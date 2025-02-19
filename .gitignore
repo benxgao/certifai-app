@@ -1,0 +1,24 @@
+.DS_Store
+.history
+.env
+functions/.env.yaml
+**/*/*.log
+**/*/*.txt
+dist
+node_modules
+gha-creds-*.json
+gcp_credentials.json
+
+### https://raw.github.com/github/gitignore/90f149de451a5433aebd94d02d11b0e28843a1af/Terraform.gitignore
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.hcl
