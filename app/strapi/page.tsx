@@ -1,25 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/page.tsx
 import Head from 'next/head';
 import Image from 'next/image';
 import { getPageData } from '../utils/strapi';
 
-interface HomePageProps {
-  pageData: {
-    title: string;
-    description: string;
-    content: string;
-    image?: {
-      data: {
-        attributes: {
-          url: string;
-          alternativeText: string;
-        };
-      };
-    };
-  } | null;
-}
-
-export default async function Home({}: HomePageProps) {
+export default async function Home({}: any) {
   const pageData = await getPageData('home'); // removed slug argument
 
   console.log('pageData', pageData);
@@ -45,7 +30,6 @@ export default async function Home({}: HomePageProps) {
             height={300}
           />
         )}
-        )
       </main>
     </div>
   );
