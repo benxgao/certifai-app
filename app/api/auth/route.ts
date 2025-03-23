@@ -1,8 +1,7 @@
-// app/api/auth/route.ts (API Route for JWT generation)
-
 import { SignJWT } from 'jose';
+import { cookies } from 'next/headers';
 
-const secretKey = process.env.JWT_SECRET; // Store securely!
+const secretKey = process.env.JWT_SECRET;
 
 export async function POST(request: Request) {
   if (!secretKey) {
@@ -10,7 +9,8 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const userId = body.userId; // Example: get user ID from request
+
+  const userId = (body as any).userId;
 
   if (!userId) {
     return new Response('User ID required', { status: 400 });
@@ -20,10 +20,18 @@ export async function POST(request: Request) {
     const token = await new SignJWT({ userId: userId })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('1h') // Token expires in 1 hour
+      .setExpirationTime('1h')
       .sign(new TextEncoder().encode(secretKey));
 
-    return Response.json({ token: token });
+    (await cookies()).set('authToken', token, {
+      httpOnly: true, // Crucial for security
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict', // Prevent CSRF attacks
+      path: '/', // Cookie path
+    });
+
+    // return Response.json({ token: token });
+    return Response.json({ success: true });
   } catch (error) {
     console.error('JWT generation error:', error);
     return new Response('Internal server error', { status: 500 });
