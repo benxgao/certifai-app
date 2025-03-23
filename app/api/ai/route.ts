@@ -1,13 +1,13 @@
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+// import { NextResponse } from 'next/server';
 
 const secretKey = process.env.JWT_SECRET;
 
 export async function GET(request: Request) {
   console.log(`request: ${JSON.stringify(request)}`);
 
-  return NextResponse.json({ message: 'GET request success' });
+  return Response.json({ message: 'GET request success' });
 }
 
 export async function POST() {
@@ -36,7 +36,7 @@ export async function POST() {
 
     const data = { message: `Protected data for user ${payload.userId}` };
 
-    return NextResponse.json({ data });
+    return Response.json({ data });
   } catch (error) {
     console.error('JWT verification error:', error);
 

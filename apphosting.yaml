@@ -2,22 +2,29 @@
 # See https://firebase.google.com/docs/app-hosting/configure#cloud-run
 runConfig:
   minInstances: 0
-  # maxInstances: 100
-  # concurrency: 80
-  # cpu: 1
-  # memoryMiB: 512
+  maxInstances: 10
+  concurrency: 50
+  cpu: 1
+  memoryMiB: 512
 
-# Environment variables and secrets.
-# env:
-  # Configure environment variables.
-  # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
-  # - variable: MESSAGE
-  #   value: Hello world!
-  #   availability:
-  #     - BUILD
-  #     - RUNTIME
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    secret: AIzaSyBV3PdmhMVxGUKkl-vmWHw4kt_kd0lM084
 
-  # Grant access to secrets in Cloud Secret Manager.
-  # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
-  # - variable: MY_SECRET
-  #   secret: mySecretRef
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    secret: co-workout-next.firebaseapp.com
+
+  # - variable: NEXT_PUBLIC_FIREBASE_DATABASE_URL
+  #   secret: firebaseDatabaseUrl
+
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    secret: co-workout-next
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    secret: co-workout-next.firebasestorage.app
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    secret: 1003282744650
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    secret: 1:1003282744650:web:03ae2c7f20f8c265586db3
