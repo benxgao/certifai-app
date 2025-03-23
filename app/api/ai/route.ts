@@ -1,4 +1,8 @@
+import { jwtVerify } from 'jose';
+
 import { NextResponse } from 'next/server';
+
+const secretKey = process.env.JWT_SECRET;
 
 export async function GET(request: Request) {
   console.log(`request: ${JSON.stringify(request)}`);
@@ -9,13 +13,31 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  // ...existing code...
+  const authHeader = request.headers.get('Authorization');
+
+  if (!authHeader) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    const body = await request.json();
-    // Process the POST request data as needed
-    return NextResponse.json({ message: 'POST request success', data: { body: body || '' } });
+    if (!secretKey) throw new Error('JWT secret not configured');
+
+    const { payload, protectedHeader } = await jwtVerify(
+      token,
+      new TextEncoder().encode(secretKey),
+    );
+
+    console.log(`protectedHeader: ${JSON.stringify(protectedHeader)}`);
+
+    const data = { message: `Protected data for user ${payload.userId}` };
+
+    return NextResponse.json({ data });
   } catch (error) {
-    return NextResponse.json({ error: `error: ${error}` }, { status: 400 });
+    console.error('JWT verification error:', error);
+
+    return new Response('Unauthenticated', { status: 401 });
   }
   // ...existing code...
 }

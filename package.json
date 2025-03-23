@@ -12,6 +12,7 @@
     "@genkit-ai/vertexai": "^1.3.0",
     "axios": "^1.8.4",
     "genkit": "^1.3.0",
+    "jose": "^6.0.10",
     "next": "^15.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
