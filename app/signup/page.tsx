@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { auth } from '../../firebase/firebaseWebConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+import { auth } from '../../firebase/firebaseWebConfig';
 
 export default function signup() {
   const router = useRouter();
@@ -68,49 +69,3 @@ export default function signup() {
     </>
   );
 }
-
-// import { useRouter } from 'next/router';
-// import { createUserWithEmailAndPassword } from 'firebase/auth';
-// import { firebaseAuth } from '../../firebase/firebaseWebConfig';
-
-// export default function Signup() {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState(null);
-//   const router = useRouter();
-
-//   const handleSignup = async (e) => {
-//     e.preventDefault();
-//     setError(null);
-
-//     try {
-//       //   await signInWithPopup(firebaseAuth, googleProvider);
-//       await createUserWithEmailAndPassword(firebaseAuth, email, password);
-
-//       router.push('/users/ai');
-//     } catch (err) {
-//       setError(err.message);
-//       console.error('Signup error:', err);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Sign Up</h1>
-//       {error && <p style={{ color: 'red' }}>{error}</p>}
-//       <form onSubmit={handleSignup}>
-//         <label>
-//           Email:
-//           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-//         </label>
-//         <br />
-//         <label>
-//           Password:
-//           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-//         </label>
-//         <br />
-//         <button type="submit">Sign Up</button>
-//       </form>
-//     </div>
-//   );
-// }

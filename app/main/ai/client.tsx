@@ -17,7 +17,7 @@ const AIClientPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId: 'user123' }),
+        body: JSON.stringify({ token: 'token123' }),
       });
 
       if (!res.ok) {

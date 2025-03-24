@@ -6,10 +6,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { auth } from '../../firebase/firebaseWebConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
+import { auth } from '../../firebase/firebaseWebConfig';
 
 export default function signin() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function signin() {
   const handleSignin = async () => {
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      router.replace('/users');
+      router.replace('/main');
     } catch (error) {
       console.error(error);
     }
@@ -73,32 +74,3 @@ export default function signin() {
     </>
   );
 }
-
-// import React from 'react';
-// import { useAuthState } from 'react-firebase-hooks/auth';
-// import { firebaseAuth } from '../../firebase/firebaseWebConfig';
-// import { signInWithPopup } from 'firebase/auth';
-
-// export default function GoogleSignIn() {
-//   const handleSignin = async () => {
-//     await signInWithPopup(firebaseAuth, googleProvider);
-//   };
-
-//   const [user, loading] = useAuthState(firebaseAuth);
-
-//   return (
-//     <>
-//       {loading ? (
-//         <>loading...</>
-//       ) : (
-//         <>
-//           {user ? (
-//             <img src={user?.photoURL ?? undefined} alt={user?.displayName ?? undefined} />
-//           ) : (
-//             <button onClick={handleSignin}>Signin</button>
-//           )}
-//         </>
-//       )}
-//     </>
-//   );
-// }

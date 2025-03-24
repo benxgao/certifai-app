@@ -16,9 +16,7 @@
     "jose": "^6.0.10",
     "next": "^15.2.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-firebase-hooks": "^5.1.1",
-    "react-markdown": "^10.1.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

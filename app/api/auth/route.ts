@@ -10,20 +10,20 @@ export async function POST(request: Request) {
 
   const body = await request.json();
 
-  const userId = (body as any).userId;
+  const token = (body as any).token;
 
-  if (!userId) {
+  if (!token) {
     return new Response('User ID required', { status: 400 });
   }
 
   try {
-    const token = await new SignJWT({ userId: userId })
+    const signedToken = await new SignJWT({ token: token })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(secretKey));
 
-    (await cookies()).set('authToken', token, {
+    (await cookies()).set('authToken', signedToken, {
       httpOnly: true, // Crucial for security
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict', // Prevent CSRF attacks
