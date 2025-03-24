@@ -25,7 +25,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
-        const token = await authUser.getIdToken();
+        const token = await authUser.getIdToken(true);
         setUser(authUser);
         setFirebaseToken(token);
 

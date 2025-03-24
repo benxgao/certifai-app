@@ -4,29 +4,30 @@ import type { NextRequest } from 'next/server';
 export async function middleware(request: NextRequest) {
   try {
     // Get the token from the cookie
-    const session = request.cookies.get('authToken')?.value;
-    if (!session) {
-      throw new Error('No session cookie');
+    const authToken = request.cookies.get('authToken')?.value;
+
+    console.log(`middleware authToken: ${authToken}`);
+
+    if (!authToken) {
+      throw new Error('No authToken cookie');
     }
 
-    // // Verify the session using our API endpoint
-    // const verifyResponse = await fetch(`${request.nextUrl.origin}/api/auth/verify-session`, {
-    //   headers: {
-    //     cookie: `authToken=${session}`,
-    //   },
-    // });
+    // For protected routes, verify the token through an API route
+    try {
+      //   const response = await fetch(`${request.nextUrl.origin}/api/auth/verify`, {
+      //     headers: {
+      //       Authorization: `Bearer ${authToken}`,
+      //     },
+      //   });
 
-    // if (!verifyResponse.ok) {
-    //   throw new Error('Invalid session');
-    // }
+      //   if (!response.ok) {
+      //     throw new Error('Invalid token');
+      //   }
 
-    // const decodedClaims = await verifyResponse.json();
-
-    // Add the user info to headers for server components
-    const response = NextResponse.next();
-    // response.headers.set('user', JSON.stringify(decodedClaims));
-
-    return response;
+      return NextResponse.next();
+    } catch (error) {
+      return NextResponse.redirect(new URL('/signin', request.url));
+    }
   } catch (error) {
     // Redirect to login if there's no valid session
     return NextResponse.redirect(new URL('/signin', request.url));

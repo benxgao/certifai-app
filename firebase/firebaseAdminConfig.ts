@@ -1,40 +1,38 @@
-import * as admin from 'firebase-admin';
-import { getApps, initializeApp, App } from 'firebase-admin/app';
+import admin, { auth } from 'firebase-admin';
+import { getApps, App } from 'firebase-admin/app';
 
 const getFirebaseAdminApp = (): App => {
   try {
-    const serviceAccount = require('../service-account.json');
+    let app;
+    const serviceAccount = require('../gcp_credentials.json');
 
     if (!serviceAccount) {
       throw new Error('Service account file not found');
     }
 
-    if (!process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL) {
-      throw new Error('Firebase Database URL is not set in environment variables');
-    }
-
     const apps = getApps();
 
-    if (!apps.length) {
-      return initializeApp({
+    if (!admin.apps.length) {
+      app = admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
       });
+    } else {
+      app = apps[0];
     }
 
-    return apps[0];
+    console.log('Initialized app:', app);
+
+    return app;
   } catch (error) {
     console.error('Error initializing Firebase Admin:', error);
     throw error;
   }
 };
 
-// Initialize the app
 const app = getFirebaseAdminApp();
 
-// Export the admin services
-export const adminAuth = admin.auth(app);
-export const adminFirestore = admin.firestore(app);
+const adminAuth = auth();
+const adminFirestore = admin.firestore();
 
 // Helper function for server components to ensure admin is initialized
 export const getAdminSDK = () => {

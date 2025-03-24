@@ -52,6 +52,8 @@ export default function Home() {
         },
       );
 
+      console.log(`protected-resources response: ${JSON.stringify(response.data)}`);
+
       setProtectedData(response.data);
     } catch (error) {
       console.error('Protected request failed:', error);
@@ -65,11 +67,14 @@ export default function Home() {
           <h1 className="text-3xl font-semibold">Private Page</h1>
         </div>
 
-        <div>{apiData && <p>Data from /api/ai: {JSON.stringify(apiData)}</p>}</div>
+        <div>{apiData && <p>Data from backend/api/ai: {JSON.stringify(apiData)}</p>}</div>
+        <div>
+          {protectedData && (
+            <p>Data from server/api/protected-resources: {JSON.stringify(protectedData)}</p>
+          )}
+        </div>
 
         <button onClick={handleProtectedRequest}>Get Protected Data</button>
-
-        {protectedData && <pre>{JSON.stringify(protectedData, null, 2)}</pre>}
 
         {user ? (
           <div>
