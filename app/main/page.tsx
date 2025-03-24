@@ -4,51 +4,17 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
-import { User } from 'firebase/auth';
-
 import { auth } from '../../firebase/firebaseWebConfig';
+import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
-  const [storedToken, setStoredToken] = useState<string | null>(null);
-
+  const { user, firebaseToken } = useFirebaseAuth();
   const [apiData, setApiData] = useState<any>(null);
-
   const [protectedData, setProtectedData] = useState(null);
 
   const handleLogout = () => {
     auth.signOut();
   };
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        const token = await authUser.getIdToken();
-
-        console.log(`authUser token: ${token}`);
-        // console.log(`authUser: ${JSON.stringify(authUser)}`);
-
-        // store token in cookie so that it can be used in next.js backend
-        const res = await fetch('/api/auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
-        });
-
-        if (!res.ok) {
-          console.error(`fetch api/auth from main: ${JSON.stringify(res.status)}`);
-          throw new Error(`Failed to fetch api/auth from main: ${JSON.stringify(res.body)}`);
-        }
-
-        setUser(authUser);
-        setStoredToken(token);
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   useEffect(() => {
     async function fetchData(data: { data: string }) {
@@ -59,8 +25,7 @@ export default function Home() {
         });
 
         if (!res.ok) {
-          console.error(`fetch error: ${JSON.stringify(res.status)}`);
-          throw new Error(`Failed to fetch data: ${JSON.stringify(res.body)}`);
+          throw new Error(`Failed to fetch data: ${res.status}`);
         }
 
         setApiData(await res.json());
@@ -82,7 +47,7 @@ export default function Home() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${storedToken}`,
+            Authorization: `Bearer ${firebaseToken}`,
           },
         },
       );
