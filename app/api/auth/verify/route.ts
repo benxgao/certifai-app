@@ -1,8 +1,10 @@
-import { verifyToken } from '../../../../firebase/verifyTokenByAdmin';
+import * as jose from 'jose';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-export async function GET() {
+import { verifyToken } from '../../../../firebase/verifyTokenByAdmin';
+
+export async function POST() {
   try {
     const headersList = await headers();
     const authorization = headersList.get('authorization');
@@ -12,7 +14,11 @@ export async function GET() {
     }
 
     const token = authorization.replace('Bearer ', '');
-    const { valid } = await verifyToken(token);
+    const firebaseToken = jose.decodeJwt(token).token;
+
+    console.log(`firebaseToken pass in verifyToken(): ${firebaseToken}`);
+
+    const { valid } = await verifyToken(firebaseToken as string);
 
     if (!valid) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
@@ -20,6 +26,12 @@ export async function GET() {
 
     return NextResponse.json({ valid: true });
   } catch (error) {
+    console.error('/api/auth/verify:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+    });
+
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

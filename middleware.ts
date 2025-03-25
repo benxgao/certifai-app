@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
@@ -14,15 +15,16 @@ export async function middleware(request: NextRequest) {
 
     // For protected routes, verify the token through an API route
     try {
-      //   const response = await fetch(`${request.nextUrl.origin}/api/auth/verify`, {
-      //     headers: {
-      //       Authorization: `Bearer ${authToken}`,
-      //     },
-      //   });
-
-      //   if (!response.ok) {
-      //     throw new Error('Invalid token');
-      //   }
+      await axios.post(
+        `${request.nextUrl.origin}/api/auth/verify`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
 
       return NextResponse.next();
     } catch (error) {
