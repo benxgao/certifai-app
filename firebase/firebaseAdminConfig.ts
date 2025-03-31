@@ -20,7 +20,7 @@ const getFirebaseAdminApp = (): App => {
       app = apps[0];
     }
 
-    console.log('Initialized app:', app);
+    // console.log('Initialized app:', app);
 
     return app;
   } catch (error) {

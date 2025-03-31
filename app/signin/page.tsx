@@ -25,7 +25,21 @@ export default function signin() {
 
   const handleSignin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, form.email, form.password);
+      const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
+      console.log(`signin init: ${JSON.stringify(signedIn)}`);
+
+      const token = await signedIn.user.getIdToken(true);
+      console.log('signin token:', token);
+
+      // store token in cookie
+      await fetch('/api/auth-cookie/set', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      });
+
+      router.push('/main');
+
       router.replace('/main');
     } catch (error) {
       console.error(error);

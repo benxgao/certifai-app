@@ -13,10 +13,19 @@ export async function POST() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 400 });
     }
 
-    const token = authorization.replace('Bearer ', '');
-    const firebaseToken = jose.decodeJwt(token).token;
+    // this is the token containing {token, exp, iat}
+    const requestToken = authorization.replace('Bearer ', '');
+    const {token, exp} = jose.decodeJwt(requestToken);
+    const firebaseToken = token; // this is the token containing the firebase info
+    const expiredAt = exp || 0;
 
-    console.log(`firebaseToken pass in verifyToken(): ${firebaseToken}`);
+    if (expiredAt < Date.now() / 1000) {
+      console.error('Token expired:', { expiredAt, currentTime: Date.now() / 1000 });
+      return NextResponse.json({ error: 'Token expired' }, { status: 401 });
+    }
+
+    // console.log(`jose.decodeJwt(token): ${JSON.stringify(firebaseToken)}`);
+    // console.log(`firebaseToken pass in verifyToken(): ${firebaseToken}`);
 
     const { valid } = await verifyToken(firebaseToken as string);
 
@@ -25,11 +34,11 @@ export async function POST() {
     }
 
     return NextResponse.json({ valid: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('/api/auth/verify:', {
       message: error.message,
       code: error.code,
-      stack: error.stack,
+      // stack: error.stack,
     });
 
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

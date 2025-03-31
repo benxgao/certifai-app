@@ -1,5 +1,7 @@
+
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
+import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 
 const secretKey = process.env.JWT_SECRET;
 
@@ -9,6 +11,8 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
+
+  // console.log(`api/auth starts: ${JSON.stringify(body)}`);
 
   const token = (body as any).token;
 
@@ -23,14 +27,20 @@ export async function POST(request: Request) {
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(secretKey));
 
-    (await cookies()).set('authToken', signedToken, {
+      // const cookieString = serialize('authToken', signedToken, {
+      //   httpOnly: true, // Crucial for security
+      //   secure: process.env.NODE_ENV === 'production',
+      //   sameSite: 'strict', // Prevent CSRF attacks
+      //   path: '/', // Cookie path
+      // });
+
+    (await cookies()).set(COOKIE_AUTH_NAME, signedToken, {
       httpOnly: true, // Crucial for security
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict', // Prevent CSRF attacks
       path: '/', // Cookie path
     });
 
-    // return Response.json({ token: token });
     return Response.json({ success: true });
   } catch (error) {
     console.error('JWT generation error:', error);

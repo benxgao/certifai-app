@@ -2,16 +2,17 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
-import { auth } from '../firebase/firebaseWebConfig';
 
 interface FirebaseAuthContextType {
-  user: User | null;
+  firebaseUser: User | null;
+  setFirebaseUser: (user: User | null) => void;
   firebaseToken: string | null;
   setFirebaseToken: (token: string | null) => void;
 }
 
 const FirebaseAuthContext = createContext<FirebaseAuthContextType>({
-  user: null,
+  firebaseUser: null,
+  setFirebaseUser: () => {},
   firebaseToken: null,
   setFirebaseToken: () => {},
 });
@@ -19,33 +20,11 @@ const FirebaseAuthContext = createContext<FirebaseAuthContextType>({
 export const useFirebaseAuth = () => useContext(FirebaseAuthContext);
 
 export function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        const token = await authUser.getIdToken(true);
-        setUser(authUser);
-        setFirebaseToken(token);
-
-        // store token in cookie
-        await fetch('/api/auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
-        });
-      } else {
-        setUser(null);
-        setFirebaseToken(null);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   return (
-    <FirebaseAuthContext.Provider value={{ user, firebaseToken, setFirebaseToken }}>
+    <FirebaseAuthContext.Provider value={{ firebaseUser, setFirebaseUser, firebaseToken, setFirebaseToken }}>
       {children}
     </FirebaseAuthContext.Provider>
   );
