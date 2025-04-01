@@ -59,17 +59,17 @@ export default function Home() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
-        // const firebaseToken = await authUser.getIdToken(true);
+        const firebaseToken = await authUser.getIdToken(true);
 
-        // setFirebaseUser(authUser);
-        // setFirebaseToken(firebaseToken);
+        setFirebaseUser(authUser);
+        setFirebaseToken(firebaseToken);
 
         // // store token in cookie
-        // await fetch('/api/auth-cookie/set', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ token: firebaseToken }),
-        // });
+        await fetch('/api/auth-cookie/set', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: firebaseToken }),
+        });
       } else {
         setFirebaseUser(null);
         setFirebaseToken(null);
