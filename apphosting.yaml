@@ -8,23 +8,23 @@ runConfig:
   memoryMiB: 512
 
 env:
-  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    secret: AIzaSyBV3PdmhMVxGUKkl-vmWHw4kt_kd0lM084
+  - variable: NEXT_PUBLIC_SERVER_API_URL
+    value: https://us-central1-co-workout-next.cloudfunctions.net/endpoints # secret
+
+  - variable: JOSE_JWT_SECRET
+    value: your_secret_key # secret
 
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    secret: co-workout-next.firebaseapp.com
-
-  # - variable: NEXT_PUBLIC_FIREBASE_DATABASE_URL
-  #   secret: firebaseDatabaseUrl
+    value: co-workout-next.firebaseapp.com
 
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    secret: co-workout-next
+    value: co-workout-next
 
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    secret: co-workout-next.firebasestorage.app
+    value: co-workout-next.firebasestorage.app
 
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    secret: 1003282744650
+    value: 1003282744650
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    secret: 1:1003282744650:web:03ae2c7f20f8c265586db3
+    value: 1:1003282744650:web:03ae2c7f20f8c265586db3

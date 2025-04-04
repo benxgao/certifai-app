@@ -1,9 +1,9 @@
 
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
-import { COOKIE_AUTH_NAME } from '@/src/config/constants';
+import { COOKIE_AUTH_NAME } from '../../../../src/config/constants';
 
-const secretKey = process.env.JWT_SECRET;
+const secretKey = process.env.JOSE_JWT_SECRET;
 
 export async function POST(request: Request) {
   if (!secretKey) {
