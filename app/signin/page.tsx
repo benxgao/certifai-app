@@ -12,7 +12,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { auth } from '../../firebase/firebaseWebConfig';
 
-export default function signin() {
+const SignIn = () => {
   const router = useRouter();
   const [form, setForm] = useState({
     email: '',
@@ -88,3 +88,5 @@ export default function signin() {
     </>
   );
 }
+
+export default SignIn;

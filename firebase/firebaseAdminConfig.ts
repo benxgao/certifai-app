@@ -4,11 +4,22 @@ import { getApps, App } from 'firebase-admin/app';
 const getFirebaseAdminApp = (): App => {
   try {
     let app;
-    const serviceAccount = require('../gcp_credentials.json');
+    // const serviceAccount = require('../gcp_credentials.json');
+    // if (!serviceAccount) {
+    //   throw new Error('Service account file not found');
+    // }
 
-    if (!serviceAccount) {
-      throw new Error('Service account file not found');
+    const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+    if (!credentialsString) {
+      throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable not set.');
     }
+
+    const serviceAccount = credentialsString.startsWith('/')
+      ? credentialsString
+      : JSON.parse(credentialsString);
+
+    console.log(`DEBUG:0 Initializing:
+      | proecess.env.GOOGLE_APPLICATION_CREDENTIALS: ${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
 
     const apps = getApps();
 
@@ -20,7 +31,7 @@ const getFirebaseAdminApp = (): App => {
       app = apps[0];
     }
 
-    // console.log('Initialized app:', app);
+    console.log('DEBUG:1 Initialized:', app);
 
     return app;
   } catch (error) {

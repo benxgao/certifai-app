@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 import { auth } from '../../firebase/firebaseWebConfig';
 
-export default function signup() {
+export default function SignUp() {
   const router = useRouter();
   const [form, setForm] = useState({
     email: '',

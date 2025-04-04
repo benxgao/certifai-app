@@ -53,7 +53,7 @@ export default function Home() {
       console.log(`main: firebaseToken: ${JSON.stringify(firebaseToken)}`);
       setApiData(aiData);
     }
-  }, [firebaseUser]);
+  }, [firebaseUser, firebaseToken]);
 
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function Home() {
     });
 
     return () => unsubscribe();
-  }, []);
+  });
 
 
   const handleProtectedRequest = async () => {

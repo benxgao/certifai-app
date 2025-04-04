@@ -8,11 +8,18 @@ runConfig:
   memoryMiB: 512
 
 env:
-  - variable: NEXT_PUBLIC_SERVER_API_URL
-    value: https://us-central1-co-workout-next.cloudfunctions.net/endpoints # secret
+  - variable: GOOGLE_APPLICATION_CREDENTIALS
+    secret: GCP_CREDENTIALS_JSON # secret
 
   - variable: JOSE_JWT_SECRET
-    value: your_secret_key # secret
+    secret: JOSE_JWT_SECRET # secret
+
+  - variable: NEXT_PUBLIC_SERVER_API_URL
+    value: https://us-central1-co-workout-next.cloudfunctions.net/endpoints
+
+# Firebase
+# See https://firebase.google.com/docs/app-hosting/configure#environment_variables
+# for more information on how to set up environment variables
 
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
     value: co-workout-next.firebaseapp.com

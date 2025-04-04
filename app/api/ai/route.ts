@@ -4,7 +4,7 @@ import { COOKIE_AUTH_NAME } from '../../../src/config/constants';
 
 const secretKey = process.env.JOSE_JWT_SECRET;
 
-export async function GET(request: Request) {
+export async function GET() {
 
   return Response.json({ message: 'GET request success' });
 }
