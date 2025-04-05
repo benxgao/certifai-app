@@ -8,6 +8,9 @@ runConfig:
   memoryMiB: 512
 
 env:
+  # - variable: NODE_ENV
+  #   value: production
+
   - variable: GOOGLE_APPLICATION_CREDENTIALS
     secret: GCP_CREDENTIALS_JSON # secret
 
@@ -17,9 +20,12 @@ env:
   - variable: NEXT_PUBLIC_SERVER_API_URL
     value: https://us-central1-co-workout-next.cloudfunctions.net/endpoints
 
-# Firebase
-# See https://firebase.google.com/docs/app-hosting/configure#environment_variables
-# for more information on how to set up environment variables
+  # Firebase
+  # See https://firebase.google.com/docs/app-hosting/configure#environment_variables
+  # for more information on how to set up environment variables
+
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyBV3PdmhMVxGUKkl-vmWHw4kt_kd0lM084
 
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
     value: co-workout-next.firebaseapp.com
