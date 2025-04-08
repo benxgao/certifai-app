@@ -38,19 +38,12 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-      // const res0 = await fetch(`/api/auth-cookie/verify`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: `Bearer ${joseToken}`,
-      //   },
-      // });
-      // const data0: any = await res0.json();
-      // console.log(`middleware: api/auth-cookie/verify data: ${JSON.stringify(data0)}`);
-      const url = new URL('/api/auth-cookie/verify', request.url);
+      const BASE_URL = process.env.NEXT_PUBLIC_FIREBASE_BACKEND_URL || request.nextUrl.origin;
+      const url = `${BASE_URL}/api/auth-cookie/verify`;
+
       console.log(`middleware: api/auth-cookie/verify
-        | url1: ${url}
-        | url2: ${request.nextUrl.origin}/api/auth-cookie/verify`);
+        | BASE_URL: ${BASE_URL}
+        | url: ${url}`);
 
       const res = await fetch(url, {
         method: 'POST',
