@@ -26,21 +26,19 @@ const SignIn = () => {
   const handleSignin = async () => {
     try {
       const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
-      console.log(`signin init: ${JSON.stringify(signedIn)}`);
+      console.log(`signin init: ${JSON.stringify(signedIn.user.uid)}`);
 
-      const token = await signedIn.user.getIdToken(true);
-      console.log('signin token:', token);
+      const firebaseToken = await signedIn.user.getIdToken(true);
+      // console.log('signin token:', token);
 
       // store token in cookie
       await fetch('/api/auth-cookie/set', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ firebaseToken }),
+      }).then(() => {
+        router.replace('/main');
       });
-
-      router.push('/main');
-
-      router.replace('/main');
     } catch (error) {
       console.error(error);
     }
@@ -87,6 +85,6 @@ const SignIn = () => {
       </Head>
     </>
   );
-}
+};
 
 export default SignIn;

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { auth } from '../../firebase/firebaseWebConfig';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 
-const getAiData = async(data: { data: string }) => {
+const getAiData = async (data: { data: string }) => {
   try {
     const res = await fetch('/api/ai', {
       method: 'POST',
@@ -18,11 +18,11 @@ const getAiData = async(data: { data: string }) => {
       throw new Error(`Failed to fetch data: ${res.status}`);
     }
 
-   return  (await res.json());
+    return await res.json();
   } catch (error) {
     console.error('JWT verification or fetch error:', error);
   }
-}
+};
 
 export default function Home() {
   const router = useRouter();
@@ -55,7 +55,6 @@ export default function Home() {
     }
   }, [firebaseUser, firebaseToken]);
 
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
@@ -68,7 +67,7 @@ export default function Home() {
         await fetch('/api/auth-cookie/set', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: firebaseToken }),
+          body: JSON.stringify({ firebaseToken }),
         });
       } else {
         setFirebaseUser(null);
@@ -79,28 +78,24 @@ export default function Home() {
     return () => unsubscribe();
   });
 
-
   const handleProtectedRequest = async () => {
     try {
       // Send a POST request to server API
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/protected-resources`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${firebaseToken}`,
-          },
-          body: JSON.stringify({}),
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/protected-resources`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${firebaseToken}`,
         },
-      );
+        body: JSON.stringify({}),
+      });
 
       if (!res.ok) {
         console.error(`fetch error: ${JSON.stringify(res.status)}`);
         throw new Error(`Failed to fetch data: ${JSON.stringify(res.body)}`);
       }
 
-      const data: any =await res.json();
+      const data: any = await res.json();
 
       console.log(`protected-resources response: ${JSON.stringify(data)}`);
 

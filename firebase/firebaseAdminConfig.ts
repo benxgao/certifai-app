@@ -8,8 +8,8 @@ const getFirebaseAdminApp = (): App => {
 
     const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-    console.log(`DEBUG:0
-      | credentialsString: ${credentialsString}`);
+    // console.log(`DEBUG:0
+    //   | credentialsString: ${credentialsString}`);
 
     if (!credentialsString) {
       throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable not set.');
@@ -19,9 +19,9 @@ const getFirebaseAdminApp = (): App => {
       ? credentialsString
       : JSON.parse(credentialsString);
 
-    console.log(`DEBUG:1
-      | typeof serviceAccount: ${typeof serviceAccount}
-      | serviceAccount: ${JSON.stringify(serviceAccount)}`);
+    // console.log(`DEBUG:1
+    //   | typeof serviceAccount: ${typeof serviceAccount}
+    //   | serviceAccount: ${JSON.stringify(serviceAccount)}`);
 
     const apps = getApps();
 
@@ -33,7 +33,7 @@ const getFirebaseAdminApp = (): App => {
       app = apps[0];
     }
 
-    console.log('DEBUG:2 Initialized:', app);
+    // console.log('DEBUG:2 Initialized:', app);
 
     return app;
   } catch (error) {
