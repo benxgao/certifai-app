@@ -12,6 +12,7 @@ export async function middleware(request: NextRequest) {
       | origin: ${request.nextUrl.origin}
       | path: ${request.nextUrl.pathname}
       | cookie: ${request.cookies.toString()}
+      | joseToken: ${joseToken}
       | headers: ${JSON.stringify(request.headers)}
       | url: ${request.url}`);
 
@@ -37,7 +38,21 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-      const res = await fetch(`${request.nextUrl.origin}/api/auth-cookie/verify`, {
+      // const res0 = await fetch(`/api/auth-cookie/verify`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${joseToken}`,
+      //   },
+      // });
+      // const data0: any = await res0.json();
+      // console.log(`middleware: api/auth-cookie/verify data: ${JSON.stringify(data0)}`);
+      const url = new URL('/api/auth-cookie/verify', request.url);
+      console.log(`middleware: api/auth-cookie/verify
+        | url1: ${url}
+        | url2: ${request.nextUrl.origin}/api/auth-cookie/verify`);
+
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,8 +65,9 @@ export async function middleware(request: NextRequest) {
         throw new Error(`Failed to fetch data: ${JSON.stringify(res.body)}`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const data: any = await res.json(); // {"valid":true}
+
+      console.log(`middleware: api/auth-cookie/verify data: ${JSON.stringify(data)}`);
 
       return NextResponse.next();
     } catch (error) {

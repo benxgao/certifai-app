@@ -6,6 +6,9 @@ import { verifyToken } from '../../../../firebase/verifyTokenByAdmin';
 
 export async function POST() {
   try {
+    console.log(`/api/auth/verify: init
+      | headers: ${JSON.stringify(headers())}`);
+
     const headersList = await headers();
     const authorization = headersList.get('authorization');
 
@@ -14,8 +17,8 @@ export async function POST() {
     }
 
     // this is the token containing {token, exp, iat}
-    const requestToken = authorization.replace('Bearer ', '');
-    const {token, exp} = jose.decodeJwt(requestToken);
+    const joseToken = authorization.replace('Bearer ', '');
+    const { token, exp } = jose.decodeJwt(joseToken);
     const firebaseToken = token; // this is the token containing the firebase info
     const expiredAt = exp || 0;
 
@@ -24,7 +27,6 @@ export async function POST() {
       return NextResponse.json({ error: 'Token expired' }, { status: 401 });
     }
 
-    // console.log(`jose.decodeJwt(token): ${JSON.stringify(firebaseToken)}`);
     // console.log(`firebaseToken pass in verifyToken(): ${firebaseToken}`);
 
     const { valid } = await verifyToken(firebaseToken as string);
