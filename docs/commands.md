@@ -15,7 +15,10 @@ gcloud auth activate-service-account --key-file=...
 ```bash
 # For each secret defined in apphosting.yaml, access request is needed
 
-firebase apphosting:secrets:grantaccess -b gcp GCP_CREDENTIALS_JSON
+firebase apphosting:secrets:grantaccess -b [BACKEND_NAME] GCP_CREDENTIALS_JSON
 
-firebase apphosting:secrets:grantaccess -b gcp JOSE_JWT_SECRET
+firebase apphosting:secrets:grantaccess -b [BACKEND_NAME] JOSE_JWT_SECRET
+
+firebase apphosting:secrets:grantaccess -b [BACKEND_NAME] NEXT_PUBLIC_FIREBASE_BACKEND_URL
+
 ```

@@ -4,24 +4,19 @@ import { getApps, App } from 'firebase-admin/app';
 const getFirebaseAdminApp = (): App => {
   try {
     let app;
-    // const serviceAccount = require('../gcp_credentials.json');
 
     const credentialsString = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-
-    // console.log(`DEBUG:0
-    //   | credentialsString: ${credentialsString}`);
 
     if (!credentialsString) {
       throw new Error('GOOGLE_APPLICATION_CREDENTIALS environment variable not set.');
     }
 
+    /**
+     * Use JSON.parse if it is loaded in production, where the string is passed from secret manager
+     */
     const serviceAccount = credentialsString.startsWith('/')
       ? credentialsString
       : JSON.parse(credentialsString);
-
-    // console.log(`DEBUG:1
-    //   | typeof serviceAccount: ${typeof serviceAccount}
-    //   | serviceAccount: ${JSON.stringify(serviceAccount)}`);
 
     const apps = getApps();
 
@@ -32,8 +27,6 @@ const getFirebaseAdminApp = (): App => {
     } else {
       app = apps[0];
     }
-
-    // console.log('DEBUG:2 Initialized:', app);
 
     return app;
   } catch (error) {
@@ -47,7 +40,6 @@ const app = getFirebaseAdminApp();
 const adminAuth = auth();
 const adminFirestore = admin.firestore();
 
-// Helper function for server components to ensure admin is initialized
 export const getAdminSDK = () => {
   return {
     auth: adminAuth,

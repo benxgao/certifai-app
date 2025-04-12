@@ -18,7 +18,7 @@ env:
     secret: JOSE_JWT_SECRET # secret
 
   - variable: NEXT_PUBLIC_FIREBASE_BACKEND_URL # for sending requests to the backend api
-    value: https://gcp--co-workout-next.us-central1.hosted.app # secret
+    secret: NEXT_PUBLIC_FIREBASE_BACKEND_URL # secret
 
   - variable: NEXT_PUBLIC_SERVER_API_URL
     value: https://us-central1-co-workout-next.cloudfunctions.net/endpoints
