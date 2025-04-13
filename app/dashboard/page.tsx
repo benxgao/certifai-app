@@ -1,9 +1,10 @@
-'use client'; // Add this line if you are using React hooks like useState
+'use client';
 
 import React from 'react';
-// import Sidebar from '@/components/sidebar';
-// import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Bell, Search, Play, Users, Calendar } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -12,93 +13,151 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { useState } from 'react';
+import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
-  const [inputText, setInputText] = useState('');
-  const [outputText, setOutputText] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
-
-  const handleInputChange = (e: any) => {
-    e.preventDefault();
-    setInputText(e.target.value);
-  };
-
-  const handleSubmit = async () => {
-    // Make async for potential API calls
-    if (!inputText.trim()) return; // Prevent submitting empty prompts
-
-    setIsLoading(true);
-    setOutputText(''); // Clear previous output
-
-    // --- Placeholder for AI interaction ---
-    // Replace this with your actual API call
-    try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      const response = `AI Response to: "${inputText}"`; // Simulate response
-      setOutputText(response);
-      setInputText(''); // Clear input after successful submission
-    } catch (error) {
-      console.error('Error fetching AI response:', error);
-      setOutputText('Sorry, something went wrong. Please try again.'); // Display error message
-    } finally {
-      setIsLoading(false); // Stop loading indicator
-    }
-    // --- End Placeholder ---
-  };
-
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      {/* Use theme variables */}
-      {/* Sidebar */}
-      {/* <Sidebar /> */}
-      {/* Main Content */}
-      <div className="flex-1 p-6 overflow-y-auto">
-        {' '}
-        {/* Add padding and scroll */}
-        <Card className="w-full max-w-3xl mx-auto shadow-lg">
-          {' '}
-          {/* Add shadow */}
-          <CardHeader>
-            <CardTitle className="text-2xl">AI Demo</CardTitle> {/* Larger title */}
-            <CardDescription>Interact with a sample AI model.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-6">
-            {' '}
-            {/* Increased gap */}
-            <div className="grid gap-2">
-              <Label htmlFor="input">Enter your prompt:</Label>
-              <Textarea
-                id="input"
-                placeholder="Ask me anything..."
-                value={inputText}
-                onChange={handleInputChange}
-                rows={4} // Set initial rows
-                disabled={isLoading} // Disable input while loading
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="output">AI Response:</Label>
-              <Textarea
-                id="output"
-                value={isLoading ? 'Generating response...' : outputText}
-                readOnly
-                rows={6} // Set initial rows for output
-                placeholder="AI response will appear here..."
-                className="bg-muted" // Slightly different background for output
-              />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button onClick={handleSubmit} disabled={isLoading || !inputText.trim()}>
-              {isLoading ? 'Generating...' : 'Submit'}
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+    <div className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
+      {/* Header */}
+      <header className="flex items-center justify-between mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="relative hidden sm:block">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search..."
+              className="pl-8 w-[150px] md:w-[200px] lg:w-[300px]"
+            />
+          </div>
+          <Button variant="ghost" size="icon">
+            <Bell className="h-5 w-5" />
+            <span className="sr-only">Notifications</span>
+          </Button>
+          <Avatar className="h-8 w-8 md:h-9 md:w-9">
+            <AvatarImage src="/placeholder-user.jpg" alt="User" />
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+        </div>
+      </header>
+
+      {/* Main Content Grid */}
+      <main className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3">
+        {/* Left Column (takes 2 cols on large screens) */}
+        <div className="lg:col-span-2 grid gap-4 md:gap-6">
+          {/* Today's Plan Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg font-semibold">Today&apos;s Plan</CardTitle>
+              <Button variant="outline" size="sm">
+                View All
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4 p-4 bg-muted/40 rounded-lg">
+                <div className="bg-primary text-primary-foreground p-3 rounded-full">
+                  <Play className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">Full Body Workout</p>
+                  <p className="text-sm text-muted-foreground">60 mins | Intermediate</p>
+                </div>
+                <Button size="sm">Start</Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Activity Feed Card */}
+          <Card className="shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">Activity</CardTitle>
+              <CardDescription>Recent workouts and achievements.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src="/placeholder-user.jpg" alt="User" />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">You completed &apos;Morning Run&apos;.</p>
+                  <p className="text-xs text-muted-foreground">2 hours ago</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src="/friend-avatar.jpg" alt="Friend" />
+                  <AvatarFallback>F</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">Alex G. shared a new workout.</p>
+                  <p className="text-xs text-muted-foreground">5 hours ago</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column (takes 1 col on large screens) */}
+        <div className="grid gap-4 md:gap-6">
+          {/* Progress Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-semibold">Progress</CardTitle>
+              <CardDescription>Your weekly goal progress.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Workouts</span>
+                  <span>3 / 5</span>
+                </div>
+                <Progress value={60} aria-label="60% workout progress" />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Active Minutes</span>
+                  <span>180 / 240</span>
+                </div>
+                <Progress value={75} aria-label="75% active minutes progress" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="link" size="sm" className="p-0 h-auto">
+                View Detailed Stats
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Community Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg font-semibold">Community</CardTitle>
+              <Users className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-3">Connect with friends.</p>
+              <Button className="w-full">Find Friends</Button>
+            </CardContent>
+          </Card>
+
+          {/* Upcoming Sessions Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg font-semibold">Upcoming</CardTitle>
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">No upcoming sessions scheduled.</p>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline" size="sm">
+                Schedule New
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </main>
     </div>
   );
 }
