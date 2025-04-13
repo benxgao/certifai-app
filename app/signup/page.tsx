@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { auth } from '@/firebase/firebaseWebConfig';
+import { auth } from '@/src/firebase/firebaseWebConfig';
 import Link from 'next/link';
 
 export default function SignUp() {

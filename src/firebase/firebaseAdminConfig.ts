@@ -1,3 +1,5 @@
+import 'server-only';
+
 import admin, { auth } from 'firebase-admin';
 import { getApps, App } from 'firebase-admin/app';
 

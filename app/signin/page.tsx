@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'; // Assuming you have shadcn/ui
 import { Label } from '@/components/ui/label'; // Assuming you have shadcn/ui
 import { cn } from '@/lib/utils'; // Assuming you have a utility for combining class names
 
-import { auth } from '@/firebase/firebaseWebConfig';
+import { auth } from '@/src/firebase/firebaseWebConfig';
 
 const LoginPage = () => {
   const [form, setForm] = useState({

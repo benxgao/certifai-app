@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { auth } from '../../firebase/firebaseWebConfig';
+import { auth } from '../../src/firebase/firebaseWebConfig';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
 
 const getAiData = async (data: { data: string }) => {

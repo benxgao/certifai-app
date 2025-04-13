@@ -21,7 +21,7 @@
       "@/styles/*": ["src/styles/*"],
       "@/utils/*": ["src/utils/*"],
       "@/types/*": ["src/types/*"],
-      "@/firebase/*": ["firebase/*"]
+      "@/firebase/*": ["src/firebase/*"]
     },
     "jsx": "preserve",
     "plugins": [

@@ -36,23 +36,18 @@ export async function verifyToken(token: string) {
           tenantId: undefined
         }
      */
-    const user = await admin.auth.getUser('wrx5WLgjjEYJK347k0WParfJcWo1'); // Replace with a valid user UID
+    // const user = await admin.auth.getUser('wrx5WLgjjEYJK347k0WParfJcWo1'); // Replace with a valid user UID
     // console.log('User data fetched successfully:', user);
 
-    let decodedToken;
+    const decodedToken = await admin.auth.verifyIdToken(token, true);
 
-    if (process.env.NODE_ENV === 'development') {
-      // Development environment (emulator)
-      decodedToken = await admin.auth.verifyIdToken(token, true);
-    } else {
-      // Production environment
-      decodedToken = await admin.auth.verifyIdToken(token, true);
-    }
+    // console.log(`verifyToken2: decodedToken: ${JSON.stringify(decodedToken)}`);
 
-    console.log(`verifyToken2: decodedToken: ${JSON.stringify(decodedToken)}`);
-
-    return { uid: decodedToken.uid, valid: true };
-  } catch (error:any) {
+    return {
+      uid: decodedToken.uid,
+      valid: true,
+    };
+  } catch (error: any) {
     console.error('Token verification error details:', {
       message: error.message,
       code: error.code,

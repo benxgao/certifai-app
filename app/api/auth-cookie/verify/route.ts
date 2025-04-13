@@ -2,7 +2,7 @@ import * as jose from 'jose';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-import { verifyToken } from '../../../../firebase/verifyTokenByAdmin';
+import { verifyToken } from '../../../../src/firebase/verifyTokenByAdmin';
 
 export async function POST() {
   try {

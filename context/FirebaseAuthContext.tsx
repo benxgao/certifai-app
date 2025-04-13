@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { User } from 'firebase/auth';
 
 interface FirebaseAuthContextType {
@@ -24,7 +24,9 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
 
   return (
-    <FirebaseAuthContext.Provider value={{ firebaseUser, setFirebaseUser, firebaseToken, setFirebaseToken }}>
+    <FirebaseAuthContext.Provider
+      value={{ firebaseUser, setFirebaseUser, firebaseToken, setFirebaseToken }}
+    >
       {children}
     </FirebaseAuthContext.Provider>
   );
