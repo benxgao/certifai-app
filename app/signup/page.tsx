@@ -6,6 +6,14 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { auth } from '@/src/firebase/firebaseWebConfig';
 import Link from 'next/link';
@@ -13,6 +21,8 @@ import Link from 'next/link';
 export default function SignUp() {
   const router = useRouter();
   const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
   });
@@ -23,88 +33,159 @@ export default function SignUp() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSignup = async () => {
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       setError('');
       setIsLoading(true);
       await createUserWithEmailAndPassword(auth, form.email, form.password);
-      router.replace('/signin');
+      router.replace('/dashboard');
     } catch (error: any) {
-      setError(error.message);
-      console.error(error);
+      if (error.code === 'auth/email-already-in-use') {
+        setError('This email address is already in use.');
+      } else if (error.code === 'auth/weak-password') {
+        setError('Password should be at least 6 characters.');
+      } else {
+        setError('Failed to create an account. Please try again.');
+      }
+      console.error('Signup Error:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Sign up to <span className="text-purple-400">App</span>
-          </h2>
+    <div className="min-h-screen w-full lg:grid lg:grid-cols-2 bg-gray-950">
+      {/* Left Column - Image/Description */}
+      <div className="hidden lg:flex lg:items-center lg:justify-center bg-gradient-to-br from-purple-900 via-gray-900 to-black p-8">
+        <div className="text-center text-white">
+          <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
+          <p className="text-lg text-gray-300">
+            Connect, collaborate, and achieve your fitness goals together.
+          </p>
         </div>
-        <form className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <Label htmlFor="email-address" className="sr-only">
-                Email address
-              </Label>
-              <Input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={form.email}
-                onChange={onChange}
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm bg-gray-800"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password" className="sr-only">
-                Password
-              </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={form.password}
-                onChange={onChange}
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm bg-gray-800"
-                placeholder="Password"
-              />
-            </div>
-          </div>
+      </div>
 
-          <div>
-            <Button
-              type="button"
-              className={cn(
-                'group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500',
-                isLoading ? 'bg-purple-700' : 'bg-purple-600 hover:bg-purple-700',
-                'transition-colors duration-300',
-              )}
-              disabled={isLoading}
-              onClick={handleSignup}
-            >
-              {isLoading ? 'Signing up...' : 'Sign up'}
-            </Button>
+      {/* Right Column - Signup Form */}
+      <div className="relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-950">
+        {/* Centered the logo horizontally */}
+        <div
+          id="logo"
+          className="flex items-center justify-center mb-6 space-x-3 absolute top-24 left-24"
+        >
+          <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+            C
           </div>
+          <span className="text-2xl font-bold text-white">Co-workout</span>
+        </div>
 
-          {error && <div className="text-center text-sm text-red-500">{error}</div>}
-
-          <div className="text-center text-sm text-gray-300 mt-4">
-            Already have an account?{' '}
-            <Link href="/signin" className="font-medium text-purple-400 hover:text-purple-300">
-              Sign in
-            </Link>
-          </div>
-        </form>
+        <Card className="w-full max-w-md bg-transparent border-0 text-white mt-24">
+          <CardHeader className="text-center space-y-1">
+            <CardTitle className="text-3xl font-extrabold">Create your account</CardTitle>
+            <CardDescription className="text-gray-400 pt-1">
+              Enter your details below to get started.
+            </CardDescription>
+          </CardHeader>
+          <form onSubmit={handleSignup}>
+            <CardContent className="space-y-4">
+              {/* First Name and Last Name Row */}
+              <div className="flex space-x-4">
+                <div className="w-1/2 space-y-2">
+                  <Label htmlFor="first-name" className="text-gray-300">
+                    First Name
+                  </Label>
+                  <Input
+                    id="first-name"
+                    name="firstName"
+                    type="text"
+                    autoComplete="given-name"
+                    required
+                    value={form.firstName}
+                    onChange={onChange}
+                    className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                    placeholder="John"
+                    disabled={isLoading}
+                  />
+                </div>
+                <div className="w-1/2 space-y-2">
+                  <Label htmlFor="last-name" className="text-gray-300">
+                    Last Name
+                  </Label>
+                  <Input
+                    id="last-name"
+                    name="lastName"
+                    type="text"
+                    autoComplete="family-name"
+                    required
+                    value={form.lastName}
+                    onChange={onChange}
+                    className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                    placeholder="Doe"
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <Label htmlFor="email-address" className="text-gray-300">
+                  Email address
+                </Label>
+                <Input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={form.email}
+                  onChange={onChange}
+                  className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                  placeholder="you@example.com"
+                  disabled={isLoading}
+                />
+              </div>
+              <div className="space-y-4">
+                <Label htmlFor="password" className="text-gray-300">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={form.password}
+                  onChange={onChange}
+                  className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                  placeholder="•••••••• (min. 6 characters)"
+                  disabled={isLoading}
+                />
+              </div>
+              {error && <p className="text-center text-sm text-red-500 pt-1">{error}</p>}
+              <Button
+                type="submit"
+                className={cn(
+                  'w-full mt-4',
+                  isLoading
+                    ? 'bg-purple-800 cursor-not-allowed'
+                    : 'bg-purple-600 hover:bg-purple-700',
+                  'text-white font-semibold py-2.5',
+                  'transition-colors duration-300',
+                )}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Creating Account...' : 'Sign Up'}
+              </Button>
+            </CardContent>
+            <CardFooter className="flex justify-center text-sm text-gray-400 pt-4">
+              Already have an account?&nbsp;
+              <Link
+                href="/signin"
+                className="font-medium text-purple-400 hover:text-purple-300 hover:underline"
+              >
+                Sign in
+              </Link>
+            </CardFooter>
+          </form>
+        </Card>
       </div>
     </div>
   );

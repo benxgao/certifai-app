@@ -17,9 +17,12 @@ import { Progress } from '@/components/ui/progress';
 
 export default function Dashboard() {
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
+    <div
+      id="dashboard-container"
+      className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8"
+    >
       {/* Header */}
-      <header className="flex items-center justify-between mb-6 md:mb-8">
+      <header id="dashboard-header" className="flex items-center justify-between mb-6 md:mb-8">
         <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
         <div className="flex items-center gap-3 md:gap-4">
           <div className="relative hidden sm:block">
@@ -42,9 +45,12 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content Grid */}
-      <main className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3">
+      <main
+        id="dashboard-main-content"
+        className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3"
+      >
         {/* Left Column (takes 2 cols on large screens) */}
-        <div className="lg:col-span-2 grid gap-4 md:gap-6">
+        <div id="dashboard-left-column" className="lg:col-span-2 grid gap-4 md:gap-6">
           {/* Today's Plan Card */}
           <Card className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -99,7 +105,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column (takes 1 col on large screens) */}
-        <div className="grid gap-4 md:gap-6">
+        <div id="dashboard-right-column" className="grid gap-4 md:gap-6">
           {/* Progress Card */}
           <Card className="shadow-sm">
             <CardHeader className="pb-2">
