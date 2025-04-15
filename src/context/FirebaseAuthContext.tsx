@@ -1,9 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { User } from 'firebase/auth';
 import { auth } from '@/firebase/firebaseWebConfig';
-
 interface FirebaseAuthContextType {
   firebaseUser: User | null;
   setFirebaseUser: (user: User | null) => void;
@@ -23,6 +23,8 @@ export const useFirebaseAuth = () => {
 };
 
 export function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,26 +48,14 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         });
       } else {
         setFirebaseToken(null);
+        router.push('/signin');
       }
 
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
-  //     setFirebaseUser(user);
-  //     if (user) {
-  //       const token = await user.getIdToken();
-  //       setFirebaseToken(token);
-  //     } else {
-  //       setFirebaseToken(null);
-  //     }
-  //     setLoading(false);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+  }, [router]);
 
   // Optionally, provide stable setters
   const setUser = useCallback((user: User | null) => setFirebaseUser(user), []);

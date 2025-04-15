@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Bell, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { auth } from '@/firebase/firebaseWebConfig';
 
 interface AppHeaderProps {
   title: string;
@@ -22,8 +23,18 @@ interface AppHeaderProps {
 const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    console.log('Logout clicked');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth-cookie/clear', {
+        method: 'POST',
+      });
+
+      await auth.signOut();
+
+      router.push('/signin');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -49,7 +60,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
               className="relative h-8 w-8 md:h-9 md:w-9 rounded-full cursor-pointer hover:bg-accent hover:brightness-95"
             >
               <Avatar className="h-8 w-8 md:h-9 md:w-9">
-                <AvatarImage src="/placeholder-user.jpg" alt="User" />
+                {/* <AvatarImage src="/placeholder-user.jpg" alt="User" /> */}
                 <AvatarFallback>Y</AvatarFallback>
               </Avatar>
             </Button>
@@ -63,7 +74,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onSelect={() => router.push('/profile')}
+              onSelect={() => router.push('/main/profile')}
               className="cursor-pointer hover:bg-accent hover:brightness-95"
             >
               Profile

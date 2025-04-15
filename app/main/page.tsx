@@ -1,10 +1,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { auth } from '@/firebase/firebaseWebConfig';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Play, Users, Calendar } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import AppHeader from '@/components/custom/appheader';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 
 const getAiData = async (data: { data: string }) => {
@@ -24,65 +33,15 @@ const getAiData = async (data: { data: string }) => {
   }
 };
 
-export default function Home() {
-  const router = useRouter();
-  const {
-    firebaseUser,
+const handleProtectedRequest =
+  ({
     firebaseToken,
-    //  setFirebaseUser, setFirebaseToken
-  } = useFirebaseAuth();
-  const [apiData, setApiData] = useState<any>(null);
-  const [protectedData, setProtectedData] = useState(null);
-
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/auth-cookie/clear', {
-        method: 'POST',
-      });
-
-      await auth.signOut();
-
-      router.push('/signin');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (firebaseUser) {
-      // Send a POST request to backend API
-      const aiData = getAiData({ data: 'example' });
-
-      console.log(`main: firebaseUser: ${JSON.stringify(firebaseUser)}`);
-      console.log(`main: firebaseToken: ${JSON.stringify(firebaseToken)}`);
-      setApiData(aiData);
-    }
-  }, [firebaseUser, firebaseToken]);
-
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-  //     if (authUser) {
-  //       const firebaseToken = await authUser.getIdToken(true);
-
-  //       setFirebaseUser(authUser);
-  //       setFirebaseToken(firebaseToken);
-
-  //       // // store token in cookie
-  //       await fetch('/api/auth-cookie/set', {
-  //         method: 'POST',
-  //         headers: { 'Content-Type': 'application/json' },
-  //         body: JSON.stringify({ firebaseToken }),
-  //       });
-  //     } else {
-  //       setFirebaseUser(null);
-  //       setFirebaseToken(null);
-  //     }
-  //   });
-
-  //   return () => unsubscribe();
-  // });
-
-  const handleProtectedRequest = async () => {
+    setProtectedData,
+  }: {
+    firebaseToken: string | null;
+    setProtectedData: React.Dispatch<React.SetStateAction<any>>;
+  }) =>
+  async () => {
     try {
       // Send a POST request to server API
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/protected-resources`, {
@@ -109,57 +68,156 @@ export default function Home() {
     }
   };
 
+export default function Dashboard() {
+  const { firebaseUser, firebaseToken } = useFirebaseAuth();
+  const [apiData, setApiData] = useState<any>(null);
+  const [protectedData, setProtectedData] = useState(null);
+
+  useEffect(() => {
+    if (firebaseUser) {
+      // Send a POST request to backend API
+      const aiData = getAiData({ data: 'example' });
+
+      console.log(`main: firebaseUser: ${JSON.stringify(firebaseUser)}`);
+      console.log(`main: firebaseToken: ${JSON.stringify(firebaseToken)}`);
+      setApiData(aiData);
+    }
+  }, [firebaseUser, firebaseToken]);
+
   return (
-    <>
-      <div className="container mx-auto mt-8 max-w-[560px]">
-        <div className="flex justify-between items-center pb-4 border-b border-dashed border-gray-900 mb-4">
-          <h1 className="text-3xl font-semibold">Private Page</h1>
+    <div
+      id="dashboard-container"
+      className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8"
+    >
+      <AppHeader title="Dashboard" />
+      <main
+        id="dashboard-main-content"
+        className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3"
+      >
+        {/* Left Column (takes 2 cols on large screens) */}
+        <div id="dashboard-left-column" className="lg:col-span-2 grid gap-4 md:gap-6">
+          {/* Upcoming Sessions Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg font-semibold">
+                Data from backend/api/ai: {JSON.stringify(apiData) || ''}
+              </CardTitle>
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Data from server/api/protected-resources:{' '}
+                {JSON.stringify(protectedData) || 'No upcoming sessions scheduled.'}
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleProtectedRequest({ firebaseToken, setProtectedData })}
+              >
+                Schedule New
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Today's Plan Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg font-semibold">Today&apos;s Plan</CardTitle>
+              <Button variant="outline" size="sm">
+                View All
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-4 p-4 bg-muted/40 rounded-lg">
+                <div className="bg-primary text-primary-foreground p-3 rounded-full">
+                  <Play className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">Full Body Workout</p>
+                  <p className="text-sm text-muted-foreground">60 mins | Intermediate</p>
+                </div>
+                <Button size="sm">Start</Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Activity Feed Card */}
+          <Card className="shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">Activity</CardTitle>
+              <CardDescription>Recent workouts and achievements.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src="/placeholder-user.jpg" alt="User" />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">You completed &apos;Morning Run&apos;.</p>
+                  <p className="text-xs text-muted-foreground">2 hours ago</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src="/friend-avatar.jpg" alt="Friend" />
+                  <AvatarFallback>F</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">Alex G. shared a new workout.</p>
+                  <p className="text-xs text-muted-foreground">5 hours ago</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <div>{apiData && <p>Data from backend/api/ai: {JSON.stringify(apiData)}</p>}</div>
-        <div>
-          {protectedData && (
-            <p>Data from server/api/protected-resources: {JSON.stringify(protectedData)}</p>
-          )}
+        {/* Right Column (takes 1 col on large screens) */}
+        <div id="dashboard-right-column" className="grid gap-4 md:gap-6">
+          {/* Progress Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-semibold">Progress</CardTitle>
+              <CardDescription>Your weekly goal progress.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Workouts</span>
+                  <span>3 / 5</span>
+                </div>
+                <Progress value={60} aria-label="60% workout progress" />
+              </div>
+              <div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Active Minutes</span>
+                  <span>180 / 240</span>
+                </div>
+                <Progress value={75} aria-label="75% active minutes progress" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="link" size="sm" className="p-0 h-auto">
+                View Detailed Stats
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Community Card */}
+          <Card className="shadow-sm">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-lg font-semibold">Community</CardTitle>
+              <Users className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-3">Connect with friends.</p>
+              <Button className="w-full">Find Friends</Button>
+            </CardContent>
+          </Card>
         </div>
-
-        <button onClick={handleProtectedRequest}>Get Protected Data</button>
-
-        {firebaseUser ? (
-          <div>
-            <p>Hi, {firebaseUser?.email}</p>
-            <button
-              className="mt-4 bg-red-600 hover:bg-opacity-80 text-white rounded-lg px-4 py-2 duration-200 w-full"
-              type="button"
-              onClick={handleLogout}
-            >
-              Log out
-            </button>
-          </div>
-        ) : (
-          <div>
-            <Link href="/signin">
-              <button
-                className="mt-4 bg-blue-600 hover:bg-opacity-80 text-white rounded-lg px-4 py-2 duration-200 w-full"
-                type="button"
-              >
-                Signin
-              </button>
-            </Link>
-            <Link href="/signup">
-              <button
-                className="mt-4 bg-red-600 hover:bg-opacity-80 text-white rounded-lg px-4 py-2 duration-200 w-full"
-                type="button"
-              >
-                Sign up
-              </button>
-            </Link>
-          </div>
-        )}
-      </div>
-      <Head>
-        <title>Private Page</title>
-      </Head>
-    </>
+      </main>
+    </div>
   );
 }
