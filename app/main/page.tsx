@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { auth } from '../../src/firebase/firebaseWebConfig';
-import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
+import { auth } from '@/firebase/firebaseWebConfig';
+import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 
 const getAiData = async (data: { data: string }) => {
   try {
@@ -26,7 +26,11 @@ const getAiData = async (data: { data: string }) => {
 
 export default function Home() {
   const router = useRouter();
-  const { firebaseUser, firebaseToken, setFirebaseUser, setFirebaseToken } = useFirebaseAuth();
+  const {
+    firebaseUser,
+    firebaseToken,
+    //  setFirebaseUser, setFirebaseToken
+  } = useFirebaseAuth();
   const [apiData, setApiData] = useState<any>(null);
   const [protectedData, setProtectedData] = useState(null);
 
@@ -55,28 +59,28 @@ export default function Home() {
     }
   }, [firebaseUser, firebaseToken]);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        const firebaseToken = await authUser.getIdToken(true);
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
+  //     if (authUser) {
+  //       const firebaseToken = await authUser.getIdToken(true);
 
-        setFirebaseUser(authUser);
-        setFirebaseToken(firebaseToken);
+  //       setFirebaseUser(authUser);
+  //       setFirebaseToken(firebaseToken);
 
-        // // store token in cookie
-        await fetch('/api/auth-cookie/set', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ firebaseToken }),
-        });
-      } else {
-        setFirebaseUser(null);
-        setFirebaseToken(null);
-      }
-    });
+  //       // // store token in cookie
+  //       await fetch('/api/auth-cookie/set', {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify({ firebaseToken }),
+  //       });
+  //     } else {
+  //       setFirebaseUser(null);
+  //       setFirebaseToken(null);
+  //     }
+  //   });
 
-    return () => unsubscribe();
-  });
+  //   return () => unsubscribe();
+  // });
 
   const handleProtectedRequest = async () => {
     try {

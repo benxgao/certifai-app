@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { auth } from '@/src/firebase/firebaseWebConfig';
+import { auth } from '@/firebase/firebaseWebConfig';
 import Link from 'next/link';
 
 export default function SignUp() {

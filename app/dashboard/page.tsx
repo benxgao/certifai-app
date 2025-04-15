@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Bell, Search, Play, Users, Calendar } from 'lucide-react';
+import { Play, Users, Calendar } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -14,6 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import AppHeader from '@/components/custom/appheader';
 
 export default function Dashboard() {
   return (
@@ -21,30 +21,7 @@ export default function Dashboard() {
       id="dashboard-container"
       className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8"
     >
-      {/* Header */}
-      <header id="dashboard-header" className="flex items-center justify-between mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
-        <div className="flex items-center gap-3 md:gap-4">
-          <div className="relative hidden sm:block">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="pl-8 w-[150px] md:w-[200px] lg:w-[300px]"
-            />
-          </div>
-          <Button variant="ghost" size="icon">
-            <Bell className="h-5 w-5" />
-            <span className="sr-only">Notifications</span>
-          </Button>
-          <Avatar className="h-8 w-8 md:h-9 md:w-9">
-            <AvatarImage src="/placeholder-user.jpg" alt="User" />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
-
-      {/* Main Content Grid */}
+      <AppHeader title="Dashboard" />
       <main
         id="dashboard-main-content"
         className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3"
