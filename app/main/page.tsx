@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Play, Users, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Play, Users, Calendar } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -72,6 +73,30 @@ export default function Dashboard() {
   const { firebaseUser, firebaseToken } = useFirebaseAuth();
   const [apiData, setApiData] = useState<any>(null);
   const [protectedData, setProtectedData] = useState(null);
+  const router = useRouter();
+  const [showExamModal, setShowExamModal] = useState(false);
+  const [examName, setExamName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleExamSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/new-exam', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: examName }),
+      });
+      if (res.ok) {
+        setShowExamModal(false);
+        router.push('/main/exams');
+      } else {
+        // handle error (optional)
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     if (firebaseUser) {
@@ -205,17 +230,56 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
 
-          {/* Community Card */}
+          {/* exams Card */}
           <Card className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-lg font-semibold">Community</CardTitle>
+              <CardTitle className="text-lg font-semibold">Exams</CardTitle>
               <Users className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-3">Connect with friends.</p>
-              <Button className="w-full">Find Friends</Button>
+              <Button className="w-full" onClick={() => setShowExamModal(true)}>
+                Add Exam
+              </Button>
             </CardContent>
           </Card>
+          {/* Exam Modal */}
+          {showExamModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="bg-white dark:bg-background rounded-lg shadow-lg p-6 w-full max-w-sm">
+                <form onSubmit={handleExamSubmit}>
+                  <h2 className="text-lg font-semibold mb-4">Add New Exam</h2>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1" htmlFor="exam-name">
+                      Exam name
+                    </label>
+                    <input
+                      id="exam-name"
+                      type="text"
+                      className="w-full border rounded px-3 py-2"
+                      value={examName}
+                      onChange={(e: any) => setExamName(e.target?.value)}
+                      required
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowExamModal(false)}
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" disabled={isSubmitting || !examName}>
+                      New exam
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
