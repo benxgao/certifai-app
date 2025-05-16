@@ -1,188 +1,111 @@
 'use client';
 
-import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button'; // Assuming you have shadcn/ui
-import { Input } from '@/components/ui/input'; // Assuming you have shadcn/ui
-import { Label } from '@/components/ui/label'; // Assuming you have shadcn/ui
-import { cn } from '@/lib/utils'; // Assuming you have a utility for combining class names
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { getFeatures, getPricingPlans } from '@/services/featureService';
 
-import { auth } from '@/firebase/firebaseWebConfig';
+// --- Landing Page for IT Certification Product ---
 
-const LoginPage = () => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Add loading state
-  const router = useRouter();
-
-  const onChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSignin = async () => {
-    try {
-      setError('');
-      setIsLoading(true); // Set loading to true when starting the request
-
-      const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
-      console.log(`signin init: ${JSON.stringify(signedIn.user.uid)}`);
-
-      const firebaseToken = await signedIn.user.getIdToken(true);
-      // console.log('signin token:', token);
-
-      // store token in cookie
-      await fetch('/api/auth-cookie/set', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firebaseToken }),
-      }).then(() => {
-        router.replace('/main');
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false); // Set loading to false when the request finishes, regardless of success or failure
-    }
-  };
-
+export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Welcome back to <span className="text-purple-400">App</span>
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-300">
-            Login to your account to continue
+    <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
+      {/* Hero with 2-column layout and dynamic background */}
+      <section className="relative flex flex-col-reverse lg:flex-row items-center lg:justify-between py-20 px-6 lg:px-20 bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500">
+        {/* Text */}
+        <div className="w-full lg:w-1/2 text-white">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">
+            Next-Gen AI-Powered IT Certification
+          </h1>
+          <p className="mb-8 text-lg opacity-90">
+            Empower your learning journey with AI-driven study plans, real-time feedback, and a
+            vibrant community.
           </p>
+          <Button className="bg-white text-indigo-600 py-3 px-8 rounded-full font-semibold hover:opacity-90">
+            Try It Free
+          </Button>
         </div>
-        <form className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <Label htmlFor="email-address" className="sr-only">
-                Email address
-              </Label>
-              <Input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={form?.email}
-                onChange={onChange}
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm bg-gray-800"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password" className="sr-only">
-                Password
-              </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={form?.password}
-                onChange={onChange}
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm bg-gray-800"
-                placeholder="Password"
-              />
-            </div>
-          </div>
+        {/* Hero Image */}
+        <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
+          <div className="h-64 flex items-center justify-center text-white">Loading image...</div>
+        </div>
+        {/* Animated SVG blobs or particles could be added here */}
+      </section>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-700 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <a href="#" className="font-medium text-purple-400 hover:text-purple-300">
-                Forgot your password?
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <Button
-              type="button"
-              className={cn(
-                'group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500',
-                isLoading
-                  ? 'bg-purple-700' // Keep the button purple when loading
-                  : 'bg-purple-600 hover:bg-purple-700', // Change color on hover only when not loading
-                'transition-colors duration-300', // Add smooth transition
-              )}
-              disabled={isLoading} // Disable the button while loading
-              onClick={handleSignin}
+      {/* Features Section */}
+      <section id="features" className="py-20 px-6 lg:px-20 bg-white">
+        <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12">How It Works</h2>
+        <div className="grid gap-8 md:grid-cols-3">
+          {getFeatures().map((f, i) => (
+            <div
+              key={i}
+              className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition"
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                {isLoading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-5 w-5 text-purple-300 group-hover:text-purple-200"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2h2V7a7 7 0 00-14 0v2h2zm7 5a2 2 0 01-2-2 2 2 0 012-2 2 2 0 012 2 2 2 0 01-2 2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </span>
-              {isLoading ? 'Signing in...' : 'Sign in'}
-            </Button>
-          </div>
+              <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
+                <span className="text-indigo-500 font-bold">{i + 1}</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+              <p className="text-gray-600">{f.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          {error && <div className="text-center text-sm text-red-500">{error}</div>}
+      {/* Pricing Section with Card Hover Effect */}
+      <section id="pricing" className="py-20 px-6 lg:px-20 bg-gray-100">
+        <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12">Choose Your Plan</h2>
+        <div className="grid gap-8 md:grid-cols-3">
+          {getPricingPlans().map((plan, i) => (
+            <div
+              key={i}
+              className="p-8 bg-white rounded-2xl border border-gray-200 transform hover:-translate-y-2 hover:shadow-2xl transition"
+            >
+              <h3 className="text-2xl font-semibold mb-4 text-indigo-600">{plan.name}</h3>
+              <div className="text-4xl font-bold mb-6">
+                {plan.price.replace('/mo', '')}
+                <span className="text-lg font-normal">/mo</span>
+              </div>
+              <ul className="mb-6 space-y-2 text-gray-600">
+                {plan.features.map((feat, j) => (
+                  <li key={j} className="flex items-center">
+                    <span className="mr-2 text-indigo-500">✓</span>
+                    {feat}
+                  </li>
+                ))}
+              </ul>
+              <Button className="w-full bg-indigo-600 text-white py-3 rounded-full hover:opacity-90">
+                Get Started
+              </Button>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="text-center text-sm text-gray-300 mt-4">
-            Do not have an account?{' '}
-            <a href="#" className="font-medium text-purple-400 hover:text-purple-300">
-              Sign up
-            </a>
-          </div>
-        </form>
-      </div>
+      {/* Call-to-Action Section */}
+      <section className="py-20 px-6 lg:px-20 bg-indigo-600 text-white text-center rounded-tl-3xl rounded-tr-3xl">
+        <h2 className="text-3xl lg:text-4xl font-bold mb-4">Ready to Boost Your Career?</h2>
+        <p className="mb-8 opacity-90">
+          Join thousands of professionals accelerating their IT certification journey with us.
+        </p>
+        <Button className="bg-white text-indigo-600 py-3 px-10 rounded-full font-semibold hover:opacity-90">
+          Register Now
+        </Button>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-auto py-8 px-6 lg:px-20 bg-gray-800 text-gray-300 text-center">
+        <div className="mb-4 flex justify-center space-x-6">
+          <a href="#" className="hover:text-white">
+            Privacy
+          </a>
+          <a href="#" className="hover:text-white">
+            Terms
+          </a>
+          <a href="#" className="hover:text-white">
+            Support
+          </a>
+        </div>
+        <div>© {new Date().getFullYear()} CertifyIT. All rights reserved.</div>
+      </footer>
     </div>
   );
-};
-
-export default LoginPage;
+}

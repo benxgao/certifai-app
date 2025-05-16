@@ -21,6 +21,7 @@
       "@/lib/*": ["src/lib/*"],
       "@/styles/*": ["src/styles/*"],
       "@/utils/*": ["src/utils/*"],
+      "@/services/*": ["src/services/*"],
       "@/types/*": ["src/types/*"],
       "@/firebase/*": ["src/firebase/*"]
     },
