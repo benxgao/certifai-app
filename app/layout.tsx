@@ -24,7 +24,57 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      {/* SEO Meta Tags */}
+      <head>
+        <title>AI IT Exam Simulator | Practice, Analyze & Pass IT Certifications</title>
+        <meta
+          name="description"
+          content="Simulate real IT certification exams with AI-generated questions. Analyze your weaknesses, create custom exams, and predict your pass rate. Start practicing smarter for IT certifications today!"
+        />
+        <meta
+          name="keywords"
+          content="IT certification, exam simulator, AI-generated questions, practice exams, custom exams, pass prediction, weakness analysis, IT training"
+        />
+        <meta
+          property="og:title"
+          content="AI IT Exam Simulator | Practice, Analyze & Pass IT Certifications"
+        />
+        <meta
+          property="og:description"
+          content="Simulate real IT certification exams with AI-generated questions. Analyze your weaknesses, create custom exams, and predict your pass rate."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://yourdomain.com/" />
+        <meta property="og:image" content="https://yourdomain.com/og-image.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="AI IT Exam Simulator | Practice, Analyze & Pass IT Certifications"
+        />
+        <meta
+          name="twitter:description"
+          content="Simulate real IT certification exams with AI-generated questions. Analyze your weaknesses, create custom exams, and predict your pass rate."
+        />
+        <meta name="twitter:image" content="https://yourdomain.com/og-image.png" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">{children}</div>
+        {/* Footer */}
+        <footer className="mt-auto py-8 px-6 lg:px-20 bg-gray-800 text-gray-300 text-center">
+          <div className="mb-4 flex justify-center space-x-6">
+            <a href="#" className="hover:text-white">
+              Privacy
+            </a>
+            <a href="#" className="hover:text-white">
+              Terms
+            </a>
+            <a href="#" className="hover:text-white">
+              Support
+            </a>
+          </div>
+          <div>© 2025 CertifyIT. All rights reserved.</div>
+        </footer>
+      </body>
     </html>
   );
 }
