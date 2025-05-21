@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,8 +38,32 @@ export default function SignUp() {
     try {
       setError('');
       setIsLoading(true);
-      await createUserWithEmailAndPassword(auth, form.email, form.password);
-      router.replace('/dashboard');
+
+      await createUserWithEmailAndPassword(auth, form.email, form.password).then(
+        async (userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+
+          console.log(`User created:0
+            | user: ${JSON.stringify(user)}`);
+
+          if (user) {
+            await updateProfile(user!, {
+              displayName: `${form.firstName} ${form.lastName}`.trim(),
+            })
+              .then((user) => {
+                console.log(`User updated:1
+                  | user: ${JSON.stringify(user)}`);
+              })
+              .catch((error) => {
+                console.error('Error updating user profile:', error);
+                setError('Failed to update user profile. Please try again.');
+              });
+          }
+        },
+      );
+
+      router.replace('/signin');
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         setError('This email address is already in use.');
@@ -76,7 +100,7 @@ export default function SignUp() {
           <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
             C
           </div>
-          <span className="text-2xl font-bold text-white">Co-workout</span>
+          <span className="text-2xl font-bold text-white">certifai.online</span>
         </div>
 
         <Card className="w-full max-w-md bg-transparent border-0 text-white mt-24">

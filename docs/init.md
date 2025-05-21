@@ -1,6 +1,6 @@
 # Project init checklist
 
-## Get started
+## Set up new project
 
 
 Navigate to Firebase settings, and register app and get env vars
@@ -22,3 +22,15 @@ firebase apphosting:secrets:grantaccess -b app NEXT_PUBLIC_FIREBASE_BACKEND_URL
 ```
 
 Enable Firebase Authentication
+  - Email/password
+
+## Start local dev
+
+
+```bash
+gcloud config set project certifai-prod
+export GOOGLE_APPLICATION_CREDENTIALS=/...
+gcloud auth activate-service-account --key-file=...
+
+npm run dev
+```

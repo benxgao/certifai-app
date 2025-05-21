@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["es2020"],
-    "module": "commonjs",
-    "moduleResolution": "node",
     "allowJs": true,
+    "baseUrl": "./",
+    "esModuleInterop": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "incremental": true,
-    "baseUrl": "./",
+    "target": "esnext",
     "paths": {
       "@/src/*": ["src/*"],
       "@/components/*": ["src/components/*"],
@@ -32,18 +32,6 @@
       }
     ]
   },
-  "include": ["src/**/*", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "dist"],
-  // Uncomment the following lines to enable strict type checking
-  // "strict": true,
-  "noImplicitAny": false
-  // "strictNullChecks": true,
-  // Uncomment the following lines to specify custom module resolution
-  // "baseUrl": "./",
-  // "paths": {
-  //   "@components/*": ["src/components/*"]
-  // },
-  // Uncomment the following lines to include additional files or exclude specific ones
-  // "include": ["src/**/*"],
-  // "exclude": ["node_modules", "dist"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

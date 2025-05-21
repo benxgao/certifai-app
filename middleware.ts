@@ -3,6 +3,33 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { COOKIE_AUTH_NAME } from './src/config/constants';
 
+/**
+ * A sample of firebaseToken
+ *  {
+      "iss": "https://securetoken.google.com/certifai-prod",
+      "aud": "certifai-prod",
+      "auth_time": 1747879437,
+      "user_id": "2GzVTQxxxxxzrnYO7pObj1",
+      "sub": "2GzVTQxxxxxHONzrnYO7pObj1",
+      "iat": 1747879491,
+      "exp": 1747883091,
+      "email": "xxxxx@gmail.com",
+      "email_verified": false,
+      "firebase": {
+        "identities": {
+          "email": [
+            "xxxxx@gmail.com"
+          ]
+        },
+        "sign_in_provider": "password"
+      }
+    }
+  */
+
+ /**
+  * For protecting path: /main/:path*, we assume a cookie has been set at the stage of login/signup
+  * and the cookie contains a Jose token, and Firebase Token can be seen by decoding joseToken.
+  */
 export async function middleware(request: NextRequest) {
   try {
     // Find joseToken from the cookie, which contains {token, exp, iat}
@@ -11,8 +38,6 @@ export async function middleware(request: NextRequest) {
     console.log(`middleware:
       | origin: ${request.nextUrl.origin}
       | path: ${request.nextUrl.pathname}
-      | cookie: ${request.cookies.toString()}
-      | joseToken: ${joseToken}
       | headers: ${JSON.stringify(request.headers)}
       | url: ${request.url}`);
 
@@ -62,13 +87,22 @@ export async function middleware(request: NextRequest) {
 
       console.log(`middleware: api/auth-cookie/verify data: ${JSON.stringify(data)}`);
 
+      if (!data.valid) {
+        console.error('middleware: token invalid:', { data });
+
+        const response = NextResponse.redirect(new URL('/signin', request.url));
+        response.cookies.delete(COOKIE_AUTH_NAME);
+
+        return response;
+      }
+
       return NextResponse.next();
-    } catch (error) {
+    } catch (error: any) {
       console.log(`middleware: failed to verify: ${JSON.stringify(error.toString())}`);
 
       return NextResponse.redirect(new URL('/signin', request.url));
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('middleware error:', {
       message: error.message,
       code: error.code,

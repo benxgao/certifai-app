@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     return new Response('JWT secret not configured', { status: 500 });
   }
 
-  const body = await request.json();
+  const body: { firebaseToken: string } = await request.json();
 
   console.log(`auth-cookie/set:0
     | req_body: ${JSON.stringify(body)}`);
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     console.log(`auth-cookie/set:1
       | joseToken: ${joseToken}`);
 
-    // const cookieString = serialize('authToken', signedToken, {
+    // const cookieString = serialize('authToken', joseToken, {
     //   httpOnly: true, // Crucial for security
     //   secure: process.env.NODE_ENV === 'production',
     //   sameSite: 'strict', // Prevent CSRF attacks
