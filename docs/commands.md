@@ -3,7 +3,7 @@
 ## Authenticate service account in local dev
 
 ```bash
-gcloud config set project co-workout-next
+gcloud config set project certifai-prod
 
 export GOOGLE_APPLICATION_CREDENTIALS=/...
 

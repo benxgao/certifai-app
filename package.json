@@ -1,6 +1,10 @@
 {
-  "name": "coworkout-nextjs",
-  "version": "0.1.0",
+  "name": "certifai-app",
+  "author": {
+    "name": "Ben Gao",
+    "email": "xingbingao@gmail.com"
+  },
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
