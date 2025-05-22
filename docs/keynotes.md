@@ -15,3 +15,5 @@ cookie
 firebaseToken
   - is used as the JWT token for the requests between Next app and backend APIs
   - firebaseToken would be validated on the API server side
+  - jose is only used to encrypt token stored in the cookie
+  - firebaseToken is used in next frontend/backend internally

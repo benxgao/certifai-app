@@ -27,6 +27,8 @@
 
 ** list **
 
+- [] Create a page /main/certifications to show a list of certifications
+- [] Enable users to register a certification
 - [] Create a page /main/certifications/:cert_id
 - [] Show a list of latest exams on the above page
 
@@ -40,18 +42,23 @@
 
 ### SWR-next
 
+- [] mutations/certifications [GET]
+- [] mutations/certifications [POST]
 - [] mutations/exams [GET]
 - [] mutations/exams [POST]
 
 ### API-next
 
+- [] [GET] /api/certifications
+- [] [POST] /api/certifications
 - [] [GET] /api/exams
 - [] [POST] /api/exams
 
 ### API-firebase
 
+- [] [GET] /endpoints/api/certifications
+- [] [POST] /endpoints/api/certifications
 - [] [GET] /endpoints/api/exams
-
 - [] [POST] /endpoints/api/exams
   - Check DB
     - Select existing questions
