@@ -1,29 +1,25 @@
 import 'server-only';
-import * as jose from 'jose';
 
-export const getInternalApiToken = async (authorization: string | null): Promise<string> => {
-  if (!authorization?.startsWith('Bearer ')) {
-    throw { message: 'Unauthorized', status: 400 };
+import { jwtVerify } from 'jose';
+import { cookies } from 'next/headers';
+import { COOKIE_AUTH_NAME } from '@/src/config/constants';
+
+const secretKey = process.env.JOSE_JWT_SECRET;
+
+export async function getFirebaseTokenFromCookie(): Promise<string | undefined> {
+  const cookieToken = (await cookies()).get(COOKIE_AUTH_NAME)?.value;
+
+  if (!cookieToken) {
+    console.error('api/certifications: Auth cookie not found');
+    return undefined;
   }
 
-  // this is the token containing {token, exp, iat}
-  const firebaseToken = authorization.replace('Bearer ', '');
-  const { exp } = jose.decodeJwt(firebaseToken);
-
-  console.log(`getInternalApiToken:
-    | firebaseToken: ${firebaseToken}
-    | exp: ${exp}`);
-
-  const expiredAt = exp || 0;
-  if (expiredAt < Date.now() / 1000) {
-    console.error('Token expired:', { expiredAt, currentTime: Date.now() / 1000 });
-    throw { message: 'Token expired', status: 401 };
+  try {
+    // payload = {token, iat, exp}
+    const { payload } = await jwtVerify(cookieToken, new TextEncoder().encode(secretKey));
+    return payload.token as string;
+  } catch (error) {
+    console.error(`api/certifications: JWT verification failed: ${error}`);
+    return undefined;
   }
-
-  // const { valid } = await verifyToken(firebaseToken);
-  // if (!valid) {
-  //   throw { message: 'Invalid token', status: 401 };
-  // }
-
-  return firebaseToken;
-};
+}

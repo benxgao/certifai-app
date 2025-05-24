@@ -7,6 +7,11 @@ export interface CertificationInput {
   name: string;
 }
 
+// Define the type for registering a user for a certification
+export interface UserCertificationRegistrationInput {
+  certificationId: string;
+}
+
 // Define the type for the expected response (optional, but good practice)
 export interface CertificationResponse {
   // Example: Adjust based on what your API returns upon successful creation
@@ -56,12 +61,12 @@ export function useRegisterCertification() {
     registerCertification: trigger, // Rename trigger to something more descriptive
     isCreating: isMutating,
     creationError: error,
-    registeredCertification: data,
+    registeredCertification: data?.data,
     resetCreation: reset,
   };
 }
 
-// --- Fetching a list of certifications ---
+// --- Fetching a list of ALL available certifications (formerly useCertifications) ---
 
 // Define the type for a single certification item in the list
 export interface CertificationListItem {
@@ -70,8 +75,10 @@ export interface CertificationListItem {
   [key: string]: any;
 }
 
-// Fetcher function for getting the list of certifications
-async function fetchCertifications(url: string): Promise<CertificationListItem[]> {
+// Fetcher function for getting the list of all available certifications
+async function fetchAllAvailableCertifications(
+  url: string,
+): Promise<{ data: CertificationListItem[] }> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -81,25 +88,110 @@ async function fetchCertifications(url: string): Promise<CertificationListItem[]
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorData.message || 'Failed to fetch certifications.');
+    throw new Error(errorData.message || 'Failed to fetch available certifications.');
   }
 
   return response.json();
 }
 
-// Custom hook to use for fetching the list of certifications
-export function useCertifications() {
-  const { data, error, isLoading, isValidating, mutate } = useSWR<CertificationListItem[], Error>(
-    '/api/certifications',
-    fetchCertifications,
+// Custom hook to use for fetching the list of all available certifications
+export function useAllAvailableCertifications() {
+  const { data, error, isLoading, isValidating, mutate } = useSWR<
+    { data: CertificationListItem[] },
+    Error
+  >(
+    '/api/certifications', // Endpoint for all available certifications
+    fetchAllAvailableCertifications,
   );
 
   return {
-    certifications: data,
-    isLoadingCertifications: isLoading,
-    isCertificationsError: error,
-    isValidatingCertifications: isValidating,
-    mutateCertifications: mutate,
+    availableCertifications: data?.data,
+    isLoadingAvailableCertifications: isLoading,
+    isAvailableCertificationsError: error,
+    isValidatingAvailableCertifications: isValidating,
+    mutateAvailableCertifications: mutate,
+  };
+}
+
+// --- Fetching a list of USER'S REGISTERED certifications ---
+
+// Fetcher function for getting the list of a user's registered certifications
+async function fetchUserRegisteredCertifications(
+  url: string,
+): Promise<{ data: CertificationListItem[] }> {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any other necessary headers, e.g., Authorization, if your API requires it
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || "Failed to fetch user's registered certifications.");
+  }
+
+  return response.json();
+}
+
+// Custom hook to use for fetching the list of a user's registered certifications
+export function useUserRegisteredCertifications(apiUserId: string | null) {
+  const { data, error, isLoading, isValidating, mutate } = useSWR<
+    { data: CertificationListItem[] },
+    Error
+  >(
+    apiUserId ? `/api/users/${apiUserId}/certifications` : null, // Conditional fetching
+    fetchUserRegisteredCertifications,
+  );
+
+  return {
+    userCertifications: data?.data,
+    isLoadingUserCertifications: isLoading,
+    isUserCertificationsError: error,
+    isValidatingUserCertifications: isValidating,
+    mutateUserCertifications: mutate,
+  };
+}
+
+// --- Registering a USER for a specific certification ---
+
+// The actual function that sends the POST request for a user to register for a certification
+async function registerUserForCertificationFetcher(
+  url: string, // This url will include the apiUserId
+  { arg }: { arg: UserCertificationRegistrationInput },
+): Promise<CertificationResponse> {
+  // Assuming CertificationResponse is a suitable response type
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any other necessary headers, e.g., Authorization
+    },
+    body: JSON.stringify(arg),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || 'Failed to register user for certification.');
+  }
+
+  return response.json();
+}
+
+// Custom hook for a user to register for a certification
+export function useRegisterUserForCertification(apiUserId: string | null) {
+  const { trigger, isMutating, error, data, reset } = useSWRMutation(
+    apiUserId ? `/api/users/${apiUserId}/certifications` : null, // The API endpoint for user registration
+    registerUserForCertificationFetcher,
+  );
+
+  return {
+    registerForCertification: trigger,
+    isRegistering: isMutating,
+    registrationError: error,
+    registrationData: data?.data,
+    resetRegistration: reset,
   };
 }
 

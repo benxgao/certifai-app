@@ -1,19 +1,18 @@
-import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies, headers } from 'next/headers';
-import { getInternalApiToken } from '@/src/lib/service-only';
-import { COOKIE_AUTH_NAME } from '@/src/config/constants';
+import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
 const CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/certifications`;
-const secretKey = process.env.JOSE_JWT_SECRET;
 
 export async function GET() {
   try {
-    const cookieToken = (await cookies()).get(COOKIE_AUTH_NAME)?.value;
+    const firebaseToken = await getFirebaseTokenFromCookie();
 
-    // payload = {token, iat, exp}
-    const { payload } = await jwtVerify(cookieToken as string, new TextEncoder().encode(secretKey));
-    const firebaseToken = payload.token;
+    if (!firebaseToken) {
+      return NextResponse.json(
+        { message: 'Authentication failed: Invalid token' },
+        { status: 401 },
+      );
+    }
 
     const response = await fetch(CERTIFICATIONS_API_URL, {
       method: 'GET',
@@ -49,9 +48,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const headersList = await headers();
-    const authorization = headersList.get('authorization');
-    const firebaseToken = getInternalApiToken(authorization);
+    const firebaseToken = await getFirebaseTokenFromCookie();
 
     const body = await request.json();
     const response = await fetch(CERTIFICATIONS_API_URL, {
