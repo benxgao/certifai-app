@@ -72,6 +72,20 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
                 <p className="text-xs leading-none text-muted-foreground">your.email@example.com</p>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuItem
+              onSelect={() => router.push('/main')}
+              className="cursor-pointer hover:bg-accent hover:brightness-95"
+            >
+              Dashboard
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              onSelect={() => router.push('/main/certifications')}
+              className="cursor-pointer hover:bg-accent hover:brightness-95"
+            >
+              Certifications
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onSelect={() => router.push('/main/profile')}

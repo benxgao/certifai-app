@@ -46,31 +46,26 @@ const LoginPage = () => {
 
       const firebaseToken = await signedIn.user.getIdToken(true);
 
-      const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
-       const res = await fetch(loginUrl, {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-           Authorization: `Bearer ${firebaseToken}`,
-         },
-         body: JSON.stringify({}),
-       });
-
-       const cookieRes = await fetch('/api/auth-cookie/set', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ firebaseToken }),
-       });
+      const [cookieRes] = await Promise.all([
+        fetch('/api/auth-cookie/set', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firebaseToken }),
+        }),
+      ]);
 
       if (cookieRes.ok) {
         router.replace('/main');
       } else {
-        const errorData: any = await cookieRes.json();
-        setError(errorData.message || 'Failed to set authentication cookie.');
+        const cookieError: any = await cookieRes.json();
+
+        setError(cookieError.message || 'Failed to set authentication cookie.');
       }
     } catch (error: any) {
       console.error(error);
+
       let errorMessage = 'An unexpected error occurred. Please try again.';
+
       if (error.code) {
         switch (error.code) {
           case 'auth/user-not-found':

@@ -4,13 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Users, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import AppHeader from '@/components/custom/appheader';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 
@@ -100,7 +94,8 @@ export default function Dashboard() {
       // Send a POST request to backend API
       const aiData = getAiData({ data: 'example' });
 
-      console.log(`main: firebaseUser: ${JSON.stringify(firebaseUser, null, 2)}`);
+      console.log(`main:
+        | firebaseUserId: ${JSON.stringify(firebaseUser.uid, null, 2)}`);
 
       setApiData(aiData);
     }

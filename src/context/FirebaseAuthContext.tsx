@@ -9,6 +9,9 @@ interface FirebaseAuthContextType {
   setFirebaseUser: (user: User | null) => void;
   firebaseToken: string | null;
   setFirebaseToken: (token: string | null) => void;
+  apiUserId: string | null;
+  setApiUserId: (token: string | null) => void;
+
   loading: boolean;
 }
 
@@ -27,6 +30,8 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
+
+  const [apiUserId, setApiUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,17 +39,38 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
       setFirebaseUser(authUser);
 
       console.log(`FirebaseAuthProvider
-        | authUser: ${JSON.stringify(authUser)}`);
+        | firebase.uid: ${JSON.stringify(authUser?.uid)}`);
 
       if (authUser) {
-        const firebaseToken = await authUser.getIdToken(true);
-        setFirebaseToken(firebaseToken);
+        const token = await authUser.getIdToken(true);
+        setFirebaseToken(token);
 
-        // await fetch('/api/auth-cookie/set', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ firebaseToken }),
-        // });
+        const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
+        const [loginRes] = await Promise.all([
+          fetch(loginUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({}),
+          }),
+        ]);
+
+        if (loginRes.ok) {
+          const { user_id } = await loginRes.json();
+
+          console.log(`FirebaseAuthProvider
+            | api_user_id: ${user_id}`);
+
+          setApiUserId(user_id);
+          console.log(`user_id: ${user_id}`);
+        } else {
+          // const loginError: any = await loginRes.json();
+
+          setFirebaseToken(null);
+          router.push('/signin');
+        }
       } else {
         setFirebaseToken(null);
         router.push('/signin');
@@ -59,6 +85,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   // Optionally, provide stable setters
   const setUser = useCallback((user: User | null) => setFirebaseUser(user), []);
   const setToken = useCallback((token: string | null) => setFirebaseToken(token), []);
+  const setUserId = useCallback((token: string | null) => setApiUserId(token), []);
 
   return (
     <FirebaseAuthContext.Provider
@@ -67,6 +94,8 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         setFirebaseUser: setUser,
         firebaseToken,
         setFirebaseToken: setToken,
+        apiUserId,
+        setApiUserId: setUserId,
         loading,
       }}
     >
