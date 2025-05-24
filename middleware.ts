@@ -32,7 +32,6 @@ import { COOKIE_AUTH_NAME } from './src/config/constants';
   */
 export async function middleware(request: NextRequest) {
   try {
-    // Find joseToken from the cookie, which contains {token, exp, iat}
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
 
     console.log(`middleware:

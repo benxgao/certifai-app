@@ -40,12 +40,11 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         const firebaseToken = await authUser.getIdToken(true);
         setFirebaseToken(firebaseToken);
 
-        // // store token in cookie
-        await fetch('/api/auth-cookie/set', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ firebaseToken }),
-        });
+        // await fetch('/api/auth-cookie/set', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ firebaseToken }),
+        // });
       } else {
         setFirebaseToken(null);
         router.push('/signin');

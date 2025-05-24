@@ -100,8 +100,8 @@ export default function Dashboard() {
       // Send a POST request to backend API
       const aiData = getAiData({ data: 'example' });
 
-      console.log(`main: firebaseUser: ${JSON.stringify(firebaseUser)}`);
-      console.log(`main: firebaseToken: ${JSON.stringify(firebaseToken)}`);
+      console.log(`main: firebaseUser: ${JSON.stringify(firebaseUser, null, 2)}`);
+
       setApiData(aiData);
     }
   }, [firebaseUser, firebaseToken]);

@@ -27,8 +27,7 @@ export async function POST(request: Request) {
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(secretKey));
 
-    console.log(`auth-cookie/set:1
-      | joseToken: ${joseToken}`);
+    console.log('auth-cookie/set:1 | joseToken');
 
     // const cookieString = serialize('authToken', joseToken, {
     //   httpOnly: true, // Crucial for security
