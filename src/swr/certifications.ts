@@ -1,4 +1,3 @@
-// filepath: /Users/xingbingao/workplace/certifai-app/src/swr/certifications.ts
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
@@ -9,7 +8,7 @@ export interface CertificationInput {
 
 // Define the type for registering a user for a certification
 export interface UserCertificationRegistrationInput {
-  certificationId: string;
+  certificationId: number;
 }
 
 // Define the type for the expected response (optional, but good practice)
@@ -69,10 +68,31 @@ export function useRegisterCertification() {
 // --- Fetching a list of ALL available certifications (formerly useCertifications) ---
 
 // Define the type for a single certification item in the list
+export interface UserRegisteredCertification {
+  user_id: string;
+  cert_id: number;
+  status: string;
+  assignedAt: string;
+  updatedAt: string;
+  certification: {
+    cert_id: number;
+    cert_category_id: number;
+    name: string;
+    exam_guide_url: string;
+    min_quiz_counts: number;
+    max_quiz_counts: number;
+    pass_score: number;
+  };
+}
+
 export interface CertificationListItem {
-  id: string;
+  cert_id: number;
+  cert_category_id: number;
   name: string;
-  [key: string]: any;
+  exam_guide_url: string;
+  min_quiz_counts: number;
+  max_quiz_counts: number;
+  pass_score: number;
 }
 
 // Fetcher function for getting the list of all available certifications
@@ -118,7 +138,7 @@ export function useAllAvailableCertifications() {
 // Fetcher function for getting the list of a user's registered certifications
 async function fetchUserRegisteredCertifications(
   url: string,
-): Promise<{ data: CertificationListItem[] }> {
+): Promise<{ data: UserRegisteredCertification[] }> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -138,7 +158,7 @@ async function fetchUserRegisteredCertifications(
 // Custom hook to use for fetching the list of a user's registered certifications
 export function useUserRegisteredCertifications(apiUserId: string | null) {
   const { data, error, isLoading, isValidating, mutate } = useSWR<
-    { data: CertificationListItem[] },
+    { data: UserRegisteredCertification[] },
     Error
   >(
     apiUserId ? `/api/users/${apiUserId}/certifications` : null, // Conditional fetching

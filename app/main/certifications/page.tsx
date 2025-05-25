@@ -11,12 +11,15 @@ import {
   useRegisterUserForCertification,
   CertificationListItem,
   UserCertificationRegistrationInput,
+  UserRegisteredCertification,
 } from '@/swr/certifications';
 import AppHeader from '@/components/custom/appheader';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 export default function CertificationsPage() {
   const { apiUserId } = useFirebaseAuth();
+  const router = useRouter(); // Initialize useRouter
 
   const {
     userCertifications,
@@ -34,7 +37,7 @@ export default function CertificationsPage() {
   const { registerForCertification, isRegistering, registrationError } =
     useRegisterUserForCertification(apiUserId);
 
-  const [registeringCertId, setRegisteringCertId] = useState<string | null>(null);
+  const [registeringCertId, setRegisteringCertId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCertForModal, setSelectedCertForModal] = useState<CertificationListItem | null>(
     null,
@@ -50,6 +53,10 @@ export default function CertificationsPage() {
     setIsModalOpen(false);
   };
 
+  const handleNavigateToExams = (certId: number) => {
+    router.push(`/main/certifications/${certId}/exams`);
+  };
+
   const handleRegisterFromModal = async () => {
     if (!selectedCertForModal) return;
 
@@ -58,16 +65,16 @@ export default function CertificationsPage() {
       handleCloseModal();
       return;
     }
-    if (userCertifications?.some((uc: any) => uc.id === selectedCertForModal.id)) {
+    if (userCertifications?.some((uc: any) => uc.cert_id === selectedCertForModal.cert_id)) {
       toast.info(`You are already registered for "${selectedCertForModal.name}".`);
       handleCloseModal();
       return;
     }
 
-    setRegisteringCertId(selectedCertForModal.id);
+    setRegisteringCertId(selectedCertForModal.cert_id);
     try {
       const input: UserCertificationRegistrationInput = {
-        certificationId: selectedCertForModal.id,
+        certificationId: selectedCertForModal.cert_id,
       };
       await registerForCertification(input);
       toast.success(`Successfully registered for "${selectedCertForModal.name}"!`);
@@ -87,12 +94,6 @@ export default function CertificationsPage() {
     }
   }, [registrationError]);
 
-  useEffect(() => {
-    if (userCertifications) {
-      console.log(`userCertifications: ${JSON.stringify(userCertifications, null, 2)}`);
-    }
-  }, [userCertifications]);
-
   if (isUserCertificationsError || isAvailableCertificationsError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -111,7 +112,26 @@ export default function CertificationsPage() {
       <AppHeader title="Manage Your Certifications" />
       <Toaster richColors />
 
-      {/* Section for User's Registered Certifications */}
+      {/*
+      userCertifications: [
+        {
+          "user_id": "7143dfb3-86a6-43ae-b970-b388f381a31a",
+          "cert_id": 2,
+          "status": "IN_PROGRESS",
+          "assignedAt": "2025-05-23T04:30:31.650Z",
+          "updatedAt": "2025-05-23T04:30:31.650Z",
+          "certification": {
+            "cert_id": 2,
+            "cert_category_id": 2,
+            "name": "Google Cloud Professional Cloud Developer",
+            "exam_guide_url": "https://cloud.google.com/learn/certification/guides/cloud-developer",
+            "min_quiz_counts": 15,
+            "max_quiz_counts": 60,
+            "pass_score": 80
+          }
+        }
+      ]
+      */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Your Registered Certifications</h2>
         {isLoadingUserCertifications ? (
@@ -130,16 +150,17 @@ export default function CertificationsPage() {
           </div>
         ) : userCertifications && userCertifications.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userCertifications.map((cert: CertificationListItem) => (
+            {userCertifications.map((cert: UserRegisteredCertification) => (
               <Card
-                key={`user-${cert.id}`}
-                className="shadow-md hover:shadow-lg transition-shadow duration-200"
+                key={`user-${cert.cert_id}`}
+                className="shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+                onClick={() => handleNavigateToExams(cert.cert_id)} // Add onClick handler
               >
                 <CardHeader>
-                  <CardTitle className="text-xl">{cert.name}</CardTitle>
+                  <CardTitle className="text-xl">{cert.certification.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">ID: {cert.id}</p>
+                  <p className="text-sm text-muted-foreground">ID: {cert.cert_id}</p>
                 </CardContent>
               </Card>
             ))}
@@ -182,10 +203,10 @@ export default function CertificationsPage() {
                 onClick={() => handleOpenModal(cert)}
               >
                 <CardHeader>
-                  <CardTitle className="text-xl">{cert.name}</CardTitle>
+                  <CardTitle className="text-xl">{cert.name || ''}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">ID: {cert.id}</p>
+                  <p className="text-sm text-muted-foreground">ID: {cert.cert_id}</p>
                   {/* Button removed from here */}
                 </CardContent>
               </Card>
@@ -209,7 +230,9 @@ export default function CertificationsPage() {
               <CardTitle className="text-2xl">{selectedCertForModal.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-2">ID: {selectedCertForModal.id}</p>
+              <p className="text-sm text-muted-foreground mb-2">
+                ID: {selectedCertForModal.cert_id}
+              </p>
               <p className="mb-6">
                 Detailed information about the &quot;{selectedCertForModal.name}&quot; certification
                 would go here. This could include prerequisites, topics covered, exam format, etc.
@@ -220,9 +243,9 @@ export default function CertificationsPage() {
                 </Button>
                 <Button
                   onClick={handleRegisterFromModal}
-                  disabled={isRegistering && registeringCertId === selectedCertForModal.id}
+                  disabled={isRegistering && registeringCertId === selectedCertForModal.cert_id}
                 >
-                  {isRegistering && registeringCertId === selectedCertForModal.id
+                  {isRegistering && registeringCertId === selectedCertForModal.cert_id
                     ? 'Registering...'
                     : 'Register for this Certification'}
                 </Button>
