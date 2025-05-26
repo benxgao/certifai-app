@@ -1,5 +1,6 @@
 // src/swr/questions.ts
 import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
 import { fetcher, PaginationInfo } from './utils';
 
 export interface AnswerOption {
@@ -11,10 +12,11 @@ export interface Question {
   quiz_question_id: string; // Or number
   question_body: string;
   answerOptions: AnswerOption[];
-  // Add other relevant question properties here
-  // e.g., explanation: string;
-  // e.g., user_answer_id: string | null;
-  // e.g., is_correct: boolean | null;
+  selected_option_id: string | null; // Add selected_option_id
+  difficulty: string;
+  topic_id: number;
+  cert_id: number;
+  user_answer_id: string;
 }
 
 export interface ExamQuestionsResponse {
@@ -42,5 +44,67 @@ export function useExamQuestions(
     isQuestionsError: error,
     isValidatingQuestions: isValidating,
     mutateQuestions: mutate,
+  };
+}
+
+// New fetcher function for the mutation
+async function submitAnswerFetcher(
+  _key: string, // The static key passed to useSWRMutation (e.g., "SUBMIT_ANSWER")
+  {
+    arg,
+  }: {
+    arg: {
+      apiUserId: string;
+      certId: number;
+      examId: string;
+      questionId: string; // This is the quiz_question_id
+      optionId: string;
+    };
+  },
+): Promise<any> {
+  // Return type can be more specific based on actual API response
+  const { apiUserId, certId, examId, questionId, optionId } = arg;
+  const apiUrl = `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions/${questionId}`;
+
+  const response = await fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      quiz_question_id: questionId, // Matching the body of the original fetch call
+      answer_option_id: optionId,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Failed to save answer');
+  }
+  // Assuming the API returns the updated question data or a success message
+  return response.json();
+}
+
+// Custom hook for submitting an answer using useSWRMutation
+export function useSubmitAnswer() {
+  const {
+    trigger,
+    isMutating,
+    error,
+    data,
+    reset, // Optional: if the component needs to reset mutation state
+  } = useSWRMutation(
+    'SUBMIT_ANSWER', // A unique static key for this type of mutation
+    submitAnswerFetcher,
+    // Optional: Configuration for the mutation can be added here
+    // e.g., for optimistic updates or revalidation strategies.
+  );
+
+  return {
+    submitAnswer: trigger, // The function to trigger the mutation
+    isSubmitting: isMutating, // The isMutating state
+    submitError: error, // Error state of the mutation
+    submitData: data, // Data returned from a successful mutation
+    resetSubmitState: reset, // Function to reset the mutation state
   };
 }

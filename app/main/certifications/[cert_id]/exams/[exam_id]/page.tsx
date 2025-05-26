@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'; //  npx shadcn@latest add dialog
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
-import { useExamQuestions, Question } from '@/swr/questions';
+import { useExamQuestions, Question, useSubmitAnswer } from '@/swr/questions'; // Import useSubmitAnswer
 
 export default function ExamAttemptPage() {
   const params = useParams();
@@ -24,77 +24,105 @@ export default function ExamAttemptPage() {
   const { apiUserId } = useFirebaseAuth();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10); // Add pageSize state, default to 10
+  const [pageSize] = useState(10);
   const [questionsApiUrl, setQuestionsApiUrl] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     if (apiUserId && certId !== null && examId) {
-      // Construct URL with page and pageSize query parameters
       setQuestionsApiUrl(
         `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions?page=${currentPage}&pageSize=${pageSize}`,
       );
     }
   }, [apiUserId, certId, examId, currentPage, pageSize]);
 
-  const { questions, pagination, isLoadingQuestions, isQuestionsError } =
-    useExamQuestions(questionsApiUrl);
+  const {
+    questions,
+    pagination,
+    isLoadingQuestions,
+    isQuestionsError,
+    mutateQuestions, // Ensure mutateQuestions is destructured
+  } = useExamQuestions(questionsApiUrl);
 
-  const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+  // Use the new SWR Mutation hook for submitting answers
+  const { submitAnswer, isSubmitting, submitError } = useSubmitAnswer();
 
   const handleOptionChange = async (questionId: string, optionId: string) => {
-    setUserAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionId]: optionId,
-    }));
+    // Optimistically update UI for the questions list
+    mutateQuestions(
+      (currentData) => {
+        if (!currentData || !currentData.data || !currentData.data.questions) {
+          return currentData;
+        }
+        const updatedQuestions = currentData.data.questions.map((q) =>
+          q.quiz_question_id === questionId ? { ...q, selected_option_id: optionId } : q,
+        );
+        return {
+          ...currentData,
+          data: {
+            ...currentData.data,
+            questions: updatedQuestions,
+          },
+        };
+      },
+      false, // optimistic update, don't revalidate the questions list yet
+    );
 
+    // Trigger the mutation to persist the answer
     if (apiUserId && certId !== null && examId) {
       try {
-        const response = await fetch(
-          `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions/${questionId}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              quiz_question_id: questionId,
-              answer_option_id: optionId,
-            }),
-          },
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error('Failed to save answer:', errorData.message);
-        } else {
-          console.log('Answer saved successfully for question:', questionId);
-        }
+        await submitAnswer({
+          apiUserId,
+          certId,
+          examId,
+          questionId,
+          optionId,
+        });
+        console.log('Answer saved successfully for question:', questionId);
+        // After successful submission, you might want to revalidate the questions
+        // if the backend response could affect the overall list or pagination.
+        // mutateQuestions(undefined, true);
       } catch (error) {
-        console.error('Error saving answer:', error);
+        // Error is already handled by useSubmitAnswer hook, but you can log or act on submitError
+        console.error(
+          'Failed to save answer (from handleOptionChange catch):',
+          (error as Error).message,
+        );
+        // Revert optimistic update on failure by revalidating the original questions data
+        mutateQuestions(undefined, true);
       }
     }
   };
 
+  // Effect to observe submission errors from the hook
+  useEffect(() => {
+    if (submitError) {
+      console.error('Failed to save answer (from submitError effect):', submitError.message);
+      // Optionally, show a toast notification or other UI feedback for the error
+      // And ensure optimistic UI is reverted if not already handled by the catch block in handleOptionChange
+      mutateQuestions(undefined, true);
+    }
+  }, [submitError, mutateQuestions]);
+
   const handlePreviousPage = async () => {
     if (pagination && pagination.currentPage > 1) {
-      console.log(
-        'Going to previous page. Current answers for page ',
-        pagination.currentPage,
-        ':',
-        userAnswers,
-      );
+      // console.log(
+      //   'Going to previous page. Current answers for page ',
+      //   pagination.currentPage,
+      //   ':',
+      //   userAnswers, // userAnswers removed
+      // );
       setCurrentPage(pagination.currentPage - 1);
-      setUserAnswers({}); // Clear answers for the new page, or handle differently
+      // setUserAnswers({}); // userAnswers removed
     }
   };
 
   const handleNextPageOrSubmit = async () => {
-    console.log('Current answers for page ', pagination?.currentPage, ':', userAnswers);
+    // console.log('Current answers for page ', pagination?.currentPage, ':', userAnswers); // userAnswers removed
 
     if (pagination && pagination.currentPage < pagination.totalPages) {
       setCurrentPage(pagination.currentPage + 1);
-      setUserAnswers({}); // Clear answers for the new page
+      // setUserAnswers({}); // userAnswers removed
     } else {
       setShowConfirmModal(true);
     }
@@ -178,7 +206,7 @@ export default function ExamAttemptPage() {
                         value={option_id} // Store the actual option_id
                         className="mr-2"
                         onChange={() => handleOptionChange(question.quiz_question_id, option_id)}
-                        checked={userAnswers[question.quiz_question_id] === option_id}
+                        checked={question.selected_option_id === option_id} // Use question.selected_option_id
                       />
                       <label htmlFor={`question-${question.quiz_question_id}-option-${option_id}`}>
                         {option_text}
@@ -202,16 +230,20 @@ export default function ExamAttemptPage() {
               <Button
                 size="lg"
                 onClick={handlePreviousPage}
-                disabled={isLoadingQuestions || !pagination || pagination.currentPage <= 1}
+                disabled={
+                  isLoadingQuestions || isSubmitting || !pagination || pagination.currentPage <= 1
+                }
               >
                 Previous Page
               </Button>
               <Button
                 size="lg"
                 onClick={handleNextPageOrSubmit}
-                disabled={isLoadingQuestions || !pagination}
+                disabled={isLoadingQuestions || isSubmitting || !pagination}
               >
-                {isLoadingQuestions
+                {isSubmitting
+                  ? 'Saving...'
+                  : isLoadingQuestions
                   ? 'Loading...'
                   : pagination && pagination.currentPage < pagination.totalPages
                   ? 'Next Page'
