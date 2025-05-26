@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const params = await paramsPromise; // Await the params object
-    const { api_user_id } = params;
+    const { api_user_id } = await params;
 
     if (!api_user_id) {
       return NextResponse.json(

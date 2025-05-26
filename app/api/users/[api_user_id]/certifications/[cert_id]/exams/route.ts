@@ -3,7 +3,7 @@ import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
 export async function GET(request: NextRequest, { params }: { params: { api_user_id: string } }) {
   try {
-    const { api_user_id } = params;
+    const { api_user_id } = await params;
 
     if (!api_user_id) {
       return NextResponse.json(

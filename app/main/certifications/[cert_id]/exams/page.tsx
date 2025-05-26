@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation'; // Import useRouter
 import { useExamsForCertification, ExamListItem } from '@/swr/exams';
 import AppHeader from '@/components/custom/appheader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 
 export default function CertificationExamsPage() {
   const params = useParams();
+  const router = useRouter(); // Initialize useRouter
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
   const { apiUserId } = useFirebaseAuth();
 
@@ -19,10 +20,10 @@ export default function CertificationExamsPage() {
 
   const handleStartExam = (examId: string) => {
     // Navigate to the exam attempt page (to be created)
-    // router.push(`/main/certifications/${certId}/exams/${examId}/attempt`);
-    console.log(`Attempting to start exam ${examId} for certification ${certId}`);
+    router.push(`/main/certifications/${certId}/exams/${examId}`);
+    // console.log(`Attempting to start exam ${examId} for certification ${certId}`);
     // For now, you can add a toast or alert
-    alert(`Starting exam ${examId}. Navigation to actual exam page not yet implemented.`);
+    // alert(`Starting exam ${examId}. Navigation to actual exam page not yet implemented.`);
   };
 
   useEffect(() => {
