@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: { api_user_id: string; cert_id: string; exam_id: string } },
 ) {
   try {
-    const { api_user_id, exam_id } = params; // cert_id is available from the path but not used in the target URL
+    const { api_user_id, exam_id } = await params;
 
     const body = await request.json();
     const { quiz_question_id, answer_option_id } = body;

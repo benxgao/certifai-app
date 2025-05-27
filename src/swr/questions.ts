@@ -89,7 +89,7 @@ async function submitAnswerFetcher(
 export function useSubmitAnswer() {
   const {
     trigger,
-    isMutating,
+    isMutating, // Renaming this in the return object
     error,
     data,
     reset, // Optional: if the component needs to reset mutation state
@@ -102,7 +102,7 @@ export function useSubmitAnswer() {
 
   return {
     submitAnswer: trigger, // The function to trigger the mutation
-    isSubmitting: isMutating, // The isMutating state
+    isAnswering: isMutating, // Renamed from isSubmitting
     submitError: error, // Error state of the mutation
     submitData: data, // Data returned from a successful mutation
     resetSubmitState: reset, // Function to reset the mutation state

@@ -1,4 +1,5 @@
 // filepath: /Users/xingbingao/workplace/certifai-app/app/api/users/[api_user_id]/certifications/[cert_id]/exams/submit/route.ts
+import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(
@@ -9,8 +10,14 @@ export async function POST(
     const body = await request.json();
 
     const { api_user_id, cert_id, exam_id } = await params;
-    // params.cert_id is available if needed for other logic,
-    // but it's not part of the target URL specified in the prompt.
+
+    const firebaseToken = await getFirebaseTokenFromCookie();
+    if (!firebaseToken) {
+      return NextResponse.json(
+        { message: 'Authentication failed: Invalid or missing token' },
+        { status: 401 },
+      );
+    }
 
     const targetUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/certifications/${cert_id}/exams/${exam_id}/submit`;
 
@@ -18,22 +25,20 @@ export async function POST(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${firebaseToken}`,
       },
-      body: JSON.stringify(body || {}), // Send remaining data after extracting exam_id
+      body: JSON.stringify(body || {}),
     });
 
-    // Try to parse the response as JSON, but handle cases where it might not be
     let responseData;
+
     try {
       responseData = await apiResponse.json();
     } catch (e: any) {
-      // Mark error as unused
-      // If response is not JSON, try to get text, or use a generic message
       responseData = {
         error: `Received non-JSON response from target API: ${e}: ${apiResponse.statusText}`,
       };
       if (apiResponse.status === 204) {
-        // No Content
         return new NextResponse(null, { status: 204 });
       }
     }

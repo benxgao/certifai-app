@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import useSWRMutation from 'swr/mutation';
 
 export interface ExamListItem {
   exam_id: string;
@@ -24,7 +25,6 @@ async function fetchExamsForCertification(url: string): Promise<{ data: ExamList
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      // Add Authorization header if needed
     },
   });
 
@@ -47,5 +47,47 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
     isExamsError: error,
     isValidatingExams: isValidating,
     mutateExams: mutate,
+  };
+}
+
+// New SWR Mutation hook for submitting an exam
+async function submitExamFetcher(
+  url: string,
+  { arg }: { arg: { apiUserId: string; certId: number; examId: string; body: any } },
+) {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(arg.body),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || 'Failed to submit exam.');
+  }
+  if (response.status === 204) {
+    return null;
+  }
+  return response.json();
+}
+
+export function useSubmitExam(
+  apiUserId: string | null,
+  certId: number | null,
+  examId: string | null,
+) {
+  const { trigger, isMutating, error } = useSWRMutation(
+    apiUserId && certId && examId
+      ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/submit`
+      : null,
+    submitExamFetcher,
+  );
+
+  return {
+    submitExam: trigger,
+    isSubmittingExam: isMutating,
+    submitExamError: error,
   };
 }

@@ -14,8 +14,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'; //  npx shadcn@latest add dialog
-import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useExamQuestions, Question, useSubmitAnswer } from '@/swr/questions'; // Import useSubmitAnswer
+import { useSubmitExam } from '@/swr/exams'; // Import useSubmitExam
+import ErrorMessage from '@/components/custom/ErrorMessage'; // Import ErrorMessage
+import PageLoader from '@/components/custom/PageLoader'; // Import PageLoader
+import { Checkbox } from '@/components/ui/checkbox'; // Import Checkbox
+import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 
 export default function ExamAttemptPage() {
   const params = useParams();
@@ -27,6 +31,8 @@ export default function ExamAttemptPage() {
   const [pageSize] = useState(10);
   const [questionsApiUrl, setQuestionsApiUrl] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState<any>(null); // To store submission result
+  const [isSubmittingExamFlag, setIsSubmittingExamFlag] = useState(false); // To manage loading state for submission
 
   useEffect(() => {
     if (apiUserId && certId !== null && examId) {
@@ -45,7 +51,14 @@ export default function ExamAttemptPage() {
   } = useExamQuestions(questionsApiUrl);
 
   // Use the new SWR Mutation hook for submitting answers
-  const { submitAnswer, isSubmitting, submitError } = useSubmitAnswer();
+  const { submitAnswer, isAnswering, submitError } = useSubmitAnswer();
+
+  // SWR hook for submitting the entire exam
+  const { submitExam, isSubmittingExam, submitExamError } = useSubmitExam(
+    apiUserId,
+    certId,
+    examId,
+  );
 
   const handleOptionChange = async (questionId: string, optionId: string) => {
     // Optimistically update UI for the questions list
@@ -104,6 +117,19 @@ export default function ExamAttemptPage() {
     }
   }, [submitError, mutateQuestions]);
 
+  // Effect to observe exam submission errors from the hook
+  useEffect(() => {
+    if (submitExamError) {
+      console.error(
+        'Failed to submit exam (from submitExamError effect):',
+        submitExamError.message,
+      );
+      // The alert is now handled by the ErrorMessage component, but you can keep this for logging
+      // alert(`Failed to submit exam: ${submitExamError.message}`);
+      setSubmissionResult({ error: submitExamError.message });
+    }
+  }, [submitExamError]);
+
   const handlePreviousPage = async () => {
     if (pagination && pagination.currentPage > 1) {
       // console.log(
@@ -130,8 +156,30 @@ export default function ExamAttemptPage() {
 
   const handleConfirmSubmit = async () => {
     setShowConfirmModal(false);
+    if (!apiUserId || certId === null || !examId) {
+      console.error('Missing user, certification, or exam ID for submission.');
+      // alert('Could not submit exam. Missing necessary information.'); // Replaced by ErrorMessage
+      setSubmissionResult({ error: 'Could not submit exam. Missing necessary information.' });
+      return;
+    }
+    setIsSubmittingExamFlag(true);
     console.log('Submitting exam...');
-    alert('Exam submitted! (Not really, implement submission logic here)');
+    try {
+      // The body for the submit request might be empty or could contain specific data
+      // based on backend requirements. For now, sending an empty object.
+      const result = await submitExam({ apiUserId, certId, examId, body: {} });
+      console.log('Exam submitted successfully:', result);
+      setSubmissionResult(result);
+      alert('Exam submitted successfully!');
+      // Optionally, redirect the user or show a summary page
+      // router.push(`/main/certifications/${certId}/exams/${examId}/results`);
+    } catch (error: any) {
+      console.error('Failed to submit exam:', error.message);
+      // alert(`Failed to submit exam: ${error.message}`); // Replaced by ErrorMessage
+      setSubmissionResult({ error: error.message });
+    } finally {
+      setIsSubmittingExamFlag(false);
+    }
   };
 
   useEffect(() => {
@@ -182,38 +230,59 @@ export default function ExamAttemptPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
+      <PageLoader isLoading={isSubmittingExam || isSubmittingExamFlag} text="Submitting Exam..." />
       <AppHeader title={`Exam ${examId} - Certification ${certId}`} />
+
+      {/* Display general submission error messages */}
+      <ErrorMessage error={submissionResult?.error} className="mt-4" />
+      <ErrorMessage error={submitExamError} className="mt-4" />
 
       {questions && questions.length > 0 ? (
         <div className="space-y-6 mt-6">
           {questions.map((question: Question, index: number) => (
             <Card key={question.quiz_question_id} className="shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg">
-                  Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}:{' '}
-                  {question.question_body}
+                <CardTitle className="text-lg flex items-center">
+                  <span>
+                    Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}:{' '}
+                    {question.question_body}
+                  </span>
                 </CardTitle>
+                {question.selected_option_id && (
+                  <span className="w-18 inline-block rounded-md border border-green-500 px-2 py-1 text-xs font-medium text-green-500">
+                    Answered
+                  </span>
+                )}
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 mb-4">
+                <ul className="space-y-4 mb-4">
                   {question.answerOptions.map(({ option_id, option_text }) => (
-                    <li key={option_id} className="flex items-center">
-                      {/* Use option_id for key if unique */}
-                      <input
-                        type="radio"
-                        name={`question-${question.quiz_question_id}`}
-                        id={`question-${question.quiz_question_id}-option-${option_id}`}
-                        value={option_id} // Store the actual option_id
-                        className="mr-2"
-                        onChange={() => handleOptionChange(question.quiz_question_id, option_id)}
-                        checked={question.selected_option_id === option_id} // Use question.selected_option_id
+                    <li key={option_id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`${question.quiz_question_id}-${option_id}`}
+                        checked={question.selected_option_id === option_id}
+                        onCheckedChange={() =>
+                          handleOptionChange(question.quiz_question_id, option_id)
+                        }
+                        disabled={isAnswering || isSubmittingExamFlag}
                       />
-                      <label htmlFor={`question-${question.quiz_question_id}-option-${option_id}`}>
+                      <label
+                        htmlFor={`${question.quiz_question_id}-${option_id}`}
+                        className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      >
                         {option_text}
                       </label>
                     </li>
                   ))}
                 </ul>
+                {/* Display error for individual answer submission */}
+                <ErrorMessage
+                  error={
+                    submitError && submitError.questionId === question.quiz_question_id
+                      ? submitError
+                      : null
+                  }
+                />
                 {/* Add logic for displaying explanations or correct answers after submission */}
               </CardContent>
             </Card>
@@ -231,7 +300,7 @@ export default function ExamAttemptPage() {
                 size="lg"
                 onClick={handlePreviousPage}
                 disabled={
-                  isLoadingQuestions || isSubmitting || !pagination || pagination.currentPage <= 1
+                  isLoadingQuestions || isAnswering || !pagination || pagination.currentPage <= 1
                 }
               >
                 Previous Page
@@ -239,15 +308,11 @@ export default function ExamAttemptPage() {
               <Button
                 size="lg"
                 onClick={handleNextPageOrSubmit}
-                disabled={isLoadingQuestions || isSubmitting || !pagination}
+                disabled={isLoadingQuestions || isAnswering || !pagination}
               >
-                {isSubmitting
-                  ? 'Saving...'
-                  : isLoadingQuestions
-                  ? 'Loading...'
-                  : pagination && pagination.currentPage < pagination.totalPages
-                  ? 'Next Page'
-                  : 'Submit Exam'}
+                {pagination && pagination.currentPage === pagination.totalPages
+                  ? 'Submit Exam'
+                  : 'Next Page'}
               </Button>
             </div>
           </div>
@@ -274,10 +339,16 @@ export default function ExamAttemptPage() {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setShowConfirmModal(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setShowConfirmModal(false)}
+                disabled={isSubmittingExamFlag}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleConfirmSubmit}>Submit Exam</Button>
+              <Button onClick={handleConfirmSubmit} disabled={isSubmittingExamFlag}>
+                {isSubmittingExamFlag ? 'Submitting...' : 'Submit Exam'}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
