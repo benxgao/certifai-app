@@ -9,14 +9,16 @@ export interface AnswerOption {
 }
 
 export interface Question {
-  quiz_question_id: string; // Or number
+  quiz_question_id: string;
   question_body: string;
   answerOptions: AnswerOption[];
-  selected_option_id: string | null; // Add selected_option_id
+  selected_option_id: string | null;
   difficulty: string;
   topic_id: number;
   cert_id: number;
   user_answer_id: string;
+  explanations?: string;
+  user_answer_is_correct: boolean | null;
 }
 
 export interface ExamQuestionsResponse {

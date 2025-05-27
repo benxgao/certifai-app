@@ -18,10 +18,18 @@ export default function CertificationExamsPage() {
 
   const { exams, isLoadingExams, isExamsError } = useExamsForCertification(apiUserId, certId);
 
-  const handleStartExam = (examId: string) => {
-    // Navigate to the exam attempt page (to be created)
-    router.push(`/main/certifications/${certId}/exams/${examId}`);
-    // console.log(`Attempting to start exam ${examId} for certification ${certId}`);
+  const handleStartExam = (examId: string, score: number | null, submittedAt: number | null) => {
+    // Navigate to the exam attempt page
+    const queryParams = new URLSearchParams();
+    if (submittedAt !== null) {
+      queryParams.append('submitted_at', submittedAt.toString());
+    }
+    if (score !== null) {
+      queryParams.append('score', score.toString());
+    }
+    const queryString = queryParams.toString();
+    router.push(`/main/certifications/${certId}/exams/${examId}${queryString ? `?${queryString}` : ''}`);
+    // console.log(`Attempting to start exam ${examId} for certification ${certId} with score ${score} and submitted_at ${submittedAt}`);
     // For now, you can add a toast or alert
     // alert(`Starting exam ${examId}. Navigation to actual exam page not yet implemented.`);
   };
@@ -81,7 +89,10 @@ export default function CertificationExamsPage() {
                 <p className="text-sm text-muted-foreground mb-4">
                   Number of Questions: {exams.length}
                 </p>
-                <Button onClick={() => handleStartExam(exam.exam_id)} className="w-full">
+                <Button
+                  onClick={() => handleStartExam(exam.exam_id, exam.score, exam.submitted_at)}
+                  className="w-full"
+                >
                   Start Exam
                 </Button>
               </CardContent>

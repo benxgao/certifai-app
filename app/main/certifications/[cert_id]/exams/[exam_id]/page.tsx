@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation'; // Import useSearchParams
 import AppHeader from '@/components/custom/appheader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -20,9 +20,16 @@ import ErrorMessage from '@/components/custom/ErrorMessage'; // Import ErrorMess
 import PageLoader from '@/components/custom/PageLoader'; // Import PageLoader
 import { Checkbox } from '@/components/ui/checkbox'; // Import Checkbox
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'; // Added
 
 export default function ExamAttemptPage() {
   const params = useParams();
+  const searchParams = useSearchParams(); // Initialize useSearchParams
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
   const examId = params.exam_id as string | null;
   const { apiUserId } = useFirebaseAuth();
@@ -33,6 +40,19 @@ export default function ExamAttemptPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<any>(null); // To store submission result
   const [isSubmittingExamFlag, setIsSubmittingExamFlag] = useState(false); // To manage loading state for submission
+  const [submittedAt, setSubmittedAt] = useState<number | null>(null);
+  const [score, setScore] = useState<number | null>(null);
+
+  useEffect(() => {
+    const submittedAtQuery = searchParams.get('submitted_at');
+    const scoreQuery = searchParams.get('score');
+    if (submittedAtQuery) {
+      setSubmittedAt(parseInt(submittedAtQuery, 10));
+    }
+    if (scoreQuery) {
+      setScore(parseInt(scoreQuery, 10));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (apiUserId && certId !== null && examId) {
@@ -232,6 +252,11 @@ export default function ExamAttemptPage() {
     <div className="min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
       <PageLoader isLoading={isSubmittingExam || isSubmittingExamFlag} text="Submitting Exam..." />
       <AppHeader title={`Exam ${examId} - Certification ${certId}`} />
+      {score !== null && (
+        <div className="text-center my-4">
+          <p className="text-2xl font-bold">Your Score: {score}%</p>
+        </div>
+      )}
 
       {/* Display general submission error messages */}
       <ErrorMessage error={submissionResult?.error} className="mt-4" />
@@ -241,21 +266,40 @@ export default function ExamAttemptPage() {
         <div className="space-y-6 mt-6">
           {questions.map((question: Question, index: number) => (
             <Card key={question.quiz_question_id} className="shadow-md">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center">
-                  <span>
+              <CardHeader className="pb-2">
+                {' '}
+                {/* Removed relative positioning and top padding, added bottom padding */}
+                <CardTitle className="text-lg">
+                  {' '}
+                  {/* Removed margin-right */}
+                  <span className="text-gray-600 dark:text-gray-400">
                     Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}:{' '}
                     {question.question_body}
                   </span>
                 </CardTitle>
-                {question.selected_option_id && (
-                  <span className="w-18 inline-block rounded-md border border-green-500 px-2 py-1 text-xs font-medium text-green-500">
-                    Answered
-                  </span>
-                )}
+                {/* Container for status labels - moved under CardTitle */}
+                <div className="flex items-center space-x-2 mt-2">
+                  {' '}
+                  {/* Added margin-top */}
+                  {question.selected_option_id && submittedAt === null && (
+                    <span className="inline-block rounded-md border border-green-500 px-2 py-1 text-xs font-medium text-green-500">
+                      Answered
+                    </span>
+                  )}
+                  {submittedAt !== null && question.user_answer_is_correct === true && (
+                    <span className="inline-block rounded-md border border-green-500 bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+                      Correct
+                    </span>
+                  )}
+                  {submittedAt !== null && question.user_answer_is_correct === false && (
+                    <span className="inline-block rounded-md border border-red-500 bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
+                      Incorrect
+                    </span>
+                  )}
+                </div>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-4 mb-4">
+                <ul className="space-y-4 mb-4 list-none">
                   {question.answerOptions.map(({ option_id, option_text }) => (
                     <li key={option_id} className="flex items-center space-x-2">
                       <Checkbox
@@ -264,11 +308,11 @@ export default function ExamAttemptPage() {
                         onCheckedChange={() =>
                           handleOptionChange(question.quiz_question_id, option_id)
                         }
-                        disabled={isAnswering || isSubmittingExamFlag}
+                        disabled={submittedAt !== null || isAnswering || isSubmittingExamFlag}
                       />
                       <label
                         htmlFor={`${question.quiz_question_id}-${option_id}`}
-                        className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                        className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer text-gray-800 dark:text-gray-300"
                       >
                         {option_text}
                       </label>
@@ -284,6 +328,20 @@ export default function ExamAttemptPage() {
                   }
                 />
                 {/* Add logic for displaying explanations or correct answers after submission */}
+                {submittedAt !== null && question.explanations && (
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full mt-8 pt-0 border-t border-gray-200"
+                  >
+                    <AccordionItem value="item-1">
+                      <AccordionTrigger className="text-muted-foreground">
+                        View Explanation
+                      </AccordionTrigger>
+                      <AccordionContent>{question.explanations}</AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -305,15 +363,17 @@ export default function ExamAttemptPage() {
               >
                 Previous Page
               </Button>
-              <Button
-                size="lg"
-                onClick={handleNextPageOrSubmit}
-                disabled={isLoadingQuestions || isAnswering || !pagination}
-              >
-                {pagination && pagination.currentPage === pagination.totalPages
-                  ? 'Submit Exam'
-                  : 'Next Page'}
-              </Button>
+              {submittedAt === null && (
+                <Button
+                  size="lg"
+                  onClick={handleNextPageOrSubmit}
+                  disabled={isLoadingQuestions || isAnswering || !pagination}
+                >
+                  {pagination && pagination.currentPage === pagination.totalPages
+                    ? 'Submit Exam'
+                    : 'Next Page'}
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -342,11 +402,14 @@ export default function ExamAttemptPage() {
               <Button
                 variant="outline"
                 onClick={() => setShowConfirmModal(false)}
-                disabled={isSubmittingExamFlag}
+                disabled={submittedAt !== null || isSubmittingExamFlag}
               >
                 Cancel
               </Button>
-              <Button onClick={handleConfirmSubmit} disabled={isSubmittingExamFlag}>
+              <Button
+                onClick={handleConfirmSubmit}
+                disabled={submittedAt !== null || isSubmittingExamFlag}
+              >
                 {isSubmittingExamFlag ? 'Submitting...' : 'Submit Exam'}
               </Button>
             </DialogFooter>
