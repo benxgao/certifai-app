@@ -3,30 +3,25 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { toast, Toaster } from 'sonner';
 import {
   useAllAvailableCertifications,
-  useUserRegisteredCertifications,
   useRegisterUserForCertification,
   CertificationListItem,
   UserCertificationRegistrationInput,
-  UserRegisteredCertification,
 } from '@/swr/certifications';
 import AppHeader from '@/components/custom/appheader';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import SkeletonCard from '@/components/custom/SkeletonCard';
+import { useUserCertifications } from '@/context/UserCertificationsContext';
 
 export default function CertificationsPage() {
   const { apiUserId } = useFirebaseAuth();
-  const router = useRouter(); // Initialize useRouter
 
   const {
-    userCertifications,
-    isLoadingUserCertifications,
-    isUserCertificationsError,
+    userCertifications, // Keep for checking existing registrations
     mutateUserCertifications,
-  } = useUserRegisteredCertifications(apiUserId);
+  } = useUserCertifications();
 
   const {
     availableCertifications,
@@ -51,10 +46,6 @@ export default function CertificationsPage() {
   const handleCloseModal = () => {
     setSelectedCertForModal(null);
     setIsModalOpen(false);
-  };
-
-  const handleNavigateToExams = (certId: number) => {
-    router.push(`/main/certifications/${certId}/exams`);
   };
 
   const handleRegisterFromModal = async () => {
@@ -94,14 +85,12 @@ export default function CertificationsPage() {
     }
   }, [registrationError]);
 
-  if (isUserCertificationsError || isAvailableCertificationsError) {
+  if (isAvailableCertificationsError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <AppHeader title="Certifications" />
         <p className="text-red-500">
-          {isUserCertificationsError?.message ||
-            isAvailableCertificationsError?.message ||
-            'Error loading certification data.'}
+          {isAvailableCertificationsError?.message || 'Error loading certification data.'}
         </p>
       </div>
     );
@@ -132,20 +121,12 @@ export default function CertificationsPage() {
         }
       ]
       */}
-      <section className="mb-12">
+      {/* <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Your Registered Certifications</h2>
         {isLoadingUserCertifications ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 3 }).map((_, index) => (
-              <Card key={`user-skeleton-${index}`} className="shadow-md">
-                <CardHeader>
-                  <Skeleton className="h-6 w-3/4" />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-5/6" />
-                </CardContent>
-              </Card>
+              <SkeletonCard key={`user-skeleton-${index}`} />
             ))}
           </div>
         ) : userCertifications && userCertifications.length > 0 ? (
@@ -175,7 +156,7 @@ export default function CertificationsPage() {
             </p>
           </div>
         )}
-      </section>
+      </section> */}
 
       {/* Section for Available Certifications to Register For */}
       <section>
@@ -183,15 +164,7 @@ export default function CertificationsPage() {
         {isLoadingAvailableCertifications ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, index) => (
-              <Card key={`available-skeleton-${index}`} className="shadow-md">
-                <CardHeader>
-                  <Skeleton className="h-6 w-3/4" />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-5/6" />
-                </CardContent>
-              </Card>
+              <SkeletonCard key={`available-skeleton-${index}`} />
             ))}
           </div>
         ) : availableCertifications && availableCertifications.length > 0 ? (

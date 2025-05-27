@@ -2,24 +2,24 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation'; // Import useRouter
-import { useExamsForCertification, ExamListItem } from '@/swr/exams';
+import { useParams, useRouter } from 'next/navigation';
 import AppHeader from '@/components/custom/appheader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
+import { useExamsContext, ExamsProvider } from '@/context/ExamsContext'; // Import the context
+import { ExamListItem } from '@/swr/exams'; // Ensure ExamListItem is imported
 
-export default function CertificationExamsPage() {
+// Renamed original component to CertificationExamsContent
+function CertificationExamsContent() {
   const params = useParams();
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
-  const { apiUserId } = useFirebaseAuth();
 
-  const { exams, isLoadingExams, isExamsError } = useExamsForCertification(apiUserId, certId);
+  // Use the context for exams data
+  const { exams, isLoadingExams, isExamsError } = useExamsContext();
 
   const handleStartExam = (examId: string, score: number | null, submittedAt: number | null) => {
-    // Navigate to the exam attempt page
     const queryParams = new URLSearchParams();
     if (submittedAt !== null) {
       queryParams.append('submitted_at', submittedAt.toString());
@@ -28,15 +28,14 @@ export default function CertificationExamsPage() {
       queryParams.append('score', score.toString());
     }
     const queryString = queryParams.toString();
-    router.push(`/main/certifications/${certId}/exams/${examId}${queryString ? `?${queryString}` : ''}`);
-    // console.log(`Attempting to start exam ${examId} for certification ${certId} with score ${score} and submitted_at ${submittedAt}`);
-    // For now, you can add a toast or alert
-    // alert(`Starting exam ${examId}. Navigation to actual exam page not yet implemented.`);
+    router.push(
+      `/main/certifications/${certId}/exams/${examId}${queryString ? `?${queryString}` : ''}`,
+    );
   };
 
   useEffect(() => {
     if (exams) {
-      console.log(`exams: ${JSON.stringify(exams, null, 2)}`);
+      // console.log(`exams from context: ${JSON.stringify(exams, null, 2)}`);
     }
   }, [exams]);
 
@@ -108,5 +107,16 @@ export default function CertificationExamsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function CertificationExamsPage() {
+  const params = useParams();
+  const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
+
+  return (
+    <ExamsProvider certId={certId}>
+      <CertificationExamsContent />
+    </ExamsProvider>
   );
 }

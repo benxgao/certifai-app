@@ -363,17 +363,43 @@ export default function ExamAttemptPage() {
               >
                 Previous Page
               </Button>
-              {submittedAt === null && (
-                <Button
-                  size="lg"
-                  onClick={handleNextPageOrSubmit}
-                  disabled={isLoadingQuestions || isAnswering || !pagination}
-                >
-                  {pagination && pagination.currentPage === pagination.totalPages
-                    ? 'Submit Exam'
-                    : 'Next Page'}
-                </Button>
-              )}
+              {(() => {
+                if (!pagination) return null; // Should not happen if questions are loaded
+
+                const isLastPage = pagination.currentPage === pagination.totalPages;
+
+                if (submittedAt === null) {
+                  // Exam not submitted yet
+                  return (
+                    <Button
+                      size="lg"
+                      onClick={handleNextPageOrSubmit} // This function handles both next and submit
+                      disabled={isLoadingQuestions || isAnswering || !pagination}
+                    >
+                      {isLastPage ? 'Submit Exam' : 'Next Page'}
+                    </Button>
+                  );
+                } else {
+                  // Exam has been submitted
+                  // Only show "Next Page" if not on the last page. "Submit Exam" is hidden.
+                  if (!isLastPage) {
+                    return (
+                      <Button
+                        size="lg"
+                        onClick={() => {
+                          if (pagination) { // Ensure pagination is defined
+                            setCurrentPage(pagination.currentPage + 1);
+                          }
+                        }}
+                        disabled={isLoadingQuestions || isAnswering || !pagination}
+                      >
+                        Next Page
+                      </Button>
+                    );
+                  }
+                  return null; // No "Next Page" or "Submit Exam" button if submitted and on last page
+                }
+              })()}
             </div>
           </div>
         </div>
