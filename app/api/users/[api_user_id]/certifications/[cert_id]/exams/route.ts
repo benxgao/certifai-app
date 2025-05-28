@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
-export async function GET(request: NextRequest, { params }: { params: { api_user_id: string } }) {
+export async function GET(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: any;
+    // { api_user_id: string }
+  },
+) {
   try {
     const { api_user_id } = await params;
 

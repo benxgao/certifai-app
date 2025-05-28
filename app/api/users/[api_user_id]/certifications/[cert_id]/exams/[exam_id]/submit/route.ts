@@ -4,7 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { api_user_id: string; cert_id: string; exam_id: string } },
+  {
+    params,
+  }: {
+    params: any;
+    // { api_user_id: string; cert_id: string; exam_id: string }
+  },
 ) {
   try {
     const body = await request.json();
