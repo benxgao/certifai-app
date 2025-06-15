@@ -10,7 +10,7 @@ export interface ExamListItem {
   submitted_at: number | null;
   certification: {
     cert_id: number;
-    cert_category_id: number;
+    // cert_category_id: number;
     name: string;
     exam_guide_url: string;
     min_quiz_counts: number;
@@ -89,5 +89,66 @@ export function useSubmitExam(
     submitExam: trigger,
     isSubmittingExam: isMutating,
     submitExamError: error,
+  };
+}
+
+// Interface for exam state/details
+export interface ExamState {
+  exam_id: string;
+  user_id: string;
+  cert_id: number;
+  score: number | null;
+  started_at: string;
+  submitted_at: number | null;
+  status: string;
+  certification?: {
+    cert_id: number;
+    name: string;
+    exam_guide_url: string;
+    min_quiz_counts: number;
+    max_quiz_counts: number;
+    pass_score: number;
+  };
+}
+
+// Fetcher for exam state
+async function fetchExamState(url: string): Promise<{ data: ExamState }> {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || 'Failed to fetch exam state.');
+  }
+  return response.json();
+}
+
+// Hook to get exam state/details
+export function useExamState(
+  apiUserId: string | null,
+  certId: number | null,
+  examId: string | null,
+) {
+  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: ExamState }, Error>(
+    apiUserId && certId && examId
+      ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
+      : null,
+    fetchExamState,
+    {
+      refreshInterval: 0, // Don't auto-refresh
+      revalidateOnFocus: false,
+    },
+  );
+
+  return {
+    examState: data?.data,
+    isLoadingExamState: isLoading,
+    isExamStateError: error,
+    isValidatingExamState: isValidating,
+    mutateExamState: mutate,
   };
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'next/navigation'; // Import useSearchParams
+import { useParams } from 'next/navigation';
 import AppHeader from '@/components/custom/appheader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'; //  npx shadcn@latest add dialog
 import { useExamQuestions, Question, useSubmitAnswer } from '@/swr/questions'; // Import useSubmitAnswer
-import { useSubmitExam } from '@/swr/exams'; // Import useSubmitExam
+import { useSubmitExam, useExamState } from '@/swr/exams'; // Import useSubmitExam and useExamState
 import ErrorMessage from '@/components/custom/ErrorMessage'; // Import ErrorMessage
 import PageLoader from '@/components/custom/PageLoader'; // Import PageLoader
 import { Checkbox } from '@/components/ui/checkbox'; // Import Checkbox
@@ -29,7 +29,6 @@ import {
 
 export default function ExamAttemptPage() {
   const params = useParams();
-  const searchParams = useSearchParams(); // Initialize useSearchParams
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
   const examId = params.exam_id as string | null;
   const { apiUserId } = useFirebaseAuth();
@@ -40,19 +39,6 @@ export default function ExamAttemptPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<any>(null); // To store submission result
   const [isSubmittingExamFlag, setIsSubmittingExamFlag] = useState(false); // To manage loading state for submission
-  const [submittedAt, setSubmittedAt] = useState<number | null>(null);
-  const [score, setScore] = useState<number | null>(null);
-
-  useEffect(() => {
-    const submittedAtQuery = searchParams.get('submitted_at');
-    const scoreQuery = searchParams.get('score');
-    if (submittedAtQuery) {
-      setSubmittedAt(parseInt(submittedAtQuery, 10));
-    }
-    if (scoreQuery) {
-      setScore(parseInt(scoreQuery, 10));
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     if (apiUserId && certId !== null && examId) {
@@ -61,6 +47,17 @@ export default function ExamAttemptPage() {
       );
     }
   }, [apiUserId, certId, examId, currentPage, pageSize]);
+
+  // Use the new SWR hook to get exam state
+  const { examState, isLoadingExamState, isExamStateError, mutateExamState } = useExamState(
+    apiUserId,
+    certId,
+    examId,
+  );
+
+  // Extract values from exam state for easier access
+  const score = examState?.score ?? null;
+  const submittedAt = examState?.submitted_at ?? null;
 
   const {
     questions,
@@ -191,6 +188,8 @@ export default function ExamAttemptPage() {
       console.log('Exam submitted successfully:', result);
       setSubmissionResult(result);
       alert('Exam submitted successfully!');
+      // Revalidate exam state to get updated score and submission status
+      mutateExamState();
       // Optionally, redirect the user or show a summary page
       // router.push(`/main/certifications/${certId}/exams/${examId}/results`);
     } catch (error: any) {
@@ -211,7 +210,7 @@ export default function ExamAttemptPage() {
     }
   }, [questions, examId, isQuestionsError]);
 
-  if (isLoadingQuestions) {
+  if (isLoadingQuestions || isLoadingExamState) {
     return (
       <div className="min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
         <AppHeader title={`Loading Exam ${examId}...`} />
@@ -234,12 +233,12 @@ export default function ExamAttemptPage() {
     );
   }
 
-  if (isQuestionsError) {
+  if (isQuestionsError || isExamStateError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <AppHeader title={`Error Loading Exam ${examId}`} />
         <p className="text-red-500 mt-6">
-          {isQuestionsError.message || 'Error loading questions for this exam.'}
+          {isQuestionsError?.message || isExamStateError?.message || 'Error loading exam data.'}
         </p>
         <Button onClick={() => window.location.reload()} className="mt-4">
           Try Again
@@ -274,7 +273,7 @@ export default function ExamAttemptPage() {
                   {/* Removed margin-right */}
                   <span className="text-gray-600 dark:text-gray-400">
                     Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}:{' '}
-                    {question.question_body}
+                    {question.question_text}
                   </span>
                 </CardTitle>
                 {/* Container for status labels - moved under CardTitle */}
@@ -387,7 +386,8 @@ export default function ExamAttemptPage() {
                       <Button
                         size="lg"
                         onClick={() => {
-                          if (pagination) { // Ensure pagination is defined
+                          if (pagination) {
+                            // Ensure pagination is defined
                             setCurrentPage(pagination.currentPage + 1);
                           }
                         }}

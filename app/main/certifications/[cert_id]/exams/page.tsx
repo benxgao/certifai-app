@@ -19,18 +19,8 @@ function CertificationExamsContent() {
   // Use the context for exams data
   const { exams, isLoadingExams, isExamsError } = useExamsContext();
 
-  const handleStartExam = (examId: string, score: number | null, submittedAt: number | null) => {
-    const queryParams = new URLSearchParams();
-    if (submittedAt !== null) {
-      queryParams.append('submitted_at', submittedAt.toString());
-    }
-    if (score !== null) {
-      queryParams.append('score', score.toString());
-    }
-    const queryString = queryParams.toString();
-    router.push(
-      `/main/certifications/${certId}/exams/${examId}${queryString ? `?${queryString}` : ''}`,
-    );
+  const handleStartExam = (examId: string) => {
+    router.push(`/main/certifications/${certId}/exams/${examId}`);
   };
 
   useEffect(() => {
@@ -88,10 +78,7 @@ function CertificationExamsContent() {
                 <p className="text-sm text-muted-foreground mb-4">
                   Number of Questions: {exams.length}
                 </p>
-                <Button
-                  onClick={() => handleStartExam(exam.exam_id, exam.score, exam.submitted_at)}
-                  className="w-full"
-                >
+                <Button onClick={() => handleStartExam(exam.exam_id)} className="w-full">
                   Start Exam
                 </Button>
               </CardContent>

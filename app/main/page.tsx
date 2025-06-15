@@ -53,7 +53,7 @@ const MainPage = () => {
                     <p className="text-sm text-muted-foreground">ID: {cert.cert_id}</p>
                     <p className="text-sm text-muted-foreground">Status: {cert.status}</p>
                     <p className="text-sm text-muted-foreground">
-                      Started since: {cert.assignedAt}
+                      Started since: {cert.assigned_at}
                     </p>
                   </CardContent>
                 </Card>

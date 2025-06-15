@@ -72,11 +72,11 @@ export interface UserRegisteredCertification {
   user_id: string;
   cert_id: number;
   status: string;
-  assignedAt: string;
-  updatedAt: string;
+  assigned_at: string;
+  updated_at: string;
   certification: {
     cert_id: number;
-    cert_category_id: number;
+    // cert_category_id: number;
     name: string;
     exam_guide_url: string;
     min_quiz_counts: number;
@@ -87,7 +87,7 @@ export interface UserRegisteredCertification {
 
 export interface CertificationListItem {
   cert_id: number;
-  cert_category_id: number;
+  // cert_category_id: number;
   name: string;
   exam_guide_url: string;
   min_quiz_counts: number;
