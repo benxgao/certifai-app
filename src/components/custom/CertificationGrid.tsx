@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { useAllAvailableCertifications } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
-import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 
 interface CertificationGridProps {
@@ -33,8 +32,8 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
 
   if (isLoadingAvailableCertifications) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {Array.from({ length: 4 }).map((_, index) => (
           <CardSkeleton key={index} />
         ))}
       </div>
@@ -45,7 +44,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
     return (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
         <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
-          <FaAward className="w-8 h-8 text-slate-400 dark:text-slate-500" />
+          <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30"></div>
         </div>
         <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           No Certifications Available
@@ -58,7 +57,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {availableCertifications.map((cert) => {
         const isRegistered = userCertifications?.some((uc: any) => uc.cert_id === cert.cert_id);
         const isCurrentlyRegistering = registeringCertId === cert.cert_id;
@@ -67,73 +66,78 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
         return (
           <Card
             key={cert.cert_id}
-            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden group"
+            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full"
           >
-            <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700">
-              <div className="flex items-start justify-between">
-                <CardTitle className="text-lg leading-relaxed flex-1 mr-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <FaAward className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                      <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                        {cert.name}
-                      </h3>
-                    </div>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Exam Guide Available • {cert.min_quiz_counts}-{cert.max_quiz_counts} Questions
-                    </p>
-                  </div>
-                </CardTitle>
-                <div className="flex-shrink-0">
-                  {isRegistered ? (
-                    <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50">
-                      <FaCheck className="w-3 h-3 mr-1" />
-                      Registered
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50">
-                      Available
-                    </span>
-                  )}
+            <CardHeader className="bg-white dark:bg-slate-800 flex-shrink-0 p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight mb-3">
+                    {cert.name}
+                  </h3>
+                </div>
+                {/* Status Badge */}
+                <div className="flex-shrink-0 ml-3">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      isRegistered
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
+                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                    }`}
+                  >
+                    {isRegistered ? 'Registered' : 'Available'}
+                  </span>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {/* Certification Stats */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                      Pass Score
-                    </p>
-                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                      {cert.pass_score}%
-                    </p>
-                  </div>
-                  <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                      Questions
-                    </p>
-                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                      {cert.min_quiz_counts}-{cert.max_quiz_counts}
-                    </p>
-                  </div>
-                </div>
 
+              {/* Certification Details Grid */}
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="flex items-center space-x-2">
+                  <span className="text-slate-400 dark:text-slate-500">📝</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    {cert.min_quiz_counts}-{cert.max_quiz_counts} Questions
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-slate-400 dark:text-slate-500">🎯</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    {cert.pass_score}% Pass
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-slate-400 dark:text-slate-500">⏱️</span>
+                  <span className="text-slate-600 dark:text-slate-400">~60 minutes</span>
+                </div>
+                {cert.exam_guide_url && (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-slate-400 dark:text-slate-500">📚</span>
+                    <a
+                      href={cert.exam_guide_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors font-medium"
+                    >
+                      Study Guide
+                    </a>
+                  </div>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="p-6 pt-4 flex flex-col flex-grow">
+              <div className="flex flex-col h-full justify-end">
                 {/* Action Button */}
                 <Button
                   onClick={() => (isRegistered ? handleViewExams(cert.cert_id) : onRegister(cert))}
                   disabled={isCurrentlyRegistering || isRegistering || isCurrentlyNavigating}
-                  className={`w-full rounded-lg py-3 font-medium transition-all duration-200 ${
+                  className={`w-full rounded-xl py-3 font-semibold transition-all duration-200 flex-shrink-0 ${
                     isRegistered
-                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                      : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-200 dark:hover:shadow-emerald-900/20'
+                      : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900/20'
                   }`}
                 >
                   {isCurrentlyNavigating ? (
                     <div className="flex items-center justify-center space-x-2">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Loading Exams...</span>
+                      <span>Loading...</span>
                     </div>
                   ) : isCurrentlyRegistering ? (
                     <div className="flex items-center justify-center space-x-2">
@@ -141,15 +145,9 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                       <span>Registering...</span>
                     </div>
                   ) : isRegistered ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <FaGraduationCap className="w-4 h-4" />
-                      <span>View Exams</span>
-                    </div>
+                    <span>View Exams</span>
                   ) : (
-                    <div className="flex items-center justify-center space-x-2">
-                      <FaAward className="w-4 h-4" />
-                      <span>Register Now</span>
-                    </div>
+                    <span>Register Now</span>
                   )}
                 </Button>
               </div>

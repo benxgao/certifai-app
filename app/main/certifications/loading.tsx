@@ -22,43 +22,45 @@ export default function CertificationsLoading() {
         </div>
 
         {/* Certifications Grid Loading */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-md transition-shadow duration-200"
+              className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 overflow-hidden hover:shadow-lg transition-all duration-200"
             >
               {/* Card Header */}
-              <div className="p-6 border-b border-slate-100 dark:border-slate-700">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-3 flex-1">
-                    <div className="flex items-center space-x-2">
-                      <Skeleton className="h-5 w-5 rounded" />
-                      <Skeleton className="h-6 w-3/4" />
-                    </div>
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-2/3" />
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1 min-w-0">
+                    <Skeleton className="h-6 w-4/5 mb-3" />
                   </div>
-                  <Skeleton className="h-8 w-20 rounded-full ml-3" />
+                  <Skeleton className="h-6 w-16 rounded-full ml-3" />
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex items-center space-x-2">
+                    <Skeleton className="h-3 w-3 rounded" />
+                    <Skeleton className="h-4 w-20" />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Skeleton className="h-3 w-3 rounded" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Skeleton className="h-3 w-3 rounded" />
+                    <Skeleton className="h-4 w-18" />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Skeleton className="h-3 w-3 rounded" />
+                    <Skeleton className="h-4 w-20" />
+                  </div>
                 </div>
               </div>
 
               {/* Card Content */}
-              <div className="p-6 space-y-4">
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <Skeleton className="h-4 w-16 mx-auto mb-1" />
-                    <Skeleton className="h-6 w-8 mx-auto" />
-                  </div>
-                  <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <Skeleton className="h-4 w-20 mx-auto mb-1" />
-                    <Skeleton className="h-6 w-12 mx-auto" />
-                  </div>
-                </div>
-
-                {/* Action Button */}
-                <Skeleton className="h-10 w-full rounded-lg" />
+              <div className="p-6 pt-4">
+                <Skeleton className="h-10 w-full" />
               </div>
             </div>
           ))}

@@ -197,38 +197,42 @@ export default function CertificationsPage() {
 
           <Suspense
             fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Array.from({ length: 6 }).map((_, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {Array.from({ length: 4 }).map((_, index) => (
                   <div
                     key={`suspense-skeleton-${index}`}
-                    className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
+                    className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 rounded-2xl overflow-hidden"
                   >
                     {/* Header skeleton */}
-                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700 p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-3 flex-1">
-                          <div className="flex items-center space-x-2">
-                            <div className="h-5 w-5 bg-slate-200 dark:bg-slate-600 rounded animate-pulse" />
-                            <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-3/4" />
+                    <div className="bg-white dark:bg-slate-800 p-6 h-40 relative">
+                      <div className="h-full w-full">
+                        <div className="flex flex-col justify-between h-full pr-8">
+                          <div className="min-h-[4rem] flex items-start">
+                            <div className="space-y-3 w-full">
+                              <div className="h-7 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-full" />
+                              <div className="h-7 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-4/5" />
+                            </div>
                           </div>
-                          <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-full" />
+                          <div className="space-y-2">
+                            <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-32" />
+                            <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-28" />
+                          </div>
                         </div>
-                        <div className="h-8 bg-slate-200 dark:bg-slate-600 rounded-full animate-pulse w-20 ml-3" />
+                        {/* Absolutely positioned label skeleton */}
+                        <div className="absolute top-6 right-6">
+                          <div className="w-3 h-3 bg-slate-200 dark:bg-slate-600 rounded-full animate-pulse" />
+                        </div>
                       </div>
                     </div>
                     {/* Content skeleton */}
-                    <div className="p-6 space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-16 mx-auto mb-1" />
-                          <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-8 mx-auto" />
-                        </div>
-                        <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                          <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-20 mx-auto mb-1" />
-                          <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-12 mx-auto" />
-                        </div>
+                    <div className="p-6 space-y-6">
+                      {/* Status indicator skeleton */}
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-slate-200 dark:bg-slate-600 rounded-full animate-pulse" />
+                        <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-20" />
                       </div>
-                      <div className="h-10 bg-slate-200 dark:bg-slate-600 rounded-lg animate-pulse w-full" />
+                      {/* Button skeleton */}
+                      <div className="h-12 bg-slate-200 dark:bg-slate-600 rounded-xl animate-pulse w-full" />
                     </div>
                   </div>
                 ))}
@@ -241,9 +245,6 @@ export default function CertificationsPage() {
               registeringCertId={registeringCertId}
             />
           </Suspense>
-          <span className="inline-flex items-center rounded-lg bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50 shadow-sm">
-            <FaCheck className="w-4 h-4 mr-2" /> Registered
-          </span>
         </section>
 
         {/* Modal for Certification Details and Registration */}
