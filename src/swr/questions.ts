@@ -1,7 +1,7 @@
 // src/swr/questions.ts
-import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
-import { fetcher, PaginationInfo } from './utils';
+import { PaginationInfo } from './utils';
+import { useAuthSWR } from './useAuthSWR';
 
 export interface AnswerOption {
   option_id: string; // Or number, depending on API
@@ -30,9 +30,8 @@ export interface ExamQuestionsResponse {
 export function useExamQuestions(
   url: string | null, // The full API URL for the questions (can be first page or next_page)
 ) {
-  const { data, error, isLoading, isValidating, mutate } = useSWR<ExamQuestionsResponse, Error>(
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ExamQuestionsResponse, Error>(
     url, // SWR key is the URL itself; SWR re-fetches if this changes
-    fetcher,
     {
       shouldRetryOnError: false, // Optional: configure SWR behavior
       revalidateOnFocus: false, // Optional: prevent revalidation on window focus

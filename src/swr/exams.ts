@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
+import { useAuthSWR } from './useAuthSWR';
 
 export interface ExamListItem {
   exam_id: string;
@@ -20,25 +20,12 @@ export interface ExamListItem {
   status: string;
 }
 
-async function fetchExamsForCertification(url: string): Promise<{ data: ExamListItem[] }> {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorData.message || 'Failed to fetch exams for certification.');
-  }
-  return response.json();
-}
-
 export function useExamsForCertification(apiUserId: string | null, certId: number | null) {
-  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: ExamListItem[] }, Error>(
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
+    { data: ExamListItem[] },
+    Error
+  >(
     certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
-    fetchExamsForCertification,
   );
 
   return {
@@ -111,33 +98,16 @@ export interface ExamState {
   };
 }
 
-// Fetcher for exam state
-async function fetchExamState(url: string): Promise<{ data: ExamState }> {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorData.message || 'Failed to fetch exam state.');
-  }
-  return response.json();
-}
-
 // Hook to get exam state/details
 export function useExamState(
   apiUserId: string | null,
   certId: number | null,
   examId: string | null,
 ) {
-  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: ExamState }, Error>(
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<{ data: ExamState }, Error>(
     apiUserId && certId && examId
       ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
       : null,
-    fetchExamState,
     {
       refreshInterval: 0, // Don't auto-refresh
       revalidateOnFocus: false,

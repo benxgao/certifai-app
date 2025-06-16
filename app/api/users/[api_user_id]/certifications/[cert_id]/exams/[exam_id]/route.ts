@@ -28,7 +28,7 @@ export async function GET(
       );
     }
 
-    const targetUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/certifications/${cert_id}/exams/${exam_id}`;
+    const targetUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/exams/${exam_id}`;
 
     const response = await fetch(targetUrl, {
       method: 'GET',

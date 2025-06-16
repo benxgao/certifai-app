@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
+import { useAuthSWR } from './useAuthSWR';
 
 // Define the type for the certification data you expect to send
 export interface CertificationInput {
@@ -95,33 +95,13 @@ export interface CertificationListItem {
   pass_score: number;
 }
 
-// Fetcher function for getting the list of all available certifications
-async function fetchAllAvailableCertifications(
-  url: string,
-): Promise<{ data: CertificationListItem[] }> {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorData.message || 'Failed to fetch available certifications.');
-  }
-
-  return response.json();
-}
-
 // Custom hook to use for fetching the list of all available certifications
 export function useAllAvailableCertifications() {
-  const { data, error, isLoading, isValidating, mutate } = useSWR<
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     { data: CertificationListItem[] },
     Error
   >(
     '/api/certifications', // Endpoint for all available certifications
-    fetchAllAvailableCertifications,
   );
 
   return {
@@ -135,34 +115,13 @@ export function useAllAvailableCertifications() {
 
 // --- Fetching a list of USER'S REGISTERED certifications ---
 
-// Fetcher function for getting the list of a user's registered certifications
-async function fetchUserRegisteredCertifications(
-  url: string,
-): Promise<{ data: UserRegisteredCertification[] }> {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      // Add any other necessary headers, e.g., Authorization, if your API requires it
-    },
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ message: response.statusText }));
-    throw new Error(errorData.message || "Failed to fetch user's registered certifications.");
-  }
-
-  return response.json();
-}
-
 // Custom hook to use for fetching the list of a user's registered certifications
 export function useUserRegisteredCertifications(apiUserId: string | null) {
-  const { data, error, isLoading, isValidating, mutate } = useSWR<
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     { data: UserRegisteredCertification[] },
     Error
   >(
     apiUserId ? `/api/users/${apiUserId}/certifications` : null, // Conditional fetching
-    fetchUserRegisteredCertifications,
   );
 
   return {

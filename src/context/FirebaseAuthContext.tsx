@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { useRouter } from 'next/navigation';
 import { User } from 'firebase/auth';
 import { auth } from '@/firebase/firebaseWebConfig';
+
 interface FirebaseAuthContextType {
   firebaseUser: User | null;
   setFirebaseUser: (user: User | null) => void;
@@ -11,7 +12,7 @@ interface FirebaseAuthContextType {
   setFirebaseToken: (token: string | null) => void;
   apiUserId: string | null;
   setApiUserId: (token: string | null) => void;
-
+  refreshToken: () => Promise<string | null>;
   loading: boolean;
 }
 
@@ -30,9 +31,48 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
-
   const [apiUserId, setApiUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Function to refresh token and update cookie
+  const refreshToken = useCallback(async (): Promise<string | null> => {
+    if (!firebaseUser) {
+      return null;
+    }
+
+    try {
+      const newToken = await firebaseUser.getIdToken(true); // Force refresh
+      setFirebaseToken(newToken);
+
+      // Update the auth cookie with the new token
+      await fetch('/api/auth-cookie/set', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ firebaseToken: newToken }),
+      });
+
+      console.log('Token refreshed successfully');
+      return newToken;
+    } catch (error) {
+      console.error('Failed to refresh token:', error);
+      setFirebaseToken(null);
+      router.push('/signin');
+      return null;
+    }
+  }, [firebaseUser, router]);
+
+  // Auto-refresh token every 45 minutes (before 1-hour expiration)
+  useEffect(() => {
+    if (!firebaseUser || !firebaseToken) return;
+
+    const refreshInterval = setInterval(() => {
+      refreshToken();
+    }, 45 * 60 * 1000); // 45 minutes
+
+    return () => clearInterval(refreshInterval);
+  }, [firebaseUser, firebaseToken, refreshToken]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
@@ -44,6 +84,15 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
       if (authUser) {
         const token = await authUser.getIdToken(true);
         setFirebaseToken(token);
+
+        // Set the auth cookie for server-side requests
+        await fetch('/api/auth-cookie/set', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ firebaseToken: token }),
+        });
 
         const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
         const [loginRes] = await Promise.all([
@@ -73,6 +122,10 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         }
       } else {
         setFirebaseToken(null);
+        // Clear the auth cookie when user logs out
+        await fetch('/api/auth-cookie/clear', {
+          method: 'POST',
+        });
         router.push('/signin');
       }
 
@@ -96,6 +149,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         setFirebaseToken: setToken,
         apiUserId,
         setApiUserId: setUserId,
+        refreshToken,
         loading,
       }}
     >
