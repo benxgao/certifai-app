@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -27,7 +27,20 @@ const LoginPage = () => {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
+
+  // Clear any error messages from URL params (in case user was redirected back with error)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorParam = urlParams.get('error');
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam));
+      // Clean up URL
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
 
   const onChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,27 +52,36 @@ const LoginPage = () => {
       setError('');
       setIsLoading(true);
 
-      const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
+      // Start the authentication process
+      const signInPromise = signInWithEmailAndPassword(auth, form.email, form.password);
+
+      // Immediately set redirecting state and navigate to main page for better UX
+      setIsRedirecting(true);
+      router.replace('/main');
+
+      // Continue authentication in the background
+      const signedIn = await signInPromise;
 
       console.log(`signin initialized
         | uid: ${JSON.stringify(signedIn.user.uid)}`);
 
       const firebaseToken = await signedIn.user.getIdToken(true);
 
-      const [cookieRes] = await Promise.all([
-        fetch('/api/auth-cookie/set', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ firebaseToken }),
-        }),
-      ]);
+      // Set the authentication cookie
+      const cookieRes = await fetch('/api/auth-cookie/set', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firebaseToken }),
+      });
 
-      if (cookieRes.ok) {
-        router.replace('/main');
-      } else {
+      if (!cookieRes.ok) {
         const cookieError: any = await cookieRes.json();
-
-        setError(cookieError.message || 'Failed to set authentication cookie.');
+        console.error('Failed to set authentication cookie:', cookieError.message);
+        // If cookie setting fails, redirect back to signin with error
+        const errorMessage = encodeURIComponent(
+          cookieError.message || 'Failed to set authentication cookie.',
+        );
+        router.replace(`/signin?error=${errorMessage}`);
       }
     } catch (error: any) {
       console.error(error);
@@ -77,9 +99,13 @@ const LoginPage = () => {
             break;
         }
       }
-      setError(errorMessage);
+
+      // If authentication fails, redirect back to signin with error
+      const encodedError = encodeURIComponent(errorMessage);
+      router.replace(`/signin?error=${encodedError}`);
     } finally {
       setIsLoading(false);
+      setIsRedirecting(false);
     }
   };
 
@@ -102,7 +128,7 @@ const LoginPage = () => {
                 required
                 value={form.email}
                 onChange={onChange}
-                disabled={isLoading}
+                disabled={isLoading || isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -119,11 +145,11 @@ const LoginPage = () => {
                 required
                 value={form.password}
                 onChange={onChange}
-                disabled={isLoading}
+                disabled={isLoading || isRedirecting}
               />
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="remember-me" disabled={isLoading} />
+              <Checkbox id="remember-me" disabled={isLoading || isRedirecting} />
               <Label
                 htmlFor="remember-me"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -132,9 +158,9 @@ const LoginPage = () => {
               </Label>
             </div>
             {error && <p className="text-sm text-center font-medium text-destructive">{error}</p>}
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isLoading ? 'Signing In...' : 'Sign In'}
+            <Button type="submit" className="w-full" disabled={isLoading || isRedirecting}>
+              {(isLoading || isRedirecting) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isRedirecting ? 'Redirecting...' : isLoading ? 'Signing In...' : 'Sign In'}
             </Button>
           </form>
         </CardContent>

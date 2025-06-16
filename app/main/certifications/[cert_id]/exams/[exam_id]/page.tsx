@@ -40,6 +40,7 @@ export default function ExamAttemptPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<any>(null); // To store submission result
   const [isSubmittingExamFlag, setIsSubmittingExamFlag] = useState(false); // To manage loading state for submission
+  const [isNavigatingPage, setIsNavigatingPage] = useState(false);
 
   useEffect(() => {
     if (apiUserId && certId !== null && examId) {
@@ -146,23 +147,21 @@ export default function ExamAttemptPage() {
 
   const handlePreviousPage = async () => {
     if (pagination && pagination.currentPage > 1) {
-      // console.log(
-      //   'Going to previous page. Current answers for page ',
-      //   pagination.currentPage,
-      //   ':',
-      //   userAnswers, // userAnswers removed
-      // );
+      setIsNavigatingPage(true);
+      // Immediate UI update for optimistic loading
       setCurrentPage(pagination.currentPage - 1);
-      // setUserAnswers({}); // userAnswers removed
+      // Reset loading state after a brief moment
+      setTimeout(() => setIsNavigatingPage(false), 300);
     }
   };
 
   const handleNextPageOrSubmit = async () => {
-    // console.log('Current answers for page ', pagination?.currentPage, ':', userAnswers); // userAnswers removed
-
     if (pagination && pagination.currentPage < pagination.totalPages) {
+      setIsNavigatingPage(true);
+      // Immediate UI update for optimistic loading
       setCurrentPage(pagination.currentPage + 1);
-      // setUserAnswers({}); // userAnswers removed
+      // Reset loading state after a brief moment
+      setTimeout(() => setIsNavigatingPage(false), 300);
     } else {
       setShowConfirmModal(true);
     }
@@ -746,13 +745,23 @@ export default function ExamAttemptPage() {
                     disabled={
                       isLoadingQuestions ||
                       isAnswering ||
+                      isNavigatingPage ||
                       !pagination ||
                       pagination.currentPage <= 1
                     }
                     className="min-w-[140px] border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
                   >
-                    <FaArrowLeft className="w-4 h-4 mr-2" />
-                    Previous
+                    {isNavigatingPage ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-current mr-2"></div>
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        <FaArrowLeft className="w-4 h-4 mr-2" />
+                        Previous
+                      </>
+                    )}
                   </Button>
                   {(() => {
                     if (!pagination) return null;
@@ -764,14 +773,21 @@ export default function ExamAttemptPage() {
                         <Button
                           size="lg"
                           onClick={handleNextPageOrSubmit}
-                          disabled={isLoadingQuestions || isAnswering || !pagination}
+                          disabled={
+                            isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
+                          }
                           className={`min-w-[140px] ${
                             isLastPage
                               ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
                               : 'bg-purple-600 hover:bg-purple-700 text-white'
                           }`}
                         >
-                          {isLastPage ? (
+                          {isNavigatingPage ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                              {isLastPage ? 'Preparing...' : 'Loading...'}
+                            </>
+                          ) : isLastPage ? (
                             <>
                               <FaCheck className="w-4 h-4 mr-2" /> Submit Exam
                             </>
@@ -790,14 +806,27 @@ export default function ExamAttemptPage() {
                             size="lg"
                             onClick={() => {
                               if (pagination) {
+                                setIsNavigatingPage(true);
                                 setCurrentPage(pagination.currentPage + 1);
+                                setTimeout(() => setIsNavigatingPage(false), 300);
                               }
                             }}
-                            disabled={isLoadingQuestions || isAnswering || !pagination}
+                            disabled={
+                              isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
+                            }
                             className="min-w-[140px] bg-purple-600 hover:bg-purple-700 text-white"
                           >
-                            Next
-                            <FaArrowRight className="w-4 h-4 ml-2" />
+                            {isNavigatingPage ? (
+                              <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                                Loading...
+                              </>
+                            ) : (
+                              <>
+                                Next
+                                <FaArrowRight className="w-4 h-4 ml-2" />
+                              </>
+                            )}
                           </Button>
                         );
                       }
@@ -825,12 +854,21 @@ export default function ExamAttemptPage() {
             <Button
               size="lg"
               onClick={handleNextPageOrSubmit}
-              disabled={isLoadingQuestions || isAnswering}
+              disabled={isLoadingQuestions || isAnswering || isNavigatingPage}
               className="shadow-lg hover:shadow-xl transition-shadow bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-4 h-auto"
             >
               <span className="flex items-center space-x-2">
-                <FaCheck className="w-4 h-4" />
-                <span className="hidden sm:inline">Submit Exam</span>
+                {isNavigatingPage ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
+                    <span className="hidden sm:inline">Preparing...</span>
+                  </>
+                ) : (
+                  <>
+                    <FaCheck className="w-4 h-4" />
+                    <span className="hidden sm:inline">Submit Exam</span>
+                  </>
+                )}
               </span>
             </Button>
           </div>

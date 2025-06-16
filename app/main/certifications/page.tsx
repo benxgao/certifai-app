@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast, Toaster } from 'sonner';
@@ -13,6 +13,7 @@ import {
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import Breadcrumb from '@/components/custom/Breadcrumb';
+import CertificationGrid from '@/components/custom/CertificationGrid';
 import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
 
 export default function CertificationsPage() {
@@ -23,11 +24,8 @@ export default function CertificationsPage() {
     mutateUserCertifications,
   } = useUserCertifications();
 
-  const {
-    availableCertifications,
-    isLoadingAvailableCertifications,
-    isAvailableCertificationsError,
-  } = useAllAvailableCertifications();
+  const { availableCertifications, isAvailableCertificationsError } =
+    useAllAvailableCertifications();
 
   const { registerForCertification, isRegistering, registrationError } =
     useRegisterUserForCertification(apiUserId);
@@ -196,127 +194,56 @@ export default function CertificationsPage() {
               Certification Catalog
             </h2>
           </div>
-          {isLoadingAvailableCertifications ? (
-            <div className="space-y-6">
-              {Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={`available-skeleton-${index}`}
-                  className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
-                >
-                  {/* Header skeleton */}
-                  <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 space-y-3">
-                        <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-3/4"></div>
-                        <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-1/4"></div>
+
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div
+                    key={`suspense-skeleton-${index}`}
+                    className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
+                  >
+                    {/* Header skeleton */}
+                    <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700 p-6">
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-3 flex-1">
+                          <div className="flex items-center space-x-2">
+                            <div className="h-5 w-5 bg-slate-200 dark:bg-slate-600 rounded animate-pulse" />
+                            <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-3/4" />
+                          </div>
+                          <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-full" />
+                        </div>
+                        <div className="h-8 bg-slate-200 dark:bg-slate-600 rounded-full animate-pulse w-20 ml-3" />
                       </div>
-                      <div className="h-8 bg-slate-200 dark:bg-slate-600 rounded-lg animate-pulse w-24"></div>
+                    </div>
+                    {/* Content skeleton */}
+                    <div className="p-6 space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-16 mx-auto mb-1" />
+                          <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-8 mx-auto" />
+                        </div>
+                        <div className="text-center p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                          <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-20 mx-auto mb-1" />
+                          <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-12 mx-auto" />
+                        </div>
+                      </div>
+                      <div className="h-10 bg-slate-200 dark:bg-slate-600 rounded-lg animate-pulse w-full" />
                     </div>
                   </div>
-                  {/* Content skeleton */}
-                  <div className="p-6">
-                    <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-full mb-2"></div>
-                    <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-5/6"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : availableCertifications && availableCertifications.length > 0 ? (
-            <div className="space-y-6">
-              {availableCertifications.map((cert: CertificationListItem, index) => {
-                const isAlreadyRegistered = userCertifications?.some(
-                  (uc: any) => uc.cert_id === cert.cert_id,
-                );
-
-                return (
-                  <Card
-                    key={`available-${index}`}
-                    className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden group"
-                  >
-                    <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-                      <div className="flex items-start justify-between">
-                        <CardTitle className="text-lg leading-relaxed flex-1 mr-4">
-                          <div className="space-y-3">
-                            <div className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-normal border border-blue-100 dark:border-blue-800/50">
-                              Certification #{index + 1}
-                            </div>
-                            <div className="text-slate-900 dark:text-slate-100 font-semibold text-xl leading-relaxed group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                              {cert.name || 'Untitled Certification'}
-                            </div>
-                          </div>
-                        </CardTitle>
-                        <div className="flex-shrink-0">
-                          {isAlreadyRegistered ? (
-                            <span className="inline-flex items-center rounded-lg bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50 shadow-sm">
-                              <FaCheck className="w-4 h-4 mr-2" /> Registered
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center rounded-lg bg-purple-50 px-4 py-2.5 text-sm font-medium text-purple-700 border border-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800/50 shadow-sm">
-                              <FaAward className="w-4 h-4 mr-2" /> Available
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-6 pt-4">
-                      <div className="flex flex-col space-y-4">
-                        <div className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                          <p className="text-slate-500 dark:text-slate-400">
-                            ID: {cert.cert_id} • Use the button below to{' '}
-                            {isAlreadyRegistered
-                              ? 'view details'
-                              : 'register for this certification'}
-                          </p>
-                        </div>
-
-                        {!isAlreadyRegistered && (
-                          <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50">
-                            <Button
-                              size="lg"
-                              onClick={() => handleOpenModal(cert)}
-                              className="w-full bg-transparent hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 rounded-xl py-4 font-medium transition-all duration-200 border border-purple-200 dark:border-purple-600 hover:border-purple-300 dark:hover:border-purple-500"
-                            >
-                              Register for This Certification
-                              <svg
-                                className="w-5 h-5 ml-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 5l7 7-7 7"
-                                />
-                              </svg>
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700/50 p-12">
-              <div className="text-center space-y-4">
-                <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center">
-                  <FaAward className="w-8 h-8 text-slate-400 dark:text-slate-500" />
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100">
-                    No Certifications Available
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-                    No certifications are currently available for registration. Please check back
-                    later.
-                  </p>
-                </div>
+                ))}
               </div>
-            </div>
-          )}
+            }
+          >
+            <CertificationGrid
+              onRegister={handleOpenModal}
+              isRegistering={isRegistering}
+              registeringCertId={registeringCertId}
+            />
+          </Suspense>
+          <span className="inline-flex items-center rounded-lg bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50 shadow-sm">
+            <FaCheck className="w-4 h-4 mr-2" /> Registered
+          </span>
         </section>
 
         {/* Modal for Certification Details and Registration */}

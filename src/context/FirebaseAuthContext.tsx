@@ -76,57 +76,79 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-      setFirebaseUser(authUser);
-
-      console.log(`FirebaseAuthProvider
+      console.log(`FirebaseAuthProvider auth state changed
         | firebase.uid: ${JSON.stringify(authUser?.uid)}`);
 
       if (authUser) {
-        const token = await authUser.getIdToken(true);
-        setFirebaseToken(token);
+        setFirebaseUser(authUser);
 
-        // Set the auth cookie for server-side requests
-        await fetch('/api/auth-cookie/set', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ firebaseToken: token }),
-        });
+        try {
+          const token = await authUser.getIdToken(true);
+          setFirebaseToken(token);
 
-        const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
-        const [loginRes] = await Promise.all([
-          fetch(loginUrl, {
+          // Set the auth cookie for server-side requests
+          const cookieResponse = await fetch('/api/auth-cookie/set', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firebaseToken: token }),
+          });
+
+          if (!cookieResponse.ok) {
+            throw new Error('Failed to set auth cookie');
+          }
+
+          const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
+          const loginRes = await fetch(loginUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({}),
-          }),
-        ]);
+          });
 
-        if (loginRes.ok) {
-          const { user_id } = await loginRes.json();
+          if (loginRes.ok) {
+            const { user_id } = await loginRes.json();
 
-          console.log(`FirebaseAuthProvider
-            | api_user_id: ${user_id}`);
+            console.log(`FirebaseAuthProvider API login successful
+              | api_user_id: ${user_id}`);
 
-          setApiUserId(user_id);
-          console.log(`user_id: ${user_id}`);
-        } else {
-          // const loginError: any = await loginRes.json();
-
+            setApiUserId(user_id);
+          } else {
+            throw new Error('API login failed');
+          }
+        } catch (error) {
+          console.error('Authentication setup failed:', error);
+          setFirebaseUser(null);
           setFirebaseToken(null);
-          router.push('/signin');
+          setApiUserId(null);
+
+          // Clear the auth cookie on error
+          await fetch('/api/auth-cookie/clear', {
+            method: 'POST',
+          });
+
+          // Only redirect if we're in a protected route
+          if (window.location.pathname.startsWith('/main')) {
+            router.push('/signin');
+          }
         }
       } else {
+        setFirebaseUser(null);
         setFirebaseToken(null);
+        setApiUserId(null);
+
         // Clear the auth cookie when user logs out
         await fetch('/api/auth-cookie/clear', {
           method: 'POST',
         });
-        router.push('/signin');
+
+        // Only redirect if we're in a protected route
+        if (window.location.pathname.startsWith('/main')) {
+          router.push('/signin');
+        }
       }
 
       setLoading(false);

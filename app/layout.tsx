@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { Suspense } from 'react';
 import './globals.css';
 
 const geistSans = Geist({
@@ -58,7 +59,20 @@ export default function RootLayout({
         <meta name="twitter:image" content="https://yourdomain.com/og-image.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">{children}</div>
+        <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
+          <Suspense
+            fallback={
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center space-y-4">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-purple-600 mx-auto"></div>
+                  <p className="text-lg text-gray-600">Loading...</p>
+                </div>
+              </div>
+            }
+          >
+            {children}
+          </Suspense>
+        </div>
         {/* Footer */}
         <footer className="mt-auto py-8 px-6 lg:px-20 bg-gray-800 text-gray-300 text-center">
           <div className="mb-4 flex justify-center space-x-6">

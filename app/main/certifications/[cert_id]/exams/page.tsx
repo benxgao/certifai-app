@@ -50,8 +50,11 @@ function CertificationExamsContent() {
   const [isCreating, setIsCreating] = useState(false);
   const [examTitle, setExamTitle] = useState('');
   const [examDescription, setExamDescription] = useState('');
+  const [navigatingExamId, setNavigatingExamId] = useState<string | null>(null);
 
   const handleStartExam = (examId: string) => {
+    setNavigatingExamId(examId);
+    // Immediate redirect with optimistic loading
     router.push(`/main/certifications/${certId}/exams/${examId}`);
   };
 
@@ -668,6 +671,7 @@ function CertificationExamsContent() {
                     {/* Action Button */}
                     <Button
                       onClick={() => handleStartExam(exam.exam_id)}
+                      disabled={navigatingExamId === exam.exam_id}
                       variant="outline"
                       className={`w-full h-12 text-base font-medium rounded-xl transition-all duration-200 group ${
                         examStatus === 'completed_successful'
@@ -680,7 +684,12 @@ function CertificationExamsContent() {
                       }`}
                     >
                       <span className="flex items-center justify-center space-x-2">
-                        {examStatus === 'completed_successful' ? (
+                        {navigatingExamId === exam.exam_id ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-current"></div>
+                            <span>Loading Exam...</span>
+                          </>
+                        ) : examStatus === 'completed_successful' ? (
                           <>
                             <FaTrophy className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-200" />
                             <span>View Certificate</span>
