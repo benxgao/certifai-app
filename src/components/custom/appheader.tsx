@@ -11,13 +11,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { auth } from '@/firebase/firebaseWebConfig';
 import Link from 'next/link';
 import { User } from 'lucide-react';
 
 const AppHeader: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     try {
@@ -39,6 +40,14 @@ const AppHeader: React.FC = () => {
     { label: 'AI Assistant', href: '/main/ai' },
   ];
 
+  // Helper function to determine if a nav item is active
+  const isActiveRoute = (href: string) => {
+    if (href === '/main') {
+      return pathname === '/main';
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,15 +64,25 @@ const AppHeader: React.FC = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-accent"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navigationItems.map((item) => {
+              const isActive = isActiveRoute(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`text-sm font-medium transition-colors duration-200 relative group ${
+                    isActive ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+                  }`}
+                >
+                  {item.label}
+                  <span
+                    className={`absolute left-0 bottom-0 h-0.5 bg-primary transition-all duration-200 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  ></span>
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Profile Dropdown */}
@@ -96,21 +115,30 @@ const AppHeader: React.FC = () => {
 
                 {/* Mobile Navigation */}
                 <div className="md:hidden">
-                  {navigationItems.map((item) => (
-                    <DropdownMenuItem
-                      key={item.href}
-                      onSelect={() => router.push(item.href)}
-                      className="cursor-pointer"
-                    >
-                      {item.label}
-                    </DropdownMenuItem>
-                  ))}
+                  {navigationItems.map((item) => {
+                    const isActive = isActiveRoute(item.href);
+                    return (
+                      <DropdownMenuItem
+                        key={item.href}
+                        onSelect={() => router.push(item.href)}
+                        className={`cursor-pointer ${
+                          isActive ? 'bg-accent text-accent-foreground font-medium' : ''
+                        }`}
+                      >
+                        {item.label}
+                      </DropdownMenuItem>
+                    );
+                  })}
                   <DropdownMenuSeparator />
                 </div>
 
                 <DropdownMenuItem
                   onSelect={() => router.push('/main/profile')}
-                  className="cursor-pointer"
+                  className={`cursor-pointer ${
+                    pathname === '/main/profile'
+                      ? 'bg-accent text-accent-foreground font-medium'
+                      : ''
+                  }`}
                 >
                   Profile
                 </DropdownMenuItem>
