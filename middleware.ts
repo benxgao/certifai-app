@@ -26,10 +26,10 @@ import { COOKIE_AUTH_NAME } from './src/config/constants';
     }
   */
 
- /**
-  * For protecting path: /main/:path*, we assume a cookie has been set at the stage of login/signup
-  * and the cookie contains a Jose token, and Firebase Token can be seen by decoding joseToken.
-  */
+/**
+ * For protecting path: /main/:path*, we assume a cookie has been set at the stage of login/signup
+ * and the cookie contains a Jose token, and Firebase Token can be seen by decoding joseToken.
+ */
 export async function middleware(request: NextRequest) {
   try {
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
@@ -55,10 +55,54 @@ export async function middleware(request: NextRequest) {
         currentTime: Date.now() / 1000,
       });
 
-      const response = NextResponse.redirect(new URL('/signin', request.url));
-      response.cookies.delete('joseToken');
+      // Try to refresh the token
+      try {
+        const BASE_URL = process.env.NEXT_PUBLIC_FIREBASE_BACKEND_URL || request.nextUrl.origin;
+        const refreshUrl = `${BASE_URL}/api/auth-cookie/refresh`;
 
-      return response;
+        console.log(`middleware: attempting token refresh at ${refreshUrl}`);
+
+        const refreshResponse = await fetch(refreshUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie: request.headers.get('cookie') || '',
+          },
+        });
+
+        if (refreshResponse.ok) {
+          console.log('middleware: token refreshed successfully');
+
+          // Create a new response with the refreshed token cookie
+          const response = NextResponse.next();
+
+          // Extract the Set-Cookie header from the refresh response
+          const setCookieHeader = refreshResponse.headers.get('set-cookie');
+          if (setCookieHeader) {
+            response.headers.set('Set-Cookie', setCookieHeader);
+            console.log('middleware: updated cookie in response');
+          } else {
+            console.warn('middleware: no set-cookie header found in refresh response');
+          }
+
+          return response;
+        } else {
+          const errorText = await refreshResponse.text();
+          console.error('middleware: token refresh failed:', {
+            status: refreshResponse.status,
+            error: errorText,
+          });
+          throw new Error(`Token refresh failed: ${refreshResponse.status}`);
+        }
+      } catch (refreshError: any) {
+        console.error('middleware: token refresh error:', refreshError.message);
+
+        // If refresh fails, redirect to signin
+        const response = NextResponse.redirect(new URL('/signin', request.url));
+        response.cookies.delete(COOKIE_AUTH_NAME);
+
+        return response;
+      }
     }
 
     try {

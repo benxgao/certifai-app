@@ -22,6 +22,29 @@ export const fetcher = async (url: string) => {
   return res.json();
 };
 
+// Utility function to refresh auth cookie on the server-side
+export const refreshAuthCookie = async (): Promise<boolean> => {
+  try {
+    const res = await fetch('/api/auth-cookie/refresh', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.ok) {
+      console.log('Auth cookie refreshed successfully');
+      return true;
+    } else {
+      console.error('Failed to refresh auth cookie:', res.status);
+      return false;
+    }
+  } catch (error) {
+    console.error('Error refreshing auth cookie:', error);
+    return false;
+  }
+};
+
 // Enhanced fetcher that handles token refresh on 401 errors
 export const fetcherWithAuth = async (
   url: string,
@@ -37,6 +60,12 @@ export const fetcherWithAuth = async (
     if (newToken) {
       // Retry the request with refreshed token (cookie should be updated automatically)
       res = await fetch(url);
+    } else {
+      // If Firebase token refresh failed, try cookie-based refresh as fallback
+      const cookieRefreshSuccess = await refreshAuthCookie();
+      if (cookieRefreshSuccess) {
+        res = await fetch(url);
+      }
     }
   }
 
