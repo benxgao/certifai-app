@@ -7,6 +7,7 @@ import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 export interface AnswerOption {
   option_id: string; // Or number, depending on API
   option_text: string;
+  is_correct?: boolean; // Optional field to indicate if this is the correct answer
 }
 
 export interface Question {
@@ -20,6 +21,7 @@ export interface Question {
   user_answer_id: string;
   explanations?: string;
   user_answer_is_correct: boolean | null;
+  correct_option_id?: string | null; // Optional field to indicate the correct answer
 }
 
 export interface ExamQuestionsResponse {
