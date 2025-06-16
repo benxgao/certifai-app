@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import AppHeader from '@/components/custom/appheader';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { UserRegisteredCertification } from '@/swr/certifications';
@@ -24,9 +23,13 @@ const MainPage = () => {
   }, [firebaseUser]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
-      <AppHeader title="Dashboard" />
+    <div className="flex flex-col min-h-screen bg-background text-foreground pt-16">
       <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+        </div>
+
         {/* User's Registered Certifications Section */}
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-6">Your Registered Certifications</h2>

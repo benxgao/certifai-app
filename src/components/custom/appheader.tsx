@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -12,15 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/firebase/firebaseWebConfig';
+import Link from 'next/link';
+import { User } from 'lucide-react';
 
-interface AppHeaderProps {
-  title: string;
-}
-
-const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
+const AppHeader: React.FC = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -37,71 +33,95 @@ const AppHeader: React.FC<AppHeaderProps> = ({ title }) => {
     }
   };
 
+  const navigationItems = [
+    { label: 'Dashboard', href: '/main' },
+    { label: 'Certifications', href: '/main/certifications' },
+    { label: 'AI Assistant', href: '/main/ai' },
+  ];
+
   return (
-    <header id="dashboard-header" className="flex items-center justify-between mb-6 md:mb-8">
-      <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
-      <div className="flex items-center gap-3 md:gap-4">
-        <div className="relative hidden sm:block">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search..."
-            className="pl-8 w-[150px] md:w-[200px] lg:w-[300px]"
-          />
-        </div>
-        <Button variant="ghost" size="icon">
-          <Bell className="h-5 w-5" />
-          <span className="sr-only">Notifications</span>
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="relative h-8 w-8 md:h-9 md:w-9 rounded-full cursor-pointer hover:bg-accent hover:brightness-95"
-            >
-              <Avatar className="h-8 w-8 md:h-9 md:w-9">
-                {/* <AvatarImage src="/placeholder-user.jpg" alt="User" /> */}
-                <AvatarFallback>Y</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">Your Name</p>
-                <p className="text-xs leading-none text-muted-foreground">your.email@example.com</p>
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Link href="/main" className="flex items-center space-x-2">
+              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-lg">C</span>
               </div>
-            </DropdownMenuLabel>
-            <DropdownMenuItem
-              onSelect={() => router.push('/main')}
-              className="cursor-pointer hover:bg-accent hover:brightness-95"
-            >
-              Dashboard
-            </DropdownMenuItem>
+              <span className="font-bold text-xl text-foreground">CertifAI</span>
+            </Link>
+          </div>
 
-            <DropdownMenuItem
-              onSelect={() => router.push('/main/certifications')}
-              className="cursor-pointer hover:bg-accent hover:brightness-95"
-            >
-              Certifications
-            </DropdownMenuItem>
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-accent"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onSelect={() => router.push('/main/profile')}
-              className="cursor-pointer hover:bg-accent hover:brightness-95"
-            >
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onSelect={handleLogout}
-              className="cursor-pointer hover:bg-accent hover:brightness-95"
-            >
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {/* Profile Dropdown */}
+          <div className="flex items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-10 w-10 rounded-full border-2 border-transparent hover:border-primary/30 hover:bg-accent/50 transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-sm shadow-sm">
+                      <User className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                  {/* Small indicator to show it's interactive */}
+                  <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-500 border-2 border-background"></div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">Your Name</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      your.email@example.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                {/* Mobile Navigation */}
+                <div className="md:hidden">
+                  {navigationItems.map((item) => (
+                    <DropdownMenuItem
+                      key={item.href}
+                      onSelect={() => router.push(item.href)}
+                      className="cursor-pointer"
+                    >
+                      {item.label}
+                    </DropdownMenuItem>
+                  ))}
+                  <DropdownMenuSeparator />
+                </div>
+
+                <DropdownMenuItem
+                  onSelect={() => router.push('/main/profile')}
+                  className="cursor-pointer"
+                >
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={handleLogout} className="cursor-pointer">
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
       </div>
     </header>
   );

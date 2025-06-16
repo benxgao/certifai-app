@@ -10,7 +10,6 @@ import {
   CertificationListItem,
   UserCertificationRegistrationInput,
 } from '@/swr/certifications';
-import AppHeader from '@/components/custom/appheader';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import SkeletonCard from '@/components/custom/SkeletonCard';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
@@ -87,21 +86,30 @@ export default function CertificationsPage() {
 
   if (isAvailableCertificationsError) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <AppHeader title="Certifications" />
-        <p className="text-red-500">
-          {isAvailableCertificationsError?.message || 'Error loading certification data.'}
-        </p>
+      <div className="min-h-screen bg-background text-foreground pt-16">
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4">
+          <div className="text-center space-y-4">
+            <h1 className="text-2xl font-bold text-destructive">Error Loading Certifications</h1>
+            <p className="text-muted-foreground max-w-md">
+              {isAvailableCertificationsError?.message || 'Error loading certification data.'}
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4 md:p-6 lg:p-8">
-      <AppHeader title="Manage Your Certifications" />
-      <Toaster richColors />
+    <div className="min-h-screen bg-background text-foreground pt-16">
+      <div className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-8">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground">Manage Your Certifications</h1>
+        </div>
 
-      {/*
+        <Toaster richColors />
+
+        {/*
       userCertifications: [
         {
           "user_id": "7143dfb3-86a6-43ae-b970-b388f381a31a",
@@ -121,7 +129,7 @@ export default function CertificationsPage() {
         }
       ]
       */}
-      {/* <section className="mb-12">
+        {/* <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Your Registered Certifications</h2>
         {isLoadingUserCertifications ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -158,75 +166,77 @@ export default function CertificationsPage() {
         )}
       </section> */}
 
-      {/* Section for Available Certifications to Register For */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-6">Available Certifications</h2>
-        {isLoadingAvailableCertifications ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <SkeletonCard key={`available-skeleton-${index}`} />
-            ))}
-          </div>
-        ) : availableCertifications && availableCertifications.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {availableCertifications.map((cert: CertificationListItem, index) => (
-              <Card
-                key={`available-${index}`}
-                className="shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer"
-                onClick={() => handleOpenModal(cert)}
-              >
-                <CardHeader>
-                  <CardTitle className="text-xl">{cert.name || ''}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">ID: {cert.cert_id}</p>
-                  {/* Button removed from here */}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-10 bg-card rounded-lg shadow">
-            <p className="text-lg text-muted-foreground">
-              No certifications are currently available for registration.
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">Please check back later.</p>
+        {/* Section for Available Certifications to Register For */}
+        <section>
+          <h2 className="text-2xl font-semibold mb-6">Available Certifications</h2>
+          {isLoadingAvailableCertifications ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <SkeletonCard key={`available-skeleton-${index}`} />
+              ))}
+            </div>
+          ) : availableCertifications && availableCertifications.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {availableCertifications.map((cert: CertificationListItem, index) => (
+                <Card
+                  key={`available-${index}`}
+                  className="shadow-md hover:shadow-xl transition-shadow duration-200 cursor-pointer"
+                  onClick={() => handleOpenModal(cert)}
+                >
+                  <CardHeader>
+                    <CardTitle className="text-xl">{cert.name || ''}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">ID: {cert.cert_id}</p>
+                    {/* Button removed from here */}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-10 bg-card rounded-lg shadow">
+              <p className="text-lg text-muted-foreground">
+                No certifications are currently available for registration.
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">Please check back later.</p>
+            </div>
+          )}
+        </section>
+
+        {/* Modal for Certification Details and Registration */}
+        {isModalOpen && selectedCertForModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <Card className="w-full max-w-md">
+              <CardHeader>
+                <CardTitle className="text-2xl">{selectedCertForModal.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-2">
+                  ID: {selectedCertForModal.cert_id}
+                </p>
+                <p className="mb-6">
+                  Detailed information about the &quot;{selectedCertForModal.name}&quot;
+                  certification would go here. This could include prerequisites, topics covered,
+                  exam format, etc.
+                </p>
+                <div className="flex justify-end space-x-3">
+                  <Button variant="outline" onClick={handleCloseModal}>
+                    Close
+                  </Button>
+                  <Button
+                    onClick={handleRegisterFromModal}
+                    disabled={isRegistering && registeringCertId === selectedCertForModal.cert_id}
+                  >
+                    {isRegistering && registeringCertId === selectedCertForModal.cert_id
+                      ? 'Registering...'
+                      : 'Register for this Certification'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
-      </section>
-
-      {/* Modal for Certification Details and Registration */}
-      {isModalOpen && selectedCertForModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <Card className="w-full max-w-md">
-            <CardHeader>
-              <CardTitle className="text-2xl">{selectedCertForModal.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-2">
-                ID: {selectedCertForModal.cert_id}
-              </p>
-              <p className="mb-6">
-                Detailed information about the &quot;{selectedCertForModal.name}&quot; certification
-                would go here. This could include prerequisites, topics covered, exam format, etc.
-              </p>
-              <div className="flex justify-end space-x-3">
-                <Button variant="outline" onClick={handleCloseModal}>
-                  Close
-                </Button>
-                <Button
-                  onClick={handleRegisterFromModal}
-                  disabled={isRegistering && registeringCertId === selectedCertForModal.cert_id}
-                >
-                  {isRegistering && registeringCertId === selectedCertForModal.cert_id
-                    ? 'Registering...'
-                    : 'Register for this Certification'}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
