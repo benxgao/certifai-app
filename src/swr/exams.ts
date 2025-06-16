@@ -1,5 +1,6 @@
 import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 export interface ExamListItem {
   exam_id: string;
@@ -37,43 +38,77 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
   };
 }
 
-// New SWR Mutation hook for submitting an exam
+// Fetcher function for submitting exams with auth refresh support
 async function submitExamFetcher(
-  url: string,
-  { arg }: { arg: { apiUserId: string; certId: number; examId: string; body: any } },
-) {
-  const response = await fetch(url, {
+  _key: string,
+  {
+    arg,
+  }: {
+    arg: {
+      apiUserId: string;
+      certId: number;
+      examId: string;
+      body: any;
+      refreshToken: () => Promise<string | null>;
+    };
+  },
+): Promise<any> {
+  const { apiUserId, certId, examId, body, refreshToken } = arg;
+  const url = `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/submit`;
+
+  let response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(arg.body),
+    body: JSON.stringify(body),
   });
+
+  // If we get a 401, try to refresh token and retry
+  if (response.status === 401) {
+    console.log('Token expired during exam submission, attempting refresh...');
+    const newToken = await refreshToken();
+
+    if (newToken) {
+      // Retry the request with refreshed token (cookie should be updated automatically)
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+    }
+  }
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ message: response.statusText }));
     throw new Error(errorData.message || 'Failed to submit exam.');
   }
+
+  // Handle empty responses (like 204 No Content)
   if (response.status === 204) {
     return null;
   }
+
   return response.json();
 }
 
-export function useSubmitExam(
-  apiUserId: string | null,
-  certId: number | null,
-  examId: string | null,
-) {
+export function useSubmitExam() {
+  const { refreshToken } = useFirebaseAuth();
+
   const { trigger, isMutating, error } = useSWRMutation(
-    apiUserId && certId && examId
-      ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/submit`
-      : null,
+    'SUBMIT_EXAM', // Static key for this type of mutation
     submitExamFetcher,
   );
 
+  // Wrapper to inject refreshToken function
+  const submitExam = (arg: { apiUserId: string; certId: number; examId: string; body: any }) => {
+    return trigger({ ...arg, refreshToken });
+  };
+
   return {
-    submitExam: trigger,
+    submitExam,
     isSubmittingExam: isMutating,
     submitExamError: error,
   };

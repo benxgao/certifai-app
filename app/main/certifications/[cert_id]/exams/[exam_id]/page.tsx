@@ -71,11 +71,7 @@ export default function ExamAttemptPage() {
   const { submitAnswer, isAnswering, submitError } = useSubmitAnswer();
 
   // SWR hook for submitting the entire exam
-  const { submitExam, isSubmittingExam, submitExamError } = useSubmitExam(
-    apiUserId,
-    certId,
-    examId,
-  );
+  const { submitExam, isSubmittingExam, submitExamError } = useSubmitExam();
 
   const handleOptionChange = async (questionId: string, optionId: string) => {
     // Optimistically update UI for the questions list

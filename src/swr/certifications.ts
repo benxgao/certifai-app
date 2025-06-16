@@ -1,5 +1,6 @@
 import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 // Define the type for the certification data you expect to send
 export interface CertificationInput {
@@ -19,22 +20,45 @@ export interface CertificationResponse {
   [key: string]: any;
 }
 
-// The actual function that sends the POST request
+// Fetcher function for registering certifications with auth refresh support
 async function registerCertificationFetcher(
-  url: string,
-  { arg }: { arg: CertificationInput },
+  _key: string,
+  {
+    arg,
+  }: {
+    arg: CertificationInput & {
+      refreshToken: () => Promise<string | null>;
+    };
+  },
 ): Promise<CertificationResponse> {
-  const response = await fetch(url, {
+  const { refreshToken, ...certificationData } = arg;
+
+  let response = await fetch('/api/certifications', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // Add any other necessary headers, e.g., Authorization
     },
-    body: JSON.stringify(arg),
+    body: JSON.stringify(certificationData),
   });
 
+  // If we get a 401, try to refresh token and retry
+  if (response.status === 401) {
+    console.log('Token expired during certification registration, attempting refresh...');
+    const newToken = await refreshToken();
+
+    if (newToken) {
+      // Retry the request with refreshed token (cookie should be updated automatically)
+      response = await fetch('/api/certifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(certificationData),
+      });
+    }
+  }
+
   if (!response.ok) {
-    // Attempt to parse error response, otherwise use status text
     const errorData = await response.json().catch(() => ({ message: response.statusText }));
     throw new Error(errorData.message || 'Failed to register certification.');
   }
@@ -45,8 +69,10 @@ async function registerCertificationFetcher(
 // Custom hook to use for creating a certification
 // This hook encapsulates the useSWRMutation logic
 export function useRegisterCertification() {
+  const { refreshToken } = useFirebaseAuth();
+
   const { trigger, isMutating, error, data, reset } = useSWRMutation(
-    '/api/certifications', // The API endpoint for creating certifications
+    'REGISTER_CERTIFICATION', // The API endpoint for creating certifications
     registerCertificationFetcher,
     // Optional: You can add SWRMutation options here, e.g., for optimistic updates
     // {
@@ -56,8 +82,13 @@ export function useRegisterCertification() {
     // }
   );
 
+  // Wrapper to inject refreshToken function
+  const registerCertification = (arg: CertificationInput) => {
+    return trigger({ ...arg, refreshToken });
+  };
+
   return {
-    registerCertification: trigger, // Rename trigger to something more descriptive
+    registerCertification, // Rename trigger to something more descriptive
     isCreating: isMutating,
     creationError: error,
     registeredCertification: data?.data,
@@ -133,22 +164,46 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
   };
 }
 
-// --- Registering a USER for a specific certification ---
-
-// The actual function that sends the POST request for a user to register for a certification
+// Fetcher function for user registration to certifications with auth refresh support
 async function registerUserForCertificationFetcher(
-  url: string, // This url will include the apiUserId
-  { arg }: { arg: UserCertificationRegistrationInput },
+  _key: string,
+  {
+    arg,
+  }: {
+    arg: {
+      apiUserId: string;
+      certificationId: number;
+      refreshToken: () => Promise<string | null>;
+    };
+  },
 ): Promise<CertificationResponse> {
-  // Assuming CertificationResponse is a suitable response type
-  const response = await fetch(url, {
+  const { apiUserId, certificationId, refreshToken } = arg;
+  const url = `/api/users/${apiUserId}/certifications`;
+
+  let response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      // Add any other necessary headers, e.g., Authorization
     },
-    body: JSON.stringify(arg),
+    body: JSON.stringify({ certificationId }),
   });
+
+  // If we get a 401, try to refresh token and retry
+  if (response.status === 401) {
+    console.log('Token expired during user certification registration, attempting refresh...');
+    const newToken = await refreshToken();
+
+    if (newToken) {
+      // Retry the request with refreshed token (cookie should be updated automatically)
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ certificationId }),
+      });
+    }
+  }
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ message: response.statusText }));
@@ -160,13 +215,27 @@ async function registerUserForCertificationFetcher(
 
 // Custom hook for a user to register for a certification
 export function useRegisterUserForCertification(apiUserId: string | null) {
+  const { refreshToken } = useFirebaseAuth();
+
   const { trigger, isMutating, error, data, reset } = useSWRMutation(
-    apiUserId ? `/api/users/${apiUserId}/certifications` : null, // The API endpoint for user registration
+    apiUserId ? `REGISTER_USER_FOR_CERTIFICATION_${apiUserId}` : null, // The API endpoint for user registration
     registerUserForCertificationFetcher,
   );
 
+  // Wrapper to inject refreshToken function and apiUserId
+  const registerForCertification = (arg: UserCertificationRegistrationInput) => {
+    if (!apiUserId) {
+      throw new Error('User ID is required');
+    }
+    return trigger({
+      apiUserId,
+      certificationId: arg.certificationId,
+      refreshToken,
+    });
+  };
+
   return {
-    registerForCertification: trigger,
+    registerForCertification,
     isRegistering: isMutating,
     registrationError: error,
     registrationData: data?.data,

@@ -2,6 +2,7 @@
 import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
 import { PaginationInfo } from './utils';
 import { useAuthSWR } from './useAuthSWR';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 export interface AnswerOption {
   option_id: string; // Or number, depending on API
@@ -48,9 +49,9 @@ export function useExamQuestions(
   };
 }
 
-// New fetcher function for the mutation
+// Fetcher function for submitting answers with auth refresh support
 async function submitAnswerFetcher(
-  _key: string, // The static key passed to useSWRMutation (e.g., "SUBMIT_ANSWER")
+  _key: string,
   {
     arg,
   }: {
@@ -58,36 +59,58 @@ async function submitAnswerFetcher(
       apiUserId: string;
       certId: number;
       examId: string;
-      questionId: string; // This is the quiz_question_id
+      questionId: string;
       optionId: string;
+      refreshToken: () => Promise<string | null>;
     };
   },
 ): Promise<any> {
-  // Return type can be more specific based on actual API response
-  const { apiUserId, certId, examId, questionId, optionId } = arg;
+  const { apiUserId, certId, examId, questionId, optionId, refreshToken } = arg;
   const apiUrl = `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions/${questionId}`;
 
-  const response = await fetch(apiUrl, {
+  let response = await fetch(apiUrl, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      quiz_question_id: questionId, // Matching the body of the original fetch call
+      quiz_question_id: questionId,
       answer_option_id: optionId,
     }),
   });
 
+  // If we get a 401, try to refresh token and retry
+  if (response.status === 401) {
+    console.log('Token expired during answer submission, attempting refresh...');
+    const newToken = await refreshToken();
+
+    if (newToken) {
+      // Retry the request with refreshed token (cookie should be updated automatically)
+      response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quiz_question_id: questionId,
+          answer_option_id: optionId,
+        }),
+      });
+    }
+  }
+
   if (!response.ok) {
-    const errorData = await response.json();
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
     throw new Error(errorData.message || 'Failed to save answer');
   }
-  // Assuming the API returns the updated question data or a success message
+
   return response.json();
 }
 
 // Custom hook for submitting an answer using useSWRMutation
 export function useSubmitAnswer() {
+  const { refreshToken } = useFirebaseAuth();
+
   const {
     trigger,
     isMutating, // Renaming this in the return object
@@ -101,8 +124,19 @@ export function useSubmitAnswer() {
     // e.g., for optimistic updates or revalidation strategies.
   );
 
+  // Wrapper to inject refreshToken function
+  const submitAnswer = (arg: {
+    apiUserId: string;
+    certId: number;
+    examId: string;
+    questionId: string;
+    optionId: string;
+  }) => {
+    return trigger({ ...arg, refreshToken });
+  };
+
   return {
-    submitAnswer: trigger, // The function to trigger the mutation
+    submitAnswer, // The function to trigger the mutation
     isAnswering: isMutating, // Renamed from isSubmitting
     submitError: error, // Error state of the mutation
     submitData: data, // Data returned from a successful mutation
