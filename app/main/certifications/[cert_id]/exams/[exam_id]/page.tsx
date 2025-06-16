@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -27,6 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'; // Added
+import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
 
 export default function ExamAttemptPage() {
   const params = useParams();
@@ -286,25 +286,16 @@ export default function ExamAttemptPage() {
       <PageLoader isLoading={isSubmittingExam || isSubmittingExamFlag} text="Submitting Exam..." />
       <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
         {/* Breadcrumb Navigation */}
-        <nav className="mb-6" aria-label="Breadcrumb">
-          <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
-            <Link
-              href="/main/certifications"
-              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-            >
-              Certifications
-            </Link>
-            <span className="text-slate-400 dark:text-slate-600">/</span>
-            <Link
-              href={`/main/certifications/${certId}`}
-              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-            >
-              {examState?.certification?.name || `Certification ${certId}`}
-            </Link>
-            <span className="text-slate-400 dark:text-slate-600">/</span>
-            <span className="text-slate-900 dark:text-slate-100 font-medium">Exam {examId}</span>
-          </div>
-        </nav>
+        <Breadcrumb
+          items={[
+            { label: 'Certifications', href: '/main/certifications' },
+            {
+              label: examState?.certification?.name || `Certification ${certId}`,
+              href: `/main/certifications/${certId}/exams`,
+            },
+            { label: `Exam ${examId}`, current: true },
+          ]}
+        />
 
         {/* Exam Status Card */}
         <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
