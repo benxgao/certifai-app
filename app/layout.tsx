@@ -1,8 +1,19 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import './globals.css';
 
+// SEO and metadata
+const META_CONTENT = {
+  TITLE: 'CertifAI | AI-Powered IT Certification Training',
+  DESCRIPTION:
+    'Practice IT certifications with AI-generated questions and personalized study recommendations. Join our growing community of 500+ beta users preparing smarter.',
+  KEYWORDS:
+    'IT certification, exam simulator, AI practice questions, custom exams, study recommendations, IT training, beta testing',
+  OG_DESCRIPTION:
+    'Practice IT certifications with AI-generated questions and personalized study recommendations. Join 500+ beta users.',
+} as const;
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -27,35 +38,17 @@ export default function RootLayout({
     <html lang="en">
       {/* SEO Meta Tags */}
       <head>
-        <title>AI IT Exam Simulator | Practice, Analyze & Pass IT Certifications</title>
-        <meta
-          name="description"
-          content="Simulate real IT certification exams with AI-generated questions. Analyze your weaknesses, create custom exams, and predict your pass rate. Start practicing smarter for IT certifications today!"
-        />
-        <meta
-          name="keywords"
-          content="IT certification, exam simulator, AI-generated questions, practice exams, custom exams, pass prediction, weakness analysis, IT training"
-        />
-        <meta
-          property="og:title"
-          content="AI IT Exam Simulator | Practice, Analyze & Pass IT Certifications"
-        />
-        <meta
-          property="og:description"
-          content="Simulate real IT certification exams with AI-generated questions. Analyze your weaknesses, create custom exams, and predict your pass rate."
-        />
+        <title>{META_CONTENT.TITLE}</title>
+        <meta name="description" content={META_CONTENT.DESCRIPTION} />
+        <meta name="keywords" content={META_CONTENT.KEYWORDS} />
+        <meta property="og:title" content={META_CONTENT.TITLE} />
+        <meta property="og:description" content={META_CONTENT.OG_DESCRIPTION} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://yourdomain.com/" />
         <meta property="og:image" content="https://yourdomain.com/og-image.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="AI IT Exam Simulator | Practice, Analyze & Pass IT Certifications"
-        />
-        <meta
-          name="twitter:description"
-          content="Simulate real IT certification exams with AI-generated questions. Analyze your weaknesses, create custom exams, and predict your pass rate."
-        />
+        <meta name="twitter:title" content={META_CONTENT.TITLE} />
+        <meta name="twitter:description" content={META_CONTENT.OG_DESCRIPTION} />
         <meta name="twitter:image" content="https://yourdomain.com/og-image.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -76,15 +69,15 @@ export default function RootLayout({
         {/* Footer */}
         <footer className="mt-auto py-8 px-6 lg:px-20 bg-gray-800 text-gray-300 text-center">
           <div className="mb-4 flex justify-center space-x-6">
-            <a href="#" className="hover:text-white">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy
-            </a>
-            <a href="#" className="hover:text-white">
+            </Link>
+            <Link href="/terms" className="hover:text-white transition-colors">
               Terms
-            </a>
-            <a href="#" className="hover:text-white">
+            </Link>
+            <Link href="/support" className="hover:text-white transition-colors">
               Support
-            </a>
+            </Link>
           </div>
           <div>© 2025 CertifyIT. All rights reserved.</div>
         </footer>
