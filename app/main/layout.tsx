@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { FirebaseAuthProvider } from '@/context/FirebaseAuthContext';
 import { UserCertificationsProvider } from '@/context/UserCertificationsContext';
+import { UserProfileProvider } from '@/src/context/UserProfileContext';
 import AppHeader from '@/components/custom/appheader';
 import PageLoader from '@/components/custom/PageLoader';
 import ErrorBoundary from '@/components/custom/ErrorBoundary';
@@ -12,14 +13,20 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <FirebaseAuthProvider>
         <AuthGuard>
           <UserCertificationsProvider>
-            <AppHeader />
-            <Suspense
-              fallback={
-                <PageLoader isLoading={true} text="Loading your dashboard..." showSpinner={true} />
-              }
-            >
-              {children}
-            </Suspense>
+            <UserProfileProvider>
+              <AppHeader />
+              <Suspense
+                fallback={
+                  <PageLoader
+                    isLoading={true}
+                    text="Loading your dashboard..."
+                    showSpinner={true}
+                  />
+                }
+              >
+                {children}
+              </Suspense>
+            </UserProfileProvider>
           </UserCertificationsProvider>
         </AuthGuard>
       </FirebaseAuthProvider>

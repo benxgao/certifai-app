@@ -1,12 +1,12 @@
 import React from 'react';
-import AIClientPage from './client';
+import ProfileClientPage from './client';
 
-const AIPage = () => {
+const ProfilePage = () => {
   return (
     <div>
-      <AIClientPage />
+      <ProfileClientPage />
     </div>
   );
 };
 
-export default AIPage;
+export default ProfilePage;

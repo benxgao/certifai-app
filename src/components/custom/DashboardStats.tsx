@@ -1,15 +1,20 @@
 import React from 'react';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
-import { FaGraduationCap, FaCertificate, FaTrophy } from 'react-icons/fa';
+import { useUserProfileContext } from '@/src/context/UserProfileContext';
+import { FaGraduationCap, FaCertificate, FaTrophy, FaCoins } from 'react-icons/fa';
+import { Zap } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
+  const { profile, isLoading: isLoadingProfile, isError: profileError } = useUserProfileContext();
 
-  if (isLoadingUserCertifications) {
+  const isLoading = isLoadingUserCertifications || isLoadingProfile;
+
+  if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 4 }).map((_, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
             className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm"
@@ -27,87 +32,102 @@ const DashboardStats = () => {
     );
   }
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* Total Certifications */}
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div className="space-y-3">
-          <div className="flex items-center justify-center space-x-2">
-            <FaCertificate className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-              Certifications
-            </p>
-          </div>
-          <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-            {userCertifications?.length || 0}
+  // Show error state if profile failed to load but certifications are available
+  if (profileError && !isLoadingUserCertifications) {
+    return (
+      <div className="space-y-4">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+            Some dashboard data may be incomplete due to profile loading issues.
           </p>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Show only certification stats */}
+          <StatsCard
+            icon={<FaCertificate className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+            title="Certifications"
+            value={userCertifications?.length || 0}
+          />
+          <StatsCard
+            icon={<FaGraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
+            title="In Progress"
+            value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
+          />
+          <StatsCard
+            icon={<FaTrophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+            title="Completed"
+            value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
+          />
+        </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* Total Certifications */}
+      <StatsCard
+        icon={<FaCertificate className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+        title="Certifications"
+        value={userCertifications?.length || 0}
+      />
 
       {/* Learning Progress */}
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div className="space-y-3">
-          <div className="flex items-center justify-center space-x-2">
-            <FaGraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-              In Progress
-            </p>
-          </div>
-          <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-            {userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
-          </p>
-        </div>
-      </div>
+      <StatsCard
+        icon={<FaGraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
+        title="In Progress"
+        value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
+      />
 
       {/* Completed */}
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div className="space-y-3">
-          <div className="flex items-center justify-center space-x-2">
-            <FaTrophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-              Completed
-            </p>
-          </div>
-          <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-            {userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
-          </p>
-        </div>
-      </div>
+      <StatsCard
+        icon={<FaTrophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+        title="Completed"
+        value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
+      />
 
-      {/* Success Rate */}
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div className="space-y-3">
-          <div className="flex items-center justify-center space-x-2">
-            <svg
-              className="w-4 h-4 text-amber-600 dark:text-amber-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-            <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-              Progress
-            </p>
-          </div>
-          <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-            {userCertifications?.length
-              ? `${Math.round(
-                  (userCertifications.filter((cert) => cert.status === 'completed').length /
-                    userCertifications.length) *
-                    100,
-                )}%`
-              : '0%'}
-          </p>
-        </div>
-      </div>
+      {/* Credit Tokens */}
+      <StatsCard
+        icon={<FaCoins className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />}
+        title="Credit Tokens"
+        value={profile?.credit_tokens || 0}
+        subtitle="Available for exams"
+      />
+
+      {/* Energy Tokens */}
+      <StatsCard
+        icon={<Zap className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />}
+        title="Energy Tokens"
+        value={profile?.energy_tokens || 0}
+        subtitle="Earned from activity"
+      />
     </div>
   );
 };
+
+// Reusable StatsCard component for cleaner code
+const StatsCard: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  value: number | string;
+  subtitle?: string;
+}> = ({ icon, title, value, subtitle }) => (
+  <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div className="space-y-3">
+      <div className="flex items-center justify-center space-x-2">
+        {icon}
+        <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+          {title}
+        </p>
+      </div>
+      <div className="text-center">
+        <p className="text-lg font-medium text-slate-800 dark:text-slate-100">
+          {typeof value === 'number' ? value.toLocaleString() : value}
+        </p>
+        {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{subtitle}</p>}
+      </div>
+    </div>
+  </div>
+);
 
 export default DashboardStats;

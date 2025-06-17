@@ -4,13 +4,12 @@ import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 export async function GET(
   request: NextRequest,
   {
-    params: paramsPromise,
+    params,
   }: {
-    params: any; //  { api_user_id: string }
+    params: Promise<{ api_user_id: string }>;
   },
 ) {
   try {
-    const params = await paramsPromise; // Await the params object
     const { api_user_id } = await params;
 
     if (!api_user_id) {

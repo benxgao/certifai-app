@@ -7,6 +7,7 @@ export interface ExamListItem {
   user_id: string;
   cert_id: number;
   score: number | null;
+  token_cost: number;
   started_at: string;
   submitted_at: number | null;
   certification: {
