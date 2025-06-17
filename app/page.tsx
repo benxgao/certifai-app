@@ -15,7 +15,7 @@ export default function LandingPage() {
         <nav className="flex items-center justify-between py-4 px-6 lg:px-20 relative">
           {/* Hamburger for mobile */}
           <button
-            className="lg:hidden flex items-center text-indigo-600 focus:outline-none"
+            className="lg:hidden flex items-center text-violet-600 focus:outline-none"
             aria-label="Open navigation"
             onClick={() => setNavOpen((v) => !v)}
           >
@@ -37,7 +37,7 @@ export default function LandingPage() {
           <div className="flex-1 flex justify-center lg:justify-start">
             <a
               href="#home"
-              className="text-2xl font-bold text-indigo-600 mx-auto lg:mx-0"
+              className="text-2xl font-bold text-violet-600 mx-auto lg:mx-0"
               style={{ minWidth: 120 }}
             >
               CertifyIT
@@ -46,17 +46,17 @@ export default function LandingPage() {
           {/* Desktop Nav */}
           <ul className="hidden lg:flex space-x-8 text-gray-700 font-medium">
             <li>
-              <a href="#home" className="hover:text-indigo-600 transition">
+              <a href="#home" className="hover:text-violet-600 transition">
                 Home
               </a>
             </li>
             <li>
-              <a href="#signup" className="hover:text-indigo-600 transition">
+              <a href="#signup" className="hover:text-violet-600 transition">
                 Sign up
               </a>
             </li>
             <li>
-              <a href="#login" className="hover:text-indigo-600 transition">
+              <a href="#login" className="hover:text-violet-600 transition">
                 Login
               </a>
             </li>
@@ -70,7 +70,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#home"
-                    className="block px-6 py-3 hover:bg-indigo-50"
+                    className="block px-6 py-3 hover:bg-violet-50"
                     onClick={() => setNavOpen(false)}
                   >
                     Home
@@ -79,7 +79,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#pricing"
-                    className="block px-6 py-3 hover:bg-indigo-50"
+                    className="block px-6 py-3 hover:bg-violet-50"
                     onClick={() => setNavOpen(false)}
                   >
                     Pricing
@@ -88,7 +88,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#signup"
-                    className="block px-6 py-3 hover:bg-indigo-50"
+                    className="block px-6 py-3 hover:bg-violet-50"
                     onClick={() => setNavOpen(false)}
                   >
                     Sign up
@@ -97,7 +97,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#login"
-                    className="block px-6 py-3 hover:bg-indigo-50"
+                    className="block px-6 py-3 hover:bg-violet-50"
                     onClick={() => setNavOpen(false)}
                   >
                     Login
@@ -113,7 +113,7 @@ export default function LandingPage() {
       <div id="home" className="h-16" />
 
       {/* Hero with 2-column layout and dynamic background */}
-      <section className="relative flex flex-col-reverse lg:flex-row items-center lg:justify-between py-20 px-6 lg:px-20 bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500">
+      <section className="relative flex flex-col-reverse lg:flex-row items-center lg:justify-between py-20 px-6 lg:px-20 bg-gradient-to-r from-violet-600 via-violet-500 to-pink-500">
         {/* Text */}
         <div className="w-full lg:w-1/2 text-white">
           <h1 className="text-4xl lg:text-5xl font-bold mb-6">AI-Generated IT Exam Simulator</h1>
@@ -121,7 +121,7 @@ export default function LandingPage() {
             Practice IT certification exams with AI-generated questions, simulate real test
             environments, and analyze your strengths and weaknesses for a smarter path to success.
           </p>
-          <Button className="bg-white text-indigo-600 py-3 px-8 rounded-full font-semibold hover:opacity-90">
+          <Button className="bg-white text-violet-600 py-3 px-8 rounded-full font-semibold hover:opacity-90">
             Register Interest
           </Button>
         </div>
@@ -140,8 +140,8 @@ export default function LandingPage() {
         <div className="grid gap-8 md:grid-cols-3">
           {/* Feature 1: AI-Generated Questions */}
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition">
-            <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-indigo-500 font-bold">1</span>
+            <div className="h-12 w-12 mb-4 bg-violet-100 rounded-full flex items-center justify-center">
+              <span className="text-violet-500 font-bold">1</span>
             </div>
             <h3 className="text-xl font-semibold mb-2">AI-Generated Questions</h3>
             <p className="text-gray-600">
@@ -152,8 +152,8 @@ export default function LandingPage() {
           </div>
           {/* Feature 2: Real Exam Simulation */}
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition">
-            <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-indigo-500 font-bold">2</span>
+            <div className="h-12 w-12 mb-4 bg-violet-100 rounded-full flex items-center justify-center">
+              <span className="text-violet-500 font-bold">2</span>
             </div>
             <h3 className="text-xl font-semibold mb-2">Simulate Real Exams</h3>
             <p className="text-gray-600">
@@ -163,8 +163,8 @@ export default function LandingPage() {
           </div>
           {/* Feature 3: Custom Exam Creation */}
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition">
-            <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-indigo-500 font-bold">3</span>
+            <div className="h-12 w-12 mb-4 bg-violet-100 rounded-full flex items-center justify-center">
+              <span className="text-violet-500 font-bold">3</span>
             </div>
             <h3 className="text-xl font-semibold mb-2">Create Your Own Exams</h3>
             <p className="text-gray-600">
@@ -174,8 +174,8 @@ export default function LandingPage() {
           </div>
           {/* Feature 4: Weakness Analysis */}
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition">
-            <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-indigo-500 font-bold">4</span>
+            <div className="h-12 w-12 mb-4 bg-violet-100 rounded-full flex items-center justify-center">
+              <span className="text-violet-500 font-bold">4</span>
             </div>
             <h3 className="text-xl font-semibold mb-2">Weakness Analysis</h3>
             <p className="text-gray-600">
@@ -185,8 +185,8 @@ export default function LandingPage() {
           </div>
           {/* Feature 5: Pass Prediction */}
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition">
-            <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-indigo-500 font-bold">5</span>
+            <div className="h-12 w-12 mb-4 bg-violet-100 rounded-full flex items-center justify-center">
+              <span className="text-violet-500 font-bold">5</span>
             </div>
             <h3 className="text-xl font-semibold mb-2">Pass Probability Prediction</h3>
             <p className="text-gray-600">
@@ -196,8 +196,8 @@ export default function LandingPage() {
           </div>
           {/* Feature 6: Progress Tracking */}
           <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 hover:shadow-lg transition">
-            <div className="h-12 w-12 mb-4 bg-indigo-100 rounded-full flex items-center justify-center">
-              <span className="text-indigo-500 font-bold">6</span>
+            <div className="h-12 w-12 mb-4 bg-violet-100 rounded-full flex items-center justify-center">
+              <span className="text-violet-500 font-bold">6</span>
             </div>
             <h3 className="text-xl font-semibold mb-2">Track Your Progress</h3>
             <p className="text-gray-600">
@@ -209,7 +209,7 @@ export default function LandingPage() {
       </section>
 
       {/* Call-to-Action Section */}
-      <section className="py-20 px-6 lg:px-20 bg-indigo-600 text-white text-center rounded-tl-3xl rounded-tr-3xl">
+      <section className="py-20 px-6 lg:px-20 bg-violet-600 text-white text-center rounded-tl-3xl rounded-tr-3xl">
         <h2 className="text-3xl lg:text-4xl font-bold mb-4">
           Start Practicing Smarter for IT Certifications Today
         </h2>
@@ -217,7 +217,7 @@ export default function LandingPage() {
           Take control of your IT certification journey with AI-powered exam simulation, custom
           practice, and detailed analytics.
         </p>
-        <Button className="bg-white text-indigo-600 py-3 px-10 rounded-full font-semibold hover:opacity-90">
+        <Button className="bg-white text-violet-600 py-3 px-10 rounded-full font-semibold hover:opacity-90">
           Register Interest
         </Button>
       </section>

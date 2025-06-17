@@ -6,7 +6,7 @@ import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useProfileData, useTokenInfo } from '@/src/hooks/useProfileData';
 import { Skeleton } from '@/components/ui/skeleton';
-import { CoinsIcon, ZapIcon, User, RefreshCw } from 'lucide-react';
+import { CoinsIcon, ZapIcon, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface ProfileQuickViewProps {
@@ -69,7 +69,6 @@ export const ProfileQuickView: React.FC<ProfileQuickViewProps> = ({
               onClick={() => mutate()}
               className="flex items-center gap-2"
             >
-              <RefreshCw className="h-3 w-3" />
               Retry
             </Button>
           </div>
@@ -111,7 +110,7 @@ export const ProfileQuickView: React.FC<ProfileQuickViewProps> = ({
       <CardContent className="space-y-4">
         {/* User Info */}
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-medium">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-violet-500 flex items-center justify-center text-white font-medium">
             {displayName.charAt(0).toUpperCase()}
           </div>
           <div>

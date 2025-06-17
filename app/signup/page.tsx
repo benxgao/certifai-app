@@ -81,7 +81,7 @@ export default function SignUp() {
   return (
     <div className="min-h-screen w-full lg:grid lg:grid-cols-2 bg-gray-950">
       {/* Left Column - Image/Description */}
-      <div className="hidden lg:flex lg:items-center lg:justify-center bg-gradient-to-br from-purple-900 via-gray-900 to-black p-8">
+      <div className="hidden lg:flex lg:items-center lg:justify-center bg-gradient-to-br from-primary-900 via-gray-900 to-black p-8">
         <div className="text-center text-white">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
           <p className="text-lg text-gray-300">
@@ -97,7 +97,7 @@ export default function SignUp() {
           id="logo"
           className="flex items-center justify-center mb-6 space-x-3 absolute top-24 left-24"
         >
-          <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+          <div className="w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
             C
           </div>
           <span className="text-2xl font-bold text-white">certifai.online</span>
@@ -126,7 +126,7 @@ export default function SignUp() {
                     required
                     value={form.firstName}
                     onChange={onChange}
-                    className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                    className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-violet-500 focus:border-violet-500 text-white"
                     placeholder="John"
                     disabled={isLoading}
                   />
@@ -143,7 +143,7 @@ export default function SignUp() {
                     required
                     value={form.lastName}
                     onChange={onChange}
-                    className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                    className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-violet-500 focus:border-violet-500 text-white"
                     placeholder="Doe"
                     disabled={isLoading}
                   />
@@ -161,7 +161,7 @@ export default function SignUp() {
                   required
                   value={form.email}
                   onChange={onChange}
-                  className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                  className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-violet-500 focus:border-violet-500 text-white"
                   placeholder="you@example.com"
                   disabled={isLoading}
                 />
@@ -178,7 +178,7 @@ export default function SignUp() {
                   required
                   value={form.password}
                   onChange={onChange}
-                  className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-purple-500 focus:border-purple-500 text-white"
+                  className="bg-gray-800 border-gray-700 placeholder-gray-500 focus:ring-violet-500 focus:border-violet-500 text-white"
                   placeholder="•••••••• (min. 6 characters)"
                   disabled={isLoading}
                 />
@@ -189,8 +189,8 @@ export default function SignUp() {
                 className={cn(
                   'w-full mt-4',
                   isLoading
-                    ? 'bg-purple-800 cursor-not-allowed'
-                    : 'bg-purple-600 hover:bg-purple-700',
+                    ? 'bg-violet-800 cursor-not-allowed'
+                    : 'bg-violet-600 hover:bg-violet-700',
                   'text-white font-semibold py-2.5',
                   'transition-colors duration-300',
                 )}
@@ -203,7 +203,7 @@ export default function SignUp() {
               Already have an account?&nbsp;
               <Link
                 href="/signin"
-                className="font-medium text-purple-400 hover:text-purple-300 hover:underline"
+                className="font-medium text-violet-400 hover:text-violet-300 hover:underline"
               >
                 Sign in
               </Link>

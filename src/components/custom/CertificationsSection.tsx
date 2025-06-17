@@ -82,7 +82,7 @@ const CertificationsSection = () => {
               d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <p className="text-red-800 dark:text-red-200 font-medium">
+          <p className="text-red-800 dark:text-red-100 font-medium">
             Error loading your registered certifications
           </p>
         </div>
@@ -102,13 +102,13 @@ const CertificationsSection = () => {
               No Certifications Yet
             </h3>
             <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-              You haven&apos;t registered for any certifications yet. Explore our catalog to
-              start your learning journey.
+              You haven&apos;t registered for any certifications yet. Explore our catalog to start
+              your learning journey.
             </p>
           </div>
           <Button
             onClick={() => router.push('/main/certifications')}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-violet-600 hover:bg-violet-700 text-white"
           >
             Explore Certifications
           </Button>
@@ -128,10 +128,10 @@ const CertificationsSection = () => {
             <div className="flex items-start justify-between">
               <CardTitle className="text-lg leading-relaxed flex-1 mr-4">
                 <div className="space-y-3">
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-normal border border-blue-100 dark:border-blue-800/50">
+                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 text-sm font-normal border border-violet-100 dark:border-violet-800/50">
                     Certification #{index + 1}
                   </div>
-                  <div className="text-slate-900 dark:text-slate-100 font-semibold text-xl leading-relaxed group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <div className="text-slate-900 dark:text-slate-100 font-semibold text-xl leading-relaxed group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
                     {cert.certification.name}
                   </div>
                 </div>
@@ -140,7 +140,7 @@ const CertificationsSection = () => {
                 <span
                   className={`inline-flex items-center rounded-lg px-4 py-2.5 text-sm font-medium border shadow-sm ${
                     cert.status === 'active'
-                      ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50'
+                      ? 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/50'
                       : cert.status === 'completed'
                       ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50'
                       : 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900/20 dark:text-slate-400 dark:border-slate-800/50'
@@ -164,7 +164,7 @@ const CertificationsSection = () => {
                 {/* Certification ID */}
                 <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50">
                   <div className="flex items-center space-x-3 mb-2">
-                    <div className="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-violet-50 dark:bg-violet-900/30 rounded-lg flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-blue-600 dark:text-blue-400"
                         fill="none"
@@ -264,7 +264,7 @@ const CertificationsSection = () => {
                 <Button
                   size="lg"
                   onClick={() => router.push(`/main/certifications/${cert.cert_id}/exams`)}
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-4 font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="w-full bg-violet-600 hover:bg-violet-700 text-white rounded-xl py-4 font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                 >
                   Continue Your Certification Journey
                   <svg

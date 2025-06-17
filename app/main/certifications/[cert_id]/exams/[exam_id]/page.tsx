@@ -414,7 +414,7 @@ export default function ExamAttemptPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-center space-x-2">
                       <svg
-                        className="w-4 h-4 text-purple-600 dark:text-purple-400"
+                        className="w-4 h-4 text-violet-600 dark:text-violet-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -639,8 +639,8 @@ export default function ExamAttemptPage() {
                               )}
                               {/* Show checkmark for correct answer */}
                               {isCorrect && (
-                                <div className="w-6 h-6 rounded-lg bg-green-50 border border-green-300 flex items-center justify-center">
-                                  <FaCheck className="text-green-600 text-sm" />
+                                <div className="w-6 h-6 rounded-lg bg-green-50 border border-green-300 dark:bg-green-900/20 dark:border-green-700/50 flex items-center justify-center">
+                                  <FaCheck className="text-green-600 dark:text-green-400 text-sm" />
                                 </div>
                               )}
                               {/* Show X for user's incorrect selection */}
@@ -779,7 +779,7 @@ export default function ExamAttemptPage() {
                           className={`min-w-[140px] ${
                             isLastPage
                               ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                              : 'bg-purple-600 hover:bg-purple-700 text-white'
+                              : 'bg-violet-600 hover:bg-violet-700 text-white'
                           }`}
                         >
                           {isNavigatingPage ? (
@@ -814,7 +814,7 @@ export default function ExamAttemptPage() {
                             disabled={
                               isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
                             }
-                            className="min-w-[140px] bg-purple-600 hover:bg-purple-700 text-white"
+                            className="min-w-[140px] bg-violet-600 hover:bg-violet-700 text-white"
                           >
                             {isNavigatingPage ? (
                               <>

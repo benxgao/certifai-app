@@ -44,7 +44,7 @@ const DashboardStats = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Show only certification stats */}
           <StatsCard
-            icon={<FaCertificate className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+            icon={<FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
             title="Certifications"
             value={userCertifications?.length || 0}
           />
@@ -54,7 +54,7 @@ const DashboardStats = () => {
             value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
           />
           <StatsCard
-            icon={<FaTrophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+            icon={<FaTrophy className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
             title="Completed"
             value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
           />
@@ -67,7 +67,7 @@ const DashboardStats = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
       {/* Total Certifications */}
       <StatsCard
-        icon={<FaCertificate className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+        icon={<FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
         title="Certifications"
         value={userCertifications?.length || 0}
       />
@@ -81,7 +81,7 @@ const DashboardStats = () => {
 
       {/* Completed */}
       <StatsCard
-        icon={<FaTrophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+        icon={<FaTrophy className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
         title="Completed"
         value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
       />

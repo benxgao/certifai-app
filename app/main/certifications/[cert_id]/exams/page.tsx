@@ -212,7 +212,7 @@ function CertificationExamsContent() {
                   <DialogTrigger asChild>
                     <Button
                       size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-sm"
+                      className="bg-violet-600 hover:bg-violet-700 text-white border-violet-600 hover:border-violet-700 shadow-sm"
                     >
                       <FaPlus className="w-4 h-4 mr-2" />
                       Create Exam
@@ -339,7 +339,7 @@ function CertificationExamsContent() {
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                   <div className="space-y-3">
                     <div className="flex items-center justify-center space-x-2">
-                      <FaChartLine className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                      <FaChartLine className="w-4 h-4 text-violet-600 dark:text-violet-400" />
                       <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                         Progress
                       </p>
@@ -535,7 +535,7 @@ function CertificationExamsContent() {
 
                       <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
                         <div className="flex items-center space-x-2 mb-2">
-                          <FaClock className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                          <FaClock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
                           <span className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                             Duration
                           </span>

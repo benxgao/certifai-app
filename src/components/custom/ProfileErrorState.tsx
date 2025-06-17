@@ -3,7 +3,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, RefreshCw, User } from 'lucide-react';
+import { AlertTriangle, User } from 'lucide-react';
 import { useProfileData } from '@/src/hooks/useProfileData';
 
 interface ProfileErrorStateProps {
@@ -40,7 +40,6 @@ export const ProfileErrorState: React.FC<ProfileErrorStateProps> = ({
               onClick={() => mutate()}
               className="flex items-center gap-2 border-orange-300 text-orange-700 hover:bg-orange-50"
             >
-              <RefreshCw className="h-3 w-3" />
               Retry Loading
             </Button>
             <Button

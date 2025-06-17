@@ -119,7 +119,7 @@ export default function CertificationsPage() {
                 </h1>
               </div>
               <div className="flex-shrink-0">
-                <span className="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50 shadow-sm">
+                <span className="inline-flex items-center rounded-lg bg-violet-50 px-4 py-2.5 text-sm font-medium text-violet-700 border border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/50 shadow-sm">
                   <FaAward className="w-4 h-4 mr-2" />
                   Explore & Register
                 </span>
@@ -134,7 +134,7 @@ export default function CertificationsPage() {
               <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="space-y-3">
                   <div className="flex items-center justify-center space-x-2">
-                    <FaAward className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <FaAward className="w-4 h-4 text-violet-600 dark:text-violet-400" />
                     <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                       Available
                     </p>
@@ -164,7 +164,7 @@ export default function CertificationsPage() {
               <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <div className="space-y-3">
                   <div className="flex items-center justify-center space-x-2">
-                    <FaCheck className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                    <FaCheck className="w-4 h-4 text-violet-600 dark:text-violet-400" />
                     <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                       Progress
                     </p>
@@ -201,7 +201,7 @@ export default function CertificationsPage() {
                 {Array.from({ length: 4 }).map((_, index) => (
                   <div
                     key={`suspense-skeleton-${index}`}
-                    className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 rounded-2xl overflow-hidden"
+                    className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 rounded-2xl overflow-hidden"
                   >
                     {/* Header skeleton */}
                     <div className="bg-white dark:bg-slate-800 p-6 h-40 relative">
@@ -258,7 +258,7 @@ export default function CertificationsPage() {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="space-y-4">
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-normal border border-blue-100 dark:border-blue-800/50">
+                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 text-sm font-normal border border-violet-100 dark:border-violet-800/50">
                     ID: {selectedCertForModal.cert_id}
                   </div>
                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -278,7 +278,7 @@ export default function CertificationsPage() {
                   <Button
                     onClick={handleRegisterFromModal}
                     disabled={isRegistering && registeringCertId === selectedCertForModal.cert_id}
-                    className="bg-transparent hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 border border-purple-200 dark:border-purple-600 hover:border-purple-300 dark:hover:border-purple-500"
+                    className="bg-transparent hover:bg-violet-50 dark:hover:bg-primary-900/20 text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 border border-violet-200 dark:border-violet-600 hover:border-violet-300 dark:hover:border-violet-500"
                   >
                     {isRegistering && registeringCertId === selectedCertForModal.cert_id
                       ? 'Registering...'

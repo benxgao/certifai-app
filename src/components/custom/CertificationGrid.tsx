@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { useAllAvailableCertifications } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
-import { Loader2 } from 'lucide-react';
 
 interface CertificationGridProps {
   onRegister: (cert: any) => void;
@@ -44,7 +43,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
     return (
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
         <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
-          <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30"></div>
+          <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-900/30"></div>
         </div>
         <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
           No Certifications Available
@@ -66,12 +65,12 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
         return (
           <Card
             key={cert.cert_id}
-            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full"
+            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full"
           >
             <CardHeader className="bg-white dark:bg-slate-800 flex-shrink-0 p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight mb-3">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2 leading-tight mb-3">
                     {cert.name}
                   </h3>
                 </div>
@@ -81,7 +80,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                     className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
                       isRegistered
                         ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
-                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                        : 'bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-400'
                     }`}
                   >
                     {isRegistered ? 'Registered' : 'Available'}
@@ -114,7 +113,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                       href={cert.exam_guide_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors font-medium"
+                      className="text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300 transition-colors font-medium"
                     >
                       Study Guide
                     </a>
@@ -131,12 +130,11 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                   className={`w-full rounded-xl py-3 font-semibold transition-all duration-200 flex-shrink-0 ${
                     isRegistered
                       ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-200 dark:hover:shadow-emerald-900/20'
-                      : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900/20'
+                      : 'bg-violet-600 hover:bg-violet-700 text-white shadow-lg hover:shadow-violet-200 dark:hover:shadow-primary-900/20'
                   }`}
                 >
                   {isCurrentlyNavigating ? (
                     <div className="flex items-center justify-center space-x-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
                       <span>Loading...</span>
                     </div>
                   ) : isCurrentlyRegistering ? (

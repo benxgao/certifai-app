@@ -50,7 +50,10 @@ export default function ExamsLoading() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   {/* Exam Stats */}
                   {Array.from({ length: 4 }).map((_, statIndex) => (
-                    <div key={statIndex} className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                    <div
+                      key={statIndex}
+                      className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg"
+                    >
                       <div className="flex items-center justify-center mb-2">
                         <Skeleton className="h-5 w-5 rounded" />
                       </div>
@@ -83,8 +86,10 @@ export default function ExamsLoading() {
         {/* Floating Loading Indicator */}
         <div className="fixed bottom-8 right-8 bg-white dark:bg-slate-800 rounded-full shadow-lg border border-slate-200 dark:border-slate-700 p-4">
           <div className="flex items-center space-x-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-purple-600"></div>
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Loading exams...</span>
+            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-violet-600"></div>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              Loading exams...
+            </span>
           </div>
         </div>
       </div>

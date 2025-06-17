@@ -64,7 +64,7 @@ export default function RootLayout({
             fallback={
               <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-purple-600 mx-auto"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
                   <p className="text-lg text-gray-600">Loading...</p>
                 </div>
               </div>

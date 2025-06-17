@@ -111,7 +111,7 @@ const MainPage = () => {
         <Breadcrumb items={[{ label: 'Dashboard', current: true }]} />
 
         {/* Welcome Section */}
-        <div className="mb-6 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-100 dark:border-purple-800/50 rounded-xl p-6">
+        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
@@ -178,7 +178,7 @@ const MainPage = () => {
               <div className="flex-shrink-0">
                 <Dialog open={isRegisterModalOpen} onOpenChange={setIsRegisterModalOpen}>
                   <DialogTrigger asChild>
-                    <Button className="inline-flex items-center rounded-lg bg-purple-600 hover:bg-purple-700 px-4 py-2.5 text-sm font-medium text-white border border-purple-600 hover:border-purple-700 dark:bg-purple-600 dark:hover:bg-purple-700 dark:text-white dark:border-purple-700 shadow-sm">
+                    <Button className="inline-flex items-center rounded-lg bg-violet-600 hover:bg-violet-700 px-4 py-2.5 text-sm font-medium text-white border border-violet-600 hover:border-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700 dark:text-white dark:border-violet-700 shadow-sm">
                       Register for Certification
                     </Button>
                   </DialogTrigger>
@@ -212,8 +212,8 @@ const MainPage = () => {
                                 key={cert.id}
                                 className={`relative p-4 border rounded-lg cursor-pointer transition-all ${
                                   selectedCertificationId === cert.id
-                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                                    : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'
+                                    ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20'
+                                    : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700'
                                 }`}
                                 onClick={() => setSelectedCertificationId(cert.id)}
                               >
@@ -229,7 +229,7 @@ const MainPage = () => {
                                     )}
                                   </div>
                                   {selectedCertificationId === cert.id && (
-                                    <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center mr-2">
+                                    <div className="w-6 h-6 rounded-full bg-violet-500 text-white flex items-center justify-center mr-2">
                                       <svg
                                         className="w-3 h-3"
                                         fill="currentColor"
@@ -255,7 +255,7 @@ const MainPage = () => {
                       )}
 
                       {registrationError && (
-                        <div className="mt-4 p-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-md">
+                        <div className="mt-4 p-2 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-100 text-sm rounded-md border border-red-200 dark:border-red-800/50">
                           {registrationError}
                         </div>
                       )}
@@ -267,7 +267,7 @@ const MainPage = () => {
                       <Button
                         onClick={handleRegisterCertification}
                         disabled={!selectedCertificationId || isRegistering}
-                        className="bg-blue-600 hover:bg-blue-700"
+                        className="bg-violet-600 hover:bg-violet-700"
                       >
                         {isRegistering ? 'Registering...' : 'Register'}
                       </Button>

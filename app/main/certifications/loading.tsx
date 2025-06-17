@@ -26,7 +26,7 @@ export default function CertificationsLoading() {
           {Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 overflow-hidden hover:shadow-lg transition-all duration-200"
+              className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 overflow-hidden hover:shadow-lg transition-all duration-200"
             >
               {/* Card Header */}
               <div className="p-6">
@@ -69,7 +69,7 @@ export default function CertificationsLoading() {
         {/* Floating Loading Indicator */}
         <div className="fixed bottom-8 right-8 bg-white dark:bg-slate-800 rounded-full shadow-lg border border-slate-200 dark:border-slate-700 p-4">
           <div className="flex items-center space-x-3">
-            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-purple-600"></div>
+            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-violet-600"></div>
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
               Loading certifications...
             </span>

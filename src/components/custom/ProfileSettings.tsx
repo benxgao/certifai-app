@@ -10,7 +10,7 @@ import { Badge } from '@/src/components/ui/badge';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
 import { useUpdateUserProfile } from '@/src/swr/profile';
-import { Settings, Save, RefreshCw } from 'lucide-react';
+import { Settings } from 'lucide-react';
 
 interface ProfileSettingsProps {
   className?: string;
@@ -68,7 +68,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isMutating}>
-              <RefreshCw className="h-4 w-4" />
+              Refresh
             </Button>
             {!isEditing ? (
               <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
@@ -80,7 +80,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
                   Cancel
                 </Button>
                 <Button size="sm" onClick={handleSave} disabled={isMutating}>
-                  <Save className="h-4 w-4 mr-1" />
                   Save
                 </Button>
               </div>
@@ -89,8 +88,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {success && <div className="text-green-600 text-sm">{success}</div>}
-        {errorMsg && <div className="text-destructive text-sm">{errorMsg}</div>}
+        {success && <div className="text-green-600 dark:text-green-400 text-sm">{success}</div>}
+        {errorMsg && <div className="text-red-600 dark:text-red-400 text-sm">{errorMsg}</div>}
 
         {/* Basic Information */}
         <div className="space-y-4">
@@ -122,14 +121,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
           <div className="flex flex-wrap gap-2">
             <Badge
               variant="default"
-              className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+              className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-100"
             >
               Active Account
             </Badge>
             {firebaseUser?.emailVerified && (
               <Badge
                 variant="default"
-                className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                className="bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-100"
               >
                 Email Verified
               </Badge>

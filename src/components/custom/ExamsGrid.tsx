@@ -4,15 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { useExamsContext } from '@/context/ExamsContext';
-import {
-  FaPlay,
-  FaClock,
-  FaClipboardList,
-  FaChartLine,
-  FaArrowRight,
-  FaTrophy,
-} from 'react-icons/fa';
-import { Loader2 } from 'lucide-react';
+import { FaPlay, FaClock, FaClipboardList, FaChartLine, FaTrophy } from 'react-icons/fa';
 
 interface ExamsGridProps {
   certId: number | null;
@@ -84,7 +76,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
               return <FaTrophy className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
             case 'completed':
             case 'completed_review':
-              return <FaTrophy className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+              return <FaTrophy className="w-5 h-5 text-violet-600 dark:text-violet-400" />;
             case 'in_progress':
               return <FaPlay className="w-5 h-5 text-orange-600 dark:text-orange-400" />;
             default:
@@ -114,7 +106,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
             case 'completed_review':
               return 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/50';
             case 'completed':
-              return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50';
+              return 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/50';
             case 'in_progress':
               return 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/50';
             default:
@@ -133,7 +125,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       {getStatusIcon()}
-                      <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
                         Exam #{exam.exam_id.toString().substring(0, 8)}
                       </h3>
                     </div>
@@ -161,7 +153,6 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                   >
                     {navigatingExamId === exam.exam_id.toString() ? (
                       <div className="flex items-center space-x-2">
-                        <Loader2 className="h-3 w-3 animate-spin" />
                         <span>Loading...</span>
                       </div>
                     ) : (
@@ -184,7 +175,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                 {/* Exam Stats */}
                 <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                   <div className="flex items-center justify-center mb-2">
-                    <FaClipboardList className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    <FaClipboardList className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                   </div>
                   <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Questions
@@ -206,7 +197,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
 
                 <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                   <div className="flex items-center justify-center mb-2">
-                    <FaChartLine className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                    <FaChartLine className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                   </div>
                   <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Score
@@ -235,17 +226,15 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                   <Button
                     onClick={() => handleStartExam(exam.exam_id.toString())}
                     disabled={navigatingExamId === exam.exam_id.toString()}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="flex-1 bg-violet-600 hover:bg-violet-700 text-white rounded-xl py-3 font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     <div className="flex items-center justify-center space-x-2">
                       {navigatingExamId === exam.exam_id.toString() ? (
                         <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
                           <span>Loading Exam...</span>
                         </>
                       ) : (
                         <>
-                          <FaPlay className="w-4 h-4" />
                           <span>
                             {examStatus === 'completed' ||
                             examStatus === 'completed_successful' ||
@@ -255,7 +244,6 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                               ? 'Continue Exam'
                               : 'Start Exam'}
                           </span>
-                          <FaArrowRight className="w-4 h-4" />
                         </>
                       )}
                     </div>

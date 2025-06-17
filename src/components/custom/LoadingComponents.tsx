@@ -20,7 +20,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div className="flex items-center justify-center min-h-[200px]">
       <div className="text-center space-y-4">
         <div
-          className={`animate-spin rounded-full border-t-4 border-b-4 border-purple-600 mx-auto ${sizeClasses[size]}`}
+          className={`animate-spin rounded-full border-t-4 border-b-4 border-violet-600 mx-auto ${sizeClasses[size]}`}
         ></div>
         <p className="text-lg text-gray-600 dark:text-gray-400">{text}</p>
       </div>
@@ -101,7 +101,7 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
         {/* Loading spinner overlay */}
         <div className="fixed inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-40">
           <div className="text-center space-y-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
             <p className="text-lg text-gray-600 dark:text-gray-400">{title}</p>
           </div>
         </div>

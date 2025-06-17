@@ -18,7 +18,7 @@ export const DashboardLoading: React.FC<DashboardLoadingProps> = ({
     <div className="space-y-6">
       {/* Welcome Section Skeleton */}
       {showWelcome && (
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-100 dark:border-purple-800/50 rounded-xl p-6">
+        <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div className="space-y-3">
               <Skeleton className="h-7 w-64" />
