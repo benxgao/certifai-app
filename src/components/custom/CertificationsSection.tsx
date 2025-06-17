@@ -106,10 +106,7 @@ const CertificationsSection = () => {
               your learning journey.
             </p>
           </div>
-          <Button
-            onClick={() => router.push('/main/certifications')}
-            className="bg-violet-600 hover:bg-violet-700 text-white"
-          >
+          <Button onClick={() => router.push('/main/certifications')}>
             Explore Certifications
           </Button>
         </div>
@@ -264,7 +261,7 @@ const CertificationsSection = () => {
                 <Button
                   size="lg"
                   onClick={() => router.push(`/main/certifications/${cert.cert_id}/exams`)}
-                  className="w-full bg-violet-600 hover:bg-violet-700 text-white rounded-xl py-4 font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="w-full"
                 >
                   Continue Your Certification Journey
                   <svg

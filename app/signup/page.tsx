@@ -14,7 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
 import { auth } from '@/firebase/firebaseWebConfig';
 import Link from 'next/link';
 
@@ -184,18 +183,7 @@ export default function SignUp() {
                 />
               </div>
               {error && <p className="text-center text-sm text-red-500 pt-1">{error}</p>}
-              <Button
-                type="submit"
-                className={cn(
-                  'w-full mt-4',
-                  isLoading
-                    ? 'bg-violet-800 cursor-not-allowed'
-                    : 'bg-violet-600 hover:bg-violet-700',
-                  'text-white font-semibold py-2.5',
-                  'transition-colors duration-300',
-                )}
-                disabled={isLoading}
-              >
+              <Button type="submit" className="w-full mt-4" disabled={isLoading}>
                 {isLoading ? 'Creating Account...' : 'Sign Up'}
               </Button>
             </CardContent>

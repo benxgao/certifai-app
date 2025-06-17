@@ -242,31 +242,3 @@ export function useRegisterUserForCertification(apiUserId: string | null) {
     resetRegistration: reset,
   };
 }
-
-/*
-Usage Example in a component (ensure this is in a .tsx file):
-
-import { useCertifications, CertificationListItem } from '@/swr/certifications';
-
-function MyCertificationsComponent() {
-  const { certifications, isLoadingCertifications, isCertificationsError } = useCertifications();
-
-  if (isLoadingCertifications) return <div>Loading...</div>;
-  if (isCertificationsError) return <div>Error: {isCertificationsError.message}</div>;
-
-  return (
-    <div>
-      <h2>Certifications</h2>
-      {certifications && certifications.length > 0 ? (
-        <ul>
-          {certifications.map((cert: CertificationListItem) => (
-            <li key={cert.id}>{cert.name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No certifications found.</p>
-      )}
-    </div>
-  );
-}
-*/

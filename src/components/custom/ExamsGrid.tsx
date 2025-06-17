@@ -147,7 +147,6 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
                     onClick={() => handleStartExam(exam.exam_id.toString())}
                     disabled={navigatingExamId === exam.exam_id.toString()}
                   >
@@ -226,7 +225,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                   <Button
                     onClick={() => handleStartExam(exam.exam_id.toString())}
                     disabled={navigatingExamId === exam.exam_id.toString()}
-                    className="flex-1 bg-violet-600 hover:bg-violet-700 text-white rounded-xl py-3 font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="flex-1"
                   >
                     <div className="flex items-center justify-center space-x-2">
                       {navigatingExamId === exam.exam_id.toString() ? (
@@ -248,10 +247,7 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                       )}
                     </div>
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-auto sm:w-32 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl py-3"
-                  >
+                  <Button variant="outline" className="w-auto sm:w-32">
                     View Details
                   </Button>
                 </div>

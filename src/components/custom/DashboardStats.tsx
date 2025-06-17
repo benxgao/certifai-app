@@ -1,13 +1,12 @@
 import React from 'react';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
-import { FaGraduationCap, FaCertificate, FaTrophy, FaCoins } from 'react-icons/fa';
-import { Zap } from 'lucide-react';
+import { FaGraduationCap, FaCertificate, FaTrophy } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
-  const { profile, isLoading: isLoadingProfile, isError: profileError } = useUserProfileContext();
+  const { isLoading: isLoadingProfile, isError: profileError } = useUserProfileContext();
 
   const isLoading = isLoadingUserCertifications || isLoadingProfile;
 
@@ -64,7 +63,7 @@ const DashboardStats = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {/* Total Certifications */}
       <StatsCard
         icon={<FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
@@ -84,22 +83,6 @@ const DashboardStats = () => {
         icon={<FaTrophy className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
         title="Completed"
         value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
-      />
-
-      {/* Credit Tokens */}
-      <StatsCard
-        icon={<FaCoins className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />}
-        title="Credit Tokens"
-        value={profile?.credit_tokens || 0}
-        subtitle="Available for exams"
-      />
-
-      {/* Energy Tokens */}
-      <StatsCard
-        icon={<Zap className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />}
-        title="Energy Tokens"
-        value={profile?.energy_tokens || 0}
-        subtitle="Earned from activity"
       />
     </div>
   );

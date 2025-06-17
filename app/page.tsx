@@ -14,8 +14,10 @@ export default function LandingPage() {
       <header className="w-full bg-white shadow-sm fixed top-0 left-0 z-50">
         <nav className="flex items-center justify-between py-4 px-6 lg:px-20 relative">
           {/* Hamburger for mobile */}
-          <button
-            className="lg:hidden flex items-center text-violet-600 focus:outline-none"
+          <Button
+            variant="ghost"
+            size="sm"
+            className="lg:hidden text-violet-600"
             aria-label="Open navigation"
             onClick={() => setNavOpen((v) => !v)}
           >
@@ -32,7 +34,7 @@ export default function LandingPage() {
                 d={navOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 8h16M4 16h16'}
               />
             </svg>
-          </button>
+          </Button>
           {/* Logo */}
           <div className="flex-1 flex justify-center lg:justify-start">
             <a
@@ -121,7 +123,7 @@ export default function LandingPage() {
             Practice IT certification exams with AI-generated questions, simulate real test
             environments, and analyze your strengths and weaknesses for a smarter path to success.
           </p>
-          <Button className="bg-white text-violet-600 py-3 px-8 rounded-full font-semibold hover:opacity-90">
+          <Button variant="outline" size="lg" className="rounded-full">
             Register Interest
           </Button>
         </div>
@@ -217,7 +219,7 @@ export default function LandingPage() {
           Take control of your IT certification journey with AI-powered exam simulation, custom
           practice, and detailed analytics.
         </p>
-        <Button className="bg-white text-violet-600 py-3 px-10 rounded-full font-semibold hover:opacity-90">
+        <Button variant="outline" size="lg" className="rounded-full">
           Register Interest
         </Button>
       </section>
