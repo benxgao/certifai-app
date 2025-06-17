@@ -4,103 +4,15 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { MARKETING_COPY } from '@/src/config/constants';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 
 // --- Landing Page for AI-Driven IT Exam Simulator ---
 
 export default function LandingPage() {
-  const [navOpen, setNavOpen] = React.useState(false);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Header with Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">C</span>
-                </div>
-                <span className="font-bold text-xl text-foreground">CertifAI</span>
-              </Link>
-            </div>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-              <a
-                href="#features"
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                Features
-              </a>
-              <Link
-                href="/signin"
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                Sign In
-              </Link>
-              <Link href="/signup">
-                <Button variant="default" size="sm" className="rounded-lg">
-                  Get Started
-                </Button>
-              </Link>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              aria-label="Open navigation"
-              onClick={() => setNavOpen((v) => !v)}
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d={navOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 8h16M4 16h16'}
-                />
-              </svg>
-            </Button>
-
-            {/* Mobile Dropdown */}
-            {navOpen && (
-              <div className="absolute top-full left-0 w-full bg-background border-b border-border md:hidden">
-                <div className="px-4 py-2 space-y-1">
-                  <a
-                    href="#features"
-                    className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors"
-                    onClick={() => setNavOpen(false)}
-                  >
-                    Features
-                  </a>
-                  <Link
-                    href="/signin"
-                    className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors"
-                    onClick={() => setNavOpen(false)}
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    href="/signup"
-                    className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-accent rounded-lg transition-colors"
-                    onClick={() => setNavOpen(false)}
-                  >
-                    Get Started
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+      <LandingHeader showFeaturesLink={true} />
 
       {/* Hero Section */}
       <section className="relative">
@@ -353,6 +265,126 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+            {/* Company */}
+            <div className="col-span-2 md:col-span-1">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-lg">C</span>
+                </div>
+                <span className="font-bold text-xl text-foreground">CertifAI</span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Revolutionizing IT certification training with AI-powered personalized learning.
+              </p>
+            </div>
+
+            {/* Product */}
+            <div>
+              <h3 className="font-semibold text-foreground mb-3">Product</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <Link href="/main" className="hover:text-primary transition-colors">
+                    Practice Exams
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/study-guides" className="hover:text-primary transition-colors">
+                    Study Guides
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/documentation" className="hover:text-primary transition-colors">
+                    Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/community" className="hover:text-primary transition-colors">
+                    Community
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div>
+              <h3 className="font-semibold text-foreground mb-3">Resources</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <Link href="/blog" className="hover:text-primary transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/support" className="hover:text-primary transition-colors">
+                    Support Center
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-primary transition-colors">
+                    Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/careers" className="hover:text-primary transition-colors">
+                    Careers
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h3 className="font-semibold text-foreground mb-3">Company</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <Link href="/about" className="hover:text-primary transition-colors">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy" className="hover:text-primary transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-primary transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Newsletter */}
+            <div>
+              <h3 className="font-semibold text-foreground mb-3">Stay Updated</h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                Get the latest updates and tips for your certification journey.
+              </p>
+              <Link href="/coming-soon">
+                <Button variant="outline" size="sm" className="w-full">
+                  Subscribe to Newsletter
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-8 border-t border-border">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-sm text-muted-foreground">
+                &copy; 2025 CertifAI. All rights reserved.
+              </p>
+              <div className="flex items-center space-x-4 mt-4 md:mt-0 text-sm text-muted-foreground">
+                <span>Made with ❤️ for IT professionals</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

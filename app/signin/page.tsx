@@ -16,6 +16,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 
 import { auth } from '@/src/firebase/firebaseWebConfig';
 
@@ -111,31 +112,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">C</span>
-                </div>
-                <span className="font-bold text-xl text-foreground">CertifAI</span>
-              </Link>
-            </div>
-
-            {/* Navigation */}
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/signup"
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                Sign Up
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <LandingHeader showFeaturesLink={false} />
 
       <div className="w-full lg:grid lg:grid-cols-2">
         {/* Left Column - Enhanced Welcome Section */}
