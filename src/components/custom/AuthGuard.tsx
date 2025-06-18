@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import PageLoader from './PageLoader';
 
@@ -8,28 +9,60 @@ interface AuthGuardProps {
   children: React.ReactNode;
 }
 
+/**
+ * AuthGuard - Protects routes by checking user authentication and email verification
+ * Only renders children if user is authenticated and verified, otherwise shows loading or redirects
+ */
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const { firebaseUser, loading, apiUserId } = useFirebaseAuth();
+  const [apiTimeout, setApiTimeout] = useState(false);
+  const router = useRouter();
 
-  // Show loading while authentication is being verified
+  // Set a 3-second timeout if API user ID doesn't load (reduced from 5s for better UX)
+  useEffect(() => {
+    if (firebaseUser && !apiUserId && !apiTimeout) {
+      const timer = setTimeout(() => {
+        console.warn('API user ID not available after 3 seconds - proceeding without it');
+        setApiTimeout(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [firebaseUser, apiUserId, apiTimeout]);
+
+  // Check if user needs email verification
+  useEffect(() => {
+    if (firebaseUser && !firebaseUser.emailVerified) {
+      console.log('User email not verified, redirecting to signin');
+      router.push(
+        '/signin?error=' +
+          encodeURIComponent('Please verify your email address before accessing your account.'),
+      );
+    }
+  }, [firebaseUser, router]);
+
+  // Case 1: Still checking authentication - show loading
   if (loading) {
     return (
       <PageLoader isLoading={true} text="Verifying your authentication..." showSpinner={true} />
     );
   }
 
-  // Show loading if user is authenticated but API user ID is not yet available
-  if (firebaseUser && !apiUserId) {
+  // Case 2: User authenticated but email not verified - show loading while redirect happens
+  if (firebaseUser && !firebaseUser.emailVerified) {
+    return <PageLoader isLoading={true} text="Email verification required..." showSpinner={true} />;
+  }
+
+  // Case 3: User authenticated but waiting for API setup - show loading (max 3 seconds)
+  if (firebaseUser && !apiUserId && !apiTimeout) {
     return <PageLoader isLoading={true} text="Setting up your account..." showSpinner={true} />;
   }
 
-  // If user is authenticated and API user ID is available, render children
-  if (firebaseUser && apiUserId) {
+  // Case 4: User is authenticated and verified - render the protected content
+  if (firebaseUser && firebaseUser.emailVerified) {
     return <>{children}</>;
   }
 
-  // If not authenticated, the FirebaseAuthContext will handle the redirect
-  // Show loading until the redirect happens
+  // Case 5: User not authenticated - show loading while redirect happens
   return <PageLoader isLoading={true} text="Redirecting to sign in..." showSpinner={true} />;
 };
 

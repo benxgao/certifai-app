@@ -6,31 +6,42 @@ export interface PaginationInfo {
 }
 
 // Re-export authentication utilities for convenience
-export {
+export { 
   clearClientAuthState,
   handleAuthenticationFailure,
   isAuthenticationError,
   fetchWithAuthRetry,
   fetchAuthJSON,
-  AuthenticationError,
+  AuthenticationError
 } from '../lib/auth-utils';
 
-// Import optimized fetch configuration
-import { optimizedFetch, AUTH_FETCH_OPTIONS } from '../lib/fetch-config';
-
-// Legacy aliases for backward compatibility
+// Utility function to clear all authentication state
 export const clearAuthState = async (): Promise<void> => {
-  const { clearClientAuthState } = await import('../lib/auth-utils');
-  return clearClientAuthState();
+  try {
+    // Clear the auth cookie
+    await fetch('/api/auth-cookie/clear', {
+      method: 'POST',
+    });
+    console.log('Auth state cleared successfully');
+  } catch (error) {
+    console.error('Error clearing auth state:', error);
+  }
 };
 
+// Utility function to handle authentication failures
 export const handleAuthFailure = async (redirectToSignin: boolean = true): Promise<void> => {
-  const { handleAuthenticationFailure } = await import('../lib/auth-utils');
-  return handleAuthenticationFailure('Session expired. Please sign in again.', redirectToSignin);
+  await clearAuthState();
+  
+  if (redirectToSignin && typeof window !== 'undefined') {
+    // Only redirect if we're in a protected route
+    if (window.location.pathname.startsWith('/main')) {
+      window.location.href = '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.');
+    }
+  }
 };
 
 export const fetcher = async (url: string) => {
-  const res = await optimizedFetch(url);
+  const res = await fetch(url);
   if (!res.ok) {
     const error = new Error('An error occurred while fetching the data.');
     // Attach extra info to the error object.
@@ -49,9 +60,11 @@ export const fetcher = async (url: string) => {
 // Utility function to refresh auth cookie on the server-side
 export const refreshAuthCookie = async (): Promise<boolean> => {
   try {
-    const res = await optimizedFetch('/api/auth-cookie/refresh', {
-      ...AUTH_FETCH_OPTIONS,
+    const res = await fetch('/api/auth-cookie/refresh', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (res.ok) {
@@ -59,13 +72,13 @@ export const refreshAuthCookie = async (): Promise<boolean> => {
       return true;
     } else {
       console.error('Failed to refresh auth cookie:', res.status);
-
+      
       // If refresh fails due to expired/invalid tokens, clear auth state
       if (res.status === 401) {
         console.log('Refresh token expired or invalid, clearing auth state');
         await handleAuthFailure();
       }
-
+      
       return false;
     }
   } catch (error) {
@@ -79,7 +92,7 @@ export const fetcherWithAuth = async (
   url: string,
   refreshTokenFn?: () => Promise<string | null>,
 ) => {
-  let res = await optimizedFetch(url);
+  let res = await fetch(url);
 
   // If we get a 401 and have a refresh function, try to refresh token and retry
   if (res.status === 401 && refreshTokenFn) {
@@ -88,12 +101,12 @@ export const fetcherWithAuth = async (
 
     if (newToken) {
       // Retry the request with refreshed token (cookie should be updated automatically)
-      res = await optimizedFetch(url);
+      res = await fetch(url);
     } else {
       // If Firebase token refresh failed, try cookie-based refresh as fallback
       const cookieRefreshSuccess = await refreshAuthCookie();
       if (cookieRefreshSuccess) {
-        res = await optimizedFetch(url);
+        res = await fetch(url);
       } else {
         // If all refresh attempts fail, clear auth state and throw error
         console.log('All token refresh attempts failed');

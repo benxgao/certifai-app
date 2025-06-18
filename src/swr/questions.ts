@@ -98,6 +98,9 @@ async function submitAnswerFetcher(
           answer_option_id: optionId,
         }),
       });
+    } else {
+      // If refresh failed, throw authentication error
+      throw new Error('Authentication failed. Please sign in again.');
     }
   }
 

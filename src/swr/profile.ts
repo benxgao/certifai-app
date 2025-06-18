@@ -4,6 +4,8 @@ import { useAuthMutation } from './useAuthMutation';
 export interface UserProfile {
   user_id: string;
   firebase_user_id: string;
+  first_name?: string;
+  last_name?: string;
   credit_tokens: number;
   energy_tokens: number;
   created_at: string;
@@ -28,7 +30,11 @@ export function useUserProfile(apiUserId: string | null) {
   return useAuthSWR<UserProfileResponse>(key, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
-    dedupingInterval: 10000, // Cache for 10 seconds
+    dedupingInterval: 15000, // Cache for 15 seconds (increased from 10s)
+    refreshInterval: 0, // Don't auto-refresh - profile changes infrequently
+    refreshWhenHidden: false, // Don't refresh when tab is hidden
+    refreshWhenOffline: false, // Don't refresh when offline
+    focusThrottleInterval: 10000, // Throttle focus-based revalidation
   });
 }
 

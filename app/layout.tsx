@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
+import { FirebaseAuthProvider } from '@/src/context/FirebaseAuthContext';
 import './globals.css';
 
 // SEO and metadata
@@ -52,20 +53,22 @@ export default function RootLayout({
         <meta name="twitter:image" content="https://yourdomain.com/og-image.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
-          <Suspense
-            fallback={
-              <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
-                  <p className="text-lg text-gray-600">Loading...</p>
+        <FirebaseAuthProvider>
+          <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
+            <Suspense
+              fallback={
+                <div className="min-h-screen flex items-center justify-center">
+                  <div className="text-center space-y-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
+                    <p className="text-lg text-gray-600">Loading...</p>
+                  </div>
                 </div>
-              </div>
-            }
-          >
-            {children}
-          </Suspense>
-        </div>
+              }
+            >
+              {children}
+            </Suspense>
+          </div>
+        </FirebaseAuthProvider>
         {/* Footer */}
         <footer className="mt-auto bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-700">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">

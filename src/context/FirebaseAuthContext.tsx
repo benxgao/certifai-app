@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { useRouter } from 'next/navigation';
 import { User } from 'firebase/auth';
 import { auth } from '@/firebase/firebaseWebConfig';
+import { optimizedFetch, AUTH_FETCH_OPTIONS } from '@/src/lib/fetch-config';
 
 interface FirebaseAuthContextType {
   firebaseUser: User | null;
@@ -44,21 +45,52 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
       const newToken = await firebaseUser.getIdToken(true); // Force refresh
       setFirebaseToken(newToken);
 
-      // Update the auth cookie with the new token
-      await fetch('/api/auth-cookie/set', {
+      // Update the auth cookie with the new token (non-blocking)
+      const cookiePromise = optimizedFetch('/api/auth-cookie/set', {
+        ...AUTH_FETCH_OPTIONS,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ firebaseToken: newToken }),
+      }).catch((err) => {
+        console.error('Failed to update auth cookie during refresh:', err);
+        return null;
+      });
+
+      // Don't block on cookie update - it's not critical for immediate functionality
+      cookiePromise.then((response) => {
+        if (response && !response.ok) {
+          console.warn('Auth cookie update failed during refresh, but continuing');
+        } else if (response) {
+          console.log('Token refreshed and cookie updated successfully');
+        }
       });
 
       console.log('Token refreshed successfully');
       return newToken;
     } catch (error) {
       console.error('Failed to refresh token:', error);
+
+      // Clear all auth state when refresh fails
+      setFirebaseUser(null);
       setFirebaseToken(null);
-      router.push('/signin');
+      setApiUserId(null);
+
+      // Clear the auth cookie (non-blocking)
+      fetch('/api/auth-cookie/clear', {
+        method: 'POST',
+      }).catch((err) => console.error('Failed to clear auth cookie:', err));
+
+      // Only redirect if we're in a protected route and not already on auth pages
+      if (
+        typeof window !== 'undefined' &&
+        window.location.pathname.startsWith('/main') &&
+        !window.location.pathname.includes('/signin') &&
+        !window.location.pathname.includes('/signup')
+      ) {
+        router.push(
+          '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.'),
+        );
+      }
+
       return null;
     }
   }, [firebaseUser, router]);
@@ -80,58 +112,156 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         | firebase.uid: ${JSON.stringify(authUser?.uid)}`);
 
       if (authUser) {
+        console.log('Setting new Firebase auth user, clearing any existing state...');
+
+        // Clear any existing auth state first to ensure clean slate
+        setFirebaseUser(null);
+        setFirebaseToken(null);
+        setApiUserId(null);
+
+        // Now set the new user
         setFirebaseUser(authUser);
 
         try {
+          // Force refresh to get a brand new token
           const token = await authUser.getIdToken(true);
           setFirebaseToken(token);
 
-          // Set the auth cookie for server-side requests
-          const cookieResponse = await fetch('/api/auth-cookie/set', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ firebaseToken: token }),
-          });
+          console.log('Retrieved fresh Firebase token for auth state change');
 
-          if (!cookieResponse.ok) {
-            throw new Error('Failed to set auth cookie');
+          // Prepare parallel requests for better performance
+          const promises = [];
+
+          // 1. Set auth cookie (only if not on signin/signup pages)
+          let cookiePromise = null;
+          if (
+            typeof window !== 'undefined' &&
+            !window.location.pathname.includes('/signin') &&
+            !window.location.pathname.includes('/signup')
+          ) {
+            cookiePromise = optimizedFetch('/api/auth-cookie/set', {
+              ...AUTH_FETCH_OPTIONS,
+              method: 'POST',
+              body: JSON.stringify({ firebaseToken: token }),
+            }).catch((err) => {
+              console.error('Failed to set auth cookie:', err);
+              return null;
+            });
+            promises.push(cookiePromise);
           }
 
+          // 2. API login to get user ID and check custom claims
           const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
-          const loginRes = await fetch(loginUrl, {
+          const loginPromise = optimizedFetch(loginUrl, {
+            ...AUTH_FETCH_OPTIONS,
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+              ...AUTH_FETCH_OPTIONS.headers,
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({}),
+          }).catch((err) => {
+            console.error('API login request failed:', err);
+            return null;
           });
+          promises.push(loginPromise);
 
-          if (loginRes.ok) {
-            const { user_id } = await loginRes.json();
+          // 3. Check for api_user_id in custom claims as an alternative source
+          const claimsPromise = authUser
+            .getIdTokenResult(true)
+            .then((idTokenResult) => {
+              const customClaims = idTokenResult.claims;
+              return (customClaims.api_user_id as string) || null;
+            })
+            .catch((err) => {
+              console.error('Failed to get custom claims:', err);
+              return null;
+            });
+          promises.push(claimsPromise);
 
-            console.log(`FirebaseAuthProvider API login successful
-              | api_user_id: ${user_id}`);
+          // Execute requests in parallel
+          const results = await Promise.allSettled(promises);
 
-            setApiUserId(user_id);
-          } else {
-            throw new Error('API login failed');
+          // Handle cookie response (if it was made)
+          if (cookiePromise) {
+            const cookieResult = results[promises.indexOf(cookiePromise)];
+            if (cookieResult.status === 'fulfilled' && cookieResult.value) {
+              const cookieRes = cookieResult.value as Response;
+              if (!cookieRes.ok) {
+                console.warn('Failed to set auth cookie, but continuing with authentication');
+              } else {
+                console.log('Successfully set new auth cookie in FirebaseAuthContext');
+              }
+            }
           }
+
+          // Handle API login response and custom claims
+          const loginResult = results[promises.indexOf(loginPromise)];
+          const claimsResult = results[promises.indexOf(claimsPromise)];
+
+          let userIdFromApi = null;
+          let userIdFromClaims = null;
+
+          // Try to get user_id from API login
+          if (loginResult.status === 'fulfilled' && loginResult.value) {
+            const loginRes = loginResult.value as Response;
+            if (loginRes.ok) {
+              try {
+                const { api_user_id } = await loginRes.json();
+                userIdFromApi = api_user_id;
+                console.log('Got api_user_id from API login:', api_user_id);
+              } catch (parseError) {
+                console.warn('Failed to parse API login response:', parseError);
+              }
+            } else {
+              console.warn('API login failed, checking custom claims as fallback');
+            }
+          }
+
+          // Try to get user_id from custom claims
+          if (claimsResult.status === 'fulfilled' && claimsResult.value) {
+            userIdFromClaims = claimsResult.value as string;
+            if (userIdFromClaims) {
+              console.log('Got api_user_id from custom claims:', userIdFromClaims);
+            }
+          }
+
+          // Use API result if available, otherwise use custom claims
+          const finalUserId = userIdFromApi || userIdFromClaims;
+
+          if (finalUserId) {
+            console.log(`FirebaseAuthProvider authentication successful
+              | api_user_id: ${finalUserId}
+              | source: ${userIdFromApi ? 'API' : 'custom claims'}
+              | current_path: ${
+                typeof window !== 'undefined' ? window.location.pathname : 'server'
+              }`);
+
+            setApiUserId(finalUserId);
+          } else {
+            console.warn('No api_user_id found from either API login or custom claims');
+          }
+
+          // Authentication setup completed (even if some parts failed)
+          console.log('Authentication setup completed');
         } catch (error) {
-          console.error('Authentication setup failed:', error);
+          console.error('Critical authentication setup failed:', error);
           setFirebaseUser(null);
           setFirebaseToken(null);
           setApiUserId(null);
 
-          // Clear the auth cookie on error
-          await fetch('/api/auth-cookie/clear', {
+          // Clear the auth cookie on critical error (non-blocking)
+          fetch('/api/auth-cookie/clear', {
             method: 'POST',
-          });
+          }).catch((err) => console.error('Failed to clear auth cookie after error:', err));
 
-          // Only redirect if we're in a protected route
-          if (window.location.pathname.startsWith('/main')) {
+          // Only redirect if we're in a protected route and not already on auth pages
+          if (
+            typeof window !== 'undefined' &&
+            window.location.pathname.startsWith('/main') &&
+            !window.location.pathname.includes('/signin') &&
+            !window.location.pathname.includes('/signup')
+          ) {
             router.push('/signin');
           }
         }
@@ -140,13 +270,18 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         setFirebaseToken(null);
         setApiUserId(null);
 
-        // Clear the auth cookie when user logs out
-        await fetch('/api/auth-cookie/clear', {
+        // Clear the auth cookie when user logs out (non-blocking)
+        fetch('/api/auth-cookie/clear', {
           method: 'POST',
-        });
+        }).catch((err) => console.error('Failed to clear auth cookie during logout:', err));
 
-        // Only redirect if we're in a protected route
-        if (window.location.pathname.startsWith('/main')) {
+        // Only redirect if we're in a protected route and not already on auth pages
+        if (
+          typeof window !== 'undefined' &&
+          window.location.pathname.startsWith('/main') &&
+          !window.location.pathname.includes('/signin') &&
+          !window.location.pathname.includes('/signup')
+        ) {
           router.push('/signin');
         }
       }

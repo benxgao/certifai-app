@@ -13,16 +13,36 @@ export function useAuthSWR<Data = any, Error = any>(
   const { refreshToken } = useFirebaseAuth();
 
   return useSWR<Data, Error>(key, (url: string) => fetcherWithAuth(url, refreshToken), {
-    ...config,
-    // Add some sensible defaults for auth-related requests
+    // Performance optimizations for auth-related requests
+    dedupingInterval: 2000, // Dedupe requests within 2 seconds
+    focusThrottleInterval: 5000, // Throttle focus revalidation
+    loadingTimeout: 3000, // Show loading state after 3s for slow requests
+
+    // Enhanced error handling
     shouldRetryOnError: (error) => {
       // Don't retry on auth errors (401, 403) to avoid infinite loops
       if ((error as any)?.status === 401 || (error as any)?.status === 403) {
         return false;
       }
+      // Don't retry on 4xx client errors except 408 (timeout)
+      if (
+        (error as any)?.status >= 400 &&
+        (error as any)?.status < 500 &&
+        (error as any)?.status !== 408
+      ) {
+        return false;
+      }
       return true;
     },
-    errorRetryCount: 3,
+    errorRetryCount: 2, // Reduced from 3 for faster failure detection
     errorRetryInterval: 1000,
+
+    // Smart revalidation settings
+    revalidateOnFocus: false, // Prevent unnecessary revalidation
+    revalidateOnReconnect: true, // Revalidate when connection restored
+    refreshWhenOffline: false, // Don't refresh when offline
+    refreshWhenHidden: false, // Don't refresh when tab hidden
+
+    ...config, // Allow overrides
   });
 }

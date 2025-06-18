@@ -131,3 +131,82 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Enhanced mobile viewport handling for auth pages */
+@layer utilities {
+  .auth-page-mobile {
+    /* Ensure full viewport height coverage on mobile devices */
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for better mobile support */
+  }
+
+  /* Mobile-first responsive background for auth pages */
+  .auth-bg-mobile {
+    background: linear-gradient(
+      135deg,
+      rgb(245 243 255) 0%,
+      rgb(237 233 254) 35%,
+      rgb(224 231 255) 100%
+    );
+  }
+
+  /* Ensure content stretches to fill available space */
+  .auth-container {
+    min-height: inherit;
+  }
+
+  /* Mobile-optimized form styles */
+  .auth-form-mobile {
+    /* Reduce horizontal padding on very small screens */
+    @media (max-width: 375px) {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    /* Reduce vertical padding on mobile to minimize gaps */
+    @media (max-width: 640px) {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  /* Responsive text sizes for mobile */
+  .auth-title-mobile {
+    @media (max-width: 640px) {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+
+  /* Compact spacing for mobile forms */
+  .auth-content-mobile {
+    @media (max-width: 640px) {
+      gap: 0.5rem; /* Further reduced from 0.75rem */
+    }
+  }
+
+  /* Reduce decorative element spacing on mobile */
+  @media (max-width: 640px) {
+    .auth-page-mobile .absolute.top-20 {
+      top: 1rem;
+    }
+
+    .auth-page-mobile .absolute.bottom-20 {
+      bottom: 1rem;
+    }
+  }
+
+  /* Mobile-optimized card padding */
+  .auth-card-mobile {
+    @media (max-width: 640px) {
+      padding: 0.75rem;
+    }
+  }
+
+  /* Tighter field spacing on mobile */
+  .auth-field-mobile {
+    @media (max-width: 640px) {
+      gap: 0.375rem; /* 6px instead of 8px */
+    }
+  }
+}

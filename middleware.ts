@@ -33,21 +33,82 @@ import { COOKIE_AUTH_NAME } from './src/config/constants';
 export async function middleware(request: NextRequest) {
   try {
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
+    const legacyToken = request.cookies.get('joseToken')?.value; // Check for legacy cookie
 
     console.log(`middleware:
       | origin: ${request.nextUrl.origin}
       | path: ${request.nextUrl.pathname}
-      | headers: ${JSON.stringify(request.headers)}
+      | has_auth_token: ${!!joseToken}
+      | has_legacy_token: ${!!legacyToken}
       | url: ${request.url}`);
 
-    if (!joseToken) {
-      throw new Error('No joseToken cookie');
+    // If we find a legacy token but no current token, clear the legacy token
+    if (legacyToken && !joseToken) {
+      console.log('middleware: Found legacy token, clearing it and redirecting to signin');
+      const response = NextResponse.redirect(
+        new URL(
+          '/signin?error=' +
+            encodeURIComponent('Please sign in again with your current credentials.'),
+          request.url,
+        ),
+      );
+      response.cookies.delete('joseToken');
+      response.cookies.delete(COOKIE_AUTH_NAME);
+      return response;
     }
 
-    const { token, exp } = jose.decodeJwt(joseToken as string);
+    if (!joseToken) {
+      throw new Error('No auth token cookie found');
+    }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // Decode and validate the JWT structure
+    let decodedPayload;
+    try {
+      decodedPayload = jose.decodeJwt(joseToken as string);
+    } catch (decodeError) {
+      console.error('middleware: Invalid JWT format:', decodeError);
+      const response = NextResponse.redirect(
+        new URL(
+          '/signin?error=' + encodeURIComponent('Invalid session. Please sign in again.'),
+          request.url,
+        ),
+      );
+      response.cookies.delete(COOKIE_AUTH_NAME);
+      response.cookies.delete('joseToken');
+      return response;
+    }
+
+    const { token, exp, jti } = decodedPayload;
     const firebaseToken = token; // this is the token containing the firebase info
+
+    // Validate that we have required fields
+    if (!firebaseToken) {
+      console.error('middleware: Missing Firebase token in JWT');
+      const response = NextResponse.redirect(
+        new URL(
+          '/signin?error=' + encodeURIComponent('Invalid session format. Please sign in again.'),
+          request.url,
+        ),
+      );
+      response.cookies.delete(COOKIE_AUTH_NAME);
+      response.cookies.delete('joseToken');
+      return response;
+    }
+
+    // For additional security, we can check if the token has our unique identifier (jti)
+    // Tokens without jti are likely legacy tokens
+    if (!jti) {
+      console.log('middleware: Token missing unique identifier, treating as legacy');
+      const response = NextResponse.redirect(
+        new URL(
+          '/signin?error=' + encodeURIComponent('Please sign in again for enhanced security.'),
+          request.url,
+        ),
+      );
+      response.cookies.delete(COOKIE_AUTH_NAME);
+      response.cookies.delete('joseToken');
+      return response;
+    }
 
     if (exp && exp < Date.now() / 1000) {
       console.error('middleware: token expired:', {
@@ -97,8 +158,13 @@ export async function middleware(request: NextRequest) {
       } catch (refreshError: any) {
         console.error('middleware: token refresh error:', refreshError.message);
 
-        // If refresh fails, redirect to signin
-        const response = NextResponse.redirect(new URL('/signin', request.url));
+        // If refresh fails, clear the cookie and redirect to signin
+        const response = NextResponse.redirect(
+          new URL(
+            '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.'),
+            request.url,
+          ),
+        );
         response.cookies.delete(COOKIE_AUTH_NAME);
 
         return response;
@@ -133,7 +199,12 @@ export async function middleware(request: NextRequest) {
       if (!data.valid) {
         console.error('middleware: token invalid:', { data });
 
-        const response = NextResponse.redirect(new URL('/signin', request.url));
+        const response = NextResponse.redirect(
+          new URL(
+            '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.'),
+            request.url,
+          ),
+        );
         response.cookies.delete(COOKIE_AUTH_NAME);
 
         return response;
@@ -143,7 +214,15 @@ export async function middleware(request: NextRequest) {
     } catch (error: any) {
       console.log(`middleware: failed to verify: ${JSON.stringify(error.toString())}`);
 
-      return NextResponse.redirect(new URL('/signin', request.url));
+      const response = NextResponse.redirect(
+        new URL(
+          '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.'),
+          request.url,
+        ),
+      );
+      response.cookies.delete(COOKIE_AUTH_NAME);
+
+      return response;
     }
   } catch (error: any) {
     console.error('middleware error:', {
@@ -152,7 +231,15 @@ export async function middleware(request: NextRequest) {
       // stack: error.stack,
     });
 
-    return NextResponse.redirect(new URL('/signin', request.url));
+    const response = NextResponse.redirect(
+      new URL(
+        '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.'),
+        request.url,
+      ),
+    );
+    response.cookies.delete(COOKIE_AUTH_NAME);
+
+    return response;
   }
 }
 

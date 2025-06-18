@@ -55,6 +55,9 @@ async function registerCertificationFetcher(
         },
         body: JSON.stringify(certificationData),
       });
+    } else {
+      // If refresh failed, throw authentication error
+      throw new Error('Authentication failed. Please sign in again.');
     }
   }
 
@@ -202,6 +205,9 @@ async function registerUserForCertificationFetcher(
         },
         body: JSON.stringify({ certificationId }),
       });
+    } else {
+      // If refresh failed, throw authentication error
+      throw new Error('Authentication failed. Please sign in again.');
     }
   }
 

@@ -1,6 +1,7 @@
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { useCallback } from 'react';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
+import { handleAuthFailure } from './utils';
 
 /**
  * Enhanced mutation fetcher that handles token refresh on 401 errors
@@ -33,6 +34,11 @@ export function useAuthMutationFetcher() {
             },
             body: JSON.stringify(arg),
           });
+        } else {
+          // If refresh failed, clear auth state and throw auth error
+          console.log('Token refresh failed during mutation');
+          await handleAuthFailure();
+          throw new Error('Authentication failed. Please sign in again.');
         }
       }
 
@@ -87,6 +93,11 @@ export function useAuthMutation<Data = any, Arg = any>(
             },
             body: JSON.stringify(arg),
           });
+        } else {
+          // If refresh failed, clear auth state and throw auth error
+          console.log('Token refresh failed during mutation');
+          await handleAuthFailure();
+          throw new Error('Authentication failed. Please sign in again.');
         }
       }
 

@@ -17,31 +17,43 @@ export async function POST(request: Request) {
   const firebaseToken = (body as any).firebaseToken;
 
   if (!firebaseToken) {
-    return new Response('User ID required', { status: 400 });
+    return new Response('Firebase token required', { status: 400 });
   }
 
   try {
-    const joseToken = await new SignJWT({ token: firebaseToken })
+    // Get current cookies and clear any existing auth cookies first
+    const cookieStore = await cookies();
+
+    // Clear any existing auth cookies to ensure fresh state
+    cookieStore.delete(COOKIE_AUTH_NAME);
+    cookieStore.delete('joseToken'); // Clear legacy cookie name
+
+    console.log('auth-cookie/set: Cleared existing auth cookies');
+
+    // Generate a completely new JWT with current timestamp to ensure uniqueness
+    const now = Math.floor(Date.now() / 1000);
+    const joseToken = await new SignJWT({
+      token: firebaseToken,
+      iat: now,
+      jti: `${now}-${Math.random().toString(36).substr(2, 9)}`, // Add unique identifier
+    })
       .setProtectedHeader({ alg: 'HS256' })
-      .setIssuedAt()
+      .setIssuedAt(now)
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(secretKey));
 
-    console.log('auth-cookie/set:1 | joseToken');
+    console.log('auth-cookie/set:1 | Generated new joseToken');
 
-    // const cookieString = serialize('authToken', joseToken, {
-    //   httpOnly: true, // Crucial for security
-    //   secure: process.env.NODE_ENV === 'production',
-    //   sameSite: 'strict', // Prevent CSRF attacks
-    //   path: '/', // Cookie path
-    // });
-
-    (await cookies()).set(COOKIE_AUTH_NAME, joseToken, {
+    // Set the new cookie with fresh token
+    cookieStore.set(COOKIE_AUTH_NAME, joseToken, {
       httpOnly: true, // Crucial for security
-      secure: process.env.NODE_ENV === 'development',
+      secure: process.env.NODE_ENV === 'production', // Fixed: should be production, not development
       sameSite: 'strict', // Prevent CSRF attacks
       path: '/', // Cookie path
+      maxAge: 60 * 60, // 1 hour in seconds
     });
+
+    console.log('auth-cookie/set: Successfully set new auth cookie');
 
     return Response.json({ success: true });
   } catch (error) {
