@@ -2,60 +2,76 @@
 
 import React, { useState, useEffect } from 'react';
 import { useProfileData } from '@/src/hooks/useProfileData'; // Updated import
+import { useDisplayNameUpdate } from '@/src/hooks/useDisplayNameUpdate';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/src/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { CoinsIcon, ZapIcon, CalendarIcon, UserIcon } from 'lucide-react';
+import { Button } from '@/src/components/ui/button';
+import { Input } from '@/src/components/ui/input';
+import { Label } from '@/src/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/src/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/src/components/ui/accordion';
+import {
+  CoinsIcon,
+  ZapIcon,
+  CalendarIcon,
+  UserIcon,
+  Settings,
+  Award,
+  Shield,
+  Bell,
+  Edit3,
+  Check,
+} from 'lucide-react';
 import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
+import EmailUpdateDialog from '@/src/components/custom/EmailUpdateDialog';
+import Breadcrumb from '@/components/custom/Breadcrumb';
 
 const ProfileSkeleton: React.FC = () => (
-  <div className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3">
-    <div className="lg:col-span-1">
-      <Card>
-        <CardHeader>
-          <CardTitle>Profile</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <Skeleton className="h-16 w-16 rounded-full" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-3 w-48" />
-            </div>
-          </div>
-          <Separator />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-3 w-36" />
-          </div>
-        </CardContent>
-      </Card>
+  <div className="space-y-6">
+    {/* Profile Header Skeleton */}
+    <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-16 w-16 rounded-full" />
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+        <div className="hidden md:flex items-center space-x-4">
+          <Skeleton className="h-12 w-20" />
+          <Skeleton className="h-12 w-20" />
+        </div>
+      </div>
     </div>
 
-    <div className="lg:col-span-2 space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Account Tokens</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Skeleton className="h-24 w-full" />
-            <Skeleton className="h-24 w-full" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Account Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-full" />
-        </CardContent>
-      </Card>
+    {/* Profile Content Skeleton */}
+    <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+        <Skeleton className="h-8 w-32" />
+      </div>
+      <div className="p-6 space-y-6">
+        <Skeleton className="h-10 w-full" />
+        <div className="space-y-4">
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      </div>
     </div>
   </div>
 );
@@ -67,19 +83,108 @@ const TokenCard: React.FC<{
   color: string;
   description: string;
 }> = ({ title, value, icon, color, description }) => (
-  <Card className="relative overflow-hidden">
-    <CardContent className="p-6">
+  <Card className="relative overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
+    <CardContent className="p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <p className="text-2xl font-bold">{value.toLocaleString()}</p>
-          <p className="text-xs text-muted-foreground">{description}</p>
+        <div className="space-y-1 flex-1 min-w-0">
+          <p className="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">{title}</p>
+          <p className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100">
+            {value.toLocaleString()}
+          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
+            {description}
+          </p>
         </div>
-        <div className={`p-3 rounded-full ${color}`}>{icon}</div>
+        <div className={`p-2.5 md:p-3 rounded-full ${color} shrink-0 ml-3`}>{icon}</div>
       </div>
     </CardContent>
   </Card>
 );
+
+const EditableDisplayName: React.FC<{
+  currentDisplayName: string;
+  onNameUpdate: () => void;
+}> = ({ currentDisplayName, onNameUpdate }) => {
+  const [newName, setNewName] = useState(currentDisplayName);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { isUpdating, error, updateDisplayName, clearError } = useDisplayNameUpdate();
+
+  const handleSave = async () => {
+    const success = await updateDisplayName(newName);
+    if (success) {
+      setIsDialogOpen(false);
+      onNameUpdate(); // Trigger a refresh of the profile data
+    }
+  };
+
+  const handleCancel = () => {
+    setNewName(currentDisplayName);
+    setIsDialogOpen(false);
+    clearError();
+  };
+
+  const handleDialogOpenChange = (open: boolean) => {
+    setIsDialogOpen(open);
+    if (!open) {
+      handleCancel();
+    }
+  };
+
+  return (
+    <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm" className="flex items-center gap-2">
+          <Edit3 className="w-4 h-4" />
+          Edit Name
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Edit Display Name</DialogTitle>
+          <DialogDescription>
+            Update your display name. This will be visible to other users.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="displayName">Display Name</Label>
+            <Input
+              id="displayName"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Enter your display name"
+              disabled={isUpdating}
+              className={error ? 'border-destructive' : ''}
+            />
+            {error && <p className="text-sm text-destructive">{error}</p>}
+          </div>
+        </div>
+        <DialogFooter className="flex gap-2">
+          <Button variant="outline" onClick={handleCancel} disabled={isUpdating}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={isUpdating || !newName.trim() || newName.trim() === currentDisplayName}
+            className="flex items-center gap-2"
+          >
+            {isUpdating ? (
+              <>
+                <LoadingSpinner size="sm" />
+                Updating...
+              </>
+            ) : (
+              <>
+                <Check className="w-4 h-4" />
+                Save Changes
+              </>
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const ProfileClientPage: React.FC = () => {
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -92,7 +197,16 @@ const ProfileClientPage: React.FC = () => {
     error, // Added error object from useProfileData
     displayName,
     email,
+    mutate, // Add mutate function for refreshing profile data
   } = useProfileData();
+
+  // Handle name update with profile refresh
+  const handleNameUpdate = () => {
+    // Trigger a refresh of the profile data after name update
+    if (mutate) {
+      mutate();
+    }
+  };
 
   // Show spinner initially, then transition to skeleton after a delay
   useEffect(() => {
@@ -138,19 +252,18 @@ const ProfileClientPage: React.FC = () => {
 
     // Show skeleton loading after initial spinner
     return (
-      <div
-        id="profile-container"
-        className="flex flex-col min-h-screen bg-background text-foreground pt-16 loading-fade-in"
-      >
-        <main id="profile-main-content" className="container mx-auto px-4 py-6 md:px-6 md:py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground">Profile</h1>
-            <p className="text-muted-foreground mt-2">
-              Manage your account settings and preferences
-            </p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+        <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb
+            items={[
+              { label: 'Dashboard', href: '/main' },
+              { label: 'Profile', current: true },
+            ]}
+          />
+
           <ProfileSkeleton />
-        </main>
+        </div>
       </div>
     );
   }
@@ -158,16 +271,20 @@ const ProfileClientPage: React.FC = () => {
   // isError and error are now from useProfileData
   if (isError) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-destructive">Error</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>There was an error loading your profile. Please try again later.</p>
-            {error && <p className="text-sm text-muted-foreground">{error.message}</p>}
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+        <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Card className="w-full max-w-md">
+              <CardHeader>
+                <CardTitle className="text-destructive">Error</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>There was an error loading your profile. Please try again later.</p>
+                {error && <p className="text-sm text-muted-foreground">{error.message}</p>}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     );
   }
@@ -186,94 +303,646 @@ const ProfileClientPage: React.FC = () => {
     : 'N/A';
 
   return (
-    <div
-      id="profile-container"
-      className="flex flex-col min-h-screen bg-background text-foreground pt-16"
-    >
-      <main id="profile-main-content" className="container mx-auto px-4 py-6 md:px-6 md:py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">My Profile</h1>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+      <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb
+          items={[
+            { label: 'Dashboard', href: '/main' },
+            { label: 'Profile', current: true },
+          ]}
+        />
 
-        <div className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3">
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle>Profile</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <Avatar className="h-16 w-16">
-                    <AvatarImage
-                      src={profile.avatar_url || undefined}
-                      alt={displayName || 'User'}
-                    />
-                    <AvatarFallback>{displayName?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h2 className="text-xl font-semibold text-foreground">{displayName}</h2>
-                    <p className="text-sm text-muted-foreground">{email}</p>
+        {/* Welcome Section */}
+        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 md:p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <Avatar className="w-12 h-12 md:w-16 md:h-16">
+                <AvatarImage src={profile.avatar_url || undefined} alt={displayName || 'User'} />
+                <AvatarFallback className="text-base md:text-lg">
+                  {displayName?.charAt(0).toUpperCase() || 'U'}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 md:mb-2">
+                  {displayName}&apos;s Profile
+                </h1>
+                <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <span className="block sm:inline">{email}</span>
+                  <span className="hidden sm:inline"> • </span>
+                  <span className="block sm:inline">
+                    {profile.subscription_plan || 'Free Tier'}
+                  </span>
+                  <span className="hidden sm:inline"> • </span>
+                  <span className="block sm:inline">Member since {registrationDate}</span>
+                </p>
+              </div>
+            </div>
+            {!isLoading && profile && (
+              <div className="flex items-center space-x-3 md:space-x-4 w-full sm:w-auto justify-center sm:justify-end">
+                <div className="text-center">
+                  <div className="flex items-center justify-center space-x-1.5 text-yellow-600 dark:text-yellow-400">
+                    <svg
+                      className="w-3.5 h-3.5 md:w-4 md:h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-xs md:text-sm font-medium">{profile.credit_tokens}</span>
                   </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Credits</p>
                 </div>
-                <Separator />
-                <div className="space-y-1">
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <UserIcon className="mr-2 h-4 w-4" />
-                    <span>{profile.role || 'User'}</span>
+                <div className="text-center">
+                  <div className="flex items-center justify-center space-x-1.5 text-cyan-600 dark:text-cyan-400">
+                    <svg
+                      className="w-3.5 h-3.5 md:w-4 md:h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                    <span className="text-xs md:text-sm font-medium">{profile.energy_tokens}</span>
                   </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    <span>Joined on {registrationDate}</span>
-                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Energy</p>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="lg:col-span-2 space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Tokens</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <TokenCard
-                    title="Credit Tokens"
-                    value={profile.credit_tokens || 0}
-                    icon={<CoinsIcon className="h-6 w-6 text-yellow-500" />}
-                    color="bg-yellow-100 dark:bg-yellow-900"
-                    description="Tokens for generating certifications"
-                  />
-                  <TokenCard
-                    title="Energy Tokens"
-                    value={profile.energy_tokens || 0}
-                    icon={<ZapIcon className="h-6 w-6 text-blue-500" />}
-                    color="bg-blue-100 dark:bg-blue-900"
-                    description="Tokens for AI interactions"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">User ID:</span>
-                  <Badge variant="outline">{profile.user_id}</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Subscription Plan:</span>
-                  <Badge variant="secondary">{profile.subscription_plan || 'Free Tier'}</Badge>
-                </div>
-                {/* Add more account details as needed */}
-              </CardContent>
-            </Card>
+              </div>
+            )}
           </div>
         </div>
-      </main>
+
+        {/* Profile Content */}
+        <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
+          {/* Header */}
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  Account Settings
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          {/* Tabs Content */}
+          <div className="p-3 md:p-6">
+            <Tabs defaultValue="personal" className="w-full">
+              {/* Mobile-optimized TabsList */}
+              <div className="relative mb-6">
+                <TabsList className="w-full h-auto p-1 bg-slate-100/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm md:grid md:grid-cols-4 overflow-x-auto scrollbar-none">
+                  <div className="flex md:contents min-w-max md:min-w-0">
+                    <TabsTrigger
+                      value="personal"
+                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                    >
+                      <UserIcon className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                      <span className="hidden xs:inline">Personal</span>
+                      <span className="xs:hidden">Info</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="tokens"
+                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                    >
+                      <CoinsIcon className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                      <span>Tokens</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="account"
+                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                    >
+                      <Award className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                      <span>Account</span>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="settings"
+                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                    >
+                      <Settings className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                      <span>Settings</span>
+                    </TabsTrigger>
+                  </div>
+                </TabsList>
+
+                {/* Mobile scroll indicator */}
+                <div className="md:hidden absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent pointer-events-none"></div>
+              </div>
+
+              {/* Personal Information Tab */}
+              <TabsContent value="personal">
+                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
+                  <CardHeader className="pb-3 md:pb-6">
+                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                      Personal Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem
+                        value="basic-info"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Basic Information
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                            <div>
+                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                Full Name
+                              </label>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                {displayName || 'Not provided'}
+                              </p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                Email
+                              </label>
+                              <div className="flex items-center justify-between mt-1">
+                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                  {email || 'Not provided'}
+                                </p>
+                                <EmailUpdateDialog
+                                  trigger={
+                                    <Button variant="ghost" size="sm" className="h-6 text-xs">
+                                      Update
+                                    </Button>
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                User Role
+                              </label>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                {profile.role || 'User'}
+                              </p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                Registration Date
+                              </label>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                {registrationDate}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-4 flex flex-col sm:flex-row gap-2">
+                            <EditableDisplayName
+                              currentDisplayName={displayName || 'User'}
+                              onNameUpdate={handleNameUpdate}
+                            />
+                            <Button variant="outline" className="text-sm">
+                              Edit Information
+                            </Button>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="avatar"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Profile Picture
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <Avatar className="h-16 w-16 md:h-20 md:w-20 mx-auto sm:mx-0">
+                              <AvatarImage
+                                src={profile.avatar_url || undefined}
+                                alt={displayName || 'User'}
+                              />
+                              <AvatarFallback className="text-base md:text-lg">
+                                {displayName?.charAt(0).toUpperCase() || 'U'}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="space-y-2 text-center sm:text-left flex-1">
+                              <p className="text-sm text-slate-600 dark:text-slate-400">
+                                Upload a new profile picture
+                              </p>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
+                              >
+                                Change Picture
+                              </Button>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="subscription"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Subscription Details
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div>
+                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                  Current Plan
+                                </label>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                  {profile.subscription_plan || 'Free Tier'}
+                                </p>
+                              </div>
+                              <div>
+                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                  Status
+                                </label>
+                                <div className="mt-1">
+                                  <Badge variant="secondary">Active</Badge>
+                                </div>
+                              </div>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
+                            >
+                              Manage Subscription
+                            </Button>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Tokens Tab */}
+              <TabsContent value="tokens">
+                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
+                  <CardHeader className="pb-3 md:pb-6">
+                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                      Token Management
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem
+                        value="current-tokens"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Current Token Balance
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                            <TokenCard
+                              title="Credit Tokens"
+                              value={profile.credit_tokens || 0}
+                              icon={<CoinsIcon className="h-6 w-6 text-yellow-500" />}
+                              color="bg-yellow-100 dark:bg-yellow-900"
+                              description="Tokens for generating certifications"
+                            />
+                            <TokenCard
+                              title="Energy Tokens"
+                              value={profile.energy_tokens || 0}
+                              icon={<ZapIcon className="h-6 w-6 text-blue-500" />}
+                              color="bg-blue-100 dark:bg-blue-900"
+                              description="Tokens for AI interactions"
+                            />
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="token-usage"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Token Usage History
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-3">
+                            <p className="text-sm text-muted-foreground">
+                              Recent token usage activity
+                            </p>
+                            <div className="border rounded-lg p-3 bg-slate-50 dark:bg-slate-800/50">
+                              <p className="text-sm text-center text-slate-500 dark:text-slate-400">
+                                No recent token usage
+                              </p>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="purchase-tokens"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Purchase Tokens
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            <p className="text-sm text-muted-foreground">
+                              Purchase additional tokens for enhanced features
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                Buy Credit Tokens
+                              </Button>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                Buy Energy Tokens
+                              </Button>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Account Tab */}
+              <TabsContent value="account">
+                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
+                  <CardHeader className="pb-3 md:pb-6">
+                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                      Account Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem
+                        value="account-details"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Account Details
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                              <span className="text-sm font-medium">User ID:</span>
+                              <Badge variant="outline" className="font-mono text-xs w-fit">
+                                {profile.user_id}
+                              </Badge>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                              <span className="text-sm font-medium">Account Type:</span>
+                              <Badge variant="secondary" className="w-fit">
+                                {profile.role || 'User'}
+                              </Badge>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                              <span className="text-sm font-medium">Registration Date:</span>
+                              <span className="text-sm text-muted-foreground">
+                                {registrationDate}
+                              </span>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="subscription-info"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Subscription Information
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                              <span className="text-sm font-medium">Current Plan:</span>
+                              <Badge variant="default" className="w-fit">
+                                {profile.subscription_plan || 'Free Tier'}
+                              </Badge>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                              <span className="text-sm font-medium">Plan Status:</span>
+                              <Badge variant="secondary" className="w-fit">
+                                Active
+                              </Badge>
+                            </div>
+                            <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                              Upgrade Plan
+                            </Button>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="activity"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Account Activity
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-3">
+                            <p className="text-sm text-muted-foreground">Recent account activity</p>
+                            <div className="border rounded-lg p-3 bg-slate-50 dark:bg-slate-800/50">
+                              <div className="flex items-center gap-2">
+                                <CalendarIcon className="w-4 h-4 text-muted-foreground shrink-0" />
+                                <span className="text-sm">Last login: Today</span>
+                              </div>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Settings Tab */}
+              <TabsContent value="settings">
+                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
+                  <CardHeader className="pb-3 md:pb-6">
+                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                      Account Settings
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem
+                        value="account-security"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          <div className="flex items-center gap-2">
+                            <Shield className="w-4 h-4 shrink-0" />
+                            <span>Account Security</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-sm md:text-base">Password</h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Update your password
+                                </p>
+                              </div>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                Change Password
+                              </Button>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-sm md:text-base">
+                                  Two-Factor Authentication
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Add an extra layer of security
+                                </p>
+                              </div>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                Enable 2FA
+                              </Button>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-sm md:text-base">Login Sessions</h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Manage your active sessions
+                                </p>
+                              </div>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                View Sessions
+                              </Button>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="notifications"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          <div className="flex items-center gap-2">
+                            <Bell className="w-4 h-4 shrink-0" />
+                            <span>Notifications</span>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            {[
+                              {
+                                name: 'Email Notifications',
+                                description: 'Receive updates via email',
+                                enabled: true,
+                              },
+                              {
+                                name: 'Browser Notifications',
+                                description: 'Get notified in your browser',
+                                enabled: false,
+                              },
+                              {
+                                name: 'Token Alerts',
+                                description: 'Notifications for token usage',
+                                enabled: true,
+                              },
+                              {
+                                name: 'Account Security',
+                                description: 'Security-related notifications',
+                                enabled: true,
+                              },
+                            ].map((setting, index) => (
+                              <div
+                                key={index}
+                                className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3"
+                              >
+                                <div className="flex-1">
+                                  <h4 className="font-medium text-sm md:text-base">
+                                    {setting.name}
+                                  </h4>
+                                  <p className="text-sm text-muted-foreground">
+                                    {setting.description}
+                                  </p>
+                                </div>
+                                <Button
+                                  variant={setting.enabled ? 'default' : 'outline'}
+                                  size="sm"
+                                  className="w-full sm:w-auto"
+                                >
+                                  {setting.enabled ? 'Enabled' : 'Disabled'}
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+
+                      <AccordionItem
+                        value="privacy"
+                        className="border-slate-200 dark:border-slate-700"
+                      >
+                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
+                          Privacy Settings
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 md:pb-6">
+                          <div className="space-y-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-sm md:text-base">
+                                  Profile Visibility
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Control who can see your profile
+                                </p>
+                              </div>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                Manage
+                              </Button>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-sm md:text-base">Data Export</h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Download your account data
+                                </p>
+                              </div>
+                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                                Export
+                              </Button>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-destructive text-sm md:text-base">
+                                  Delete Account
+                                </h4>
+                                <p className="text-sm text-muted-foreground">
+                                  Permanently delete your account
+                                </p>
+                              </div>
+                              <Button variant="destructive" size="sm" className="w-full sm:w-auto">
+                                Delete
+                              </Button>
+                            </div>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

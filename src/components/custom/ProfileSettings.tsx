@@ -12,6 +12,7 @@ import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
 import { useUpdateUserProfile } from '@/src/swr/profile';
 import { Settings } from 'lucide-react';
+import EmailUpdateDialog from './EmailUpdateDialog';
 
 interface ProfileSettingsProps {
   className?: string;
@@ -130,9 +131,25 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
 
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" value={formData.email} disabled={true} placeholder="Email address" />
+            <div className="flex gap-2">
+              <Input
+                id="email"
+                value={formData.email}
+                disabled={true}
+                placeholder="Email address"
+                className="flex-1"
+              />
+              <EmailUpdateDialog
+                trigger={
+                  <Button variant="outline" size="sm">
+                    Update
+                  </Button>
+                }
+              />
+            </div>
             <p className="text-xs text-muted-foreground">
-              Email address cannot be changed here. Please use Firebase Authentication settings.
+              Click &quot;Update&quot; to change your email address. A verification email will be
+              sent to the new address.
             </p>
           </div>
         </div>

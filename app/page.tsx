@@ -2,8 +2,7 @@
 
 import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import EmailVerification from '@/src/components/auth/EmailVerification';
-import PasswordReset from '@/src/components/auth/PasswordReset';
+import EmailActionHandler from '@/src/components/auth/EmailActionHandler';
 import LandingPageContent from '@/src/components/landing/LandingPageContent';
 
 // Structured Data for SEO
@@ -85,14 +84,9 @@ function MainPage() {
   const searchParams = useSearchParams();
   const mode = searchParams.get('mode');
 
-  // If mode is verifyEmail, show email verification component
-  if (mode === 'verifyEmail') {
-    return <EmailVerification />;
-  }
-
-  // If mode is resetPassword, show password reset component
-  if (mode === 'resetPassword') {
-    return <PasswordReset />;
+  // If mode is verifyEmail or resetPassword, show email action handler
+  if (mode === 'verifyEmail' || mode === 'resetPassword') {
+    return <EmailActionHandler />;
   }
 
   // Otherwise show the landing page with structured data
