@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useProfileData } from '@/src/hooks/useProfileData'; // Updated import
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/src/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { CoinsIcon, ZapIcon, CalendarIcon, UserIcon } from 'lucide-react';
+import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 
 const ProfileSkeleton: React.FC = () => (
   <div className="grid gap-4 md:gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-3">
@@ -81,6 +82,8 @@ const TokenCard: React.FC<{
 );
 
 const ProfileClientPage: React.FC = () => {
+  const [showSkeleton, setShowSkeleton] = useState(false);
+
   // Use useProfileData hook
   const {
     profile,
@@ -91,12 +94,53 @@ const ProfileClientPage: React.FC = () => {
     email,
   } = useProfileData();
 
+  // Show spinner initially, then transition to skeleton after a delay
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        setShowSkeleton(true);
+      }, 800); // Show spinner for 800ms, then transition to skeleton
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowSkeleton(false);
+    }
+  }, [isLoading]);
+
   // isLoading is now directly from useProfileData
   if (isLoading) {
+    // Show centered spinner initially
+    if (!showSkeleton) {
+      return (
+        <div className="flex flex-col min-h-screen bg-background text-foreground">
+          <div className="flex-1 flex items-center justify-center p-4">
+            <div className="flex flex-col items-center space-y-6 text-center max-w-md mx-auto loading-fade-in">
+              <div className="relative">
+                <LoadingSpinner size="xl" variant="primary" className="loading-glow" />
+                <div className="absolute -inset-4 bg-violet-500/10 rounded-full blur-xl animate-pulse"></div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold text-foreground">Loading Profile</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Please wait while we fetch your profile data and personalized information...
+                </p>
+                <div className="flex items-center justify-center space-x-1 mt-4">
+                  <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Show skeleton loading after initial spinner
     return (
       <div
         id="profile-container"
-        className="flex flex-col min-h-screen bg-background text-foreground pt-16"
+        className="flex flex-col min-h-screen bg-background text-foreground pt-16 loading-fade-in"
       >
         <main id="profile-main-content" className="container mx-auto px-4 py-6 md:px-6 md:py-8">
           <div className="mb-8">

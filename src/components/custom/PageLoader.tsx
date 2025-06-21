@@ -1,4 +1,5 @@
 import React from 'react';
+import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 
 interface PageLoaderProps {
   isLoading: boolean;
@@ -18,18 +19,21 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   }
 
   const containerClasses = fullScreen
-    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm'
+    ? 'fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 backdrop-blur-md'
     : 'flex flex-col items-center justify-center min-h-[60vh] w-full';
 
   return (
     <div className={containerClasses}>
-      <div className="loading-fade-in">
-        {showSpinner && (
-          <div className="loading-spinner rounded-full h-16 w-16 border-4 border-violet-500 border-t-transparent mb-4"></div>
-        )}
-        {/* Alternative: Indeterminate Progress Bar */}
-        {/* <Progress value={undefined} className="w-1/2 md:w-1/3 lg:w-1/4 mb-4" /> */}
-        {text && <p className="text-lg text-foreground text-center max-w-md">{text}</p>}
+      <div className="flex flex-col items-center space-y-6 p-8 rounded-lg bg-background/50 border border-border/50 shadow-2xl backdrop-blur-sm">
+        {showSpinner && <LoadingSpinner size="xl" variant="primary" className="drop-shadow-lg" />}
+        <div className="text-center space-y-2">
+          {text && <p className="text-lg font-medium text-foreground">{text}</p>}
+          <div className="flex items-center justify-center space-x-1">
+            <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce"></div>
+          </div>
+        </div>
       </div>
     </div>
   );

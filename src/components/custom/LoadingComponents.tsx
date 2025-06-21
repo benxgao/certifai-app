@@ -1,5 +1,6 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingSpinner as UnifiedLoadingSpinner } from '@/src/components/ui/loading-spinner';
 
 interface LoadingSpinnerProps {
   text?: string;
@@ -10,7 +11,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ text = 'Loading.
   return (
     <div className="flex items-center justify-center min-h-[200px]">
       <div className="text-center space-y-4 loading-fade-in">
-        <div className="loading-spinner rounded-full h-12 w-12 border-4 border-violet-500 border-t-transparent mx-auto"></div>
+        <UnifiedLoadingSpinner size="lg" variant="primary" className="mx-auto" />
         <p className="text-lg text-gray-600 dark:text-gray-400">{text}</p>
       </div>
     </div>
@@ -90,7 +91,7 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
         {/* Loading spinner overlay */}
         <div className="fixed inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-40">
           <div className="text-center space-y-4 loading-fade-in">
-            <div className="loading-spinner rounded-full h-12 w-12 border-4 border-violet-500 border-t-transparent mx-auto"></div>
+            <UnifiedLoadingSpinner size="lg" variant="primary" className="mx-auto" />
             <p className="text-lg text-gray-600 dark:text-gray-400">{title}</p>
           </div>
         </div>

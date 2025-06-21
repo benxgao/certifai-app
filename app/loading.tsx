@@ -1,5 +1,6 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 
 export default function RootLoading() {
   return (
@@ -41,7 +42,7 @@ export default function RootLoading() {
 
           {/* Loading Spinner */}
           <div className="flex justify-center">
-            <div className="loading-spinner rounded-full h-12 w-12 border-4 border-violet-500 border-t-transparent"></div>
+            <LoadingSpinner size="lg" variant="primary" />
           </div>
 
           {/* Loading Text */}

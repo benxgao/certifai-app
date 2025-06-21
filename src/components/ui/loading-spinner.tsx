@@ -15,9 +15,9 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   const sizeClasses = {
     xs: 'h-3 w-3',
     sm: 'h-4 w-4',
-    md: 'h-5 w-5',
-    lg: 'h-6 w-6',
-    xl: 'h-8 w-8',
+    md: 'h-6 w-6',
+    lg: 'h-8 w-8',
+    xl: 'h-12 w-12',
   };
 
   const variantClasses = {
@@ -27,19 +27,28 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   return (
-    <svg
-      className={cn('loading-spinner', sizeClasses[size], variantClasses[variant], className)}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
+    <div className={cn('inline-flex items-center justify-center', className)}>
+      <svg
+        className={cn('animate-spin', sizeClasses[size], variantClasses[variant], 'drop-shadow-sm')}
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        />
+      </svg>
+    </div>
   );
 };
 
@@ -64,27 +73,35 @@ export const PageTransitionLoader: React.FC<PageTransitionLoaderProps> = ({
     return (
       <div
         className={cn(
-          'fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm',
+          'fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 backdrop-blur-md',
           className,
         )}
       >
-        <div className="flex flex-col items-center space-y-4 loading-fade-in">
-          {showIcon && (
-            <div className="loading-spinner rounded-full h-12 w-12 border-4 border-violet-500 border-t-transparent" />
-          )}
-          <p className="text-lg font-medium text-slate-700 dark:text-slate-300">{text}</p>
+        <div className="flex flex-col items-center space-y-6 p-8 rounded-lg bg-background/50 border border-border/50 shadow-2xl backdrop-blur-sm">
+          {showIcon && <LoadingSpinner size="xl" variant="primary" className="drop-shadow-lg" />}
+          <div className="text-center space-y-2">
+            <p className="text-lg font-medium text-foreground">{text}</p>
+            <div className="flex items-center justify-center space-x-1">
+              <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="w-2 h-2 bg-violet-500 rounded-full animate-bounce"></div>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={cn('flex flex-col items-center justify-center py-8', className)}>
-      <div className="flex flex-col items-center space-y-4 loading-fade-in">
-        {showIcon && (
-          <div className="loading-spinner rounded-full h-8 w-8 border-4 border-violet-500 border-t-transparent" />
-        )}
-        <p className="text-slate-600 dark:text-slate-400">{text}</p>
+    <div className={cn('flex flex-col items-center justify-center py-12 px-4', className)}>
+      <div className="flex flex-col items-center space-y-4 text-center max-w-sm mx-auto">
+        {showIcon && <LoadingSpinner size="lg" variant="primary" className="drop-shadow-sm" />}
+        <p className="text-slate-600 dark:text-slate-400 font-medium">{text}</p>
+        <div className="flex items-center justify-center space-x-1">
+          <div className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-bounce"></div>
+        </div>
       </div>
     </div>
   );
