@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,93 @@ const LoginPage = () => {
   const router = useRouter();
   const { firebaseUser, loading } = useFirebaseAuth();
 
+  // Clear any existing auth state when signin page loads to ensure legacy tokens are not effective
+  // This is a security measure to prevent any lingering authentication tokens from being used
+  useEffect(() => {
+    const clearLegacyAuthState = async () => {
+      try {
+        // First, immediately clear any client-side tokens synchronously
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('firebaseToken');
+          localStorage.removeItem('apiUserId');
+          localStorage.removeItem('authToken');
+          sessionStorage.removeItem('firebaseToken');
+          sessionStorage.removeItem('apiUserId');
+          sessionStorage.removeItem('authToken');
+        }
+
+        // Sign out any existing Firebase auth session explicitly
+        try {
+          await signOut(auth);
+          console.log('Existing Firebase auth session signed out');
+        } catch {
+          // Ignore signOut errors as user might not be signed in
+          console.log('No existing Firebase session to sign out');
+        }
+
+        // Then clear server-side cookies
+        await resetAuthenticationState();
+        console.log('Legacy auth state cleared on signin page load');
+      } catch (error) {
+        console.error('Failed to clear legacy auth state on signin page load:', error);
+        // Even if server call fails, we've cleared client-side tokens and Firebase session
+      }
+    };
+
+    clearLegacyAuthState();
+  }, []); // Run only once on component mount
+
+  // Safeguard to ensure form remains functional after auth errors
+  useEffect(() => {
+    // If there's an error and we're not currently processing/loading,
+    // ensure all loading states are cleared to keep the form functional
+    if (error && !authProcessing && !isLoading) {
+      setIsRedirecting(false);
+    }
+  }, [error, authProcessing, isLoading]);
+
+  // Additional safeguard: Clear any lingering auth state when error occurs
+  useEffect(() => {
+    if (
+      error &&
+      error !==
+        'Account created! Please check your email and verify your account before signing in.' &&
+      error !== 'Account created successfully! You can now sign in.' &&
+      !error.includes('sent!')
+    ) {
+      // Only clear auth state for actual error conditions, not success messages
+      const clearAuthOnError = async () => {
+        try {
+          // Small delay to ensure any ongoing auth operations complete
+          await new Promise((resolve) => setTimeout(resolve, 50));
+
+          // Clear any client-side tokens immediately
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('firebaseToken');
+            localStorage.removeItem('apiUserId');
+            localStorage.removeItem('authToken');
+            sessionStorage.removeItem('firebaseToken');
+            sessionStorage.removeItem('apiUserId');
+            sessionStorage.removeItem('authToken');
+          }
+
+          // Also ensure Firebase is signed out
+          try {
+            await signOut(auth);
+          } catch {
+            // Ignore if already signed out
+          }
+
+          console.log('Cleared auth state due to error condition');
+        } catch (clearError) {
+          console.error('Failed to clear auth state on error:', clearError);
+        }
+      };
+
+      clearAuthOnError();
+    }
+  }, [error]);
+
   // Monitor authentication state and redirect when both firebaseUser and apiUserId are available
   useEffect(() => {
     // Only redirect if:
@@ -45,15 +132,16 @@ const LoginPage = () => {
     // 3. No signin loading in progress
     // 4. User is authenticated
     // 5. Not already redirecting
-    if (!loading && !authProcessing && !isLoading && firebaseUser && !isRedirecting) {
+    // 6. No current error state (to prevent redirect during error handling)
+    if (!loading && !authProcessing && !isLoading && firebaseUser && !isRedirecting && !error) {
       console.log('Authentication successful, initiating redirect to /main');
-      setIsRedirecting(true);
       // Use a minimal delay to ensure state is fully settled
       setTimeout(() => {
+        setIsRedirecting(true);
         router.replace('/main');
       }, 50);
     }
-  }, [firebaseUser, loading, authProcessing, isLoading, isRedirecting, router]);
+  }, [firebaseUser, loading, authProcessing, isLoading, isRedirecting, error, router]);
 
   // Clear any error messages from URL params and handle signup success
   useEffect(() => {
@@ -104,9 +192,18 @@ const LoginPage = () => {
 
   const onChange = useCallback(
     (e: any) => {
-      setForm({ ...form, [e.target.name]: e.target.value });
+      const { name, value } = e.target;
+      setForm((prevForm) => {
+        // Ensure we don't accidentally clear the form
+        const newForm = { ...prevForm, [name]: value };
+        return newForm;
+      });
+      // Clear error when user starts typing again
+      if (error) {
+        setError('');
+      }
     },
-    [form],
+    [error],
   );
 
   const handleSignin = async (e: React.FormEvent) => {
@@ -143,8 +240,21 @@ const LoginPage = () => {
         setError(
           'Please verify your email address before signing in. Check your inbox for a verification link.',
         );
-        setIsLoading(false);
-        setAuthProcessing(false);
+
+        // Sign out the user since email is not verified - prevent token persistence
+        try {
+          await signOut(auth);
+          await resetAuthenticationState();
+          console.log('Signed out unverified user and cleared auth state');
+        } catch (signOutError) {
+          console.error('Failed to sign out unverified user:', signOutError);
+        }
+
+        // Small delay to ensure auth state has settled before clearing loading states
+        setTimeout(() => {
+          setIsLoading(false);
+          setAuthProcessing(false);
+        }, 100);
         return;
       }
 
@@ -160,9 +270,18 @@ const LoginPage = () => {
 
       if (!cookieRes.ok) {
         const cookieError: any = await cookieRes.json();
-        // If cookie setting fails, show error
+        // If cookie setting fails, show error and clear any auth state
         const errorMessage = cookieError.message || 'Failed to set authentication cookie.';
         setError(errorMessage);
+
+        // Clear any lingering auth state on cookie failure
+        try {
+          await resetAuthenticationState();
+          await signOut(auth);
+        } catch (clearError) {
+          console.error('Failed to clear auth state after cookie error:', clearError);
+        }
+
         return;
       }
 
@@ -192,11 +311,38 @@ const LoginPage = () => {
       }
 
       setError(errorMessage);
+
+      // Clear any lingering auth state on signin error to prevent token reuse
+      try {
+        await resetAuthenticationState();
+        await signOut(auth);
+        console.log('Auth state cleared after signin error');
+      } catch (clearError) {
+        console.error('Failed to clear auth state after signin error:', clearError);
+        // Continue even if clearing fails - user will see the error
+      }
+
+      // Ensure all loading states are properly cleared on error
+      setIsLoading(false);
+      setIsRedirecting(false);
+      setAuthProcessing(false);
     } finally {
       setIsLoading(false);
       setAuthProcessing(false);
     }
   };
+
+  // Don't show signin form if user is already authenticated and will be redirected
+  if (!loading && firebaseUser && !error) {
+    return (
+      <div className="flex flex-col min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-slate-600">Already signed in. Redirecting...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen auth-page-mobile">
@@ -355,7 +501,9 @@ const LoginPage = () => {
                 <Button
                   type="submit"
                   className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
-                  disabled={isLoading || isRedirecting}
+                  disabled={
+                    isLoading || isRedirecting || !form.email.trim() || !form.password.trim()
+                  }
                   size="lg"
                 >
                   {(isLoading || isRedirecting) && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -38,15 +38,25 @@ export default function SignUpPage() {
   const [success, setSuccess] = useState('');
   const [showVerificationStep, setShowVerificationStep] = useState(false);
   const [resendingVerification, setResendingVerification] = useState(false);
+  const [isRedirectingToSignin, setIsRedirectingToSignin] = useState(false);
   const router = useRouter();
   const { firebaseUser } = useFirebaseAuth();
+  const isMountedRef = useRef(true);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   // Redirect if already signed in
   useEffect(() => {
-    if (firebaseUser && !loading && !showVerificationStep) {
-      router.push('/main');
+    if (firebaseUser && !loading && !showVerificationStep && !isRedirectingToSignin) {
+      // Silently redirect to main without showing any loading state
+      router.replace('/main');
     }
-  }, [firebaseUser, loading, showVerificationStep, router]);
+  }, [firebaseUser, loading, showVerificationStep, isRedirectingToSignin, router]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,18 +95,58 @@ export default function SignUpPage() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // Check if component is still mounted before proceeding
+      if (!isMountedRef.current) return;
+
       // Update user profile with display name
       await updateProfile(user, {
         displayName: `${firstName.trim()} ${lastName.trim()}`,
       });
 
-      // Send email verification
-      await sendEmailVerification(user);
+      // Check if component is still mounted before proceeding
+      if (!isMountedRef.current) return;
 
-      setShowVerificationStep(true);
-      setSuccess('Account created successfully! Please check your email to verify your account.');
+      // Send email verification with retry mechanism
+      try {
+        await sendEmailVerificationWithRetry(user);
+
+        // Check if component is still mounted before updating state
+        if (!isMountedRef.current) return;
+
+        setShowVerificationStep(true);
+        setSuccess('Account created successfully! Please check your email to verify your account.');
+      } catch (verificationError: any) {
+        console.error('Email verification error:', verificationError);
+
+        // Check if component is still mounted before updating state
+        if (!isMountedRef.current) return;
+
+        // Handle specific verification errors
+        if (
+          verificationError.message?.includes('signal is aborted') ||
+          verificationError.message?.includes('timeout') ||
+          verificationError.code === 'auth/internal-error'
+        ) {
+          // Still show verification step even if email sending failed
+          setShowVerificationStep(true);
+          setError(
+            'Account created but verification email may not have been sent. You can resend it below.',
+          );
+        } else {
+          throw verificationError; // Re-throw other errors to be handled by outer catch
+        }
+      }
     } catch (error: any) {
       console.error('Signup error:', error);
+
+      // Check if component is still mounted before updating state
+      if (!isMountedRef.current) return;
+
+      // Handle signal aborted errors specifically
+      if (error.message?.includes('signal is aborted')) {
+        setError('Operation was interrupted. Please try again.');
+        return;
+      }
 
       switch (error.code) {
         case 'auth/email-already-in-use':
@@ -118,7 +168,10 @@ export default function SignUpPage() {
           setError(error.message || 'An error occurred during signup');
       }
     } finally {
-      setLoading(false);
+      // Check if component is still mounted before updating loading state
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -129,18 +182,72 @@ export default function SignUpPage() {
     setError('');
 
     try {
-      await sendEmailVerification(auth.currentUser);
+      await sendEmailVerificationWithRetry(auth.currentUser);
+
+      // Check if component is still mounted before updating state
+      if (!isMountedRef.current) return;
+
       setSuccess('Verification email sent! Please check your inbox.');
     } catch (error: any) {
       console.error('Error resending verification:', error);
-      setError('Failed to resend verification email. Please try again.');
+
+      // Check if component is still mounted before updating state
+      if (!isMountedRef.current) return;
+
+      // Handle signal aborted errors specifically
+      if (error.message?.includes('signal is aborted')) {
+        setError('Operation was interrupted. Please try again.');
+      } else if (error.message?.includes('timeout')) {
+        setError('Request timed out. Please check your connection and try again.');
+      } else if (error.code === 'auth/internal-error') {
+        setError('Internal error occurred. Please try again in a moment.');
+      } else {
+        setError('Failed to resend verification email. Please try again.');
+      }
     } finally {
-      setResendingVerification(false);
+      // Check if component is still mounted before updating loading state
+      if (isMountedRef.current) {
+        setResendingVerification(false);
+      }
     }
   };
 
   const handleGoToSignIn = () => {
+    setIsRedirectingToSignin(true);
     router.push('/signin?message=verification-sent');
+  };
+
+  // Helper function to retry email verification with exponential backoff
+  const sendEmailVerificationWithRetry = async (user: any, maxRetries = 2): Promise<void> => {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        // Add timeout for each attempt
+        const verificationPromise = sendEmailVerification(user);
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error('Email verification timeout')), 15000); // 15 second timeout per attempt
+        });
+
+        await Promise.race([verificationPromise, timeoutPromise]);
+        return; // Success, exit the retry loop
+      } catch (error: any) {
+        console.error(`Email verification attempt ${attempt + 1} failed:`, error);
+
+        // If this is the last attempt or it's a non-retryable error, throw the error
+        if (
+          attempt === maxRetries ||
+          (!error.message?.includes('signal is aborted') &&
+            !error.message?.includes('timeout') &&
+            !error.message?.includes('network') &&
+            error.code !== 'auth/internal-error')
+        ) {
+          throw error;
+        }
+
+        // Wait before retrying (exponential backoff)
+        const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s...
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
   };
 
   if (showVerificationStep) {
@@ -210,7 +317,7 @@ export default function SignUpPage() {
 
                 <Button
                   onClick={handleResendVerification}
-                  disabled={resendingVerification}
+                  disabled={resendingVerification || isRedirectingToSignin}
                   variant="outline"
                   className="w-full rounded-xl border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200"
                   size="lg"
@@ -221,10 +328,12 @@ export default function SignUpPage() {
 
                 <Button
                   onClick={handleGoToSignIn}
+                  disabled={isRedirectingToSignin}
                   className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
                   size="lg"
                 >
-                  Continue to Sign In
+                  {isRedirectingToSignin && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
+                  {isRedirectingToSignin ? 'Redirecting...' : 'Continue to Sign In'}
                 </Button>
 
                 <div className="text-center text-sm text-slate-600 dark:text-slate-400 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50">
@@ -424,7 +533,7 @@ export default function SignUpPage() {
                       >
                         <path
                           fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zm-4 4a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                           clipRule="evenodd"
                         />
                       </svg>
