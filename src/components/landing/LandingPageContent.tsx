@@ -156,8 +156,8 @@ export default function LandingPageContent() {
               </div>
             </div>
 
-            {/* Hero Visual */}
-            <div className="flex-1 max-w-lg lg:max-w-xl">
+            {/* Hero Visual - Made bigger */}
+            <div className="flex-1 max-w-2xl lg:max-w-4xl">
               <div className="relative">
                 {/* Decorative background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-3 scale-105"></div>

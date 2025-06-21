@@ -5,6 +5,7 @@ import AppHeader from '@/components/custom/appheader';
 import PageLoader from '@/components/custom/PageLoader';
 import ErrorBoundary from '@/components/custom/ErrorBoundary';
 import AuthGuard from '@/src/components/custom/AuthGuard';
+import SimpleAppFooter from '@/src/components/custom/SimpleAppFooter';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,14 +13,23 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <AuthGuard>
         <UserCertificationsProvider>
           <UserProfileProvider>
-            <AppHeader />
-            <Suspense
-              fallback={
-                <PageLoader isLoading={true} text="Loading your dashboard..." showSpinner={true} />
-              }
-            >
-              {children}
-            </Suspense>
+            <div className="min-h-screen flex flex-col">
+              <AppHeader />
+              <div className="flex-1">
+                <Suspense
+                  fallback={
+                    <PageLoader
+                      isLoading={true}
+                      text="Loading your dashboard..."
+                      showSpinner={true}
+                    />
+                  }
+                >
+                  {children}
+                </Suspense>
+              </div>
+              <SimpleAppFooter />
+            </div>
           </UserProfileProvider>
         </UserCertificationsProvider>
       </AuthGuard>

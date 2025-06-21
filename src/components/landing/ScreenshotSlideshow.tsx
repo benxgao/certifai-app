@@ -97,8 +97,8 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
       onMouseEnter={() => setIsPlaying(false)}
       onMouseLeave={() => setIsPlaying(true)}
     >
-      {/* Main slideshow container */}
-      <div className="relative aspect-video">
+      {/* Main slideshow container - Made taller for bigger appearance */}
+      <div className="relative aspect-[16/10]">
         {screenshots.map((screenshot, index) => {
           // Only render current slide and adjacent slides for better performance
           const shouldRender =
@@ -126,8 +126,6 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
                 placeholder="blur"
                 blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyejFnyMolemMcTGWjKw8HgZhSplkwKMgZIjPJJl3+dR8I6jrfMcA3xS+1LILZJqP4vUFGjWCjFTN4pDHi9nCwpPPQWCKzjOkqGj1XvuKWCEqT06vW2mMoTYUwV"
               />
-              {/* Gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
           );
         })}
@@ -193,19 +191,21 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
           )}
         </button>
 
-        {/* Title overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
-          <h3 className="text-white font-semibold text-lg mb-1">
-            {screenshots[currentSlide].title}
-          </h3>
-          <p className="text-white/80 text-sm">
-            Experience the power of AI-driven certification training
-          </p>
+        {/* Title overlay - Only covers the title bar area */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <div className="bg-gradient-to-t from-black/70 via-black/40 to-transparent p-6">
+            <h3 className="text-white font-semibold text-lg mb-1">
+              {screenshots[currentSlide].title}
+            </h3>
+            <p className="text-white/90 text-sm">
+              Experience the power of AI-driven certification training
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Dot indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+      {/* Dot indicators - Positioned above the title overlay */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
         {screenshots.map((_, index) => (
           <button
             key={index}
