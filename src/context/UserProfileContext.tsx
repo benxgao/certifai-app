@@ -19,15 +19,22 @@ interface UserProfileProviderProps {
 }
 
 export const UserProfileProvider: React.FC<UserProfileProviderProps> = ({ children }) => {
-  const { apiUserId } = useFirebaseAuth();
+  const { apiUserId, loading: authLoading } = useFirebaseAuth();
 
-  const { data: profileResponse, error, isLoading, mutate } = useUserProfile(apiUserId);
+  // Only fetch profile data when we have apiUserId and auth is not loading
+  const shouldFetch = !authLoading && !!apiUserId;
+  const {
+    data: profileResponse,
+    error,
+    isLoading,
+    mutate,
+  } = useUserProfile(shouldFetch ? apiUserId : null);
 
   const profile = profileResponse?.data || null;
 
   const value: UserProfileContextType = {
     profile,
-    isLoading,
+    isLoading: authLoading || isLoading,
     isError: !!error,
     error,
     mutate,

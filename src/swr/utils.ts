@@ -109,8 +109,13 @@ export const fetcherWithAuth = async (
     const error = new Error('An error occurred while fetching the data.');
     try {
       (error as any).info = await res.json();
-    } catch (e) {
-      (e as any).info = await res.text();
+    } catch {
+      try {
+        (error as any).info = await res.text();
+      } catch {
+        // If we can't read the response, use status text
+        (error as any).info = res.statusText;
+      }
     }
     (error as any).status = res.status;
     throw error;

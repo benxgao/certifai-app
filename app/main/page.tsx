@@ -108,6 +108,16 @@ const MainPage = () => {
     }
   }, [firebaseUser]);
 
+  // Cleanup effect to handle component unmounting
+  useEffect(() => {
+    return () => {
+      // Reset local state when component unmounts to prevent stale state
+      setIsRegisterModalOpen(false);
+      setSelectedCertificationId(null);
+      setRegistrationError(null);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
       <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">

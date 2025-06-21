@@ -19,9 +19,20 @@ export const DEFAULT_FETCH_OPTIONS: RequestInit = {
 export const optimizedFetch = async (
   url: string,
   options: RequestInit = {},
-  timeoutMs = 5000,
+  timeoutMs = 10000, // Increased default timeout to 10 seconds
 ): Promise<Response> => {
+  // Check if there's already an abort signal provided
+  const existingSignal = options.signal;
   const controller = new AbortController();
+
+  // If there's an existing signal, abort when it aborts
+  if (existingSignal) {
+    if (existingSignal.aborted) {
+      throw new Error('Request was cancelled before it started');
+    }
+    existingSignal.addEventListener('abort', () => controller.abort());
+  }
+
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
@@ -43,10 +54,19 @@ export const optimizedFetch = async (
     // Enhance error messages for better user experience
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        // Create a more descriptive error for timeout scenarios
-        const timeoutError = new Error(`Request timed out after ${timeoutMs}ms`);
-        timeoutError.name = 'TimeoutError';
-        throw timeoutError;
+        // Check if it was a timeout or an external abort
+        if (existingSignal?.aborted) {
+          // External abort (component unmounted, navigation, etc.)
+          console.log('Request cancelled due to component cleanup or navigation');
+          const cancelError = new Error('Request was cancelled');
+          cancelError.name = 'CancelledError';
+          throw cancelError;
+        } else {
+          // Timeout abort
+          const timeoutError = new Error(`Request timed out after ${timeoutMs}ms`);
+          timeoutError.name = 'TimeoutError';
+          throw timeoutError;
+        }
       }
 
       // Preserve other error types but ensure they have meaningful messages

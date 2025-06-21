@@ -18,16 +18,23 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const [apiTimeout, setApiTimeout] = useState(false);
   const router = useRouter();
 
-  // Set a 3-second timeout if API user ID doesn't load (reduced from 5s for better UX)
+  // Set a 5-second timeout if API user ID doesn't load (increased from 3s for better stability)
   useEffect(() => {
     if (firebaseUser && !apiUserId && !apiTimeout) {
       const timer = setTimeout(() => {
-        console.warn('API user ID not available after 3 seconds - proceeding without it');
+        console.warn('API user ID not available after 5 seconds - proceeding without it');
         setApiTimeout(true);
-      }, 3000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [firebaseUser, apiUserId, apiTimeout]);
+
+  // Reset API timeout when apiUserId becomes available
+  useEffect(() => {
+    if (apiUserId && apiTimeout) {
+      setApiTimeout(false);
+    }
+  }, [apiUserId, apiTimeout]);
 
   // Check if user needs email verification
   useEffect(() => {
@@ -52,7 +59,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     return <PageLoader isLoading={true} text="Email verification required..." showSpinner={true} />;
   }
 
-  // Case 3: User authenticated but waiting for API setup - show loading (max 3 seconds)
+  // Case 3: User authenticated but waiting for API setup - show loading (max 5 seconds)
   if (firebaseUser && !apiUserId && !apiTimeout) {
     return <PageLoader isLoading={true} text="Setting up your account..." showSpinner={true} />;
   }

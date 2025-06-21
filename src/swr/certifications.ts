@@ -156,6 +156,26 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
     Error
   >(
     apiUserId ? `/api/users/${apiUserId}/certifications` : null, // Conditional fetching
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      dedupingInterval: 20000, // Increased cache time
+      refreshInterval: 0, // Don't auto-refresh
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+      focusThrottleInterval: 15000,
+      errorRetryCount: 2,
+      errorRetryInterval: 3000,
+      // Prevent multiple rapid requests
+      shouldRetryOnError: (error) => {
+        // Don't retry on cancellation errors
+        if ((error as any)?.name === 'CancelledError') {
+          return false;
+        }
+        // Retry on timeout and network errors
+        return (error as any)?.name === 'TimeoutError' || (error as any)?.name === 'NetworkError';
+      },
+    },
   );
 
   return {
