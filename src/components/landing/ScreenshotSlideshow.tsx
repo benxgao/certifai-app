@@ -133,7 +133,7 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
         {/* Navigation arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100"
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100 cursor-pointer"
           aria-label="Previous slide"
         >
           <svg
@@ -153,7 +153,7 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
 
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100"
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100 cursor-pointer"
           aria-label="Next slide"
         >
           <svg
@@ -169,7 +169,7 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
         {/* Play/Pause button */}
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className="absolute top-4 right-4 w-8 h-8 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100"
+          className="absolute top-4 right-4 w-8 h-8 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 opacity-0 hover:opacity-100 group-hover:opacity-100 cursor-pointer"
           aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
         >
           {isPlaying ? (
@@ -210,7 +210,7 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-200 ${
+            className={`w-2 h-2 rounded-full transition-all duration-200 cursor-pointer ${
               index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
             }`}
             aria-label={`Go to slide ${index + 1}`}
