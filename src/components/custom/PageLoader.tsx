@@ -23,12 +23,14 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <div className={containerClasses}>
-      {showSpinner && (
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary mb-4"></div>
-      )}
-      {/* Alternative: Indeterminate Progress Bar */}
-      {/* <Progress value={undefined} className="w-1/2 md:w-1/3 lg:w-1/4 mb-4" /> */}
-      {text && <p className="text-lg text-foreground text-center max-w-md">{text}</p>}
+      <div className="loading-fade-in">
+        {showSpinner && (
+          <div className="loading-spinner rounded-full h-16 w-16 border-4 border-violet-500 border-t-transparent mb-4"></div>
+        )}
+        {/* Alternative: Indeterminate Progress Bar */}
+        {/* <Progress value={undefined} className="w-1/2 md:w-1/3 lg:w-1/4 mb-4" /> */}
+        {text && <p className="text-lg text-foreground text-center max-w-md">{text}</p>}
+      </div>
     </div>
   );
 };

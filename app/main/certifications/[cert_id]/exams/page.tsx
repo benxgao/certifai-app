@@ -686,7 +686,7 @@ function CertificationExamsContent() {
                       <span className="flex items-center justify-center space-x-2">
                         {navigatingExamId === exam.exam_id ? (
                           <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-current"></div>
+                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
                             <span>Loading Exam...</span>
                           </>
                         ) : examStatus === 'completed_successful' ? (

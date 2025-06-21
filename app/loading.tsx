@@ -41,7 +41,7 @@ export default function RootLoading() {
 
           {/* Loading Spinner */}
           <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-primary"></div>
+            <div className="loading-spinner rounded-full h-12 w-12 border-4 border-violet-500 border-t-transparent"></div>
           </div>
 
           {/* Loading Text */}

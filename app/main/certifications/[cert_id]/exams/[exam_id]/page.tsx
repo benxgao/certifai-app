@@ -753,7 +753,7 @@ export default function ExamAttemptPage() {
                   >
                     {isNavigatingPage ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-current mr-2"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
                         Loading...
                       </>
                     ) : (
@@ -784,7 +784,7 @@ export default function ExamAttemptPage() {
                         >
                           {isNavigatingPage ? (
                             <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                               {isLastPage ? 'Preparing...' : 'Loading...'}
                             </>
                           ) : isLastPage ? (
@@ -818,7 +818,7 @@ export default function ExamAttemptPage() {
                           >
                             {isNavigatingPage ? (
                               <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                                 Loading...
                               </>
                             ) : (
@@ -860,7 +860,7 @@ export default function ExamAttemptPage() {
               <span className="flex items-center space-x-2">
                 {isNavigatingPage ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
                     <span className="hidden sm:inline">Preparing...</span>
                   </>
                 ) : (

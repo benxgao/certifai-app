@@ -228,7 +228,7 @@ export default function ComingSoonPage() {
                     />
                     <Button type="submit" disabled={isSubmitting}>
                       {isSubmitting ? (
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
                       ) : (
                         <Mail className="h-4 w-4" />
                       )}

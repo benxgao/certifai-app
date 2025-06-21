@@ -19,6 +19,7 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import { resetAuthenticationState } from '@/src/lib/auth-utils';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { PageTransitionLoader, ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 
 import { auth } from '@/src/firebase/firebaseWebConfig';
 
@@ -379,12 +380,12 @@ const LoginPage = () => {
 
   if (!loading && firebaseUser && !isAuthError) {
     return (
-      <div className="flex flex-col min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-slate-600">Already signed in. Redirecting...</p>
-        </div>
-      </div>
+      <PageTransitionLoader
+        isLoading={true}
+        text="Already signed in. Redirecting..."
+        variant="inline"
+        className="min-h-screen"
+      />
     );
   }
 
@@ -533,29 +534,13 @@ const LoginPage = () => {
                   }
                   size="lg"
                 >
-                  {(isLoading || isRedirecting) && (
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                  )}
-                  {isRedirecting ? 'Redirecting...' : isLoading ? 'Signing In...' : 'Sign In'}
+                  <ButtonLoadingText
+                    isLoading={isLoading || isRedirecting}
+                    loadingText={isRedirecting ? 'Redirecting...' : 'Signing In...'}
+                    defaultText="Sign In"
+                    showSpinner={true}
+                    spinnerSize="sm"
+                  />
                 </Button>
               </CardContent>
               <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-400 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 sm:px-6">

@@ -209,4 +209,59 @@ body {
       gap: 0.375rem; /* 6px instead of 8px */
     }
   }
+
+  /* Unified Loading Spinner Styles */
+  @keyframes spin-smooth {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-spinner {
+    animation: spin-smooth 1s linear infinite;
+  }
+
+  .loading-spinner-primary {
+    border-color: transparent;
+    border-top-color: #8b5cf6; /* violet-500 */
+    border-right-color: #8b5cf6;
+  }
+
+  .loading-spinner-white {
+    border-color: transparent;
+    border-top-color: #ffffff;
+    border-right-color: #ffffff;
+  }
+
+  .loading-spinner-muted {
+    border-color: transparent;
+    border-top-color: #94a3b8; /* slate-400 */
+    border-right-color: #94a3b8;
+  }
+
+  /* Enhanced loading transitions */
+  .loading-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile-optimized loading states */
+  @media (max-width: 640px) {
+    .loading-spinner {
+      animation-duration: 0.8s; /* Slightly faster on mobile for better perceived performance */
+    }
+  }
 }
