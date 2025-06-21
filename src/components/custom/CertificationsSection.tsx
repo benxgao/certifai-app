@@ -3,66 +3,22 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
+import { useUserProfileContext } from '@/context/UserProfileContext';
 import { UserRegisteredCertification } from '@/swr/certifications';
 import { FaGraduationCap, FaCertificate, FaTrophy } from 'react-icons/fa';
-import { Skeleton } from '@/components/ui/skeleton';
-
-const CertificationCardSkeleton = () => (
-  <div className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden">
-    {/* Header skeleton */}
-    <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-      <div className="flex items-start justify-between">
-        <div className="flex-1 space-y-3">
-          <Skeleton className="h-5 w-32" />
-          <Skeleton className="h-7 w-3/4" />
-        </div>
-        <Skeleton className="h-8 w-24 rounded-lg" />
-      </div>
-    </div>
-
-    {/* Content skeleton */}
-    <div className="p-6 pt-4">
-      <div className="flex flex-col space-y-5">
-        {/* Three-column metrics skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50"
-            >
-              <div className="flex items-center space-x-3">
-                <Skeleton className="w-8 h-8 rounded-lg" />
-                <div className="flex-1 space-y-2">
-                  <Skeleton className="h-3 w-24" />
-                  <Skeleton className="h-5 w-16" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Action button skeleton */}
-        <div className="flex justify-center mt-2">
-          <Skeleton className="h-12 w-64 rounded-xl" />
-        </div>
-      </div>
-    </div>
-  </div>
-);
+import { UserCertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 
 const CertificationsSection = () => {
   const router = useRouter();
   const { userCertifications, isLoadingUserCertifications, isUserCertificationsError } =
     useUserCertifications();
+  const { isLoading: isLoadingProfile } = useUserProfileContext();
 
-  if (isLoadingUserCertifications) {
-    return (
-      <div className="space-y-6">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <CertificationCardSkeleton key={`skeleton-${index}`} />
-        ))}
-      </div>
-    );
+  // Combine loading states - show skeleton while either is loading
+  const isLoading = isLoadingUserCertifications || isLoadingProfile;
+
+  if (isLoading) {
+    return <UserCertificationCardSkeleton count={3} />;
   }
 
   if (isUserCertificationsError) {

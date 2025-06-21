@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ExamCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -117,41 +118,7 @@ function CertificationExamsContent() {
           </div>
 
           {/* Skeleton Cards */}
-          <div className="space-y-6">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Card
-                key={`exam-skeleton-${index}`}
-                className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
-              >
-                <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-3">
-                      <Skeleton className="h-6 w-32" />
-                      <Skeleton className="h-4 w-48" />
-                    </div>
-                    <Skeleton className="h-8 w-24 rounded-lg" />
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-6 w-20" />
-                    </div>
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-6 w-24" />
-                    </div>
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-12" />
-                      <Skeleton className="h-6 w-16" />
-                    </div>
-                  </div>
-                  <Skeleton className="h-12 w-full rounded-lg" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <ExamCardSkeleton count={3} />
         </div>
       </div>
     );

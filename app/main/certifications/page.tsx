@@ -14,6 +14,7 @@ import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationGrid from '@/components/custom/CertificationGrid';
+import { CertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
 
 export default function CertificationsPage() {
@@ -195,50 +196,7 @@ export default function CertificationsPage() {
             </h2>
           </div>
 
-          <Suspense
-            fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <div
-                    key={`suspense-skeleton-${index}`}
-                    className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 rounded-2xl overflow-hidden"
-                  >
-                    {/* Header skeleton */}
-                    <div className="bg-white dark:bg-slate-800 p-6 h-40 relative">
-                      <div className="h-full w-full">
-                        <div className="flex flex-col justify-between h-full pr-8">
-                          <div className="min-h-[4rem] flex items-start">
-                            <div className="space-y-3 w-full">
-                              <div className="h-7 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-full" />
-                              <div className="h-7 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-4/5" />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-32" />
-                            <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-28" />
-                          </div>
-                        </div>
-                        {/* Absolutely positioned label skeleton */}
-                        <div className="absolute top-6 right-6">
-                          <div className="w-3 h-3 bg-slate-200 dark:bg-slate-600 rounded-full animate-pulse" />
-                        </div>
-                      </div>
-                    </div>
-                    {/* Content skeleton */}
-                    <div className="p-6 space-y-6">
-                      {/* Status indicator skeleton */}
-                      <div className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-slate-200 dark:bg-slate-600 rounded-full animate-pulse" />
-                        <div className="h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-20" />
-                      </div>
-                      {/* Button skeleton */}
-                      <div className="h-12 bg-slate-200 dark:bg-slate-600 rounded-xl animate-pulse w-full" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            }
-          >
+          <Suspense fallback={<CertificationCardSkeleton count={4} />}>
             <CertificationGrid
               onRegister={handleOpenModal}
               isRegistering={isRegistering}

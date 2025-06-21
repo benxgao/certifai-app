@@ -18,6 +18,10 @@ import {
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
 import DashboardStats from '@/components/custom/DashboardStats';
+import {
+  DashboardStatSkeleton,
+  UserCertificationCardSkeleton,
+} from '@/src/components/ui/card-skeletons';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
@@ -277,26 +281,7 @@ const MainPage = () => {
 
           {/* Dashboard Stats */}
           <div className="px-6 py-6">
-            <Suspense
-              fallback={
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm"
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-center space-x-2">
-                          <div className="w-4 h-4 bg-slate-200 dark:bg-slate-600 rounded animate-pulse" />
-                          <div className="h-3 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-20" />
-                        </div>
-                        <div className="h-6 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-8 mx-auto" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              }
-            >
+            <Suspense fallback={<DashboardStatSkeleton count={5} />}>
               <DashboardStats />
             </Suspense>
           </div>
@@ -317,54 +302,7 @@ const MainPage = () => {
             </Button>
           </div>
 
-          <Suspense
-            fallback={
-              <div className="space-y-6">
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <div
-                    key={`suspense-skeleton-${index}`}
-                    className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
-                  >
-                    {/* Header skeleton */}
-                    <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 space-y-3">
-                          <div className="h-5 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-32"></div>
-                          <div className="h-7 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-3/4"></div>
-                        </div>
-                        <div className="h-8 bg-slate-200 dark:bg-slate-600 rounded-lg animate-pulse w-24"></div>
-                      </div>
-                    </div>
-
-                    {/* Content skeleton */}
-                    <div className="p-6 pt-4">
-                      <div className="flex flex-col space-y-5">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          {Array.from({ length: 3 }).map((_, i) => (
-                            <div
-                              key={i}
-                              className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-slate-200 dark:bg-slate-600 rounded-lg animate-pulse"></div>
-                                <div className="flex-1 space-y-2">
-                                  <div className="h-3 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-24"></div>
-                                  <div className="h-5 bg-slate-200 dark:bg-slate-600 rounded animate-pulse w-16"></div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="flex justify-center mt-2">
-                          <div className="h-12 bg-slate-200 dark:bg-slate-600 rounded-xl animate-pulse w-64"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            }
-          >
+          <Suspense fallback={<UserCertificationCardSkeleton count={3} />}>
             <CertificationsSection />
           </Suspense>
         </section>
