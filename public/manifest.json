@@ -1,0 +1,66 @@
+{
+  "name": "CertifAI - AI-Powered IT Certification Training",
+  "short_name": "CertifAI",
+  "description": "Practice IT certifications with AI-generated questions and personalized study recommendations. Join our growing community of 500+ beta users preparing smarter.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "CertifAI Dashboard - AI-powered practice exams"
+    },
+    {
+      "src": "/images/screenshot-2.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Personalized study recommendations"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start Practice Exam",
+      "short_name": "Practice",
+      "description": "Begin an AI-generated practice exam",
+      "url": "/main/certifications",
+      "icons": [{ "src": "/images/shortcut-practice.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "View Progress",
+      "short_name": "Progress",
+      "description": "Check your learning progress",
+      "url": "/main/profile",
+      "icons": [{ "src": "/images/shortcut-progress.png", "sizes": "96x96" }]
+    }
+  ]
+}

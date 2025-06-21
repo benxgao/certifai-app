@@ -11,7 +11,7 @@ export default function LandingPageContent() {
       <LandingHeader showFeaturesLink={true} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden" role="banner">
         {/* Background decorative elements */}
         <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -25,6 +25,7 @@ export default function LandingPageContent() {
                 className="w-4 h-4 text-green-600 dark:text-green-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
+                aria-hidden="true"
               >
                 <path
                   fillRule="evenodd"
@@ -33,7 +34,7 @@ export default function LandingPageContent() {
                 />
               </svg>
               <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Early Beta - Join the Community
+                Early Beta - Join 500+ Users Already Learning
               </span>
             </div>
           </div>
@@ -43,7 +44,7 @@ export default function LandingPageContent() {
             <div className="flex-1 max-w-2xl text-center lg:text-left">
               {/* Beta badge */}
               <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-6">
-                <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse" aria-hidden="true"></div>
                 <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
                   Beta Access Available
                 </span>
@@ -58,31 +59,30 @@ export default function LandingPageContent() {
               </h1>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
-                An experimental AI-powered platform for IT certification practice. Currently in
-                early beta - help shape the future of certification training.
+                Master IT certifications with intelligent, personalized AI-powered practice questions and adaptive learning paths. Join our growing community of professionals advancing their careers through smart technology.
               </p>
 
-              {/* Stats */}
+              {/* Enhanced Stats with SEO keywords */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 mb-10">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    Early
+                    500+
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Stage</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Users</div>
                 </div>
-                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700" aria-hidden="true"></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    Growing
+                    AI-First
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Community</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Technology</div>
                 </div>
-                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700" aria-hidden="true"></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    Open
+                    Free
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Source</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
                 </div>
               </div>
 

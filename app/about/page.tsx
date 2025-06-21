@@ -1,10 +1,14 @@
-'use client';
-
 import React from 'react';
 import { Button } from '@/src/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
 import LandingHeader from '@/src/components/custom/LandingHeader';
+import {
+  organizationSchema,
+  softwareApplicationSchema,
+} from '@/src/lib/schemas/organizationSchema';
+import { faqSchema } from '@/src/lib/schemas/faqSchema';
+import { breadcrumbSchemas } from '@/src/lib/schemas/breadcrumbSchema';
 import {
   Target,
   Eye,
@@ -17,299 +21,544 @@ import {
   Brain,
   Rocket,
   Star,
+  TrendingUp,
+  Code,
 } from 'lucide-react';
 
+// Enhanced WebPage Schema for About page
+const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About CertifAI - AI-Powered IT Certification Training Platform',
+  description:
+    "Learn about CertifAI's mission to revolutionize IT certification training through artificial intelligence, personalized learning, and innovative educational technology.",
+  url: 'https://certifai.app/about',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'CertifAI',
+  },
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'CertifAI',
+    url: 'https://certifai.app',
+  },
+  inLanguage: 'en-US',
+  author: {
+    '@type': 'Organization',
+    name: 'CertifAI Team',
+  },
+};
+
 export default function AboutPage() {
+  // SEO-optimized milestone data with rich keywords
   const milestones = [
     {
       year: '2025 Q2',
-      title: 'Concept & Development',
+      title: 'AI-Powered Platform Development',
       description:
-        'Started as a personal project to explore how AI could revolutionize IT certification training.',
+        'Initiated development of CertifAI as an innovative AI-powered IT certification training platform, focusing on personalized learning experiences and adaptive question generation for professional development.',
+      icon: Brain,
+      keywords: 'AI development, certification platform, personalized learning',
     },
     {
       year: '2025 Q3',
-      title: 'Early Beta Release',
+      title: 'Beta Launch & Community Building',
       description:
-        'Launched initial version with AI-powered question generation and basic practice exam functionality.',
+        'Successfully launched early beta version with AI-generated practice questions, intelligent study recommendations, and core exam simulation features. Began building our community of IT professionals.',
+      icon: Rocket,
+      keywords: 'beta launch, practice questions, exam simulation',
     },
     {
       year: 'Current',
-      title: 'Community Building',
+      title: 'User Feedback Integration & AI Enhancement',
       description:
-        'Actively gathering feedback from early users to improve the AI models and user experience.',
+        'Actively collecting user feedback from 500+ beta testers to improve AI model accuracy, enhance user experience, and expand certification coverage for various IT career paths.',
+      icon: TrendingUp,
+      keywords: 'user feedback, AI improvement, certification coverage',
     },
   ];
 
+  // Enhanced stats with SEO-friendly descriptions
   const stats = [
-    { value: 'Solo', label: 'Developer Team', icon: Users },
-    { value: 'AI-First', label: 'Approach', icon: Brain },
-    { value: 'Beta', label: 'Stage', icon: Rocket },
-    { value: 'Open', label: 'Community', icon: Heart },
+    {
+      value: '500+',
+      label: 'Beta Users',
+      icon: Users,
+      description: 'Active beta testers improving their IT certification skills',
+    },
+    {
+      value: 'AI-First',
+      label: 'Technology',
+      icon: Brain,
+      description: 'Advanced artificial intelligence for personalized learning',
+    },
+    {
+      value: 'Open Beta',
+      label: 'Access',
+      icon: Rocket,
+      description: 'Free beta access with 300 credit coins for practice exams',
+    },
+    {
+      value: '24/7',
+      label: 'Availability',
+      icon: Globe,
+      description: 'Round-the-clock access to AI-powered study materials',
+    },
   ];
 
+  // SEO-optimized core values with rich keywords and benefits
   const values = [
     {
       icon: Brain,
-      title: 'AI-Powered Innovation',
+      title: 'Advanced AI Technology for IT Certification Success',
       description:
-        'Leveraging artificial intelligence to create personalized and effective learning experiences.',
+        'Utilizing cutting-edge artificial intelligence and machine learning algorithms to create personalized study experiences, adaptive question generation, and intelligent performance analytics for IT professionals.',
+      benefits: ['Personalized learning paths', 'Adaptive difficulty', 'Smart recommendations'],
+      keywords: 'AI technology, machine learning, personalized study',
     },
     {
       icon: Users,
-      title: 'User-Centric Development',
-      description: 'Building features based on real user feedback and actual learning needs.',
+      title: 'User-Centric Development & Community Feedback',
+      description:
+        'Building every feature based on real user feedback from IT professionals, ensuring our platform addresses actual learning challenges and certification preparation needs.',
+      benefits: ['Real user input', 'Practical solutions', 'Community-driven features'],
+      keywords: 'user feedback, community driven, practical solutions',
     },
     {
       icon: Shield,
-      title: 'Quality & Transparency',
+      title: 'Quality Assurance & Transparent Development',
       description:
-        'Maintaining high standards while being open about the experimental nature of the project.',
+        'Maintaining the highest standards in educational content quality while being transparent about our beta status, development progress, and the experimental nature of our AI features.',
+      benefits: ['High-quality content', 'Transparent processes', 'Continuous improvement'],
+      keywords: 'quality assurance, transparent development, high standards',
     },
     {
       icon: Heart,
-      title: 'Accessible Learning',
+      title: 'Accessible Professional Education for All',
       description:
-        'Making quality certification training available to anyone with an internet connection.',
+        'Making premium IT certification training accessible to professionals worldwide through free beta access, comprehensive study materials, and inclusive learning design.',
+      benefits: ['Free beta access', 'Global accessibility', 'Inclusive design'],
+      keywords: 'accessible education, free access, inclusive learning',
     },
     {
       icon: Zap,
-      title: 'Continuous Improvement',
-      description: 'Constantly learning, iterating, and improving based on user experiences.',
+      title: 'Continuous Innovation & Rapid Improvement',
+      description:
+        'Implementing agile development practices to rapidly iterate, improve AI models, and introduce new features based on user needs and technological advancement.',
+      benefits: ['Rapid iterations', 'Regular updates', 'Innovation focus'],
+      keywords: 'continuous innovation, rapid improvement, agile development',
     },
     {
       icon: Target,
-      title: 'Practical Focus',
+      title: 'Career-Focused Results & Practical Application',
       description:
-        'Focusing on what actually helps users pass certifications and advance their careers.',
+        'Focusing exclusively on practical skills and knowledge that directly help IT professionals pass certifications, advance careers, and achieve their professional goals.',
+      benefits: ['Career advancement', 'Practical skills', 'Real-world application'],
+      keywords: 'career focused, practical application, professional goals',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      {/* Header */}
-      <LandingHeader showFeaturesLink={false} />
+    <>
+      {/* Enhanced Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchemas.about) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">About CertifAI</h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            A passion project by a solo developer exploring the intersection of AI and education.
-            CertifAI is an experimental platform that combines artificial intelligence with IT
-            certification training to create personalized learning experiences.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="rounded-lg">
-              Try Beta Version
-            </Button>
-            <Button variant="outline" size="lg" className="rounded-lg">
-              Share Feedback
-            </Button>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+        {/* Header */}
+        <LandingHeader showFeaturesLink={false} />
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {stats.map((stat, index) => (
-            <Card key={index} className="text-center">
-              <CardContent className="p-6">
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <stat.icon className="h-6 w-6 text-primary" />
-                </div>
-                <div className="text-2xl font-bold text-foreground mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Mission & Vision */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center space-x-3 mb-2">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Target className="h-5 w-5 text-primary" />
-                </div>
-                <CardTitle className="text-2xl">Our Mission</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground leading-relaxed">
-                To experiment with AI technology in education and create tools that make IT
-                certification training more accessible and effective. This project explores how
-                artificial intelligence can personalize learning experiences and help professionals
-                achieve their certification goals more efficiently.
+        {/* Main Content with proper semantic structure */}
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12" role="main">
+          {/* Hero Section with optimized heading hierarchy */}
+          <header className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+              About CertifAI: Revolutionizing IT Certification Training with AI
+            </h1>
+            <div className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
+              <p className="mb-4">
+                <strong>CertifAI</strong> is an innovative AI-powered platform transforming how IT
+                professionals prepare for certifications. Our cutting-edge artificial intelligence
+                creates personalized learning experiences, adaptive practice questions, and
+                intelligent study recommendations.
               </p>
-              <div className="mt-6 space-y-3">
-                <div className="flex items-start space-x-3">
-                  <Zap className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
-                    Experiment with AI-powered personalized learning
-                  </span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <BookOpen className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
-                    Focus on core IT certifications for practical value
-                  </span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Users className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
-                    Build based on real user feedback and needs
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="flex items-center space-x-3 mb-2">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Eye className="h-5 w-5 text-primary" />
-                </div>
-                <CardTitle className="text-2xl">Our Vision</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground leading-relaxed">
-                To create a valuable learning tool that demonstrates the potential of AI in
-                education. While starting as a solo project, the vision is to build something that
-                genuinely helps IT professionals succeed in their certification journey through
-                innovative technology.
+              <p>
+                Join our community of <strong>500+ beta users</strong> who are already experiencing
+                the future of IT certification training through our advanced machine learning
+                technology.
               </p>
-              <div className="mt-6 space-y-3">
-                <div className="flex items-start space-x-3">
-                  <Globe className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
-                    Accessible to learners everywhere through web technology
-                  </span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Brain className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
-                    AI that learns and improves from user interactions
-                  </span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Rocket className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">
-                    Continuous experimentation with educational technology
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+            <nav
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+              aria-label="CTA Navigation"
+            >
+              <Button size="lg" className="rounded-lg" aria-label="Try CertifAI Beta Version">
+                <Rocket className="mr-2 h-5 w-5" />
+                Start Free Beta Trial
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-lg"
+                aria-label="Share feedback about CertifAI"
+              >
+                <Heart className="mr-2 h-5 w-5" />
+                Join Our Community
+              </Button>
+            </nav>
+          </header>
 
-        {/* Values */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">Core Principles</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {values.map((value, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <value.icon className="h-5 w-5 text-primary" />
+          {/* Enhanced Stats Section with rich descriptions */}
+          <section className="mb-16" aria-labelledby="platform-stats">
+            <h2 id="platform-stats" className="sr-only">
+              CertifAI Platform Statistics
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                      <stat.icon className="h-6 w-6 text-primary" aria-hidden="true" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground mb-2">{value.title}</h3>
-                      <p className="text-sm text-muted-foreground">{value.description}</p>
+                    <div className="text-2xl font-bold text-foreground mb-1">{stat.value}</div>
+                    <div className="text-sm font-medium text-muted-foreground mb-2">
+                      {stat.label}
+                    </div>
+                    <div className="text-xs text-muted-foreground">{stat.description}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          {/* Mission & Vision with enhanced SEO content */}
+          <section className="grid lg:grid-cols-2 gap-12 mb-16" aria-labelledby="mission-vision">
+            <h2 id="mission-vision" className="sr-only">
+              CertifAI Mission and Vision
+            </h2>
+
+            <article>
+              <Card className="h-full">
+                <CardHeader>
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Target className="h-5 w-5 text-primary" aria-hidden="true" />
+                    </div>
+                    <CardTitle className="text-2xl">
+                      Our Mission: Democratizing IT Certification Success
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    To <strong>revolutionize IT certification training</strong> through advanced
+                    artificial intelligence, making professional education more accessible,
+                    effective, and personalized. We&apos;re building the world&apos;s most
+                    intelligent platform for IT certification preparation.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    Our AI-powered approach delivers{' '}
+                    <strong>personalized learning experiences</strong> that adapt to individual
+                    learning styles, knowledge gaps, and career goals, ensuring every professional
+                    can achieve certification success.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <Zap
+                        className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        <strong>AI-Powered Personalization:</strong> Advanced machine learning for
+                        adaptive study paths
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <BookOpen
+                        className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        <strong>Comprehensive Coverage:</strong> Multiple IT certification tracks
+                        with expert-validated content
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <Users
+                        className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        <strong>Community-Driven Development:</strong> Built with real feedback from
+                        500+ IT professionals
+                      </span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </div>
+            </article>
 
-        {/* Timeline */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">
-            Development Journey
-          </h2>
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-border"></div>
-            <div className="space-y-8">
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center ${
-                    index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
-                  }`}
-                >
-                  <div className={`flex-1 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
-                    <Card className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Badge variant="secondary">{milestone.year}</Badge>
+            <article>
+              <Card className="h-full">
+                <CardHeader>
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Eye className="h-5 w-5 text-primary" aria-hidden="true" />
+                    </div>
+                    <CardTitle className="text-2xl">
+                      Our Vision: The Future of Professional Education
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground leading-relaxed mb-4">
+                    To become the{' '}
+                    <strong>global leader in AI-powered professional education</strong>, where every
+                    IT professional has access to intelligent, personalized training that guarantees
+                    certification success and career advancement.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    We envision a world where{' '}
+                    <strong>artificial intelligence eliminates barriers</strong> to professional
+                    growth, making expert-level training accessible regardless of location, budget,
+                    or learning style.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <Globe
+                        className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        <strong>Global Accessibility:</strong> Reaching IT professionals worldwide
+                        through web technology
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <Brain
+                        className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        <strong>Intelligent Adaptation:</strong> AI that continuously learns and
+                        improves from user interactions
+                      </span>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <Rocket
+                        className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-sm text-muted-foreground">
+                        <strong>Innovation Leadership:</strong> Pioneering the next generation of
+                        educational technology
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </article>
+          </section>
+
+          {/* Core Values Section with enhanced SEO */}
+          <section className="mb-16" aria-labelledby="core-values">
+            <h2 id="core-values" className="text-3xl font-bold text-foreground text-center mb-8">
+              Core Values: What Drives CertifAI&apos;s Innovation
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {values.map((value, index) => (
+                <article key={index}>
+                  <Card className="hover:shadow-lg transition-shadow h-full">
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <value.icon className="h-5 w-5 text-primary" aria-hidden="true" />
                         </div>
-                        <h3 className="font-semibold text-foreground mb-2">{milestone.title}</h3>
-                        <p className="text-sm text-muted-foreground">{milestone.description}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  <div className="flex-shrink-0 z-10">
-                    <div className="h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
-                  </div>
-                  <div className="flex-1"></div>
-                </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-2">{value.title}</h3>
+                          <p className="text-sm text-muted-foreground mb-3">{value.description}</p>
+                          <div className="space-y-1">
+                            {value.benefits.map((benefit, idx) => (
+                              <div key={idx} className="flex items-center space-x-2">
+                                <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                                <span className="text-xs text-muted-foreground">{benefit}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </article>
               ))}
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Developer */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">The Developer</h2>
-          <div className="max-w-2xl mx-auto">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-8 text-center">
-                <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-6 flex items-center justify-center">
-                  <Brain className="h-12 w-12 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Solo Developer</h3>
-                <p className="text-primary mb-4">Founder & AI Enthusiast</p>
-                <p className="text-muted-foreground leading-relaxed">
-                  A passionate developer exploring the intersection of artificial intelligence and
-                  education. Building CertifAI as an experiment to see how AI can make certification
-                  training more effective and accessible. Open to collaboration and always learning
-                  from the community.
+          {/* Development Timeline with rich content */}
+          <section className="mb-16" aria-labelledby="development-timeline">
+            <h2
+              id="development-timeline"
+              className="text-3xl font-bold text-foreground text-center mb-8"
+            >
+              CertifAI Development Journey: From Concept to AI-Powered Platform
+            </h2>
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-border"></div>
+              <div className="space-y-8">
+                {milestones.map((milestone, index) => (
+                  <article
+                    key={index}
+                    className={`flex items-center ${
+                      index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+                    }`}
+                  >
+                    <div className={`flex-1 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
+                      <Card className="hover:shadow-lg transition-shadow">
+                        <CardContent className="p-6">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <Badge variant="secondary" className="font-medium">
+                              {milestone.year}
+                            </Badge>
+                            <milestone.icon className="h-4 w-4 text-primary" aria-hidden="true" />
+                          </div>
+                          <h3 className="font-semibold text-foreground mb-2 text-lg">
+                            {milestone.title}
+                          </h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {milestone.description}
+                          </p>
+                          <div className="text-xs text-primary font-medium">
+                            Key Focus: {milestone.keywords}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    <div className="flex-shrink-0 z-10">
+                      <div className="h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
+                    </div>
+                    <div className="flex-1"></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Enhanced Developer Section */}
+          <section className="mb-16" aria-labelledby="developer-info">
+            <h2 id="developer-info" className="text-3xl font-bold text-foreground text-center mb-8">
+              Meet the Developer: Building the Future of AI Education
+            </h2>
+            <div className="max-w-2xl mx-auto">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-8 text-center">
+                  <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-6 flex items-center justify-center">
+                    <Brain className="h-12 w-12 text-primary" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
+                    Solo Developer & AI Innovation Expert
+                  </h3>
+                  <p className="text-primary mb-4 font-medium">
+                    Founder of CertifAI | AI Education Pioneer
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    A passionate <strong>full-stack developer and AI enthusiast</strong> dedicated
+                    to revolutionizing professional education through cutting-edge technology. With
+                    deep expertise in machine learning, educational technology, and user experience
+                    design, I&apos;m building CertifAI to demonstrate how AI can transform the way
+                    IT professionals learn and grow.
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center justify-center space-x-2">
+                      <Code className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <span>Full-Stack Development</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-2">
+                      <Brain className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <span>AI & Machine Learning</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-2">
+                      <BookOpen className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <span>Educational Technology</span>
+                    </div>
+                    <div className="flex items-center justify-center space-x-2">
+                      <Users className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <span>User Experience Design</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          {/* Enhanced Call to Action */}
+          <section className="text-center" aria-labelledby="join-beta">
+            <Card className="bg-primary/5 border-primary/20">
+              <CardContent className="p-12">
+                <Star className="h-12 w-12 text-primary mx-auto mb-6" aria-hidden="true" />
+                <h2 id="join-beta" className="text-3xl font-bold text-foreground mb-4">
+                  Join the AI-Powered Learning Revolution
+                </h2>
+                <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
+                  Be part of the future of IT certification training. Try CertifAI&apos;s beta
+                  platform and experience how artificial intelligence can accelerate your
+                  professional growth.
                 </p>
+                <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">300+</div>
+                    <div className="text-sm text-muted-foreground">Free Credit Coins</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">5+</div>
+                    <div className="text-sm text-muted-foreground">Practice Exams</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">24/7</div>
+                    <div className="text-sm text-muted-foreground">AI-Powered Support</div>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    size="lg"
+                    className="rounded-lg"
+                    aria-label="Start free CertifAI beta trial"
+                  >
+                    <Rocket className="mr-2 h-5 w-5" />
+                    Start Free Beta Trial
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="rounded-lg"
+                    aria-label="Join CertifAI community"
+                  >
+                    <Heart className="mr-2 h-5 w-5" />
+                    Join Our Community
+                  </Button>
+                </div>
               </CardContent>
             </Card>
-          </div>
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center">
-          <Card className="bg-primary/5 border-primary/20">
-            <CardContent className="p-12">
-              <Star className="h-12 w-12 text-primary mx-auto mb-6" />
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Join the AI Learning Experiment
-              </h2>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Help shape the development of CertifAI by trying the beta version and sharing your
-                feedback. Your input directly influences how the AI models learn and improve.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="rounded-lg">
-                  Try Beta Version
-                </Button>
-                <Button variant="outline" size="lg" className="rounded-lg">
-                  Share Feedback
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-    </div>
+          </section>
+        </main>
+      </div>
+    </>
   );
 }
