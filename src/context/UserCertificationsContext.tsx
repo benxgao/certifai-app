@@ -18,14 +18,13 @@ const UserCertificationsContext = createContext<UserCertificationsContextType | 
 export const UserCertificationsProvider = ({ children }: { children: ReactNode }) => {
   const { apiUserId, loading: authLoading } = useFirebaseAuth();
 
-  // Only fetch certifications when we have apiUserId and auth is not loading
-  const shouldFetch = !authLoading && !!apiUserId;
+  // Start fetching immediately when apiUserId is available, don't wait for auth loading to complete
   const {
     userCertifications,
     isLoadingUserCertifications,
     isUserCertificationsError,
     mutateUserCertifications,
-  } = useUserRegisteredCertifications(shouldFetch ? apiUserId : null);
+  } = useUserRegisteredCertifications(apiUserId);
 
   return (
     <UserCertificationsContext.Provider

@@ -6,11 +6,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
-  const { isLoading: isLoadingProfile, isError: profileError } = useUserProfileContext();
+  const { isError: profileError } = useUserProfileContext();
 
-  const isLoading = isLoadingUserCertifications || isLoadingProfile;
-
-  if (isLoading) {
+  // Show loading skeleton only while certifications are loading
+  // Profile loading can continue in background since we mainly need certifications here
+  if (isLoadingUserCertifications) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {Array.from({ length: 5 }).map((_, i) => (

@@ -3,7 +3,6 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
-import { useUserProfileContext } from '@/context/UserProfileContext';
 import { UserRegisteredCertification } from '@/swr/certifications';
 import { FaGraduationCap, FaCertificate, FaTrophy } from 'react-icons/fa';
 import { UserCertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
@@ -12,12 +11,10 @@ const CertificationsSection = () => {
   const router = useRouter();
   const { userCertifications, isLoadingUserCertifications, isUserCertificationsError } =
     useUserCertifications();
-  const { isLoading: isLoadingProfile } = useUserProfileContext();
 
-  // Combine loading states - show skeleton while either is loading
-  const isLoading = isLoadingUserCertifications || isLoadingProfile;
-
-  if (isLoading) {
+  // Show skeleton only while certifications are loading
+  // Profile loading can continue in background
+  if (isLoadingUserCertifications) {
     return <UserCertificationCardSkeleton count={3} />;
   }
 

@@ -30,13 +30,14 @@ export function useUserProfile(apiUserId: string | null) {
   return useAuthSWR<UserProfileResponse>(key, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
-    dedupingInterval: 20000, // Increased cache time to prevent unnecessary requests
+    dedupingInterval: 30000, // Increased cache time for better performance
     refreshInterval: 0, // Don't auto-refresh - profile changes infrequently
     refreshWhenHidden: false, // Don't refresh when tab is hidden
     refreshWhenOffline: false, // Don't refresh when offline
     focusThrottleInterval: 15000, // Throttle focus-based revalidation
     errorRetryCount: 2, // Retry on error
     errorRetryInterval: 3000, // Wait 3 seconds between retries
+    keepPreviousData: true, // Keep previous data while revalidating for better UX
     // Prevent multiple rapid requests
     shouldRetryOnError: (error) => {
       // Don't retry on cancellation errors

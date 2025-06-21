@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { MARKETING_COPY } from '@/src/config/constants';
 import LandingHeader from '@/src/components/custom/LandingHeader';
+import ScreenshotSlideshow from '@/src/components/landing/ScreenshotSlideshow';
 
 export default function LandingPageContent() {
   return (
@@ -11,46 +11,179 @@ export default function LandingPageContent() {
       <LandingHeader showFeaturesLink={true} />
 
       {/* Hero Section */}
-      <section className="relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-          <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-12">
+      <section className="relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+        <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
+          {/* Trust indicators */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 rounded-full px-4 py-2 mb-6">
+              <svg
+                className="w-4 h-4 text-green-600 dark:text-green-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-sm font-medium text-green-700 dark:text-green-300">
+                Join 500+ Beta Users
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-16">
             {/* Hero Content */}
-            <div className="flex-1 max-w-2xl">
-              <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-8">
-                <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-                  {MARKETING_COPY.HERO_TAGLINE}
-                </h1>
-                <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                  {MARKETING_COPY.HERO_DESCRIPTION}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/signup">
-                    <Button size="lg" className="w-full sm:w-auto rounded-lg">
-                      Start Free Trial
-                    </Button>
-                  </Link>
-                  <Link href="/signin">
-                    <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-lg">
-                      Sign In
-                    </Button>
-                  </Link>
+            <div className="flex-1 max-w-2xl text-center lg:text-left">
+              {/* Beta badge */}
+              <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-6">
+                <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
+                  Beta Access Available
+                </span>
+              </div>
+
+              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                  AI-Powered
+                </span>
+                <br />
+                IT Certification Training
+              </h1>
+
+              <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
+                Master IT certifications with AI-generated practice exams, real-time performance
+                analysis, and personalized study recommendations.
+              </p>
+
+              {/* Stats */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 mb-10">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">94%</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Beta Success Rate
+                  </div>
+                </div>
+                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+                    500+
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Early Adopters</div>
+                </div>
+                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+                    24/7
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">AI Support</div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+                <Link href="/signup">
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                  >
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                    Start Free Trial
+                  </Button>
+                </Link>
+                <Link href="/signin">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-sm text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  No credit card required
+                </div>
+                <div className="hidden sm:block">•</div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  14-day free trial
+                </div>
+                <div className="hidden sm:block">•</div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Cancel anytime
                 </div>
               </div>
             </div>
 
             {/* Hero Visual */}
-            <div className="flex-1 max-w-lg">
-              <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl p-8">
-                <div className="aspect-video bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center text-white">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <p className="text-lg font-semibold">AI Exam Simulator</p>
-                    <p className="text-sm opacity-90">Interactive Demo</p>
-                  </div>
+            <div className="flex-1 max-w-lg lg:max-w-xl">
+              <div className="relative">
+                {/* Decorative background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-3 scale-105"></div>
+                <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-2">
+                  <ScreenshotSlideshow className="group rounded-xl overflow-hidden" />
+                </div>
+                {/* Floating elements */}
+                <div className="absolute -top-4 -right-4 bg-green-500 text-white rounded-full p-3 shadow-lg">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <div className="absolute -bottom-4 -left-4 bg-violet-500 text-white rounded-full p-3 shadow-lg">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
                 </div>
               </div>
             </div>
@@ -59,24 +192,52 @@ export default function LandingPageContent() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              Everything You Need to Succeed
+      <section id="features" className="relative py-24 bg-slate-50/50 dark:bg-slate-800/30">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
+        <div className="absolute top-20 left-1/4 w-64 h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
+
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            {/* Section badge */}
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-4 py-2 mb-6">
+              <svg
+                className="w-4 h-4 text-violet-600 dark:text-violet-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
+                AI-Powered Features
+              </span>
+            </div>
+
+            <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+              Everything You Need to
+              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
+                Succeed
+              </span>
             </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
               Comprehensive tools and AI-powered features designed to accelerate your IT
-              certification journey.
+              certification journey with cutting-edge technology.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {/* Feature 1: AI-Generated Questions */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <svg
-                  className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                  className="w-8 h-8 text-violet-600 dark:text-violet-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -89,20 +250,31 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
                 AI-Generated Questions
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Get unlimited practice questions tailored to your certification goals. Our AI
                 creates relevant, up-to-date questions that mirror real exam scenarios.
               </p>
+              <div className="mt-6 flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Feature 2: Real Exam Simulation */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <svg
-                  className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                  className="w-8 h-8 text-blue-600 dark:text-blue-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -115,20 +287,31 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                 Realistic Exam Environment
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Experience authentic exam conditions with timed tests, proper formatting, and
                 realistic pressure to build confidence for the real thing.
               </p>
+              <div className="mt-6 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Feature 3: Performance Analytics */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900/30 dark:to-emerald-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <svg
-                  className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                  className="w-8 h-8 text-emerald-600 dark:text-emerald-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -141,20 +324,31 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
                 Detailed Analytics
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Track your progress with comprehensive performance metrics, identify knowledge gaps,
                 and receive personalized study recommendations.
               </p>
+              <div className="mt-6 flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Feature 4: Custom Exam Creation */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <svg
-                  className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                  className="w-8 h-8 text-amber-600 dark:text-amber-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -167,20 +361,31 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300">
                 Custom Practice Exams
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Create personalized practice tests focusing on specific topics or weak areas.
                 Perfect for targeted learning and last-minute reviews.
               </p>
+              <div className="mt-6 flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Feature 5: Pass Prediction */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <svg
-                  className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                  className="w-8 h-8 text-green-600 dark:text-green-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -193,20 +398,31 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-300">
                 Smart Pass Prediction
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 AI-powered algorithms analyze your performance patterns to predict your likelihood
                 of passing and guide your study strategy.
               </p>
+              <div className="mt-6 flex items-center text-green-600 dark:text-green-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Feature 6: Progress Tracking */}
-            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-              <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center mb-4">
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <svg
-                  className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                  className="w-8 h-8 text-indigo-600 dark:text-indigo-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -219,168 +435,181 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
                 Progress Monitoring
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Visualize your improvement over time with detailed progress charts, milestone
                 tracking, and achievement badges to stay motivated.
               </p>
+              <div className="mt-6 flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Call-to-Action Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-8 lg:p-12 text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-              Ready to Accelerate Your IT Career?
-            </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of IT professionals who have transformed their certification journey
-              with our AI-powered platform. Start your free trial today and experience the future of
-              exam preparation.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/signup">
-                <Button size="lg" className="w-full sm:w-auto rounded-lg">
-                  Start Free Trial
-                </Button>
-              </Link>
-              <Link href="/signin">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-lg">
-                  Sign In
-                </Button>
-              </Link>
+      <section className="relative py-24 overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-transparent to-blue-50/60 dark:from-violet-900/20 dark:via-transparent dark:to-blue-900/15"></div>
+        <div className="absolute top-10 right-20 w-80 h-80 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-20 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-2 border-slate-200 dark:border-slate-700 shadow-2xl rounded-3xl p-12 lg:p-16 text-center overflow-hidden">
+            {/* Decorative background pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 to-blue-50/30 dark:from-violet-900/10 dark:to-blue-900/5 rounded-3xl"></div>
+            <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+
+            <div className="relative z-10">
+              {/* CTA badge */}
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-6 py-3 mb-8">
+                <div className="w-3 h-3 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-semibold text-violet-700 dark:text-violet-300">
+                  Limited Time Beta Access
+                </span>
+              </div>
+
+              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
+                Ready to
+                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                  Accelerate
+                </span>
+                <br />
+                Your IT Career?
+              </h2>
+
+              <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
+                Join thousands of IT professionals who have transformed their certification journey
+                with our AI-powered platform. Start your free trial today and experience the future
+                of exam preparation.
+              </p>
+
+              {/* Enhanced stats for CTA */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
+                <div className="text-center">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                    500+
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Users</div>
+                </div>
+                <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                    94%
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Success Rate</div>
+                </div>
+                <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                    14
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Day Free Trial</div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-6 justify-center mb-10">
+                <Link href="/signup">
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 transform hover:scale-105"
+                  >
+                    <svg
+                      className="w-6 h-6 mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                    Start Free Trial
+                  </Button>
+                </Link>
+                <Link href="/signin">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Enhanced trust indicators */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-base text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-green-600 dark:text-green-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <span className="font-medium">No credit card required</span>
+                </div>
+                <div className="hidden sm:block">•</div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-green-600 dark:text-green-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <span className="font-medium">14-day free trial</span>
+                </div>
+                <div className="hidden sm:block">•</div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4 text-green-600 dark:text-green-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <span className="font-medium">Cancel anytime</span>
+                </div>
+              </div>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-6">
-              No credit card required • 14-day free trial • Cancel anytime
-            </p>
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-            {/* Company */}
-            <div className="col-span-2 md:col-span-1">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">C</span>
-                </div>
-                <span className="font-bold text-xl text-foreground">CertifAI</span>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Revolutionizing IT certification training with AI-powered personalized learning.
-              </p>
-            </div>
-
-            {/* Product */}
-            <div>
-              <h3 className="font-semibold text-foreground mb-3">Product</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link href="/main" className="hover:text-primary transition-colors">
-                    Practice Exams
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/study-guides" className="hover:text-primary transition-colors">
-                    Study Guides
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/documentation" className="hover:text-primary transition-colors">
-                    Documentation
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/community" className="hover:text-primary transition-colors">
-                    Community
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div>
-              <h3 className="font-semibold text-foreground mb-3">Resources</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link href="/blog" className="hover:text-primary transition-colors">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/support" className="hover:text-primary transition-colors">
-                    Support Center
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-primary transition-colors">
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/careers" className="hover:text-primary transition-colors">
-                    Careers
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Company */}
-            <div>
-              <h3 className="font-semibold text-foreground mb-3">Company</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>
-                  <Link href="/about" className="hover:text-primary transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="hover:text-primary transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="hover:text-primary transition-colors">
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Newsletter */}
-            <div>
-              <h3 className="font-semibold text-foreground mb-3">Stay Updated</h3>
-              <p className="text-sm text-muted-foreground mb-3">
-                Get the latest updates and tips for your certification journey.
-              </p>
-              <Link href="/coming-soon">
-                <Button variant="outline" size="sm" className="w-full">
-                  Subscribe to Newsletter
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-8 pt-8 border-t border-border">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-sm text-muted-foreground">
-                &copy; 2025 CertifAI. All rights reserved.
-              </p>
-              <div className="flex items-center space-x-4 mt-4 md:mt-0 text-sm text-muted-foreground">
-                <span>Made with ❤️ for IT professionals</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

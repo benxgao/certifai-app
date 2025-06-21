@@ -159,13 +159,14 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
-      dedupingInterval: 20000, // Increased cache time
+      dedupingInterval: 30000, // Increased cache time for better performance
       refreshInterval: 0, // Don't auto-refresh
       refreshWhenHidden: false,
       refreshWhenOffline: false,
       focusThrottleInterval: 15000,
       errorRetryCount: 2,
       errorRetryInterval: 3000,
+      keepPreviousData: true, // Keep previous data while revalidating for better UX
       // Prevent multiple rapid requests
       shouldRetryOnError: (error) => {
         // Don't retry on cancellation errors

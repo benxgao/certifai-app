@@ -71,12 +71,16 @@ const MainPage = () => {
   const [selectedCertificationId, setSelectedCertificationId] = useState<number | null>(null);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
 
-  // SWR hook for fetching available certifications
+  // SWR hook for fetching available certifications - prefetch for better UX
   const {
     data: availableCertifications,
     error: availableCertificationsError,
     isLoading: isLoadingAvailableCertifications,
-  } = useSWR<AvailableCertification[]>(isRegisterModalOpen ? '/api/certifications' : null);
+  } = useSWR<AvailableCertification[]>('/api/certifications', null, {
+    revalidateOnFocus: false,
+    dedupingInterval: 60000, // Cache for 1 minute
+    refreshInterval: 0,
+  });
 
   const { trigger: registerCertification, isMutating: isRegistering } = useSWRMutation(
     '/api/certifications/register',
