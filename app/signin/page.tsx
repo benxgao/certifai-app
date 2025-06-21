@@ -180,7 +180,12 @@ const LoginPage = () => {
 
     try {
       setVerificationLoading(true);
-      await sendEmailVerification(auth.currentUser);
+      // Configure action code settings to use the new URL structure
+      const actionCodeSettings = {
+        url: `${window.location.origin}?mode=verifyEmail`,
+        handleCodeInApp: true,
+      };
+      await sendEmailVerification(auth.currentUser, actionCodeSettings);
       setError('Verification email sent! Please check your inbox.');
     } catch (error) {
       console.error('Failed to resend verification email:', error);

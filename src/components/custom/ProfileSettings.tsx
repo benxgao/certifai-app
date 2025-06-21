@@ -38,7 +38,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
 
     try {
       setVerificationLoading(true);
-      await sendEmailVerification(firebaseUser);
+      // Configure action code settings to use the new URL structure
+      const actionCodeSettings = {
+        url: `${window.location.origin}?mode=verifyEmail`,
+        handleCodeInApp: true,
+      };
+      await sendEmailVerification(firebaseUser, actionCodeSettings);
       setSuccess('Verification email sent! Please check your inbox.');
       setErrorMsg(null);
     } catch (error) {

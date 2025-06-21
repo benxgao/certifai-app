@@ -219,10 +219,16 @@ export default function SignUpPage() {
 
   // Helper function to retry email verification with exponential backoff
   const sendEmailVerificationWithRetry = async (user: any, maxRetries = 2): Promise<void> => {
+    // Configure action code settings to use the new URL structure
+    const actionCodeSettings = {
+      url: `${window.location.origin}?mode=verifyEmail`,
+      handleCodeInApp: true,
+    };
+
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       try {
         // Add timeout for each attempt
-        const verificationPromise = sendEmailVerification(user);
+        const verificationPromise = sendEmailVerification(user, actionCodeSettings);
         const timeoutPromise = new Promise<never>((_, reject) => {
           setTimeout(() => reject(new Error('Email verification timeout')), 15000); // 15 second timeout per attempt
         });
