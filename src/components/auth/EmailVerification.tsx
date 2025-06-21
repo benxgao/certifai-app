@@ -67,14 +67,14 @@ export default function EmailVerification() {
   return (
     <div className="flex flex-col min-h-screen">
       <LandingHeader showFeaturesLink={false} />
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50">
-        <Card className="w-full max-w-md bg-white/95 backdrop-blur-sm border border-slate-200/50 shadow-2xl">
-          <CardHeader className="text-center space-y-6 pb-8">
+      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <Card className="w-full max-w-md bg-white border border-gray-200 shadow-sm">
+          <CardHeader className="text-center space-y-4 pb-6">
             {status === 'loading' && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 text-white animate-spin"
+                    className="w-6 h-6 text-green-600 animate-spin"
                     fill="none"
                     viewBox="0 0 24 24"
                   >
@@ -94,11 +94,11 @@ export default function EmailVerification() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
-                    Verifying your email
+                  <CardTitle className="text-xl font-semibold text-gray-900">
+                    Verifying email
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
-                    We&apos;re confirming your email address. This should only take a moment.
+                  <CardDescription className="text-gray-600">
+                    Please wait while we verify your email address.
                   </CardDescription>
                 </div>
               </>
@@ -106,9 +106,9 @@ export default function EmailVerification() {
 
             {status === 'success' && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 text-white"
+                    className="w-6 h-6 text-green-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -116,17 +116,17 @@ export default function EmailVerification() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2.5}
+                      strokeWidth={2}
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
-                    Email verified!
+                  <CardTitle className="text-xl font-semibold text-gray-900">
+                    Email verified
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
-                    Your email has been successfully verified. You can now access your account.
+                  <CardDescription className="text-gray-600">
+                    Your email has been successfully verified.
                   </CardDescription>
                 </div>
               </>
@@ -134,9 +134,9 @@ export default function EmailVerification() {
 
             {(status === 'error' || status === 'expired') && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-rose-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center">
                   <svg
-                    className="w-10 h-10 text-white"
+                    className="w-6 h-6 text-green-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -144,28 +144,26 @@ export default function EmailVerification() {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={2.5}
+                      strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
+                  <CardTitle className="text-xl font-semibold text-gray-900">
                     {status === 'expired' ? 'Link expired' : 'Verification failed'}
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
-                    {errorMessage}
-                  </CardDescription>
+                  <CardDescription className="text-gray-600">{errorMessage}</CardDescription>
                 </div>
               </>
             )}
           </CardHeader>
 
-          <CardContent className="space-y-6 px-6 pb-6">
+          <CardContent className="space-y-4 px-6 pb-6">
             {status === 'success' && (
               <Button
                 onClick={handleContinueToSignIn}
-                className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 size="lg"
               >
                 Continue to Sign In
@@ -175,7 +173,7 @@ export default function EmailVerification() {
             {status === 'expired' && (
               <Button
                 onClick={handleRequestNewLink}
-                className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 size="lg"
               >
                 Request New Verification Link
@@ -186,7 +184,7 @@ export default function EmailVerification() {
               <div className="space-y-3">
                 <Button
                   onClick={handleRequestNewLink}
-                  className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                   size="lg"
                 >
                   Get New Verification Link
@@ -194,7 +192,7 @@ export default function EmailVerification() {
                 <Button
                   onClick={() => router.push('/support')}
                   variant="outline"
-                  className="w-full border-slate-300 hover:bg-slate-50 transition-all duration-200"
+                  className="w-full border-gray-300 hover:bg-gray-50"
                   size="lg"
                 >
                   Contact Support
@@ -203,10 +201,10 @@ export default function EmailVerification() {
             )}
 
             {status === 'loading' && (
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 text-sm p-5 rounded-xl border border-blue-200/50 shadow-sm">
-                <div className="flex items-center justify-center">
+              <div className="bg-green-50 border border-green-200 text-green-800 text-sm p-4 rounded-lg">
+                <div className="flex items-center">
                   <svg
-                    className="w-5 h-5 mr-3 flex-shrink-0"
+                    className="w-4 h-4 mr-2 flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -216,7 +214,7 @@ export default function EmailVerification() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="font-medium">Processing your verification...</span>
+                  <span>Processing your verification request...</span>
                 </div>
               </div>
             )}

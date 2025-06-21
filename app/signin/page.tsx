@@ -132,9 +132,26 @@ const LoginPage = () => {
     // 3. No signin loading in progress
     // 4. User is authenticated
     // 5. Not already redirecting
-    // 6. No current error state (to prevent redirect during error handling)
-    if (!loading && !authProcessing && !isLoading && firebaseUser && !isRedirecting && !error) {
+    // 6. No current error state that indicates authentication failure (allow redirect for success messages)
+    const isAuthError =
+      error &&
+      !error.includes('created successfully') &&
+      !error.includes('sent!') &&
+      !error.includes('verified successfully') &&
+      !error.includes('reset successful');
+
+    if (
+      !loading &&
+      !authProcessing &&
+      !isLoading &&
+      firebaseUser &&
+      !isRedirecting &&
+      !isAuthError
+    ) {
       console.log('Authentication successful, initiating redirect to /main');
+      // Clear any success messages before redirecting
+      setError('');
+      setShowVerificationPrompt(false);
       // Use a minimal delay to ensure state is fully settled
       setTimeout(() => {
         setIsRedirecting(true);
@@ -301,6 +318,11 @@ const LoginPage = () => {
 
       // Small delay to ensure cookie is properly set in browser (reduced from 200ms to 100ms)
       await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Clear any previous error messages on successful authentication
+      setError('');
+      setShowVerificationPrompt(false);
+
       // Don't redirect here - let the useEffect with auth state monitoring handle it
       // The FirebaseAuthContext will handle getting the API user ID
     } catch (error: any) {
@@ -347,7 +369,15 @@ const LoginPage = () => {
   };
 
   // Don't show signin form if user is already authenticated and will be redirected
-  if (!loading && firebaseUser && !error) {
+  // Only show loading if there's no authentication error
+  const isAuthError =
+    error &&
+    !error.includes('created successfully') &&
+    !error.includes('sent!') &&
+    !error.includes('verified successfully') &&
+    !error.includes('reset successful');
+
+  if (!loading && firebaseUser && !isAuthError) {
     return (
       <div className="flex flex-col min-h-screen items-center justify-center">
         <div className="text-center">
@@ -392,7 +422,7 @@ const LoginPage = () => {
                 Enter your credentials to access your CertifAI account.
               </CardDescription>
             </CardHeader>
-            <form onSubmit={handleSignin} autoComplete="off">
+            <form onSubmit={handleSignin} autoComplete="on">
               <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
                 <div className="space-y-1.5 sm:space-y-2">
                   <Label htmlFor="email" className="text-slate-700 dark:text-slate-300 font-medium">
@@ -407,7 +437,7 @@ const LoginPage = () => {
                     value={form.email}
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
-                    autoComplete="off"
+                    autoComplete="on"
                     className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
                   />
                 </div>
@@ -435,14 +465,17 @@ const LoginPage = () => {
                     value={form.password}
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
-                    autoComplete="off"
+                    autoComplete="on"
                     className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
                   />
                 </div>
                 {error && (
                   <div
                     className={`text-sm p-3 rounded-xl border animate-in slide-in-from-top-2 duration-300 ${
-                      error.includes('created successfully') || error.includes('sent!')
+                      error.includes('created successfully') ||
+                      error.includes('sent!') ||
+                      error.includes('verified successfully') ||
+                      error.includes('reset successful')
                         ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-100 border-green-200 dark:border-green-800/50'
                         : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-100 border-red-200 dark:border-red-800/50'
                     }`}
@@ -453,7 +486,10 @@ const LoginPage = () => {
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
-                        {error.includes('created successfully') || error.includes('sent!') ? (
+                        {error.includes('created successfully') ||
+                        error.includes('sent!') ||
+                        error.includes('verified successfully') ||
+                        error.includes('reset successful') ? (
                           <path
                             fillRule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -470,83 +506,19 @@ const LoginPage = () => {
                       <div className="flex-1">
                         {error}
                         {showVerificationPrompt && (
-                          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl">
-                            <div className="flex items-start space-x-3">
-                              <div className="flex-shrink-0">
-                                <svg
-                                  className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                  />
-                                </svg>
-                              </div>
-                              <div className="flex-1">
-                                <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
-                                  Didn&apos;t receive the email?
-                                </h4>
-                                <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
-                                  Check your spam folder or click below to send a new verification
-                                  email.
-                                </p>
-                                <Button
-                                  onClick={resendVerificationEmail}
-                                  disabled={verificationLoading}
-                                  variant="outline"
-                                  size="sm"
-                                  className="bg-white hover:bg-blue-50 border-blue-300 text-blue-700 hover:text-blue-800 transition-all duration-200 hover:shadow-md"
-                                >
-                                  {verificationLoading ? (
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="animate-spin -ml-1 mr-2 h-4 w-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <circle
-                                          className="opacity-25"
-                                          cx="12"
-                                          cy="12"
-                                          r="10"
-                                          stroke="currentColor"
-                                          strokeWidth="4"
-                                        ></circle>
-                                        <path
-                                          className="opacity-75"
-                                          fill="currentColor"
-                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                        ></path>
-                                      </svg>
-                                      Sending email...
-                                    </div>
-                                  ) : (
-                                    <div className="flex items-center">
-                                      <svg
-                                        className="mr-2 h-4 w-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                        />
-                                      </svg>
-                                      Resend verification email
-                                    </div>
-                                  )}
-                                </Button>
-                              </div>
-                            </div>
+                          <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg">
+                            <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
+                              Didn&apos;t receive the email? Check your spam folder or resend it.
+                            </p>
+                            <Button
+                              onClick={resendVerificationEmail}
+                              disabled={verificationLoading}
+                              variant="outline"
+                              size="sm"
+                              className="text-xs"
+                            >
+                              {verificationLoading ? 'Sending...' : 'Resend verification email'}
+                            </Button>
                           </div>
                         )}
                       </div>
