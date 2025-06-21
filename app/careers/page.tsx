@@ -1,9 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Textarea } from '@/src/components/ui/textarea';
 import {
   Card,
   CardContent,
@@ -11,40 +9,126 @@ import {
   CardHeader,
   CardTitle,
 } from '@/src/components/ui/card';
-import { Badge } from '@/src/components/ui/badge';
 import {
-  MapPin,
-  Clock,
-  DollarSign,
-  Users,
-  Lightbulb,
   Heart,
-  TrendingUp,
   Code,
   Brain,
-  Palette,
-  Shield,
-  Upload,
-  CheckCircle,
+  Github,
+  MessageSquare,
 } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 
 export default function CareersPage() {
-  const [applicationData, setApplicationData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    position: '',
-    experience: '',
-    coverLetter: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <LandingHeader showFeaturesLink={false} />
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+            Currently a Solo Project
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+            CertifAI is currently being developed by a single passionate developer. While there are
+            no traditional job openings, the project is open to collaboration, contributions, and
+            community involvement.
+          </p>
+        </div>
+
+        {/* How to Get Involved */}
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Github className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle>Open Source Contributions</CardTitle>
+              <CardDescription>
+                Contribute to the codebase, suggest features, or help with documentation
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                The project welcomes developers interested in AI, education technology, and
+                open source development.
+              </p>
+              <Button variant="outline" className="w-full">
+                View on GitHub
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <MessageSquare className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle>Beta Testing & Feedback</CardTitle>
+              <CardDescription>
+                Help shape the product by testing features and providing feedback
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Join our beta community to test new features and help prioritize development.
+              </p>
+              <Button variant="outline" className="w-full">
+                Join Beta
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Brain className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle>Domain Expertise</CardTitle>
+              <CardDescription>
+                Share your IT certification experience to improve content quality
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                If you're an IT professional with certification experience, your insights
+                can help improve question quality and accuracy.
+              </p>
+              <Button variant="outline" className="w-full">
+                Get In Touch
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Future Vision */}
+        <div className="text-center mb-16">
+          <Card className="bg-primary/5 border-primary/20">
+            <CardContent className="p-12">
+              <Heart className="h-12 w-12 text-primary mx-auto mb-6" />
+              <h2 className="text-3xl font-bold text-foreground mb-4">
+                Future Collaboration
+              </h2>
+              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                As the project grows, there may be opportunities for collaboration, partnerships,
+                or even traditional employment. For now, it's about building something valuable
+                for the community.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="rounded-lg">
+                  Follow Progress
+                </Button>
+                <Button variant="outline" size="lg" className="rounded-lg">
+                  Contact Developer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    </div>
+  );
+}
     setApplicationData((prev) => ({
       ...prev,
       [name]: value,

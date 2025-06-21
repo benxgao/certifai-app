@@ -54,49 +54,49 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email',
-      content: 'support@certifai.com',
-      description: 'Send us an email and we&apos;ll respond within 24 hours',
+      content: 'contact@certifai.com',
+      description: 'Best way to reach the developer - usually responds within a day or two',
     },
     {
       icon: MessageSquare,
-      title: 'Live Chat',
-      content: 'Available 9 AM - 6 PM EST',
-      description: 'Chat with our support team for immediate assistance',
+      title: 'Beta Feedback',
+      content: 'Community Discord',
+      description: 'Join our beta community for discussions and feedback',
     },
     {
       icon: Phone,
-      title: 'Phone',
-      content: '+1 (555) 123-4567',
-      description: 'Call us for urgent technical support',
+      title: 'GitHub',
+      content: 'github.com/certifai',
+      description: 'Check out the code, report issues, or contribute',
     },
     {
       icon: MapPin,
-      title: 'Office',
-      content: 'San Francisco, CA',
-      description: 'Visit us at our headquarters',
+      title: 'Remote',
+      content: 'Distributed Development',
+      description: 'Built remotely with love for the community',
     },
   ];
 
   const faqs = [
     {
-      question: 'How do AI-generated questions work?',
+      question: 'Is this a real company?',
       answer:
-        'Our AI analyzes official certification blueprints and creates personalized practice questions based on your learning progress and weak areas.',
+        "CertifAI is currently a solo developer project exploring AI applications in education. It's in early beta and may evolve into something bigger based on community interest.",
     },
     {
       question: 'Which certifications do you support?',
       answer:
-        'We currently support AWS, Azure, Google Cloud, CompTIA, Cisco, and many other popular IT certifications. New certifications are added regularly.',
+        'Currently focusing on a few core certifications like AWS basics. Support is limited during beta but expanding based on user feedback.',
     },
     {
-      question: 'Is there a free trial available?',
+      question: 'Is there a cost?',
       answer:
-        'Yes! We offer a 7-day free trial with access to all features. No credit card required to get started.',
+        'The beta is completely free while we develop and improve the platform. Future pricing will be determined based on community feedback.',
     },
     {
-      question: 'Can I track my progress?',
+      question: 'How can I help or contribute?',
       answer:
-        'Absolutely! Our platform provides detailed analytics, performance tracking, and personalized study recommendations.',
+        'Join the beta, provide feedback, contribute to the GitHub repo, or simply spread the word if you find it useful!',
     },
   ];
 
@@ -111,8 +111,8 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Get in Touch</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Have questions about CertifAI? Need technical support? Want to share feedback?
-            We&apos;re here to help you succeed in your IT certification journey.
+            Questions about the beta? Want to contribute? Have feedback to share? I&apos;d love to
+            hear from you and learn how we can make CertifAI better together.
           </p>
         </div>
 
@@ -121,9 +121,9 @@ export default function ContactPage() {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Send us a Message</CardTitle>
+                <CardTitle className="text-2xl">Send a Message</CardTitle>
                 <CardDescription>
-                  Fill out the form below and we&apos;ll get back to you as soon as possible.
+                  Share your thoughts, report issues, or just say hello!
                 </CardDescription>
               </CardHeader>
               <CardContent>

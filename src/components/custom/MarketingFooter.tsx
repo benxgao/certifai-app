@@ -162,14 +162,6 @@ export default function MarketingFooter() {
               </li>
               <li>
                 <Link
-                  href="/careers"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/contact"
                   className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
                 >

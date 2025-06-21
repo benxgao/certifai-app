@@ -18,7 +18,6 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
     ...(showFeaturesLink ? [{ href: '/#features', label: 'Features' }] : []),
     { href: '/about', label: 'About' },
     { href: '/pricing', label: 'Pricing' },
-    { href: '/careers', label: 'Careers' },
     { href: '/contact', label: 'Contact' },
   ];
 

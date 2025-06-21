@@ -33,7 +33,7 @@ export default function LandingPageContent() {
                 />
               </svg>
               <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Join 500+ Beta Users
+                Early Beta - Join the Community
               </span>
             </div>
           </div>
@@ -58,31 +58,31 @@ export default function LandingPageContent() {
               </h1>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
-                Master IT certifications with AI-generated practice exams, real-time performance
-                analysis, and personalized study recommendations.
+                An experimental AI-powered platform for IT certification practice. Currently in
+                early beta - help shape the future of certification training.
               </p>
 
               {/* Stats */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 mb-10">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">94%</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Beta Success Rate
+                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+                    Early
                   </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Stage</div>
                 </div>
                 <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    500+
+                    Growing
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Early Adopters</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Community</div>
                 </div>
                 <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    24/7
+                    Open
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">AI Support</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Source</div>
                 </div>
               </div>
 
@@ -105,7 +105,7 @@ export default function LandingPageContent() {
                         d="M13 7l5 5m0 0l-5 5m5-5H6"
                       />
                     </svg>
-                    Start Free Trial
+                    Start Beta Trial
                   </Button>
                 </Link>
                 <Link href="/signin">
@@ -227,8 +227,8 @@ export default function LandingPageContent() {
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Comprehensive tools and AI-powered features designed to accelerate your IT
-              certification journey with cutting-edge technology.
+              Experimental AI-powered features being developed to help IT professionals practice for
+              certifications. Currently in early beta - your feedback drives development.
             </p>
           </div>
 
@@ -254,8 +254,8 @@ export default function LandingPageContent() {
                 AI-Generated Questions
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Get unlimited practice questions tailored to your certification goals. Our AI
-                creates relevant, up-to-date questions that mirror real exam scenarios.
+                Experimenting with AI to generate practice questions for various IT certifications.
+                Quality improving through user feedback and continuous learning.
               </p>
               <div className="mt-6 flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
@@ -291,8 +291,8 @@ export default function LandingPageContent() {
                 Realistic Exam Environment
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Experience authentic exam conditions with timed tests, proper formatting, and
-                realistic pressure to build confidence for the real thing.
+                Building a practice environment that simulates real exam conditions. Currently
+                supports basic timing and question formats.
               </p>
               <div className="mt-6 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
@@ -328,8 +328,8 @@ export default function LandingPageContent() {
                 Detailed Analytics
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Track your progress with comprehensive performance metrics, identify knowledge gaps,
-                and receive personalized study recommendations.
+                Working on basic performance tracking to help identify areas for improvement.
+                Analytics features are in early development.
               </p>
               <div className="mt-6 flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
@@ -482,41 +482,40 @@ export default function LandingPageContent() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Ready to
+                Help Shape the Future of
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  Accelerate
+                  AI-Powered
                 </span>
                 <br />
-                Your IT Career?
+                Certification Training
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Join thousands of IT professionals who have transformed their certification journey
-                with our AI-powered platform. Start your free trial today and experience the future
-                of exam preparation.
+                Join our growing beta community to help develop the next generation of IT
+                certification tools. Your feedback directly influences the features we build.
               </p>
 
               {/* Enhanced stats for CTA */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    500+
+                    Open
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Users</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    94%
+                    Active
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Success Rate</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Development</div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    14
+                    Free
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Day Free Trial</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">During Beta</div>
                 </div>
               </div>
 
@@ -539,7 +538,7 @@ export default function LandingPageContent() {
                         d="M13 7l5 5m0 0l-5 5m5-5H6"
                       />
                     </svg>
-                    Start Free Trial
+                    Start Beta Trial
                   </Button>
                 </Link>
                 <Link href="/signin">
@@ -586,7 +585,7 @@ export default function LandingPageContent() {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">14-day free trial</span>
+                  <span className="font-medium">Free during beta</span>
                 </div>
                 <div className="hidden sm:block">•</div>
                 <div className="flex items-center gap-3">

@@ -10,8 +10,6 @@ import {
   Eye,
   Heart,
   Users,
-  Award,
-  TrendingUp,
   Globe,
   BookOpen,
   Zap,
@@ -19,156 +17,72 @@ import {
   Brain,
   Rocket,
   Star,
-  Linkedin,
-  Twitter,
-  Github,
 } from 'lucide-react';
 
 export default function AboutPage() {
   const milestones = [
     {
-      year: '2023',
-      quarter: 'Q1',
-      title: 'Company Founded',
+      year: '2025 Q2',
+      title: 'Concept & Development',
       description:
-        'CertifAI was founded with a vision to revolutionize IT certification training using AI technology.',
+        'Started as a personal project to explore how AI could revolutionize IT certification training.',
     },
     {
-      year: '2023',
-      quarter: 'Q3',
-      title: 'Beta Launch',
+      year: '2025 Q3',
+      title: 'Early Beta Release',
       description:
-        'Launched our beta platform with 50 initial users and AWS certification support.',
+        'Launched initial version with AI-powered question generation and basic practice exam functionality.',
     },
     {
-      year: '2024',
-      quarter: 'Q1',
-      title: 'Series A Funding',
+      year: 'Current',
+      title: 'Community Building',
       description:
-        'Raised $12M in Series A funding to accelerate product development and team growth.',
-    },
-    {
-      year: '2024',
-      quarter: 'Q3',
-      title: 'Multi-Cloud Support',
-      description: 'Expanded to support Azure, Google Cloud, and other major cloud certifications.',
-    },
-    {
-      year: '2025',
-      quarter: 'Q1',
-      title: '500+ Active Users',
-      description: 'Reached 500+ active users with 95% satisfaction rate and growing community.',
-    },
-    {
-      year: '2025',
-      quarter: 'Q2',
-      title: 'AI Enhancement',
-      description:
-        'Launched advanced AI personalization features and adaptive learning algorithms.',
+        'Actively gathering feedback from early users to improve the AI models and user experience.',
     },
   ];
 
   const stats = [
-    { value: '500+', label: 'Active Users', icon: Users },
-    { value: '95%', label: 'Success Rate', icon: Award },
-    { value: '50+', label: 'Certifications', icon: BookOpen },
-    { value: '28', label: 'Team Members', icon: Heart },
-    { value: '$12M', label: 'Funding Raised', icon: TrendingUp },
-    { value: '15+', label: 'Countries', icon: Globe },
-  ];
-
-  const team = [
-    {
-      name: 'Sarah Chen',
-      role: 'CEO & Co-Founder',
-      bio: 'Former AWS Solutions Architect with 10+ years in cloud technologies. Passionate about democratizing IT education.',
-      image: '/api/placeholder/150/150',
-      linkedin: '#',
-      twitter: '#',
-    },
-    {
-      name: 'Marcus Rodriguez',
-      role: 'CTO & Co-Founder',
-      bio: 'Ex-Google AI researcher specializing in educational technology and machine learning systems.',
-      image: '/api/placeholder/150/150',
-      linkedin: '#',
-      github: '#',
-    },
-    {
-      name: 'Dr. Emily Watson',
-      role: 'Head of AI Research',
-      bio: 'PhD in Computer Science from Stanford. Expert in natural language processing and adaptive learning.',
-      image: '/api/placeholder/150/150',
-      linkedin: '#',
-      twitter: '#',
-    },
-    {
-      name: 'James Park',
-      role: 'VP of Engineering',
-      bio: 'Former Principal Engineer at Microsoft Azure. 12+ years building scalable cloud platforms.',
-      image: '/api/placeholder/150/150',
-      linkedin: '#',
-      github: '#',
-    },
-    {
-      name: 'Lisa Thompson',
-      role: 'Head of Product',
-      bio: 'Former Product Manager at Salesforce. Expert in B2B SaaS and user experience design.',
-      image: '/api/placeholder/150/150',
-      linkedin: '#',
-      twitter: '#',
-    },
-    {
-      name: 'David Kim',
-      role: 'Head of Customer Success',
-      bio: 'Former Solutions Engineer with deep expertise in IT certifications and customer success.',
-      image: '/api/placeholder/150/150',
-      linkedin: '#',
-    },
+    { value: 'Solo', label: 'Developer Team', icon: Users },
+    { value: 'AI-First', label: 'Approach', icon: Brain },
+    { value: 'Beta', label: 'Stage', icon: Rocket },
+    { value: 'Open', label: 'Community', icon: Heart },
   ];
 
   const values = [
     {
       icon: Brain,
-      title: 'Innovation First',
+      title: 'AI-Powered Innovation',
       description:
-        'We push the boundaries of what&apos;s possible with AI and education technology.',
+        'Leveraging artificial intelligence to create personalized and effective learning experiences.',
     },
     {
       icon: Users,
-      title: 'User-Centric',
-      description:
-        'Every decision we make is guided by how it will improve our learners&apos; success.',
+      title: 'User-Centric Development',
+      description: 'Building features based on real user feedback and actual learning needs.',
     },
     {
       icon: Shield,
-      title: 'Quality & Trust',
-      description: 'We maintain the highest standards in accuracy, reliability, and data security.',
+      title: 'Quality & Transparency',
+      description:
+        'Maintaining high standards while being open about the experimental nature of the project.',
     },
     {
       icon: Heart,
-      title: 'Inclusive Community',
+      title: 'Accessible Learning',
       description:
-        'We believe learning should be accessible to everyone, regardless of background.',
+        'Making quality certification training available to anyone with an internet connection.',
     },
     {
       icon: Zap,
-      title: 'Continuous Learning',
-      description: 'We practice what we preach - always learning, improving, and adapting.',
+      title: 'Continuous Improvement',
+      description: 'Constantly learning, iterating, and improving based on user experiences.',
     },
     {
       icon: Target,
-      title: 'Results Driven',
+      title: 'Practical Focus',
       description:
-        'We measure success by our users&apos; certification achievements and career growth.',
+        'Focusing on what actually helps users pass certifications and advance their careers.',
     },
-  ];
-
-  const investors = [
-    { name: 'Andreessen Horowitz', type: 'Lead Series A', logo: '/api/placeholder/120/60' },
-    { name: 'Sequoia Capital', type: 'Series A', logo: '/api/placeholder/120/60' },
-    { name: 'First Round Capital', type: 'Seed', logo: '/api/placeholder/120/60' },
-    { name: 'Y Combinator', type: 'Accelerator', logo: '/api/placeholder/120/60' },
   ];
 
   return (
@@ -182,22 +96,22 @@ export default function AboutPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">About CertifAI</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            We&apos;re on a mission to democratize IT certification training through the power of
-            artificial intelligence. Our platform helps professionals advance their careers with
-            personalized, AI-generated practice questions and adaptive learning experiences.
+            A passion project by a solo developer exploring the intersection of AI and education.
+            CertifAI is an experimental platform that combines artificial intelligence with IT
+            certification training to create personalized learning experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="rounded-lg">
-              Start Your Journey
+              Try Beta Version
             </Button>
             <Button variant="outline" size="lg" className="rounded-lg">
-              Learn More
+              Share Feedback
             </Button>
           </div>
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           {stats.map((stat, index) => (
             <Card key={index} className="text-center">
               <CardContent className="p-6">
@@ -224,28 +138,28 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">
-                To revolutionize IT certification training by making high-quality, personalized
-                learning accessible to everyone. We believe that with the right tools and AI-powered
-                insights, any motivated professional can achieve their certification goals and
-                advance their career in technology.
+                To experiment with AI technology in education and create tools that make IT
+                certification training more accessible and effective. This project explores how
+                artificial intelligence can personalize learning experiences and help professionals
+                achieve their certification goals more efficiently.
               </p>
               <div className="mt-6 space-y-3">
                 <div className="flex items-start space-x-3">
                   <Zap className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">
-                    Accelerate learning with AI-powered personalization
+                    Experiment with AI-powered personalized learning
                   </span>
                 </div>
                 <div className="flex items-start space-x-3">
                   <BookOpen className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">
-                    Provide comprehensive coverage of all major certifications
+                    Focus on core IT certifications for practical value
                   </span>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Users className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">
-                    Build a supportive community of learners and professionals
+                    Build based on real user feedback and needs
                   </span>
                 </div>
               </div>
@@ -263,27 +177,28 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">
-                To become the world&apos;s leading platform for AI-powered professional
-                certification training, where millions of learners achieve their career goals
-                through personalized, effective, and engaging educational experiences.
+                To create a valuable learning tool that demonstrates the potential of AI in
+                education. While starting as a solo project, the vision is to build something that
+                genuinely helps IT professionals succeed in their certification journey through
+                innovative technology.
               </p>
               <div className="mt-6 space-y-3">
                 <div className="flex items-start space-x-3">
                   <Globe className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">
-                    Global reach with localized learning experiences
+                    Accessible to learners everywhere through web technology
                   </span>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Brain className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">
-                    Cutting-edge AI that adapts to each learner&apos;s needs
+                    AI that learns and improves from user interactions
                   </span>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Rocket className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">
-                    Continuous innovation in educational technology
+                    Continuous experimentation with educational technology
                   </span>
                 </div>
               </div>
@@ -293,7 +208,7 @@ export default function AboutPage() {
 
         {/* Values */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">Our Values</h2>
+          <h2 className="text-3xl font-bold text-foreground text-center mb-8">Core Principles</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {values.map((value, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -315,7 +230,9 @@ export default function AboutPage() {
 
         {/* Timeline */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">Our Journey</h2>
+          <h2 className="text-3xl font-bold text-foreground text-center mb-8">
+            Development Journey
+          </h2>
           <div className="relative">
             <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-border"></div>
             <div className="space-y-8">
@@ -330,9 +247,7 @@ export default function AboutPage() {
                     <Card className="hover:shadow-lg transition-shadow">
                       <CardContent className="p-6">
                         <div className="flex items-center space-x-2 mb-2">
-                          <Badge variant="secondary">
-                            {milestone.year} {milestone.quarter}
-                          </Badge>
+                          <Badge variant="secondary">{milestone.year}</Badge>
                         </div>
                         <h3 className="font-semibold text-foreground mb-2">{milestone.title}</h3>
                         <p className="text-sm text-muted-foreground">{milestone.description}</p>
@@ -349,69 +264,25 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Leadership Team */}
+        {/* Developer */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">Leadership Team</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
-                    <Users className="h-12 w-12 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-1">{member.name}</h3>
-                  <p className="text-sm text-primary mb-3">{member.role}</p>
-                  <p className="text-sm text-muted-foreground mb-4">{member.bio}</p>
-                  <div className="flex justify-center space-x-3">
-                    {member.linkedin && (
-                      <a
-                        href={member.linkedin}
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Linkedin className="h-4 w-4" />
-                      </a>
-                    )}
-                    {member.twitter && (
-                      <a
-                        href={member.twitter}
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Twitter className="h-4 w-4" />
-                      </a>
-                    )}
-                    {member.github && (
-                      <a
-                        href={member.github}
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        <Github className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Investors */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-foreground text-center mb-8">
-            Backed by Leading Investors
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {investors.map((investor, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <div className="h-16 w-full bg-muted rounded-lg flex items-center justify-center mb-3">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {investor.name}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">{investor.type}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <h2 className="text-3xl font-bold text-foreground text-center mb-8">The Developer</h2>
+          <div className="max-w-2xl mx-auto">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-8 text-center">
+                <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-6 flex items-center justify-center">
+                  <Brain className="h-12 w-12 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Solo Developer</h3>
+                <p className="text-primary mb-4">Founder & AI Enthusiast</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  A passionate developer exploring the intersection of artificial intelligence and
+                  education. Building CertifAI as an experiment to see how AI can make certification
+                  training more effective and accessible. Open to collaboration and always learning
+                  from the community.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
@@ -421,18 +292,18 @@ export default function AboutPage() {
             <CardContent className="p-12">
               <Star className="h-12 w-12 text-primary mx-auto mb-6" />
               <h2 className="text-3xl font-bold text-foreground mb-4">
-                Ready to Transform Your Career?
+                Join the AI Learning Experiment
               </h2>
               <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Join thousands of professionals who are already using CertifAI to accelerate their
-                certification journey and advance their careers in technology.
+                Help shape the development of CertifAI by trying the beta version and sharing your
+                feedback. Your input directly influences how the AI models learn and improve.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" className="rounded-lg">
-                  Start Free Trial
+                  Try Beta Version
                 </Button>
                 <Button variant="outline" size="lg" className="rounded-lg">
-                  Schedule a Demo
+                  Share Feedback
                 </Button>
               </div>
             </CardContent>
