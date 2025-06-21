@@ -151,8 +151,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           }
 
           // 2. API login to get user ID and check custom claims
-          const loginUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/auth/login`;
-          const loginPromise = optimizedFetch(loginUrl, {
+          const loginPromise = optimizedFetch('/api/auth/login', {
             ...AUTH_FETCH_OPTIONS,
             method: 'POST',
             headers: {
@@ -179,6 +178,31 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             });
           promises.push(claimsPromise);
 
+          // 4. If no claims found, retry after a short delay (for newly created accounts)
+          const retryClaimsPromise = claimsPromise.then(async (initialResult) => {
+            if (!initialResult) {
+              // Wait a bit for custom claims to propagate
+              await new Promise((resolve) => setTimeout(resolve, 2000));
+
+              try {
+                const retryTokenResult = await authUser.getIdTokenResult(true);
+                const retryClaims = retryTokenResult.claims;
+                const retryApiUserId = (retryClaims.api_user_id as string) || null;
+
+                if (retryApiUserId) {
+                  console.log('Got api_user_id on retry:', retryApiUserId);
+                }
+
+                return retryApiUserId;
+              } catch (retryError) {
+                console.error('Failed to get custom claims on retry:', retryError);
+                return null;
+              }
+            }
+            return initialResult;
+          });
+          promises.push(retryClaimsPromise);
+
           // Execute requests in parallel
           const results = await Promise.allSettled(promises);
 
@@ -198,6 +222,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           // Handle API login response and custom claims
           const loginResult = results[promises.indexOf(loginPromise)];
           const claimsResult = results[promises.indexOf(claimsPromise)];
+          const retryClaimsResult = results[promises.indexOf(retryClaimsPromise)];
 
           let userIdFromApi = null;
           let userIdFromClaims = null;
@@ -218,9 +243,14 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             }
           }
 
-          // Try to get user_id from custom claims
-          if (claimsResult.status === 'fulfilled' && claimsResult.value) {
-            userIdFromClaims = claimsResult.value as string;
+          // Try to get user_id from custom claims (use retry result if available)
+          const claimsResultToUse =
+            retryClaimsResult.status === 'fulfilled' && retryClaimsResult.value
+              ? retryClaimsResult
+              : claimsResult;
+
+          if (claimsResultToUse.status === 'fulfilled' && claimsResultToUse.value) {
+            userIdFromClaims = claimsResultToUse.value as string;
             if (userIdFromClaims) {
               console.log('Got api_user_id from custom claims:', userIdFromClaims);
             }
@@ -228,6 +258,32 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
           // Use API result if available, otherwise use custom claims
           const finalUserId = userIdFromApi || userIdFromClaims;
+
+          // If we have api_user_id from API but not in claims, patch the claims
+          if (userIdFromApi && (!userIdFromClaims || userIdFromApi !== userIdFromClaims)) {
+            try {
+              const patchClaimsRes = await fetch('/api/auth/set-claims', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ api_user_id: userIdFromApi }),
+              });
+              if (patchClaimsRes.ok) {
+                console.log('Patched Firebase custom claims with api_user_id:', userIdFromApi);
+                // Optionally, force refresh token to get new claims
+                await authUser.getIdToken(true);
+              } else {
+                console.warn(
+                  'Failed to patch Firebase custom claims:',
+                  await patchClaimsRes.text(),
+                );
+              }
+            } catch (patchError) {
+              console.error('Error patching Firebase custom claims:', patchError);
+            }
+          }
 
           if (finalUserId) {
             console.log(`FirebaseAuthProvider authentication successful

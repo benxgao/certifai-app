@@ -107,6 +107,35 @@ export default function SignUpPage() {
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
+      // Register user in external API and set custom claims
+      try {
+        const token = await user.getIdToken();
+        const registerResponse = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+          }),
+        });
+
+        if (registerResponse.ok) {
+          const result = await registerResponse.json();
+          console.log('User registered successfully with api_user_id:', result.api_user_id);
+        } else {
+          console.warn('Failed to register user in external API, but proceeding with signup');
+        }
+      } catch (registrationError) {
+        console.error('Error during user registration:', registrationError);
+        // Don't block signup for registration errors
+      }
+
+      // Check if component is still mounted before proceeding
+      if (!isMountedRef.current) return;
+
       // Send email verification with retry mechanism
       try {
         await sendEmailVerificationWithRetry(user);
