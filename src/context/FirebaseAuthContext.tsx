@@ -117,16 +117,35 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           }
         } catch (error) {
           console.error('Critical authentication setup failed:', error);
-          setFirebaseUser(null);
-          setFirebaseToken(null);
-          setApiUserId(null);
 
-          // Clear the auth cookie on critical error (non-blocking)
-          clearAuthCookie();
+          // Check if this is a timeout/abort error - don't clear auth state immediately
+          const isTimeoutError =
+            error instanceof Error &&
+            (error.message?.includes('signal is aborted') ||
+              error.message?.includes('timeout') ||
+              error.name === 'AbortError' ||
+              error.name === 'TimeoutError');
 
-          // Only redirect if we're in a protected route and not already on auth pages
-          if (shouldRedirectToSignIn()) {
-            router.push('/signin');
+          if (isTimeoutError) {
+            console.warn(
+              'Auth setup timed out, but keeping Firebase user authenticated. Will retry on next auth state change.',
+            );
+            // Don't clear Firebase auth state for timeout errors - user is still authenticated
+            // Just clear the API-related state
+            setApiUserId(null);
+          } else {
+            // For other critical errors, clear all auth state
+            setFirebaseUser(null);
+            setFirebaseToken(null);
+            setApiUserId(null);
+
+            // Clear the auth cookie on critical error (non-blocking)
+            clearAuthCookie();
+
+            // Only redirect if we're in a protected route and not already on auth pages
+            if (shouldRedirectToSignIn()) {
+              router.push('/signin');
+            }
           }
         }
       } else {

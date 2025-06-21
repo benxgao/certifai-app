@@ -23,11 +23,16 @@ export interface AuthCookieResult {
  */
 export const setAuthCookie = async (token: string): Promise<AuthCookieResult> => {
   try {
-    const response = await optimizedFetch('/api/auth-cookie/set', {
-      ...AUTH_FETCH_OPTIONS,
-      method: 'POST',
-      body: JSON.stringify({ firebaseToken: token }),
-    });
+    // Use a longer timeout for cookie operations (8 seconds)
+    const response = await optimizedFetch(
+      '/api/auth-cookie/set',
+      {
+        ...AUTH_FETCH_OPTIONS,
+        method: 'POST',
+        body: JSON.stringify({ firebaseToken: token }),
+      },
+      8000,
+    ); // 8 second timeout for cookie operations
 
     if (response && response.ok) {
       console.log('Successfully set auth cookie');
@@ -38,6 +43,24 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
     }
   } catch (error) {
     console.error('Failed to set auth cookie:', error);
+
+    // Provide specific error messages for timeout scenarios
+    if (error instanceof Error) {
+      if (
+        error.message?.includes('signal is aborted') ||
+        error.name === 'AbortError' ||
+        error.name === 'TimeoutError'
+      ) {
+        return { success: false, error: 'Cookie setting timed out. Please try again.' };
+      }
+      if (error.message?.includes('network') || error.name === 'NetworkError') {
+        return {
+          success: false,
+          error: 'Network error while setting authentication. Please try again.',
+        };
+      }
+    }
+
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };
@@ -57,34 +80,40 @@ export const clearAuthCookie = async (): Promise<void> => {
 };
 
 /**
- * Perform API login to get user ID
+ * Perform API login to get user ID with retry logic
  */
 export const performApiLogin = async (token: string): Promise<string | null> => {
-  try {
-    const response = await optimizedFetch('/api/auth/login', {
-      ...AUTH_FETCH_OPTIONS,
-      method: 'POST',
-      headers: {
-        ...AUTH_FETCH_OPTIONS.headers,
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({}),
-    });
+  return (
+    (await retryAuthOperation(async () => {
+      // Use a longer timeout for auth operations (10 seconds instead of 5)
+      const response = await optimizedFetch(
+        '/api/auth/login',
+        {
+          ...AUTH_FETCH_OPTIONS,
+          method: 'POST',
+          headers: {
+            ...AUTH_FETCH_OPTIONS.headers,
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({}),
+        },
+        10000,
+      ); // 10 second timeout for auth operations
 
-    if (response && response.ok) {
-      const { api_user_id } = await response.json();
-      if (api_user_id) {
-        console.log('Got api_user_id from API login:', api_user_id);
-        return api_user_id;
+      if (response && response.ok) {
+        const { api_user_id } = await response.json();
+        if (api_user_id) {
+          console.log('Got api_user_id from API login:', api_user_id);
+          return api_user_id;
+        }
+      } else {
+        console.warn('API login failed, will check custom claims as fallback');
+        return null;
       }
-    } else {
-      console.warn('API login failed, will check custom claims as fallback');
-    }
-  } catch (error) {
-    console.error('API login request failed:', error);
-  }
 
-  return null;
+      return null;
+    })) || null
+  );
 };
 
 /**
@@ -309,4 +338,46 @@ export const refreshTokenAndUpdateCookie = async (firebaseUser: User): Promise<s
     console.error('Failed to refresh token:', error);
     throw error;
   }
+};
+
+/**
+ * Retry wrapper for authentication operations that might fail due to timeouts
+ */
+export const retryAuthOperation = async <T>(
+  operation: () => Promise<T>,
+  maxRetries: number = 2,
+  delayMs: number = 1000,
+): Promise<T | null> => {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      const isRetriableError =
+        error instanceof Error &&
+        (error.message?.includes('signal is aborted') ||
+          error.message?.includes('timeout') ||
+          error.name === 'AbortError' ||
+          error.name === 'TimeoutError' ||
+          error.name === 'NetworkError');
+
+      if (isRetriableError && attempt < maxRetries) {
+        console.warn(
+          `Auth operation attempt ${
+            attempt + 1
+          } failed (retriable error), retrying in ${delayMs}ms...`,
+          error.message,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        delayMs *= 1.5; // Exponential backoff
+        continue;
+      }
+
+      // If this is the last attempt or non-retriable error, throw it
+      if (attempt === maxRetries) {
+        console.error(`Auth operation failed after ${maxRetries + 1} attempts:`, error);
+      }
+      throw error;
+    }
+  }
+  return null;
 };

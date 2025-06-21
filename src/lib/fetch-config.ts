@@ -39,6 +39,26 @@ export const optimizedFetch = async (
     return response;
   } catch (error) {
     clearTimeout(timeoutId);
+
+    // Enhance error messages for better user experience
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        // Create a more descriptive error for timeout scenarios
+        const timeoutError = new Error(`Request timed out after ${timeoutMs}ms`);
+        timeoutError.name = 'TimeoutError';
+        throw timeoutError;
+      }
+
+      // Preserve other error types but ensure they have meaningful messages
+      if (error.message === 'Failed to fetch') {
+        const networkError = new Error(
+          'Network error. Please check your connection and try again.',
+        );
+        networkError.name = 'NetworkError';
+        throw networkError;
+      }
+    }
+
     throw error;
   }
 };

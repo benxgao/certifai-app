@@ -18,6 +18,7 @@ import {
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import { resetAuthenticationState } from '@/src/lib/auth-utils';
+import { setAuthCookie } from '@/src/lib/auth-setup';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { PageTransitionLoader, ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 
@@ -293,17 +294,40 @@ const LoginPage = () => {
       // Force refresh to get a brand new Firebase token
       const firebaseToken = await signedIn.user.getIdToken(true);
 
-      // Set the authentication cookie with brand new token
-      const cookieRes = await fetch('/api/auth-cookie/set', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firebaseToken }),
-      });
+      // Set the authentication cookie with brand new token using our retry logic
+      try {
+        const cookieResult = await setAuthCookie(firebaseToken);
 
-      if (!cookieRes.ok) {
-        const cookieError: any = await cookieRes.json();
-        // If cookie setting fails, show error and clear any auth state
-        const errorMessage = cookieError.message || 'Failed to set authentication cookie.';
+        if (!cookieResult.success) {
+          // If cookie setting fails, show error and clear any auth state
+          const errorMessage = cookieResult.error || 'Failed to set authentication cookie.';
+          setError(errorMessage);
+
+          // Clear any lingering auth state on cookie failure
+          try {
+            await resetAuthenticationState();
+            await signOut(auth);
+          } catch (clearError) {
+            console.error('Failed to clear auth state after cookie error:', clearError);
+          }
+
+          return;
+        }
+      } catch (cookieError: any) {
+        // Handle any exceptions during cookie setting
+        let errorMessage = 'Failed to set authentication cookie.';
+
+        if (
+          cookieError.message?.includes('timeout') ||
+          cookieError.message?.includes('signal is aborted') ||
+          cookieError.name === 'TimeoutError'
+        ) {
+          errorMessage = 'Authentication timed out. Please try again.';
+        } else if (cookieError.name === 'NetworkError') {
+          errorMessage =
+            'Network error during authentication. Please check your connection and try again.';
+        }
+
         setError(errorMessage);
 
         // Clear any lingering auth state on cookie failure
@@ -329,7 +353,16 @@ const LoginPage = () => {
     } catch (error: any) {
       let errorMessage = 'An unexpected error occurred. Please try again.';
 
-      if (error.code) {
+      // Handle specific signal abortion errors first
+      if (error.message?.includes('signal is aborted')) {
+        errorMessage = 'Request timed out. Please check your connection and try again.';
+      } else if (error.message?.includes('timeout')) {
+        errorMessage = 'Connection timeout. Please try again.';
+      } else if (error.message?.includes('network') || error.message?.includes('Network')) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (error.name === 'AbortError') {
+        errorMessage = 'Request was cancelled. Please try again.';
+      } else if (error.code) {
         switch (error.code) {
           case 'auth/user-not-found':
           case 'auth/wrong-password':
@@ -343,6 +376,12 @@ const LoginPage = () => {
             break;
           case 'auth/user-disabled':
             errorMessage = 'This account has been disabled.';
+            break;
+          case 'auth/network-request-failed':
+            errorMessage = 'Network error. Please check your connection and try again.';
+            break;
+          case 'auth/internal-error':
+            errorMessage = 'Internal error occurred. Please try again in a moment.';
             break;
         }
       }
