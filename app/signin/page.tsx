@@ -149,6 +149,7 @@ const LoginPage = () => {
     const errorParam = urlParams.get('error');
     const signupParam = urlParams.get('signup');
     const verificationParam = urlParams.get('verification');
+    const passwordResetParam = urlParams.get('passwordReset');
 
     if (errorParam) {
       setError(decodeURIComponent(errorParam));
@@ -164,8 +165,16 @@ const LoginPage = () => {
       }
     }
 
+    if (verificationParam === 'success') {
+      setError('Email verified successfully! You can now sign in.');
+    }
+
+    if (passwordResetParam === 'success') {
+      setError('Password reset successful! You can now sign in with your new password.');
+    }
+
     // Clean up URL
-    if (errorParam || signupParam) {
+    if (errorParam || signupParam || verificationParam || passwordResetParam) {
       const newUrl = window.location.pathname;
       window.history.replaceState({}, '', newUrl);
     }
@@ -411,7 +420,7 @@ const LoginPage = () => {
                       Password
                     </Label>
                     <Link
-                      href="#"
+                      href="/forgot-password"
                       className="text-sm font-medium text-violet-600 hover:text-violet-500 hover:underline transition-colors duration-200"
                     >
                       Forgot password?
@@ -461,42 +470,83 @@ const LoginPage = () => {
                       <div className="flex-1">
                         {error}
                         {showVerificationPrompt && (
-                          <div className="mt-3">
-                            <Button
-                              onClick={resendVerificationEmail}
-                              disabled={verificationLoading}
-                              variant="outline"
-                              size="sm"
-                              className="w-full"
-                            >
-                              {verificationLoading ? (
-                                <div className="flex items-center">
-                                  <svg
-                                    className="animate-spin -ml-1 mr-2 h-3 w-3"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <circle
-                                      className="opacity-25"
-                                      cx="12"
-                                      cy="12"
-                                      r="10"
-                                      stroke="currentColor"
-                                      strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                      className="opacity-75"
-                                      fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                    ></path>
-                                  </svg>
-                                  Sending...
-                                </div>
-                              ) : (
-                                'Resend verification email'
-                              )}
-                            </Button>
+                          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl">
+                            <div className="flex items-start space-x-3">
+                              <div className="flex-shrink-0">
+                                <svg
+                                  className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                  />
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                                  Didn&apos;t receive the email?
+                                </h4>
+                                <p className="text-sm text-blue-700 dark:text-blue-300 mb-3">
+                                  Check your spam folder or click below to send a new verification
+                                  email.
+                                </p>
+                                <Button
+                                  onClick={resendVerificationEmail}
+                                  disabled={verificationLoading}
+                                  variant="outline"
+                                  size="sm"
+                                  className="bg-white hover:bg-blue-50 border-blue-300 text-blue-700 hover:text-blue-800 transition-all duration-200 hover:shadow-md"
+                                >
+                                  {verificationLoading ? (
+                                    <div className="flex items-center">
+                                      <svg
+                                        className="animate-spin -ml-1 mr-2 h-4 w-4"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <circle
+                                          className="opacity-25"
+                                          cx="12"
+                                          cy="12"
+                                          r="10"
+                                          stroke="currentColor"
+                                          strokeWidth="4"
+                                        ></circle>
+                                        <path
+                                          className="opacity-75"
+                                          fill="currentColor"
+                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                        ></path>
+                                      </svg>
+                                      Sending email...
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center">
+                                      <svg
+                                        className="mr-2 h-4 w-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                        />
+                                      </svg>
+                                      Resend verification email
+                                    </div>
+                                  )}
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                         )}
                       </div>

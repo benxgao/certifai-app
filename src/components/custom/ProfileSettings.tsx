@@ -173,7 +173,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
 
           {/* Email verification actions */}
           {!firebaseUser?.emailVerified && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800/50">
+            <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800/50 shadow-sm">
               <div className="flex items-start space-x-3">
                 <svg
                   className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0"
@@ -193,41 +193,61 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
                   <p className="text-sm text-yellow-700 dark:text-yellow-200 mb-3">
                     Please verify your email address to secure your account and access all features.
                   </p>
-                  <Button
-                    onClick={handleResendVerification}
-                    disabled={verificationLoading}
-                    size="sm"
-                    variant="outline"
-                    className="bg-white hover:bg-yellow-50 border-yellow-300 text-yellow-800 hover:text-yellow-900"
-                  >
-                    {verificationLoading ? (
-                      <div className="flex items-center">
-                        <svg
-                          className="animate-spin -ml-1 mr-2 h-3 w-3"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      onClick={handleResendVerification}
+                      disabled={verificationLoading}
+                      size="sm"
+                      variant="outline"
+                      className="bg-white hover:bg-yellow-50 border-yellow-300 text-yellow-800 hover:text-yellow-900 transition-all duration-200 hover:shadow-md"
+                    >
+                      {verificationLoading ? (
+                        <div className="flex items-center">
+                          <svg
+                            className="animate-spin -ml-1 mr-2 h-3 w-3"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          Sending...
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <svg
+                            className="w-4 h-4 mr-2"
+                            fill="none"
                             stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Sending...
-                      </div>
-                    ) : (
-                      'Resend verification email'
-                    )}
-                  </Button>
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M3 8l7.89 1.26a2 2 0 001.78-1.89V4a2 2 0 011.78-1.89L22 3.74"
+                            />
+                          </svg>
+                          Resend verification email
+                        </div>
+                      )}
+                    </Button>
+                    <div className="text-xs text-yellow-600 dark:text-yellow-300 mt-1">
+                      Check your spam folder if you don&apos;t see the email
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
