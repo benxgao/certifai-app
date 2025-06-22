@@ -1,6 +1,7 @@
 import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { ApiResponse, PaginatedApiResponse } from '../types/api';
 
 export interface ExamListItem {
   exam_id: string;
@@ -24,7 +25,7 @@ export interface ExamListItem {
 
 export function useExamsForCertification(apiUserId: string | null, certId: number | null) {
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    { data: ExamListItem[] },
+    PaginatedApiResponse<ExamListItem[]>,
     Error
   >(
     certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
@@ -32,6 +33,7 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
 
   return {
     exams: data?.data,
+    pagination: data?.meta,
     isLoadingExams: isLoading,
     isExamsError: error,
     isValidatingExams: isValidating,
@@ -140,7 +142,10 @@ export function useExamState(
   certId: number | null,
   examId: string | null,
 ) {
-  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<{ data: ExamState }, Error>(
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
+    ApiResponse<ExamState>,
+    Error
+  >(
     apiUserId && certId && examId
       ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
       : null,

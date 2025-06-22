@@ -26,7 +26,7 @@ export interface Question {
 
 export interface ExamQuestionsResponse {
   data: { questions: Question[] };
-  pagination: PaginationInfo; // Use imported PaginationInfo
+  meta: PaginationInfo; // Updated to use meta instead of pagination to match API
 }
 
 // Hook to fetch questions for a specific exam page URL
@@ -43,7 +43,7 @@ export function useExamQuestions(
 
   return {
     questions: data?.data?.questions,
-    pagination: data?.pagination,
+    pagination: data?.meta,
     isLoadingQuestions: isLoading,
     isQuestionsError: error,
     isValidatingQuestions: isValidating,

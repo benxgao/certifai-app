@@ -73,14 +73,16 @@ const MainPage = () => {
 
   // SWR hook for fetching available certifications - prefetch for better UX
   const {
-    data: availableCertifications,
+    data: certificationsResponse,
     error: availableCertificationsError,
     isLoading: isLoadingAvailableCertifications,
-  } = useSWR<AvailableCertification[]>('/api/certifications', null, {
+  } = useSWR<{ data: AvailableCertification[]; meta?: any }>('/api/certifications', null, {
     revalidateOnFocus: false,
     dedupingInterval: 60000, // Cache for 1 minute
     refreshInterval: 0,
   });
+
+  const availableCertifications = certificationsResponse?.data;
 
   const { trigger: registerCertification, isMutating: isRegistering } = useSWRMutation(
     '/api/certifications/register',

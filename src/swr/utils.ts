@@ -5,6 +5,15 @@ export interface PaginationInfo {
   totalPages: number; // 2
 }
 
+// Import standardized API types
+export type {
+  ApiResponse,
+  PaginatedApiResponse,
+  PaginationMeta,
+  ApiErrorResponse,
+  LegacyPaginationInfo,
+} from '../types/api';
+
 // Re-export authentication utilities for convenience
 export {
   clearClientAuthState,

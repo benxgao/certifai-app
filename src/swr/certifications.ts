@@ -1,6 +1,7 @@
 import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { PaginatedApiResponse } from '../types/api';
 
 // Define the type for the certification data you expect to send
 export interface CertificationInput {
@@ -132,7 +133,7 @@ export interface CertificationListItem {
 // Custom hook to use for fetching the list of all available certifications
 export function useAllAvailableCertifications() {
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    { data: CertificationListItem[] },
+    PaginatedApiResponse<CertificationListItem[]>,
     Error
   >(
     '/api/certifications', // Endpoint for all available certifications
@@ -140,6 +141,7 @@ export function useAllAvailableCertifications() {
 
   return {
     availableCertifications: data?.data,
+    pagination: data?.meta,
     isLoadingAvailableCertifications: isLoading,
     isAvailableCertificationsError: error,
     isValidatingAvailableCertifications: isValidating,
@@ -152,7 +154,7 @@ export function useAllAvailableCertifications() {
 // Custom hook to use for fetching the list of a user's registered certifications
 export function useUserRegisteredCertifications(apiUserId: string | null) {
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    { data: UserRegisteredCertification[] },
+    PaginatedApiResponse<UserRegisteredCertification[]>,
     Error
   >(
     apiUserId ? `/api/users/${apiUserId}/certifications` : null, // Conditional fetching
@@ -181,6 +183,7 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
 
   return {
     userCertifications: data?.data,
+    pagination: data?.meta,
     isLoadingUserCertifications: isLoading,
     isUserCertificationsError: error,
     isValidatingUserCertifications: isValidating,
