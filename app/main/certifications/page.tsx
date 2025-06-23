@@ -13,7 +13,7 @@ import {
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import Breadcrumb from '@/components/custom/Breadcrumb';
-import CertificationGrid from '@/components/custom/CertificationGrid';
+import EnhancedFirmNavigation from '@/components/custom/EnhancedFirmNavigation';
 import { CertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
 
@@ -192,14 +192,13 @@ export default function CertificationsPage() {
         <section className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-              Certification Catalog
+              Certification Catalog by Provider
             </h2>
           </div>
 
           <Suspense fallback={<CertificationCardSkeleton count={4} />}>
-            <CertificationGrid
+            <EnhancedFirmNavigation
               onRegister={handleOpenModal}
-              isRegistering={isRegistering}
               registeringCertId={registeringCertId}
             />
           </Suspense>

@@ -122,12 +122,23 @@ export interface UserRegisteredCertification {
 
 export interface CertificationListItem {
   cert_id: number;
+  firm_id: number;
   // cert_category_id: number;
   name: string;
   exam_guide_url: string;
   min_quiz_counts: number;
   max_quiz_counts: number;
   pass_score: number;
+  firm?: {
+    firm_id: number;
+    name: string;
+    code: string;
+    description: string;
+    website_url: string | null;
+    logo_url: string | null;
+    created_at: string;
+    updated_at: string;
+  };
 }
 
 // Custom hook to use for fetching the list of all available certifications
