@@ -16,6 +16,7 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
   // Define navigation items in consistent order
   const navigationItems = [
     ...(showFeaturesLink ? [{ href: '/#features', label: 'Features' }] : []),
+    { href: '/certifications', label: 'Certifications' },
     { href: '/about', label: 'About' },
     { href: '/pricing', label: 'Pricing' },
     { href: '/contact', label: 'Contact' },
