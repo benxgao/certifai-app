@@ -31,16 +31,6 @@ interface Firm {
   certifications: Certification[];
 }
 
-interface ApiResponse {
-  success: boolean;
-  data: Firm[];
-  meta: {
-    firm_count: number;
-    total_certifications: number;
-    timestamp: string;
-  };
-}
-
 export default function CertificationsOverview() {
   const [firms, setFirms] = useState<Firm[]>([]);
   const [filteredFirms, setFilteredFirms] = useState<Firm[]>([]);
@@ -83,21 +73,38 @@ export default function CertificationsOverview() {
   const fetchCertifications = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_API_URL}/public/certifications/grouped-by-firm`,
-      );
-
-      if (!response.ok) {
+      
+      // Fetch firms with certification counts
+      const firmsResponse = await fetch('/api/firms?includeCount=true&pageSize=50');
+      if (!firmsResponse.ok) {
+        throw new Error('Failed to fetch firms');
+      }
+      const firmsResult = await firmsResponse.json();
+      
+      // Fetch all certifications with firm information
+      const certsResponse = await fetch('/api/certifications?pageSize=100');
+      if (!certsResponse.ok) {
         throw new Error('Failed to fetch certifications');
       }
-
-      const result: ApiResponse = await response.json();
-
-      if (result.success) {
-        setFirms(result.data);
-        setFilteredFirms(result.data);
+      const certsResult = await certsResponse.json();
+      
+      if (firmsResult.data && certsResult.data) {
+        // Group certifications by firm
+        const firmsWithCerts = firmsResult.data.map((firm: any) => ({
+          id: firm.firm_id,
+          code: firm.code,
+          name: firm.name,
+          description: firm.description,
+          website_url: firm.website_url,
+          logo_url: firm.logo_url,
+          certification_count: firm._count?.certifications || 0,
+          certifications: certsResult.data.filter((cert: any) => cert.firm_id === firm.firm_id)
+        }));
+        
+        setFirms(firmsWithCerts);
+        setFilteredFirms(firmsWithCerts);
       } else {
-        throw new Error('API returned error');
+        throw new Error('API returned incomplete data');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

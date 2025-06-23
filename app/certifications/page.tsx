@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import CertificationsOverview from '@/src/components/custom/CertificationsOverview';
+import CertificationsOverviewClient from '@/src/components/custom/CertificationsOverviewClient';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
+import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export const metadata: Metadata = {
   title: 'All IT Certifications by Leading Firms | CertifAI',
@@ -27,11 +28,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CertificationsPage() {
+export default async function CertificationsPage() {
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
   ];
+
+  // Fetch certification data server-side
+  const { firms, error } = await fetchCertificationsData();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -48,7 +52,7 @@ export default function CertificationsPage() {
         </div>
 
         <Suspense fallback={<CertificationsOverviewSkeleton />}>
-          <CertificationsOverview />
+          <CertificationsOverviewClient initialFirms={firms} initialError={error} />
         </Suspense>
       </div>
     </div>

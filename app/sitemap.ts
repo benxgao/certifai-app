@@ -91,29 +91,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic certification pages
-  let certificationPages: MetadataRoute.Sitemap = [];
+  // Note: Dynamic certification pages removed from sitemap since all endpoints now require authentication.
+  // Consider implementing a build-time solution or using a different approach for SEO.
+  // For now, the main certifications page will handle SEO for individual certifications.
 
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/certifications?limit=1000`,
-      { next: { revalidate: 3600 } }, // Cache for 1 hour
-    );
-
-    if (response.ok) {
-      const result = await response.json();
-      if (result.success && result.data) {
-        certificationPages = result.data.map((cert: any) => ({
-          url: `${baseUrl}/certifications/${cert.cert_id}`,
-          lastModified: new Date(cert.updated_at),
-          changeFrequency: 'weekly' as const,
-          priority: 0.7,
-        }));
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching certifications for sitemap:', error);
-  }
-
-  return [...staticPages, ...certificationPages];
+  return staticPages;
 }

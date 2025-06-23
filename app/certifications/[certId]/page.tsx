@@ -5,126 +5,64 @@ import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 
 interface Props {
-  params: {
+  params: Promise<{
     certId: string;
-  };
+  }>;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const certId = params.certId;
+  const resolvedParams = await params;
+  const certId = resolvedParams.certId;
 
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/certifications/${certId}`,
-      { next: { revalidate: 3600 } }, // Cache for 1 hour
-    );
+  // Note: Dynamic metadata generation removed due to authentication requirement.
+  // All API endpoints now require authentication. Consider implementing a server-side
+  // solution or using static metadata for SEO.
 
-    if (!response.ok) {
-      return {
-        title: 'Certification Not Found | CertifAI',
-        description: 'The requested certification could not be found.',
-      };
-    }
-
-    const result = await response.json();
-
-    if (!result.success || !result.data) {
-      return {
-        title: 'Certification Not Found | CertifAI',
-        description: 'The requested certification could not be found.',
-      };
-    }
-
-    const cert = result.data;
-    const firmName = cert.firm?.name || 'Unknown';
-
-    return {
-      title: `${cert.name} - ${firmName} Certification | CertifAI`,
+  return {
+    title: `Certification ${certId} | CertifAI`,
+    description:
+      'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
+    keywords: 'IT certification, exam preparation, practice questions, training',
+    openGraph: {
+      title: `Certification ${certId} | CertifAI`,
       description:
-        cert.description ||
-        `Learn about ${cert.name} certification from ${firmName}. Prepare with AI-powered practice questions and study materials.`,
-      keywords: `${cert.name}, ${firmName} certification, IT certification, exam preparation, practice questions, ${firmName} training`,
-      openGraph: {
-        title: `${cert.name} - ${firmName} Certification | CertifAI`,
-        description:
-          cert.description ||
-          `Learn about ${cert.name} certification from ${firmName}. Prepare with AI-powered practice questions and study materials.`,
-        type: 'article',
-        url: `https://certifai.app/certifications/${certId}`,
-        images: cert.firm?.logo_url
-          ? [
-              {
-                url: cert.firm.logo_url,
-                width: 400,
-                height: 400,
-                alt: `${firmName} logo`,
-              },
-            ]
-          : undefined,
-      },
-      twitter: {
-        title: `${cert.name} - ${firmName} Certification | CertifAI`,
-        description:
-          cert.description ||
-          `Learn about ${cert.name} certification from ${firmName}. Prepare with AI-powered practice questions and study materials.`,
-        card: 'summary_large_image',
-      },
-      alternates: {
-        canonical: `/certifications/${certId}`,
-      },
-    };
-  } catch (error) {
-    console.error('Error generating metadata:', error);
-    return {
-      title: 'Certification | CertifAI',
-      description: 'IT certification information and training materials.',
-    };
-  }
+        'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
+      type: 'article',
+      url: `https://certifai.app/certifications/${certId}`,
+    },
+    twitter: {
+      title: `Certification ${certId} | CertifAI`,
+      description:
+        'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
+      card: 'summary_large_image',
+    },
+    alternates: {
+      canonical: `/certifications/${certId}`,
+    },
+  };
 }
 
 export default async function CertificationPage({ params }: Props) {
-  const certId = params.certId;
+  const resolvedParams = await params;
+  const certId = resolvedParams.certId;
 
   // Validate certId is a number
   if (!/^\d+$/.test(certId)) {
     notFound();
   }
 
-  // Fetch certification data for breadcrumb
-  let certification = null;
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/certifications/${certId}`,
-      { next: { revalidate: 3600 } },
-    );
-
-    if (response.ok) {
-      const result = await response.json();
-      if (result.success) {
-        certification = result.data;
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching certification for breadcrumb:', error);
-  }
+  // Note: Breadcrumb data fetching removed due to authentication requirement.
+  // All API endpoints now require authentication. The CertificationDetail component
+  // will handle loading and display of certification information with proper authentication.
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
-    ...(certification
-      ? [
-          {
-            label: certification.name,
-            href: `/certifications/${certId}`,
-          },
-        ]
-      : [
-          {
-            label: `Certification ${certId}`,
-            href: `/certifications/${certId}`,
-          },
-        ]),
+    {
+      label: `Certification ${certId}`,
+      href: `/certifications/${certId}`,
+    },
   ];
 
   return (

@@ -1,36 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
+import {
+  getAuthenticatedToken,
+  makeAuthenticatedRequest,
+  createErrorResponse,
+  validateRequiredParams,
+} from '@/src/lib/api-utils';
 
 const CERTIFICATIONS_REGISTER_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/certifications`;
 
 export async function POST(request: NextRequest) {
   try {
-    const firebaseToken = await getFirebaseTokenFromCookie();
+    const firebaseToken = await getAuthenticatedToken();
+    const body = await request.json();
 
-    if (!firebaseToken) {
-      return NextResponse.json(
-        { message: 'Authentication failed: Invalid token' },
-        { status: 401 },
-      );
-    }
+    // Validate required parameters
+    validateRequiredParams(body, ['certificationId']);
 
-    const { certificationId } = await request.json();
-
-    if (!certificationId) {
-      return NextResponse.json({ message: 'Certification ID is required' }, { status: 400 });
-    }
-
-    const response = await fetch(CERTIFICATIONS_REGISTER_API_URL, {
+    const response = await makeAuthenticatedRequest(CERTIFICATIONS_REGISTER_API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${firebaseToken}`,
-      },
-      body: JSON.stringify({ certificationId }),
+      firebaseToken,
+      body: JSON.stringify({ certificationId: body.certificationId }),
     });
 
     if (!response.ok) {
-      let errorData;
+      let errorData: any;
       try {
         errorData = await response.json();
       } catch {
@@ -40,20 +33,18 @@ export async function POST(request: NextRequest) {
       console.error('Failed to register for certification:', response.status, errorData);
 
       return NextResponse.json(
-        { message: 'Failed to register for certification', error: errorData },
+        {
+          success: false,
+          message: 'Failed to register for certification',
+          error: errorData,
+        },
         { status: response.status },
       );
     }
 
     const data = await response.json();
-
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error('Error registering for certification:', error);
-
-    return NextResponse.json(
-      { message: 'Error registering for certification', error: (error as Error).message },
-      { status: 500 },
-    );
+    return createErrorResponse(error as Error, 'registering for certification');
   }
 }
