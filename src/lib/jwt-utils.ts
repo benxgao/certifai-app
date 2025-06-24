@@ -25,13 +25,13 @@ interface JWTTokenResponse {
 export async function generatePublicJWTToken(): Promise<string | null> {
   try {
     if (!SERVER_API_URL) {
-      console.error('SERVER_API_URL environment variable is not set');
+      console.warn('SERVER_API_URL environment variable is not set, using fallback data');
       return null;
     }
 
     const serviceSecret = process.env.SERVICE_SECRET;
     if (!serviceSecret) {
-      console.error('SERVICE_SECRET environment variable is not set');
+      console.warn('SERVICE_SECRET environment variable is not set, using fallback data');
       return null;
     }
 
@@ -51,20 +51,31 @@ export async function generatePublicJWTToken(): Promise<string | null> {
     });
 
     if (!response.ok) {
-      console.error('Failed to generate JWT token:', response.status, response.statusText);
+      // Check if it's a 404 (endpoint doesn't exist) vs other errors
+      if (response.status === 404) {
+        console.info(
+          'JWT token generation endpoint not available on API server, using fallback data',
+        );
+      } else {
+        const errorText = await response.text().catch(() => 'Unknown error');
+        console.warn(`Backend API returned ${response.status}, using fallback data:`, errorText);
+      }
       return null;
     }
 
     const result: JWTTokenResponse = await response.json();
 
     if (!result.success || !result.data?.token) {
-      console.error('JWT token generation failed:', result.error || result.message);
+      console.warn(
+        'JWT token generation failed, using fallback data:',
+        result.error || result.message,
+      );
       return null;
     }
 
     return result.data.token;
-  } catch (error) {
-    console.error('Error generating JWT token:', error);
+  } catch {
+    console.info('Backend API connection failed, using fallback data');
     return null;
   }
 }

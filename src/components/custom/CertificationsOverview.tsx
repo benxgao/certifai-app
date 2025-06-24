@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 
 interface Certification {
@@ -73,21 +72,21 @@ export default function CertificationsOverview() {
   const fetchCertifications = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch firms with certification counts
       const firmsResponse = await fetch('/api/firms?includeCount=true&pageSize=50');
       if (!firmsResponse.ok) {
         throw new Error('Failed to fetch firms');
       }
       const firmsResult = await firmsResponse.json();
-      
+
       // Fetch all certifications with firm information
       const certsResponse = await fetch('/api/certifications?pageSize=100');
       if (!certsResponse.ok) {
         throw new Error('Failed to fetch certifications');
       }
       const certsResult = await certsResponse.json();
-      
+
       if (firmsResult.data && certsResult.data) {
         // Group certifications by firm
         const firmsWithCerts = firmsResult.data.map((firm: any) => ({
@@ -98,9 +97,9 @@ export default function CertificationsOverview() {
           website_url: firm.website_url,
           logo_url: firm.logo_url,
           certification_count: firm._count?.certifications || 0,
-          certifications: certsResult.data.filter((cert: any) => cert.firm_id === firm.firm_id)
+          certifications: certsResult.data.filter((cert: any) => cert.firm_id === firm.firm_id),
         }));
-        
+
         setFirms(firmsWithCerts);
         setFilteredFirms(firmsWithCerts);
       } else {
@@ -195,16 +194,6 @@ export default function CertificationsOverview() {
             <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  {firm.logo_url && (
-                    <div className="w-16 h-16 relative bg-white rounded-lg p-2 shadow-sm">
-                      <Image
-                        src={firm.logo_url}
-                        alt={`${firm.name} logo`}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
                   <div>
                     <CardTitle className="text-2xl text-gray-900 mb-2">{firm.name}</CardTitle>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
@@ -238,7 +227,7 @@ export default function CertificationsOverview() {
                 {firm.certifications.map((cert) => (
                   <Link
                     key={cert.cert_id}
-                    href={`/certifications/${cert.cert_id}`}
+                    href={`/certifications/cert/${cert.cert_id}`}
                     className="block"
                   >
                     <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer">

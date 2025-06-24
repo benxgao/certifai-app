@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import CertificationsOverviewClient from '@/src/components/custom/CertificationsOverviewClient';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export const metadata: Metadata = {
@@ -28,7 +29,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CertificationsPage() {
+export default async function CertificationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
@@ -37,8 +42,16 @@ export default async function CertificationsPage() {
   // Fetch certification data server-side
   const { firms, error } = await fetchCertificationsData();
 
+  // Get firm filter from search params
+  const resolvedSearchParams = await searchParams;
+  const firmFilter =
+    typeof resolvedSearchParams.firm === 'string' ? resolvedSearchParams.firm : undefined;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header with Navigation */}
+      <LandingHeader showFeaturesLink={false} />
+
       <div className="container mx-auto px-4 py-8">
         <Breadcrumb items={breadcrumbItems} />
 
@@ -52,7 +65,11 @@ export default async function CertificationsPage() {
         </div>
 
         <Suspense fallback={<CertificationsOverviewSkeleton />}>
-          <CertificationsOverviewClient initialFirms={firms} initialError={error} />
+          <CertificationsOverviewClient
+            initialFirms={firms}
+            initialError={error}
+            defaultFirmFilter={firmFilter}
+          />
         </Suspense>
       </div>
     </div>

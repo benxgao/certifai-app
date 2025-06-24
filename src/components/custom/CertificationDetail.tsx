@@ -15,7 +15,6 @@ import {
   FaCalendar,
 } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
 
 // Simple date formatting function
@@ -153,16 +152,6 @@ export default function CertificationDetail({ certId }: Props) {
       <Card className="overflow-hidden">
         <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
           <div className="flex items-start gap-6">
-            {firm.logo_url && (
-              <div className="w-20 h-20 relative bg-white rounded-lg p-3 shadow-sm flex-shrink-0">
-                <Image
-                  src={firm.logo_url}
-                  alt={`${firm.name} logo`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            )}
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
                 <Badge variant="secondary" className="text-sm px-3 py-1">
@@ -260,7 +249,7 @@ export default function CertificationDetail({ certId }: Props) {
               {certification.related_certifications.map((relatedCert) => (
                 <Link
                   key={relatedCert.cert_id}
-                  href={`/certifications/${relatedCert.cert_id}`}
+                  href={`/certifications/cert/${relatedCert.cert_id}`}
                   className="block"
                 >
                   <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer">

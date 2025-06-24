@@ -44,7 +44,7 @@ export async function fetchCertificationsData(): Promise<{
     const token = await generatePublicJWTToken();
 
     if (!token) {
-      console.warn('Failed to generate JWT token, using fallback data');
+      console.info('Using local mock data (backend API JWT generation not available)');
       return {
         firms: getMockFirmsData(),
         error: undefined,
@@ -64,7 +64,7 @@ export async function fetchCertificationsData(): Promise<{
     ]);
 
     if (!firmsResponse?.ok || !certsResponse?.ok) {
-      console.warn('Public API requests failed, using fallback data');
+      console.info('Public API requests failed, using local mock data');
 
       return {
         firms: getMockFirmsData(),

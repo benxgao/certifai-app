@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://certifai.app';
@@ -91,9 +92,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Note: Dynamic certification pages removed from sitemap since all endpoints now require authentication.
-  // Consider implementing a build-time solution or using a different approach for SEO.
-  // For now, the main certifications page will handle SEO for individual certifications.
+  // Dynamic certification pages
+  let dynamicPages: MetadataRoute.Sitemap = [];
 
-  return staticPages;
+  try {
+    const { firms } = await fetchCertificationsData();
+
+    // Add firm-specific certification pages
+    dynamicPages = firms.flatMap((firm) => {
+      const firmPages: MetadataRoute.Sitemap = [
+        // Firm-specific certifications page
+        {
+          url: `${baseUrl}/certifications/${firm.code.toLowerCase()}`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        // Individual certification pages for this firm
+        ...firm.certifications.map((cert) => ({
+          url: `${baseUrl}/certifications/${firm.code.toLowerCase()}/${cert.cert_id}`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.7,
+        })),
+      ];
+
+      return firmPages;
+    });
+  } catch (error) {
+    console.error('Error generating dynamic sitemap entries:', error);
+    // Gracefully handle errors - sitemap will still work with static pages
+  }
+
+  return [...staticPages, ...dynamicPages];
 }

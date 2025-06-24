@@ -6,15 +6,13 @@ import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
 
 interface Props {
-  params: Promise<{
-    certId: string;
-  }>;
+  params: Promise<{ firmCode: string; certId: string }>;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  const certId = resolvedParams.certId;
+  const { firmCode, certId } = resolvedParams;
 
   // Fetch certification data for better SEO metadata
   try {
@@ -26,16 +24,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         const cert = result.data;
 
         if (cert) {
+          const firm = cert.firm;
           return {
-            title: `${cert.name} | CertifAI`,
+            title: `${cert.name} - ${firm.name} Certification | CertifAI`,
             description:
               cert.description ||
-              'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
-            keywords: `${cert.name}, IT certification, exam preparation, practice questions, training`,
+              `${cert.name} certification from ${firm.name}. Learn about exam requirements, practice questions, and training materials.`,
+            keywords: `${cert.name}, ${firm.name}, ${firmCode}, IT certification, exam preparation, practice questions, training`,
             openGraph: {
-              title: `${cert.name} | CertifAI`,
+              title: `${cert.name} - ${firm.name} Certification | CertifAI`,
               description:
-                cert.description || 'IT certification information and training materials.',
+                cert.description ||
+                `${cert.name} certification from ${firm.name}. Learn about exam requirements, practice questions, and training materials.`,
               type: 'article',
             },
           };
@@ -43,40 +43,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       }
     }
   } catch (error) {
-    console.error('Error fetching certification metadata:', error);
+    console.error('Error fetching certification for metadata:', error);
   }
 
-  // Fallback metadata
   return {
-    title: `Certification ${certId} | CertifAI`,
-    description:
-      'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
-    keywords: 'IT certification, exam preparation, practice questions, training',
-    openGraph: {
-      title: `Certification ${certId} | CertifAI`,
-      description:
-        'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
-      type: 'article',
-      url: `https://certifai.app/certifications/${certId}`,
-    },
-    twitter: {
-      title: `Certification ${certId} | CertifAI`,
-      description:
-        'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
-      card: 'summary_large_image',
-    },
-    alternates: {
-      canonical: `/certifications/${certId}`,
-    },
+    title: `Certification ${certId} - ${firmCode.toUpperCase()} | CertifAI`,
+    description: `${firmCode.toUpperCase()} certification information and training materials. Prepare with AI-powered practice questions and study materials.`,
+    keywords: `${firmCode}, certification ${certId}, IT certification, exam preparation, practice questions, training`,
   };
 }
 
 export default async function CertificationPage({ params }: Props) {
   const resolvedParams = await params;
-  const certId = resolvedParams.certId;
+  const { firmCode, certId } = resolvedParams;
 
   // Validate certId is a number
   if (!/^\d+$/.test(certId)) {
+    notFound();
+  }
+
+  // Validate firmCode (should be alphanumeric, typically 2-6 characters)
+  if (!/^[a-zA-Z0-9]{1,10}$/i.test(firmCode)) {
     notFound();
   }
 
@@ -84,8 +71,12 @@ export default async function CertificationPage({ params }: Props) {
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
     {
+      label: firmCode.toUpperCase(),
+      href: `/certifications?firm=${firmCode}`,
+    },
+    {
       label: `Certification ${certId}`,
-      href: `/certifications/${certId}`,
+      href: `/certifications/${firmCode}/${certId}`,
     },
   ];
 

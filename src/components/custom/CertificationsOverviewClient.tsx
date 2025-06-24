@@ -7,24 +7,25 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
-import Image from 'next/image';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 import { FirmWithCertifications } from '@/src/lib/server-actions/certifications';
 
 interface CertificationsOverviewClientProps {
   initialFirms: FirmWithCertifications[];
   initialError?: string;
+  defaultFirmFilter?: string;
 }
 
 export default function CertificationsOverviewClient({
   initialFirms,
   initialError,
+  defaultFirmFilter,
 }: CertificationsOverviewClientProps) {
   const [firms] = useState<FirmWithCertifications[]>(initialFirms);
   const [filteredFirms, setFilteredFirms] = useState<FirmWithCertifications[]>(initialFirms);
   const [error] = useState<string | null>(initialError || null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFirm, setSelectedFirm] = useState<string | null>(null);
+  const [selectedFirm, setSelectedFirm] = useState<string | null>(defaultFirmFilter || null);
 
   useEffect(() => {
     const filterFirms = () => {
@@ -159,17 +160,6 @@ export default function CertificationsOverviewClient({
             <Card key={firm.id} className="bg-white shadow-md hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  {firm.logo_url && (
-                    <div className="w-16 h-16 relative flex-shrink-0">
-                      <Image
-                        src={firm.logo_url}
-                        alt={`${firm.name} logo`}
-                        width={64}
-                        height={64}
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <CardTitle className="text-2xl text-gray-900">{firm.name}</CardTitle>
