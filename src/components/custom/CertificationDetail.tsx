@@ -10,7 +10,6 @@ import {
   FaGraduationCap,
   FaExternalLinkAlt,
   FaClock,
-  FaChartLine,
   FaStar,
   FaCalendar,
 } from 'react-icons/fa';
@@ -203,15 +202,7 @@ export default function CertificationDetail({ certId }: Props) {
       </Card>
 
       {/* Certification Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardContent className="p-6 text-center">
-            <FaChartLine className="text-3xl text-green-500 mb-4 mx-auto" />
-            <div className="text-2xl font-bold text-gray-900 mb-1">{certification.pass_score}%</div>
-            <div className="text-gray-600">Pass Score Required</div>
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardContent className="p-6 text-center">
             <FaClock className="text-3xl text-blue-500 mb-4 mx-auto" />
@@ -261,7 +252,6 @@ export default function CertificationDetail({ certId }: Props) {
                         {relatedCert.description}
                       </p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>Pass Score: {relatedCert.pass_score}%</span>
                         <Badge variant="outline">
                           {relatedCert.min_quiz_counts}-{relatedCert.max_quiz_counts} Questions
                         </Badge>

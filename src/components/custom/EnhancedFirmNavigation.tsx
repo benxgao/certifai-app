@@ -137,11 +137,6 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                   {cert.min_quiz_counts}-{cert.max_quiz_counts} Questions
                 </span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-slate-600 dark:text-slate-400">
-                  {cert.pass_score}% Pass Score
-                </span>
-              </div>
             </div>
           )}
         </CardHeader>

@@ -285,23 +285,6 @@ function CertificationExamsContent() {
                   </div>
                 </div>
 
-                {/* Pass Score */}
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-center space-x-2">
-                      <FaTrophy className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
-                      <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                        Target Score
-                      </p>
-                    </div>
-                    <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                      {exams && exams.length > 0 && exams[0].certification?.pass_score
-                        ? `${exams[0].certification.pass_score}%`
-                        : '80%'}
-                    </p>
-                  </div>
-                </div>
-
                 {/* Progress */}
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                   <div className="space-y-3">
@@ -363,18 +346,10 @@ function CertificationExamsContent() {
               const isCompleted = exam.submitted_at !== null;
               const hasStarted = exam.started_at !== null;
               const hasScore = exam.score !== null && exam.score !== undefined;
-              const meetsRequirement =
-                hasScore && exam.score! >= (exam.certification?.pass_score || 80);
-              const needsImprovement =
-                hasScore && exam.score! < (exam.certification?.pass_score || 80);
 
               // Determine exam status
               let examStatus = 'not_started';
-              if (isCompleted && meetsRequirement) {
-                examStatus = 'completed_successful';
-              } else if (isCompleted && needsImprovement) {
-                examStatus = 'completed_review';
-              } else if (isCompleted) {
+              if (isCompleted) {
                 examStatus = 'completed';
               } else if (hasStarted) {
                 examStatus = 'in_progress';
@@ -469,16 +444,11 @@ function CertificationExamsContent() {
                             <p
                               className={`text-2xl font-bold ${
                                 hasScore
-                                  ? meetsRequirement
-                                    ? 'text-emerald-600 dark:text-emerald-400'
-                                    : 'text-orange-600 dark:text-orange-400'
+                                  ? 'text-blue-600 dark:text-blue-400'
                                   : 'text-slate-400 dark:text-slate-500'
                               }`}
                             >
                               {hasScore ? `${exam.score}%` : '—'}
-                            </p>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                              Target: {exam.certification?.pass_score || 80}%
                             </p>
                           </div>
                         </div>
@@ -511,21 +481,6 @@ function CertificationExamsContent() {
                           60 min
                         </p>
                       </div>
-
-                      {/* Show score in statistics only if not already shown in header */}
-                      {!hasScore && examStatus !== 'in_progress' && (
-                        <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <FaChartLine className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                            <span className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                              Target Score
-                            </span>
-                          </div>
-                          <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                            {exam.certification?.pass_score || 80}%
-                          </p>
-                        </div>
-                      )}
 
                       {/* Show pass rate or attempts info */}
                       <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50 col-span-2 lg:col-span-1">

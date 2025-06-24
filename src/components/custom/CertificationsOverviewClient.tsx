@@ -204,7 +204,6 @@ export default function CertificationsOverviewClient({
                             {cert.description}
                           </p>
                           <div className="flex items-center justify-between text-xs text-gray-500">
-                            <span>Pass: {cert.pass_score}%</span>
                             <span>
                               {cert.min_quiz_counts}-{cert.max_quiz_counts} questions
                             </span>

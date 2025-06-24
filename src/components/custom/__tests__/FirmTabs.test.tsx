@@ -41,7 +41,6 @@ jest.mock('@/swr/certifications', () => ({
         exam_guide_url: 'https://aws.amazon.com/certification/',
         min_quiz_counts: 65,
         max_quiz_counts: 75,
-        pass_score: 72,
         firm: {
           firm_id: 1,
           name: 'Amazon Web Services',
@@ -104,9 +103,6 @@ describe('FirmTabs Component', () => {
 
     // Should display question count
     expect(screen.getByText('65-75 Questions')).toBeInTheDocument();
-
-    // Should display pass score
-    expect(screen.getByText('72% Pass Score')).toBeInTheDocument();
   });
 
   test('handles registration correctly', () => {

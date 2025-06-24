@@ -239,9 +239,6 @@ export default function CertificationsOverview() {
                           {cert.description}
                         </p>
                         <div className="flex items-center justify-between text-xs text-gray-500">
-                          <div className="flex items-center gap-2">
-                            <span>Pass Score: {cert.pass_score}%</span>
-                          </div>
                           <Badge variant="outline">
                             {cert.min_quiz_counts}-{cert.max_quiz_counts} Questions
                           </Badge>

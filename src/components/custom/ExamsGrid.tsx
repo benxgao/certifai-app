@@ -54,17 +54,10 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
         // Enhanced status detection based on actual ExamListItem properties
         const isCompleted = exam.submitted_at !== null;
         const hasStarted = exam.started_at !== null;
-        const hasScore = exam.score !== null && exam.score !== undefined;
-        const meetsRequirement = hasScore && exam.score! >= (exam.certification?.pass_score || 80);
-        const needsImprovement = hasScore && exam.score! < (exam.certification?.pass_score || 80);
 
         // Determine exam status
         let examStatus = 'not_started';
-        if (isCompleted && meetsRequirement) {
-          examStatus = 'completed_successful';
-        } else if (isCompleted && needsImprovement) {
-          examStatus = 'completed_review';
-        } else if (isCompleted) {
+        if (isCompleted) {
           examStatus = 'completed';
         } else if (hasStarted) {
           examStatus = 'in_progress';
@@ -72,11 +65,8 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
 
         const getStatusIcon = () => {
           switch (examStatus) {
-            case 'completed_successful':
-              return <FaTrophy className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
             case 'completed':
-            case 'completed_review':
-              return <FaTrophy className="w-5 h-5 text-violet-600 dark:text-violet-400" />;
+              return <FaTrophy className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
             case 'in_progress':
               return <FaPlay className="w-5 h-5 text-orange-600 dark:text-orange-400" />;
             default:
@@ -203,18 +193,6 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                   </p>
                   <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
                     {exam.score !== null ? `${exam.score}%` : 'N/A'}
-                  </p>
-                </div>
-
-                <div className="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                  <div className="flex items-center justify-center mb-2">
-                    <FaTrophy className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                  </div>
-                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    Target Score
-                  </p>
-                  <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                    {exam.certification?.pass_score || 80}%
                   </p>
                 </div>
               </div>

@@ -196,8 +196,7 @@ export default function CertificationMarketingPage({ certId, firmCode }: Props) 
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Pass score of {certification.pass_score}% with our proven study methodology and
-                expert-crafted practice exams.
+                Achieve success with our proven study methodology and expert-crafted practice exams.
               </p>
             </CardContent>
           </Card>
@@ -226,12 +225,6 @@ export default function CertificationMarketingPage({ certId, firmCode }: Props) 
                   {certification.enrollment_count.toLocaleString()}+
                 </div>
                 <p className="text-gray-600">Students Enrolled</p>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-green-600 mb-2">
-                  {certification.pass_score}%
-                </div>
-                <p className="text-gray-600">Pass Score Required</p>
               </div>
               <div>
                 <div className="text-3xl font-bold text-purple-600 mb-2">
@@ -306,7 +299,6 @@ export default function CertificationMarketingPage({ certId, firmCode }: Props) 
                           <span>
                             {related.min_quiz_counts}-{related.max_quiz_counts} questions
                           </span>
-                          <span>{related.pass_score}% pass</span>
                         </div>
                         <Link
                           href={`/certifications/${firmCode}/${related.cert_id}`}

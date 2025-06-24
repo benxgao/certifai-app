@@ -97,12 +97,6 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-slate-400 dark:text-slate-500">🎯</span>
-                  <span className="text-slate-600 dark:text-slate-400">
-                    {cert.pass_score}% Pass
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
                   <span className="text-slate-400 dark:text-slate-500">⏱️</span>
                   <span className="text-slate-600 dark:text-slate-400">~60 minutes</span>
                 </div>

@@ -17,25 +17,23 @@ interface FirmTabsProps {
   registeringCertId: number | null;
 }
 
-const FirmTabs: React.FC<FirmTabsProps> = ({
-  onRegister,
-  registeringCertId,
-}) => {
+const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) => {
   const router = useRouter();
   const [navigatingCertId, setNavigatingCertId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<string>('all');
 
   // Fetch firms and certifications data
   const { firms, isLoadingFirms, isFirmsError } = useFirms(true);
-  const { availableCertifications, isLoadingAvailableCertifications } = useAllAvailableCertifications();
+  const { availableCertifications, isLoadingAvailableCertifications } =
+    useAllAvailableCertifications();
   const { userCertifications } = useUserCertifications();
 
   // Group certifications by firm
   const certificationsByFirm = useMemo(() => {
     if (!availableCertifications) return {};
-    
+
     const grouped: { [key: string]: CertificationListItem[] } = {};
-    
+
     availableCertifications.forEach((cert) => {
       const firmKey = cert.firm?.code || 'UNKNOWN';
       if (!grouped[firmKey]) {
@@ -43,15 +41,15 @@ const FirmTabs: React.FC<FirmTabsProps> = ({
       }
       grouped[firmKey].push(cert);
     });
-    
+
     return grouped;
   }, [availableCertifications]);
 
   // Get firm with most certifications for default tab
   const defaultFirm = useMemo(() => {
     if (!firms || firms.length === 0) return null;
-    return firms.reduce((prev, current) => 
-      (current._count?.certifications || 0) > (prev._count?.certifications || 0) ? current : prev
+    return firms.reduce((prev, current) =>
+      (current._count?.certifications || 0) > (prev._count?.certifications || 0) ? current : prev,
     );
   }, [firms]);
 
@@ -86,13 +84,15 @@ const FirmTabs: React.FC<FirmTabsProps> = ({
               {cert.firm && (
                 <div className="flex items-center space-x-2 mb-3">
                   <FaBuilding className="w-3 h-3 text-slate-400" />
-                  <span className="text-sm text-slate-600 dark:text-slate-400">{cert.firm.name}</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400">
+                    {cert.firm.name}
+                  </span>
                 </div>
               )}
             </div>
             <div className="flex-shrink-0 ml-3">
               <Badge
-                variant={isRegistered ? "default" : "secondary"}
+                variant={isRegistered ? 'default' : 'secondary'}
                 className={`${
                   isRegistered
                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
@@ -109,12 +109,6 @@ const FirmTabs: React.FC<FirmTabsProps> = ({
               <span className="text-slate-400 dark:text-slate-500">📝</span>
               <span className="text-slate-600 dark:text-slate-400">
                 {cert.min_quiz_counts}-{cert.max_quiz_counts} Questions
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-slate-400 dark:text-slate-500">🎯</span>
-              <span className="text-slate-600 dark:text-slate-400">
-                {cert.pass_score}% Pass Score
               </span>
             </div>
           </div>
@@ -197,7 +191,10 @@ const FirmTabs: React.FC<FirmTabsProps> = ({
       <div className="space-y-6">
         <div className="flex space-x-2 mb-6">
           {Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className="h-10 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
+            <div
+              key={index}
+              className="h-10 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse"
+            />
           ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -238,68 +235,72 @@ const FirmTabs: React.FC<FirmTabsProps> = ({
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-auto overflow-x-auto bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-          <TabsTrigger 
-            value="all" 
+          <TabsTrigger
+            value="all"
             className="flex items-center space-x-2 px-4 py-2 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700"
           >
             <FaAward className="w-4 h-4" />
             <span>All ({availableCertifications?.length || 0})</span>
           </TabsTrigger>
-          
-          {firms?.filter(firm => (firm._count?.certifications || 0) > 0).map((firm) => (
-            <TabsTrigger 
-              key={firm.code} 
-              value={firm.code}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 whitespace-nowrap"
-            >
-              <FaBuilding className="w-4 h-4" />
-              <span>{firm.code} ({firm._count?.certifications || 0})</span>
-            </TabsTrigger>
-          ))}
+
+          {firms
+            ?.filter((firm) => (firm._count?.certifications || 0) > 0)
+            .map((firm) => (
+              <TabsTrigger
+                key={firm.code}
+                value={firm.code}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 whitespace-nowrap"
+              >
+                <FaBuilding className="w-4 h-4" />
+                <span>
+                  {firm.code} ({firm._count?.certifications || 0})
+                </span>
+              </TabsTrigger>
+            ))}
         </TabsList>
 
         <TabsContent value="all" className="mt-6">
           {renderCertificationsGrid(availableCertifications || [])}
         </TabsContent>
 
-        {firms?.filter(firm => (firm._count?.certifications || 0) > 0).map((firm) => (
-          <TabsContent key={firm.code} value={firm.code} className="mt-6">
-            <div className="mb-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center">
-                  <FaBuilding className="w-6 h-6 text-violet-600 dark:text-violet-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-                    {firm.name}
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-3">
-                    {firm.description}
-                  </p>
-                  <div className="flex items-center space-x-4 text-sm">
-                    <span className="flex items-center space-x-2">
-                      <FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-                      <span className="text-slate-600 dark:text-slate-400">
-                        {firm._count?.certifications || 0} Certifications
+        {firms
+          ?.filter((firm) => (firm._count?.certifications || 0) > 0)
+          .map((firm) => (
+            <TabsContent key={firm.code} value={firm.code} className="mt-6">
+              <div className="mb-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center">
+                    <FaBuilding className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                      {firm.name}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-3">{firm.description}</p>
+                    <div className="flex items-center space-x-4 text-sm">
+                      <span className="flex items-center space-x-2">
+                        <FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                        <span className="text-slate-600 dark:text-slate-400">
+                          {firm._count?.certifications || 0} Certifications
+                        </span>
                       </span>
-                    </span>
-                    {firm.website_url && (
-                      <a
-                        href={firm.website_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
-                      >
-                        Visit Website →
-                      </a>
-                    )}
+                      {firm.website_url && (
+                        <a
+                          href={firm.website_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
+                        >
+                          Visit Website →
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {renderCertificationsGrid(certificationsByFirm[firm.code] || [])}
-          </TabsContent>
-        ))}
+              {renderCertificationsGrid(certificationsByFirm[firm.code] || [])}
+            </TabsContent>
+          ))}
       </Tabs>
     </div>
   );
