@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
+import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
 
 interface Props {
   params: Promise<{
@@ -15,10 +16,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const certId = resolvedParams.certId;
 
-  // Note: Dynamic metadata generation removed due to authentication requirement.
-  // All API endpoints now require authentication. Consider implementing a server-side
-  // solution or using static metadata for SEO.
+  // Fetch certification data for better SEO metadata
+  try {
+    const token = await generatePublicJWTToken();
+    if (token) {
+      const response = await makePublicAPIRequest(`/certifications/${certId}`, token);
+      if (response.ok) {
+        const result = await response.json();
+        const cert = result.data;
 
+        if (cert) {
+          return {
+            title: `${cert.name} | CertifAI`,
+            description:
+              cert.description ||
+              'IT certification information and training materials. Prepare with AI-powered practice questions and study materials.',
+            keywords: `${cert.name}, IT certification, exam preparation, practice questions, training`,
+            openGraph: {
+              title: `${cert.name} | CertifAI`,
+              description:
+                cert.description || 'IT certification information and training materials.',
+              type: 'article',
+            },
+          };
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching certification metadata:', error);
+  }
+
+  // Fallback metadata
   return {
     title: `Certification ${certId} | CertifAI`,
     description:
@@ -51,10 +79,6 @@ export default async function CertificationPage({ params }: Props) {
   if (!/^\d+$/.test(certId)) {
     notFound();
   }
-
-  // Note: Breadcrumb data fetching removed due to authentication requirement.
-  // All API endpoints now require authentication. The CertificationDetail component
-  // will handle loading and display of certification information with proper authentication.
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },

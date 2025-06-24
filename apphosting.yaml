@@ -17,6 +17,9 @@ env:
   - variable: JOSE_JWT_SECRET
     secret: JOSE_JWT_SECRET # secret
 
+  - variable: SERVICE_SECRET
+    secret: SERVICE_SECRET # secret
+
   - variable: NEXT_PUBLIC_FIREBASE_BACKEND_URL # for sending requests to the backend api
     secret: NEXT_PUBLIC_FIREBASE_BACKEND_URL # secret
 
