@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
-import { FirebaseAuthProvider } from '@/src/context/FirebaseAuthContext';
+import ConditionalFirebaseAuthProvider from '@/src/components/auth/ConditionalFirebaseAuthProvider';
 import ConditionalFooter from '@/src/components/custom/ConditionalFooter';
 import './globals.css';
 
@@ -164,7 +164,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <FirebaseAuthProvider>
+        <ConditionalFirebaseAuthProvider>
           <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
             <Suspense
               fallback={
@@ -180,7 +180,7 @@ export default function RootLayout({
             </Suspense>
           </div>
           <ConditionalFooter />
-        </FirebaseAuthProvider>
+        </ConditionalFirebaseAuthProvider>
       </body>
     </html>
   );

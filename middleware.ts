@@ -116,12 +116,12 @@ export async function middleware(request: NextRequest) {
         currentTime: Date.now() / 1000,
       });
 
-      // Try to refresh the token
+      // Try to refresh the token using enhanced server-side refresh
       try {
         const BASE_URL = process.env.NEXT_PUBLIC_FIREBASE_BACKEND_URL || request.nextUrl.origin;
-        const refreshUrl = `${BASE_URL}/api/auth-cookie/refresh`;
+        const refreshUrl = `${BASE_URL}/api/auth-cookie/server-refresh`;
 
-        console.log(`middleware: attempting token refresh at ${refreshUrl}`);
+        console.log(`middleware: attempting enhanced server-side token refresh at ${refreshUrl}`);
 
         const refreshResponse = await fetch(refreshUrl, {
           method: 'POST',

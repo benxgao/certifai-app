@@ -75,9 +75,8 @@ export default function CertificationMarketingPage({ certId, firmCode }: Props) 
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_API_URL}/public/certifications/${certId}`,
-        );
+        // Use the server-side API endpoint that handles JWT authentication
+        const response = await fetch(`/api/certifications/${certId}`);
 
         if (!response.ok) {
           if (response.status === 404) {

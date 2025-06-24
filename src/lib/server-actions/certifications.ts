@@ -1,5 +1,4 @@
 import 'server-only';
-import { generatePublicJWTToken, makePublicAPIRequest } from '../jwt-utils';
 
 interface Certification {
   cert_id: number;
@@ -40,63 +39,67 @@ export async function fetchCertificationsData(): Promise<{
   error?: string;
 }> {
   try {
-    // Generate JWT token for public API access
-    const token = await generatePublicJWTToken();
+    // For now, try to use the internal API endpoints directly without external JWT auth
+    // This is a temporary solution until public endpoints are properly configured
 
-    if (!token) {
-      console.info('Using local mock data (backend API JWT generation not available)');
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
+
+    if (!baseUrl) {
+      console.info('SERVER_API_URL not configured, using mock data');
       return {
         firms: getMockFirmsData(),
         error: undefined,
       };
     }
 
-    // Use the public API endpoints with JWT authentication
-    const [firmsResponse, certsResponse] = await Promise.all([
-      makePublicAPIRequest('/firms?pageSize=50', token, {
-        cache: 'force-cache', // Cache for better performance since this is public data
-        next: { revalidate: 3600 }, // Revalidate every hour
-      }).catch(() => null),
-      makePublicAPIRequest('/certifications?pageSize=100', token, {
-        cache: 'force-cache',
-        next: { revalidate: 3600 },
-      }).catch(() => null),
-    ]);
+    // Try to fetch from internal endpoints first (may require auth)
+    try {
+      const [firmsResponse, certsResponse] = await Promise.all([
+        fetch(`${baseUrl}/api/firms?pageSize=50`, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        }),
+        fetch(`${baseUrl}/api/certifications?pageSize=100`, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        }),
+      ]);
 
-    if (!firmsResponse?.ok || !certsResponse?.ok) {
-      console.info('Public API requests failed, using local mock data');
+      if (firmsResponse.ok && certsResponse.ok) {
+        const firmsResult = await firmsResponse.json();
+        const certsResult = await certsResponse.json();
 
-      return {
-        firms: getMockFirmsData(),
-        error: undefined,
-      };
+        if (firmsResult.data && certsResult.data) {
+          // Group certifications by firm
+          const firmsWithCerts: FirmWithCertifications[] = firmsResult.data.map((firm: Firm) => ({
+            id: firm.firm_id,
+            code: firm.code,
+            name: firm.name,
+            description: firm.description,
+            website_url: firm.website_url,
+            logo_url: firm.logo_url,
+            certification_count: firm._count?.certifications || 0,
+            certifications: certsResult.data.filter(
+              (cert: Certification) => cert.firm_id === firm.firm_id,
+            ),
+          }));
+
+          console.info(
+            `Successfully loaded ${firmsWithCerts.length} firms with certifications from API`,
+          );
+          return { firms: firmsWithCerts };
+        }
+      }
+    } catch (apiError) {
+      console.warn('Internal API call failed, falling back to mock data:', apiError);
     }
 
-    const firmsResult = await firmsResponse.json();
-    const certsResult = await certsResponse.json();
-
-    if (firmsResult.data && certsResult.data) {
-      // Group certifications by firm
-      const firmsWithCerts: FirmWithCertifications[] = firmsResult.data.map((firm: Firm) => ({
-        id: firm.firm_id,
-        code: firm.code,
-        name: firm.name,
-        description: firm.description,
-        website_url: firm.website_url,
-        logo_url: firm.logo_url,
-        certification_count: firm._count?.certifications || 0,
-        certifications: certsResult.data.filter(
-          (cert: Certification) => cert.firm_id === firm.firm_id,
-        ),
-      }));
-
-      return { firms: firmsWithCerts };
-    } else {
-      return {
-        firms: getMockFirmsData(),
-        error: undefined,
-      };
-    }
+    // If API calls fail, use mock data
+    console.info('Using mock data for certifications');
+    return {
+      firms: getMockFirmsData(),
+      error: undefined,
+    };
   } catch (error) {
     console.error('Error fetching certifications data:', error);
     return {

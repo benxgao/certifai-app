@@ -37,9 +37,7 @@ export default async function CertificationsPage({
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
-  ];
-
-  // Fetch certification data server-side
+  ]; // Fetch certification data server-side
   const { firms, error } = await fetchCertificationsData();
 
   // Get firm filter from search params

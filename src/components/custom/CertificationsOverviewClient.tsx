@@ -183,7 +183,7 @@ export default function CertificationsOverviewClient({
                 </div>
               </CardHeader>
               <CardContent>
-                {firm.certifications.length === 0 ? (
+                {!Array.isArray(firm.certifications) || firm.certifications.length === 0 ? (
                   <p className="text-gray-500 italic">No certifications available yet</p>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
