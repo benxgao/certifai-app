@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
-import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
+import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
 
 interface Props {
   params: Promise<{
@@ -25,31 +25,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   try {
-    // Fetch certification data for SEO metadata
-    const token = await generatePublicJWTToken();
-    if (token) {
-      const response = await makePublicAPIRequest(`/certifications/${certId}`, token);
-      if (response.ok) {
-        const result = await response.json();
-        const cert = result.data;
+    // Fetch certification data using server-side authenticated request
+    const { certification: certData, error: fetchError } = await fetchCertificationData(certId);
 
-        if (cert) {
-          return {
-            title: `${cert.name} | ${cert.firm?.name || 'CertifAI'}`,
-            description:
-              cert.description ||
-              `Learn about ${cert.name} certification - exam details, study materials, and career benefits.`,
-            keywords: `${cert.name}, ${
-              cert.firm?.name || ''
-            }, IT certification, exam preparation, practice questions, training`,
-            openGraph: {
-              title: `${cert.name} | ${cert.firm?.name || 'CertifAI'}`,
-              description: cert.description || `Learn about ${cert.name} certification`,
-              type: 'website',
-            },
-          };
-        }
-      }
+    if (fetchError) {
+      console.error('Error fetching certification for metadata:', fetchError);
+    }
+
+    if (certData) {
+      return {
+        title: `${certData.name} | CertifAI`,
+        description:
+          certData.description ||
+          `Learn about ${certData.name} certification - exam details, study materials, and career benefits.`,
+        keywords: `${certData.name}, IT certification, exam preparation, practice questions, training`,
+        openGraph: {
+          title: `${certData.name} | CertifAI`,
+          description: certData.description || `Learn about ${certData.name} certification`,
+          type: 'website',
+        },
+      };
     }
   } catch (error) {
     console.error('Error fetching certification for metadata:', error);
@@ -71,25 +66,20 @@ export default async function CertificationPage({ params }: Props) {
   }
 
   let certification = null;
-  let firm = null;
   let error = null;
 
   try {
-    // Fetch certification data for breadcrumbs and initial data
-    const token = await generatePublicJWTToken();
-    if (token) {
-      const response = await makePublicAPIRequest(`/certifications/${certId}`, token);
-      if (response.ok) {
-        const result = await response.json();
-        certification = result.data;
-        firm = certification?.firm;
-      } else if (response.status === 404) {
-        notFound();
-      } else {
-        error = 'Failed to load certification';
-      }
+    // Fetch certification data using server-side authenticated request
+    const { certification: certData, error: fetchError } = await fetchCertificationData(certId);
+
+    if (fetchError) {
+      console.error('Error fetching certification:', fetchError);
+      error = fetchError;
+    } else if (certData) {
+      certification = certData;
+      // Note: firm data might need to be fetched separately if needed for breadcrumbs
     } else {
-      error = 'Authentication failed';
+      notFound();
     }
   } catch (err) {
     console.error('Error fetching certification:', err);
@@ -104,13 +94,6 @@ export default async function CertificationPage({ params }: Props) {
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
   ];
-
-  if (firm) {
-    breadcrumbItems.push({
-      label: firm.name,
-      href: `/certifications/${firm.code}`,
-    });
-  }
 
   if (certification) {
     breadcrumbItems.push({
@@ -131,7 +114,7 @@ export default async function CertificationPage({ params }: Props) {
           </div>
         ) : (
           <Suspense fallback={<CertificationDetailSkeleton />}>
-            <CertificationDetail certId={certId} />
+            <CertificationDetail certId={certId} initialData={certification} />
           </Suspense>
         )}
       </div>

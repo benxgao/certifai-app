@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
-import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
+import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
 import CertificationMarketingPage from '@/src/components/custom/CertificationMarketingPage';
 
 interface Props {
@@ -14,29 +14,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const { firmCode, certId } = resolvedParams;
 
+  // Validate certId is a number
+  if (!/^\d+$/.test(certId)) {
+    return {
+      title: 'Certification Not Found | CertifAI',
+      description: 'The requested certification could not be found.',
+    };
+  }
+
   // Fetch certification data for better SEO metadata
   try {
-    const token = await generatePublicJWTToken();
-    if (token) {
-      const response = await makePublicAPIRequest(`/certifications/${certId}`, token);
-      if (response.ok) {
-        const result = await response.json();
-        const cert = result.data;
+    const { certification: cert, error: fetchError } = await fetchCertificationData(certId);
 
-        if (cert) {
-          const firm = cert.firm;
-          return {
-            title: `${cert.name} - ${firm.name} Certification Training | CertifAI`,
-            description: `Master the ${cert.name} certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking for ${firm.name} certifications.`,
-            keywords: `${cert.name}, ${firm.name}, ${firmCode}, IT certification training, exam preparation, practice questions, AI-powered learning, study guide`,
-            openGraph: {
-              title: `${cert.name} - ${firm.name} Certification Training | CertifAI`,
-              description: `Master the ${cert.name} certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking.`,
-              type: 'website',
-            },
-          };
-        }
-      }
+    if (fetchError) {
+      console.error('Error fetching certification for metadata:', fetchError);
+    }
+
+    if (cert) {
+      return {
+        title: `${cert.name} - ${firmCode.toUpperCase()} Certification Training | CertifAI`,
+        description: `Master the ${
+          cert.name
+        } certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking for ${firmCode.toUpperCase()} certifications.`,
+        keywords: `${cert.name}, ${firmCode}, IT certification training, exam preparation, practice questions, AI-powered learning, study guide`,
+        openGraph: {
+          title: `${cert.name} - ${firmCode.toUpperCase()} Certification Training | CertifAI`,
+          description: `Master the ${cert.name} certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking.`,
+          type: 'website',
+        },
+      };
     }
   } catch (error) {
     console.error('Error fetching certification for metadata:', error);
@@ -63,6 +69,27 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
     notFound();
   }
 
+  // Fetch certification data using server action
+  let certification = null;
+  let error = null;
+
+  try {
+    const result = await fetchCertificationData(certId);
+    certification = result.certification;
+    error = result.error;
+
+    if (error) {
+      console.error('Error fetching certification:', error);
+    }
+
+    if (!certification && !error) {
+      notFound();
+    }
+  } catch (err) {
+    console.error('Error fetching certification:', err);
+    error = 'Failed to load certification';
+  }
+
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
@@ -80,14 +107,33 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
     },
   ];
 
+  if (certification) {
+    // Update breadcrumb with certification name
+    breadcrumbItems[3] = {
+      label: certification.name,
+      href: `/certifications/${firmCode}/${certId}`,
+    };
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <div className="container mx-auto px-4 py-8">
         <Breadcrumb items={breadcrumbItems} />
 
-        <Suspense fallback={<CertificationMarketingPageSkeleton />}>
-          <CertificationMarketingPage certId={certId} firmCode={firmCode} />
-        </Suspense>
+        {error ? (
+          <div className="text-center py-12">
+            <div className="text-red-500 text-lg mb-2">Error</div>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        ) : (
+          <Suspense fallback={<CertificationMarketingPageSkeleton />}>
+            <CertificationMarketingPage
+              certId={certId}
+              firmCode={firmCode}
+              initialData={certification}
+            />
+          </Suspense>
+        )}
       </div>
     </div>
   );

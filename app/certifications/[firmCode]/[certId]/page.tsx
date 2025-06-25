@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
-import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
+import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
 
 interface Props {
   params: Promise<{ firmCode: string; certId: string }>;
@@ -16,31 +16,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Fetch certification data for better SEO metadata
   try {
-    const token = await generatePublicJWTToken();
-    if (token) {
-      const response = await makePublicAPIRequest(`/certifications/${certId}`, token);
-      if (response.ok) {
-        const result = await response.json();
-        const cert = result.data;
+    const { certification } = await fetchCertificationData(certId);
 
-        if (cert) {
-          const firm = cert.firm;
-          return {
-            title: `${cert.name} - ${firm.name} Certification | CertifAI`,
-            description:
-              cert.description ||
-              `${cert.name} certification from ${firm.name}. Learn about exam requirements, practice questions, and training materials.`,
-            keywords: `${cert.name}, ${firm.name}, ${firmCode}, IT certification, exam preparation, practice questions, training`,
-            openGraph: {
-              title: `${cert.name} - ${firm.name} Certification | CertifAI`,
-              description:
-                cert.description ||
-                `${cert.name} certification from ${firm.name}. Learn about exam requirements, practice questions, and training materials.`,
-              type: 'article',
-            },
-          };
-        }
-      }
+    if (certification) {
+      return {
+        title: `${certification.name} - ${firmCode.toUpperCase()} Certification | CertifAI`,
+        description:
+          certification.description ||
+          `${
+            certification.name
+          } certification from ${firmCode.toUpperCase()}. Learn about exam requirements, practice questions, and training materials.`,
+        keywords: `${
+          certification.name
+        }, ${firmCode.toUpperCase()}, IT certification, exam preparation, practice questions, training`,
+        openGraph: {
+          title: `${certification.name} - ${firmCode.toUpperCase()} Certification | CertifAI`,
+          description:
+            certification.description ||
+            `${
+              certification.name
+            } certification from ${firmCode.toUpperCase()}. Learn about exam requirements, practice questions, and training materials.`,
+          type: 'article',
+        },
+      };
     }
   } catch (error) {
     console.error('Error fetching certification for metadata:', error);

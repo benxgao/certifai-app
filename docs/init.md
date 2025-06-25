@@ -1,5 +1,13 @@
 # Project init checklist
 
+## Architecture Decision: Server-Side Authenticated API Pattern
+
+**Key Decision**: Public pages use server-side components with authenticated API requests instead of separate public endpoints.
+
+**Why**: This approach provides better security, performance, and maintainability while ensuring all data access is properly authenticated and audited.
+
+**Documentation**: See `/docs/server-side-authenticated-api-pattern.md` for complete implementation details.
+
 ## Set up new project
 
 Navigate to Firebase settings, and register app and get env vars

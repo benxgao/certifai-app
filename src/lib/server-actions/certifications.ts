@@ -1,4 +1,5 @@
 import 'server-only';
+import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
 
 interface Certification {
   cert_id: number;
@@ -52,50 +53,70 @@ export async function fetchCertificationsData(): Promise<{
       };
     }
 
-    // Try to fetch from internal endpoints first (may require auth)
+    // Try to fetch from public API using JWT authentication for server-to-server communication
     try {
-      const [firmsResponse, certsResponse] = await Promise.all([
-        fetch(`${baseUrl}/api/firms?pageSize=50`, {
-          cache: 'force-cache',
-          next: { revalidate: 3600 },
-        }),
-        fetch(`${baseUrl}/api/certifications?pageSize=100`, {
-          cache: 'force-cache',
-          next: { revalidate: 3600 },
-        }),
-      ]);
+      const token = await generatePublicJWTToken();
 
-      if (firmsResponse.ok && certsResponse.ok) {
-        const firmsResult = await firmsResponse.json();
-        const certsResult = await certsResponse.json();
+      if (token) {
+        const [firmsResponse, certsResponse] = await Promise.all([
+          makePublicAPIRequest('/firms?pageSize=50', token, {
+            cache: 'force-cache',
+            next: { revalidate: 3600 },
+          }),
+          makePublicAPIRequest('/certifications?pageSize=100', token, {
+            cache: 'force-cache',
+            next: { revalidate: 3600 },
+          }),
+        ]);
 
-        if (firmsResult.data && certsResult.data) {
-          // Group certifications by firm
-          const firmsWithCerts: FirmWithCertifications[] = firmsResult.data.map((firm: Firm) => ({
-            id: firm.firm_id,
-            code: firm.code,
-            name: firm.name,
-            description: firm.description,
-            website_url: firm.website_url,
-            logo_url: firm.logo_url,
-            certification_count: firm._count?.certifications || 0,
-            certifications: certsResult.data.filter(
-              (cert: Certification) => cert.firm_id === firm.firm_id,
-            ),
-          }));
+        if (firmsResponse.ok && certsResponse.ok) {
+          const firmsResult = await firmsResponse.json();
+          const certsResult = await certsResponse.json();
 
-          console.info(
-            `Successfully loaded ${firmsWithCerts.length} firms with certifications from API`,
-          );
-          return { firms: firmsWithCerts };
+          console.log('API firmsResult:', JSON.stringify(firmsResult, null, 2));
+          console.log('API certsResult:', JSON.stringify(certsResult, null, 2));
+
+          if (firmsResult.data && certsResult.data) {
+            // Group certifications by firm
+            const firmsWithCerts: FirmWithCertifications[] = firmsResult.data.map((firm: Firm) => {
+              const firmCerts = certsResult.data.filter(
+                (cert: Certification) => cert.firm_id === firm.firm_id,
+              );
+              console.log(
+                `Firm ${firm.name} (ID: ${firm.firm_id}) has ${firmCerts.length} certifications`,
+              );
+
+              return {
+                id: firm.firm_id,
+                code: firm.code,
+                name: firm.name,
+                description: firm.description,
+                website_url: firm.website_url,
+                logo_url: firm.logo_url,
+                certification_count: firm._count?.certifications || 0,
+                certifications: firmCerts,
+              };
+            });
+
+            console.info(
+              `Successfully loaded ${firmsWithCerts.length} firms with certifications from public API`,
+            );
+            return { firms: firmsWithCerts };
+          } else {
+            console.warn('Public API returned incomplete data, using fallback data');
+          }
+        } else {
+          console.warn('Public API responses failed, using fallback data');
         }
+      } else {
+        console.warn('Could not generate JWT token for firms data');
       }
     } catch (apiError) {
-      console.warn('Internal API call failed, falling back to mock data:', apiError);
+      console.warn('Public API call failed, falling back to mock data:', apiError);
     }
 
     // If API calls fail, use mock data
-    console.info('Using mock data for certifications');
+    console.info('API calls failed, using mock data for certifications');
     return {
       firms: getMockFirmsData(),
       error: undefined,
@@ -104,9 +125,162 @@ export async function fetchCertificationsData(): Promise<{
     console.error('Error fetching certifications data:', error);
     return {
       firms: getMockFirmsData(),
+      error: undefined,
+    };
+  }
+}
+
+/**
+ * Fetch individual certification data server-side with authentication
+ * This allows public pages to display certification details without client-side auth
+ */
+export async function fetchCertificationData(certificationId: string): Promise<{
+  certification: Certification | null;
+  error?: string;
+}> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
+
+    if (!baseUrl) {
+      console.info('SERVER_API_URL not configured, using mock data');
+      return {
+        certification: getMockCertificationData(certificationId),
+        error: undefined,
+      };
+    }
+
+    // Try to fetch from public API using JWT authentication for server-to-server communication
+    try {
+      const token = await generatePublicJWTToken();
+
+      if (token) {
+        const response = await makePublicAPIRequest(`/certifications/${certificationId}`, token, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            console.info(`Successfully loaded certification ${certificationId} from public API`);
+            return { certification: result.data };
+          }
+        } else {
+          console.warn(
+            `Public API call failed for certification ${certificationId}:`,
+            response.status,
+          );
+        }
+      } else {
+        console.warn(`Could not generate JWT token for certification ${certificationId}`);
+      }
+    } catch (apiError) {
+      console.warn(
+        `Public API call failed for certification ${certificationId}, falling back to mock data:`,
+        apiError,
+      );
+    }
+
+    // If API calls fail, use mock data
+    console.info(`Using mock data for certification ${certificationId}`);
+    return {
+      certification: getMockCertificationData(certificationId),
+      error: undefined,
+    };
+  } catch (error) {
+    console.error(`Error fetching certification ${certificationId}:`, error);
+    return {
+      certification: getMockCertificationData(certificationId),
       error: undefined, // Use fallback data instead of showing error
     };
   }
+}
+
+/**
+ * Get mock certification data for fallback when API is not accessible
+ */
+function getMockCertificationData(certificationId: string): Certification | null {
+  const mockCertifications: Record<string, Certification> = {
+    '1': {
+      cert_id: 1,
+      name: 'AWS Certified Solutions Architect - Associate',
+      description:
+        'Validates technical skills and experience designing distributed applications and systems on the AWS platform.',
+      min_quiz_counts: 65,
+      max_quiz_counts: 65,
+      pass_score: 72,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 1,
+    },
+    '2': {
+      cert_id: 2,
+      name: 'AWS Certified Developer - Associate',
+      description:
+        'Validates technical expertise in developing, deploying, and debugging cloud-based applications using AWS.',
+      min_quiz_counts: 65,
+      max_quiz_counts: 65,
+      pass_score: 72,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 1,
+    },
+    '3': {
+      cert_id: 3,
+      name: 'AWS Certified SysOps Administrator - Associate',
+      description:
+        'Validates technical expertise in deployment, management, and operations on the AWS platform.',
+      min_quiz_counts: 65,
+      max_quiz_counts: 65,
+      pass_score: 72,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 1,
+    },
+    '4': {
+      cert_id: 4,
+      name: 'Microsoft Certified: Azure Fundamentals',
+      description:
+        'Validates foundational knowledge of cloud services and how those services are provided with Microsoft Azure.',
+      min_quiz_counts: 40,
+      max_quiz_counts: 60,
+      pass_score: 70,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 2,
+    },
+    '5': {
+      cert_id: 5,
+      name: 'Microsoft Certified: Azure Administrator Associate',
+      description:
+        'Validates skills and knowledge to implement, manage, and monitor identity, governance, storage, compute, and virtual networks.',
+      min_quiz_counts: 40,
+      max_quiz_counts: 60,
+      pass_score: 70,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 2,
+    },
+    '6': {
+      cert_id: 6,
+      name: 'Google Cloud Professional Cloud Architect',
+      description:
+        'Validates ability to design, develop, and manage robust, secure, scalable, highly available, and dynamic solutions.',
+      min_quiz_counts: 50,
+      max_quiz_counts: 60,
+      pass_score: 80,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 3,
+    },
+    '7': {
+      cert_id: 7,
+      name: 'Google Cloud Professional Data Engineer',
+      description:
+        'Validates ability to design data processing systems, build and maintain data structures and databases.',
+      min_quiz_counts: 50,
+      max_quiz_counts: 60,
+      pass_score: 80,
+      created_at: '2024-01-01T00:00:00.000Z',
+      firm_id: 3,
+    },
+  };
+
+  return mockCertifications[certificationId] || null;
 }
 
 // Mock data for fallback when API is not accessible

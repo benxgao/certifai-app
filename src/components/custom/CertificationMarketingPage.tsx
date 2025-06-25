@@ -62,14 +62,51 @@ interface ApiResponse {
 interface Props {
   certId: string;
   firmCode: string;
+  initialData?: {
+    cert_id: number;
+    name: string;
+    description: string;
+    min_quiz_counts: number;
+    max_quiz_counts: number;
+    pass_score: number;
+    created_at: string;
+    firm_id: number;
+  } | null;
 }
 
-export default function CertificationMarketingPage({ certId, firmCode }: Props) {
+export default function CertificationMarketingPage({ certId, firmCode, initialData }: Props) {
   const [certification, setCertification] = useState<CertificationDetailData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // If we have initial data, convert it to the expected format
+    if (initialData) {
+      const convertedData: CertificationDetailData = {
+        cert_id: initialData.cert_id,
+        name: initialData.name,
+        description: initialData.description,
+        min_quiz_counts: initialData.min_quiz_counts,
+        max_quiz_counts: initialData.max_quiz_counts,
+        pass_score: initialData.pass_score,
+        created_at: initialData.created_at,
+        updated_at: initialData.created_at, // Use created_at as fallback
+        firm: {
+          id: initialData.firm_id,
+          name: 'Loading...', // Will be filled by the API call if needed
+          code: firmCode.toUpperCase(),
+          description: '',
+          website_url: null,
+          logo_url: null,
+        },
+        enrollment_count: 0,
+        related_certifications: [],
+      };
+      setCertification(convertedData);
+      setLoading(false);
+      return;
+    }
+
     const fetchCertification = async () => {
       try {
         setLoading(true);
@@ -103,7 +140,7 @@ export default function CertificationMarketingPage({ certId, firmCode }: Props) 
     if (certId) {
       fetchCertification();
     }
-  }, [certId]);
+  }, [certId, firmCode, initialData]);
 
   if (loading) {
     return <MarketingPageSkeleton />;
