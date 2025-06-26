@@ -11,6 +11,7 @@ import { useAuthenticatedFirms } from '@/swr/firms';
 import { useAllAvailableCertifications, CertificationListItem } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
+import { linkifyText } from '@/src/lib/text-utils';
 
 interface FirmTabsProps {
   onRegister: (cert: CertificationListItem) => void;
@@ -276,7 +277,9 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                       {firm.name}
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400 mb-3">{firm.description}</p>
+                    <p className="text-slate-600 dark:text-slate-400 mb-3">
+                      {linkifyText(firm.description)}
+                    </p>
                     <div className="flex items-center space-x-4 text-sm">
                       <span className="flex items-center space-x-2">
                         <FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />

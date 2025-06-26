@@ -33,14 +33,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     if (cert) {
       return {
-        title: `${cert.name} - ${firmCode.toUpperCase()} Certification Training | CertifAI`,
+        title: `${
+          cert.name
+        } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
         description: `Master the ${
           cert.name
-        } certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking for ${firmCode.toUpperCase()} certifications.`,
-        keywords: `${cert.name}, ${firmCode}, IT certification training, exam preparation, practice questions, AI-powered learning, study guide`,
+        } certification by simulating exams with AI. Prepare for IT certification by self exams with personalized study plans, AI-powered practice questions, and detailed progress tracking for ${firmCode.toUpperCase()} certifications.`,
+        keywords: `${cert.name}, ${firmCode}, simulate exams by AI, prepare for IT certification by self exams, IT certification training, exam preparation, practice questions, AI-powered learning, study guide, self exam preparation`,
         openGraph: {
-          title: `${cert.name} - ${firmCode.toUpperCase()} Certification Training | CertifAI`,
-          description: `Master the ${cert.name} certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking.`,
+          title: `${
+            cert.name
+          } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
+          description: `Master the ${cert.name} certification by simulating exams with AI. Prepare for IT certification by self exams with personalized study plans, AI-powered practice questions, and detailed progress tracking.`,
           type: 'website',
         },
       };
@@ -50,9 +54,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${firmCode.toUpperCase()} Certification Training | CertifAI`,
-    description: `Master your ${firmCode.toUpperCase()} certification with AI-powered training. Get personalized study plans, practice exams, and detailed progress tracking.`,
-    keywords: `${firmCode}, certification training, exam preparation, practice questions, AI-powered learning, study guide`,
+    title: `${firmCode.toUpperCase()} Certification Training - Simulate Exams by AI & Prepare by Self Exams | CertifAI`,
+    description: `Master your ${firmCode.toUpperCase()} certification by simulating exams with AI. Prepare for IT certification by self exams with personalized study plans, AI-powered practice questions, and detailed progress tracking.`,
+    keywords: `${firmCode}, simulate exams by AI, prepare for IT certification by self exams, certification training, exam preparation, practice questions, AI-powered learning, study guide, self exam preparation`,
   };
 }
 

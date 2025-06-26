@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
+import { linkifyText } from '@/src/lib/text-utils';
 
 interface Certification {
   cert_id: number;
@@ -219,7 +220,9 @@ export default function CertificationsOverview() {
                   {firm.certification_count}
                 </Badge>
               </div>
-              {firm.description && <p className="text-gray-700 mt-3">{firm.description}</p>}
+              {firm.description && (
+                <p className="text-gray-700 mt-3">{linkifyText(firm.description)}</p>
+              )}
             </CardHeader>
 
             <CardContent className="p-6">

@@ -9,6 +9,7 @@ import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 import { FirmWithCertifications } from '@/src/lib/server-actions/certifications';
+import { linkifyText } from '@/src/lib/text-utils';
 
 interface CertificationsOverviewClientProps {
   initialFirms: FirmWithCertifications[];
@@ -178,7 +179,7 @@ export default function CertificationsOverviewClient({
                         {firm.certification_count !== 1 ? 's' : ''}
                       </Badge>
                     </div>
-                    <p className="text-gray-600 mb-2">{firm.description}</p>
+                    <p className="text-gray-600 mb-2">{linkifyText(firm.description)}</p>
                     {firm.website_url && (
                       <a
                         href={firm.website_url}

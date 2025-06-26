@@ -15,6 +15,7 @@ import {
 } from 'react-icons/fa';
 import Link from 'next/link';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
+import { linkifyText } from '@/src/lib/text-utils';
 
 // Simple date formatting function
 const formatDate = (dateString: string) => {
@@ -227,13 +228,15 @@ export default function CertificationDetail({ certId, initialData }: Props) {
           <div className="space-y-6">
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">About This Certification</h3>
-              <p className="text-gray-700 leading-relaxed">{certification.description}</p>
+              <p className="text-gray-700 leading-relaxed">
+                {linkifyText(certification.description)}
+              </p>
             </div>
 
             {firm.description && (
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">About {firm.name}</h3>
-                <p className="text-gray-700 leading-relaxed">{firm.description}</p>
+                <p className="text-gray-700 leading-relaxed">{linkifyText(firm.description)}</p>
               </div>
             )}
           </div>
@@ -288,7 +291,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
                         {relatedCert.name}
                       </h4>
                       <p className="text-sm text-gray-600 mb-3 line-clamp-3">
-                        {relatedCert.description}
+                        {linkifyText(relatedCert.description)}
                       </p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <Badge variant="outline">

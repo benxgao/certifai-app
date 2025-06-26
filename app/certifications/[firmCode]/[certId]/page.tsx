@@ -21,22 +21,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     if (certification) {
       return {
-        title: `${certification.name} - ${firmCode.toUpperCase()} Certification | CertifAI`,
+        title: `${
+          certification.name
+        } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
         description:
           certification.description ||
           `${
             certification.name
-          } certification from ${firmCode.toUpperCase()}. Learn about exam requirements, practice questions, and training materials.`,
+          } certification from ${firmCode.toUpperCase()}. Simulate exams by AI and prepare for IT certification by self exams. Learn about exam requirements, practice questions, and training materials.`,
         keywords: `${
           certification.name
-        }, ${firmCode.toUpperCase()}, IT certification, exam preparation, practice questions, training`,
+        }, ${firmCode.toUpperCase()}, simulate exams by AI, prepare for IT certification by self exams, IT certification, exam preparation, practice questions, training, self exam preparation`,
         openGraph: {
-          title: `${certification.name} - ${firmCode.toUpperCase()} Certification | CertifAI`,
+          title: `${
+            certification.name
+          } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
           description:
             certification.description ||
             `${
               certification.name
-            } certification from ${firmCode.toUpperCase()}. Learn about exam requirements, practice questions, and training materials.`,
+            } certification from ${firmCode.toUpperCase()}. Simulate exams by AI and prepare for IT certification by self exams. Learn about exam requirements, practice questions, and training materials.`,
           type: 'article',
         },
       };
@@ -46,8 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Certification ${certId} - ${firmCode.toUpperCase()} | CertifAI`,
-    description: `${firmCode.toUpperCase()} certification information and training materials. Prepare with AI-powered practice questions and study materials.`,
+    title: `Certification ${certId} - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
+    description: `${firmCode.toUpperCase()} certification information and training materials. Simulate exams by AI and prepare for IT certification by self exams with AI-powered practice questions and study materials.`,
     keywords: `${firmCode}, certification ${certId}, IT certification, exam preparation, practice questions, training`,
   };
 }

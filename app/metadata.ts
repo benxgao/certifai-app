@@ -1,11 +1,14 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'CertifAI | AI-Powered IT Certification Training Platform | Beta Access Available',
+  title:
+    'CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams | Beta Access Available',
   description:
-    'Join 500+ beta users mastering IT certifications with AI-powered practice questions, personalized study recommendations, and adaptive learning. Free beta access with 300 credit coins.',
+    'Simulate exams by AI and prepare for IT certification by self exams with 500+ beta users. AI-powered practice questions, personalized study recommendations, and adaptive learning. Free beta access with 300 credit coins.',
   keywords: [
     'CertifAI',
+    'simulate exams by AI',
+    'prepare for IT certification by self exams',
     'AI-powered IT certification training',
     'IT certification practice exams',
     'artificial intelligence learning platform',
@@ -14,6 +17,8 @@ export const metadata: Metadata = {
     'AI-generated practice questions',
     'IT professional development',
     'certification exam simulator',
+    'self exam preparation',
+    'AI exam simulation technology',
     'beta testing platform',
     'free certification training',
     'machine learning education',
@@ -21,6 +26,7 @@ export const metadata: Metadata = {
     'online certification preparation',
     'smart study technology',
     'certification success platform',
+    'self-paced exam simulation',
   ].join(', '),
   authors: [{ name: 'CertifAI Team' }],
   creator: 'CertifAI',
@@ -37,9 +43,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'CertifAI | AI-Powered IT Certification Training Platform',
+    title: 'CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams',
     description:
-      'Join 500+ beta users mastering IT certifications with AI-powered practice questions and personalized study recommendations. Free beta access available.',
+      'Simulate exams by AI and prepare for IT certification by self exams with 500+ beta users. AI-powered practice questions and personalized study recommendations. Free beta access available.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certifai.app',
@@ -55,9 +61,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CertifAI | AI-Powered IT Certification Training Platform',
+    title: 'CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams',
     description:
-      'Join 500+ beta users mastering IT certifications with AI-powered practice questions and personalized study recommendations.',
+      'Simulate exams by AI and prepare for IT certification by self exams with 500+ beta users. AI-powered practice questions and personalized study recommendations.',
     creator: '@CertifAI',
     site: '@CertifAI',
     images: [

@@ -1,14 +1,19 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About CertifAI | AI-Powered IT Certification Training Platform | Learn Our Story',
+  title:
+    'About CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams | Learn Our Story',
   description:
-    "Discover CertifAI's mission to revolutionize IT certification training with AI technology. Learn about our developer journey, core values, and how we're making professional education accessible to everyone.",
+    "Discover CertifAI's mission to revolutionize how professionals simulate exams by AI and prepare for IT certification by self exams. Learn about our developer journey, core values, and AI-powered exam simulation technology.",
   keywords: [
     'CertifAI about us',
+    'simulate exams by AI',
+    'prepare for IT certification by self exams',
     'AI-powered IT certification training',
     'artificial intelligence education platform',
     'IT certification study platform',
+    'self exam preparation technology',
+    'AI exam simulation',
     'personalized learning technology',
     'professional development tools',
     'certification exam preparation',

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import ScreenshotSlideshow from '@/src/components/landing/ScreenshotSlideshow';
+import SEOContentBlock from '@/src/components/seo/SEOContentBlock';
 
 export default function LandingPageContent() {
   return (
@@ -44,7 +45,10 @@ export default function LandingPageContent() {
             <div className="flex-1 max-w-2xl text-center lg:text-left">
               {/* Beta badge */}
               <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-6">
-                <div className="w-2 h-2 bg-violet-500 rounded-full animate-pulse" aria-hidden="true"></div>
+                <div
+                  className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"
+                  aria-hidden="true"
+                ></div>
                 <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
                   Beta Access Available
                 </span>
@@ -52,14 +56,15 @@ export default function LandingPageContent() {
 
               <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  AI-Powered
+                  Simulate Exams by AI
                 </span>
-                <br />
-                IT Certification Training
+                <br />& Prepare for IT Certification
               </h1>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
-                Master IT certifications with intelligent, personalized AI-powered practice questions and adaptive learning paths. Join our growing community of professionals advancing their careers through smart technology.
+                Master IT certifications by self exams with intelligent, AI-powered practice
+                questions that simulate real exam conditions. Join our growing community of
+                professionals advancing their careers through smart exam simulation technology.
               </p>
 
               {/* Enhanced Stats with SEO keywords */}
@@ -68,16 +73,22 @@ export default function LandingPageContent() {
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
                     500+
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Users</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Self Exam Users</div>
                 </div>
-                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700" aria-hidden="true"></div>
+                <div
+                  className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
+                  aria-hidden="true"
+                ></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    AI-First
+                    AI Exam
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Technology</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Simulation</div>
                 </div>
-                <div className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700" aria-hidden="true"></div>
+                <div
+                  className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
+                  aria-hidden="true"
+                ></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
                     Free
@@ -221,14 +232,15 @@ export default function LandingPageContent() {
             </div>
 
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-              Everything You Need to
+              Simulate Exams by AI &
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
-                Succeed
+                Prepare by Self Exams
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Experimental AI-powered features being developed to help IT professionals practice for
-              certifications. Currently in early beta - your feedback drives development.
+              Experimental AI-powered features to simulate exams by AI and help IT professionals
+              prepare for IT certification by self exams. Currently in early beta - your feedback
+              drives development.
             </p>
           </div>
 
@@ -251,11 +263,12 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
-                AI-Generated Questions
+                AI Exam Simulation
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Experimenting with AI to generate practice questions for various IT certifications.
-                Quality improving through user feedback and continuous learning.
+                Simulate exams by AI with intelligent question generation for various IT
+                certifications. Quality improving through user feedback and continuous machine
+                learning.
               </p>
               <div className="mt-6 flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
@@ -288,11 +301,11 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                Realistic Exam Environment
+                Self Exam Environment
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Building a practice environment that simulates real exam conditions. Currently
-                supports basic timing and question formats.
+                Prepare for IT certification by self exams in a realistic practice environment that
+                simulates real exam conditions with timing and question formats.
               </p>
               <div className="mt-6 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
@@ -482,17 +495,18 @@ export default function LandingPageContent() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Help Shape the Future of
+                Simulate Exams by AI &
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  AI-Powered
+                  Shape the Future
                 </span>
                 <br />
-                Certification Training
+                of Self Exam Preparation
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Join our growing beta community to help develop the next generation of IT
-                certification tools. Your feedback directly influences the features we build.
+                Join our growing beta community to help develop the next generation of AI-powered
+                exam simulation tools. Help us perfect how to simulate exams by AI and prepare for
+                IT certification by self exams.
               </p>
 
               {/* Enhanced stats for CTA */}
@@ -609,6 +623,9 @@ export default function LandingPageContent() {
           </div>
         </div>
       </section>
+
+      {/* SEO Content Block */}
+      <SEOContentBlock />
     </div>
   );
 }

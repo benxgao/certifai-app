@@ -6,22 +6,22 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export const metadata: Metadata = {
-  title: 'All IT Certifications by Leading Firms | CertifAI',
+  title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | CertifAI',
   description:
-    'Browse all available IT certifications organized by leading technology companies. Find AWS, Microsoft, Google, Cisco, and more certification programs with AI-powered training.',
+    'Browse all available IT certifications organized by leading technology companies. Simulate exams by AI and prepare for IT certification by self exams with AWS, Microsoft, Google, Cisco, and more certification programs.',
   keywords:
-    'IT certifications, AWS certifications, Microsoft certifications, Google Cloud certifications, Cisco certifications, certification catalog, IT training programs, technology certifications',
+    'IT certifications, simulate exams by AI, prepare for IT certification by self exams, AWS certifications, Microsoft certifications, Google Cloud certifications, Cisco certifications, certification catalog, IT training programs, technology certifications, self exam preparation',
   openGraph: {
-    title: 'All IT Certifications by Leading Firms | CertifAI',
+    title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | CertifAI',
     description:
-      'Browse all available IT certifications organized by leading technology companies. Find AWS, Microsoft, Google, Cisco, and more certification programs with AI-powered training.',
+      'Browse all available IT certifications organized by leading technology companies. Simulate exams by AI and prepare for IT certification by self exams with AWS, Microsoft, Google, Cisco, and more certification programs.',
     type: 'website',
     url: 'https://certifai.app/certifications',
   },
   twitter: {
-    title: 'All IT Certifications by Leading Firms | CertifAI',
+    title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | CertifAI',
     description:
-      'Browse all available IT certifications organized by leading technology companies. Find AWS, Microsoft, Google, Cisco, and more certification programs with AI-powered training.',
+      'Browse all available IT certifications organized by leading technology companies. Simulate exams by AI and prepare for IT certification by self exams with AWS, Microsoft, Google, Cisco, and more certification programs.',
     card: 'summary_large_image',
   },
   alternates: {
@@ -54,11 +54,13 @@ export default async function CertificationsPage({
         <Breadcrumb items={breadcrumbItems} />
 
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">IT Certifications Catalog</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            IT Certifications Catalog - Simulate Exams by AI
+          </h1>
           <p className="text-xl text-gray-600 max-w-3xl">
-            Explore certification programs from leading technology companies. Each certification is
-            designed to validate your skills and advance your career in the ever-evolving tech
-            industry.
+            Explore certification programs from leading technology companies and prepare for IT
+            certification by self exams. Each certification is designed to validate your skills and
+            advance your career with AI-powered exam simulation technology.
           </p>
         </div>
 

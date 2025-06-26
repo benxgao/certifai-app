@@ -11,7 +11,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'CertifAI',
   description:
-    'AI-powered IT certification training platform providing personalized learning experiences',
+    'AI-powered IT certification training platform to simulate exams by AI and prepare for IT certification by self exams with personalized learning experiences',
   url: 'https://certifai.app',
   logo: 'https://certifai.app/images/logo.png',
   foundingDate: '2025',
@@ -39,7 +39,7 @@ const softwareApplicationSchema = {
   '@type': 'SoftwareApplication',
   name: 'CertifAI',
   description:
-    'AI-powered IT certification training platform with personalized learning, practice exams, and adaptive study recommendations',
+    'Simulate exams by AI and prepare for IT certification by self exams with our AI-powered training platform featuring personalized learning, practice exams, and adaptive study recommendations',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web Browser',
   offers: {
@@ -55,22 +55,23 @@ const softwareApplicationSchema = {
     bestRating: '5',
   },
   featureList: [
-    'AI-generated practice questions',
-    'Personalized study recommendations',
+    'AI-generated practice questions to simulate exams by AI',
+    'Personalized study recommendations for self exam preparation',
     'Multiple IT certification tracks',
     'Progress tracking and analytics',
     'Community learning features',
     'Adaptive difficulty adjustment',
-    'Real-time performance insights',
+    'Real-time performance insights for certification success',
+    'Self-paced exam simulation technology',
   ],
 };
 
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'CertifAI - AI-Powered IT Certification Training Platform',
+  name: 'CertifAI - Simulate Exams by AI & Prepare for IT Certification by Self Exams',
   description:
-    'Join 500+ beta users mastering IT certifications with AI-powered practice questions and personalized study recommendations',
+    'Join 500+ beta users who simulate exams by AI and prepare for IT certification by self exams with AI-powered practice questions and personalized study recommendations',
   url: 'https://certifai.app',
   mainEntity: {
     '@type': 'EducationalOrganization',

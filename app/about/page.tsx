@@ -29,9 +29,9 @@ import {
 const aboutPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About CertifAI - AI-Powered IT Certification Training Platform',
+  name: 'About CertifAI - Simulate Exams by AI & Prepare for IT Certification by Self Exams',
   description:
-    "Learn about CertifAI's mission to revolutionize IT certification training through artificial intelligence, personalized learning, and innovative educational technology.",
+    "Learn about CertifAI's mission to revolutionize how professionals simulate exams by AI and prepare for IT certification by self exams through artificial intelligence, personalized learning, and innovative educational technology.",
   url: 'https://certifai.app/about',
   mainEntity: {
     '@type': 'Organization',

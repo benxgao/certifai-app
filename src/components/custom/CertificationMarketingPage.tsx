@@ -17,6 +17,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
+import { linkifyText } from '@/src/lib/text-utils';
 
 interface Firm {
   id: number;
@@ -288,7 +289,9 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
           </CardHeader>
           <CardContent>
             <div className="prose max-w-none">
-              <p className="text-gray-700 text-lg leading-relaxed">{certification.description}</p>
+              <p className="text-gray-700 text-lg leading-relaxed">
+                {linkifyText(certification.description)}
+              </p>
 
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">

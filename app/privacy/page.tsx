@@ -36,27 +36,18 @@ export default function PrivacyPolicy() {
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Introduction
                 </h2>
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
-                  <p className="text-blue-800 dark:text-blue-200 font-semibold mb-2">
-                    🇳🇿 New Zealand Privacy Act 2020 Compliance
-                  </p>
-                  <p className="text-blue-700 dark:text-blue-300 text-sm">
-                    This Privacy Policy complies with the New Zealand Privacy Act 2020 and the 13
-                    Information Privacy Principles.
-                  </p>
-                </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   CertifAI Limited (Company Number: [TBC], &quot;we,&quot; &quot;us,&quot; or
                   &quot;our&quot;) is committed to protecting your privacy and ensuring the security
-                  of your personal information in accordance with the New Zealand Privacy Act 2020.
-                  This Privacy Policy explains how we collect, use, disclose, store, and safeguard
-                  your personal information when you use our AI-powered IT certification training
-                  platform.
+                  of your personal information in accordance with applicable privacy laws, including
+                  the New Zealand Privacy Act 2020 and international privacy standards. This Privacy
+                  Policy explains how we collect, use, disclose, store, and safeguard your personal
+                  information when you use our AI-powered IT certification training platform.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>Your Rights:</strong> Under New Zealand law, you have specific rights
-                  regarding your personal information, including the right to access, correct, and
-                  request deletion of your information.
+                  <strong>Your Rights:</strong> You have specific rights regarding your personal
+                  information, including the right to access, correct, and request deletion of your
+                  information. These rights may vary depending on your jurisdiction.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   By using CertifAI, you consent to the collection, use, and disclosure of your
@@ -71,9 +62,8 @@ export default function PrivacyPolicy() {
                   Legal Basis and Purpose for Collection
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under the Privacy Act 2020, we are required to have a lawful purpose for
-                  collecting your personal information. We collect and process your personal
-                  information for the following purposes:
+                  We are required to have a lawful purpose for collecting your personal information.
+                  We collect and process your personal information for the following purposes:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
                   <li>
@@ -90,7 +80,7 @@ export default function PrivacyPolicy() {
                   </li>
                   <li>
                     <strong>Legal Compliance:</strong> To comply with our legal obligations under
-                    New Zealand and international law
+                    applicable laws and regulations
                   </li>
                   <li>
                     <strong>Consent:</strong> Where you have explicitly consented to specific uses
@@ -364,7 +354,7 @@ export default function PrivacyPolicy() {
                   Legal and Regulatory Requirements
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  We may disclose your information when required or permitted by New Zealand law:
+                  We may disclose your information when required or permitted by applicable law:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
@@ -577,27 +567,18 @@ export default function PrivacyPolicy() {
                 </ul>
               </section>
 
-              {/* Your Privacy Rights Under New Zealand Law */}
+              {/* Your Privacy Rights */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Your Privacy Rights Under New Zealand Law (Privacy Principles 6 & 7)
+                  Your Privacy Rights
                 </h2>
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
-                  <p className="text-blue-800 dark:text-blue-200 font-semibold mb-2">
-                    🔒 Your Fundamental Rights
-                  </p>
-                  <p className="text-blue-700 dark:text-blue-300 text-sm">
-                    Under the Privacy Act 2020, you have strong rights to access and control your
-                    personal information.
-                  </p>
-                </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
-                  As an individual under New Zealand law, you have the following rights regarding
-                  your personal information:
+                  You have important rights regarding your personal information. These rights may
+                  vary depending on your jurisdiction, but generally include:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Right of Access (Privacy Principle 6)
+                  Right of Access
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   You have the right to request access to any personal information we hold about
@@ -628,7 +609,7 @@ export default function PrivacyPolicy() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Right of Correction (Privacy Principle 7)
+                  Right of Correction
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   You have the right to request correction of any personal information that is
@@ -731,7 +712,8 @@ export default function PrivacyPolicy() {
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
                   <li>Contact our Privacy Officer to discuss your concerns</li>
                   <li>
-                    Make a complaint to the New Zealand Privacy Commissioner (
+                    Make a complaint to the relevant privacy regulator (for New Zealand users, the
+                    Privacy Commissioner
                     <a href="https://privacy.org.nz" className="text-primary hover:underline">
                       privacy.org.nz
                     </a>
@@ -829,7 +811,7 @@ export default function PrivacyPolicy() {
                   Children&apos;s Privacy and Parental Rights
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under New Zealand law and our terms of service:
+                  Under applicable law and our terms of service:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
@@ -858,25 +840,21 @@ export default function PrivacyPolicy() {
               {/* International Customer Rights */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  International Customer Rights
+                  Jurisdiction-Specific Rights
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
-                  While CertifAI is governed by New Zealand law, we recognize and respect the
-                  privacy rights of our international customers. Depending on your location, you may
-                  have additional rights under your local privacy legislation. We are committed to
+                  While CertifAI operates under New Zealand law, we recognize and respect the
+                  privacy rights of our global customers. Depending on your location, you may have
+                  additional rights under your local privacy legislation. We are committed to
                   honoring these rights to the fullest extent reasonably practicable.
                 </p>
 
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg mb-6">
-                  <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                    General Principle
-                  </h3>
-                  <p className="text-blue-800 dark:text-blue-200 text-sm">
-                    Where your local privacy laws provide stronger protections than New Zealand law,
-                    we will endeavor to comply with the higher standard. This includes processing
-                    grounds, retention periods, disclosure requirements, and individual rights.
-                  </p>
-                </div>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
+                  <strong>General Principle:</strong> Where your local privacy laws provide stronger
+                  protections than our base requirements, we will endeavor to comply with the higher
+                  standard. This includes processing grounds, retention periods, disclosure
+                  requirements, and individual rights.
+                </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
                   European Union Users (GDPR Rights)
@@ -923,7 +901,8 @@ export default function PrivacyPolicy() {
                 </h3>
                 <div className="mb-6">
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-3">
-                    Australian customers have rights similar to those under New Zealand law, plus:
+                    Australian customers have rights similar to our standard privacy protections,
+                    plus:
                   </p>
                   <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
                     <li>
@@ -1052,7 +1031,7 @@ export default function PrivacyPolicy() {
                   </p>
                   <p className="text-red-700 dark:text-red-300 text-sm">
                     This section limits CertifAI&apos;s liability regarding data processing
-                    activities to the maximum extent permitted under New Zealand law.
+                    activities to the maximum extent permitted under applicable law.
                   </p>
                 </div>
 
@@ -1060,7 +1039,7 @@ export default function PrivacyPolicy() {
                   Data Processing Disclaimers
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY NEW ZEALAND LAW AND THE PRIVACY ACT 2020:
+                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
@@ -1091,7 +1070,7 @@ export default function PrivacyPolicy() {
                   Limitation of Liability - Privacy Matters
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY NEW ZEALAND LAW, CertifAI&apos;s LIABILITY FOR
+                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CertifAI&apos;s LIABILITY FOR
                   ANY PRIVACY-RELATED CLAIMS SHALL BE LIMITED TO:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
@@ -1167,25 +1146,24 @@ export default function PrivacyPolicy() {
                   <p className="text-yellow-800 dark:text-yellow-200 text-sm">
                     <strong>Important:</strong> Nothing in this section excludes, restricts, or
                     modifies any consumer guarantee, warranty, or right that cannot be excluded
-                    under New Zealand law, including the Consumer Guarantees Act 1993 and the
-                    Privacy Act 2020. Where local or international laws provide stronger
+                    under applicable law. Where local or international laws provide stronger
                     protections, those protections will apply.
                   </p>
                 </div>
               </section>
 
               {/* Effective Date */}
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 text-center">
-                <p className="text-blue-800 dark:text-blue-200 font-semibold mb-2">
+              <div className="bg-slate-50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-700 rounded-lg p-6 text-center">
+                <p className="text-slate-800 dark:text-slate-200 font-semibold mb-2">
                   Privacy Policy Effective Date
                 </p>
-                <p className="text-blue-700 dark:text-blue-300 text-sm mb-2">
+                <p className="text-slate-700 dark:text-slate-300 text-sm mb-2">
                   This Privacy Policy is effective as of June 18, 2025, and applies to all users of
                   the CertifAI platform.
                 </p>
-                <p className="text-blue-600 dark:text-blue-400 text-xs">
-                  This policy complies with the New Zealand Privacy Act 2020 and incorporates all 13
-                  Information Privacy Principles.
+                <p className="text-slate-600 dark:text-slate-400 text-xs">
+                  This policy complies with applicable privacy laws and regulations, including the
+                  New Zealand Privacy Act 2020 and international privacy standards.
                 </p>
               </div>
             </div>
