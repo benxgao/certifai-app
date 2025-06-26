@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
+import { generatePublicJWTToken } from '@/src/lib/jwt-utils';
 
 /**
  * Standard API response interface
@@ -57,6 +58,19 @@ export async function getAuthenticatedToken(): Promise<string> {
 }
 
 /**
+ * Get JWT token for public API access
+ */
+export async function getJWTToken(): Promise<string> {
+  const jwtToken = await generatePublicJWTToken();
+
+  if (!jwtToken) {
+    throw new ApiError('Authentication failed: Unable to generate JWT token', 401);
+  }
+
+  return jwtToken;
+}
+
+/**
  * Make authenticated API request to backend
  */
 export async function makeAuthenticatedRequest(
@@ -70,6 +84,27 @@ export async function makeAuthenticatedRequest(
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${firebaseToken}`,
+      ...requestOptions.headers,
+    },
+  });
+
+  return response;
+}
+
+/**
+ * Make authenticated API request to backend using JWT token
+ */
+export async function makeJWTAuthenticatedRequest(
+  url: string,
+  options: RequestInit & { jwtToken: string },
+): Promise<Response> {
+  const { jwtToken, ...requestOptions } = options;
+
+  const response = await fetch(url, {
+    ...requestOptions,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwtToken}`,
       ...requestOptions.headers,
     },
   });

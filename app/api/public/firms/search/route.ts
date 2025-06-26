@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import {
-  getAuthenticatedToken,
-  makeAuthenticatedRequest,
+  getJWTToken,
+  makeJWTAuthenticatedRequest,
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
@@ -11,12 +11,12 @@ const FIRMS_SEARCH_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/publ
 
 export async function GET(request: NextRequest) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const apiUrl = buildApiUrl(FIRMS_SEARCH_API_URL, request);
 
-    const response = await makeAuthenticatedRequest(apiUrl, {
+    const response = await makeJWTAuthenticatedRequest(apiUrl, {
       method: 'GET',
-      firebaseToken,
+      jwtToken,
     });
 
     return handleApiResponse(response, 'search firms');

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import {
-  getAuthenticatedToken,
-  makeAuthenticatedRequest,
+  getJWTToken,
+  makeJWTAuthenticatedRequest,
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
@@ -15,15 +15,15 @@ export async function GET(
   { params }: { params: Promise<{ certificationId: string }> },
 ) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const resolvedParams = await params;
     const certificationId = validateId(resolvedParams.certificationId, 'certificationId');
 
     const apiUrl = buildApiUrl(CERTIFICATIONS_API_URL, request, certificationId.toString());
 
-    const response = await makeAuthenticatedRequest(apiUrl, {
+    const response = await makeJWTAuthenticatedRequest(apiUrl, {
       method: 'GET',
-      firebaseToken,
+      jwtToken,
     });
 
     return handleApiResponse(response, 'fetch certification');
@@ -37,16 +37,16 @@ export async function PUT(
   { params }: { params: Promise<{ certificationId: string }> },
 ) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const resolvedParams = await params;
     const certificationId = validateId(resolvedParams.certificationId, 'certificationId');
     const body = await request.json();
 
-    const response = await makeAuthenticatedRequest(
+    const response = await makeJWTAuthenticatedRequest(
       `${CERTIFICATIONS_API_URL}/${certificationId}`,
       {
         method: 'PUT',
-        firebaseToken,
+        jwtToken,
         body: JSON.stringify(body),
       },
     );
@@ -62,15 +62,15 @@ export async function DELETE(
   { params }: { params: Promise<{ certificationId: string }> },
 ) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const resolvedParams = await params;
     const certificationId = validateId(resolvedParams.certificationId, 'certificationId');
 
-    const response = await makeAuthenticatedRequest(
+    const response = await makeJWTAuthenticatedRequest(
       `${CERTIFICATIONS_API_URL}/${certificationId}`,
       {
         method: 'DELETE',
-        firebaseToken,
+        jwtToken,
       },
     );
 

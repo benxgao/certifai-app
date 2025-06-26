@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
-  getAuthenticatedToken,
-  makeAuthenticatedRequest,
+  getJWTToken,
+  makeJWTAuthenticatedRequest,
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
@@ -11,12 +11,12 @@ const CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/pu
 
 export async function GET(request: NextRequest) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const apiUrl = buildApiUrl(CERTIFICATIONS_API_URL, request);
 
-    const response = await makeAuthenticatedRequest(apiUrl, {
+    const response = await makeJWTAuthenticatedRequest(apiUrl, {
       method: 'GET',
-      firebaseToken,
+      jwtToken,
     });
 
     return handleApiResponse(response, 'fetch certifications');
@@ -27,12 +27,12 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const body = await request.json();
 
-    const response = await makeAuthenticatedRequest(CERTIFICATIONS_API_URL, {
+    const response = await makeJWTAuthenticatedRequest(CERTIFICATIONS_API_URL, {
       method: 'POST',
-      firebaseToken,
+      jwtToken,
       body: JSON.stringify(body),
     });
 

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import {
-  getAuthenticatedToken,
-  makeAuthenticatedRequest,
+  getJWTToken,
+  makeJWTAuthenticatedRequest,
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
@@ -15,16 +15,16 @@ export async function GET(
   { params }: { params: Promise<{ firmId: string }> },
 ) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    const jwtToken = await getJWTToken();
     const resolvedParams = await params;
     const firmId = validateId(resolvedParams.firmId, 'firmId');
 
     const baseUrl = `${CERTIFICATIONS_BY_FIRM_API_URL}/${firmId}/certifications`;
     const apiUrl = buildApiUrl(baseUrl, request);
 
-    const response = await makeAuthenticatedRequest(apiUrl, {
+    const response = await makeJWTAuthenticatedRequest(apiUrl, {
       method: 'GET',
-      firebaseToken,
+      jwtToken,
     });
 
     return handleApiResponse(response, 'fetch certifications by firm');
