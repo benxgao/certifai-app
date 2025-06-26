@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
 
 interface Props {
@@ -104,8 +105,21 @@ export default async function CertificationPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header with Navigation */}
+      <LandingHeader showFeaturesLink={false} />
+
       <div className="container mx-auto px-4 py-8">
         <Breadcrumb items={breadcrumbItems} />
+
+        {/* Page Header */}
+        {certification && (
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{certification.name}</h1>
+            <p className="text-xl text-gray-600 max-w-3xl">
+              Learn about this certification - exam details, study materials, and career benefits.
+            </p>
+          </div>
+        )}
 
         {error ? (
           <div className="text-center py-12">
@@ -114,7 +128,25 @@ export default async function CertificationPage({ params }: Props) {
           </div>
         ) : (
           <Suspense fallback={<CertificationDetailSkeleton />}>
-            <CertificationDetail certId={certId} initialData={certification} />
+            <CertificationDetail
+              certId={certId}
+              initialData={
+                certification
+                  ? {
+                      cert_id: certification.cert_id,
+                      name: certification.name,
+                      description:
+                        certification.description ||
+                        `Learn about ${certification.name} certification and advance your career.`,
+                      min_quiz_counts: certification.min_quiz_counts,
+                      max_quiz_counts: certification.max_quiz_counts,
+                      pass_score: certification.pass_score,
+                      created_at: certification.created_at || new Date().toISOString(),
+                      firm_id: certification.firm_id || 0,
+                    }
+                  : null
+              }
+            />
           </Suspense>
         )}
       </div>

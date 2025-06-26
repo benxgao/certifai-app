@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 import { generatePublicJWTToken } from '@/src/lib/jwt-utils';
+import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 
 /**
  * Standard API response interface
@@ -198,4 +199,65 @@ export function buildApiUrl(
  */
 export function createSuccessResponse<T>(data: T, statusCode: number = 200): NextResponse {
   return NextResponse.json(data, { status: statusCode });
+}
+
+/**
+ * Check if request is authorized for public API access
+ * More permissive approach - allows legitimate server-side and direct API calls
+ */
+export function isPublicCertificationPageRequest(request: NextRequest): boolean {
+  const referer = request.headers.get('referer');
+
+  // Allow requests without referer (server-side requests, direct API calls, etc.)
+  if (!referer) {
+    return true;
+  }
+
+  try {
+    const parsedUrl = new URL(referer);
+    const pathname = parsedUrl.pathname;
+
+    // Block requests from authenticated main pages to public APIs
+    if (pathname.startsWith('/main/')) {
+      return false;
+    }
+
+    // Allow all other requests (including public certification pages)
+    return true;
+  } catch {
+    // If URL parsing fails, allow the request
+    return true;
+  }
+}
+
+/**
+ * Check if request is authorized for authenticated API access
+ * Requires either valid session or request from main pages
+ */
+export function isCertCatalogPageRequest(request: NextRequest): boolean {
+  const referer = request.headers.get('referer');
+
+  // For requests without referer, check for valid auth cookie
+  if (!referer) {
+    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
+    return !!authCookie;
+  }
+
+  try {
+    const parsedUrl = new URL(referer);
+    const pathname = parsedUrl.pathname;
+
+    // Allow requests from main pages (authenticated area)
+    if (pathname.startsWith('/main/')) {
+      return true;
+    }
+
+    // For other pages, check for valid auth cookie
+    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
+    return !!authCookie;
+  } catch {
+    // If URL parsing fails, check for auth cookie
+    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
+    return !!authCookie;
+  }
 }

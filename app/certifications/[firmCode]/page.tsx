@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import CertificationsOverviewClient from '@/src/components/custom/CertificationsOverviewClient';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 interface Props {
@@ -72,6 +73,9 @@ export default async function FirmCertificationsPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header with Navigation */}
+      <LandingHeader showFeaturesLink={false} />
+
       <div className="container mx-auto px-4 py-8">
         <Breadcrumb items={breadcrumbItems} />
 

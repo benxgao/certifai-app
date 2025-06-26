@@ -4,12 +4,19 @@ import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-util
 interface Certification {
   cert_id: number;
   name: string;
-  description: string;
+  description?: string;
+  exam_guide_url?: string;
   min_quiz_counts: number;
   max_quiz_counts: number;
   pass_score: number;
-  created_at: string;
-  firm_id: number;
+  created_at?: string;
+  firm_id?: number; // For backward compatibility with mock data
+  firm?: {
+    firm_id: number;
+    name: string;
+    code: string;
+    logo_url: string | null;
+  };
 }
 
 interface Firm {
@@ -47,8 +54,10 @@ export async function fetchCertificationsData(): Promise<{
 
     if (!baseUrl) {
       console.info('SERVER_API_URL not configured, using mock data');
+      const mockFirms = getMockFirmsData();
+      const validatedMockFirms = validateAndCleanFirmsData(mockFirms);
       return {
-        firms: getMockFirmsData(),
+        firms: validatedMockFirms,
         error: undefined,
       };
     }
@@ -77,14 +86,21 @@ export async function fetchCertificationsData(): Promise<{
           // console.log('API certsResult:', JSON.stringify(certsResult, null, 2));
 
           if (firmsResult.data && certsResult.data) {
-            // Group certifications by firm
+            // Group certifications by firm with better error handling
             const firmsWithCerts: FirmWithCertifications[] = firmsResult.data.map((firm: Firm) => {
-              const firmCerts = certsResult.data.filter(
-                (cert: Certification) => cert.firm_id === firm.firm_id,
+              const firmCerts = certsResult.data.filter((cert: Certification) => {
+                // Handle both API structure (cert.firm.firm_id) and mock structure (cert.firm_id)
+                const certFirmId = cert.firm?.firm_id || cert.firm_id;
+                return certFirmId === firm.firm_id;
+              });
+
+              console.log(
+                `Firm ${firm.name} (ID: ${firm.firm_id}) has ${firmCerts.length} certifications`,
+                firmCerts.map((c: Certification) => c.name),
               );
-              // console.log(
-              //   `Firm ${firm.name} (ID: ${firm.firm_id}) has ${firmCerts.length} certifications`,
-              // );
+
+              // Use actual certification count instead of API provided count
+              const actualCertCount = firmCerts.length;
 
               return {
                 id: firm.firm_id,
@@ -93,15 +109,39 @@ export async function fetchCertificationsData(): Promise<{
                 description: firm.description,
                 website_url: firm.website_url,
                 logo_url: firm.logo_url,
-                certification_count: firm._count?.certifications || 0,
-                certifications: firmCerts,
+                certification_count: actualCertCount,
+                certifications: firmCerts.map((cert: Certification) => ({
+                  cert_id: cert.cert_id,
+                  name: cert.name,
+                  description: cert.description || cert.exam_guide_url || '',
+                  min_quiz_counts: cert.min_quiz_counts,
+                  max_quiz_counts: cert.max_quiz_counts,
+                  pass_score: cert.pass_score,
+                  created_at: cert.created_at || new Date().toISOString(),
+                  firm_id: cert.firm?.firm_id || cert.firm_id || firm.firm_id,
+                })),
               };
             });
 
-            // console.info(
-            //   `Successfully loaded ${firmsWithCerts.length} firms with certifications from public API`,
-            // );
-            return { firms: firmsWithCerts };
+            console.info(
+              `Successfully loaded ${firmsWithCerts.length} firms with certifications from public API`,
+            );
+
+            // Filter out firms with no certifications for better UX
+            const firmsWithActiveCerts = firmsWithCerts.filter(
+              (firm) => firm.certifications.length > 0,
+            );
+
+            console.info(
+              `Filtered to ${firmsWithActiveCerts.length} firms with active certifications`,
+            );
+
+            // Validate and clean the data
+            const validatedFirms = validateAndCleanFirmsData(firmsWithActiveCerts);
+
+            console.info(`Final validated firms: ${validatedFirms.length}`);
+
+            return { firms: validatedFirms };
           } else {
             console.warn('Public API returned incomplete data, using fallback data');
           }
@@ -117,14 +157,31 @@ export async function fetchCertificationsData(): Promise<{
 
     // If API calls fail, use mock data
     console.info('API calls failed, using mock data for certifications');
+    const mockFirms = getMockFirmsData();
+
+    // Validate and ensure consistency
+    const validatedMockFirms = validateAndCleanFirmsData(mockFirms);
+
+    // Ensure mock data has proper structure
+    console.info(
+      `Loaded ${validatedMockFirms.length} mock firms with ${validatedMockFirms.reduce(
+        (sum, f) => sum + f.certifications.length,
+        0,
+      )} total certifications`,
+    );
+
     return {
-      firms: getMockFirmsData(),
+      firms: validatedMockFirms,
       error: undefined,
     };
   } catch (error) {
     console.error('Error fetching certifications data:', error);
+    const mockFirms = getMockFirmsData();
+    const validatedMockFirms = validateAndCleanFirmsData(mockFirms);
+    console.info(`Falling back to ${validatedMockFirms.length} mock firms due to error`);
+
     return {
-      firms: getMockFirmsData(),
+      firms: validatedMockFirms,
       error: undefined,
     };
   }
@@ -161,8 +218,31 @@ export async function fetchCertificationData(certificationId: string): Promise<{
 
         if (response.ok) {
           const result = await response.json();
-          if (result.data) {
-            console.info(`Successfully loaded certification ${certificationId} from public API`);
+
+          if (result.success && result.data) {
+            // Transform API response to match expected format
+            const apiData = result.data;
+            const transformedCertification: Certification = {
+              cert_id: apiData.cert_id,
+              name: apiData.name,
+              description: apiData.description,
+              min_quiz_counts: apiData.min_quiz_counts,
+              max_quiz_counts: apiData.max_quiz_counts,
+              pass_score: apiData.pass_score,
+              created_at: apiData.created_at,
+              firm_id: apiData.firm?.id || 0,
+              firm: apiData.firm
+                ? {
+                    firm_id: apiData.firm.id,
+                    name: apiData.firm.name,
+                    code: apiData.firm.code,
+                    logo_url: apiData.firm.logo_url,
+                  }
+                : undefined,
+            };
+            return { certification: transformedCertification };
+          } else if (result.data) {
+            // Handle old API format for backward compatibility
             return { certification: result.data };
           }
         } else {
@@ -191,6 +271,77 @@ export async function fetchCertificationData(certificationId: string): Promise<{
     console.error(`Error fetching certification ${certificationId}:`, error);
     return {
       certification: getMockCertificationData(certificationId),
+      error: undefined, // Use fallback data instead of showing error
+    };
+  }
+}
+
+/**
+ * Fetch certifications for a specific firm by firm ID
+ */
+export async function fetchCertificationsByFirmId(firmId: string | number): Promise<{
+  certifications: Certification[];
+  error?: string;
+}> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
+
+    if (!baseUrl) {
+      console.info('SERVER_API_URL not configured, using mock data');
+      const mockFirms = getMockFirmsData();
+      const firm = mockFirms.find((f) => f.id === Number(firmId));
+      return {
+        certifications: firm ? firm.certifications : [],
+        error: undefined,
+      };
+    }
+
+    // Try to fetch from public API using JWT authentication
+    try {
+      const token = await generatePublicJWTToken();
+
+      if (token) {
+        const response = await makePublicAPIRequest(`/firms/${firmId}/certifications`, token, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            console.info(
+              `Successfully loaded ${result.data.length} certifications for firm ${firmId}`,
+            );
+            return { certifications: result.data };
+          }
+        } else {
+          console.warn(
+            `Public API call failed for firm ${firmId} certifications:`,
+            response.status,
+          );
+        }
+      } else {
+        console.warn(`Could not generate JWT token for firm ${firmId} certifications`);
+      }
+    } catch (apiError) {
+      console.warn(
+        `Public API call failed for firm ${firmId} certifications, falling back to mock data:`,
+        apiError,
+      );
+    }
+
+    // If API calls fail, use mock data
+    console.info(`Using mock data for firm ${firmId} certifications`);
+    const mockFirms = getMockFirmsData();
+    const firm = mockFirms.find((f) => f.id === Number(firmId));
+    return {
+      certifications: firm ? firm.certifications : [],
+      error: undefined,
+    };
+  } catch (error) {
+    console.error(`Error fetching certifications for firm ${firmId}:`, error);
+    return {
+      certifications: [],
       error: undefined, // Use fallback data instead of showing error
     };
   }
@@ -294,7 +445,7 @@ function getMockFirmsData(): FirmWithCertifications[] {
         'Leading cloud computing platform offering scalable infrastructure and services.',
       website_url: 'https://aws.amazon.com',
       logo_url: '/logos/aws.png',
-      certification_count: 12,
+      certification_count: 3,
       certifications: [
         {
           cert_id: 1,
@@ -339,7 +490,7 @@ function getMockFirmsData(): FirmWithCertifications[] {
         'Technology company focused on productivity software, cloud computing, and enterprise solutions.',
       website_url: 'https://www.microsoft.com',
       logo_url: '/logos/microsoft.png',
-      certification_count: 15,
+      certification_count: 2,
       certifications: [
         {
           cert_id: 4,
@@ -373,7 +524,7 @@ function getMockFirmsData(): FirmWithCertifications[] {
         'Cloud computing services that run on the same infrastructure that Google uses internally.',
       website_url: 'https://cloud.google.com',
       logo_url: '/logos/google-cloud.png',
-      certification_count: 8,
+      certification_count: 2,
       certifications: [
         {
           cert_id: 6,
@@ -407,7 +558,7 @@ function getMockFirmsData(): FirmWithCertifications[] {
         'Multinational technology company that develops, manufactures and sells networking hardware and software.',
       website_url: 'https://www.cisco.com',
       logo_url: '/logos/cisco.png',
-      certification_count: 10,
+      certification_count: 1,
       certifications: [
         {
           cert_id: 8,
@@ -423,4 +574,55 @@ function getMockFirmsData(): FirmWithCertifications[] {
       ],
     },
   ];
+}
+
+/**
+ * Validate firm data structure
+ */
+function validateFirmData(firm: any): firm is FirmWithCertifications {
+  return (
+    firm &&
+    typeof firm.id === 'number' &&
+    typeof firm.code === 'string' &&
+    typeof firm.name === 'string' &&
+    typeof firm.description === 'string' &&
+    typeof firm.certification_count === 'number' &&
+    Array.isArray(firm.certifications)
+  );
+}
+
+/**
+ * Validate and clean firm data
+ */
+function validateAndCleanFirmsData(firms: any[]): FirmWithCertifications[] {
+  console.log(`validateAndCleanFirmsData called with ${firms.length} firms`);
+
+  const validFirms = firms.filter(validateFirmData);
+
+  if (validFirms.length !== firms.length) {
+    console.warn(`Filtered out ${firms.length - validFirms.length} invalid firm records`);
+  }
+
+  const result = validFirms.map((firm) => {
+    const validCertifications = firm.certifications.filter(
+      (cert: any) =>
+        cert &&
+        typeof cert.cert_id === 'number' &&
+        typeof cert.name === 'string' &&
+        (cert.description || cert.exam_guide_url), // Accept either description or exam_guide_url
+    );
+
+    console.log(
+      `Firm ${firm.name}: ${firm.certifications.length} -> ${validCertifications.length} valid certs`,
+    );
+
+    return {
+      ...firm,
+      certifications: validCertifications,
+      certification_count: validCertifications.length, // Ensure count matches actual certifications
+    };
+  });
+
+  console.log(`validateAndCleanFirmsData returning ${result.length} firms`);
+  return result;
 }

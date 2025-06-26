@@ -5,12 +5,25 @@ import {
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
+  isCertCatalogPageRequest,
 } from '@/src/lib/api-utils';
 
 const FIRMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/firms`;
 
 export async function GET(request: NextRequest) {
   try {
+    // Check if request is from authenticated cert catalog pages
+    if (!isCertCatalogPageRequest(request)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            'Access denied: This endpoint is only available for authenticated cert catalog pages',
+        },
+        { status: 403 },
+      );
+    }
+
     const firebaseToken = await getAuthenticatedToken();
     const apiUrl = buildApiUrl(FIRMS_API_URL, request);
 
@@ -27,6 +40,18 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if request is from authenticated cert catalog pages
+    if (!isCertCatalogPageRequest(request)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            'Access denied: This endpoint is only available for authenticated cert catalog pages',
+        },
+        { status: 403 },
+      );
+    }
+
     const firebaseToken = await getAuthenticatedToken();
     const body = await request.json();
 

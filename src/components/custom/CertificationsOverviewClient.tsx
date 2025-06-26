@@ -21,6 +21,15 @@ export default function CertificationsOverviewClient({
   initialError,
   defaultFirmFilter,
 }: CertificationsOverviewClientProps) {
+  // Debug logging
+  console.log('CertificationsOverviewClient initialized with:', {
+    firmsCount: initialFirms.length,
+    totalCerts: initialFirms.reduce((sum, f) => sum + f.certifications.length, 0),
+    firmsWithCerts: initialFirms.filter((f) => f.certifications.length > 0).length,
+    firmsDetail: initialFirms.map((f) => ({ name: f.name, certCount: f.certifications.length })),
+    error: initialError,
+  });
+
   const [firms] = useState<FirmWithCertifications[]>(initialFirms);
   const [filteredFirms, setFilteredFirms] = useState<FirmWithCertifications[]>(initialFirms);
   const [error] = useState<string | null>(initialError || null);
@@ -43,7 +52,8 @@ export default function CertificationsOverviewClient({
             firm.certifications.some(
               (cert) =>
                 cert.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                cert.description.toLowerCase().includes(searchTerm.toLowerCase()),
+                (cert.description &&
+                  cert.description.toLowerCase().includes(searchTerm.toLowerCase())),
             ),
         );
       }
@@ -184,7 +194,13 @@ export default function CertificationsOverviewClient({
               </CardHeader>
               <CardContent>
                 {!Array.isArray(firm.certifications) || firm.certifications.length === 0 ? (
-                  <p className="text-gray-500 italic">No certifications available yet</p>
+                  <div className="text-center py-8">
+                    <p className="text-gray-500 italic mb-2">No certifications available yet</p>
+                    <p className="text-sm text-gray-400">
+                      Expected: {firm.certification_count} certification
+                      {firm.certification_count !== 1 ? 's' : ''}
+                    </p>
+                  </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {firm.certifications.map((cert) => (

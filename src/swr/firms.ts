@@ -30,18 +30,29 @@ export interface CertificationByFirm {
 
 /**
  * Hook to fetch all firms with optional certification counts
+ * @param includeCount - Whether to include certification counts
+ * @param page - Page number for pagination
+ * @param pageSize - Number of items per page
+ * @param usePublicEndpoint - Whether to use public endpoint (for public pages) or private endpoint (for authenticated pages)
  */
-export function useFirms(includeCount: boolean = false, page: number = 1, pageSize: number = 50) {
+export function useFirms(
+  includeCount: boolean = false,
+  page: number = 1,
+  pageSize: number = 50,
+  usePublicEndpoint: boolean = false,
+) {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
     ...(includeCount && { includeCount: 'true' }),
   });
 
+  const endpoint = usePublicEndpoint ? '/api/public/firms' : '/api/firms';
+
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<Firm[]>,
     Error
-  >(`/api/public/firms?${queryParams.toString()}`, {
+  >(`${endpoint}?${queryParams.toString()}`, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 30000, // Cache for 30 seconds
@@ -60,12 +71,20 @@ export function useFirms(includeCount: boolean = false, page: number = 1, pageSi
 
 /**
  * Hook to fetch a specific firm by ID with optional certifications
+ * @param firmId - The ID of the firm to fetch
+ * @param includeCertifications - Whether to include certifications data
+ * @param usePublicEndpoint - Whether to use public endpoint (for public pages) or private endpoint (for authenticated pages)
  */
-export function useFirm(firmId: number | null, includeCertifications: boolean = false) {
+export function useFirm(
+  firmId: number | null,
+  includeCertifications: boolean = false,
+  usePublicEndpoint: boolean = false,
+) {
   const queryParams = includeCertifications ? `?includeCertifications=true` : '';
+  const endpoint = usePublicEndpoint ? '/api/public/firms' : '/api/firms';
 
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ApiResponse<Firm>, Error>(
-    firmId ? `/api/public/firms/${firmId}${queryParams}` : null,
+    firmId ? `${endpoint}/${firmId}${queryParams}` : null,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
@@ -85,18 +104,29 @@ export function useFirm(firmId: number | null, includeCertifications: boolean = 
 
 /**
  * Hook to search firms
+ * @param query - Search query string
+ * @param page - Page number for pagination
+ * @param pageSize - Number of items per page
+ * @param usePublicEndpoint - Whether to use public endpoint (for public pages) or private endpoint (for authenticated pages)
  */
-export function useSearchFirms(query: string | null, page: number = 1, pageSize: number = 50) {
+export function useSearchFirms(
+  query: string | null,
+  page: number = 1,
+  pageSize: number = 50,
+  usePublicEndpoint: boolean = false,
+) {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
     ...(query && { q: query }),
   });
 
+  const endpoint = usePublicEndpoint ? '/api/public/firms' : '/api/firms';
+
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<Firm[]>,
     Error
-  >(query ? `/api/public/firms/search?${queryParams.toString()}` : null, {
+  >(query ? `${endpoint}/search?${queryParams.toString()}` : null, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 10000, // Cache search results for 10 seconds
@@ -144,4 +174,65 @@ export function useCertificationsByFirm(
     isValidatingCertifications: isValidating,
     mutateCertifications: mutate,
   };
+}
+
+/**
+ * Convenience hook for public pages to fetch firms data
+ */
+export function usePublicFirms(
+  includeCount: boolean = false,
+  page: number = 1,
+  pageSize: number = 50,
+) {
+  return useFirms(includeCount, page, pageSize, true);
+}
+
+/**
+ * Convenience hook for authenticated pages to fetch firms data
+ */
+export function useAuthenticatedFirms(
+  includeCount: boolean = false,
+  page: number = 1,
+  pageSize: number = 50,
+) {
+  return useFirms(includeCount, page, pageSize, false);
+}
+
+/**
+ * Convenience hook for public pages to fetch a specific firm
+ */
+export function usePublicFirm(firmId: number | null, includeCertifications: boolean = false) {
+  return useFirm(firmId, includeCertifications, true);
+}
+
+/**
+ * Convenience hook for authenticated pages to fetch a specific firm
+ */
+export function useAuthenticatedFirm(
+  firmId: number | null,
+  includeCertifications: boolean = false,
+) {
+  return useFirm(firmId, includeCertifications, false);
+}
+
+/**
+ * Convenience hook for public pages to search firms
+ */
+export function usePublicSearchFirms(
+  query: string | null,
+  page: number = 1,
+  pageSize: number = 50,
+) {
+  return useSearchFirms(query, page, pageSize, true);
+}
+
+/**
+ * Convenience hook for authenticated pages to search firms
+ */
+export function useAuthenticatedSearchFirms(
+  query: string | null,
+  page: number = 1,
+  pageSize: number = 50,
+) {
+  return useSearchFirms(query, page, pageSize, false);
 }

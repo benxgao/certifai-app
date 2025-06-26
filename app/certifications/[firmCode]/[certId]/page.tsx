@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
 
 interface Props {
@@ -65,6 +66,13 @@ export default async function CertificationPage({ params }: Props) {
     notFound();
   }
 
+  // Fetch certification data to get the certification name for breadcrumb
+  const { certification } = await fetchCertificationData(certId);
+
+  if (!certification) {
+    notFound();
+  }
+
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Certifications', href: '/certifications' },
@@ -73,15 +81,27 @@ export default async function CertificationPage({ params }: Props) {
       href: `/certifications?firm=${firmCode}`,
     },
     {
-      label: `Certification ${certId}`,
+      label: certification.name,
       href: `/certifications/${firmCode}/${certId}`,
     },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header with Navigation */}
+      <LandingHeader showFeaturesLink={false} />
+
       <div className="container mx-auto px-4 py-8">
         <Breadcrumb items={breadcrumbItems} />
+
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">{certification.name}</h1>
+          <p className="text-xl text-gray-600 max-w-3xl">
+            {firmCode.toUpperCase()} Certification - Learn about exam requirements, practice
+            questions, and training materials.
+          </p>
+        </div>
 
         <Suspense fallback={<CertificationDetailSkeleton />}>
           <CertificationDetail certId={certId} />

@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter } from 'next/navigation';
 import { FaAward, FaGraduationCap, FaBuilding, FaCertificate } from 'react-icons/fa';
-import { useFirms } from '@/swr/firms';
+import { useAuthenticatedFirms } from '@/swr/firms';
 import { useAllAvailableCertifications, CertificationListItem } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
@@ -23,7 +23,7 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
   const [activeTab, setActiveTab] = useState<string>('all');
 
   // Fetch firms and certifications data
-  const { firms, isLoadingFirms, isFirmsError } = useFirms(true);
+  const { firms, isLoadingFirms, isFirmsError } = useAuthenticatedFirms(true); // Use private endpoint for authenticated pages
   const { availableCertifications, isLoadingAvailableCertifications } =
     useAllAvailableCertifications();
   const { userCertifications } = useUserCertifications();

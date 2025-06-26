@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
+import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
 import CertificationMarketingPage from '@/src/components/custom/CertificationMarketingPage';
 
@@ -117,6 +118,9 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {/* Header with Navigation */}
+      <LandingHeader showFeaturesLink={false} />
+
       <div className="container mx-auto px-4 py-8">
         <Breadcrumb items={breadcrumbItems} />
 
@@ -130,7 +134,22 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
             <CertificationMarketingPage
               certId={certId}
               firmCode={firmCode}
-              initialData={certification}
+              initialData={
+                certification
+                  ? {
+                      cert_id: certification.cert_id,
+                      name: certification.name,
+                      description:
+                        certification.description ||
+                        `Learn about ${certification.name} certification and prepare for your exam with comprehensive training materials.`,
+                      min_quiz_counts: certification.min_quiz_counts,
+                      max_quiz_counts: certification.max_quiz_counts,
+                      pass_score: certification.pass_score,
+                      created_at: certification.created_at || new Date().toISOString(),
+                      firm_id: certification.firm_id || certification.firm?.firm_id || 0,
+                    }
+                  : null
+              }
             />
           </Suspense>
         )}

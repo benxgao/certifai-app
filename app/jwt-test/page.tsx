@@ -44,7 +44,9 @@ export default async function JWTTestPage() {
             </div>
             <div>
               <span className="font-medium">Created:</span>{' '}
-              {new Date(certification.created_at).toLocaleDateString()}
+              {certification.created_at
+                ? new Date(certification.created_at).toLocaleDateString()
+                : 'N/A'}
             </div>
           </div>
         </div>

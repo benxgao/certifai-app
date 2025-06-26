@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import {
   getJWTToken,
   makeJWTAuthenticatedRequest,
@@ -6,6 +6,7 @@ import {
   createErrorResponse,
   buildApiUrl,
   validateId,
+  isPublicCertificationPageRequest,
 } from '@/src/lib/api-utils';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
@@ -19,6 +20,17 @@ export async function GET(
   { params }: { params: Promise<{ firmId: string }> },
 ) {
   try {
+    // Check if request is from public certification pages
+    if (!isPublicCertificationPageRequest(request)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Access denied: This endpoint is only available for public certification pages',
+        },
+        { status: 403 },
+      );
+    }
+
     const jwtToken = await getJWTToken();
     const resolvedParams = await params;
     const firmId = validateId(resolvedParams.firmId, 'firmId');

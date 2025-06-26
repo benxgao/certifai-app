@@ -83,50 +83,23 @@ interface Props {
 
 export default function CertificationDetail({ certId, initialData }: Props) {
   const [certification, setCertification] = useState<CertificationDetailData | null>(null);
-  const [loading, setLoading] = useState(!initialData);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // If we have initial data, convert it to the expected format
-    if (initialData) {
-      const convertedData: CertificationDetailData = {
-        cert_id: initialData.cert_id,
-        name: initialData.name,
-        description: initialData.description,
-        min_quiz_counts: initialData.min_quiz_counts,
-        max_quiz_counts: initialData.max_quiz_counts,
-        pass_score: initialData.pass_score,
-        created_at: initialData.created_at,
-        updated_at: initialData.created_at, // Use created_at as fallback
-        firm: {
-          id: initialData.firm_id,
-          name: 'Loading...', // Will be filled by the API call if needed
-          code: '',
-          description: '',
-          website_url: null,
-          logo_url: null,
-        },
-        enrollment_count: 0,
-        related_certifications: [],
-      };
-      setCertification(convertedData);
-      setLoading(false);
-      return;
-    }
-
     const fetchCertification = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Use the server-side API endpoint that handles JWT authentication
-        const response = await fetch(`/api/certifications/${certId}`);
+        // Use the public API endpoint that handles JWT authentication (no Firebase auth required)
+        const response = await fetch(`/api/public/certifications/${certId}`);
 
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Certification not found');
           }
-          throw new Error('Failed to fetch certification details');
+          throw new Error(`Failed to fetch certification details (${response.status})`);
         }
 
         const result: ApiResponse = await response.json();
@@ -134,10 +107,40 @@ export default function CertificationDetail({ certId, initialData }: Props) {
         if (result.success && result.data) {
           setCertification(result.data);
         } else {
-          throw new Error('Invalid response format');
+          throw new Error('Invalid response format from server');
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error('Error fetching certification:', err);
+
+        // If we have initial data and API call fails, use it as fallback
+        if (initialData) {
+          console.log('Using initial data as fallback due to API error');
+          const convertedData: CertificationDetailData = {
+            cert_id: initialData.cert_id,
+            name: initialData.name,
+            description: initialData.description,
+            min_quiz_counts: initialData.min_quiz_counts,
+            max_quiz_counts: initialData.max_quiz_counts,
+            pass_score: initialData.pass_score,
+            created_at: initialData.created_at,
+            updated_at: initialData.created_at,
+            firm: {
+              id: initialData.firm_id,
+              name: 'Unknown Firm',
+              code: '',
+              description: '',
+              website_url: null,
+              logo_url: null,
+            },
+            enrollment_count: 0,
+            related_certifications: [],
+          };
+          setCertification(convertedData);
+        } else {
+          setError(
+            err instanceof Error ? err.message : 'An error occurred while loading certification',
+          );
+        }
       } finally {
         setLoading(false);
       }

@@ -147,7 +147,7 @@ export function useAllAvailableCertifications() {
     PaginatedApiResponse<CertificationListItem[]>,
     Error
   >(
-    '/api/public/certifications', // Endpoint for all available certifications
+    '/api/certifications', // Endpoint for all available certifications (Firebase auth required)
   );
 
   return {
@@ -281,5 +281,34 @@ export function useRegisterUserForCertification(apiUserId: string | null) {
     registrationError: error,
     registrationData: data?.data,
     resetRegistration: reset,
+  };
+}
+
+// --- Fetching individual certification details (authenticated) ---
+
+// Custom hook for fetching individual certification details with Firebase authentication
+// This is for authenticated pages in /main area that need detailed certification info
+export function useAuthenticatedCertificationDetail(certificationId: string | null) {
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
+    {
+      success: boolean;
+      data: CertificationListItem;
+      meta: {
+        related_count: number;
+        timestamp: string;
+      };
+    },
+    Error
+  >(
+    certificationId ? `/api/certifications/${certificationId}` : null, // Firebase auth required endpoint
+  );
+
+  return {
+    certification: data?.data,
+    meta: data?.meta,
+    isLoadingCertification: isLoading,
+    isCertificationError: error,
+    isValidatingCertification: isValidating,
+    mutateCertification: mutate,
   };
 }
