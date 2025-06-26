@@ -34,7 +34,7 @@ async function registerCertificationFetcher(
 ): Promise<CertificationResponse> {
   const { refreshToken, ...certificationData } = arg;
 
-  let response = await fetch('/api/certifications', {
+  let response = await fetch('/api/public/certifications', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ async function registerCertificationFetcher(
 
     if (newToken) {
       // Retry the request with refreshed token (cookie should be updated automatically)
-      response = await fetch('/api/certifications', {
+      response = await fetch('/api/public/certifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ export function useAllAvailableCertifications() {
     PaginatedApiResponse<CertificationListItem[]>,
     Error
   >(
-    '/api/certifications', // Endpoint for all available certifications
+    '/api/public/certifications', // Endpoint for all available certifications
   );
 
   return {

@@ -74,14 +74,14 @@ export default function CertificationsOverview() {
       setLoading(true);
 
       // Fetch firms with certification counts
-      const firmsResponse = await fetch('/api/firms?includeCount=true&pageSize=50');
+      const firmsResponse = await fetch('/api/public/firms?includeCount=true&pageSize=50');
       if (!firmsResponse.ok) {
         throw new Error('Failed to fetch firms');
       }
       const firmsResult = await firmsResponse.json();
 
       // Fetch all certifications with firm information
-      const certsResponse = await fetch('/api/certifications?pageSize=100');
+      const certsResponse = await fetch('/api/public/certifications?pageSize=100');
       if (!certsResponse.ok) {
         throw new Error('Failed to fetch certifications');
       }

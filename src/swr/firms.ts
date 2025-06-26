@@ -41,7 +41,7 @@ export function useFirms(includeCount: boolean = false, page: number = 1, pageSi
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<Firm[]>,
     Error
-  >(`/api/firms?${queryParams.toString()}`, {
+  >(`/api/public/firms?${queryParams.toString()}`, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     dedupingInterval: 30000, // Cache for 30 seconds
@@ -62,21 +62,16 @@ export function useFirms(includeCount: boolean = false, page: number = 1, pageSi
  * Hook to fetch a specific firm by ID with optional certifications
  */
 export function useFirm(firmId: number | null, includeCertifications: boolean = false) {
-  const queryParams = includeCertifications 
-    ? `?includeCertifications=true` 
-    : '';
+  const queryParams = includeCertifications ? `?includeCertifications=true` : '';
 
-  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    ApiResponse<Firm>,
-    Error
-  >(
-    firmId ? `/api/firms/${firmId}${queryParams}` : null,
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ApiResponse<Firm>, Error>(
+    firmId ? `/api/public/firms/${firmId}${queryParams}` : null,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
       dedupingInterval: 30000, // Cache for 30 seconds
       refreshInterval: 0, // Don't auto-refresh
-    }
+    },
   );
 
   return {
@@ -101,15 +96,12 @@ export function useSearchFirms(query: string | null, page: number = 1, pageSize:
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<Firm[]>,
     Error
-  >(
-    query ? `/api/firms/search?${queryParams.toString()}` : null,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-      dedupingInterval: 10000, // Cache search results for 10 seconds
-      refreshInterval: 0, // Don't auto-refresh
-    }
-  );
+  >(query ? `/api/public/firms/search?${queryParams.toString()}` : null, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    dedupingInterval: 10000, // Cache search results for 10 seconds
+    refreshInterval: 0, // Don't auto-refresh
+  });
 
   return {
     searchResults: data?.data,
@@ -124,7 +116,11 @@ export function useSearchFirms(query: string | null, page: number = 1, pageSize:
 /**
  * Hook to fetch certifications for a specific firm
  */
-export function useCertificationsByFirm(firmId: number | null, page: number = 1, pageSize: number = 50) {
+export function useCertificationsByFirm(
+  firmId: number | null,
+  page: number = 1,
+  pageSize: number = 50,
+) {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
@@ -133,15 +129,12 @@ export function useCertificationsByFirm(firmId: number | null, page: number = 1,
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<CertificationByFirm[]>,
     Error
-  >(
-    firmId ? `/api/certifications/firms/${firmId}?${queryParams.toString()}` : null,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-      dedupingInterval: 30000, // Cache for 30 seconds
-      refreshInterval: 0, // Don't auto-refresh
-    }
-  );
+  >(firmId ? `/api/public/certifications/firms/${firmId}?${queryParams.toString()}` : null, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    dedupingInterval: 30000, // Cache for 30 seconds
+    refreshInterval: 0, // Don't auto-refresh
+  });
 
   return {
     certifications: data?.data,

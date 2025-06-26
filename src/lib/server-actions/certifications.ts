@@ -73,8 +73,8 @@ export async function fetchCertificationsData(): Promise<{
           const firmsResult = await firmsResponse.json();
           const certsResult = await certsResponse.json();
 
-          console.log('API firmsResult:', JSON.stringify(firmsResult, null, 2));
-          console.log('API certsResult:', JSON.stringify(certsResult, null, 2));
+          // console.log('API firmsResult:', JSON.stringify(firmsResult, null, 2));
+          // console.log('API certsResult:', JSON.stringify(certsResult, null, 2));
 
           if (firmsResult.data && certsResult.data) {
             // Group certifications by firm
@@ -82,9 +82,9 @@ export async function fetchCertificationsData(): Promise<{
               const firmCerts = certsResult.data.filter(
                 (cert: Certification) => cert.firm_id === firm.firm_id,
               );
-              console.log(
-                `Firm ${firm.name} (ID: ${firm.firm_id}) has ${firmCerts.length} certifications`,
-              );
+              // console.log(
+              //   `Firm ${firm.name} (ID: ${firm.firm_id}) has ${firmCerts.length} certifications`,
+              // );
 
               return {
                 id: firm.firm_id,
@@ -98,9 +98,9 @@ export async function fetchCertificationsData(): Promise<{
               };
             });
 
-            console.info(
-              `Successfully loaded ${firmsWithCerts.length} firms with certifications from public API`,
-            );
+            // console.info(
+            //   `Successfully loaded ${firmsWithCerts.length} firms with certifications from public API`,
+            // );
             return { firms: firmsWithCerts };
           } else {
             console.warn('Public API returned incomplete data, using fallback data');
