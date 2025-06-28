@@ -311,7 +311,29 @@ export default function ExamAttemptPage() {
               <div className="flex-shrink-0">
                 {submittedAt !== null ? (
                   <span className="inline-flex items-center rounded-lg bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50 shadow-sm">
-                    <FaCheck className="w-4 h-4 mr-2" /> Completed
+                    <FaCheck className="w-4 h-4 mr-2" />
+                    {examState?.status === 'PASSED'
+                      ? 'Passed'
+                      : examState?.status === 'FAILED'
+                      ? 'Failed'
+                      : 'Completed'}
+                  </span>
+                ) : examState?.exam_status === 'QUESTIONS_GENERATING' ? (
+                  <span className="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50 shadow-sm">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-700 border-t-transparent mr-2"></div>
+                    Generating Questions
+                  </span>
+                ) : examState?.exam_status === 'QUESTION_GENERATION_FAILED' ? (
+                  <span className="inline-flex items-center rounded-lg bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50 shadow-sm">
+                    <FaTimes className="w-4 h-4 mr-2" /> Generation Failed
+                  </span>
+                ) : examState?.exam_status === 'READY' ? (
+                  <span className="inline-flex items-center rounded-lg bg-green-50 px-4 py-2.5 text-sm font-medium text-green-700 border border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800/50 shadow-sm">
+                    <FaCheck className="w-4 h-4 mr-2" /> Ready
+                  </span>
+                ) : examState?.exam_status === 'PENDING_QUESTIONS' ? (
+                  <span className="inline-flex items-center rounded-lg bg-yellow-50 px-4 py-2.5 text-sm font-medium text-yellow-700 border border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800/50 shadow-sm">
+                    <FaEdit className="w-4 h-4 mr-2" /> Pending
                   </span>
                 ) : (
                   <span className="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50 shadow-sm">
@@ -839,12 +861,48 @@ export default function ExamAttemptPage() {
           </div>
         ) : (
           <div className="text-center py-12 mt-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-            <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
-              No questions are currently available for this exam.
-            </p>
-            <p className="text-base text-slate-500 dark:text-slate-400 mt-2">
-              This might be an issue with the exam setup or the API.
-            </p>
+            {examState?.exam_status === 'QUESTIONS_GENERATING' ? (
+              <>
+                <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
+                  Questions are being generated for this exam.
+                </p>
+                <p className="text-base text-slate-500 dark:text-slate-400 mt-2">
+                  Please wait while we prepare your exam questions. This may take a few minutes.
+                </p>
+              </>
+            ) : examState?.exam_status === 'QUESTION_GENERATION_FAILED' ? (
+              <>
+                <FaTimes className="w-8 h-8 text-red-600 dark:text-red-400 mx-auto mb-4" />
+                <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
+                  Question generation failed for this exam.
+                </p>
+                <p className="text-base text-slate-500 dark:text-slate-400 mt-2">
+                  Please try refreshing the page or contact support if the issue persists.
+                </p>
+              </>
+            ) : examState?.exam_status === 'PENDING_QUESTIONS' ? (
+              <>
+                <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaEdit className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                </div>
+                <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
+                  This exam is pending question setup.
+                </p>
+                <p className="text-base text-slate-500 dark:text-slate-400 mt-2">
+                  Please wait while the exam is being prepared.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
+                  No questions are currently available for this exam.
+                </p>
+                <p className="text-base text-slate-500 dark:text-slate-400 mt-2">
+                  This might be an issue with the exam setup or the API.
+                </p>
+              </>
+            )}
           </div>
         )}
 

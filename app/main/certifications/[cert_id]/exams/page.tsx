@@ -34,6 +34,7 @@ import {
   FaPause,
   FaTrophy,
   FaPlus,
+  FaLightbulb,
 } from 'react-icons/fa';
 
 // Renamed original component to CertificationExamsContent
@@ -49,8 +50,8 @@ function CertificationExamsContent() {
   // State for create exam modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [examTitle, setExamTitle] = useState('');
-  const [examDescription, setExamDescription] = useState('');
+  const [numberOfQuestions, setNumberOfQuestions] = useState(20);
+  const [customPromptText, setCustomPromptText] = useState('');
   const [navigatingExamId, setNavigatingExamId] = useState<string | null>(null);
 
   const handleStartExam = (examId: string) => {
@@ -60,7 +61,7 @@ function CertificationExamsContent() {
   };
 
   const handleCreateExam = async () => {
-    if (!examTitle.trim() || !apiUserId || !certId) return;
+    if (!numberOfQuestions || numberOfQuestions < 1 || !apiUserId || !certId) return;
 
     setIsCreating(true);
     try {
@@ -70,8 +71,8 @@ function CertificationExamsContent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: examTitle.trim(),
-          description: examDescription.trim(),
+          numberOfQuestions: numberOfQuestions,
+          customPromptText: customPromptText.trim(),
         }),
       });
 
@@ -79,13 +80,21 @@ function CertificationExamsContent() {
         throw new Error('Failed to create exam');
       }
 
+      const result = await response.json();
+
       // Refresh the exams list
       await mutateExams();
 
       // Reset form and close modal
-      setExamTitle('');
-      setExamDescription('');
+      setNumberOfQuestions(20);
+      setCustomPromptText('');
       setIsCreateModalOpen(false);
+
+      // Show success message about async generation
+      if (result.data?.status === 'QUESTIONS_GENERATING') {
+        // You could show a toast notification here
+        console.log('Exam created successfully. Questions are being generated in the background.');
+      }
     } catch (error) {
       console.error('Error creating exam:', error);
       // You could add a toast notification here
@@ -189,28 +198,54 @@ function CertificationExamsContent() {
                     <DialogHeader>
                       <DialogTitle>Create New Exam</DialogTitle>
                       <DialogDescription>
-                        Create a new exam for this certification. Fill in the details below.
+                        Create a new exam for this certification. Configure the number of questions
+                        and any specific requirements.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                       <div className="grid gap-2">
-                        <Label htmlFor="exam-title">Exam Title</Label>
+                        <Label htmlFor="number-of-questions">Number of Questions</Label>
                         <Input
-                          id="exam-title"
-                          placeholder="Enter exam title..."
-                          value={examTitle}
-                          onChange={(e) => setExamTitle(e.target.value)}
+                          id="number-of-questions"
+                          type="number"
+                          min="1"
+                          max="100"
+                          placeholder="Enter number of questions..."
+                          value={numberOfQuestions}
+                          onChange={(e) => setNumberOfQuestions(parseInt(e.target.value) || 20)}
                         />
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          Recommended: 20-50 questions (each question costs 2 tokens)
+                        </p>
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="exam-description">Description (Optional)</Label>
+                        <Label htmlFor="custom-prompt">Custom Prompt (Optional)</Label>
                         <Textarea
-                          id="exam-description"
-                          placeholder="Enter exam description..."
-                          value={examDescription}
-                          onChange={(e) => setExamDescription(e.target.value)}
+                          id="custom-prompt"
+                          placeholder="Enter any specific requirements or topics to focus on..."
+                          value={customPromptText}
+                          onChange={(e) => setCustomPromptText(e.target.value)}
                           rows={3}
                         />
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          AI will consider this when generating questions
+                        </p>
+                      </div>
+                      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg p-4">
+                        <div className="flex items-start space-x-3">
+                          <div className="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
+                            <FaLightbulb className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div className="text-sm">
+                            <p className="font-medium text-blue-800 dark:text-blue-200 mb-1">
+                              Async Generation
+                            </p>
+                            <p className="text-blue-700 dark:text-blue-300">
+                              Questions will be generated in the background. You can monitor the
+                              progress in your exams list.
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <DialogFooter>
@@ -225,7 +260,7 @@ function CertificationExamsContent() {
                       <Button
                         type="button"
                         onClick={handleCreateExam}
-                        disabled={isCreating || !examTitle.trim()}
+                        disabled={isCreating || !numberOfQuestions || numberOfQuestions < 1}
                       >
                         {isCreating ? 'Creating...' : 'Create Exam'}
                       </Button>

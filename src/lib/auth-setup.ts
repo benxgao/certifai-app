@@ -23,7 +23,7 @@ export interface AuthCookieResult {
  */
 export const setAuthCookie = async (token: string): Promise<AuthCookieResult> => {
   try {
-    // Use a longer timeout for cookie operations (8 seconds)
+    // Use a longer timeout for cookie operations (15 seconds)
     const response = await optimizedFetch(
       '/api/auth-cookie/set',
       {
@@ -31,8 +31,8 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
         method: 'POST',
         body: JSON.stringify({ firebaseToken: token }),
       },
-      8000,
-    ); // 8 second timeout for cookie operations
+      15000,
+    ); // 15 second timeout for cookie operations
 
     if (response && response.ok) {
       console.log('Successfully set auth cookie');

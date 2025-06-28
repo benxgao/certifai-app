@@ -4,11 +4,36 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { useExamsContext } from '@/context/ExamsContext';
-import { FaPlay, FaClock, FaClipboardList, FaChartLine, FaTrophy } from 'react-icons/fa';
+import {
+  FaPlay,
+  FaClock,
+  FaClipboardList,
+  FaChartLine,
+  FaTrophy,
+  FaTimes,
+  FaCheck,
+  FaCheckCircle,
+  FaSpinner,
+  FaExclamationTriangle,
+  FaHourglass,
+} from 'react-icons/fa';
 
 interface ExamsGridProps {
   certId: number | null;
 }
+
+// Normalized internal status values used for UI display
+type ExamStatus =
+  | 'completed_successful'
+  | 'completed_failed'
+  | 'completed_review'
+  | 'completed'
+  | 'in_progress'
+  | 'ready'
+  | 'generating'
+  | 'generation_failed'
+  | 'pending'
+  | 'not_started';
 
 const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
   const router = useRouter();
@@ -51,24 +76,56 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
   return (
     <div className="space-y-6">
       {exams.map((exam) => {
-        // Enhanced status detection based on actual ExamListItem properties
-        const isCompleted = exam.submitted_at !== null;
+        // Enhanced status detection based on actual exam status and submission state
         const hasStarted = exam.started_at !== null;
 
-        // Determine exam status
-        let examStatus = 'not_started';
-        if (isCompleted) {
+        // Determine exam status based on the actual exam_status from API
+        const rawStatus = exam.status || exam.exam_status || 'not_started';
+        let examStatus: ExamStatus;
+
+        // Normalize status for consistent display
+        if (rawStatus === 'PASSED') {
+          examStatus = 'completed_successful';
+        } else if (rawStatus === 'FAILED') {
+          examStatus = 'completed_failed';
+        } else if (rawStatus === 'COMPLETED') {
           examStatus = 'completed';
-        } else if (hasStarted) {
+        } else if (rawStatus === 'COMPLETED_REVIEW') {
+          examStatus = 'completed_review';
+        } else if (rawStatus === 'IN_PROGRESS') {
           examStatus = 'in_progress';
+        } else if (rawStatus === 'READY') {
+          examStatus = hasStarted ? 'in_progress' : 'ready';
+        } else if (rawStatus === 'QUESTIONS_GENERATING') {
+          examStatus = 'generating';
+        } else if (rawStatus === 'QUESTION_GENERATION_FAILED') {
+          examStatus = 'generation_failed';
+        } else if (rawStatus === 'PENDING_QUESTIONS') {
+          examStatus = 'pending';
+        } else {
+          examStatus = 'not_started';
         }
 
         const getStatusIcon = () => {
           switch (examStatus) {
+            case 'completed_successful':
+              return <FaTrophy className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+            case 'completed_failed':
+              return <FaTimes className="w-5 h-5 text-red-600 dark:text-red-400" />;
             case 'completed':
-              return <FaTrophy className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+              return <FaCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
             case 'in_progress':
               return <FaPlay className="w-5 h-5 text-orange-600 dark:text-orange-400" />;
+            case 'ready':
+              return <FaCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />;
+            case 'generating':
+              return (
+                <FaSpinner className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin" />
+              );
+            case 'generation_failed':
+              return <FaExclamationTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />;
+            case 'pending':
+              return <FaHourglass className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />;
             default:
               return <FaClock className="w-5 h-5 text-slate-600 dark:text-slate-400" />;
           }
@@ -78,12 +135,22 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
           switch (examStatus) {
             case 'completed_successful':
               return 'Passed';
+            case 'completed_failed':
+              return 'Failed';
             case 'completed_review':
               return 'Needs Review';
             case 'completed':
               return 'Completed';
             case 'in_progress':
               return 'In Progress';
+            case 'ready':
+              return 'Ready to Start';
+            case 'generating':
+              return 'Generating Questions';
+            case 'generation_failed':
+              return 'Generation Failed';
+            case 'pending':
+              return 'Pending';
             default:
               return 'Not Started';
           }
@@ -93,12 +160,22 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
           switch (examStatus) {
             case 'completed_successful':
               return 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50';
+            case 'completed_failed':
+              return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50';
             case 'completed_review':
               return 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/50';
             case 'completed':
               return 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/50';
             case 'in_progress':
               return 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/50';
+            case 'ready':
+              return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800/50';
+            case 'generating':
+              return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50';
+            case 'generation_failed':
+              return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50';
+            case 'pending':
+              return 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800/50';
             default:
               return 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900/20 dark:text-slate-400 dark:border-slate-800/50';
           }
@@ -138,7 +215,12 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleStartExam(exam.exam_id.toString())}
-                    disabled={navigatingExamId === exam.exam_id.toString()}
+                    disabled={
+                      navigatingExamId === exam.exam_id.toString() ||
+                      examStatus === 'generating' ||
+                      examStatus === 'generation_failed' ||
+                      examStatus === 'pending'
+                    }
                   >
                     {navigatingExamId === exam.exam_id.toString() ? (
                       <div className="flex items-center space-x-2">
@@ -148,10 +230,19 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                       <>
                         {examStatus === 'completed' ||
                         examStatus === 'completed_successful' ||
+                        examStatus === 'completed_failed' ||
                         examStatus === 'completed_review'
                           ? 'Review'
                           : examStatus === 'in_progress'
                           ? 'Continue'
+                          : examStatus === 'ready'
+                          ? 'Start'
+                          : examStatus === 'generating'
+                          ? 'Generating...'
+                          : examStatus === 'generation_failed'
+                          ? 'Retry Setup'
+                          : examStatus === 'pending'
+                          ? 'Pending'
                           : 'Start'}
                       </>
                     )}
@@ -202,7 +293,12 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     onClick={() => handleStartExam(exam.exam_id.toString())}
-                    disabled={navigatingExamId === exam.exam_id.toString()}
+                    disabled={
+                      navigatingExamId === exam.exam_id.toString() ||
+                      examStatus === 'generating' ||
+                      examStatus === 'generation_failed' ||
+                      examStatus === 'pending'
+                    }
                     className="flex-1"
                   >
                     <div className="flex items-center justify-center space-x-2">
@@ -219,6 +315,12 @@ const ExamsGrid: React.FC<ExamsGridProps> = ({ certId }) => {
                               ? 'Review Exam'
                               : examStatus === 'in_progress'
                               ? 'Continue Exam'
+                              : examStatus === 'generating'
+                              ? 'Questions Generating...'
+                              : examStatus === 'generation_failed'
+                              ? 'Generation Failed'
+                              : examStatus === 'pending'
+                              ? 'Exam Setup Pending...'
                               : 'Start Exam'}
                           </span>
                         </>

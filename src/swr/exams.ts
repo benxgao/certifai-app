@@ -7,6 +7,7 @@ export interface ExamListItem {
   exam_id: string;
   user_id: string;
   cert_id: number;
+  exam_status?: string; // Database exam status
   score: number | null;
   token_cost: number;
   started_at: string;
@@ -20,7 +21,7 @@ export interface ExamListItem {
     max_quiz_counts: number;
     pass_score: number;
   };
-  status: string;
+  status: string; // Computed status from API
 }
 
 export function useExamsForCertification(apiUserId: string | null, certId: number | null) {
@@ -29,6 +30,18 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
     Error
   >(
     certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
+    {
+      // Enable polling if there are exams in generating status
+      refreshInterval: (data) => {
+        const hasGeneratingExams = data?.data?.some(
+          (exam) =>
+            exam.exam_status === 'QUESTIONS_GENERATING' || exam.status === 'QUESTIONS_GENERATING',
+        );
+        return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating
+      },
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+    },
   );
 
   return {
@@ -122,10 +135,11 @@ export interface ExamState {
   exam_id: string;
   user_id: string;
   cert_id: number;
+  exam_status?: string; // Database exam status
   score: number | null;
   started_at: string;
   submitted_at: number | null;
-  status: string;
+  status: string; // Computed status from API
   certification?: {
     cert_id: number;
     name: string;
@@ -150,8 +164,14 @@ export function useExamState(
       ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
       : null,
     {
-      refreshInterval: 0, // Don't auto-refresh
-      revalidateOnFocus: false,
+      // Enable polling if exam is in generating status
+      refreshInterval: (data) => {
+        const examStatus = data?.data?.exam_status || data?.data?.status;
+        return examStatus === 'QUESTIONS_GENERATING' ? 5000 : 0; // Poll every 5 seconds if generating
+      },
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+      revalidateOnFocus: true,
     },
   );
 

@@ -29,12 +29,16 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { title, description } = body;
+    const { numberOfQuestions, customPromptText } = body;
 
-    if (!title) {
-      return NextResponse.json({ message: 'Exam title is required' }, { status: 400 });
+    if (!numberOfQuestions || numberOfQuestions < 1) {
+      return NextResponse.json(
+        { message: 'Number of questions is required and must be at least 1' },
+        { status: 400 },
+      );
     }
 
+    // MARKED
     const CREATE_EXAM_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/certifications/${cert_id}/exams`;
 
     const response = await fetch(CREATE_EXAM_API_URL, {
@@ -44,8 +48,8 @@ export async function POST(
         Authorization: `Bearer ${firebaseToken}`,
       },
       body: JSON.stringify({
-        title,
-        description,
+        numberOfQuestions: parseInt(numberOfQuestions, 10),
+        customPromptText: customPromptText || undefined,
       }),
     });
 
