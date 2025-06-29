@@ -5,7 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
-import { UserCertificationRegistrationInput } from '@/swr/certifications';
+import { useUserCertifications } from '@/context/UserCertificationsContext';
+import {
+  UserCertificationRegistrationInput,
+  useAllAvailableCertifications,
+} from '@/swr/certifications';
 import {
   Dialog,
   DialogContent,
@@ -15,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { toast, Toaster } from 'sonner';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
 import DashboardStats from '@/components/custom/DashboardStats';
@@ -22,7 +27,6 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
-import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 
 // Fetcher function for registering a user for a certification
@@ -46,43 +50,26 @@ const registerUserForCertification = async (
   return response.json();
 };
 
-// Interface for available certifications from the API
-interface AvailableCertification {
-  id: number;
-  name: string;
-  description?: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
 const MainPage = () => {
-  const { firebaseUser } = useFirebaseAuth();
+  const { firebaseUser, apiUserId } = useFirebaseAuth();
   const {
     profile,
     isLoading: isLoadingProfile,
     isError: profileError,
     displayName,
   } = useProfileData();
+  const { userCertifications, mutateUserCertifications } = useUserCertifications();
+  const {
+    availableCertifications,
+    isLoadingAvailableCertifications,
+    isAvailableCertificationsError,
+  } = useAllAvailableCertifications();
   const router = useRouter();
 
   // State for modal
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [selectedCertificationId, setSelectedCertificationId] = useState<number | null>(null);
   const [registrationError, setRegistrationError] = useState<string | null>(null);
-
-  // SWR hook for fetching available certifications - prefetch for better UX
-  const {
-    data: certificationsResponse,
-    error: availableCertificationsError,
-    isLoading: isLoadingAvailableCertifications,
-  } = useSWR<{ data: AvailableCertification[]; meta?: any }>('/api/certifications', null, {
-    revalidateOnFocus: false,
-    dedupingInterval: 60000, // Cache for 1 minute
-    refreshInterval: 0,
-  });
-
-  const availableCertifications = certificationsResponse?.data;
 
   const { trigger: registerCertification, isMutating: isRegistering } = useSWRMutation(
     '/api/certifications/register',
@@ -96,15 +83,43 @@ const MainPage = () => {
       return;
     }
 
+    if (!apiUserId) {
+      setRegistrationError('You must be logged in to register for certifications');
+      return;
+    }
+
+    // Check if user is already registered for this certification
+    const isAlreadyRegistered = userCertifications?.some(
+      (uc) => uc.cert_id === selectedCertificationId,
+    );
+
+    if (isAlreadyRegistered) {
+      const selectedCert = availableCertifications?.find(
+        (c) => c.cert_id === selectedCertificationId,
+      );
+      toast.info(`You are already registered for "${selectedCert?.name || 'this certification'}".`);
+      setIsRegisterModalOpen(false);
+      return;
+    }
+
     try {
       setRegistrationError(null);
       await registerCertification({ certificationId: selectedCertificationId });
+
+      const selectedCert = availableCertifications?.find(
+        (c) => c.cert_id === selectedCertificationId,
+      );
+      toast.success(`Successfully registered for "${selectedCert?.name || 'certification'}"!`);
+
       setIsRegisterModalOpen(false);
-      // Refresh user certifications
-      // Note: You might need to add a mutate function to useUserCertifications if it's using SWR
-      window.location.reload(); // Fallback to refresh the page
+      setSelectedCertificationId(null);
+
+      // Refresh user certifications using the context
+      await mutateUserCertifications();
     } catch (error) {
-      setRegistrationError((error as Error).message || 'Failed to register for certification');
+      const errorMessage = (error as Error).message || 'Failed to register for certification';
+      setRegistrationError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -198,14 +213,27 @@ const MainPage = () => {
               <div className="flex-shrink-0">
                 <Dialog open={isRegisterModalOpen} onOpenChange={setIsRegisterModalOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="secondary">Register for Certification</Button>
+                    <Button
+                      variant="secondary"
+                      disabled={
+                        isLoadingAvailableCertifications ||
+                        (availableCertifications && availableCertifications.length === 0)
+                      }
+                    >
+                      {isLoadingAvailableCertifications
+                        ? 'Loading...'
+                        : 'Register for Certification'}
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle>Register for Certification</DialogTitle>
-                      <DialogDescription>
-                        Select a certification to register for. Once registered, you&apos;ll be able
-                        to access exams and practice materials.
+                      <DialogTitle className="text-xl font-semibold">
+                        🎓 Register for Certification
+                      </DialogTitle>
+                      <DialogDescription className="text-slate-600 dark:text-slate-400">
+                        Choose from our available certifications to start your learning journey.
+                        Once registered, you&apos;ll have access to practice exams and study
+                        materials.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="py-4">
@@ -218,57 +246,97 @@ const MainPage = () => {
                             />
                           ))}
                         </div>
-                      ) : availableCertificationsError ? (
+                      ) : isAvailableCertificationsError ? (
                         <div className="text-red-500 text-center py-4">
                           Failed to load available certifications
                         </div>
                       ) : availableCertifications && availableCertifications.length > 0 ? (
-                        <div className="max-h-[300px] overflow-y-auto pr-2">
-                          <div className="space-y-2">
-                            {availableCertifications.map((cert) => (
-                              <div
-                                key={cert.id}
-                                className={`relative p-4 border rounded-lg cursor-pointer transition-all ${
-                                  selectedCertificationId === cert.id
-                                    ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20'
-                                    : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700'
-                                }`}
-                                onClick={() => setSelectedCertificationId(cert.id)}
-                              >
-                                <div className="flex items-center justify-between">
-                                  <div className="flex-1">
-                                    <h4 className="font-medium text-slate-900 dark:text-slate-100">
-                                      {cert.name}
-                                    </h4>
-                                    {cert.description && (
-                                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                                        {cert.description}
-                                      </p>
-                                    )}
-                                  </div>
-                                  {selectedCertificationId === cert.id && (
-                                    <div className="w-6 h-6 rounded-full bg-violet-500 text-white flex items-center justify-center mr-2">
-                                      <svg
-                                        className="w-3 h-3"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
+                        availableCertifications.filter(
+                          (cert) => !userCertifications?.some((uc) => uc.cert_id === cert.cert_id),
+                        ).length > 0 ? (
+                          <div className="max-h-[300px] overflow-y-auto pr-2">
+                            <div className="space-y-2">
+                              {availableCertifications
+                                .filter(
+                                  (cert) =>
+                                    !userCertifications?.some((uc) => uc.cert_id === cert.cert_id),
+                                )
+                                .map((cert) => (
+                                  <div
+                                    key={cert.cert_id}
+                                    className={`relative p-4 border rounded-xl cursor-pointer transition-all duration-200 ${
+                                      selectedCertificationId === cert.cert_id
+                                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20 shadow-md'
+                                        : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 hover:shadow-sm'
+                                    }`}
+                                    onClick={() => setSelectedCertificationId(cert.cert_id)}
+                                  >
+                                    <div className="flex items-start justify-between">
+                                      <div className="flex-1">
+                                        <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                                          {cert.name}
+                                        </h4>
+                                        {cert.firm && (
+                                          <div className="flex items-center gap-2 mb-2">
+                                            <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-1 rounded-md font-medium">
+                                              {cert.firm.name}
+                                            </span>
+                                          </div>
+                                        )}
+                                        <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+                                          <span className="flex items-center gap-1">
+                                            📝 {cert.min_quiz_counts}-{cert.max_quiz_counts}{' '}
+                                            questions
+                                          </span>
+                                          <span className="flex items-center gap-1">
+                                            🎯 {cert.pass_score}% pass score
+                                          </span>
+                                        </div>
+                                      </div>
+                                      {selectedCertificationId === cert.cert_id && (
+                                        <div className="w-6 h-6 rounded-full bg-violet-500 text-white flex items-center justify-center ml-3 flex-shrink-0">
+                                          <svg
+                                            className="w-3 h-3"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                          >
+                                            <path
+                                              fillRule="evenodd"
+                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                              clipRule="evenodd"
+                                            />
+                                          </svg>
+                                        </div>
+                                      )}
                                     </div>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
+                                  </div>
+                                ))}
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="text-center py-8">
+                            <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                              ✨
+                            </div>
+                            <p className="text-slate-600 dark:text-slate-300 font-medium">
+                              You&apos;re all caught up!
+                            </p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                              You are already registered for all available certifications
+                            </p>
+                          </div>
+                        )
                       ) : (
-                        <div className="text-center py-4 text-slate-500 dark:text-slate-400">
-                          No certifications available at this time
+                        <div className="text-center py-8">
+                          <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            🎓
+                          </div>
+                          <p className="text-slate-500 dark:text-slate-400 font-medium">
+                            No certifications available at this time
+                          </p>
+                          <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
+                            Check back later for new opportunities
+                          </p>
                         </div>
                       )}
 
@@ -278,15 +346,31 @@ const MainPage = () => {
                         </div>
                       )}
                     </div>
-                    <DialogFooter className="flex justify-between items-center">
-                      <Button variant="outline" onClick={() => setIsRegisterModalOpen(false)}>
+                    <DialogFooter className="flex justify-between items-center pt-4">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setIsRegisterModalOpen(false);
+                          setSelectedCertificationId(null);
+                          setRegistrationError(null);
+                        }}
+                        disabled={isRegistering}
+                      >
                         Cancel
                       </Button>
                       <Button
                         onClick={handleRegisterCertification}
                         disabled={!selectedCertificationId || isRegistering}
+                        className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                       >
-                        {isRegistering ? 'Registering...' : 'Register'}
+                        {isRegistering ? (
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Registering...
+                          </div>
+                        ) : (
+                          'Register'
+                        )}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -323,6 +407,8 @@ const MainPage = () => {
           </Suspense>
         </section>
       </div>
+
+      <Toaster richColors />
     </div>
   );
 };

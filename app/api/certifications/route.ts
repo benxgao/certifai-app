@@ -7,7 +7,7 @@ import {
   buildApiUrl,
 } from '@/src/lib/api-utils';
 
-const CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/certifications`;
+const CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/certifications`;
 
 export async function GET(request: NextRequest) {
   try {

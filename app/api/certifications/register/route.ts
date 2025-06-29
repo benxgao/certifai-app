@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const response = await makeAuthenticatedRequest(CERTIFICATIONS_REGISTER_API_URL, {
       method: 'POST',
       firebaseToken,
-      body: JSON.stringify({ certificationId: body.certificationId }),
+      body: JSON.stringify({ cert_id: body.certificationId }),
     });
 
     if (!response.ok) {
