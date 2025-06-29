@@ -5,57 +5,41 @@ import {
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
-  isCertCatalogPageRequest,
+  getJWTToken,
+  makeJWTAuthenticatedRequest,
 } from '@/src/lib/api-utils';
 
 const FIRMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/firms`;
 
 export async function GET(request: NextRequest) {
   try {
-    // Check if request is from authenticated cert catalog pages
-    if (!isCertCatalogPageRequest(request)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            'Access denied: This endpoint is only available for authenticated cert catalog pages',
-        },
-        { status: 403 },
-      );
-    }
-
-    const firebaseToken = await getAuthenticatedToken();
+    // Use JWT token for public endpoints instead of Firebase token
+    const jwtToken = await getJWTToken();
     const apiUrl = buildApiUrl(FIRMS_API_URL, request);
 
-    const response = await makeAuthenticatedRequest(apiUrl, {
+    console.log('Calling firms API with JWT token:', apiUrl);
+
+    const response = await makeJWTAuthenticatedRequest(apiUrl, {
       method: 'GET',
-      firebaseToken,
+      jwtToken,
     });
 
     return handleApiResponse(response, 'fetch firms');
   } catch (error) {
+    console.error('Error in /api/firms GET:', error);
     return createErrorResponse(error as Error, 'fetching firms');
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if request is from authenticated cert catalog pages
-    if (!isCertCatalogPageRequest(request)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            'Access denied: This endpoint is only available for authenticated cert catalog pages',
-        },
-        { status: 403 },
-      );
-    }
-
     const firebaseToken = await getAuthenticatedToken();
     const body = await request.json();
 
-    const response = await makeAuthenticatedRequest(FIRMS_API_URL, {
+    // Use the authenticated endpoint for creating firms
+    const FIRMS_CREATE_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/firms`;
+
+    const response = await makeAuthenticatedRequest(FIRMS_CREATE_URL, {
       method: 'POST',
       firebaseToken,
       body: JSON.stringify(body),

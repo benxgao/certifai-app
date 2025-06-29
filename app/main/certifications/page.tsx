@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast, Toaster } from 'sonner';
@@ -18,6 +19,7 @@ import { CertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
 
 export default function CertificationsPage() {
+  const router = useRouter();
   const { apiUserId } = useFirebaseAuth();
 
   const {
@@ -85,6 +87,7 @@ export default function CertificationsPage() {
   }, [registrationError]);
 
   if (isAvailableCertificationsError) {
+    console.error('Error loading certifications:', isAvailableCertificationsError);
     return (
       <div className="min-h-screen bg-background text-foreground pt-16">
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4">
@@ -93,6 +96,12 @@ export default function CertificationsPage() {
             <p className="text-muted-foreground max-w-md">
               {isAvailableCertificationsError?.message || 'Error loading certification data.'}
             </p>
+            <div className="space-x-4">
+              <Button onClick={() => window.location.reload()}>Try Again</Button>
+              <Button variant="outline" onClick={() => router.push('/main')}>
+                Back to Dashboard
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import {
   getAuthenticatedToken,
   makeAuthenticatedRequest,
@@ -6,7 +6,6 @@ import {
   createErrorResponse,
   buildApiUrl,
   validateId,
-  isCertCatalogPageRequest,
 } from '@/src/lib/api-utils';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
@@ -20,18 +19,6 @@ export async function GET(
   { params }: { params: Promise<{ firmId: string }> },
 ) {
   try {
-    // Check if request is from authenticated cert catalog pages
-    if (!isCertCatalogPageRequest(request)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            'Access denied: This endpoint is only available for authenticated cert catalog pages',
-        },
-        { status: 403 },
-      );
-    }
-
     const firebaseToken = await getAuthenticatedToken();
     const resolvedParams = await params;
     const firmId = validateId(resolvedParams.firmId, 'firmId');

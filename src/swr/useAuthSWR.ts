@@ -28,6 +28,7 @@ export function useAuthSWR<Data = any, Error = any>(
 
       // Don't retry on auth errors (401, 403) to avoid infinite loops
       if ((error as any)?.status === 401 || (error as any)?.status === 403) {
+        console.error('Authentication error in useAuthSWR:', (error as any)?.message || error);
         return false;
       }
 
@@ -37,14 +38,21 @@ export function useAuthSWR<Data = any, Error = any>(
         (error as any)?.status < 500 &&
         (error as any)?.status !== 408
       ) {
+        console.error(
+          'Client error in useAuthSWR:',
+          (error as any)?.status,
+          (error as any)?.message || error,
+        );
         return false;
       }
 
       // Retry on timeout errors but with limit
       if ((error as any)?.name === 'TimeoutError') {
+        console.warn('Timeout error in useAuthSWR, retrying...');
         return true;
       }
 
+      console.error('Network error in useAuthSWR, retrying...', error);
       return true;
     },
     errorRetryCount: 2, // Reduced from 3 for faster failure detection

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 import { generatePublicJWTToken } from '@/src/lib/jwt-utils';
-import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 
 /**
  * Standard API response interface
@@ -49,13 +48,22 @@ export function validateId(id: string, paramName: string = 'id'): number {
  * Get Firebase token with proper error handling
  */
 export async function getAuthenticatedToken(): Promise<string> {
-  const firebaseToken = await getFirebaseTokenFromCookie();
+  try {
+    const firebaseToken = await getFirebaseTokenFromCookie();
 
-  if (!firebaseToken) {
-    throw new ApiError('Authentication failed: Invalid token', 401);
+    if (!firebaseToken) {
+      console.error('Authentication failed: No Firebase token found in cookie');
+      throw new ApiError('Authentication failed: Invalid token', 401);
+    }
+
+    return firebaseToken;
+  } catch (error) {
+    console.error('getAuthenticatedToken error:', error);
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError('Authentication failed: Unable to retrieve token', 401);
   }
-
-  return firebaseToken;
 }
 
 /**
@@ -227,37 +235,5 @@ export function isPublicCertificationPageRequest(request: NextRequest): boolean 
   } catch {
     // If URL parsing fails, allow the request
     return true;
-  }
-}
-
-/**
- * Check if request is authorized for authenticated API access
- * Requires either valid session or request from main pages
- */
-export function isCertCatalogPageRequest(request: NextRequest): boolean {
-  const referer = request.headers.get('referer');
-
-  // For requests without referer, check for valid auth cookie
-  if (!referer) {
-    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
-    return !!authCookie;
-  }
-
-  try {
-    const parsedUrl = new URL(referer);
-    const pathname = parsedUrl.pathname;
-
-    // Allow requests from main pages (authenticated area)
-    if (pathname.startsWith('/main/')) {
-      return true;
-    }
-
-    // For other pages, check for valid auth cookie
-    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
-    return !!authCookie;
-  } catch {
-    // If URL parsing fails, check for auth cookie
-    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
-    return !!authCookie;
   }
 }

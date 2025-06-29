@@ -14,7 +14,7 @@ export async function getFirebaseTokenFromCookie(): Promise<string | undefined> 
   const cookieToken = (await cookies()).get(COOKIE_AUTH_NAME)?.value;
 
   if (!cookieToken) {
-    console.error('api/certifications: Auth cookie not found');
+    console.error('getFirebaseTokenFromCookie: Auth cookie not found');
     return undefined;
   }
 
@@ -28,6 +28,11 @@ export async function getFirebaseTokenFromCookie(): Promise<string | undefined> 
     // payload = {token, iat, exp}
     const { payload } = await jwtVerify(cookieToken, new TextEncoder().encode(secretKey));
     const firebaseToken = payload.token as string;
+
+    if (!firebaseToken) {
+      console.error('getFirebaseTokenFromCookie: No Firebase token in JWT payload');
+      return undefined;
+    }
 
     // Cache the result for a short period
     tokenCache.set(cookieToken, {
@@ -47,7 +52,7 @@ export async function getFirebaseTokenFromCookie(): Promise<string | undefined> 
 
     return firebaseToken;
   } catch (error) {
-    console.error(`api/certifications: JWT verification failed: ${error}`);
+    console.error(`getFirebaseTokenFromCookie: JWT verification failed:`, error);
     // Remove from cache if verification fails
     tokenCache.delete(cookieToken);
     return undefined;

@@ -5,22 +5,28 @@ import {
   handleApiResponse,
   createErrorResponse,
   buildApiUrl,
+  getJWTToken,
+  makeJWTAuthenticatedRequest,
 } from '@/src/lib/api-utils';
 
-const CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/certifications`;
+const CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/public/certifications`;
 
 export async function GET(request: NextRequest) {
   try {
-    const firebaseToken = await getAuthenticatedToken();
+    // Use JWT token for public endpoints instead of Firebase token
+    const jwtToken = await getJWTToken();
     const apiUrl = buildApiUrl(CERTIFICATIONS_API_URL, request);
 
-    const response = await makeAuthenticatedRequest(apiUrl, {
+    console.log('Calling certifications API with JWT token:', apiUrl);
+
+    const response = await makeJWTAuthenticatedRequest(apiUrl, {
       method: 'GET',
-      firebaseToken,
+      jwtToken,
     });
 
     return handleApiResponse(response, 'fetch certifications');
   } catch (error) {
+    console.error('Error in /api/certifications GET:', error);
     return createErrorResponse(error as Error, 'fetching certifications');
   }
 }
@@ -30,7 +36,10 @@ export async function POST(request: NextRequest) {
     const firebaseToken = await getAuthenticatedToken();
     const body = await request.json();
 
-    const response = await makeAuthenticatedRequest(CERTIFICATIONS_API_URL, {
+    // Use the authenticated endpoint for creating certifications
+    const CERTIFICATIONS_CREATE_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/certifications`;
+
+    const response = await makeAuthenticatedRequest(CERTIFICATIONS_CREATE_URL, {
       method: 'POST',
       firebaseToken,
       body: JSON.stringify(body),
