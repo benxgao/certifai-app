@@ -5,12 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
-// ...existing code...
-import {
-  // ...existing code...
-  useAllAvailableCertifications,
-} from '@/swr/certifications';
-// ...existing code...
+import { useAllAvailableCertifications } from '@/swr/certifications';
 import { Toaster } from 'sonner';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
@@ -19,9 +14,6 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
-// ...existing code...
-
-// ...existing code...
 
 const MainPage = () => {
   const { firebaseUser } = useFirebaseAuth();
@@ -36,20 +28,11 @@ const MainPage = () => {
     useAllAvailableCertifications();
   const router = useRouter();
 
-  // ...existing code...
-
-  // ...existing code...
-
-  // ...existing code...
-
   useEffect(() => {
     if (firebaseUser) {
       console.log(`Firebase user ID: ${JSON.stringify(firebaseUser.uid, null, 2)}`);
     }
   }, [firebaseUser]);
-
-  // Cleanup effect to handle component unmounting
-  // ...existing code...
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">

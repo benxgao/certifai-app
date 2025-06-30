@@ -114,7 +114,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
         setError(null);
 
         // Use the server-side API endpoint that handles JWT authentication
-        const response = await fetch(`/api/certifications/${certId}`);
+        const response = await fetch(`/api/public/certifications/${certId}`);
 
         if (!response.ok) {
           if (response.status === 404) {
