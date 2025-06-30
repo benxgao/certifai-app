@@ -35,19 +35,15 @@ export interface CertificationByFirm {
  * @param pageSize - Number of items per page
  * @param usePublicEndpoint - Whether to use public endpoint (for public pages) or private endpoint (for authenticated pages)
  */
-export function useFirms(
-  includeCount: boolean = false,
-  page: number = 1,
-  pageSize: number = 50,
-  usePublicEndpoint: boolean = false,
-) {
+export function useFirms(includeCount: boolean = false, page: number = 1, pageSize: number = 50) {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
     ...(includeCount && { includeCount: 'true' }),
   });
 
-  const endpoint = usePublicEndpoint ? '/api/public/firms' : '/api/firms';
+  // Always use public endpoint for all app requests
+  const endpoint = '/api/public/firms';
 
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<Firm[]>,
@@ -75,13 +71,10 @@ export function useFirms(
  * @param includeCertifications - Whether to include certifications data
  * @param usePublicEndpoint - Whether to use public endpoint (for public pages) or private endpoint (for authenticated pages)
  */
-export function useFirm(
-  firmId: number | null,
-  includeCertifications: boolean = false,
-  usePublicEndpoint: boolean = false,
-) {
+export function useFirm(firmId: number | null, includeCertifications: boolean = false) {
   const queryParams = includeCertifications ? `?includeCertifications=true` : '';
-  const endpoint = usePublicEndpoint ? '/api/public/firms' : '/api/firms';
+  // Always use public endpoint for all app requests
+  const endpoint = '/api/public/firms';
 
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ApiResponse<Firm>, Error>(
     firmId ? `${endpoint}/${firmId}${queryParams}` : null,
@@ -109,19 +102,15 @@ export function useFirm(
  * @param pageSize - Number of items per page
  * @param usePublicEndpoint - Whether to use public endpoint (for public pages) or private endpoint (for authenticated pages)
  */
-export function useSearchFirms(
-  query: string | null,
-  page: number = 1,
-  pageSize: number = 50,
-  usePublicEndpoint: boolean = false,
-) {
+export function useSearchFirms(query: string | null, page: number = 1, pageSize: number = 50) {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
     ...(query && { q: query }),
   });
 
-  const endpoint = usePublicEndpoint ? '/api/public/firms' : '/api/firms';
+  // Always use public endpoint for all app requests
+  const endpoint = '/api/public/firms';
 
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<Firm[]>,
@@ -184,7 +173,7 @@ export function usePublicFirms(
   page: number = 1,
   pageSize: number = 50,
 ) {
-  return useFirms(includeCount, page, pageSize, true);
+  return useFirms(includeCount, page, pageSize);
 }
 
 /**
@@ -195,14 +184,14 @@ export function useAuthenticatedFirms(
   page: number = 1,
   pageSize: number = 50,
 ) {
-  return useFirms(includeCount, page, pageSize, false);
+  return useFirms(includeCount, page, pageSize);
 }
 
 /**
  * Convenience hook for public pages to fetch a specific firm
  */
 export function usePublicFirm(firmId: number | null, includeCertifications: boolean = false) {
-  return useFirm(firmId, includeCertifications, true);
+  return useFirm(firmId, includeCertifications);
 }
 
 /**
@@ -212,7 +201,7 @@ export function useAuthenticatedFirm(
   firmId: number | null,
   includeCertifications: boolean = false,
 ) {
-  return useFirm(firmId, includeCertifications, false);
+  return useFirm(firmId, includeCertifications);
 }
 
 /**
@@ -223,7 +212,7 @@ export function usePublicSearchFirms(
   page: number = 1,
   pageSize: number = 50,
 ) {
-  return useSearchFirms(query, page, pageSize, true);
+  return useSearchFirms(query, page, pageSize);
 }
 
 /**
@@ -234,5 +223,5 @@ export function useAuthenticatedSearchFirms(
   page: number = 1,
   pageSize: number = 50,
 ) {
-  return useSearchFirms(query, page, pageSize, false);
+  return useSearchFirms(query, page, pageSize);
 }

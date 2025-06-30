@@ -147,7 +147,7 @@ export function useAllAvailableCertifications() {
     PaginatedApiResponse<CertificationListItem[]>,
     Error
   >(
-    '/api/certifications', // Endpoint for all available certifications (Firebase auth required)
+    '/api/public/certifications', // Always use public endpoint for all app requests
   );
 
   return {
@@ -300,7 +300,7 @@ export function useAuthenticatedCertificationDetail(certificationId: string | nu
     },
     Error
   >(
-    certificationId ? `/api/certifications/${certificationId}` : null, // Firebase auth required endpoint
+    certificationId ? `/api/public/certifications/${certificationId}` : null, // Always use public endpoint for all app requests
   );
 
   return {

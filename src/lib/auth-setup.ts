@@ -103,7 +103,6 @@ export const performApiLogin = async (token: string): Promise<string | null> => 
       if (response && response.ok) {
         const { api_user_id } = await response.json();
         if (api_user_id) {
-          console.log('Got api_user_id from API login:', api_user_id);
           return api_user_id;
         }
       } else {
@@ -289,8 +288,6 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
 
     if (finalUserId) {
       console.log(`Authentication setup successful:
-        | api_user_id: ${finalUserId}
-        | source: ${userIdFromApi ? 'API' : 'custom claims'}
         | cookie_set: ${cookieResult?.success ?? 'skipped'}
         | current_path: ${typeof window !== 'undefined' ? window.location.pathname : 'server'}`);
 
