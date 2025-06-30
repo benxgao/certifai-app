@@ -11,6 +11,8 @@ export interface ExamListItem {
   exam_status?: BackendExamStatus; // Database exam status
   score: number | null;
   token_cost: number;
+  total_questions: number; // Actual number of questions in this exam
+  custom_prompt_text?: string | null; // Custom prompt used for question generation
   started_at: string;
   submitted_at: number | null;
   certification: {
@@ -138,6 +140,8 @@ export interface ExamState {
   cert_id: number;
   exam_status?: string; // Database exam status
   score: number | null;
+  total_questions: number; // Actual number of questions in this exam
+  custom_prompt_text?: string | null; // Custom prompt used for question generation
   started_at: string;
   submitted_at: number | null;
   status: string; // Computed status from API

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 import { FaSearch, FaList, FaTh } from 'react-icons/fa';
-import { useAuthenticatedFirms } from '@/swr/firms';
+import { useAllAuthenticatedFirms } from '@/swr/firms';
 import { useAllAvailableCertifications, CertificationListItem } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
@@ -30,8 +30,8 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('tree');
 
-  // Fetch firms and certifications data
-  const { firms, isLoadingFirms, isFirmsError } = useAuthenticatedFirms(true); // Use private endpoint for authenticated pages
+  // Fetch firms and certifications data - using hooks that load ALL data recursively
+  const { firms, isLoadingFirms, isFirmsError } = useAllAuthenticatedFirms(true); // Load all firms with cert counts
   const { availableCertifications, isLoadingAvailableCertifications } =
     useAllAvailableCertifications();
   const { userCertifications } = useUserCertifications();

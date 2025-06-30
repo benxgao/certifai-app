@@ -1,3 +1,4 @@
+import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
@@ -151,13 +152,16 @@ async function fetchAllCertificationsPaginated() {
 
 // Custom hook to use for fetching the list of all available certifications (fetches all pages)
 export function useAllAvailableCertifications() {
-  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    PaginatedApiResponse<CertificationListItem[]>,
+  // Use custom fetcher to load all pages recursively
+  const { data, error, isLoading, isValidating, mutate } = useSWR<
+    { data: CertificationListItem[]; meta: { total: number } },
     Error
-  >('/api/public/certifications');
-
-  // If you want to always fetch all pages, use a custom fetcher:
-  // const { data, error, isLoading, mutate } = useSWR('all-certs', fetchAllCertificationsPaginated);
+  >('all-certifications', fetchAllCertificationsPaginated, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    dedupingInterval: 60000, // Cache for 60 seconds since we're loading all data
+    refreshInterval: 0, // Don't auto-refresh
+  });
 
   // Optionally, expose a function to fetch all pages on demand
   const fetchAll = async () => {

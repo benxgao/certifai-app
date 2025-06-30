@@ -1,3 +1,4 @@
+import useSWR from 'swr';
 import { useAuthSWR } from './useAuthSWR';
 import { PaginatedApiResponse, ApiResponse } from '../types/api';
 import { fetchAllFirms, fetchAllCertificationsByFirm } from '../lib/pagination-utils';
@@ -229,4 +230,53 @@ export function useAuthenticatedSearchFirms(
   pageSize: number = 50,
 ) {
   return useSearchFirms(query, page, pageSize);
+}
+
+/**
+ * Hook to fetch ALL firms recursively across all pages
+ * @param includeCount - Whether to include certification counts
+ */
+export function useAllFirms(includeCount: boolean = false) {
+  // Use custom fetcher to load all pages recursively
+  const { data, error, isLoading, isValidating, mutate } = useSWR<
+    { data: Firm[]; meta: { total: number } },
+    Error
+  >(`all-firms-${includeCount}`, () => fetchAllFirmsPaginated(includeCount), {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    dedupingInterval: 60000, // Cache for 60 seconds since we're loading all data
+    refreshInterval: 0, // Don't auto-refresh
+  });
+
+  return {
+    firms: data?.data,
+    pagination: data?.meta,
+    isLoadingFirms: isLoading,
+    isFirmsError: error,
+    isValidatingFirms: isValidating,
+    mutateFirms: mutate,
+    // Function to fetch all firms across all pages
+    fetchAllFirms: () => fetchAllFirms(includeCount),
+  };
+}
+
+// Helper to recursively fetch all paginated firms
+async function fetchAllFirmsPaginated(includeCount: boolean = false) {
+  // Use the new utility function instead
+  const data = await fetchAllFirms(includeCount);
+  return { data, meta: { total: data.length } };
+}
+
+/**
+ * Convenience hook for public pages to fetch ALL firms data across all pages
+ */
+export function useAllPublicFirms(includeCount: boolean = false) {
+  return useAllFirms(includeCount);
+}
+
+/**
+ * Convenience hook for authenticated pages to fetch ALL firms data across all pages
+ */
+export function useAllAuthenticatedFirms(includeCount: boolean = false) {
+  return useAllFirms(includeCount);
 }

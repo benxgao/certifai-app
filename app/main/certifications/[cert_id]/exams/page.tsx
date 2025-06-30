@@ -25,7 +25,6 @@ import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status
 import {
   FaPlay,
   FaCheck,
-  FaClock,
   FaClipboardList,
   FaChartLine,
   FaArrowRight,
@@ -480,7 +479,7 @@ function CertificationExamsContent() {
                   </CardHeader>
                   <CardContent className="p-6">
                     {/* Exam Statistics */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
                       <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
                         <div className="flex items-center space-x-2 mb-2">
                           <FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -489,24 +488,12 @@ function CertificationExamsContent() {
                           </span>
                         </div>
                         <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                          {displayCertification?.max_quiz_counts || '25'}
-                        </p>
-                      </div>
-
-                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <FaClock className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-                          <span className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                            Duration
-                          </span>
-                        </div>
-                        <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                          60 min
+                          {exam.total_questions || displayCertification?.max_quiz_counts || '25'}
                         </p>
                       </div>
 
                       {/* Show pass rate or attempts info */}
-                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50 col-span-2 lg:col-span-1">
+                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
                         <div className="flex items-center space-x-2 mb-2">
                           <FaTrophy className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
                           <span className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
@@ -518,6 +505,27 @@ function CertificationExamsContent() {
                         </p>
                       </div>
                     </div>
+
+                    {/* Custom Prompt Display */}
+                    {exam.custom_prompt_text && (
+                      <div className="mb-6">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-700/50">
+                          <div className="flex items-start space-x-3">
+                            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
+                              <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
+                                Custom Focus Area
+                              </h4>
+                              <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
+                                {exam.custom_prompt_text}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Status Information - Simplified */}
                     <div className="mb-6">

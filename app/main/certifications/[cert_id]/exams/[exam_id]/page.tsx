@@ -369,7 +369,7 @@ export default function ExamAttemptPage() {
               )}
 
               {/* Exam Information Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Total Questions */}
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                   <div className="space-y-3">
@@ -392,7 +392,7 @@ export default function ExamAttemptPage() {
                       </p>
                     </div>
                     <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                      {pagination?.totalItems || '...'}
+                      {pagination?.totalItems || examState?.total_questions || '...'}
                     </p>
                   </div>
                 </div>
@@ -427,44 +427,6 @@ export default function ExamAttemptPage() {
                             minute: '2-digit',
                           })
                         : '...'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Time Information */}
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-center space-x-2">
-                      <svg
-                        className="w-4 h-4 text-violet-600 dark:text-violet-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                        Duration
-                      </p>
-                    </div>
-                    <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                      {submittedAt && examState?.started_at
-                        ? (() => {
-                            const start = new Date(examState.started_at);
-                            const end = new Date(submittedAt);
-                            const diffMs = end.getTime() - start.getTime();
-                            const diffMins = Math.round(diffMs / (1000 * 60));
-                            if (diffMins < 60) return `${diffMins}m`;
-                            const hours = Math.floor(diffMins / 60);
-                            const mins = diffMins % 60;
-                            return `${hours}h ${mins}m`;
-                          })()
-                        : 'Active'}
                     </p>
                   </div>
                 </div>
@@ -519,6 +481,25 @@ export default function ExamAttemptPage() {
                   </div>
                 )}
               </div>
+
+              {/* Custom Prompt Display */}
+              {examState?.custom_prompt_text && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-200 dark:border-blue-700/50 shadow-sm">
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
+                      <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-base font-medium text-blue-800 dark:text-blue-200 mb-2">
+                        Custom Focus Area
+                      </h4>
+                      <p className="text-base text-blue-700 dark:text-blue-300 leading-relaxed">
+                        {examState.custom_prompt_text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Helpful Tips (only during active exam) */}
               {submittedAt === null && (
