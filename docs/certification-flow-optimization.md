@@ -20,20 +20,6 @@ This update extends the optimistic loading pattern implemented for the signin fl
 - Loading spinner with "Loading Exams..." text during transition
 - Disabled button state during navigation to prevent multiple clicks
 
-### 2. ExamsGrid Component (`src/components/custom/ExamsGrid.tsx`)
-
-**Changes:**
-
-- Modified to handle navigation internally instead of through callback
-- Added loading states for exam start/resume/review actions
-- Updated interface to receive `certId` instead of `onStartExam` callback
-
-**Features:**
-
-- Optimistic navigation to `/main/certifications/${certId}/exams/${examId}`
-- Individual loading states per exam button
-- Context-aware button text ("Start Exam", "Resume Exam", "Review Exam")
-
 ### 3. Certification Exams Page (`app/main/certifications/[cert_id]/exams/page.tsx`)
 
 **Changes:**

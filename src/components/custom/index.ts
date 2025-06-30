@@ -9,7 +9,6 @@ export { default as DashboardLoading } from './DashboardLoading';
 export { default as DashboardStats } from './DashboardStats';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ErrorMessage } from './ErrorMessage';
-export { default as ExamsGrid } from './ExamsGrid';
 export { default as LoadingComponents } from './LoadingComponents';
 export { default as PageLoader } from './PageLoader';
 export { default as ProfileErrorState } from './ProfileErrorState';

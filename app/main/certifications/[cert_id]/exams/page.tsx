@@ -1,11 +1,9 @@
-// filepath: /Users/xingbingao/workplace/certifai-app/app/main/certifications/[cert_id]/exams/page.tsx
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ExamCardSkeleton } from '@/src/components/ui/card-skeletons';
+import { LoadingComponents } from '@/components/custom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -19,11 +17,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useExamsContext, ExamsProvider } from '@/context/ExamsContext'; // Import the context
+
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem } from '@/swr/exams'; // Ensure ExamListItem is imported
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
-import BreadcrumbSkeleton from '@/components/custom/BreadcrumbSkeleton'; // Import BreadcrumbSkeleton component
 import {
   FaPlay,
   FaCheck,
@@ -44,8 +41,72 @@ function CertificationExamsContent() {
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
   const { apiUserId } = useFirebaseAuth();
 
-  // Use the context for exams data
-  const { exams, isLoadingExams, isExamsError, mutateExams } = useExamsContext();
+  // Separate state for exams and certification data to ensure we always have certification info
+  const [exams, setExams] = useState<any[] | null>(null);
+  const [certification, setCertification] = useState<{
+    cert_id: number;
+    name: string;
+    description?: string;
+    min_quiz_counts: number;
+    max_quiz_counts: number;
+    pass_score: number;
+    firm?: {
+      firm_id: number;
+      name: string;
+      code: string;
+    };
+  } | null>(null);
+  const [isLoadingExams, setIsLoadingExams] = useState(true);
+  const [isLoadingCertification, setIsLoadingCertification] = useState(true);
+
+  // Fetch certification details separately to ensure we always have certification info
+  const fetchCertification = async () => {
+    if (!certId) return;
+    setIsLoadingCertification(true);
+    try {
+      const response = await fetch(`/api/public/certifications/${certId}`);
+      if (!response.ok) throw new Error('Failed to fetch certification');
+      const result = await response.json();
+      setCertification(result.data || null);
+    } catch (error) {
+      console.error('Error fetching certification:', error);
+      setCertification(null);
+    } finally {
+      setIsLoadingCertification(false);
+    }
+  };
+
+  // TODO: Handle by SWR
+  const fetchExams = async () => {
+    if (!apiUserId || !certId) return;
+    setIsLoadingExams(true);
+    try {
+      const response = await fetch(`/api/users/${apiUserId}/certifications/${certId}/exams`);
+      if (!response.ok) throw new Error('Failed to fetch exams');
+      const result = await response.json();
+      setExams(result.data || []);
+
+      // Fallback: If we don't have certification data yet and exams have certification info, use it
+      if (!certification && result.data && result.data.length > 0 && result.data[0].certification) {
+        setCertification(result.data[0].certification);
+      }
+    } catch {
+      setExams([]);
+    } finally {
+      setIsLoadingExams(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCertification();
+    fetchExams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiUserId, certId]);
+
+  // Derived certification data with fallback
+  const displayCertification =
+    certification ||
+    (exams && exams.length > 0 && exams[0].certification ? exams[0].certification : null);
 
   // State for create exam modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -62,92 +123,44 @@ function CertificationExamsContent() {
 
   const handleCreateExam = async () => {
     if (!numberOfQuestions || numberOfQuestions < 1 || !apiUserId || !certId) return;
-
     setIsCreating(true);
     try {
       const response = await fetch(`/api/users/${apiUserId}/certifications/${certId}/exams`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           numberOfQuestions: numberOfQuestions,
           customPromptText: customPromptText.trim(),
         }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to create exam');
-      }
-
+      if (!response.ok) throw new Error('Failed to create exam');
       const result = await response.json();
-
-      // Refresh the exams list
-      await mutateExams();
-
-      // Reset form and close modal
+      await fetchExams();
       setNumberOfQuestions(20);
       setCustomPromptText('');
       setIsCreateModalOpen(false);
-
-      // Show success message about async generation
       if (result.data?.status === 'QUESTIONS_GENERATING') {
-        // You could show a toast notification here
+        // Optionally show a toast
         console.log('Exam created successfully. Questions are being generated in the background.');
       }
     } catch (error) {
       console.error('Error creating exam:', error);
-      // You could add a toast notification here
     } finally {
       setIsCreating(false);
     }
   };
 
-  useEffect(() => {
-    if (exams) {
-      // console.log(`exams from context: ${JSON.stringify(exams, null, 2)}`);
-    }
-  }, [exams]);
+  // Removed context debug useEffects
 
-  if (isLoadingExams) {
+  if (isLoadingExams || isLoadingCertification) {
+    // Use the reusable skeleton component instead of hardcoding
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-        <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
-          {/* Breadcrumb Navigation Skeleton */}
-          <BreadcrumbSkeleton />
-
-          {/* Header Section */}
-          <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
-            <div className="px-6 py-8">
-              <div className="space-y-4">
-                <Skeleton className="h-8 w-96" />
-                <Skeleton className="h-4 w-64" />
-              </div>
-            </div>
-          </div>
-
-          {/* Skeleton Cards */}
-          <ExamCardSkeleton count={3} />
-        </div>
-      </div>
-    );
-  }
-
-  if (isExamsError) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-          <div className="text-center space-y-4">
-            <h1 className="text-2xl font-bold text-destructive">Error Loading Exams</h1>
-            <p className="text-muted-foreground max-w-md">
-              {isExamsError.message || 'Error loading exams for this certification.'}
-            </p>
-            <Button onClick={() => window.location.reload()} className="mt-4">
-              Try Again
-            </Button>
-          </div>
-        </div>
-      </div>
+      <LoadingComponents.PageSkeleton
+        title="Loading exams..."
+        cardCount={3}
+        showBreadcrumb={true}
+        showHeader={true}
+      />
     );
   }
 
@@ -159,10 +172,7 @@ function CertificationExamsContent() {
           items={[
             { label: 'Certifications', href: '/main/certifications' },
             {
-              label:
-                exams && exams.length > 0 && exams[0].certification?.name
-                  ? exams[0].certification.name
-                  : `Certification ${certId}`,
+              label: displayCertification?.name || `Certification ${certId}`,
               href: `/main/certifications/${certId}/exams`,
             },
             { label: 'Exams', current: true },
@@ -176,9 +186,7 @@ function CertificationExamsContent() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <h2 className="text-lg font-medium text-slate-900 dark:text-slate-100">
-                  {exams && exams.length > 0 && exams[0].certification?.name
-                    ? exams[0].certification.name
-                    : 'Certification Overview'}
+                  {displayCertification?.name || 'Certification Overview'}
                 </h2>
               </div>
 
@@ -198,8 +206,8 @@ function CertificationExamsContent() {
                     <DialogHeader>
                       <DialogTitle>Create New Exam</DialogTitle>
                       <DialogDescription>
-                        Create a new exam for this certification. Configure the number of questions
-                        and any specific requirements.
+                        Create a new exam for {displayCertification?.name || 'this certification'}.
+                        Configure the number of questions and any specific requirements.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
@@ -313,9 +321,7 @@ function CertificationExamsContent() {
                       </p>
                     </div>
                     <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                      {exams && exams.length > 0 && exams[0].certification?.max_quiz_counts
-                        ? exams[0].certification.max_quiz_counts
-                        : '25'}
+                      {displayCertification?.max_quiz_counts || '25'}
                     </p>
                   </div>
                 </div>
@@ -501,7 +507,7 @@ function CertificationExamsContent() {
                           </span>
                         </div>
                         <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                          {exam.certification?.max_quiz_counts || '25'}
+                          {displayCertification?.max_quiz_counts || '25'}
                         </p>
                       </div>
 
@@ -704,12 +710,5 @@ function CertificationExamsContent() {
 }
 
 export default function CertificationExamsPage() {
-  const params = useParams();
-  const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
-
-  return (
-    <ExamsProvider certId={certId}>
-      <CertificationExamsContent />
-    </ExamsProvider>
-  );
+  return <CertificationExamsContent />;
 }
