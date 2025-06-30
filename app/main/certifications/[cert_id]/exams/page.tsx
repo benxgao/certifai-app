@@ -19,8 +19,9 @@ import {
 } from '@/components/ui/dialog';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
-import { ExamListItem } from '@/swr/exams'; // Ensure ExamListItem is imported
+import { ExamListItem, useExamsForCertification } from '@/swr/exams'; // Import SWR hook
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
+import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
 import {
   FaPlay,
   FaCheck,
@@ -41,8 +42,7 @@ function CertificationExamsContent() {
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
   const { apiUserId } = useFirebaseAuth();
 
-  // Separate state for exams and certification data to ensure we always have certification info
-  const [exams, setExams] = useState<any[] | null>(null);
+  // Separate state for certification data to ensure we always have certification info
   const [certification, setCertification] = useState<{
     cert_id: number;
     name: string;
@@ -56,8 +56,10 @@ function CertificationExamsContent() {
       code: string;
     };
   } | null>(null);
-  const [isLoadingExams, setIsLoadingExams] = useState(true);
   const [isLoadingCertification, setIsLoadingCertification] = useState(true);
+
+  // Use SWR hook for exams data
+  const { exams, isLoadingExams, mutateExams } = useExamsForCertification(apiUserId, certId);
 
   // Fetch certification details separately to ensure we always have certification info
   const fetchCertification = async () => {
@@ -76,32 +78,18 @@ function CertificationExamsContent() {
     }
   };
 
-  // TODO: Handle by SWR
-  const fetchExams = async () => {
-    if (!apiUserId || !certId) return;
-    setIsLoadingExams(true);
-    try {
-      const response = await fetch(`/api/users/${apiUserId}/certifications/${certId}/exams`);
-      if (!response.ok) throw new Error('Failed to fetch exams');
-      const result = await response.json();
-      setExams(result.data || []);
-
-      // Fallback: If we don't have certification data yet and exams have certification info, use it
-      if (!certification && result.data && result.data.length > 0 && result.data[0].certification) {
-        setCertification(result.data[0].certification);
-      }
-    } catch {
-      setExams([]);
-    } finally {
-      setIsLoadingExams(false);
-    }
-  };
-
   useEffect(() => {
     fetchCertification();
-    fetchExams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiUserId, certId]);
+  }, [certId]); // Removed apiUserId dependency as SWR handles it
+
+  // Update certification fallback when exams data loads
+  useEffect(() => {
+    // Fallback: If we don't have certification data yet and exams have certification info, use it
+    if (!certification && exams && exams.length > 0 && exams[0].certification) {
+      setCertification(exams[0].certification);
+    }
+  }, [exams, certification]);
 
   // Derived certification data with fallback
   const displayCertification =
@@ -135,7 +123,7 @@ function CertificationExamsContent() {
       });
       if (!response.ok) throw new Error('Failed to create exam');
       const result = await response.json();
-      await fetchExams();
+      await mutateExams(); // Use SWR mutate instead of fetchExams
       setNumberOfQuestions(20);
       setCustomPromptText('');
       setIsCreateModalOpen(false);
@@ -383,18 +371,12 @@ function CertificationExamsContent() {
         {exams && exams.length > 0 ? (
           <div className="space-y-6">
             {exams.map((exam: ExamListItem) => {
-              // Enhanced status detection
+              // Get typed exam status and info
+              const examStatus = getDerivedExamStatus(exam);
+              const statusInfo = getExamStatusInfo(examStatus);
               const isCompleted = exam.submitted_at !== null;
               const hasStarted = exam.started_at !== null;
               const hasScore = exam.score !== null && exam.score !== undefined;
-
-              // Determine exam status
-              let examStatus = 'not_started';
-              if (isCompleted) {
-                examStatus = 'completed';
-              } else if (hasStarted) {
-                examStatus = 'in_progress';
-              }
 
               return (
                 <Card
@@ -476,7 +458,7 @@ function CertificationExamsContent() {
                       </div>
 
                       {/* Right section: Score display (if available) or progress for in-progress exams */}
-                      {(hasScore || examStatus === 'in_progress') && (
+                      {hasScore || examStatus === 'in_progress' ? (
                         <div className="flex-shrink-0 text-right">
                           <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-600 shadow-sm">
                             <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">
@@ -493,7 +475,7 @@ function CertificationExamsContent() {
                             </p>
                           </div>
                         </div>
-                      )}
+                      ) : null}
                     </div>
                   </CardHeader>
                   <CardContent className="p-6">
@@ -532,15 +514,7 @@ function CertificationExamsContent() {
                           </span>
                         </div>
                         <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-                          {examStatus === 'completed_successful'
-                            ? 'Passed'
-                            : examStatus === 'completed_review'
-                            ? 'Review'
-                            : examStatus === 'completed'
-                            ? 'Submitted'
-                            : examStatus === 'in_progress'
-                            ? 'In Progress'
-                            : 'Not Started'}
+                          {statusInfo.label}
                         </p>
                       </div>
                     </div>
@@ -548,15 +522,7 @@ function CertificationExamsContent() {
                     {/* Status Information - Simplified */}
                     <div className="mb-6">
                       <div
-                        className={`p-4 rounded-xl border ${
-                          examStatus === 'completed_successful'
-                            ? 'bg-emerald-25 dark:bg-emerald-950/20 border-emerald-100 dark:border-emerald-900/30'
-                            : examStatus === 'completed_review'
-                            ? 'bg-blue-25 dark:bg-blue-950/20 border-blue-100 dark:border-blue-900/30'
-                            : examStatus === 'in_progress'
-                            ? 'bg-orange-25 dark:bg-orange-950/20 border-orange-100 dark:border-orange-900/30'
-                            : 'bg-blue-25 dark:bg-blue-950/20 border-blue-100 dark:border-blue-900/30'
-                        }`}
+                        className={`p-4 rounded-xl border ${statusInfo.bgColor} ${statusInfo.borderColor}`}
                       >
                         <div className="flex items-center space-x-3">
                           <div
@@ -567,6 +533,12 @@ function CertificationExamsContent() {
                                 ? 'bg-blue-50 dark:bg-blue-900/30'
                                 : examStatus === 'in_progress'
                                 ? 'bg-orange-50 dark:bg-orange-900/30'
+                                : examStatus === 'generating'
+                                ? 'bg-yellow-50 dark:bg-yellow-900/30'
+                                : examStatus === 'generation_failed'
+                                ? 'bg-red-50 dark:bg-red-900/30'
+                                : examStatus === 'ready'
+                                ? 'bg-green-50 dark:bg-green-900/30'
                                 : 'bg-blue-50 dark:bg-blue-900/30'
                             }`}
                           >
@@ -578,6 +550,24 @@ function CertificationExamsContent() {
                               <FaCheck className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                             ) : examStatus === 'in_progress' ? (
                               <FaPause className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                            ) : examStatus === 'generating' ? (
+                              <div className="animate-spin rounded-full h-5 w-5 border-2 border-yellow-600 dark:border-yellow-400 border-t-transparent"></div>
+                            ) : examStatus === 'generation_failed' ? (
+                              <svg
+                                className="w-5 h-5 text-red-600 dark:text-red-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                            ) : examStatus === 'ready' ? (
+                              <FaLightbulb className="w-5 h-5 text-green-600 dark:text-green-400" />
                             ) : (
                               <FaPlay className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                             )}
@@ -591,6 +581,12 @@ function CertificationExamsContent() {
                                   ? 'text-blue-600 dark:text-blue-300'
                                   : examStatus === 'in_progress'
                                   ? 'text-orange-600 dark:text-orange-300'
+                                  : examStatus === 'generating'
+                                  ? 'text-yellow-600 dark:text-yellow-300'
+                                  : examStatus === 'generation_failed'
+                                  ? 'text-red-600 dark:text-red-300'
+                                  : examStatus === 'ready'
+                                  ? 'text-green-600 dark:text-green-300'
                                   : 'text-blue-600 dark:text-blue-300'
                               }`}
                             >
@@ -599,10 +595,15 @@ function CertificationExamsContent() {
                               {examStatus === 'completed_review' &&
                                 'Review Available with Explanations'}
                               {examStatus === 'completed' &&
-                                !hasScore &&
+                                !exam.score &&
                                 'Exam Submitted Successfully'}
                               {examStatus === 'in_progress' && 'Resume Your Exam'}
-                              {examStatus === 'not_started' && 'Begin Your Assessment'}
+                              {examStatus === 'generating' && 'Questions Being Generated'}
+                              {examStatus === 'generation_failed' && 'Question Generation Failed'}
+                              {examStatus === 'ready' && 'Ready to Begin Assessment'}
+                              {(examStatus === 'not_started' ||
+                                (!examStatus && !exam.started_at)) &&
+                                'Begin Your Assessment'}
                             </p>
                             <p
                               className={`text-sm ${
@@ -612,6 +613,12 @@ function CertificationExamsContent() {
                                   ? 'text-blue-500 dark:text-blue-400'
                                   : examStatus === 'in_progress'
                                   ? 'text-orange-500 dark:text-orange-400'
+                                  : examStatus === 'generating'
+                                  ? 'text-yellow-500 dark:text-yellow-400'
+                                  : examStatus === 'generation_failed'
+                                  ? 'text-red-500 dark:text-red-400'
+                                  : examStatus === 'ready'
+                                  ? 'text-green-500 dark:text-green-400'
                                   : 'text-blue-500 dark:text-blue-400'
                               }`}
                             >
@@ -620,10 +627,17 @@ function CertificationExamsContent() {
                               {examStatus === 'completed_review' &&
                                 `Score: ${exam.score}% - View detailed explanations and learning resources`}
                               {examStatus === 'completed' &&
-                                !hasScore &&
+                                !exam.score &&
                                 'Your responses are being evaluated'}
                               {examStatus === 'in_progress' && 'Continue from where you left off'}
-                              {examStatus === 'not_started' &&
+                              {examStatus === 'generating' &&
+                                'Please wait while we prepare your personalized questions'}
+                              {examStatus === 'generation_failed' &&
+                                'Please contact support or try creating a new exam'}
+                              {examStatus === 'ready' &&
+                                'Your personalized exam questions are ready'}
+                              {(examStatus === 'not_started' ||
+                                (!examStatus && !exam.started_at)) &&
                                 'Demonstrate your knowledge and earn your certification'}
                             </p>
                           </div>
@@ -634,7 +648,11 @@ function CertificationExamsContent() {
                     {/* Action Button */}
                     <Button
                       onClick={() => handleStartExam(exam.exam_id)}
-                      disabled={navigatingExamId === exam.exam_id}
+                      disabled={
+                        navigatingExamId === exam.exam_id ||
+                        examStatus === 'generating' ||
+                        examStatus === 'generation_failed'
+                      }
                       variant="outline"
                       className={`w-full h-12 text-base font-medium rounded-xl transition-all duration-200 group ${
                         examStatus === 'completed_successful'
@@ -643,6 +661,12 @@ function CertificationExamsContent() {
                           ? 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
                           : examStatus === 'in_progress'
                           ? 'border-orange-200 text-orange-700 hover:bg-orange-100 hover:border-orange-300 hover:text-orange-800 dark:border-orange-800 dark:text-orange-400 dark:hover:bg-orange-900/30 dark:hover:border-orange-700 dark:hover:text-orange-300'
+                          : examStatus === 'generating'
+                          ? 'border-yellow-200 text-yellow-600 bg-yellow-50 dark:border-yellow-800 dark:text-yellow-400 dark:bg-yellow-900/20 cursor-not-allowed opacity-60'
+                          : examStatus === 'generation_failed'
+                          ? 'border-red-200 text-red-600 bg-red-50 dark:border-red-800 dark:text-red-400 dark:bg-red-900/20 cursor-not-allowed opacity-60'
+                          : examStatus === 'ready'
+                          ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
                           : 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
                       }`}
                     >
@@ -651,6 +675,28 @@ function CertificationExamsContent() {
                           <>
                             <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
                             <span>Loading Exam...</span>
+                          </>
+                        ) : examStatus === 'generating' ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                            <span>Generating Questions...</span>
+                          </>
+                        ) : examStatus === 'generation_failed' ? (
+                          <>
+                            <svg
+                              className="w-4 h-4 text-red-600 dark:text-red-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                            <span>Generation Failed</span>
                           </>
                         ) : examStatus === 'completed_successful' ? (
                           <>
@@ -671,6 +717,11 @@ function CertificationExamsContent() {
                           <>
                             <FaArrowRight className="w-4 h-4 text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 group-hover:translate-x-1 transition-all duration-200" />
                             <span>Resume Exam</span>
+                          </>
+                        ) : examStatus === 'ready' ? (
+                          <>
+                            <FaPlay className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200" />
+                            <span>Begin Exam</span>
                           </>
                         ) : (
                           <>

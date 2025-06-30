@@ -89,11 +89,18 @@ export async function GET(
   },
 ) {
   try {
-    const { api_user_id } = await params;
+    const { api_user_id, cert_id } = await params;
 
     if (!api_user_id) {
       return NextResponse.json(
         { message: 'User ID is missing from the request path' },
+        { status: 400 },
+      );
+    }
+
+    if (!cert_id) {
+      return NextResponse.json(
+        { message: 'Certification ID is missing from the request path' },
         { status: 400 },
       );
     }
@@ -107,7 +114,8 @@ export async function GET(
       );
     }
 
-    const USER_EXAMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/exams`;
+    // Add cert_id as a query parameter to filter exams by certification
+    const USER_EXAMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/exams?cert_id=${cert_id}`;
 
     const response = await fetch(USER_EXAMS_API_URL, {
       method: 'GET',

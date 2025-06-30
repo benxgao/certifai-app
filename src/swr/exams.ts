@@ -2,12 +2,13 @@ import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ApiResponse, PaginatedApiResponse } from '../types/api';
+import { BackendExamStatus } from '../types/exam-status';
 
 export interface ExamListItem {
   exam_id: string;
   user_id: string;
   cert_id: number;
-  exam_status?: string; // Database exam status
+  exam_status?: BackendExamStatus; // Database exam status
   score: number | null;
   token_cost: number;
   started_at: string;
@@ -29,7 +30,7 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
     PaginatedApiResponse<ExamListItem[]>,
     Error
   >(
-    certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
+    apiUserId && certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
     {
       // Enable polling if there are exams in generating status
       refreshInterval: (data) => {
