@@ -21,6 +21,45 @@ export interface CertificationResponse {
   [key: string]: any;
 }
 
+// Define the type for a single certification item in the list
+export interface CertificationListItem {
+  cert_id: number;
+  firm_id: number;
+  // cert_category_id: number;
+  name: string;
+  exam_guide_url: string;
+  min_quiz_counts: number;
+  max_quiz_counts: number;
+  pass_score: number;
+  firm?: {
+    firm_id: number;
+    name: string;
+    code: string;
+    description: string;
+    website_url: string | null;
+    logo_url: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+export interface UserRegisteredCertification {
+  user_id: string;
+  cert_id: number;
+  status: string;
+  assigned_at: string;
+  updated_at: string;
+  certification: {
+    cert_id: number;
+    // cert_category_id: number;
+    name: string;
+    exam_guide_url: string;
+    min_quiz_counts: number;
+    max_quiz_counts: number;
+    pass_score: number;
+  };
+}
+
 // Fetcher function for registering certifications with auth refresh support
 async function registerCertificationFetcher(
   _key: string,
@@ -102,53 +141,34 @@ export function useRegisterCertification() {
 
 // --- Fetching a list of ALL available certifications (formerly useCertifications) ---
 
-// Define the type for a single certification item in the list
-export interface UserRegisteredCertification {
-  user_id: string;
-  cert_id: number;
-  status: string;
-  assigned_at: string;
-  updated_at: string;
-  certification: {
-    cert_id: number;
-    // cert_category_id: number;
-    name: string;
-    exam_guide_url: string;
-    min_quiz_counts: number;
-    max_quiz_counts: number;
-    pass_score: number;
-  };
+// Helper to recursively fetch all paginated certifications
+async function fetchAllCertificationsPaginated(page = 1, pageSize = 100, acc = []) {
+  const res = await fetch(`/api/public/certifications?page=${page}&pageSize=${pageSize}`);
+  if (!res.ok) throw new Error('Failed to fetch certifications');
+  const data = await res.json();
+  const items = data?.data || [];
+  const total = data?.meta?.total || 0;
+  const all = acc.concat(items);
+  if (all.length < total && items.length > 0) {
+    return fetchAllCertificationsPaginated(page + 1, pageSize, all);
+  }
+  return { data: all, meta: data?.meta };
 }
 
-export interface CertificationListItem {
-  cert_id: number;
-  firm_id: number;
-  // cert_category_id: number;
-  name: string;
-  exam_guide_url: string;
-  min_quiz_counts: number;
-  max_quiz_counts: number;
-  pass_score: number;
-  firm?: {
-    firm_id: number;
-    name: string;
-    code: string;
-    description: string;
-    website_url: string | null;
-    logo_url: string | null;
-    created_at: string;
-    updated_at: string;
-  };
-}
-
-// Custom hook to use for fetching the list of all available certifications
+// Custom hook to use for fetching the list of all available certifications (fetches all pages)
 export function useAllAvailableCertifications() {
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     PaginatedApiResponse<CertificationListItem[]>,
     Error
-  >(
-    '/api/public/certifications', // Always use public endpoint for all app requests
-  );
+  >('/api/public/certifications');
+
+  // If you want to always fetch all pages, use a custom fetcher:
+  // const { data, error, isLoading, mutate } = useSWR('all-certs', fetchAllCertificationsPaginated);
+
+  // Optionally, expose a function to fetch all pages on demand
+  const fetchAll = async () => {
+    return fetchAllCertificationsPaginated();
+  };
 
   return {
     availableCertifications: data?.data,
@@ -157,6 +177,7 @@ export function useAllAvailableCertifications() {
     isAvailableCertificationsError: error,
     isValidatingAvailableCertifications: isValidating,
     mutateAvailableCertifications: mutate,
+    fetchAllAvailableCertifications: fetchAll, // Expose for manual use if needed
   };
 }
 
@@ -223,7 +244,7 @@ async function registerUserForCertificationFetcher(
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ certificationId }),
+    body: JSON.stringify({ cert_id: certificationId }),
   });
 
   // If we get a 401, try to refresh token and retry
@@ -238,7 +259,7 @@ async function registerUserForCertificationFetcher(
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ certificationId }),
+        body: JSON.stringify({ cert_id: certificationId }),
       });
     } else {
       // If refresh failed, throw authentication error

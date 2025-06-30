@@ -64,7 +64,6 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
 
     // Filter firms that have certifications matching search
     const firmsWithCerts = firms.filter((firm) => grouped[firm.code]?.length > 0);
-
     return {
       certificationsByFirm: grouped,
       filteredFirms: firmsWithCerts,

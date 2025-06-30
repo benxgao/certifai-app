@@ -62,91 +62,80 @@ export async function fetchCertificationsData(): Promise<{
       };
     }
 
-    // Try to fetch from public API using JWT authentication for server-to-server communication
-    try {
-      const token = await generatePublicJWTToken();
-
-      if (token) {
-        const [firmsResponse, certsResponse] = await Promise.all([
-          makePublicAPIRequest('/firms?pageSize=50', token, {
-            cache: 'force-cache',
-            next: { revalidate: 3600 },
-          }),
-          makePublicAPIRequest('/certifications?pageSize=100', token, {
-            cache: 'force-cache',
-            next: { revalidate: 3600 },
-          }),
-        ]);
-
-        if (firmsResponse.ok && certsResponse.ok) {
-          const firmsResult = await firmsResponse.json();
-          const certsResult = await certsResponse.json();
-
-          // console.log('API firmsResult:', JSON.stringify(firmsResult, null, 2));
-          // console.log('API certsResult:', JSON.stringify(certsResult, null, 2));
-
-          if (firmsResult.data && certsResult.data) {
-            // Group certifications by firm with better error handling
-            const firmsWithCerts: FirmWithCertifications[] = firmsResult.data.map((firm: Firm) => {
-              const firmCerts = certsResult.data.filter((cert: Certification) => {
-                // Handle both API structure (cert.firm.firm_id) and mock structure (cert.firm_id)
-                const certFirmId = cert.firm?.firm_id || cert.firm_id;
-                return certFirmId === firm.firm_id;
-              });
-
-              console.log(
-                `Firm ${firm.name} (ID: ${firm.firm_id}) has ${firmCerts.length} certifications`,
-                firmCerts.map((c: Certification) => c.name),
-              );
-
-              // Use actual certification count instead of API provided count
-              const actualCertCount = firmCerts.length;
-
-              return {
-                id: firm.firm_id,
-                code: firm.code,
-                name: firm.name,
-                description: firm.description,
-                website_url: firm.website_url,
-                logo_url: firm.logo_url,
-                certification_count: actualCertCount,
-                certifications: firmCerts.map((cert: Certification) => ({
-                  cert_id: cert.cert_id,
-                  name: cert.name,
-                  description: cert.description || cert.exam_guide_url || '',
-                  min_quiz_counts: cert.min_quiz_counts,
-                  max_quiz_counts: cert.max_quiz_counts,
-                  pass_score: cert.pass_score,
-                  created_at: cert.created_at || new Date().toISOString(),
-                  firm_id: cert.firm?.firm_id || cert.firm_id || firm.firm_id,
-                })),
-              };
-            });
-
-            console.info(
-              `Successfully loaded ${firmsWithCerts.length} firms with certifications from public API`,
-            );
-
-            // Filter out firms with no certifications for better UX
-            const firmsWithActiveCerts = firmsWithCerts.filter(
-              (firm) => firm.certifications.length > 0,
-            );
-
-            console.info(
-              `Filtered to ${firmsWithActiveCerts.length} firms with active certifications`,
-            );
-
-            // Validate and clean the data
-            const validatedFirms = validateAndCleanFirmsData(firmsWithActiveCerts);
-
-            console.info(`Final validated firms: ${validatedFirms.length}`);
-
-            return { firms: validatedFirms };
+    // Helper to recursively fetch all paginated data
+    async function fetchAllPages(endpoint: string, token: string, pageSize: number) {
+      let page = 1;
+      let allData: any[] = [];
+      let hasMore = true;
+      while (hasMore) {
+        const url = `${endpoint}?page=${page}&pageSize=${pageSize}`;
+        const response = await makePublicAPIRequest(url, token, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        });
+        if (!response.ok) break;
+        const result = await response.json();
+        if (result.data && Array.isArray(result.data)) {
+          allData = allData.concat(result.data);
+          // If API provides pagination info, use it; else, infer from data length
+          if (result.nextPage) {
+            page = result.nextPage;
+          } else if (result.total && result.data.length > 0) {
+            hasMore = allData.length < result.total;
+            page++;
+          } else if (result.data.length === pageSize) {
+            page++;
           } else {
-            console.warn('Public API returned incomplete data, using fallback data');
+            hasMore = false;
           }
         } else {
-          console.warn('Public API responses failed, using fallback data');
+          hasMore = false;
+        }
+      }
+      return allData;
+    }
+
+    try {
+      const token = await generatePublicJWTToken();
+      if (token) {
+        // Recursively fetch all firms and certifications
+        const [allFirms, allCerts] = await Promise.all([
+          fetchAllPages('/firms', token, 50),
+          fetchAllPages('/certifications', token, 100),
+        ]);
+
+        if (allFirms.length && allCerts.length) {
+          const firmsWithCerts: FirmWithCertifications[] = allFirms.map((firm: Firm) => {
+            const firmCerts = allCerts.filter((cert: Certification) => {
+              const certFirmId = cert.firm?.firm_id || cert.firm_id;
+              return certFirmId === firm.firm_id;
+            });
+            const actualCertCount = firmCerts.length;
+            return {
+              id: firm.firm_id,
+              code: firm.code,
+              name: firm.name,
+              description: firm.description,
+              website_url: firm.website_url,
+              logo_url: firm.logo_url,
+              certification_count: actualCertCount,
+              certifications: firmCerts.map((cert: Certification) => ({
+                cert_id: cert.cert_id,
+                name: cert.name,
+                description: cert.description || cert.exam_guide_url || '',
+                min_quiz_counts: cert.min_quiz_counts,
+                max_quiz_counts: cert.max_quiz_counts,
+                pass_score: cert.pass_score,
+                created_at: cert.created_at || new Date().toISOString(),
+                firm_id: cert.firm?.firm_id || cert.firm_id || firm.firm_id,
+              })),
+            };
+          });
+          // Do not filter out firms with no certifications, so all firms are listed
+          const validatedFirms = validateAndCleanFirmsData(firmsWithCerts);
+          return { firms: validatedFirms };
+        } else {
+          console.warn('Public API returned incomplete data, using fallback data');
         }
       } else {
         console.warn('Could not generate JWT token for firms data');
@@ -609,17 +598,17 @@ function validateAndCleanFirmsData(firms: any[]): FirmWithCertifications[] {
         cert &&
         typeof cert.cert_id === 'number' &&
         typeof cert.name === 'string' &&
-        (cert.description || cert.exam_guide_url), // Accept either description or exam_guide_url
+        (cert.description || cert.exam_guide_url),
     );
 
     console.log(
       `Firm ${firm.name}: ${firm.certifications.length} -> ${validCertifications.length} valid certs`,
     );
 
+    // Do not overwrite certification_count, keep the original value
     return {
       ...firm,
       certifications: validCertifications,
-      certification_count: validCertifications.length, // Ensure count matches actual certifications
     };
   });
 

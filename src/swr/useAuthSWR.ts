@@ -16,7 +16,7 @@ export function useAuthSWR<Data = any, Error = any>(
     // Performance optimizations for auth-related requests
     dedupingInterval: 5000, // Increased to prevent duplicate requests
     focusThrottleInterval: 10000, // Increased throttle time
-    loadingTimeout: 15000, // Increased loading timeout to 15 seconds
+    loadingTimeout: 30000, // Increased loading timeout to 30 seconds
 
     // Enhanced error handling for cancellation scenarios
     shouldRetryOnError: (error) => {
