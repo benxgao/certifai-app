@@ -9,6 +9,7 @@ import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
+import { useAllFirmsWithCertifications } from '@/src/swr/useAllData';
 
 interface Certification {
   cert_id: number;
@@ -32,20 +33,29 @@ interface Firm {
 }
 
 export default function CertificationsOverview() {
-  const [firms, setFirms] = useState<Firm[]>([]);
+  // Use the custom hook to fetch all firms with certifications
+  const {
+    firms: allFirms,
+    isLoading,
+    error: fetchError,
+    totalCertifications,
+  } = useAllFirmsWithCertifications();
+
   const [filteredFirms, setFilteredFirms] = useState<Firm[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFirm, setSelectedFirm] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchCertifications();
-  }, []);
+    if (allFirms) {
+      setFilteredFirms(allFirms);
+    }
+  }, [allFirms]);
 
   useEffect(() => {
+    if (!allFirms) return;
+
     const filterFirms = () => {
-      let filtered = firms;
+      let filtered = allFirms;
 
       if (selectedFirm) {
         filtered = filtered.filter((firm) => firm.code === selectedFirm);
@@ -68,63 +78,18 @@ export default function CertificationsOverview() {
     };
 
     filterFirms();
-  }, [firms, searchTerm, selectedFirm]);
+  }, [allFirms, searchTerm, selectedFirm]);
 
-  const fetchCertifications = async () => {
-    try {
-      setLoading(true);
-
-      // Fetch firms with certification counts
-      const firmsResponse = await fetch('/api/public/firms?includeCount=true&pageSize=50');
-      if (!firmsResponse.ok) {
-        throw new Error('Failed to fetch firms');
-      }
-      const firmsResult = await firmsResponse.json();
-
-      // Fetch all certifications with firm information
-      const certsResponse = await fetch('/api/public/certifications?pageSize=100');
-      if (!certsResponse.ok) {
-        throw new Error('Failed to fetch certifications');
-      }
-      const certsResult = await certsResponse.json();
-
-      if (firmsResult.data && certsResult.data) {
-        // Group certifications by firm
-        const firmsWithCerts = firmsResult.data.map((firm: any) => ({
-          id: firm.firm_id,
-          code: firm.code,
-          name: firm.name,
-          description: firm.description,
-          website_url: firm.website_url,
-          logo_url: firm.logo_url,
-          certification_count: firm._count?.certifications || 0,
-          certifications: certsResult.data.filter((cert: any) => cert.firm_id === firm.firm_id),
-        }));
-
-        setFirms(firmsWithCerts);
-        setFilteredFirms(firmsWithCerts);
-      } else {
-        throw new Error('API returned incomplete data');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const totalCertifications = firms.reduce((sum, firm) => sum + firm.certification_count, 0);
-
-  if (loading) {
+  if (isLoading) {
     return <CertificationsOverviewSkeleton />;
   }
 
-  if (error) {
+  if (fetchError) {
     return (
       <div className="text-center py-12">
         <div className="text-red-600 text-lg mb-4">Error loading certifications</div>
-        <p className="text-gray-600 mb-4">{error}</p>
-        <Button onClick={fetchCertifications}>Try Again</Button>
+        <p className="text-gray-600 mb-4">{fetchError.message || 'An error occurred'}</p>
+        <Button onClick={() => window.location.reload()}>Try Again</Button>
       </div>
     );
   }
@@ -134,14 +99,14 @@ export default function CertificationsOverview() {
       {/* SEO JSON-LD */}
       <CertificationsCatalogJsonLd
         totalCertifications={totalCertifications}
-        totalFirms={firms.length}
+        totalFirms={allFirms?.length || 0}
       />
 
       {/* Stats and Search */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-1">{firms.length}</div>
+            <div className="text-3xl font-bold text-blue-600 mb-1">{allFirms?.length || 0}</div>
             <div className="text-gray-600">Technology Firms</div>
           </div>
           <div className="text-center">
@@ -174,7 +139,7 @@ export default function CertificationsOverview() {
             >
               All Firms
             </Button>
-            {firms.slice(0, 5).map((firm) => (
+            {(allFirms || []).slice(0, 5).map((firm) => (
               <Button
                 key={firm.code}
                 variant={selectedFirm === firm.code ? 'default' : 'outline'}

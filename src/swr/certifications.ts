@@ -2,6 +2,7 @@ import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { PaginatedApiResponse } from '../types/api';
+import { fetchAllCertifications } from '../lib/pagination-utils';
 
 // Define the type for the certification data you expect to send
 export interface CertificationInput {
@@ -142,17 +143,10 @@ export function useRegisterCertification() {
 // --- Fetching a list of ALL available certifications (formerly useCertifications) ---
 
 // Helper to recursively fetch all paginated certifications
-async function fetchAllCertificationsPaginated(page = 1, pageSize = 100, acc = []) {
-  const res = await fetch(`/api/public/certifications?page=${page}&pageSize=${pageSize}`);
-  if (!res.ok) throw new Error('Failed to fetch certifications');
-  const data = await res.json();
-  const items = data?.data || [];
-  const total = data?.meta?.total || 0;
-  const all = acc.concat(items);
-  if (all.length < total && items.length > 0) {
-    return fetchAllCertificationsPaginated(page + 1, pageSize, all);
-  }
-  return { data: all, meta: data?.meta };
+async function fetchAllCertificationsPaginated() {
+  // Use the new utility function instead
+  const data = await fetchAllCertifications();
+  return { data, meta: { total: data.length } };
 }
 
 // Custom hook to use for fetching the list of all available certifications (fetches all pages)

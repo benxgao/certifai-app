@@ -1,5 +1,6 @@
 import { useAuthSWR } from './useAuthSWR';
 import { PaginatedApiResponse, ApiResponse } from '../types/api';
+import { fetchAllFirms, fetchAllCertificationsByFirm } from '../lib/pagination-utils';
 
 // Define the type for a firm
 export interface Firm {
@@ -62,6 +63,8 @@ export function useFirms(includeCount: boolean = false, page: number = 1, pageSi
     isFirmsError: error,
     isValidatingFirms: isValidating,
     mutateFirms: mutate,
+    // Function to fetch all firms across all pages
+    fetchAllFirms: () => fetchAllFirms(includeCount),
   };
 }
 
@@ -162,6 +165,8 @@ export function useCertificationsByFirm(
     isCertificationsError: error,
     isValidatingCertifications: isValidating,
     mutateCertifications: mutate,
+    // Function to fetch all certifications for the firm across all pages
+    fetchAllCertificationsByFirm: firmId ? () => fetchAllCertificationsByFirm(firmId) : undefined,
   };
 }
 
