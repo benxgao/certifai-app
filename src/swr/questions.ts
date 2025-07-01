@@ -18,6 +18,7 @@ export interface Question {
   difficulty: string;
   // topic_id: number;
   cert_id: number;
+  exam_topic?: string | null; // Add exam topic field
   user_answer_id: string;
   explanations?: string;
   user_answer_is_correct: boolean | null;

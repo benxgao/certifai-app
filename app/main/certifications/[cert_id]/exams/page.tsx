@@ -5,9 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { LoadingComponents } from '@/components/custom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Slider } from '@/src/components/ui/slider';
 import {
   Dialog,
   DialogContent,
@@ -95,10 +95,19 @@ function CertificationExamsContent() {
     certification ||
     (exams && exams.length > 0 && exams[0].certification ? exams[0].certification : null);
 
+  // Update numberOfQuestions when certification data changes
+  useEffect(() => {
+    if (displayCertification?.max_quiz_counts) {
+      setNumberOfQuestions(displayCertification.max_quiz_counts);
+    }
+  }, [displayCertification?.max_quiz_counts]);
+
   // State for create exam modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [numberOfQuestions, setNumberOfQuestions] = useState(20);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(
+    displayCertification?.max_quiz_counts || 20,
+  );
   const [customPromptText, setCustomPromptText] = useState('');
   const [navigatingExamId, setNavigatingExamId] = useState<string | null>(null);
 
@@ -199,16 +208,22 @@ function CertificationExamsContent() {
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                       <div className="grid gap-2">
-                        <Label htmlFor="number-of-questions">Number of Questions</Label>
-                        <Input
+                        <Label htmlFor="number-of-questions">
+                          Number of Questions: {numberOfQuestions}
+                        </Label>
+                        <Slider
                           id="number-of-questions"
-                          type="number"
-                          min="1"
-                          max="100"
-                          placeholder="Enter number of questions..."
-                          value={numberOfQuestions}
-                          onChange={(e) => setNumberOfQuestions(parseInt(e.target.value) || 20)}
+                          min={displayCertification?.min_quiz_counts || 1}
+                          max={displayCertification?.max_quiz_counts || 100}
+                          step={1}
+                          value={[numberOfQuestions]}
+                          onValueChange={(value) => setNumberOfQuestions(value[0])}
+                          className="w-full"
                         />
+                        <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+                          <span>Min: {displayCertification?.min_quiz_counts || 1}</span>
+                          <span>Max: {displayCertification?.max_quiz_counts || 100}</span>
+                        </div>
                         <p className="text-sm text-slate-600 dark:text-slate-400">
                           Recommended: 20-50 questions (each question costs 2 tokens)
                         </p>
@@ -540,7 +555,7 @@ function CertificationExamsContent() {
                                 : examStatus === 'completed_review'
                                 ? 'bg-blue-50 dark:bg-blue-900/30'
                                 : examStatus === 'in_progress'
-                                ? 'bg-orange-50 dark:bg-orange-900/30'
+                                ? 'bg-green-50 dark:bg-green-900/30'
                                 : examStatus === 'generating'
                                 ? 'bg-yellow-50 dark:bg-yellow-900/30'
                                 : examStatus === 'generation_failed'
@@ -557,7 +572,7 @@ function CertificationExamsContent() {
                             ) : examStatus === 'completed' ? (
                               <FaCheck className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                             ) : examStatus === 'in_progress' ? (
-                              <FaPause className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                              <FaPause className="w-5 h-5 text-green-600 dark:text-green-400" />
                             ) : examStatus === 'generating' ? (
                               <div className="animate-spin rounded-full h-5 w-5 border-2 border-yellow-600 dark:border-yellow-400 border-t-transparent"></div>
                             ) : examStatus === 'generation_failed' ? (
@@ -588,7 +603,7 @@ function CertificationExamsContent() {
                                   : examStatus === 'completed_review'
                                   ? 'text-blue-600 dark:text-blue-300'
                                   : examStatus === 'in_progress'
-                                  ? 'text-orange-600 dark:text-orange-300'
+                                  ? 'text-green-600 dark:text-green-300'
                                   : examStatus === 'generating'
                                   ? 'text-yellow-600 dark:text-yellow-300'
                                   : examStatus === 'generation_failed'
@@ -620,7 +635,7 @@ function CertificationExamsContent() {
                                   : examStatus === 'completed_review'
                                   ? 'text-blue-500 dark:text-blue-400'
                                   : examStatus === 'in_progress'
-                                  ? 'text-orange-500 dark:text-orange-400'
+                                  ? 'text-green-500 dark:text-green-400'
                                   : examStatus === 'generating'
                                   ? 'text-yellow-500 dark:text-yellow-400'
                                   : examStatus === 'generation_failed'
@@ -668,7 +683,7 @@ function CertificationExamsContent() {
                           : examStatus === 'completed_review'
                           ? 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
                           : examStatus === 'in_progress'
-                          ? 'border-orange-200 text-orange-700 hover:bg-orange-100 hover:border-orange-300 hover:text-orange-800 dark:border-orange-800 dark:text-orange-400 dark:hover:bg-orange-900/30 dark:hover:border-orange-700 dark:hover:text-orange-300'
+                          ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
                           : examStatus === 'generating'
                           ? 'border-yellow-200 text-yellow-600 bg-yellow-50 dark:border-yellow-800 dark:text-yellow-400 dark:bg-yellow-900/20 cursor-not-allowed opacity-60'
                           : examStatus === 'generation_failed'
@@ -723,7 +738,7 @@ function CertificationExamsContent() {
                           </>
                         ) : examStatus === 'in_progress' ? (
                           <>
-                            <FaArrowRight className="w-4 h-4 text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 group-hover:translate-x-1 transition-all duration-200" />
+                            <FaArrowRight className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:translate-x-1 transition-all duration-200" />
                             <span>Resume Exam</span>
                           </>
                         ) : examStatus === 'ready' ? (

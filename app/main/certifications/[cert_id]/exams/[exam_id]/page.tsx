@@ -283,7 +283,7 @@ export default function ExamAttemptPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
       <PageLoader isLoading={isSubmittingExam || isSubmittingExamFlag} text="Submitting Exam..." />
-      <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+      <div className="max-w-4xl mx-auto px-3 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8">
         {/* Breadcrumb Navigation */}
         <Breadcrumb
           items={[
@@ -345,19 +345,19 @@ export default function ExamAttemptPage() {
           </div>
 
           {/* Content */}
-          <div className="px-6 py-6">
-            <div className="space-y-6">
+          <div className="px-3 py-4 sm:px-6 sm:py-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Score Section - only show if exam is completed */}
               {score !== null && submittedAt !== null && (
-                <div className="bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 dark:from-emerald-900/20 dark:via-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-emerald-200 dark:border-emerald-700/50 shadow-sm">
+                <div className="bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 dark:from-emerald-900/20 dark:via-green-900/20 dark:to-emerald-900/20 p-4 sm:p-6 rounded-xl border border-emerald-200 dark:border-emerald-700/50 shadow-sm">
                   <div className="text-center">
-                    <p className="text-base font-normal text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-2">
+                    <p className="text-sm sm:text-base font-normal text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-2">
                       Final Score
                     </p>
-                    <p className="text-5xl font-bold text-emerald-700 dark:text-emerald-200 mb-2">
+                    <p className="text-3xl sm:text-5xl font-bold text-emerald-700 dark:text-emerald-200 mb-2">
                       {score}%
                     </p>
-                    <p className="text-sm text-emerald-600 dark:text-emerald-400">
+                    <p className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
                       {score >= 80
                         ? 'Excellent Performance!'
                         : score >= 60
@@ -369,7 +369,7 @@ export default function ExamAttemptPage() {
               )}
 
               {/* Exam Information Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {/* Total Questions */}
                 <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                   <div className="space-y-3">
@@ -529,18 +529,41 @@ export default function ExamAttemptPage() {
         <ErrorMessage error={submitExamError} className="mt-4" />
 
         {questions && questions.length > 0 ? (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {questions.map((question: Question, index: number) => (
               <Card
                 key={question.quiz_question_id}
                 className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden"
               >
-                <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+                <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-4 sm:p-6">
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg leading-relaxed flex-1 mr-4">
-                      <div className="space-y-3">
-                        <div className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-normal border border-blue-100 dark:border-blue-800/50">
-                          Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
+                    <CardTitle className="text-base sm:text-lg leading-relaxed flex-1 mr-2 sm:mr-4">
+                      <div className="space-y-2 sm:space-y-3">
+                        <div className="flex items-center gap-3 flex-wrap">
+                          <div className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-normal border border-blue-100 dark:border-blue-800/50">
+                            Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
+                          </div>
+                          {question.exam_topic && (
+                            <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/25 dark:to-purple-900/25 text-violet-700 dark:text-violet-300 text-sm font-medium border border-violet-200 dark:border-violet-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                              <svg
+                                className="w-3 h-3 mr-1.5 text-violet-600 dark:text-violet-400"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM15.657 6.343a1 1 0 011.414 0A9.972 9.972 0 0119 12a9.972 9.972 0 01-1.929 5.657 1 1 0 11-1.414-1.414A7.971 7.971 0 0017 12a7.971 7.971 0 00-1.343-4.243 1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                />
+                                <path
+                                  fillRule="evenodd"
+                                  d="M13.828 7.172a1 1 0 011.414 0A5.983 5.983 0 0117 12a5.983 5.983 0 01-1.758 4.828 1 1 0 01-1.414-1.414A3.987 3.987 0 0015 12a3.987 3.987 0 00-1.172-2.828 1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                              {question.exam_topic}
+                            </div>
+                          )}
                         </div>
                         <div className="text-slate-700 dark:text-slate-200 font-medium text-lg leading-relaxed">
                           {question.question_text}
@@ -712,130 +735,139 @@ export default function ExamAttemptPage() {
                 </CardContent>
               </Card>
             ))}
-            {/* Bottom Navigation Controls */}
-            <div className="mt-12 pt-8 border-t border-slate-100 dark:border-slate-700/50">
-              <div className="flex justify-between items-center">
-                {/* Left side - Pagination info */}
-                <div className="flex items-center space-x-6">
-                  {pagination && (
-                    <div className="flex items-center space-x-2 text-base text-slate-500 dark:text-slate-400">
-                      <span>Page</span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        {pagination.currentPage}
-                      </span>
-                      <span>of</span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        {pagination.totalPages}
-                      </span>
-                    </div>
-                  )}
-                  {pagination && (
-                    <div className="text-base text-slate-500 dark:text-slate-400">
-                      <span className="font-medium text-slate-600 dark:text-slate-300">
-                        {pagination.totalItems}
-                      </span>{' '}
-                      total questions
-                    </div>
-                  )}
-                </div>
-
-                {/* Right side - Navigation buttons */}
-                <div className="flex items-center space-x-4">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    onClick={handlePreviousPage}
-                    disabled={
-                      isLoadingQuestions ||
-                      isAnswering ||
-                      isNavigatingPage ||
-                      !pagination ||
-                      pagination.currentPage <= 1
-                    }
-                    className="min-w-[140px] border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
-                  >
-                    {isNavigatingPage ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
-                        Loading...
-                      </>
-                    ) : (
-                      <>
-                        <FaArrowLeft className="w-4 h-4 mr-2" />
-                        Previous
-                      </>
+            {/* Bottom Navigation Controls - At end of question list */}
+            <div className="pt-8 border-t border-slate-100 dark:border-slate-700/50">
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 rounded-xl p-4 lg:p-6 shadow-sm">
+                <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row lg:justify-between lg:items-center">
+                  {/* Pagination info - centered on mobile, left on desktop */}
+                  <div className="flex flex-col items-center space-y-2 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-6">
+                    {pagination && (
+                      <div className="flex items-center space-x-2 text-sm lg:text-base text-slate-500 dark:text-slate-400">
+                        <span>Page</span>
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">
+                          {pagination.currentPage}
+                        </span>
+                        <span>of</span>
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">
+                          {pagination.totalPages}
+                        </span>
+                      </div>
                     )}
-                  </Button>
-                  {(() => {
-                    if (!pagination) return null;
+                    {pagination && (
+                      <div className="text-sm lg:text-base text-slate-500 dark:text-slate-400">
+                        <span className="font-medium text-slate-600 dark:text-slate-300">
+                          {pagination.totalItems}
+                        </span>{' '}
+                        total questions
+                      </div>
+                    )}
+                  </div>
 
-                    const isLastPage = pagination.currentPage === pagination.totalPages;
+                  {/* Navigation buttons - full width on mobile, auto width on desktop */}
+                  <div className="flex items-center space-x-3 w-full lg:w-auto justify-center lg:justify-end">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={handlePreviousPage}
+                      disabled={
+                        isLoadingQuestions ||
+                        isAnswering ||
+                        isNavigatingPage ||
+                        !pagination ||
+                        pagination.currentPage <= 1
+                      }
+                      className="flex-1 lg:flex-none lg:min-w-[140px] border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
+                    >
+                      {isNavigatingPage ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
+                          <span className="hidden sm:inline">Loading...</span>
+                          <span className="sm:hidden">...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaArrowLeft className="w-4 h-4 sm:mr-2" />
+                          <span className="hidden sm:inline">Previous</span>
+                        </>
+                      )}
+                    </Button>
+                    {(() => {
+                      if (!pagination) return null;
 
-                    if (submittedAt === null) {
-                      return (
-                        <Button
-                          size="lg"
-                          onClick={handleNextPageOrSubmit}
-                          disabled={
-                            isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
-                          }
-                          className={`min-w-[140px] ${
-                            isLastPage
-                              ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                              : 'bg-violet-600 hover:bg-violet-700 text-white'
-                          }`}
-                        >
-                          {isNavigatingPage ? (
-                            <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                              {isLastPage ? 'Preparing...' : 'Loading...'}
-                            </>
-                          ) : isLastPage ? (
-                            <>
-                              <FaCheck className="w-4 h-4 mr-2" /> Submit Exam
-                            </>
-                          ) : (
-                            <>
-                              Next
-                              <FaArrowRight className="w-4 h-4 ml-2" />
-                            </>
-                          )}
-                        </Button>
-                      );
-                    } else {
-                      if (!isLastPage) {
+                      const isLastPage = pagination.currentPage === pagination.totalPages;
+
+                      if (submittedAt === null) {
                         return (
                           <Button
                             size="lg"
-                            onClick={() => {
-                              if (pagination) {
-                                setIsNavigatingPage(true);
-                                setCurrentPage(pagination.currentPage + 1);
-                                setTimeout(() => setIsNavigatingPage(false), 300);
-                              }
-                            }}
+                            onClick={handleNextPageOrSubmit}
                             disabled={
                               isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
                             }
-                            className="min-w-[140px] bg-violet-600 hover:bg-violet-700 text-white"
+                            className={`flex-1 lg:flex-none lg:min-w-[140px] ${
+                              isLastPage
+                                ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                : 'bg-violet-600 hover:bg-violet-700 text-white'
+                            }`}
                           >
                             {isNavigatingPage ? (
                               <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                                Loading...
+                                <span className="hidden sm:inline">
+                                  {isLastPage ? 'Preparing...' : 'Loading...'}
+                                </span>
+                                <span className="sm:hidden">...</span>
+                              </>
+                            ) : isLastPage ? (
+                              <>
+                                <FaCheck className="w-4 h-4 sm:mr-2" />
+                                <span className="hidden sm:inline">Submit Exam</span>
+                                <span className="sm:hidden">Submit</span>
                               </>
                             ) : (
                               <>
-                                Next
-                                <FaArrowRight className="w-4 h-4 ml-2" />
+                                <span className="hidden sm:inline">Next</span>
+                                <FaArrowRight className="w-4 h-4 sm:ml-2" />
                               </>
                             )}
                           </Button>
                         );
+                      } else {
+                        if (!isLastPage) {
+                          return (
+                            <Button
+                              size="lg"
+                              onClick={() => {
+                                if (pagination) {
+                                  setIsNavigatingPage(true);
+                                  setCurrentPage(pagination.currentPage + 1);
+                                  setTimeout(() => setIsNavigatingPage(false), 300);
+                                }
+                              }}
+                              disabled={
+                                isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
+                              }
+                              className="flex-1 lg:flex-none lg:min-w-[140px] bg-violet-600 hover:bg-violet-700 text-white"
+                            >
+                              {isNavigatingPage ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                                  <span className="hidden sm:inline">Loading...</span>
+                                  <span className="sm:hidden">...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="hidden sm:inline">Next</span>
+                                  <FaArrowRight className="w-4 h-4 sm:ml-2" />
+                                </>
+                              )}
+                            </Button>
+                          );
+                        }
+                        return null;
                       }
-                      return null;
-                    }
-                  })()}
+                    })()}
+                  </div>
                 </div>
               </div>
             </div>
@@ -886,32 +918,7 @@ export default function ExamAttemptPage() {
             )}
           </div>
         )}
-
-        {/* Floating Action Button for Submit - only show on last page during active exam */}
-        {submittedAt === null && pagination && pagination.currentPage === pagination.totalPages && (
-          <div className="fixed bottom-6 right-6 z-50">
-            <Button
-              size="lg"
-              onClick={handleNextPageOrSubmit}
-              disabled={isLoadingQuestions || isAnswering || isNavigatingPage}
-              className="shadow-lg hover:shadow-xl transition-shadow bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-4 h-auto"
-            >
-              <span className="flex items-center space-x-2">
-                {isNavigatingPage ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                    <span className="hidden sm:inline">Preparing...</span>
-                  </>
-                ) : (
-                  <>
-                    <FaCheck className="w-4 h-4" />
-                    <span className="hidden sm:inline">Submit Exam</span>
-                  </>
-                )}
-              </span>
-            </Button>
-          </div>
-        )}
+        {/* Floating Action Button removed since navigation is now at bottom of content */}
 
         {showConfirmModal && (
           <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>

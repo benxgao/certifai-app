@@ -83,8 +83,8 @@ export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => 
     in_progress: {
       status: 'in_progress',
       label: 'In Progress',
-      bgColor: 'bg-orange-25 dark:bg-orange-950/20',
-      borderColor: 'border-orange-100 dark:border-orange-900/30',
+      bgColor: 'bg-green-25 dark:bg-green-950/20',
+      borderColor: 'border-green-100 dark:border-green-900/30',
     },
     completed: {
       status: 'completed',
