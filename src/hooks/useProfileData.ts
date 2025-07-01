@@ -35,23 +35,3 @@ export function useProfileData(): ProfileData {
     isAuthenticated: !!firebaseUser,
   };
 }
-
-/**
- * Hook to get formatted token information
- */
-export function useTokenInfo() {
-  const { profile, isLoading } = useProfileData();
-
-  const formatTokens = (amount: number = 0) => {
-    return amount.toLocaleString();
-  };
-
-  return {
-    creditTokens: profile?.credit_tokens || 0,
-    energyTokens: profile?.energy_tokens || 0,
-    totalTokens: (profile?.credit_tokens || 0) + (profile?.energy_tokens || 0),
-    formattedCreditTokens: formatTokens(profile?.credit_tokens),
-    formattedEnergyTokens: formatTokens(profile?.energy_tokens),
-    isLoading,
-  };
-}

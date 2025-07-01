@@ -4,9 +4,9 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useProfileData, useTokenInfo } from '@/src/hooks/useProfileData';
+import { useProfileData } from '@/src/hooks/useProfileData';
 import { Skeleton } from '@/components/ui/skeleton';
-import { CoinsIcon, ZapIcon, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface ProfileQuickViewProps {
@@ -21,8 +21,6 @@ export const ProfileQuickView: React.FC<ProfileQuickViewProps> = ({
   compact = false,
 }) => {
   const { profile, isLoading, isError, mutate, displayName, email } = useProfileData();
-  const { creditTokens, energyTokens, formattedCreditTokens, formattedEnergyTokens } =
-    useTokenInfo();
   const router = useRouter();
 
   if (isLoading) {
@@ -81,12 +79,7 @@ export const ProfileQuickView: React.FC<ProfileQuickViewProps> = ({
     return (
       <div className={`flex items-center space-x-4 ${className}`}>
         <div className="flex items-center space-x-2">
-          <CoinsIcon className="h-4 w-4 text-yellow-600" />
-          <span className="text-sm font-medium">{formattedCreditTokens}</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <ZapIcon className="h-4 w-4 text-cyan-600" />
-          <span className="text-sm font-medium">{formattedEnergyTokens}</span>
+          <span className="text-sm font-medium">{displayName}</span>
         </div>
       </div>
     );
@@ -119,40 +112,10 @@ export const ProfileQuickView: React.FC<ProfileQuickViewProps> = ({
           </div>
         </div>
 
-        {/* Token Information */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800">
-            <div className="flex items-center space-x-2 mb-1">
-              <CoinsIcon className="h-3 w-3 text-yellow-600" />
-              <span className="text-xs font-medium text-yellow-800 dark:text-yellow-200">
-                Credit
-              </span>
-            </div>
-            <p className="text-lg font-bold text-yellow-900 dark:text-yellow-100">
-              {formattedCreditTokens}
-            </p>
-            <p className="text-xs text-yellow-700 dark:text-yellow-300">Available for exams</p>
-          </div>
-
-          <div className="bg-cyan-50 dark:bg-cyan-900/20 p-3 rounded-lg border border-cyan-200 dark:border-cyan-800">
-            <div className="flex items-center space-x-2 mb-1">
-              <ZapIcon className="h-3 w-3 text-cyan-600" />
-              <span className="text-xs font-medium text-cyan-800 dark:text-cyan-200">Energy</span>
-            </div>
-            <p className="text-lg font-bold text-cyan-900 dark:text-cyan-100">
-              {formattedEnergyTokens}
-            </p>
-            <p className="text-xs text-cyan-700 dark:text-cyan-300">Earned tokens</p>
-          </div>
-        </div>
-
         {/* Status Badge */}
         <div className="flex items-center space-x-2">
           <Badge variant="secondary" className="text-xs">
             Active Account
-          </Badge>
-          <Badge variant="outline" className="text-xs">
-            {creditTokens + energyTokens} Total Tokens
           </Badge>
         </div>
       </CardContent>

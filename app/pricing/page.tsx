@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Check, Star, Zap } from 'lucide-react';
+import { Check, Star } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 
 // Structured Data for SEO
@@ -92,9 +92,8 @@ export default function PricingPage() {
               Simple, Transparent Pricing for AI-Powered IT Certification Training
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Start your certification journey with our beta program. Every new account gets 300
-              credit coins absolutely free - enough for 5 practice exams to get you started with
-              AI-powered learning.
+              Start your certification journey with our beta program. Get access to AI-powered
+              practice exams and personalized learning to accelerate your certification journey.
             </p>
           </header>
 
@@ -114,10 +113,6 @@ export default function PricingPage() {
               </div>
 
               <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-foreground">300 Credit Coins</span>
-                </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-500" />
                   <span className="text-foreground">5 Practice Exams</span>
@@ -165,10 +160,6 @@ export default function PricingPage() {
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">2,000 Credit Coins/month</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
                   <span className="text-foreground">Unlimited Practice Exams</span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -209,10 +200,6 @@ export default function PricingPage() {
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">Unlimited Credit Coins</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
                   <span className="text-foreground">Team Management</span>
                 </div>
                 <div className="flex items-center gap-3">
@@ -246,48 +233,6 @@ export default function PricingPage() {
           </div>
 
           {/* Credit Coin System Explanation */}
-          <div className="mt-20 bg-white dark:bg-slate-800 rounded-2xl border border-border p-8 max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <Zap className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-4">How Credit Coins Work</h2>
-              <p className="text-muted-foreground">
-                Our credit coin system provides flexible access to AI-powered exam preparation
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-primary">60</span>
-                </div>
-                <h4 className="font-semibold text-foreground mb-2">Practice Exam</h4>
-                <p className="text-sm text-muted-foreground">
-                  Generate a full-length practice exam with AI-powered questions
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-primary">15</span>
-                </div>
-                <h4 className="font-semibold text-foreground mb-2">Quick Quiz</h4>
-                <p className="text-sm text-muted-foreground">
-                  Create targeted quizzes for specific topics or weak areas
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-primary">5</span>
-                </div>
-                <h4 className="font-semibold text-foreground mb-2">Question Review</h4>
-                <p className="text-sm text-muted-foreground">
-                  Get detailed explanations and study recommendations
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* FAQ Section */}
           <div className="mt-20">
             <h2 className="text-3xl font-bold text-center text-foreground mb-12">
@@ -295,16 +240,6 @@ export default function PricingPage() {
             </h2>
 
             <div className="max-w-3xl mx-auto space-y-6">
-              <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-6">
-                <h4 className="font-semibold text-foreground mb-2">
-                  What happens when I run out of credit coins?
-                </h4>
-                <p className="text-muted-foreground">
-                  You can upgrade to a paid plan for monthly credit refills, or purchase additional
-                  coins as needed. Your progress and study data are always preserved.
-                </p>
-              </div>
-
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-6">
                 <h4 className="font-semibold text-foreground mb-2">
                   Can I cancel my subscription anytime?
@@ -320,8 +255,8 @@ export default function PricingPage() {
                   Is this really free during beta?
                 </h4>
                 <p className="text-muted-foreground">
-                  Yes! Every new account gets 300 credit coins completely free. This is our way of
-                  thanking early users for helping us improve the platform during our beta phase.
+                  Yes! We offer free access to our core features during beta. This is our way of
+                  thanking early users for helping us improve the platform.
                 </p>
               </div>
 

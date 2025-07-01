@@ -26,18 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/src/components/ui/accordion';
-import {
-  CoinsIcon,
-  ZapIcon,
-  CalendarIcon,
-  UserIcon,
-  Settings,
-  Award,
-  Shield,
-  Bell,
-  Edit3,
-  Check,
-} from 'lucide-react';
+import { CalendarIcon, UserIcon, Settings, Award, Shield, Bell, Edit3, Check } from 'lucide-react';
 import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 import EmailUpdateDialog from '@/src/components/custom/EmailUpdateDialog';
 import Breadcrumb from '@/components/custom/Breadcrumb';
@@ -74,31 +63,6 @@ const ProfileSkeleton: React.FC = () => (
       </div>
     </div>
   </div>
-);
-
-const TokenCard: React.FC<{
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-  color: string;
-  description: string;
-}> = ({ title, value, icon, color, description }) => (
-  <Card className="relative overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
-    <CardContent className="p-4 md:p-6">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1 flex-1 min-w-0">
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">{title}</p>
-          <p className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100">
-            {value.toLocaleString()}
-          </p>
-          <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
-            {description}
-          </p>
-        </div>
-        <div className={`p-2.5 md:p-3 rounded-full ${color} shrink-0 ml-3`}>{icon}</div>
-      </div>
-    </CardContent>
-  </Card>
 );
 
 const EditableDisplayName: React.FC<{
@@ -338,47 +302,6 @@ const ProfileClientPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            {!isLoading && profile && (
-              <div className="flex items-center space-x-3 md:space-x-4 w-full sm:w-auto justify-center sm:justify-end">
-                <div className="text-center">
-                  <div className="flex items-center justify-center space-x-1.5 text-yellow-600 dark:text-yellow-400">
-                    <svg
-                      className="w-3.5 h-3.5 md:w-4 md:h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span className="text-xs md:text-sm font-medium">{profile.credit_tokens}</span>
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Credits</p>
-                </div>
-                <div className="text-center">
-                  <div className="flex items-center justify-center space-x-1.5 text-cyan-600 dark:text-cyan-400">
-                    <svg
-                      className="w-3.5 h-3.5 md:w-4 md:h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                    <span className="text-xs md:text-sm font-medium">{profile.energy_tokens}</span>
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">Energy</p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -409,13 +332,6 @@ const ProfileClientPage: React.FC = () => {
                       <UserIcon className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
                       <span className="hidden xs:inline">Personal</span>
                       <span className="xs:hidden">Info</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="tokens"
-                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
-                    >
-                      <CoinsIcon className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
-                      <span>Tokens</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="account"
@@ -579,92 +495,6 @@ const ProfileClientPage: React.FC = () => {
                             >
                               Manage Subscription
                             </Button>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Tokens Tab */}
-              <TabsContent value="tokens">
-                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <CardHeader className="pb-3 md:pb-6">
-                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
-                      Token Management
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem
-                        value="current-tokens"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Current Token Balance
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                            <TokenCard
-                              title="Credit Tokens"
-                              value={profile.credit_tokens || 0}
-                              icon={<CoinsIcon className="h-6 w-6 text-yellow-500" />}
-                              color="bg-yellow-100 dark:bg-yellow-900"
-                              description="Tokens for generating certifications"
-                            />
-                            <TokenCard
-                              title="Energy Tokens"
-                              value={profile.energy_tokens || 0}
-                              icon={<ZapIcon className="h-6 w-6 text-blue-500" />}
-                              color="bg-blue-100 dark:bg-blue-900"
-                              description="Tokens for AI interactions"
-                            />
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-
-                      <AccordionItem
-                        value="token-usage"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Token Usage History
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-3">
-                            <p className="text-sm text-muted-foreground">
-                              Recent token usage activity
-                            </p>
-                            <div className="border rounded-lg p-3 bg-slate-50 dark:bg-slate-800/50">
-                              <p className="text-sm text-center text-slate-500 dark:text-slate-400">
-                                No recent token usage
-                              </p>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-
-                      <AccordionItem
-                        value="purchase-tokens"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Purchase Tokens
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            <p className="text-sm text-muted-foreground">
-                              Purchase additional tokens for enhanced features
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-2">
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                Buy Credit Tokens
-                              </Button>
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                Buy Energy Tokens
-                              </Button>
-                            </div>
                           </div>
                         </AccordionContent>
                       </AccordionItem>
@@ -849,11 +679,6 @@ const ProfileClientPage: React.FC = () => {
                                 name: 'Browser Notifications',
                                 description: 'Get notified in your browser',
                                 enabled: false,
-                              },
-                              {
-                                name: 'Token Alerts',
-                                description: 'Notifications for token usage',
-                                enabled: true,
                               },
                               {
                                 name: 'Account Security',

@@ -1,23 +1,26 @@
 import { Metadata } from 'next';
 
+const description =
+  'Simple, transparent pricing for AI-powered IT certification practice. Join our beta program with free access to core features and special pricing.';
+
+const keywords = [
+  'CertifAI pricing',
+  'IT certification cost',
+  'free beta trial',
+  'practice exam pricing',
+  'AI training platform cost',
+  'beta program pricing',
+  'IT certification subscription',
+  'educational technology pricing',
+  'certification preparation cost',
+  'affordable IT training',
+  'beta access pricing',
+].join(', ');
+
 export const metadata: Metadata = {
   title: 'Pricing Plans | CertifAI - AI-Powered IT Certification Training | Free Beta Access',
-  description:
-    'Simple, transparent pricing for AI-powered IT certification practice. Start free with 300 credit coins - enough for 5 practice exams. Join our beta program with special pricing.',
-  keywords: [
-    'CertifAI pricing',
-    'IT certification cost',
-    'free beta trial',
-    'credit coins system',
-    'practice exam pricing',
-    'AI training platform cost',
-    'beta program pricing',
-    'IT certification subscription',
-    'educational technology pricing',
-    'certification preparation cost',
-    'affordable IT training',
-    'beta access pricing',
-  ].join(', '),
+  description,
+  keywords,
   authors: [{ name: 'CertifAI Team' }],
   creator: 'CertifAI',
   publisher: 'CertifAI',
@@ -35,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Pricing Plans | CertifAI - AI-Powered IT Certification Training',
     description:
-      'Start free with 300 credit coins. Simple, transparent pricing for AI-powered IT certification practice and training.',
+      'Simple, transparent pricing for AI-powered IT certification practice and training. Free beta access available.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certifai.app/pricing',
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Pricing Plans | CertifAI - Free Beta Access',
     description:
-      'Start free with 300 credit coins. Simple pricing for AI-powered IT certification practice.',
+      'Simple pricing for AI-powered IT certification practice. Free beta access available.',
     creator: '@CertifAI',
     site: '@CertifAI',
     images: [

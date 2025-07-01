@@ -181,11 +181,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
                 Email Unverified
               </Badge>
             )}
-            {profile && (
-              <Badge variant="secondary">
-                {profile.credit_tokens + profile.energy_tokens} Total Tokens
-              </Badge>
-            )}
           </div>
 
           {/* Email verification actions */}

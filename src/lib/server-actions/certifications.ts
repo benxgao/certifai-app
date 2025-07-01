@@ -42,6 +42,14 @@ export interface FirmWithCertifications {
   certifications: Certification[];
 }
 
+/**
+ * Fetch all firms with their certifications
+ *
+ * Used by:
+ * - Main catalog: /app/certifications/page.tsx (main certifications overview)
+ * - Main catalog: /app/certifications/[firmCode]/page.tsx (firm-specific certifications)
+ * - SEO: /app/sitemap.ts (for generating sitemap)
+ */
 export async function fetchCertificationsData(): Promise<{
   firms: FirmWithCertifications[];
   error?: string;
@@ -68,7 +76,13 @@ export async function fetchCertificationsData(): Promise<{
       let allData: any[] = [];
       let hasMore = true;
       while (hasMore) {
-        const url = `${endpoint}?page=${page}&pageSize=${pageSize}`;
+        /**
+         *  GET /api/public/firms?includeCount=true&page=1&pageSize=50
+            GET /api/public/certifications?page=1&pageSize=100
+         */
+        const url = `${endpoint}${
+          endpoint.includes('?') ? '&' : '?'
+        }page=${page}&pageSize=${pageSize}`;
         const response = await makePublicAPIRequest(url, token, {
           cache: 'force-cache',
           next: { revalidate: 3600 },
@@ -99,8 +113,9 @@ export async function fetchCertificationsData(): Promise<{
       const token = await generatePublicJWTToken();
       if (token) {
         // Recursively fetch all firms and certifications
+        // Use includeCount=true for consistency with client-side calls
         const [allFirms, allCerts] = await Promise.all([
-          fetchAllPages('/firms', token, 50),
+          fetchAllPages('/firms?includeCount=true', token, 50),
           fetchAllPages('/certifications', token, 100),
         ]);
 
@@ -179,6 +194,12 @@ export async function fetchCertificationsData(): Promise<{
 /**
  * Fetch individual certification data server-side with authentication
  * This allows public pages to display certification details without client-side auth
+ *
+ * Used by:
+ * - Marketing pages: /app/certifications/[firmCode]/[certId]/marketing/page.tsx (certification marketing/landing page)
+ * - Main catalog: /app/certifications/[firmCode]/[certId]/page.tsx (certification detail page)
+ * - Main catalog: /app/certifications/cert/[certId]/page.tsx (alternative certification detail route)
+ * - Testing: /app/test-certification/page.tsx (certification testing functionality)
  */
 export async function fetchCertificationData(certificationId: string): Promise<{
   certification: Certification | null;
@@ -267,6 +288,9 @@ export async function fetchCertificationData(certificationId: string): Promise<{
 
 /**
  * Fetch certifications for a specific firm by firm ID
+ *
+ * Currently unused - no direct usages found in the codebase.
+ * Available for future use when needed to fetch firm-specific certifications.
  */
 export async function fetchCertificationsByFirmId(firmId: string | number): Promise<{
   certifications: Certification[];
