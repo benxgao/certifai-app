@@ -77,7 +77,7 @@ export const seoKeywords = [
 // SEO meta descriptions for different contexts
 export const seoDescriptions = {
   homepage:
-    'Simulate exams by AI and prepare for IT certification by self exams with CertifAI. Join 500+ professionals using AI-powered practice questions and personalized study recommendations.',
+    'Simulate exams by AI and prepare for IT certification by self exams with CertifAI. Join a growing number of professionals using AI-powered practice questions and personalized study recommendations.',
   certifications:
     'Browse IT certifications and simulate exams by AI for AWS, Microsoft, Google Cloud, and more. Prepare for IT certification by self exams with our comprehensive catalog.',
   individual: (certName: string, firmCode: string) =>

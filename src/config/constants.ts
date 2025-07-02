@@ -10,7 +10,7 @@ export const MARKETING_COPY = {
   HERO_DESCRIPTION:
     'Master IT certifications with AI-generated practice exams, real-time performance analysis, and personalized study recommendations. Join our growing community of beta users.',
   SIGNUP_DESCRIPTION:
-    'Join 500+ beta users who are accelerating their certification success with AI-powered learning.',
+    'Join a growing number of beta users who are accelerating their certification success with AI-powered learning.',
   STATS_LABEL_SUCCESS: 'Beta Success Rate',
   STATS_LABEL_USERS: 'Early Adopters',
 } as const;

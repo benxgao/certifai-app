@@ -14,7 +14,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
     signup: {
       title: 'Transform Your Career',
       description:
-        'Join 500+ beta users who are accelerating their certification success with AI-powered learning.',
+        'Join a growing number of beta users who are accelerating their certification success with AI-powered learning.',
       stats: {
         primary: { value: '90%', label: 'Beta Success Rate' },
         secondary: { value: '500+', label: 'Early Adopters' },

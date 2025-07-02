@@ -24,7 +24,7 @@ export default function SEOComponent({
 }: SEOProps) {
   const defaultTitle = 'CertifAI | AI-Powered IT Certification Training';
   const defaultDescription =
-    'Master IT certifications with AI-powered practice questions and personalized study recommendations. Join 500+ beta users advancing their careers.';
+    'Master IT certifications with AI-powered practice questions and personalized study recommendations. Join a growing number of beta users advancing their careers.';
 
   const pageTitle = title || defaultTitle;
   const pageDescription = description || defaultDescription;

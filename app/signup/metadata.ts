@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign Up | CertifAI - Join 500+ Users Mastering IT Certifications with AI',
+  title: 'Sign Up | CertifAI - Join a growing number of Users Mastering IT Certifications with AI',
   description:
     'Join CertifAI today and get free beta access with 300 credit coins. Start your AI-powered IT certification journey with personalized learning and practice exams.',
   keywords: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Sign Up | CertifAI - Join 500+ Users Mastering IT Certifications',
+    title: 'Sign Up | CertifAI - Join a growing number of Users Mastering IT Certifications',
     description:
       'Join CertifAI today and get free beta access with 300 credit coins. Start your AI-powered certification journey.',
     type: 'website',
@@ -50,7 +50,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Sign Up | CertifAI - Free Beta Access',
-    description: 'Join 500+ users mastering IT certifications with AI-powered learning.',
+    description:
+      'Join a growing number of users mastering IT certifications with AI-powered learning.',
     creator: '@CertifAI',
     site: '@CertifAI',
     images: [

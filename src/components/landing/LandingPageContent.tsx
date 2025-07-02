@@ -35,7 +35,7 @@ export default function LandingPageContent() {
                 />
               </svg>
               <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Early Beta - Join 500+ Users Already Learning
+                Early Beta - Join a Growing Number of Users Already Learning
               </span>
             </div>
           </div>
@@ -74,7 +74,7 @@ export default function LandingPageContent() {
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 mb-10">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    500+
+                    Growing
                   </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">Self Exam Users</div>
                 </div>

@@ -7,6 +7,7 @@ import { LoadingComponents } from '@/components/custom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/src/components/ui/slider';
 import {
   Dialog,
@@ -225,6 +226,42 @@ function CertificationExamsContent() {
                       </DialogDescription>
                     </DialogHeader>
 
+                    {/* Rate Limit Information Display */}
+                    {rateLimitInfo && !isLoadingRateLimit && (
+                      <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 mb-4">
+                        <div className="flex items-start space-x-3">
+                          <div className="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
+                            <FaClipboardList className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div className="text-sm">
+                            <p className="font-medium text-slate-800 dark:text-slate-200 mb-1">
+                              Exam Creation Limit
+                            </p>
+                            <p className="text-slate-600 dark:text-slate-400 mb-2">
+                              You can create at most <strong>3 exams every 24 hours</strong>.
+                            </p>
+                            <div className="flex items-center space-x-2">
+                              <span className="text-slate-600 dark:text-slate-400">
+                                Current usage:
+                              </span>
+                              <Badge variant="secondary" className="text-xs">
+                                {rateLimitInfo.currentCount}/3 used
+                              </Badge>
+                              {rateLimitInfo.remainingCount > 0 ? (
+                                <span className="text-xs text-green-600 dark:text-green-400">
+                                  {rateLimitInfo.remainingCount} remaining
+                                </span>
+                              ) : (
+                                <span className="text-xs text-red-600 dark:text-red-400">
+                                  Limit reached
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Rate Limiting Error Display */}
                     {createExamError?.status === 429 && createExamError.rateLimitInfo && (
                       <RateLimitDisplay
@@ -274,7 +311,8 @@ function CertificationExamsContent() {
                           rows={3}
                         />
                         <p className="text-sm text-slate-600 dark:text-slate-400">
-                          AI will generate exam questions focused on your specified topics and concepts
+                          AI will generate exam questions focused on your specified topics and
+                          concepts
                         </p>
                       </div>
                       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg p-4">

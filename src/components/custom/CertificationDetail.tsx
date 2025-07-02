@@ -188,8 +188,8 @@ export default function CertificationDetail({ certId, initialData }: Props) {
       <CertificationJsonLd certification={certification} />
 
       {/* Main Certification Info */}
-      <Card className="overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+      <Card className="overflow-hidden pt-0">
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b pt-8">
           <div className="flex items-start gap-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">

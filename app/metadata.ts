@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'CertifAI | Create Exams on Particular Topics & Test Knowledge Mastery with AI',
     description:
-      'Create exams on particular exam topics to test knowledge mastery. Tell AI to generate exams on your particular needs like focusing on specific concepts or technologies. Better user experience than AI chatbots. Join 500+ beta users.',
+      'Create exams on particular exam topics to test knowledge mastery. Tell AI to generate exams on your particular needs like focusing on specific concepts or technologies. Better user experience than AI chatbots. Join a growing number of beta users.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certifai.app',
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams',
     description:
-      'Simulate exams by AI and prepare for IT certification by self exams with 500+ beta users. AI-powered practice questions and personalized study recommendations.',
+      'Simulate exams by AI and prepare for IT certification by self exams with a growing number of beta users. AI-powered practice questions and personalized study recommendations.',
     creator: '@CertifAI',
     site: '@CertifAI',
     images: [

@@ -137,7 +137,7 @@ function MyComponent() {
 
 - **401 Unauthorized**: Automatic refresh attempt, then auth state cleanup
 - **403 Forbidden**: No retry, user needs different permissions
-- **500+ Server Errors**: Standard retry logic (not auth-related)
+- **a growing number of Server Errors**: Standard retry logic (not auth-related)
 
 ### Server-Side Errors
 

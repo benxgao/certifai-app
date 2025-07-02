@@ -72,7 +72,7 @@ export default function AboutPage() {
       year: 'Current',
       title: 'User Feedback Integration & AI Enhancement',
       description:
-        'Actively collecting user feedback from 500+ beta testers to improve AI model accuracy, enhance user experience, and expand certification coverage for various IT career paths.',
+        'Actively collecting user feedback from a growing number of beta testers to improve AI model accuracy, enhance user experience, and expand certification coverage for various IT career paths.',
       icon: TrendingUp,
       keywords: 'user feedback, AI improvement, certification coverage',
     },
@@ -201,9 +201,9 @@ export default function AboutPage() {
                 intelligent study recommendations.
               </p>
               <p>
-                Join our community of <strong>500+ beta users</strong> who are already experiencing
-                the future of IT certification training through our advanced machine learning
-                technology.
+                Join our community of <strong>a growing number of beta users</strong> who are
+                already experiencing the future of IT certification training through our advanced
+                machine learning technology.
               </p>
             </div>
             <nav
@@ -308,7 +308,7 @@ export default function AboutPage() {
                       />
                       <span className="text-sm text-muted-foreground">
                         <strong>Community-Driven Development:</strong> Built with real feedback from
-                        500+ IT professionals
+                        a growing number of IT professionals
                       </span>
                     </div>
                   </div>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
 export async function GET(
   request: NextRequest,
@@ -8,16 +9,23 @@ export async function GET(
     const { api_user_id } = await params;
 
     // Forward the request to the backend API with the same path structure
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/${api_user_id}/rate-limit`;
+    const backendUrl = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/rate-limit`;
 
-    // Get cookies from the incoming request to forward authentication
-    const cookieHeader = request.headers.get('cookie');
+    // Get Firebase token from the JWT cookie for authentication
+    const firebaseToken = await getFirebaseTokenFromCookie();
+
+    if (!firebaseToken) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication failed: Invalid or missing token' },
+        { status: 401 },
+      );
+    }
 
     const response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        ...(cookieHeader && { Cookie: cookieHeader }),
+        Authorization: `Bearer ${firebaseToken}`,
       },
     });
 

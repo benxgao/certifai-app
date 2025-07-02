@@ -9,11 +9,11 @@ import './globals.css';
 const META_CONTENT = {
   TITLE: 'CertifAI | AI-Powered IT Certification Training Platform',
   DESCRIPTION:
-    'Master IT certifications with AI-powered practice questions, personalized study recommendations, and adaptive learning. Join 500+ beta users advancing their careers through intelligent technology.',
+    'Master IT certifications with AI-powered practice questions, personalized study recommendations, and adaptive learning. Join a growing number of beta users advancing their careers through intelligent technology.',
   KEYWORDS:
     'CertifAI, AI-powered IT certification training, artificial intelligence learning platform, IT certification practice exams, personalized study recommendations, adaptive certification training, AI-generated practice questions, IT professional development, certification exam simulator, beta testing platform, free certification training, machine learning education, IT career advancement, online certification preparation, smart study technology, certification success platform',
   OG_DESCRIPTION:
-    'Master IT certifications with AI-powered practice questions and personalized study recommendations. Join 500+ beta users advancing their careers.',
+    'Master IT certifications with AI-powered practice questions and personalized study recommendations. Join a growing number of beta users advancing their careers.',
 } as const;
 const geistSans = Geist({
   variable: '--font-geist-sans',
