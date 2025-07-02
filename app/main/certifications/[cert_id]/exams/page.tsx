@@ -265,16 +265,16 @@ function CertificationExamsContent() {
                         </p>
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="custom-prompt">Custom Prompt (Optional)</Label>
+                        <Label htmlFor="custom-prompt">Focus on Specific Topics (Optional)</Label>
                         <Textarea
                           id="custom-prompt"
-                          placeholder="Enter any specific requirements or topics to focus on..."
+                          placeholder="Tell AI to focus on specific topics, concepts, or technologies (e.g., 'Focus on IAM policies and VPC networking', 'Emphasize Docker containers and Kubernetes orchestration')..."
                           value={customPromptText}
                           onChange={(e) => setCustomPromptText(e.target.value)}
                           rows={3}
                         />
                         <p className="text-sm text-slate-600 dark:text-slate-400">
-                          AI will consider this when generating questions
+                          AI will generate exam questions focused on your specified topics and concepts
                         </p>
                       </div>
                       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg p-4">

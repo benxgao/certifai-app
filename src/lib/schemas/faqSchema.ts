@@ -13,34 +13,42 @@ export const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'How does AI exam simulation work for self exam preparation?',
+      name: 'How can I create exams on particular exam topics to test my knowledge?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Our AI technology simulates real exam conditions by analyzing your learning patterns, strengths, and weaknesses to generate personalized practice questions. When you prepare for IT certification by self exams, the system adapts to your progress and provides targeted content to help you improve in areas where you need the most support.',
+        text: 'You can create exams on particular exam topics by telling our AI to generate exams on your particular needs. Simply specify the topics, concepts, or technologies you want to focus on, and the AI will generate targeted questions to test if you have mastered knowledge in those specific areas.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Can I really simulate exams by AI for free during beta?',
+      name: 'Can I tell AI to generate exams focused on specific topics for free during beta?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes! During our beta phase, new users receive 300 credit coins absolutely free to simulate exams by AI, which is enough for approximately 5 practice exams. This allows you to thoroughly test our AI exam simulation platform and prepare for IT certification by self exams while providing valuable feedback.',
+        text: 'Yes! During our beta phase, new users receive 300 credit coins absolutely free to create exams on particular exam topics and test knowledge mastery. This allows you to thoroughly test our topic-focused AI exam generation platform while providing valuable feedback.',
       },
     },
     {
       '@type': 'Question',
-      name: 'What IT certifications can I prepare for by self exams using AI simulation?',
+      name: 'What IT certification topics can I create exams for using AI?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'CertifAI supports various IT certification tracks including cloud computing, cybersecurity, networking, and software development certifications. You can simulate exams by AI and prepare for IT certification by self exams for most major certification programs.',
+        text: 'CertifAI supports various IT certification topics including cloud computing, cybersecurity, networking, and software development. You can create exams on particular exam topics and tell AI to generate questions focused on specific concepts, technologies, or certification domains for most major certification programs.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How accurate is the AI exam simulation for IT certification preparation?',
+      name: 'How accurate is the topic-focused AI exam generation for testing knowledge mastery?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Our AI exam simulation technology is continuously refined based on user feedback and performance data. While we are in beta, we are actively improving the accuracy and relevance of simulated exam questions to ensure they align with actual certification exam standards, making it easier to prepare for IT certification by self exams.',
+        text: 'Our topic-focused AI exam generation technology is continuously refined based on user feedback and performance data. While we are in beta, we are actively improving the accuracy and relevance of topic-specific questions to ensure they effectively test knowledge mastery and align with actual certification exam standards.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Why is CertifAI better than generating exam tests in AI chatbots directly?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'CertifAI provides a superior user experience compared to AI chatbots with professional exam formatting, timed sessions, dedicated progress tracking, and seamless workflow designed specifically for certification preparation. Unlike basic text responses in chatbots, CertifAI offers a purpose-built platform for creating exams on particular exam topics.',
       },
     },
   ],

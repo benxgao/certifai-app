@@ -56,15 +56,18 @@ export default function LandingPageContent() {
 
               <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  Simulate Exams by AI
+                  Create Exams on Particular Topics
                 </span>
-                <br />& Prepare for IT Certification
+                <br />& Test Knowledge Mastery
               </h1>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
-                Master IT certifications by self exams with intelligent, AI-powered practice
-                questions that simulate real exam conditions. Join our growing community of
-                professionals advancing their careers through smart exam simulation technology.
+                Master IT certifications by creating exams on particular exam topics to test your
+                knowledge. We are a wonderful addition to IT training by self-testing the knowledge
+                you&apos;ve gained. Tell AI to generate exams on your particular needs like focusing
+                on specific concepts, technologies, or certification domains. Join our growing
+                community of professionals advancing their careers through intelligent exam
+                simulation.
               </p>
 
               {/* Enhanced Stats with SEO keywords */}
@@ -238,9 +241,10 @@ export default function LandingPageContent() {
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Experimental AI-powered features to simulate exams by AI and help IT professionals
-              prepare for IT certification by self exams. Currently in early beta - your feedback
-              drives development.
+              Create exams on particular exam topics to test your knowledge mastery. Tell AI to
+              generate exams on your particular needs - whether focusing on specific concepts,
+              technologies, or certification domains. Currently in early beta with features driven
+              by your feedback.
             </p>
           </div>
 
@@ -266,9 +270,9 @@ export default function LandingPageContent() {
                 AI Exam Simulation
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Simulate exams by AI with intelligent question generation for various IT
-                certifications. Quality improving through user feedback and continuous machine
-                learning.
+                Create exams on particular exam topics to test if you have mastered knowledge. AI
+                generates intelligent questions for various IT certifications, with quality
+                improving through user feedback and continuous learning.
               </p>
               <div className="mt-6 flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
@@ -375,50 +379,14 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300">
-                Custom Practice Exams
+                Topic-Focused AI Exams
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Create personalized practice tests focusing on specific topics or weak areas.
-                Perfect for targeted learning and last-minute reviews.
+                Tell AI to generate exams on your particular needs like focusing on a specific
+                topic, concept, or weak area. Create targeted practice tests to master knowledge in
+                areas that matter most.
               </p>
               <div className="mt-6 flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Feature 5: Pass Prediction */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <svg
-                  className="w-8 h-8 text-green-600 dark:text-green-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-300">
-                Smart Pass Prediction
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                AI-powered algorithms analyze your performance patterns to predict your likelihood
-                of passing and guide your study strategy.
-              </p>
-              <div className="mt-6 flex items-center text-green-600 dark:text-green-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">Learn more</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -467,6 +435,44 @@ export default function LandingPageContent() {
                 </svg>
               </div>
             </div>
+
+            {/* Feature 7: Better Than AI Chatbots */}
+            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/30 dark:to-orange-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <svg
+                  className="w-8 h-8 text-orange-600 dark:text-orange-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
+                Better Than AI Chatbots
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                Unlike generating exam tests in AI chatbots directly, CertifAI provides a dedicated
+                interface with proper exam formatting, timed sessions, progress tracking, and
+                seamless user experience designed specifically for certification preparation.
+              </p>
+              <div className="mt-6 flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+                <span className="mr-2">Learn more</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -495,18 +501,18 @@ export default function LandingPageContent() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Simulate Exams by AI &
+                Create Exams on Particular Topics &
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   Shape the Future
                 </span>
                 <br />
-                of Self Exam Preparation
+                of Knowledge Testing
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Join our growing beta community to help develop the next generation of AI-powered
-                exam simulation tools. Help us perfect how to simulate exams by AI and prepare for
-                IT certification by self exams.
+                Join our growing beta community to help develop the next generation of topic-focused
+                AI exam tools. Help us perfect how to create exams on particular exam topics and
+                tell AI to generate exams on your particular needs.
               </p>
 
               {/* Enhanced stats for CTA */}
@@ -620,6 +626,187 @@ export default function LandingPageContent() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Section - Why CertifAI vs AI Chatbots */}
+      <section className="relative py-24 bg-slate-50 dark:bg-slate-800/50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 border border-orange-200 dark:border-orange-800/50 rounded-full px-4 py-2 mb-6">
+              <svg
+                className="w-4 h-4 text-orange-600 dark:text-orange-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
+                Superior User Experience
+              </span>
+            </div>
+
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+              Why Choose CertifAI Over
+              <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent block">
+                AI Chatbots for Exams?
+              </span>
+            </h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+              While you can generate exam tests in AI chatbots directly, CertifAI provides a
+              purpose-built platform designed specifically for certification preparation with
+              superior user experience.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* AI Chatbots Column */}
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 shadow-lg">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center mr-4">
+                  <svg
+                    className="w-6 h-6 text-red-600 dark:text-red-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  AI Chatbots
+                </h3>
+              </div>
+
+              <ul className="space-y-4">
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-3 mt-1">×</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    Basic text-only responses without proper exam formatting
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-3 mt-1">×</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    No timed exam sessions or real exam simulation
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-3 mt-1">×</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    No progress tracking or performance analytics
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-3 mt-1">×</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    Manual copy-paste workflow disrupts study flow
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-3 mt-1">×</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    No dedicated exam review or detailed explanations
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-red-500 mr-3 mt-1">×</span>
+                  <span className="text-slate-600 dark:text-slate-400">
+                    Limited topic-specific exam generation capabilities
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* CertifAI Column */}
+            <div className="bg-gradient-to-br from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20 rounded-2xl p-8 border-2 border-violet-200 dark:border-violet-800/50 shadow-xl">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-800/50 dark:to-blue-800/50 rounded-xl flex items-center justify-center mr-4">
+                  <svg
+                    className="w-6 h-6 text-violet-600 dark:text-violet-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  CertifAI Platform
+                </h3>
+              </div>
+
+              <ul className="space-y-4">
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-3 mt-1">✓</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
+                    Professional exam interface with proper multiple-choice formatting
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-3 mt-1">✓</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
+                    Real exam simulation with timed sessions and countdown
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-3 mt-1">✓</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
+                    Comprehensive progress tracking and performance analytics
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-3 mt-1">✓</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
+                    Seamless workflow designed for continuous learning
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-3 mt-1">✓</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
+                    Detailed exam review with explanations and topic breakdown
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-3 mt-1">✓</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-medium">
+                    Advanced AI that creates exams on particular exam topics you specify
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="text-center mt-12">
+            <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
+              Experience the difference of a platform built specifically for certification success
+            </p>
+            <Link href="/signup" className="inline-block">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Try CertifAI Free
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

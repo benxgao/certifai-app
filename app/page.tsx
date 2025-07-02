@@ -11,7 +11,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'CertifAI',
   description:
-    'AI-powered IT certification training platform to simulate exams by AI and prepare for IT certification by self exams with personalized learning experiences',
+    'AI-powered IT certification training platform to create exams on particular exam topics and test knowledge mastery. Tell AI to generate exams on your particular needs focusing on specific concepts and technologies',
   url: 'https://certifai.app',
   logo: 'https://certifai.app/images/logo.png',
   foundingDate: '2025',
@@ -39,7 +39,7 @@ const softwareApplicationSchema = {
   '@type': 'SoftwareApplication',
   name: 'CertifAI',
   description:
-    'Simulate exams by AI and prepare for IT certification by self exams with our AI-powered training platform featuring personalized learning, practice exams, and adaptive study recommendations',
+    'Create exams on particular exam topics to test knowledge mastery and tell AI to generate exams on your particular needs. AI-powered training platform featuring topic-focused practice exams, personalized learning, and adaptive study recommendations',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web Browser',
   offers: {
@@ -55,23 +55,24 @@ const softwareApplicationSchema = {
     bestRating: '5',
   },
   featureList: [
-    'AI-generated practice questions to simulate exams by AI',
-    'Personalized study recommendations for self exam preparation',
-    'Multiple IT certification tracks',
-    'Progress tracking and analytics',
-    'Community learning features',
-    'Adaptive difficulty adjustment',
-    'Real-time performance insights for certification success',
-    'Self-paced exam simulation technology',
+    'Create exams on particular exam topics to test knowledge mastery',
+    'Tell AI to generate exams focused on your specific learning needs',
+    'Topic-focused practice questions for targeted preparation',
+    'Personalized study recommendations based on topic performance',
+    'Multiple IT certification tracks with concept-specific testing',
+    'Progress tracking across different topics and domains',
+    'Adaptive difficulty adjustment for optimized learning',
+    'Real-time insights on topic-specific knowledge gaps',
+    'Custom exam creation for particular concepts and technologies',
   ],
 };
 
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'CertifAI - Simulate Exams by AI & Prepare for IT Certification by Self Exams',
+  name: 'CertifAI - Create Exams on Particular Topics & Test Knowledge Mastery with AI',
   description:
-    'Join 500+ beta users who simulate exams by AI and prepare for IT certification by self exams with AI-powered practice questions and personalized study recommendations',
+    'Create exams on particular exam topics to test if you have mastered knowledge. Tell AI to generate exams on your particular needs like focusing on specific concepts, technologies, or certification domains',
   url: 'https://certifai.app',
   mainEntity: {
     '@type': 'EducationalOrganization',

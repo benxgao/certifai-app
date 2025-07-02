@@ -35,16 +35,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return {
         title: `${
           cert.name
-        } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
+        } - Create Exams on Particular Topics & Test Knowledge Mastery | ${firmCode.toUpperCase()} | CertifAI`,
         description: `Master the ${
           cert.name
-        } certification by simulating exams with AI. Prepare for IT certification by self exams with personalized study plans, AI-powered practice questions, and detailed progress tracking for ${firmCode.toUpperCase()} certifications.`,
-        keywords: `${cert.name}, ${firmCode}, simulate exams by AI, prepare for IT certification by self exams, IT certification training, exam preparation, practice questions, AI-powered learning, study guide, self exam preparation`,
+        } certification by creating exams on particular exam topics. Tell AI to generate exams on your particular needs focusing on specific concepts, technologies, and domains. Better user experience than generating exam tests in AI chatbots directly for ${firmCode.toUpperCase()} certifications.`,
+        keywords: `${cert.name}, ${firmCode}, create exams on particular exam topics, test knowledge mastery, tell AI to generate exams, better than AI chatbots, superior user experience, topic-focused exam preparation, IT certification training, concept-specific practice questions, AI-powered learning, study guide`,
         openGraph: {
           title: `${
             cert.name
-          } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
-          description: `Master the ${cert.name} certification by simulating exams with AI. Prepare for IT certification by self exams with personalized study plans, AI-powered practice questions, and detailed progress tracking.`,
+          } - Create Exams on Particular Topics & Test Knowledge Mastery | ${firmCode.toUpperCase()} | CertifAI`,
+          description: `Master the ${cert.name} certification by creating exams on particular exam topics. Tell AI to generate exams focused on your specific learning needs and test knowledge mastery.`,
           type: 'website',
         },
       };
@@ -54,9 +54,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${firmCode.toUpperCase()} Certification Training - Simulate Exams by AI & Prepare by Self Exams | CertifAI`,
-    description: `Master your ${firmCode.toUpperCase()} certification by simulating exams with AI. Prepare for IT certification by self exams with personalized study plans, AI-powered practice questions, and detailed progress tracking.`,
-    keywords: `${firmCode}, simulate exams by AI, prepare for IT certification by self exams, certification training, exam preparation, practice questions, AI-powered learning, study guide, self exam preparation`,
+    title: `${firmCode.toUpperCase()} Certification Training - Create Exams on Particular Topics & Test Knowledge Mastery | CertifAI`,
+    description: `Master your ${firmCode.toUpperCase()} certification by creating exams on particular exam topics. Tell AI to generate exams on your particular needs focusing on specific concepts, technologies, and certification domains. Superior user experience compared to AI chatbots for exam generation.`,
+    keywords: `${firmCode}, create exams on particular exam topics, test knowledge mastery, tell AI to generate exams, better than AI chatbots, superior user experience, topic-focused certification training, exam preparation, concept-specific practice questions, AI-powered learning, study guide`,
   };
 }
 

@@ -164,7 +164,7 @@ export default function PricingPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Custom Exam Creation</span>
+                  <span className="text-foreground">Topic-Focused AI Exam Creation</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-primary" />
