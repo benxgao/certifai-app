@@ -313,9 +313,9 @@ export default function ExamAttemptPage() {
                   <span className="inline-flex items-center rounded-lg bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50 shadow-sm">
                     <FaCheck className="w-4 h-4 mr-2" />
                     {examState?.status === 'PASSED'
-                      ? 'Passed'
+                      ? 'Completed'
                       : examState?.status === 'FAILED'
-                      ? 'Failed'
+                      ? 'Completed'
                       : 'Completed'}
                   </span>
                 ) : examState?.exam_status === 'QUESTIONS_GENERATING' ? (
@@ -349,20 +349,13 @@ export default function ExamAttemptPage() {
             <div className="space-y-4 sm:space-y-6">
               {/* Score Section - only show if exam is completed */}
               {score !== null && submittedAt !== null && (
-                <div className="bg-gradient-to-r from-emerald-50 via-green-50 to-emerald-50 dark:from-emerald-900/20 dark:via-green-900/20 dark:to-emerald-900/20 p-4 sm:p-6 rounded-xl border border-emerald-200 dark:border-emerald-700/50 shadow-sm">
+                <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm">
                   <div className="text-center">
-                    <p className="text-sm sm:text-base font-normal text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-2">
+                    <p className="text-sm sm:text-base font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                       Final Score
                     </p>
-                    <p className="text-3xl sm:text-5xl font-bold text-emerald-700 dark:text-emerald-200 mb-2">
+                    <p className="text-3xl sm:text-5xl font-semibold text-slate-700 dark:text-slate-200 mb-2">
                       {score}%
-                    </p>
-                    <p className="text-xs sm:text-sm text-emerald-600 dark:text-emerald-400">
-                      {score >= 80
-                        ? 'Excellent Performance!'
-                        : score >= 60
-                        ? 'Good Job!'
-                        : 'Keep Learning!'}
                     </p>
                   </div>
                 </div>
@@ -484,18 +477,20 @@ export default function ExamAttemptPage() {
 
               {/* Custom Prompt Display */}
               {examState?.custom_prompt_text && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-200 dark:border-blue-700/50 shadow-sm">
-                  <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
-                      <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-base font-medium text-blue-800 dark:text-blue-200 mb-2">
+                <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/25 dark:via-indigo-900/25 dark:to-purple-900/25 p-5 sm:p-6 rounded-xl border border-blue-200 dark:border-blue-700/50 shadow-sm">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800/50 dark:to-indigo-800/50 rounded-lg flex items-center justify-center shadow-sm">
+                        <FaLightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <h4 className="text-lg font-semibold text-blue-800 dark:text-blue-200">
                         Custom Focus Area
                       </h4>
-                      <p className="text-base text-blue-700 dark:text-blue-300 leading-relaxed">
-                        {examState.custom_prompt_text}
-                      </p>
+                    </div>
+                    <div className="bg-white/60 dark:bg-slate-800/60 rounded-lg p-4 border border-blue-100 dark:border-blue-700/30">
+                      <blockquote className="text-base sm:text-lg font-medium text-blue-900 dark:text-blue-100 leading-relaxed italic">
+                        &ldquo;{examState.custom_prompt_text}&rdquo;
+                      </blockquote>
                     </div>
                   </div>
                 </div>
@@ -535,18 +530,18 @@ export default function ExamAttemptPage() {
                 key={question.quiz_question_id}
                 className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden"
               >
-                <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-4 sm:p-6">
+                <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-3 sm:p-6">
                   <div className="flex items-start justify-between">
                     <CardTitle className="text-base sm:text-lg leading-relaxed flex-1 mr-2 sm:mr-4">
                       <div className="space-y-2 sm:space-y-3">
-                        <div className="flex items-center gap-3 flex-wrap">
-                          <div className="inline-flex items-center px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-sm font-normal border border-blue-100 dark:border-blue-800/50">
-                            Question {((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
+                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                          <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs sm:text-sm font-normal border border-blue-100 dark:border-blue-800/50">
+                            Q{((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
                           </div>
                           {question.exam_topic && (
-                            <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/25 dark:to-purple-900/25 text-violet-700 dark:text-violet-300 text-sm font-medium border border-violet-200 dark:border-violet-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                            <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/25 dark:to-purple-900/25 text-violet-700 dark:text-violet-300 text-xs sm:text-sm font-medium border border-violet-200 dark:border-violet-700/50 shadow-sm">
                               <svg
-                                className="w-3 h-3 mr-1.5 text-violet-600 dark:text-violet-400"
+                                className="w-3 h-3 mr-1 sm:mr-1.5 text-violet-600 dark:text-violet-400"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -565,15 +560,15 @@ export default function ExamAttemptPage() {
                             </div>
                           )}
                         </div>
-                        <div className="text-slate-700 dark:text-slate-200 font-medium text-lg leading-relaxed">
+                        <div className="text-slate-700 dark:text-slate-200 font-medium text-base sm:text-lg leading-relaxed mt-3">
                           {question.question_text}
                         </div>
                       </div>
                     </CardTitle>
                   </div>
                 </CardHeader>
-                <CardContent className="p-6 pt-0">
-                  <div className="space-y-4 mb-6">
+                <CardContent className="p-3 sm:p-6 pt-0">
+                  <div className="space-y-3 mb-6">
                     {question.answerOptions.map(({ option_id, option_text }, optionIndex) => {
                       const isSelected = question.selected_option_id === option_id;
                       const isCorrect = isCorrectOption(question, option_id);
@@ -586,7 +581,7 @@ export default function ExamAttemptPage() {
                       return (
                         <div
                           key={option_id}
-                          className={`flex items-center space-x-4 p-4 rounded-xl transition-all duration-200 cursor-pointer group relative border ${
+                          className={`flex items-center space-x-3 p-3 sm:p-4 rounded-xl transition-all duration-200 cursor-pointer group relative border ${
                             // Show correct answer with green background after submission
                             showCorrectAnswer
                               ? 'bg-green-25 border-green-200 dark:bg-green-900/20 dark:border-green-600/50 shadow-sm'
@@ -599,7 +594,9 @@ export default function ExamAttemptPage() {
                                 question.user_answer_is_correct === true
                               ? 'bg-green-25 border-green-200 dark:bg-green-900/20 dark:border-green-600/50 shadow-sm'
                               : // Show regular selected state during exam
-                              isSelected && submittedAt === null
+                              isSelected &&
+                                submittedAt === null &&
+                                question.user_answer_is_correct !== true
                               ? 'bg-blue-25 border-blue-200 dark:bg-blue-900/20 dark:border-blue-600/50 shadow-sm'
                               : // Default state with hover
                                 'bg-white border-gray-100 hover:bg-gray-25 hover:border-gray-200 dark:bg-slate-800 dark:border-slate-600/50 dark:hover:bg-slate-700 dark:hover:border-slate-500/50'
@@ -624,21 +621,21 @@ export default function ExamAttemptPage() {
                             className="flex-shrink-0"
                           />
                           <div
-                            className={`w-8 h-8 flex items-center justify-center text-base font-bold flex-shrink-0 ${
+                            className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-sm sm:text-base font-bold flex-shrink-0 rounded-lg ${
                               showCorrectAnswer
-                                ? 'text-green-800 dark:text-green-100'
+                                ? 'text-green-800 dark:text-green-100 bg-green-100 dark:bg-green-800/30'
                                 : showIncorrectSelection
-                                ? 'text-red-800 dark:text-red-100'
+                                ? 'text-red-800 dark:text-red-100 bg-red-100 dark:bg-red-800/30'
                                 : isSelected
-                                ? 'text-blue-800 dark:text-blue-100'
-                                : 'text-slate-700 dark:text-slate-200'
+                                ? 'text-blue-800 dark:text-blue-100 bg-blue-100 dark:bg-blue-800/30'
+                                : 'text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700'
                             }`}
                           >
                             {String.fromCharCode(65 + optionIndex)}
                           </div>
                           <label
                             htmlFor={`${question.quiz_question_id}-${option_id}`}
-                            className={`text-lg leading-relaxed cursor-pointer flex-1 select-none font-normal ${
+                            className={`text-base sm:text-lg leading-relaxed cursor-pointer flex-1 select-none font-normal ${
                               showCorrectAnswer
                                 ? 'text-green-900 dark:text-green-100'
                                 : showIncorrectSelection
@@ -650,28 +647,16 @@ export default function ExamAttemptPage() {
                           </label>
                           {/* Show indicators for correct/incorrect answers after submission */}
                           {submittedAt !== null && (
-                            <div className="flex-shrink-0 flex items-center space-x-3">
-                              {/* Show "CORRECT" label for the right answer */}
-                              {isCorrect && (
-                                <span className="text-sm font-medium text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 px-3 py-1 rounded-lg border border-green-200 dark:border-green-700/50">
-                                  CORRECT
-                                </span>
-                              )}
-                              {/* Show "Your answer" label for user's incorrect selection */}
-                              {isSelected && question.user_answer_is_correct === false && (
-                                <span className="text-sm font-medium text-red-700 dark:text-red-300 bg-gradient-to-r from-red-25 to-red-50/50 dark:bg-gradient-to-r dark:from-red-900/15 dark:to-red-800/10 px-3 py-1 rounded-lg border border-red-100/60 dark:border-red-800/40 shadow-sm">
-                                  YOUR ANSWER
-                                </span>
-                              )}
+                            <div className="flex-shrink-0 flex items-center space-x-2">
                               {/* Show checkmark for correct answer */}
                               {isCorrect && (
-                                <div className="w-6 h-6 rounded-lg bg-green-50 border border-green-300 dark:bg-green-900/20 dark:border-green-700/50 flex items-center justify-center">
+                                <div className="w-7 h-7 rounded-lg bg-green-50 border-2 border-green-300 dark:bg-green-900/30 dark:border-green-600/60 flex items-center justify-center shadow-sm">
                                   <FaCheck className="text-green-600 dark:text-green-400 text-sm" />
                                 </div>
                               )}
                               {/* Show X for user's incorrect selection */}
                               {isSelected && question.user_answer_is_correct === false && (
-                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/30 border border-red-200/50 dark:border-red-600/30 flex items-center justify-center shadow-sm">
+                                <div className="w-7 h-7 rounded-lg bg-red-50 border-2 border-red-300 dark:bg-red-900/30 dark:border-red-600/60 flex items-center justify-center shadow-sm">
                                   <FaTimes className="text-red-600 dark:text-red-400 text-sm" />
                                 </div>
                               )}
@@ -690,7 +675,7 @@ export default function ExamAttemptPage() {
                     }
                   />
 
-                  {/* Add logic for displaying explanations or correct answers after submission */}
+                  {/* Add logic for displaying explanations only after submission */}
                   {submittedAt !== null && question.explanations && (
                     <div className="mt-6">
                       <Accordion
