@@ -20,6 +20,10 @@ import {
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification } from '@/swr/exams'; // Import SWR hook
+import { useCreateExam } from '@/src/swr/createExam'; // Import create exam hook
+import { useRateLimitInfo } from '@/src/swr/rateLimitInfo'; // Import rate limit hook
+import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay'; // Import rate limit display
+import RateLimitSummary from '@/src/components/custom/RateLimitSummary'; // Import rate limit summary
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
 import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
 import {
@@ -104,12 +108,17 @@ function CertificationExamsContent() {
 
   // State for create exam modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
   const [numberOfQuestions, setNumberOfQuestions] = useState(
     displayCertification?.max_quiz_counts || 20,
   );
   const [customPromptText, setCustomPromptText] = useState('');
   const [navigatingExamId, setNavigatingExamId] = useState<string | null>(null);
+
+  // Use the create exam hook
+  const { createExam, isCreatingExam, createExamError } = useCreateExam();
+
+  // Use the rate limit info hook
+  const { rateLimitInfo, isLoadingRateLimit, mutateRateLimit } = useRateLimitInfo(apiUserId);
 
   const handleStartExam = (examId: string) => {
     setNavigatingExamId(examId);
@@ -119,30 +128,31 @@ function CertificationExamsContent() {
 
   const handleCreateExam = async () => {
     if (!numberOfQuestions || numberOfQuestions < 1 || !apiUserId || !certId) return;
-    setIsCreating(true);
+
     try {
-      const response = await fetch(`/api/users/${apiUserId}/certifications/${certId}/exams`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const result = await createExam({
+        apiUserId,
+        certId,
+        body: {
           numberOfQuestions: numberOfQuestions,
           customPromptText: customPromptText.trim(),
-        }),
+        },
       });
-      if (!response.ok) throw new Error('Failed to create exam');
-      const result = await response.json();
-      await mutateExams(); // Use SWR mutate instead of fetchExams
-      setNumberOfQuestions(20);
+
+      await mutateExams(); // Refresh the exams list
+      await mutateRateLimit(); // Refresh rate limit info
+      setNumberOfQuestions(displayCertification?.max_quiz_counts || 20);
       setCustomPromptText('');
       setIsCreateModalOpen(false);
+
       if (result.data?.status === 'QUESTIONS_GENERATING') {
-        // Optionally show a toast
         console.log('Exam created successfully. Questions are being generated in the background.');
       }
     } catch (error) {
       console.error('Error creating exam:', error);
-    } finally {
-      setIsCreating(false);
+      // Error is handled by the hook and component will show rate limit info if needed
+      // Also refresh rate limit info in case of rate limit error
+      await mutateRateLimit();
     }
   };
 
@@ -184,6 +194,10 @@ function CertificationExamsContent() {
                 <h2 className="text-lg font-medium text-slate-900 dark:text-slate-100">
                   {displayCertification?.name || 'Certification Overview'}
                 </h2>
+                {/* Rate Limit Summary */}
+                {rateLimitInfo && !isLoadingRateLimit && (
+                  <RateLimitSummary rateLimitInfo={rateLimitInfo} />
+                )}
               </div>
 
               <div className="flex items-center space-x-3">
@@ -193,6 +207,10 @@ function CertificationExamsContent() {
                     <Button
                       size="sm"
                       className="bg-violet-600 hover:bg-violet-700 text-white border-violet-600 hover:border-violet-700 shadow-sm"
+                      disabled={
+                        createExamError?.status === 429 || // Disable if rate limited
+                        (rateLimitInfo && !rateLimitInfo.canCreateExam) // Disable if at limit
+                      }
                     >
                       <FaPlus className="w-4 h-4 mr-2" />
                       Create Exam
@@ -206,6 +224,24 @@ function CertificationExamsContent() {
                         Configure the number of questions and any specific requirements.
                       </DialogDescription>
                     </DialogHeader>
+
+                    {/* Rate Limiting Error Display */}
+                    {createExamError?.status === 429 && createExamError.rateLimitInfo && (
+                      <RateLimitDisplay
+                        rateLimitInfo={createExamError.rateLimitInfo}
+                        className="mb-4"
+                      />
+                    )}
+
+                    {/* General Error Display */}
+                    {createExamError && createExamError.status !== 429 && (
+                      <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <p className="text-sm text-red-800 dark:text-red-200">
+                          {createExamError.message || 'Failed to create exam. Please try again.'}
+                        </p>
+                      </div>
+                    )}
+
                     <div className="grid gap-4 py-4">
                       <div className="grid gap-2">
                         <Label htmlFor="number-of-questions">
@@ -263,16 +299,21 @@ function CertificationExamsContent() {
                         type="button"
                         variant="outline"
                         onClick={() => setIsCreateModalOpen(false)}
-                        disabled={isCreating}
+                        disabled={isCreatingExam}
                       >
                         Cancel
                       </Button>
                       <Button
                         type="button"
                         onClick={handleCreateExam}
-                        disabled={isCreating || !numberOfQuestions || numberOfQuestions < 1}
+                        disabled={
+                          isCreatingExam ||
+                          !numberOfQuestions ||
+                          numberOfQuestions < 1 ||
+                          createExamError?.status === 429 // Disable if rate limited
+                        }
                       >
-                        {isCreating ? 'Creating...' : 'Create Exam'}
+                        {isCreatingExam ? 'Creating...' : 'Create Exam'}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
