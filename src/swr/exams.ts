@@ -133,6 +133,73 @@ export function useSubmitExam() {
   };
 }
 
+// Fetcher function for deleting failed exams with auth refresh support
+async function deleteExamFetcher(
+  _key: string,
+  {
+    arg,
+  }: {
+    arg: {
+      apiUserId: string;
+      examId: string;
+      refreshToken: () => Promise<string | null>;
+    };
+  },
+): Promise<any> {
+  const { apiUserId, examId, refreshToken } = arg;
+  const url = `/api/users/${apiUserId}/exams/${examId}`;
+
+  let response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  // If we get a 401, try to refresh token and retry
+  if (response.status === 401) {
+    console.log('Token expired during exam deletion, attempting refresh...');
+    const newToken = await refreshToken();
+
+    if (newToken) {
+      // Retry the request with refreshed token (cookie should be updated automatically)
+      response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || 'Failed to delete exam.');
+  }
+
+  return response.json();
+}
+
+export function useDeleteExam() {
+  const { refreshToken } = useFirebaseAuth();
+
+  const { trigger, isMutating, error } = useSWRMutation(
+    'DELETE_EXAM', // Static key for this type of mutation
+    deleteExamFetcher,
+  );
+
+  // Wrapper to inject refreshToken function
+  const deleteExam = (arg: { apiUserId: string; examId: string }) => {
+    return trigger({ ...arg, refreshToken });
+  };
+
+  return {
+    deleteExam,
+    isDeletingExam: isMutating,
+    deleteExamError: error,
+  };
+}
+
 // Interface for exam state/details
 export interface ExamState {
   exam_id: string;

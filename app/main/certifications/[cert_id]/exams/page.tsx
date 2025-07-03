@@ -19,7 +19,7 @@ import {
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/src/components/ui/tooltip';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
-import { ExamListItem, useExamsForCertification } from '@/swr/exams'; // Import SWR hook
+import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams'; // Import SWR hook
 import { useCreateExam } from '@/src/swr/createExam'; // Import create exam hook
 import { useRateLimitInfo } from '@/src/swr/rateLimitInfo'; // Import rate limit hook
 import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay'; // Import rate limit display
@@ -35,6 +35,7 @@ import {
   FaPause,
   FaLightbulb,
   FaArrowRight, // Added missing icon
+  FaTrash, // Added delete icon
 } from 'react-icons/fa';
 
 // Renamed original component to CertificationExamsContent
@@ -116,6 +117,9 @@ function CertificationExamsContent() {
   // Use the create exam hook
   const { createExam, isCreatingExam, createExamError } = useCreateExam();
 
+  // Use the delete exam hook
+  const { deleteExam, isDeletingExam, deleteExamError } = useDeleteExam();
+
   // Use the rate limit info hook
   const { rateLimitInfo, isLoadingRateLimit, mutateRateLimit } = useRateLimitInfo(apiUserId);
 
@@ -152,6 +156,22 @@ function CertificationExamsContent() {
       // Error is handled by the hook and component will show rate limit info if needed
       // Also refresh rate limit info in case of rate limit error
       await mutateRateLimit();
+    }
+  };
+
+  const handleDeleteExam = async (examId: string) => {
+    if (!apiUserId || !certId) return;
+
+    try {
+      await deleteExam({
+        apiUserId,
+        examId,
+      });
+
+      await mutateExams(); // Refresh the exams list
+      console.log('Exam deleted successfully');
+    } catch (error) {
+      console.error('Error deleting exam:', error);
     }
   };
 
@@ -808,92 +828,131 @@ function CertificationExamsContent() {
                       </div>
                     </div>
 
-                    {/* Action Button */}
-                    <Button
-                      onClick={() => handleStartExam(exam.exam_id)}
-                      disabled={
-                        navigatingExamId === exam.exam_id ||
-                        examStatus === 'generating' ||
-                        examStatus === 'generation_failed'
-                      }
-                      variant="outline"
-                      className={`w-full h-12 text-base font-medium rounded-xl transition-all duration-200 group ${
-                        examStatus === 'completed_successful'
-                          ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 hover:text-emerald-800 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/30 dark:hover:border-emerald-700 dark:hover:text-emerald-300'
-                          : examStatus === 'completed_review'
-                          ? 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
-                          : examStatus === 'in_progress'
-                          ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
-                          : examStatus === 'generating'
-                          ? 'border-yellow-200 text-yellow-600 bg-yellow-50 dark:border-yellow-800 dark:text-yellow-400 dark:bg-yellow-900/20 cursor-not-allowed opacity-60'
-                          : examStatus === 'generation_failed'
-                          ? 'border-red-200 text-red-600 bg-red-50 dark:border-red-800 dark:text-red-400 dark:bg-red-900/20 cursor-not-allowed opacity-60'
-                          : examStatus === 'ready'
-                          ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
-                          : 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
-                      }`}
-                    >
-                      <span className="flex items-center justify-center space-x-2">
-                        {navigatingExamId === exam.exam_id ? (
-                          <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                            <span>Loading Exam...</span>
-                          </>
-                        ) : examStatus === 'generating' ? (
-                          <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                            <span>Generating Questions...</span>
-                          </>
-                        ) : examStatus === 'generation_failed' ? (
-                          <>
-                            <svg
-                              className="w-4 h-4 text-red-600 dark:text-red-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                            <span>Generation Failed</span>
-                          </>
-                        ) : examStatus === 'completed_successful' ? (
-                          <>
-                            <FaTrophy className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-200" />
-                            <span>View Certificate</span>
-                          </>
-                        ) : examStatus === 'completed_review' ? (
-                          <>
-                            <FaChartLine className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-200" />
-                            <span>View Results & Explanations</span>
-                          </>
-                        ) : examStatus === 'completed' ? (
-                          <>
-                            <FaChartLine className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-200" />
-                            <span>View Results</span>
-                          </>
-                        ) : examStatus === 'in_progress' ? (
-                          <>
-                            <FaArrowRight className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:translate-x-1 transition-all duration-200" />
-                            <span>Resume Exam</span>
-                          </>
-                        ) : examStatus === 'ready' ? (
-                          <>
-                            <FaPlay className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200" />
-                            <span>Begin Exam</span>
-                          </>
-                        ) : (
-                          <>
-                            <FaPlay className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-200" />
-                            <span>Begin Exam</span>
-                          </>
-                        )}
-                      </span>
-                    </Button>
+                    {/* Action Buttons Section */}
+                    <div className="space-y-3">
+                      {/* Delete button for failed exams */}
+                      {examStatus === 'generation_failed' && (
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleDeleteExam(exam.exam_id)}
+                            disabled={isDeletingExam}
+                            variant="outline"
+                            size="sm"
+                            className="flex-1 h-10 text-sm font-medium rounded-lg border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300 hover:text-red-800 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:border-red-700 dark:hover:text-red-300"
+                          >
+                            <span className="flex items-center justify-center space-x-2">
+                              {isDeletingExam ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-3 w-3 border-2 border-current border-t-transparent"></div>
+                                  <span>Deleting...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <FaTrash className="w-3 h-3" />
+                                  <span>Delete Exam</span>
+                                </>
+                              )}
+                            </span>
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* Error display for delete operation */}
+                      {deleteExamError && (
+                        <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                          <p className="text-sm text-red-800 dark:text-red-200">
+                            {deleteExamError.message || 'Failed to delete exam. Please try again.'}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Main Action Button */}
+                      <Button
+                        onClick={() => handleStartExam(exam.exam_id)}
+                        disabled={
+                          navigatingExamId === exam.exam_id ||
+                          examStatus === 'generating' ||
+                          examStatus === 'generation_failed'
+                        }
+                        variant="outline"
+                        className={`w-full h-12 text-base font-medium rounded-xl transition-all duration-200 group ${
+                          examStatus === 'completed_successful'
+                            ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 hover:text-emerald-800 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/30 dark:hover:border-emerald-700 dark:hover:text-emerald-300'
+                            : examStatus === 'completed_review'
+                            ? 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
+                            : examStatus === 'in_progress'
+                            ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
+                            : examStatus === 'generating'
+                            ? 'border-yellow-200 text-yellow-600 bg-yellow-50 dark:border-yellow-800 dark:text-yellow-400 dark:bg-yellow-900/20 cursor-not-allowed opacity-60'
+                            : examStatus === 'generation_failed'
+                            ? 'border-red-200 text-red-600 bg-red-50 dark:border-red-800 dark:text-red-400 dark:bg-red-900/20 cursor-not-allowed opacity-60'
+                            : examStatus === 'ready'
+                            ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
+                            : 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
+                        }`}
+                      >
+                        <span className="flex items-center justify-center space-x-2">
+                          {navigatingExamId === exam.exam_id ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                              <span>Loading Exam...</span>
+                            </>
+                          ) : examStatus === 'generating' ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                              <span>Generating Questions...</span>
+                            </>
+                          ) : examStatus === 'generation_failed' ? (
+                            <>
+                              <svg
+                                className="w-4 h-4 text-red-600 dark:text-red-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
+                              </svg>
+                              <span>Generation Failed</span>
+                            </>
+                          ) : examStatus === 'completed_successful' ? (
+                            <>
+                              <FaTrophy className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-200" />
+                              <span>View Certificate</span>
+                            </>
+                          ) : examStatus === 'completed_review' ? (
+                            <>
+                              <FaChartLine className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-200" />
+                              <span>View Results & Explanations</span>
+                            </>
+                          ) : examStatus === 'completed' ? (
+                            <>
+                              <FaChartLine className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-200" />
+                              <span>View Results</span>
+                            </>
+                          ) : examStatus === 'in_progress' ? (
+                            <>
+                              <FaArrowRight className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:translate-x-1 transition-all duration-200" />
+                              <span>Resume Exam</span>
+                            </>
+                          ) : examStatus === 'ready' ? (
+                            <>
+                              <FaPlay className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200" />
+                              <span>Begin Exam</span>
+                            </>
+                          ) : (
+                            <>
+                              <FaPlay className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-200" />
+                              <span>Begin Exam</span>
+                            </>
+                          )}
+                        </span>
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               );
