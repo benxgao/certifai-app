@@ -19,7 +19,7 @@ export const DEFAULT_FETCH_OPTIONS: RequestInit = {
 export const optimizedFetch = async (
   url: string,
   options: RequestInit = {},
-  timeoutMs = 10000, // Increased default timeout to 10 seconds
+  timeoutMs = 20000, // Increased default timeout to 20 seconds
 ): Promise<Response> => {
   // Check if there's already an abort signal provided
   const existingSignal = options.signal;

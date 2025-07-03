@@ -7,36 +7,34 @@ import { LoadingComponents } from '@/components/custom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/src/components/ui/slider';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/src/components/ui/tooltip';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification } from '@/swr/exams'; // Import SWR hook
 import { useCreateExam } from '@/src/swr/createExam'; // Import create exam hook
 import { useRateLimitInfo } from '@/src/swr/rateLimitInfo'; // Import rate limit hook
 import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay'; // Import rate limit display
-import RateLimitSummary from '@/src/components/custom/RateLimitSummary'; // Import rate limit summary
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
 import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
 import {
   FaPlay,
   FaCheck,
+  FaRegFileAlt,
   FaClipboardList,
   FaChartLine,
-  FaArrowRight,
-  FaPause,
   FaTrophy,
-  FaPlus,
+  FaPause,
   FaLightbulb,
+  FaArrowRight, // Added missing icon
 } from 'react-icons/fa';
 
 // Renamed original component to CertificationExamsContent
@@ -189,80 +187,61 @@ function CertificationExamsContent() {
         {/* Certification Status Card */}
         <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
           {/* Status Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
+          <div className="px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+            {/* Mobile-friendly layout */}
+            <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+              <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3">
                 <h2 className="text-lg font-medium text-slate-900 dark:text-slate-100">
                   {displayCertification?.name || 'Certification Overview'}
                 </h2>
-                {/* Rate Limit Summary */}
-                {rateLimitInfo && !isLoadingRateLimit && (
-                  <RateLimitSummary rateLimitInfo={rateLimitInfo} />
-                )}
               </div>
 
-              <div className="flex items-center space-x-3">
-                {/* Create Exam Button */}
+              {/* Create Exam Button - full width on mobile, auto on desktop */}
+              <div className="flex flex-col space-y-2 sm:space-y-0">
                 <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
                   <DialogTrigger asChild>
                     <Button
                       size="sm"
-                      className="bg-violet-600 hover:bg-violet-700 text-white border-violet-600 hover:border-violet-700 shadow-sm"
+                      className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white border-violet-600 hover:border-violet-700 shadow-sm"
                       disabled={
                         createExamError?.status === 429 || // Disable if rate limited
                         (rateLimitInfo && !rateLimitInfo.canCreateExam) // Disable if at limit
                       }
                     >
-                      <FaPlus className="w-4 h-4 mr-2" />
-                      Create Exam
+                      <FaRegFileAlt className="w-4 h-4 mr-2" />
+                      New Exam
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                      <DialogTitle>Create New Exam</DialogTitle>
-                      <DialogDescription>
-                        Create a new exam for {displayCertification?.name || 'this certification'}.
-                        Configure the number of questions and any specific requirements.
-                      </DialogDescription>
-                    </DialogHeader>
-
-                    {/* Rate Limit Information Display */}
-                    {rateLimitInfo && !isLoadingRateLimit && (
-                      <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg p-4 mb-4">
-                        <div className="flex items-start space-x-3">
-                          <div className="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
-                            <FaClipboardList className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                          </div>
-                          <div className="text-sm">
-                            <p className="font-medium text-slate-800 dark:text-slate-200 mb-1">
-                              Exam Creation Limit
-                            </p>
-                            <p className="text-slate-600 dark:text-slate-400 mb-2">
-                              You can create at most <strong>3 exams every 24 hours</strong>.
-                            </p>
-                            <div className="space-y-1">
-                              <div className="flex items-center space-x-2">
-                                <span className="text-slate-600 dark:text-slate-400">
-                                  Current usage:
-                                </span>
-                                <Badge variant="secondary" className="text-xs">
-                                  {rateLimitInfo.currentCount}/3 used
-                                </Badge>
-                              </div>
-                              {rateLimitInfo.remainingCount > 0 ? (
-                                <div className="text-xs text-green-600 dark:text-green-400">
-                                  {rateLimitInfo.remainingCount} remaining
-                                </div>
-                              ) : (
-                                <div className="text-xs text-red-600 dark:text-red-400">
-                                  Limit reached
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <DialogTitle>Generate New Exam</DialogTitle>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="cursor-pointer text-slate-400 dark:text-slate-500">
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent sideOffset={4} className="max-w-[300px]">
+                            Generate a new exam for{' '}
+                            {displayCertification?.name || 'this certification'}. Configure the
+                            number of questions and any specific requirements.
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
-                    )}
+                    </DialogHeader>
 
                     {/* Rate Limiting Error Display */}
                     {createExamError?.status === 429 && createExamError.rateLimitInfo && (
@@ -283,9 +262,22 @@ function CertificationExamsContent() {
 
                     <div className="grid gap-4 py-4">
                       <div className="grid gap-2">
-                        <Label htmlFor="number-of-questions">
-                          Number of Questions: {numberOfQuestions}
-                        </Label>
+                        <div className="flex items-center gap-1">
+                          <Label htmlFor="number-of-questions">
+                            Number of Questions: {numberOfQuestions}
+                          </Label>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="ml-1 cursor-pointer text-slate-400 dark:text-slate-500">
+                                <FaLightbulb className="w-3 h-3" />
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent sideOffset={4} className="max-w-[300px]">
+                              Choose how many questions you want in your exam. Each question costs 2
+                              tokens. Recommended: 20-50.
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                         <Slider
                           id="number-of-questions"
                           min={displayCertification?.min_quiz_counts || 1}
@@ -299,12 +291,22 @@ function CertificationExamsContent() {
                           <span>Min: {displayCertification?.min_quiz_counts || 1}</span>
                           <span>Max: {displayCertification?.max_quiz_counts || 100}</span>
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                          Recommended: 20-50 questions (each question costs 2 tokens)
-                        </p>
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="custom-prompt">Focus on Specific Topics (Optional)</Label>
+                        <div className="flex items-center gap-1">
+                          <Label htmlFor="custom-prompt">Focus on Specific Topics (Optional)</Label>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="ml-1 cursor-pointer text-slate-400 dark:text-slate-500">
+                                <FaLightbulb className="w-3 h-3" />
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent sideOffset={4} className="max-w-[300px]">
+                              Enter keywords or topics to focus your exam (e.g., &quot;risk
+                              management, portfolio theory&quot;). Leave blank for a general exam.
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
                         <Textarea
                           id="custom-prompt"
                           placeholder="Keywords like a concept, a topic, etc"
@@ -312,26 +314,22 @@ function CertificationExamsContent() {
                           onChange={(e) => setCustomPromptText(e.target.value)}
                           rows={3}
                         />
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                          AI will generate exam questions focused on your specified topics and
-                          concepts
-                        </p>
                       </div>
-                      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700/50 rounded-lg p-4">
-                        <div className="flex items-start space-x-3">
-                          <div className="flex-shrink-0 w-5 h-5 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
-                            <FaLightbulb className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                          </div>
-                          <div className="text-sm">
-                            <p className="font-medium text-blue-800 dark:text-blue-200 mb-1">
-                              Async Generation
-                            </p>
-                            <p className="text-blue-700 dark:text-blue-300">
-                              Questions will be generated in the background. You can monitor the
-                              progress in your exams list.
-                            </p>
-                          </div>
-                        </div>
+                      <div className="flex items-center gap-1 pt-2">
+                        <span className="text-sm text-slate-600 dark:text-slate-400">
+                          Generation will happen in the background
+                        </span>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className="cursor-pointer text-slate-400 dark:text-slate-500">
+                              <FaLightbulb className="w-3 h-3" />
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent sideOffset={4} className="max-w-[280px]">
+                            Questions will be generated in the background. You can monitor the
+                            progress in your exams list.
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                     <DialogFooter>
@@ -361,6 +359,67 @@ function CertificationExamsContent() {
               </div>
             </div>
           </div>
+
+          {/* Rate Limit Summary - separate section */}
+          {rateLimitInfo && !isLoadingRateLimit && (
+            <div className="px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/30 border-b border-blue-200 dark:border-blue-800/50">
+              <div className="flex items-center justify-center space-x-3">
+                <div className="flex items-center space-x-3">
+                  <div className="flex-shrink-0 w-8 h-8 bg-white dark:bg-blue-900/50 rounded-full flex items-center justify-center shadow-sm">
+                    <svg
+                      className="w-4 h-4 text-blue-600 dark:text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <div className="flex items-center justify-center sm:justify-start space-x-2">
+                      <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                        Exam Creation Limit
+                      </span>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent sideOffset={4} className="max-w-[280px]">
+                          You can create at most 3 exams every 24 hours to ensure fair usage and
+                          optimal system performance.
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <div className="flex items-center justify-center sm:justify-start space-x-2 mt-1">
+                      <span className="text-xl font-bold text-blue-900 dark:text-blue-100">
+                        {rateLimitInfo.currentCount}/3
+                      </span>
+                      <span className="text-sm text-blue-700 dark:text-blue-300">exams used</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Content */}
           <div className="px-6 py-6">

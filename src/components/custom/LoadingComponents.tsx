@@ -33,7 +33,7 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-      <div className="max-w-6xl mx-auto px-4 py-6 md:px-6 md:py-8">
+      <div className="max-w-6xl mx-auto px-2 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8">
         {/* Breadcrumb Loading */}
         {showBreadcrumb && (
           <div className="mb-8">
@@ -88,11 +88,13 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
           ))}
         </div>
 
-        {/* Loading spinner overlay */}
-        <div className="fixed inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-40">
-          <div className="text-center space-y-4 loading-fade-in">
+        {/* Loading spinner overlay - improved for mobile */}
+        <div className="fixed inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-8">
+          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto text-center space-y-4 loading-fade-in">
             <UnifiedLoadingSpinner size="lg" variant="primary" className="mx-auto" />
-            <p className="text-lg text-gray-600 dark:text-gray-400">{title}</p>
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 break-words">
+              {title}
+            </p>
           </div>
         </div>
       </div>

@@ -97,8 +97,8 @@ export const performApiLogin = async (token: string): Promise<string | null> => 
           },
           body: JSON.stringify({}),
         },
-        10000,
-      ); // 10 second timeout for auth operations
+        15000,
+      ); // 15 second timeout for auth operations
 
       if (response && response.ok) {
         const { api_user_id } = await response.json();
