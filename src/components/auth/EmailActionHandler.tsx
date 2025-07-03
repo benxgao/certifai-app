@@ -148,7 +148,7 @@ export default function EmailActionHandler() {
       <LandingHeader showFeaturesLink={false} />
 
       <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <Card className="w-full max-w-md bg-white border border-gray-200 shadow-sm">
+        <Card className="w-full max-w-md bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm">
           <CardHeader className="text-center space-y-4 pb-6">
             {status === 'loading' && (
               <>

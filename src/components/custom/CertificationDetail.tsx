@@ -198,7 +198,9 @@ export default function CertificationDetail({ certId, initialData }: Props) {
                 </Badge>
                 <Badge variant="outline">Certification ID: {certification.cert_id}</Badge>
               </div>
-              <CardTitle className="text-3xl text-gray-900 mb-3">{certification.name}</CardTitle>
+              <CardTitle className="text-3xl text-gray-900 dark:text-slate-100 mb-3">
+                {certification.name}
+              </CardTitle>
               <div className="flex items-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <FaUsers className="text-blue-500" />
@@ -227,7 +229,9 @@ export default function CertificationDetail({ certId, initialData }: Props) {
         <CardContent className="p-8">
           <div className="space-y-6">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">About This Certification</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-3">
+                About This Certification
+              </h3>
               <p className="text-gray-700 leading-relaxed">
                 {linkifyText(certification.description)}
               </p>
@@ -235,7 +239,9 @@ export default function CertificationDetail({ certId, initialData }: Props) {
 
             {firm.description && (
               <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">About {firm.name}</h3>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-3">
+                  About {firm.name}
+                </h3>
                 <p className="text-gray-700 leading-relaxed">{linkifyText(firm.description)}</p>
               </div>
             )}
@@ -322,7 +328,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
             </p>
             <div className="space-x-4">
               <Link href="/signup">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
                   Get Started Free
                 </Button>
               </Link>

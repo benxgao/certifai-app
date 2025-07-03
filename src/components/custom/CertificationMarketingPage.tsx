@@ -374,7 +374,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
                   <Button
                     size="lg"
                     variant="outline"
-                    className="px-8 py-3 text-lg border-white text-white hover:bg-white hover:text-blue-600"
+                    className="px-8 py-3 text-lg border-white text-white hover:bg-white hover:text-blue-600 dark:border-slate-300 dark:text-slate-100 dark:hover:bg-slate-200 dark:hover:text-slate-900"
                   >
                     <FaExternalLinkAlt className="mr-2" />
                     Official {certification.firm.name} Site
@@ -394,35 +394,35 @@ function MarketingPageSkeleton() {
     <div className="space-y-12">
       {/* Hero Section Skeleton */}
       <div className="text-center space-y-6">
-        <div className="w-3/4 h-12 bg-gray-200 rounded animate-pulse mx-auto" />
-        <div className="w-2/3 h-6 bg-gray-200 rounded animate-pulse mx-auto" />
+        <div className="w-3/4 h-12 bg-gray-200 dark:bg-slate-700 rounded animate-pulse mx-auto" />
+        <div className="w-2/3 h-6 bg-gray-200 dark:bg-slate-700 rounded animate-pulse mx-auto" />
         <div className="flex justify-center gap-4">
-          <div className="w-32 h-12 bg-blue-200 rounded animate-pulse" />
-          <div className="w-32 h-12 bg-gray-200 rounded animate-pulse" />
+          <div className="w-32 h-12 bg-blue-200 dark:bg-blue-800 rounded animate-pulse" />
+          <div className="w-32 h-12 bg-gray-200 dark:bg-slate-700 rounded animate-pulse" />
         </div>
       </div>
 
       {/* Features Section Skeleton */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-lg shadow-md p-6">
-            <div className="w-12 h-12 bg-blue-200 rounded animate-pulse mb-4" />
-            <div className="w-3/4 h-6 bg-gray-200 rounded animate-pulse mb-3" />
+          <div key={i} className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-6">
+            <div className="w-12 h-12 bg-blue-200 dark:bg-blue-800 rounded animate-pulse mb-4" />
+            <div className="w-3/4 h-6 bg-gray-200 dark:bg-slate-700 rounded animate-pulse mb-3" />
             <div className="space-y-2">
-              <div className="w-full h-4 bg-gray-200 rounded animate-pulse" />
-              <div className="w-5/6 h-4 bg-gray-200 rounded animate-pulse" />
+              <div className="w-full h-4 bg-gray-200 dark:bg-slate-700 rounded animate-pulse" />
+              <div className="w-5/6 h-4 bg-gray-200 dark:bg-slate-700 rounded animate-pulse" />
             </div>
           </div>
         ))}
       </div>
 
       {/* Stats Section Skeleton */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="text-center">
-              <div className="w-16 h-10 bg-blue-200 rounded animate-pulse mx-auto mb-2" />
-              <div className="w-24 h-4 bg-gray-200 rounded animate-pulse mx-auto" />
+              <div className="w-16 h-10 bg-blue-200 dark:bg-blue-800 rounded animate-pulse mx-auto mb-2" />
+              <div className="w-24 h-4 bg-gray-200 dark:bg-slate-700 rounded animate-pulse mx-auto" />
             </div>
           ))}
         </div>

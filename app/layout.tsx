@@ -92,9 +92,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       {/* Enhanced SEO Meta Tags */}
       <head>
+        {/* Theme detection script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function setTheme() {
+                  const theme = localStorage.getItem('theme') ||
+                    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                }
+                setTheme();
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
+              })();
+            `,
+          }}
+        />
         <title>{META_CONTENT.TITLE}</title>
         <meta name="description" content={META_CONTENT.DESCRIPTION} />
         <meta name="keywords" content={META_CONTENT.KEYWORDS} />
@@ -165,13 +185,13 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ConditionalFirebaseAuthProvider>
-          <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900">
+          <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-slate-100">
             <Suspense
               fallback={
-                <div className="min-h-screen flex items-center justify-center">
+                <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
                   <div className="text-center space-y-4">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
-                    <p className="text-lg text-gray-600">Loading...</p>
+                    <p className="text-lg text-gray-600 dark:text-slate-400">Loading...</p>
                   </div>
                 </div>
               }

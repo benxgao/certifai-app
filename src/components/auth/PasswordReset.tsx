@@ -154,10 +154,10 @@ export default function PasswordReset() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
+                  <CardTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                     Verifying reset link
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
+                  <CardDescription className="text-slate-600 dark:text-slate-300 text-base">
                     We&apos;re confirming your password reset request. This should only take a
                     moment.
                   </CardDescription>
@@ -183,10 +183,10 @@ export default function PasswordReset() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
+                  <CardTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                     Reset your password
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
+                  <CardDescription className="text-slate-600 dark:text-slate-300 text-base">
                     Enter a new password for {email}
                   </CardDescription>
                 </div>
@@ -211,10 +211,10 @@ export default function PasswordReset() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
+                  <CardTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                     Password reset successful!
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
+                  <CardDescription className="text-slate-600 dark:text-slate-300 text-base">
                     Your password has been successfully updated. You can now sign in with your new
                     password.
                   </CardDescription>
@@ -240,10 +240,10 @@ export default function PasswordReset() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900">
+                  <CardTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                     {status === 'expired' ? 'Link expired' : 'Reset failed'}
                   </CardTitle>
-                  <CardDescription className="text-slate-600 text-base">
+                  <CardDescription className="text-slate-600 dark:text-slate-300 text-base">
                     {errorMessage}
                   </CardDescription>
                 </div>
@@ -377,7 +377,7 @@ export default function PasswordReset() {
                 <Button
                   onClick={() => router.push('/support')}
                   variant="outline"
-                  className="w-full border-slate-300 hover:bg-slate-50 transition-all duration-200"
+                  className="w-full border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200"
                   size="lg"
                 >
                   Contact Support

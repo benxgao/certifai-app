@@ -181,12 +181,14 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                 {getMainIcon()}
               </div>
               <div className="flex-1">
-                <h2 className="text-3xl font-bold text-slate-900 leading-tight">
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 leading-tight">
                   {currentContent.title}
                 </h2>
               </div>
             </div>
-            <p className="text-lg text-slate-600 leading-relaxed">{currentContent.description}</p>
+            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+              {currentContent.description}
+            </p>
           </div>
 
           {/* Feature List - Clean cards integrated with background */}
@@ -202,10 +204,10 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                   {renderIcon(feature.icon, 'w-5 h-5 text-white')}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-slate-900 text-base leading-tight">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 text-base leading-tight">
                     {feature.title}
                   </h3>
-                  <p className="text-slate-600 text-sm mt-1 leading-relaxed">
+                  <p className="text-slate-600 dark:text-slate-300 text-sm mt-1 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>

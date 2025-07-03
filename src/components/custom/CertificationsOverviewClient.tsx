@@ -210,7 +210,7 @@ export default function CertificationsOverviewClient({
                         href={`/certifications/${firm.code}/${cert.cert_id}`}
                         className="group"
                       >
-                        <div className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors cursor-pointer">
+                        <div className="p-4 border border-gray-200 dark:border-slate-700 rounded-lg hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer">
                           <div className="flex items-start gap-2 mb-2">
                             <FaAward className="text-blue-600 mt-1 flex-shrink-0" />
                             <h4 className="font-medium text-gray-900 group-hover:text-blue-800 line-clamp-2">

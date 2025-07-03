@@ -240,21 +240,23 @@ function CertificationExamsContent() {
                             <p className="text-slate-600 dark:text-slate-400 mb-2">
                               You can create at most <strong>3 exams every 24 hours</strong>.
                             </p>
-                            <div className="flex items-center space-x-2">
-                              <span className="text-slate-600 dark:text-slate-400">
-                                Current usage:
-                              </span>
-                              <Badge variant="secondary" className="text-xs">
-                                {rateLimitInfo.currentCount}/3 used
-                              </Badge>
+                            <div className="space-y-1">
+                              <div className="flex items-center space-x-2">
+                                <span className="text-slate-600 dark:text-slate-400">
+                                  Current usage:
+                                </span>
+                                <Badge variant="secondary" className="text-xs">
+                                  {rateLimitInfo.currentCount}/3 used
+                                </Badge>
+                              </div>
                               {rateLimitInfo.remainingCount > 0 ? (
-                                <span className="text-xs text-green-600 dark:text-green-400">
+                                <div className="text-xs text-green-600 dark:text-green-400">
                                   {rateLimitInfo.remainingCount} remaining
-                                </span>
+                                </div>
                               ) : (
-                                <span className="text-xs text-red-600 dark:text-red-400">
+                                <div className="text-xs text-red-600 dark:text-red-400">
                                   Limit reached
-                                </span>
+                                </div>
                               )}
                             </div>
                           </div>
@@ -305,7 +307,7 @@ function CertificationExamsContent() {
                         <Label htmlFor="custom-prompt">Focus on Specific Topics (Optional)</Label>
                         <Textarea
                           id="custom-prompt"
-                          placeholder="Tell AI to focus on specific topics, concepts, or technologies (e.g., 'Focus on IAM policies and VPC networking', 'Emphasize Docker containers and Kubernetes orchestration')..."
+                          placeholder="Keywords like a concept, a topic, etc"
                           value={customPromptText}
                           onChange={(e) => setCustomPromptText(e.target.value)}
                           rows={3}
