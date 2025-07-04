@@ -1,24 +1,25 @@
 import { Metadata } from 'next';
 
 const description =
-  'Simple, transparent pricing for AI-powered IT certification practice. Join our beta program with free access to core features and special pricing.';
+  'Join our free beta program and help build the future of AI-powered IT certification training. Complete access to all features while we gather feedback and improve together.';
 
 const keywords = [
-  'CertifAI pricing',
-  'IT certification cost',
-  'free beta trial',
-  'practice exam pricing',
-  'AI training platform cost',
-  'beta program pricing',
-  'IT certification subscription',
-  'educational technology pricing',
-  'certification preparation cost',
-  'affordable IT training',
-  'beta access pricing',
+  'CertifAI beta program',
+  'free IT certification training',
+  'AI certification beta',
+  'free practice exam platform',
+  'beta testing certification',
+  'feedback driven development',
+  'free AI training platform',
+  'certification training beta',
+  'IT certification feedback',
+  'free certification practice',
+  'beta user program',
 ].join(', ');
 
 export const metadata: Metadata = {
-  title: 'Pricing Plans | CertifAI - AI-Powered IT Certification Training | Free Beta Access',
+  title:
+    'Free Beta Program | CertifAI - AI-Powered IT Certification Training | Help Us Build the Future',
   description,
   keywords,
   authors: [{ name: 'CertifAI Team' }],
@@ -36,9 +37,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Pricing Plans | CertifAI - AI-Powered IT Certification Training',
+    title: 'Free Beta Program | CertifAI - Shape the Future of IT Certification Training',
     description:
-      'Simple, transparent pricing for AI-powered IT certification practice and training. Free beta access available.',
+      'Join our free beta program and help build the most effective AI-powered IT certification training platform. Complete access while we develop together.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certifai.app/pricing',
@@ -48,21 +49,21 @@ export const metadata: Metadata = {
         url: '/images/pricing/certifai-pricing-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI Pricing Plans - Free Beta Access Available',
+        alt: 'CertifAI Free Beta Program - Help Build the Future of IT Certification Training',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pricing Plans | CertifAI - Free Beta Access',
+    title: 'Free Beta Program | CertifAI - Shape the Future',
     description:
-      'Simple pricing for AI-powered IT certification practice. Free beta access available.',
+      'Join our free beta program and help build the most effective AI-powered IT certification training platform.',
     creator: '@CertifAI',
     site: '@CertifAI',
     images: [
       {
         url: '/images/pricing/certifai-pricing-twitter.jpg',
-        alt: 'CertifAI Pricing Plans - Free Beta Access',
+        alt: 'CertifAI Free Beta Program - Help Build the Future',
       },
     ],
   },

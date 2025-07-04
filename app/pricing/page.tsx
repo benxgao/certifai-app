@@ -10,8 +10,9 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 const pricingSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: 'CertifAI IT Certification Training Platform',
-  description: 'AI-powered IT certification training with personalized learning and practice exams',
+  name: 'CertifAI IT Certification Training Platform - Beta',
+  description:
+    'Free AI-powered IT certification training platform in beta - helping us improve through user feedback',
   brand: {
     '@type': 'Brand',
     name: 'CertifAI',
@@ -19,8 +20,8 @@ const pricingSchema = {
   offers: [
     {
       '@type': 'Offer',
-      name: 'Beta Starter',
-      description: 'Free beta access with 300 credit coins',
+      name: 'Beta Access',
+      description: 'Free beta access to all features - feedback appreciated',
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
@@ -32,34 +33,19 @@ const pricingSchema = {
         valueAddedTaxIncluded: true,
       },
     },
-    {
-      '@type': 'Offer',
-      name: 'Beta Pro',
-      description: 'Enhanced beta access with 1500 credit coins',
-      price: '19',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      validFrom: '2025-01-01',
-      priceSpecification: {
-        '@type': 'PriceSpecification',
-        price: '19',
-        priceCurrency: 'USD',
-        valueAddedTaxIncluded: true,
-      },
-    },
   ],
 };
 
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'CertifAI Pricing Plans - AI-Powered IT Certification Training',
+  name: 'CertifAI - Free Beta Access | AI-Powered IT Certification Training',
   description:
-    'Simple, transparent pricing for AI-powered IT certification practice. Free beta access available.',
+    'Join our free beta program and help us build the future of AI-powered IT certification training. Your feedback shapes our platform.',
   url: 'https://certifai.app/pricing',
   mainEntity: {
     '@type': 'Product',
-    name: 'CertifAI IT Certification Training Platform',
+    name: 'CertifAI IT Certification Training Platform - Beta',
   },
 };
 
@@ -84,213 +70,153 @@ export default function PricingPage() {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-20" role="main">
           {/* Header Section */}
           <header className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Star className="w-4 h-4" />
-              <span>Beta Version - Special Pricing</span>
+              <span>Free Beta - We Value Your Feedback</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Simple, Transparent Pricing for AI-Powered IT Certification Training
+              Join Our Beta Program
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Start your certification journey with our beta program. Get access to AI-powered
-              practice exams and personalized learning to accelerate your certification journey.
+              Help us build the future of AI-powered IT certification training. Access all features
+              completely free during our beta phase while we gather feedback and improve the
+              platform.
             </p>
           </header>
 
-          {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {/* Beta Trial */}
-            <div className="relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-green-200 dark:border-green-800 p-8 shadow-lg">
+          {/* Beta Access Card */}
+          <div className="max-w-2xl mx-auto">
+            <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl border-2 border-orange-200 dark:border-orange-800 p-8 shadow-xl">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                  FREE TRIAL
+                <span className="bg-orange-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
+                  FREE BETA ACCESS
                 </span>
               </div>
+
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-foreground mb-2">Beta Starter</h3>
-                <div className="text-4xl font-bold text-foreground mb-2">FREE</div>
-                <p className="text-muted-foreground">Perfect for getting started</p>
+                <h3 className="text-3xl font-bold text-foreground mb-2">Beta Program</h3>
+                <div className="text-5xl font-bold text-foreground mb-2">FREE</div>
+                <p className="text-muted-foreground">
+                  Complete access while we build the future together
+                </p>
               </div>
 
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-foreground">5 Practice Exams</span>
+                  <Check className="w-5 h-5 text-orange-500" />
+                  <span className="text-foreground">Unlimited AI-Generated Practice Exams</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-foreground">AI-Generated Questions</span>
+                  <Check className="w-5 h-5 text-orange-500" />
+                  <span className="text-foreground">All IT Certifications Supported</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-foreground">Performance Analytics</span>
+                  <Check className="w-5 h-5 text-orange-500" />
+                  <span className="text-foreground">Advanced Performance Analytics</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-foreground">Study Recommendations</span>
+                  <Check className="w-5 h-5 text-orange-500" />
+                  <span className="text-foreground">Personalized Study Recommendations</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-500" />
-                  <span className="text-foreground">Community Access</span>
+                  <Check className="w-5 h-5 text-orange-500" />
+                  <span className="text-foreground">Community Access & Support</span>
                 </div>
+                <div className="flex items-center gap-3">
+                  <Check className="w-5 h-5 text-orange-500" />
+                  <span className="text-foreground">
+                    Direct Feedback Channel to Development Team
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 mb-6">
+                <p className="text-sm text-orange-700 dark:text-orange-300 text-center">
+                  <strong>Beta Promise:</strong> Your feedback directly shapes our platform. Help us
+                  build the best AI-powered certification training experience.
+                </p>
               </div>
 
               <Link href="/signup" className="block">
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
-                  Start Free Trial
-                </Button>
-              </Link>
-            </div>
-
-            {/* Pro Plan */}
-            <div className="relative bg-white dark:bg-slate-800 rounded-2xl border-2 border-primary p-8 shadow-lg">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-semibold">
-                  MOST POPULAR
-                </span>
-              </div>
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-foreground mb-2">Pro</h3>
-                <div className="text-4xl font-bold text-foreground mb-2">
-                  $19<span className="text-lg text-muted-foreground">/month</span>
-                </div>
-                <p className="text-muted-foreground">For serious exam preparation</p>
-              </div>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Unlimited Practice Exams</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Topic-Focused AI Exam Creation</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Advanced Analytics</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Personalized Study Plans</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Priority Support</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-primary" />
-                  <span className="text-foreground">Export Progress Reports</span>
-                </div>
-              </div>
-
-              <Link href="/signup" className="block">
-                <Button className="w-full">Choose Pro Plan</Button>
-              </Link>
-            </div>
-
-            {/* Enterprise Plan */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl border border-border p-8 shadow-lg">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-foreground mb-2">Enterprise</h3>
-                <div className="text-4xl font-bold text-foreground mb-2">Custom</div>
-                <p className="text-muted-foreground">For teams and organizations</p>
-              </div>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">Team Management</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">Custom Branding</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">API Access</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">Advanced Reporting</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">24/7 Dedicated Support</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-foreground" />
-                  <span className="text-foreground">SLA Guarantee</span>
-                </div>
-              </div>
-
-              <Link href="/contact" className="block">
-                <Button variant="outline" className="w-full">
-                  Contact Sales
+                <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white text-lg py-3">
+                  Join Beta Program
                 </Button>
               </Link>
             </div>
           </div>
 
-          {/* Credit Coin System Explanation */}
           {/* FAQ Section */}
           <div className="mt-20">
             <h2 className="text-3xl font-bold text-center text-foreground mb-12">
-              Frequently Asked Questions
+              Beta Program Questions
             </h2>
 
             <div className="max-w-3xl mx-auto space-y-6">
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-6">
                 <h4 className="font-semibold text-foreground mb-2">
-                  Can I cancel my subscription anytime?
+                  How long will the beta program last?
                 </h4>
                 <p className="text-muted-foreground">
-                  Yes, you can cancel your subscription at any time. You&apos;ll continue to have
-                  access to paid features until the end of your current billing period.
+                  We&apos;re in active development and expect the beta phase to continue throughout
+                  2025. We&apos;ll give plenty of notice before any changes, and early beta users
+                  will receive special benefits.
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-6">
                 <h4 className="font-semibold text-foreground mb-2">
-                  Is this really free during beta?
+                  What happens to my data during beta?
                 </h4>
                 <p className="text-muted-foreground">
-                  Yes! We offer free access to our core features during beta. This is our way of
-                  thanking early users for helping us improve the platform.
+                  Your progress and data are secure and will be preserved. We&apos;re committed to
+                  maintaining your study history and achievements as we evolve the platform.
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-6">
+                <h4 className="font-semibold text-foreground mb-2">How can I provide feedback?</h4>
+                <p className="text-muted-foreground">
+                  We&apos;ve built feedback mechanisms directly into the platform. You can also
+                  reach out through our support channels. Your input directly influences our
+                  development roadmap.
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-6">
                 <h4 className="font-semibold text-foreground mb-2">
-                  What certifications do you support?
+                  Are there any limitations during beta?
                 </h4>
                 <p className="text-muted-foreground">
-                  We support major IT certifications including AWS, Azure, Google Cloud, CompTIA,
-                  Cisco, and many more. Our AI adapts to create relevant questions for any
-                  certification you&apos;re studying for.
+                  While we&apos;re in beta, you may occasionally experience new features being
+                  tested or minor issues as we improve. We work quickly to address any problems and
+                  appreciate your patience.
                 </p>
               </div>
             </div>
           </div>
 
           {/* CTA Section */}
-          <div className="mt-20 text-center bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-12">
+          <div className="mt-20 text-center bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/10 dark:to-orange-800/10 rounded-2xl p-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Ready to Start Your Certification Journey?
+              Ready to Shape the Future of IT Certification Training?
             </h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join hundreds of beta users who are already preparing smarter with AI-powered practice
-              exams.
+              Join our beta community and help us build the most effective AI-powered certification
+              training platform. Your feedback drives our innovation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/signup">
-                <Button size="lg" className="px-8">
-                  Start Free Trial
+                <Button size="lg" className="px-8 bg-orange-600 hover:bg-orange-700">
+                  Join Beta Program
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button variant="outline" size="lg" className="px-8">
-                  Contact Sales
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 border-orange-200 dark:border-orange-700"
+                >
+                  Share Your Ideas
                 </Button>
               </Link>
             </div>

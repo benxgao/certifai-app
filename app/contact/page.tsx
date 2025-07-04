@@ -65,9 +65,9 @@ export default function ContactPage() {
     },
     {
       icon: Phone,
-      title: 'GitHub',
-      content: 'github.com/certifai',
-      description: 'Check out the code, report issues, or contribute',
+      title: 'Live Support Hours',
+      content: 'NZDT 8pm-10pm',
+      description: 'When the developer is online and available for real-time chat',
     },
     {
       icon: MapPin,
@@ -284,7 +284,8 @@ export default function ContactPage() {
             <h2 className="text-2xl font-bold text-foreground mb-4">Need Immediate Help?</h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Join our community Discord server for real-time support from our team and fellow
-              learners, or check out our comprehensive documentation.
+              learners, or check out our comprehensive documentation. For direct developer support,
+              I&apos;m usually available <strong>NZDT 8pm-10pm</strong> for live chat.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/community">

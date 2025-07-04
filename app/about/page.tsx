@@ -29,13 +29,14 @@ import {
 const aboutPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About CertifAI - Simulate Exams by AI & Prepare for IT Certification by Self Exams',
+  name: "About CertifAI - A Solo Developer's Side-Hustle Project",
   description:
-    "Learn about CertifAI's mission to revolutionize how professionals simulate exams by AI and prepare for IT certification by self exams through artificial intelligence, personalized learning, and innovative educational technology.",
+    "Learn about CertifAI, a passionate side-hustle project by a solo developer who's building an AI-powered IT certification platform in their spare time.",
   url: 'https://certifai.app/about',
   mainEntity: {
-    '@type': 'Organization',
-    name: 'CertifAI',
+    '@type': 'Person',
+    name: 'CertifAI Developer',
+    jobTitle: 'Full-Stack Developer & AI Enthusiast',
   },
   isPartOf: {
     '@type': 'WebSite',
@@ -44,117 +45,117 @@ const aboutPageSchema = {
   },
   inLanguage: 'en-US',
   author: {
-    '@type': 'Organization',
-    name: 'CertifAI Team',
+    '@type': 'Person',
+    name: 'CertifAI Developer',
   },
 };
 
 export default function AboutPage() {
-  // SEO-optimized milestone data with rich keywords
+  // Project milestones with personal developer journey
   const milestones = [
     {
-      year: '2025 Q2',
-      title: 'AI-Powered Platform Development',
+      year: 'Early 2025',
+      title: 'The Side-Hustle Begins',
       description:
-        'Initiated development of CertifAI as an innovative AI-powered IT certification training platform, focusing on personalized learning experiences and adaptive question generation for professional development.',
+        'Started CertifAI as a weekend project after noticing how expensive and outdated most IT certification training was. Began experimenting with AI to create personalized practice questions in my spare time.',
       icon: Brain,
-      keywords: 'AI development, certification platform, personalized learning',
+      keywords: 'side project, weekend coding, AI experimentation',
     },
     {
-      year: '2025 Q3',
-      title: 'Beta Launch & Community Building',
+      year: 'Mid 2025',
+      title: 'First Beta Release',
       description:
-        'Successfully launched early beta version with AI-generated practice questions, intelligent study recommendations, and core exam simulation features. Began building our community of IT professionals.',
+        'After countless late nights and weekends, launched the first beta version. Started with basic AI-generated questions and slowly built up features based on feedback from fellow developers and IT professionals.',
       icon: Rocket,
-      keywords: 'beta launch, practice questions, exam simulation',
+      keywords: 'beta launch, late nights, community feedback',
     },
     {
       year: 'Current',
-      title: 'User Feedback Integration & AI Enhancement',
+      title: 'Growing the Dream',
       description:
-        'Actively collecting user feedback from a growing number of beta testers to improve AI model accuracy, enhance user experience, and expand certification coverage for various IT career paths.',
+        'Continuing to develop CertifAI in my spare time, balancing it with my day job. Each new user and piece of feedback motivates me to keep building and improving this passion project.',
       icon: TrendingUp,
-      keywords: 'user feedback, AI improvement, certification coverage',
+      keywords: 'passion project, work-life balance, user feedback',
     },
   ];
 
-  // Enhanced stats with SEO-friendly descriptions
+  // Personal project stats
   const stats = [
     {
-      value: '500+',
+      value: 'A growing number',
       label: 'Beta Users',
       icon: Users,
-      description: 'Active beta testers improving their IT certification skills',
+      description: 'Fellow developers and IT professionals trying my side project',
     },
     {
-      value: 'AI-First',
-      label: 'Technology',
+      value: 'Solo Dev',
+      label: 'Team Size',
       icon: Brain,
-      description: 'Advanced artificial intelligence for personalized learning',
+      description: 'Just me, coding in my spare time with passion',
     },
     {
-      value: 'Open Beta',
+      value: 'Free Beta',
       label: 'Access',
       icon: Rocket,
-      description: 'Free beta access with 300 credit coins for practice exams',
+      description: 'Free while I build and improve based on your feedback',
     },
     {
-      value: '24/7',
-      label: 'Availability',
+      value: 'Nights & Weekends',
+      label: 'Development Time',
       icon: Globe,
-      description: 'Round-the-clock access to AI-powered study materials',
+      description: 'Built with love during my free time',
     },
   ];
 
-  // SEO-optimized core values with rich keywords and benefits
+  // Personal values and approach to this side project
   const values = [
     {
       icon: Brain,
-      title: 'Advanced AI Technology for IT Certification Success',
+      title: 'AI-Powered Learning (Built by Hand)',
       description:
-        'Utilizing cutting-edge artificial intelligence and machine learning algorithms to create personalized study experiences, adaptive question generation, and intelligent performance analytics for IT professionals.',
-      benefits: ['Personalized learning paths', 'Adaptive difficulty', 'Smart recommendations'],
-      keywords: 'AI technology, machine learning, personalized study',
+        'I&apos;m fascinated by AI and spend my weekends experimenting with machine learning to create personalized study experiences. Every algorithm and feature is crafted with care during my spare time.',
+      benefits: ['Hand-crafted AI models', 'Personal experimentation', 'Weekend innovations'],
+      keywords: 'AI passion, machine learning, personal development',
     },
     {
       icon: Users,
-      title: 'User-Centric Development & Community Feedback',
+      title: 'Community-First Development',
       description:
-        'Building every feature based on real user feedback from IT professionals, ensuring our platform addresses actual learning challenges and certification preparation needs.',
-      benefits: ['Real user input', 'Practical solutions', 'Community-driven features'],
-      keywords: 'user feedback, community driven, practical solutions',
+        'As a solo developer, I rely heavily on feedback from users like you. Every feature request and bug report helps me improve CertifAI during my limited development time.',
+      benefits: ['Direct developer contact', 'Quick responses', 'User-driven features'],
+      keywords: 'community feedback, solo development, user input',
     },
     {
       icon: Shield,
-      title: 'Quality Assurance & Transparent Development',
+      title: 'Honest & Transparent',
       description:
-        'Maintaining the highest standards in educational content quality while being transparent about our beta status, development progress, and the experimental nature of our AI features.',
-      benefits: ['High-quality content', 'Transparent processes', 'Continuous improvement'],
-      keywords: 'quality assurance, transparent development, high standards',
+        'I&apos;m upfront about this being a side project. I share my development progress, challenges, and wins openly. No corporate speak - just honest communication about what I&apos;m building.',
+      benefits: ['Transparent development', 'No marketing fluff', 'Real progress updates'],
+      keywords: 'transparency, honest development, authentic communication',
     },
     {
       icon: Heart,
-      title: 'Accessible Professional Education for All',
+      title: 'Accessible & Free (For Now)',
       description:
-        'Making premium IT certification training accessible to professionals worldwide through free beta access, comprehensive study materials, and inclusive learning design.',
-      benefits: ['Free beta access', 'Global accessibility', 'Inclusive design'],
-      keywords: 'accessible education, free access, inclusive learning',
+        'While I figure out the business model, CertifAI stays free. I believe good education shouldn&apos;t be expensive, and I want to help as many people as possible while I build this dream.',
+      benefits: ['Free beta access', 'No hidden costs', 'Educational mission'],
+      keywords: 'free access, educational mission, affordable learning',
     },
     {
       icon: Zap,
-      title: 'Continuous Innovation & Rapid Improvement',
+      title: 'Rapid Iteration & Learning',
       description:
-        'Implementing agile development practices to rapidly iterate, improve AI models, and introduce new features based on user needs and technological advancement.',
-      benefits: ['Rapid iterations', 'Regular updates', 'Innovation focus'],
-      keywords: 'continuous innovation, rapid improvement, agile development',
+        'Working solo means I can move fast and experiment freely. I push updates regularly, try new features, and learn from failures without corporate bureaucracy slowing me down.',
+      benefits: ['Fast updates', 'Experimental features', 'Quick pivots'],
+      keywords: 'rapid development, experimentation, agile solo work',
     },
     {
       icon: Target,
-      title: 'Career-Focused Results & Practical Application',
+      title: 'Practical & Results-Focused',
       description:
-        'Focusing exclusively on practical skills and knowledge that directly help IT professionals pass certifications, advance careers, and achieve their professional goals.',
-      benefits: ['Career advancement', 'Practical skills', 'Real-world application'],
-      keywords: 'career focused, practical application, professional goals',
+        'I built CertifAI to solve real problems I&apos;ve seen in my career. Every feature is designed to actually help people pass certifications and advance their careers, not just look impressive.',
+      benefits: ['Real-world solutions', 'Career-focused', 'Practical approach'],
+      keywords: 'practical solutions, career advancement, real-world application',
     },
   ];
 
@@ -191,19 +192,19 @@ export default function AboutPage() {
           {/* Hero Section with optimized heading hierarchy */}
           <header className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              About CertifAI: Revolutionizing IT Certification Training with AI
+              About CertifAI: A Solo Developer&apos;s Side-Hustle
             </h1>
             <div className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
               <p className="mb-4">
-                <strong>CertifAI</strong> is an innovative AI-powered platform transforming how IT
-                professionals prepare for certifications. Our cutting-edge artificial intelligence
-                creates personalized learning experiences, adaptive practice questions, and
-                intelligent study recommendations.
+                <strong>CertifAI</strong> is my personal side project - a passion-driven attempt to
+                make IT certification training more accessible and effective using AI. What started
+                as weekend coding sessions has grown into something I&apos;m genuinely proud of.
               </p>
               <p>
-                Join our community of <strong>a growing number of beta users</strong> who are
-                already experiencing the future of IT certification training through our advanced
-                machine learning technology.
+                I&apos;m just <strong>one developer</strong> working on this in my spare time, but I
+                believe that with your feedback and support, we can build something truly special
+                together. No corporate BS, just honest work and genuine care for helping people
+                succeed.
               </p>
             </div>
             <nav
@@ -212,7 +213,7 @@ export default function AboutPage() {
             >
               <Button size="lg" className="rounded-lg" aria-label="Try CertifAI Beta Version">
                 <Rocket className="mr-2 h-5 w-5" />
-                Start Free Beta Trial
+                Try My Beta Project
               </Button>
               <Button
                 variant="outline"
@@ -221,7 +222,7 @@ export default function AboutPage() {
                 aria-label="Share feedback about CertifAI"
               >
                 <Heart className="mr-2 h-5 w-5" />
-                Join Our Community
+                Send Me Feedback
               </Button>
             </nav>
           </header>
@@ -252,7 +253,7 @@ export default function AboutPage() {
           {/* Mission & Vision with enhanced SEO content */}
           <section className="grid lg:grid-cols-2 gap-12 mb-16" aria-labelledby="mission-vision">
             <h2 id="mission-vision" className="sr-only">
-              CertifAI Mission and Vision
+              My Personal Mission and Vision for CertifAI
             </h2>
 
             <article>
@@ -263,22 +264,21 @@ export default function AboutPage() {
                       <Target className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
                     <CardTitle className="text-2xl">
-                      Our Mission: Democratizing IT Certification Success
+                      My Mission: Making IT Certification Training Better
                     </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed mb-4">
-                    To <strong>revolutionize IT certification training</strong> through advanced
-                    artificial intelligence, making professional education more accessible,
-                    effective, and personalized. We&apos;re building the world&apos;s most
-                    intelligent platform for IT certification preparation.
+                    I started CertifAI because I was frustrated with the expensive, outdated IT
+                    certification training options available. As someone who&apos;s been through
+                    multiple certifications, I knew there had to be a better way.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    Our AI-powered approach delivers{' '}
-                    <strong>personalized learning experiences</strong> that adapt to individual
-                    learning styles, knowledge gaps, and career goals, ensuring every professional
-                    can achieve certification success.
+                    My goal is simple: use AI to create{' '}
+                    <strong>personalized, effective, and affordable</strong> certification training
+                    that actually helps people pass their exams and advance their careers. No fluff,
+                    just results.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -287,8 +287,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>AI-Powered Personalization:</strong> Advanced machine learning for
-                        adaptive study paths
+                        <strong>Personal AI Development:</strong> Hand-crafted algorithms based on
+                        real learning patterns
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -297,8 +297,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Comprehensive Coverage:</strong> Multiple IT certification tracks
-                        with expert-validated content
+                        <strong>Real-World Focus:</strong> Content based on actual certification
+                        experiences
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -307,8 +307,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Community-Driven Development:</strong> Built with real feedback from
-                        a growing number of IT professionals
+                        <strong>Community Partnership:</strong> Built with and for fellow IT
+                        professionals
                       </span>
                     </div>
                   </div>
@@ -324,22 +324,22 @@ export default function AboutPage() {
                       <Eye className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
                     <CardTitle className="text-2xl">
-                      Our Vision: The Future of Professional Education
+                      My Vision: Growing Beyond a Side Project
                     </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed mb-4">
-                    To become the{' '}
-                    <strong>global leader in AI-powered professional education</strong>, where every
-                    IT professional has access to intelligent, personalized training that guarantees
-                    certification success and career advancement.
+                    Right now, CertifAI is my nights-and-weekends project, but I dream of it
+                    becoming the go-to platform for IT certification training. I want to prove that
+                    a solo developer can build something that competes with (and beats) the big
+                    players.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    We envision a world where{' '}
-                    <strong>artificial intelligence eliminates barriers</strong> to professional
-                    growth, making expert-level training accessible regardless of location, budget,
-                    or learning style.
+                    My vision is to create a platform where <strong>every IT professional</strong>{' '}
+                    can access high-quality, AI-powered training regardless of their budget or
+                    location. If I can help just one person advance their career, it&apos;s worth
+                    it.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -348,8 +348,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Global Accessibility:</strong> Reaching IT professionals worldwide
-                        through web technology
+                        <strong>Global Impact:</strong> Helping IT professionals worldwide achieve
+                        their goals
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -358,8 +358,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Intelligent Adaptation:</strong> AI that continuously learns and
-                        improves from user interactions
+                        <strong>Continuous Learning:</strong> AI that gets smarter with every user
+                        interaction
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -368,8 +368,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Innovation Leadership:</strong> Pioneering the next generation of
-                        educational technology
+                        <strong>Sustainable Growth:</strong> Building a business that supports great
+                        education
                       </span>
                     </div>
                   </div>
@@ -381,7 +381,7 @@ export default function AboutPage() {
           {/* Core Values Section with enhanced SEO */}
           <section className="mb-16" aria-labelledby="core-values">
             <h2 id="core-values" className="text-3xl font-bold text-foreground text-center mb-8">
-              Core Values: What Drives CertifAI&apos;s Innovation
+              My Development Philosophy: How I&apos;m Building CertifAI
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {values.map((value, index) => (
@@ -418,7 +418,7 @@ export default function AboutPage() {
               id="development-timeline"
               className="text-3xl font-bold text-foreground text-center mb-8"
             >
-              CertifAI Development Journey: From Concept to AI-Powered Platform
+              My CertifAI Journey: From Idea to Beta
             </h2>
             <div className="relative">
               <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-border"></div>
@@ -464,7 +464,7 @@ export default function AboutPage() {
           {/* Enhanced Developer Section */}
           <section className="mb-16" aria-labelledby="developer-info">
             <h2 id="developer-info" className="text-3xl font-bold text-foreground text-center mb-8">
-              Meet the Developer: Building the Future of AI Education
+              Hi, I&apos;m the Developer Behind CertifAI
             </h2>
             <div className="max-w-2xl mx-auto">
               <Card className="hover:shadow-lg transition-shadow">
@@ -473,34 +473,39 @@ export default function AboutPage() {
                     <Brain className="h-12 w-12 text-primary" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
-                    Solo Developer & AI Innovation Expert
+                    Just a Developer with a Dream
                   </h3>
                   <p className="text-primary mb-4 font-medium">
-                    Founder of CertifAI | AI Education Pioneer
+                    Full-Stack Developer | AI Enthusiast | Side-Hustle Entrepreneur
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    A passionate <strong>full-stack developer and AI enthusiast</strong> dedicated
-                    to revolutionizing professional education through cutting-edge technology. With
-                    deep expertise in machine learning, educational technology, and user experience
-                    design, I&apos;m building CertifAI to demonstrate how AI can transform the way
-                    IT professionals learn and grow.
+                    I&apos;m a <strong>full-stack developer</strong> who got tired of expensive,
+                    outdated IT certification training. After struggling through multiple
+                    certifications myself, I decided to build something better. CertifAI is my
+                    attempt to use AI to solve real problems in professional education.
+                  </p>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    This isn&apos;t my day job - it&apos;s my passion project. I work on CertifAI
+                    during evenings and weekends, pouring my heart into creating something that
+                    genuinely helps people advance their careers. Every line of code is written with
+                    care and purpose.
                   </p>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="flex items-center justify-center space-x-2">
                       <Code className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>Full-Stack Development</span>
+                      <span>Weekend Coding</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
                       <Brain className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>AI & Machine Learning</span>
+                      <span>AI Experimentation</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
                       <BookOpen className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>Educational Technology</span>
+                      <span>Real-World Testing</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
                       <Users className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>User Experience Design</span>
+                      <span>Community Feedback</span>
                     </div>
                   </div>
                 </CardContent>
@@ -514,44 +519,40 @@ export default function AboutPage() {
               <CardContent className="p-12">
                 <Star className="h-12 w-12 text-primary mx-auto mb-6" aria-hidden="true" />
                 <h2 id="join-beta" className="text-3xl font-bold text-foreground mb-4">
-                  Join the AI-Powered Learning Revolution
+                  Help Me Build Something Amazing
                 </h2>
                 <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
-                  Be part of the future of IT certification training. Try CertifAI&apos;s beta
-                  platform and experience how artificial intelligence can accelerate your
-                  professional growth.
+                  CertifAI is still in beta, and I need your help to make it better. Try it out,
+                  break it, and tell me what you think. Your feedback directly shapes what I build
+                  next.
                 </p>
                 <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">300+</div>
-                    <div className="text-sm text-muted-foreground">Free Credit Coins</div>
+                    <div className="text-2xl font-bold text-primary">Free</div>
+                    <div className="text-sm text-muted-foreground">Beta Access</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">5+</div>
-                    <div className="text-sm text-muted-foreground">Practice Exams</div>
+                    <div className="text-2xl font-bold text-primary">Direct</div>
+                    <div className="text-sm text-muted-foreground">Developer Contact</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">24/7</div>
-                    <div className="text-sm text-muted-foreground">AI-Powered Support</div>
+                    <div className="text-2xl font-bold text-primary">Real</div>
+                    <div className="text-sm text-muted-foreground">Impact on Development</div>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    size="lg"
-                    className="rounded-lg"
-                    aria-label="Start free CertifAI beta trial"
-                  >
+                  <Button size="lg" className="rounded-lg" aria-label="Try CertifAI beta">
                     <Rocket className="mr-2 h-5 w-5" />
-                    Start Free Beta Trial
+                    Try My Beta Project
                   </Button>
                   <Button
                     variant="outline"
                     size="lg"
                     className="rounded-lg"
-                    aria-label="Join CertifAI community"
+                    aria-label="Contact the developer"
                   >
                     <Heart className="mr-2 h-5 w-5" />
-                    Join Our Community
+                    Send Me Feedback
                   </Button>
                 </div>
               </CardContent>
