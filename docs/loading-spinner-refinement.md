@@ -2,7 +2,7 @@
 
 ## Overview
 
-I've successfully refined and unified the loading spinner styles across the CertifAI application to provide a consistent, modern user experience during page transitions and loading states.
+I've successfully refined and unified the loading spinner styles across the Certestic application to provide a consistent, modern user experience during page transitions and loading states.
 
 ## Key Improvements
 

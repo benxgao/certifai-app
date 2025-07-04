@@ -3,9 +3,9 @@ import { Metadata } from 'next';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | CertifAI',
+  title: 'Privacy Policy | Certestic',
   description:
-    'Learn how CertifAI collects, uses, and protects your personal information. Our comprehensive privacy policy explains your rights and our data practices.',
+    'Learn how Certestic collects, uses, and protects your personal information. Our comprehensive privacy policy explains your rights and our data practices.',
   robots: 'index, follow',
 };
 
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
                   Introduction
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  CertifAI Limited (Company Number: [TBC], &quot;we,&quot; &quot;us,&quot; or
+                  Certestic Limited (Company Number: [TBC], &quot;we,&quot; &quot;us,&quot; or
                   &quot;our&quot;) is committed to protecting your privacy and ensuring the security
                   of your personal information in accordance with applicable privacy laws, including
                   the New Zealand Privacy Act 2020 and international privacy standards. This Privacy
@@ -50,7 +50,7 @@ export default function PrivacyPolicy() {
                   information. These rights may vary depending on your jurisdiction.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  By using CertifAI, you consent to the collection, use, and disclosure of your
+                  By using Certestic, you consent to the collection, use, and disclosure of your
                   personal information as described in this policy. If you do not agree with this
                   policy, please do not use our platform.
                 </p>
@@ -371,7 +371,7 @@ export default function PrivacyPolicy() {
                   </li>
                   <li>
                     <strong>Legal Protection:</strong> To protect the rights, property, or safety of
-                    CertifAI, our users, or the public
+                    Certestic, our users, or the public
                   </li>
                   <li>
                     <strong>Emergency Situations:</strong> To prevent serious harm or illegal
@@ -685,7 +685,7 @@ export default function PrivacyPolicy() {
                   </p>
                   <div className="space-y-2 text-slate-700 dark:text-slate-300">
                     <p>
-                      <strong>Email:</strong> privacy@certifai.com
+                      <strong>Email:</strong> privacy@certestic.com
                     </p>
                     <p>
                       <strong>Subject Line:</strong> &quot;Privacy Rights Request - [Your Request
@@ -815,7 +815,7 @@ export default function PrivacyPolicy() {
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Age Requirement:</strong> CertifAI is intended for users 18 years and
+                    <strong>Age Requirement:</strong> Certestic is intended for users 18 years and
                     older
                   </li>
                   <li>
@@ -843,7 +843,7 @@ export default function PrivacyPolicy() {
                   Jurisdiction-Specific Rights
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
-                  While CertifAI operates under New Zealand law, we recognize and respect the
+                  While Certestic operates under New Zealand law, we recognize and respect the
                   privacy rights of our global customers. Depending on your location, you may have
                   additional rights under your local privacy legislation. We are committed to
                   honoring these rights to the fullest extent reasonably practicable.
@@ -1005,7 +1005,7 @@ export default function PrivacyPolicy() {
                   </p>
                   <ul className="text-amber-800 dark:text-amber-200 text-sm space-y-1">
                     <li>
-                      <strong>Email:</strong> privacy@certifai.co.nz
+                      <strong>Email:</strong> info@certestic.com
                     </li>
                     <li>
                       <strong>Subject Line:</strong> &quot;International Privacy Rights
@@ -1030,7 +1030,7 @@ export default function PrivacyPolicy() {
                     ⚠️ Important Legal Notice - Data Processing Disclaimers
                   </p>
                   <p className="text-red-700 dark:text-red-300 text-sm">
-                    This section limits CertifAI&apos;s liability regarding data processing
+                    This section limits Certestic&apos;s liability regarding data processing
                     activities to the maximum extent permitted under applicable law.
                   </p>
                 </div>
@@ -1070,7 +1070,7 @@ export default function PrivacyPolicy() {
                   Limitation of Liability - Privacy Matters
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CertifAI&apos;s LIABILITY FOR
+                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, Certestic&apos;s LIABILITY FOR
                   ANY PRIVACY-RELATED CLAIMS SHALL BE LIMITED TO:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
@@ -1113,7 +1113,7 @@ export default function PrivacyPolicy() {
                   User Data Indemnification
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  You agree to indemnify and hold CertifAI harmless from any claims, damages, or
+                  You agree to indemnify and hold Certestic harmless from any claims, damages, or
                   losses arising from:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
@@ -1159,7 +1159,7 @@ export default function PrivacyPolicy() {
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 text-sm mb-2">
                   This Privacy Policy is effective as of June 18, 2025, and applies to all users of
-                  the CertifAI platform.
+                  the Certestic platform.
                 </p>
                 <p className="text-slate-600 dark:text-slate-400 text-xs">
                   This policy complies with applicable privacy laws and regulations, including the

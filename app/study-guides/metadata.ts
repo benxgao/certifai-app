@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Study Guides | CertifAI - AI-Powered IT Certification Study Materials',
+  title: 'Study Guides | Certestic - AI-Powered IT Certification Study Materials',
   description:
     'Access comprehensive AI-generated study guides for IT certifications. Personalized study materials, practice questions, and learning paths tailored to your certification goals.',
   keywords: [
-    'CertifAI study guides',
+    'Certestic study guides',
     'IT certification study materials',
     'AI-generated study guides',
     'personalized learning materials',
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     'professional certification guides',
     'AI-powered study materials',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -33,37 +33,37 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Study Guides | CertifAI - AI-Powered IT Certification Study Materials',
+    title: 'Study Guides | Certestic - AI-Powered IT Certification Study Materials',
     description:
       'Access comprehensive AI-generated study guides and personalized learning materials for IT certification success.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/study-guides',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/study-guides',
+    siteName: 'Certestic',
     images: [
       {
-        url: '/images/study-guides/certifai-study-guides-og.jpg',
+        url: '/images/study-guides/certestic-study-guides-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI Study Guides - AI-Powered IT Certification Materials',
+        alt: 'Certestic Study Guides - AI-Powered IT Certification Materials',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Study Guides | CertifAI - AI-Powered Study Materials',
+    title: 'Study Guides | Certestic - AI-Powered Study Materials',
     description: 'Access comprehensive AI-generated study guides for IT certification success.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    creator: '@Certestic',
+    site: '@Certestic',
     images: [
       {
-        url: '/images/study-guides/certifai-study-guides-twitter.jpg',
-        alt: 'CertifAI Study Guides - AI-Powered IT Certification Materials',
+        url: '/images/study-guides/certestic-study-guides-twitter.jpg',
+        alt: 'Certestic Study Guides - AI-Powered IT Certification Materials',
       },
     ],
   },
   alternates: {
-    canonical: 'https://certifai.app/study-guides',
+    canonical: 'https://certestic.com/study-guides',
   },
   category: 'Education',
 };

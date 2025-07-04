@@ -1,6 +1,6 @@
 # Skeleton Loading Components
 
-This documentation covers the reusable skeleton loading components available in the CertifAI application.
+This documentation covers the reusable skeleton loading components available in the Certestic application.
 
 ## Overview
 
@@ -14,7 +14,7 @@ Skeleton loading components provide visual placeholders while content is loading
 import { Skeleton } from '@/src/components/ui/skeleton';
 
 // Basic skeleton element
-<Skeleton className="h-4 w-32" />
+<Skeleton className="h-4 w-32" />;
 ```
 
 ### Specialized Card Skeletons
@@ -41,6 +41,7 @@ Used for certification listing pages with grid layouts.
 ```
 
 **Props:**
+
 - `count?: number` - Number of skeleton cards (default: 4)
 - `className?: string` - Additional CSS classes
 
@@ -51,13 +52,11 @@ Used for certification listing pages with grid layouts.
 Used for dashboard statistics cards.
 
 ```tsx
-<DashboardStatSkeleton 
-  count={5} 
-  gridCols="grid-cols-1 md:grid-cols-2 lg:grid-cols-5"
-/>
+<DashboardStatSkeleton count={5} gridCols="grid-cols-1 md:grid-cols-2 lg:grid-cols-5" />
 ```
 
 **Props:**
+
 - `count?: number` - Number of stat cards (default: 5)
 - `gridCols?: string` - Grid layout classes (default: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-5')
 - `className?: string` - Additional CSS classes
@@ -73,6 +72,7 @@ Used for user's registered certification cards.
 ```
 
 **Props:**
+
 - `count?: number` - Number of certification cards (default: 3)
 - `className?: string` - Additional CSS classes
 
@@ -87,6 +87,7 @@ Used for exam listing pages.
 ```
 
 **Props:**
+
 - `count?: number` - Number of exam cards (default: 3)
 - `className?: string` - Additional CSS classes
 
@@ -97,14 +98,11 @@ Used for exam listing pages.
 A flexible skeleton for basic card layouts.
 
 ```tsx
-<GenericCardSkeleton 
-  count={6}
-  gridCols="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-  height="h-48"
-/>
+<GenericCardSkeleton count={6} gridCols="grid-cols-1 md:grid-cols-2 lg:grid-cols-3" height="h-48" />
 ```
 
 **Props:**
+
 - `count?: number` - Number of cards (default: 6)
 - `gridCols?: string` - Grid layout classes (default: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3')
 - `height?: string` - Card height (default: 'h-48')
@@ -121,6 +119,7 @@ Used for list-based layouts.
 ```
 
 **Props:**
+
 - `count?: number` - Number of list items (default: 5)
 - `showAvatar?: boolean` - Show avatar placeholder (default: true)
 - `className?: string` - Additional CSS classes
@@ -138,7 +137,7 @@ import CertificationGrid from '@/components/custom/CertificationGrid';
 
 <Suspense fallback={<CertificationCardSkeleton count={4} />}>
   <CertificationGrid />
-</Suspense>
+</Suspense>;
 ```
 
 ## Design System
@@ -155,6 +154,7 @@ All skeleton components follow the application's design system:
 1. **Match Real Components:** Skeleton layouts should closely match the structure of the actual components they represent.
 
 2. **Appropriate Count:** Use realistic counts that match typical data loads:
+
    - Certifications: 4-6 items
    - Dashboard stats: 3-5 items
    - Exams: 3-4 items
@@ -168,6 +168,7 @@ All skeleton components follow the application's design system:
 ## Example Implementations
 
 ### Certification Page
+
 ```tsx
 <Suspense fallback={<CertificationCardSkeleton count={4} />}>
   <CertificationGrid />
@@ -175,6 +176,7 @@ All skeleton components follow the application's design system:
 ```
 
 ### Dashboard
+
 ```tsx
 <Suspense fallback={<DashboardStatSkeleton count={5} />}>
   <DashboardStats />
@@ -186,17 +188,20 @@ All skeleton components follow the application's design system:
 ```
 
 ### Exams Page
+
 ```tsx
-{isLoadingExams && (
-  <div className="max-w-4xl mx-auto px-4 py-6">
-    <BreadcrumbSkeleton />
-    <div className="mb-8">
-      <Skeleton className="h-8 w-96" />
-      <Skeleton className="h-4 w-64" />
+{
+  isLoadingExams && (
+    <div className="max-w-4xl mx-auto px-4 py-6">
+      <BreadcrumbSkeleton />
+      <div className="mb-8">
+        <Skeleton className="h-8 w-96" />
+        <Skeleton className="h-4 w-64" />
+      </div>
+      <ExamCardSkeleton count={3} />
     </div>
-    <ExamCardSkeleton count={3} />
-  </div>
-)}
+  );
+}
 ```
 
 ## Customization

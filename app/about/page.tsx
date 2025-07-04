@@ -29,24 +29,24 @@ import {
 const aboutPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: "About CertifAI - A Solo Developer's Side-Hustle Project",
+  name: "About Certestic - A Solo Developer's Side-Hustle Project",
   description:
-    "Learn about CertifAI, a passionate side-hustle project by a solo developer who's building an AI-powered IT certification platform in their spare time.",
-  url: 'https://certifai.app/about',
+    "Learn about Certestic, a passionate side-hustle project by a solo developer who's building an AI-powered IT certification platform in their spare time.",
+  url: 'https://certestic.com/about',
   mainEntity: {
     '@type': 'Person',
-    name: 'CertifAI Developer',
+    name: 'Certestic Developer',
     jobTitle: 'Full-Stack Developer & AI Enthusiast',
   },
   isPartOf: {
     '@type': 'WebSite',
-    name: 'CertifAI',
-    url: 'https://certifai.app',
+    name: 'Certestic',
+    url: 'https://certestic.com',
   },
   inLanguage: 'en-US',
   author: {
     '@type': 'Person',
-    name: 'CertifAI Developer',
+    name: 'Certestic Developer',
   },
 };
 
@@ -57,7 +57,7 @@ export default function AboutPage() {
       year: 'Early 2025',
       title: 'The Side-Hustle Begins',
       description:
-        'Started CertifAI as a weekend project after noticing how expensive and outdated most IT certification training was. Began experimenting with AI to create personalized practice questions in my spare time.',
+        'Started Certestic as a weekend project after noticing how expensive and outdated most IT certification training was. Began experimenting with AI to create personalized practice questions in my spare time.',
       icon: Brain,
       keywords: 'side project, weekend coding, AI experimentation',
     },
@@ -71,9 +71,9 @@ export default function AboutPage() {
     },
     {
       year: 'Current',
-      title: 'Growing the Dream',
+      title: 'Building the Future',
       description:
-        'Continuing to develop CertifAI in my spare time, balancing it with my day job. Each new user and piece of feedback motivates me to keep building and improving this passion project.',
+        'Continuing to develop Certestic in my spare time, balancing it with my day job. Each new user and piece of feedback motivates me to keep building and improving this passion project.',
       icon: TrendingUp,
       keywords: 'passion project, work-life balance, user feedback',
     },
@@ -121,7 +121,7 @@ export default function AboutPage() {
       icon: Users,
       title: 'Community-First Development',
       description:
-        'As a solo developer, I rely heavily on feedback from users like you. Every feature request and bug report helps me improve CertifAI during my limited development time.',
+        'As a solo developer, I rely heavily on feedback from users like you. Every feature request and bug report helps me improve Certestic during my limited development time.',
       benefits: ['Direct developer contact', 'Quick responses', 'User-driven features'],
       keywords: 'community feedback, solo development, user input',
     },
@@ -137,7 +137,7 @@ export default function AboutPage() {
       icon: Heart,
       title: 'Accessible & Free (For Now)',
       description:
-        'While I figure out the business model, CertifAI stays free. I believe good education shouldn&apos;t be expensive, and I want to help as many people as possible while I build this dream.',
+        'While I figure out the business model, Certestic stays free. I believe good education shouldn&apos;t be expensive, and I want to help as many people as possible while I build this platform.',
       benefits: ['Free beta access', 'No hidden costs', 'Educational mission'],
       keywords: 'free access, educational mission, affordable learning',
     },
@@ -153,7 +153,7 @@ export default function AboutPage() {
       icon: Target,
       title: 'Practical & Results-Focused',
       description:
-        'I built CertifAI to solve real problems I&apos;ve seen in my career. Every feature is designed to actually help people pass certifications and advance their careers, not just look impressive.',
+        'I built Certestic to solve real problems I&apos;ve seen in my career. Every feature is designed to actually help people pass certifications and advance their careers, not just look impressive.',
       benefits: ['Real-world solutions', 'Career-focused', 'Practical approach'],
       keywords: 'practical solutions, career advancement, real-world application',
     },
@@ -192,11 +192,11 @@ export default function AboutPage() {
           {/* Hero Section with optimized heading hierarchy */}
           <header className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              About CertifAI: A Solo Developer&apos;s Side-Hustle
+              About Certestic: A Solo Developer&apos;s Side-Hustle
             </h1>
             <div className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
               <p className="mb-4">
-                <strong>CertifAI</strong> is my personal side project - a passion-driven attempt to
+                <strong>Certestic</strong> is my personal side project - a passion-driven attempt to
                 make IT certification training more accessible and effective using AI. What started
                 as weekend coding sessions has grown into something I&apos;m genuinely proud of.
               </p>
@@ -211,7 +211,7 @@ export default function AboutPage() {
               className="flex flex-col sm:flex-row gap-4 justify-center"
               aria-label="CTA Navigation"
             >
-              <Button size="lg" className="rounded-lg" aria-label="Try CertifAI Beta Version">
+              <Button size="lg" className="rounded-lg" aria-label="Try Certestic Beta Version">
                 <Rocket className="mr-2 h-5 w-5" />
                 Try My Beta Project
               </Button>
@@ -219,7 +219,7 @@ export default function AboutPage() {
                 variant="outline"
                 size="lg"
                 className="rounded-lg"
-                aria-label="Share feedback about CertifAI"
+                aria-label="Share feedback about Certestic"
               >
                 <Heart className="mr-2 h-5 w-5" />
                 Send Me Feedback
@@ -230,7 +230,7 @@ export default function AboutPage() {
           {/* Enhanced Stats Section with rich descriptions */}
           <section className="mb-16" aria-labelledby="platform-stats">
             <h2 id="platform-stats" className="sr-only">
-              CertifAI Platform Statistics
+              Certestic Platform Statistics
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
@@ -253,7 +253,7 @@ export default function AboutPage() {
           {/* Mission & Vision with enhanced SEO content */}
           <section className="grid lg:grid-cols-2 gap-12 mb-16" aria-labelledby="mission-vision">
             <h2 id="mission-vision" className="sr-only">
-              My Personal Mission and Vision for CertifAI
+              My Personal Mission and Vision for Certestic
             </h2>
 
             <article>
@@ -270,7 +270,7 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed mb-4">
-                    I started CertifAI because I was frustrated with the expensive, outdated IT
+                    I started Certestic because I was frustrated with the expensive, outdated IT
                     certification training options available. As someone who&apos;s been through
                     multiple certifications, I knew there had to be a better way.
                   </p>
@@ -330,7 +330,7 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed mb-4">
-                    Right now, CertifAI is my nights-and-weekends project, but I dream of it
+                    Right now, Certestic is my nights-and-weekends project, but I have plans for it
                     becoming the go-to platform for IT certification training. I want to prove that
                     a solo developer can build something that competes with (and beats) the big
                     players.
@@ -381,7 +381,7 @@ export default function AboutPage() {
           {/* Core Values Section with enhanced SEO */}
           <section className="mb-16" aria-labelledby="core-values">
             <h2 id="core-values" className="text-3xl font-bold text-foreground text-center mb-8">
-              My Development Philosophy: How I&apos;m Building CertifAI
+              My Development Philosophy: How I&apos;m Building Certestic
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {values.map((value, index) => (
@@ -418,7 +418,7 @@ export default function AboutPage() {
               id="development-timeline"
               className="text-3xl font-bold text-foreground text-center mb-8"
             >
-              My CertifAI Journey: From Idea to Beta
+              My Certestic Journey: From Idea to Beta
             </h2>
             <div className="relative">
               <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-border"></div>
@@ -464,7 +464,7 @@ export default function AboutPage() {
           {/* Enhanced Developer Section */}
           <section className="mb-16" aria-labelledby="developer-info">
             <h2 id="developer-info" className="text-3xl font-bold text-foreground text-center mb-8">
-              Hi, I&apos;m the Developer Behind CertifAI
+              Hi, I&apos;m the Developer Behind Certestic
             </h2>
             <div className="max-w-2xl mx-auto">
               <Card className="hover:shadow-lg transition-shadow">
@@ -473,7 +473,7 @@ export default function AboutPage() {
                     <Brain className="h-12 w-12 text-primary" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
-                    Just a Developer with a Dream
+                    Just a Developer with a Plan
                   </h3>
                   <p className="text-primary mb-4 font-medium">
                     Full-Stack Developer | AI Enthusiast | Side-Hustle Entrepreneur
@@ -481,11 +481,11 @@ export default function AboutPage() {
                   <p className="text-muted-foreground leading-relaxed mb-6">
                     I&apos;m a <strong>full-stack developer</strong> who got tired of expensive,
                     outdated IT certification training. After struggling through multiple
-                    certifications myself, I decided to build something better. CertifAI is my
+                    certifications myself, I decided to build something better. Certestic is my
                     attempt to use AI to solve real problems in professional education.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    This isn&apos;t my day job - it&apos;s my passion project. I work on CertifAI
+                    This isn&apos;t my day job - it&apos;s my passion project. I work on Certestic
                     during evenings and weekends, pouring my heart into creating something that
                     genuinely helps people advance their careers. Every line of code is written with
                     care and purpose.
@@ -522,7 +522,7 @@ export default function AboutPage() {
                   Help Me Build Something Amazing
                 </h2>
                 <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
-                  CertifAI is still in beta, and I need your help to make it better. Try it out,
+                  Certestic is still in beta, and I need your help to make it better. Try it out,
                   break it, and tell me what you think. Your feedback directly shapes what I build
                   next.
                 </p>
@@ -541,7 +541,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="rounded-lg" aria-label="Try CertifAI beta">
+                  <Button size="lg" className="rounded-lg" aria-label="Try Certestic beta">
                     <Rocket className="mr-2 h-5 w-5" />
                     Try My Beta Project
                   </Button>

@@ -46,7 +46,7 @@ export default function RootLoading() {
           </div>
 
           {/* Loading Text */}
-          <p className="text-sm text-slate-600 dark:text-slate-400">Loading CertifAI...</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">Loading Certestic...</p>
         </div>
       </div>
     </div>

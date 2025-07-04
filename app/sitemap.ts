@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://certifai.app';
+  const baseUrl = 'https://certestic.com';
 
   // Static pages
   const staticPages = [

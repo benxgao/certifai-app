@@ -54,7 +54,7 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: 'Email',
-      content: 'contact@certifai.com',
+      content: 'contact@certestic.com',
       description: 'Best way to reach the developer - usually responds within a day or two',
     },
     {
@@ -81,7 +81,7 @@ export default function ContactPage() {
     {
       question: 'Is this a real company?',
       answer:
-        "CertifAI is currently a solo developer project exploring AI applications in education. It's in early beta and may evolve into something bigger based on community interest.",
+        "Certestic is currently a solo developer project exploring AI applications in education. It's in early beta and may evolve into something bigger based on community interest.",
     },
     {
       question: 'Which certifications do you support?',
@@ -112,7 +112,7 @@ export default function ContactPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Get in Touch</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Questions about the beta? Want to contribute? Have feedback to share? I&apos;d love to
-            hear from you and learn how we can make CertifAI better together.
+            hear from you and learn how we can make Certestic better together.
           </p>
         </div>
 

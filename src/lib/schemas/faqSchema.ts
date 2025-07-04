@@ -5,10 +5,10 @@ export const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'What is CertifAI and how can I simulate exams by AI?',
+      name: 'What is Certestic and how can I simulate exams by AI?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'CertifAI is an AI-powered IT certification training platform that allows you to simulate exams by AI and prepare for IT certification by self exams. Our technology provides personalized learning experiences, AI-generated practice questions, and adaptive study recommendations to help professionals succeed in their certification goals.',
+        text: 'Certestic is an AI-powered IT certification training platform that allows you to simulate exams by AI and prepare for IT certification by self exams. Our technology provides personalized learning experiences, AI-generated practice questions, and adaptive study recommendations to help professionals succeed in their certification goals.',
       },
     },
     {
@@ -32,7 +32,7 @@ export const faqSchema = {
       name: 'What IT certification topics can I create exams for using AI?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'CertifAI supports various IT certification topics including cloud computing, cybersecurity, networking, and software development. You can create exams on particular exam topics and tell AI to generate questions focused on specific concepts, technologies, or certification domains for most major certification programs.',
+        text: 'Certestic supports various IT certification topics including cloud computing, cybersecurity, networking, and software development. You can create exams on particular exam topics and tell AI to generate questions focused on specific concepts, technologies, or certification domains for most major certification programs.',
       },
     },
     {
@@ -45,10 +45,10 @@ export const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'Why is CertifAI better than generating exam tests in AI chatbots directly?',
+      name: 'Why is Certestic better than generating exam tests in AI chatbots directly?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'CertifAI provides a superior user experience compared to AI chatbots with professional exam formatting, timed sessions, dedicated progress tracking, and seamless workflow designed specifically for certification preparation. Unlike basic text responses in chatbots, CertifAI offers a purpose-built platform for creating exams on particular exam topics.',
+        text: 'Certestic provides a superior user experience compared to AI chatbots with professional exam formatting, timed sessions, dedicated progress tracking, and seamless workflow designed specifically for certification preparation. Unlike basic text responses in chatbots, Certestic offers a purpose-built platform for creating exams on particular exam topics.',
       },
     },
   ],

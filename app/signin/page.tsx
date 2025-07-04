@@ -459,7 +459,7 @@ const LoginPage = () => {
                 Sign In
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                Enter your credentials to access your CertifAI account.
+                Enter your credentials to access your Certestic account.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleSignin} autoComplete="on">

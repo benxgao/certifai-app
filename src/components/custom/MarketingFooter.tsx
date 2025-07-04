@@ -11,7 +11,7 @@ export default function MarketingFooter() {
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">C</span>
               </div>
-              <span className="font-bold text-xl text-white">CertifAI</span>
+              <span className="font-bold text-xl text-white">Certestic</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
               Master IT certifications with AI-powered practice exams, real-time performance
@@ -191,7 +191,7 @@ export default function MarketingFooter() {
         {/* Bottom Section */}
         <div className="mt-12 pt-8 border-t border-slate-700">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-slate-400 text-sm">© 2025 CertifAI. All rights reserved.</div>
+            <div className="text-slate-400 text-sm">© 2025 Certestic. All rights reserved.</div>
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2 text-slate-400 text-sm">
                 <span>🌟</span>

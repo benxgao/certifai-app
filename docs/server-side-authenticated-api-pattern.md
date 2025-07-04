@@ -115,7 +115,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     if ([entity]) {
       return {
-        title: `${[entity].name} | CertifAI`,
+        title: `${[entity].name} | Certestic`,
         description: [entity].description,
         // ... other metadata
       };
@@ -125,7 +125,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: 'Default Title | CertifAI',
+    title: 'Default Title | Certestic',
     description: 'Default description',
   };
 }
@@ -193,12 +193,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (certification) {
     return {
-      title: `${certification.name} | CertifAI`,
+      title: `${certification.name} | Certestic`,
       description: certification.description,
     };
   }
 
-  return { title: 'Certification | CertifAI' };
+  return { title: 'Certification | Certestic' };
 }
 
 export default async function CertificationPage({ params }: Props) {

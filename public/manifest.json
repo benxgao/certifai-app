@@ -1,6 +1,6 @@
 {
-  "name": "CertifAI - AI-Powered IT Certification Training",
-  "short_name": "CertifAI",
+  "name": "Certestic - AI-Powered IT Certification Training",
+  "short_name": "Certestic",
   "description": "Practice IT certifications with AI-generated questions and personalized study recommendations. Join our growing community of a growing number of beta users preparing smarter.",
   "start_url": "/",
   "display": "standalone",
@@ -32,7 +32,7 @@
       "src": "/images/screenshot-1.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "label": "CertifAI Dashboard - AI-powered practice exams"
+      "label": "Certestic Dashboard - AI-powered practice exams"
     },
     {
       "src": "/images/screenshot-2.png",

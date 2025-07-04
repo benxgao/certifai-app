@@ -1,14 +1,14 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign Up | CertifAI - Join a growing number of Users Mastering IT Certifications with AI',
+  title: 'Sign Up | Certestic - Join a growing number of Users Mastering IT Certifications with AI',
   description:
-    'Join CertifAI today and get free beta access with 300 credit coins. Start your AI-powered IT certification journey with personalized learning and practice exams.',
+    'Join Certestic today and get free beta access with 300 credit coins. Start your AI-powered IT certification journey with personalized learning and practice exams.',
   keywords: [
-    'CertifAI sign up',
+    'Certestic sign up',
     'free beta access',
     'register account',
-    'join CertifAI',
+    'join Certestic',
     'IT certification training registration',
     'AI platform signup',
     'free trial registration',
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     'certification training account',
     'create account',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -31,38 +31,38 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Sign Up | CertifAI - Join a growing number of Users Mastering IT Certifications',
+    title: 'Sign Up | Certestic - Join a growing number of Users Mastering IT Certifications',
     description:
-      'Join CertifAI today and get free beta access with 300 credit coins. Start your AI-powered certification journey.',
+      'Join Certestic today and get free beta access with 300 credit coins. Start your AI-powered certification journey.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/signup',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/signup',
+    siteName: 'Certestic',
     images: [
       {
-        url: '/images/signup/certifai-signup-og.jpg',
+        url: '/images/signup/certestic-signup-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'Join CertifAI - Free Beta Access Available',
+        alt: 'Join Certestic - Free Beta Access Available',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sign Up | CertifAI - Free Beta Access',
+    title: 'Sign Up | Certestic - Free Beta Access',
     description:
       'Join a growing number of users mastering IT certifications with AI-powered learning.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    creator: '@Certestic',
+    site: '@Certestic',
     images: [
       {
-        url: '/images/signup/certifai-signup-twitter.jpg',
-        alt: 'Join CertifAI - Free Beta Access Available',
+        url: '/images/signup/certestic-signup-twitter.jpg',
+        alt: 'Join Certestic - Free Beta Access Available',
       },
     ],
   },
   alternates: {
-    canonical: 'https://certifai.app/signup',
+    canonical: 'https://certestic.com/signup',
   },
   category: 'Registration',
 };

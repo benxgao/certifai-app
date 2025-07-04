@@ -22,7 +22,7 @@ export default function SEOComponent({
   structuredData = [],
   noIndex = false,
 }: SEOProps) {
-  const defaultTitle = 'CertifAI | AI-Powered IT Certification Training';
+  const defaultTitle = 'Certestic | AI-Powered IT Certification Training';
   const defaultDescription =
     'Master IT certifications with AI-powered practice questions and personalized study recommendations. Join a growing number of beta users advancing their careers.';
 
@@ -54,7 +54,7 @@ export default function SEOComponent({
       <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={pageDescription} />
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="CertifAI" />
+      <meta property="og:site_name" content="Certestic" />
       <meta property="og:locale" content="en_US" />
       {ogImage && <meta property="og:image" content={ogImage} />}
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
@@ -63,8 +63,8 @@ export default function SEOComponent({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={pageDescription} />
-      <meta name="twitter:creator" content="@CertifAI" />
-      <meta name="twitter:site" content="@CertifAI" />
+      <meta name="twitter:creator" content="@Certestic" />
+      <meta name="twitter:site" content="@Certestic" />
       {twitterImage && <meta name="twitter:image" content={twitterImage} />}
 
       {/* Structured Data */}
@@ -81,9 +81,9 @@ export default function SEOComponent({
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
       {/* Additional SEO Meta Tags */}
-      <meta name="author" content="CertifAI Team" />
-      <meta name="creator" content="CertifAI" />
-      <meta name="publisher" content="CertifAI" />
+      <meta name="author" content="Certestic Team" />
+      <meta name="creator" content="Certestic" />
+      <meta name="publisher" content="Certestic" />
       <meta name="format-detection" content="telephone=no, email=no, address=no" />
 
       {/* Mobile Optimization */}

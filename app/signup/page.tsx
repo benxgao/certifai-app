@@ -463,7 +463,7 @@ export default function SignUpPage() {
                 Create Account
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                Sign up to get started with CertifAI
+                Sign up to get started with Certestic
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleSignUp} autoComplete="off">

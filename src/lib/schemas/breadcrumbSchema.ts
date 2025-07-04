@@ -14,15 +14,15 @@ export function generateBreadcrumbSchema(breadcrumbs: Array<{ name: string; url:
 
 // Common breadcrumb paths
 export const commonBreadcrumbs = {
-  home: { name: 'Home', url: 'https://certifai.app' },
-  about: { name: 'About', url: 'https://certifai.app/about' },
-  pricing: { name: 'Pricing', url: 'https://certifai.app/pricing' },
-  blog: { name: 'Blog', url: 'https://certifai.app/blog' },
-  studyGuides: { name: 'Study Guides', url: 'https://certifai.app/study-guides' },
-  documentation: { name: 'Documentation', url: 'https://certifai.app/documentation' },
-  support: { name: 'Support', url: 'https://certifai.app/support' },
-  contact: { name: 'Contact', url: 'https://certifai.app/contact' },
-  community: { name: 'Community', url: 'https://certifai.app/community' },
+  home: { name: 'Home', url: 'https://certestic.com' },
+  about: { name: 'About', url: 'https://certestic.com/about' },
+  pricing: { name: 'Pricing', url: 'https://certestic.com/pricing' },
+  blog: { name: 'Blog', url: 'https://certestic.com/blog' },
+  studyGuides: { name: 'Study Guides', url: 'https://certestic.com/study-guides' },
+  documentation: { name: 'Documentation', url: 'https://certestic.com/documentation' },
+  support: { name: 'Support', url: 'https://certestic.com/support' },
+  contact: { name: 'Contact', url: 'https://certestic.com/contact' },
+  community: { name: 'Community', url: 'https://certestic.com/community' },
 };
 
 // Predefined breadcrumb schemas for main pages

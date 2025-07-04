@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://certifai.app';
+  const baseUrl = 'https://certestic.com';
 
   return [
     {

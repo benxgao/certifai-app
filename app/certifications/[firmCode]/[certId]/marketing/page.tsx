@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Validate certId is a number
   if (!/^\d+$/.test(certId)) {
     return {
-      title: 'Certification Not Found | CertifAI',
+      title: 'Certification Not Found | Certestic',
       description: 'The requested certification could not be found.',
     };
   }
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return {
         title: `${
           cert.name
-        } - Create Exams on Particular Topics & Test Knowledge Mastery | ${firmCode.toUpperCase()} | CertifAI`,
+        } - Create Exams on Particular Topics & Test Knowledge Mastery | ${firmCode.toUpperCase()} | Certestic`,
         description: `Master the ${
           cert.name
         } certification by creating exams on particular exam topics. Tell AI to generate exams on your particular needs focusing on specific concepts, technologies, and domains. Better user experience than generating exam tests in AI chatbots directly for ${firmCode.toUpperCase()} certifications.`,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
           title: `${
             cert.name
-          } - Create Exams on Particular Topics & Test Knowledge Mastery | ${firmCode.toUpperCase()} | CertifAI`,
+          } - Create Exams on Particular Topics & Test Knowledge Mastery | ${firmCode.toUpperCase()} | Certestic`,
           description: `Master the ${cert.name} certification by creating exams on particular exam topics. Tell AI to generate exams focused on your specific learning needs and test knowledge mastery.`,
           type: 'website',
         },
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${firmCode.toUpperCase()} Certification Training - Create Exams on Particular Topics & Test Knowledge Mastery | CertifAI`,
+    title: `${firmCode.toUpperCase()} Certification Training - Create Exams on Particular Topics & Test Knowledge Mastery | Certestic`,
     description: `Master your ${firmCode.toUpperCase()} certification by creating exams on particular exam topics. Tell AI to generate exams on your particular needs focusing on specific concepts, technologies, and certification domains. Superior user experience compared to AI chatbots for exam generation.`,
     keywords: `${firmCode}, create exams on particular exam topics, test knowledge mastery, tell AI to generate exams, better than AI chatbots, superior user experience, topic-focused certification training, exam preparation, concept-specific practice questions, AI-powered learning, study guide`,
   };

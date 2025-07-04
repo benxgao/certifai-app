@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title:
-    'CertifAI | Create Exams on Particular Topics & Test Knowledge Mastery with AI | Beta Access',
+    'Certestic | Create Exams on Particular Topics & Test Knowledge Mastery with AI | Beta Access',
   description:
     'Create exams on particular exam topics to test if you have mastered knowledge. Tell AI to generate exams on your particular needs like focusing on specific concepts or technologies. Superior user experience compared to generating exam tests in AI chatbots directly.',
   keywords: [
-    'CertifAI',
+    'Certestic',
     'create exams on particular exam topics',
     'test knowledge mastery with AI',
     'tell AI to generate exams on particular needs',
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     'certification success platform',
     'knowledge mastery assessment',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -51,41 +51,41 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'CertifAI | Create Exams on Particular Topics & Test Knowledge Mastery with AI',
+    title: 'Certestic | Create Exams on Particular Topics & Test Knowledge Mastery with AI',
     description:
       'Create exams on particular exam topics to test knowledge mastery. Tell AI to generate exams on your particular needs like focusing on specific concepts or technologies. Better user experience than AI chatbots. Join a growing number of beta users.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com',
+    siteName: 'Certestic',
     images: [
       {
-        url: '/images/landing/certifai-homepage-og.jpg',
+        url: '/images/landing/certestic-homepage-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI - AI-Powered IT Certification Training Platform Homepage',
+        alt: 'Certestic - AI-Powered IT Certification Training Platform Homepage',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams',
+    title: 'Certestic | Simulate Exams by AI & Prepare for IT Certification by Self Exams',
     description:
       'Simulate exams by AI and prepare for IT certification by self exams with a growing number of beta users. AI-powered practice questions and personalized study recommendations.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    creator: '@Certestic',
+    site: '@Certestic',
     images: [
       {
-        url: '/images/landing/certifai-homepage-twitter.jpg',
-        alt: 'CertifAI - AI-Powered IT Certification Training Platform',
+        url: '/images/landing/certestic-homepage-twitter.jpg',
+        alt: 'Certestic - AI-Powered IT Certification Training Platform',
       },
     ],
   },
   alternates: {
-    canonical: 'https://certifai.app',
+    canonical: 'https://certestic.com',
   },
   category: 'Education',
-  applicationName: 'CertifAI',
+  applicationName: 'Certestic',
   referrer: 'origin-when-cross-origin',
   formatDetection: {
     email: false,

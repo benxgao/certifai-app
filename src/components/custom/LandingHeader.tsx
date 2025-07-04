@@ -40,7 +40,7 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">C</span>
               </div>
-              <span className="font-bold text-xl text-foreground">CertifAI</span>
+              <span className="font-bold text-xl text-foreground">Certestic</span>
             </Link>
           </div>
 

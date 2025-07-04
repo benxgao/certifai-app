@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog | CertifAI - AI-Powered IT Certification Training Insights & Tips',
+  title: 'Blog | Certestic - AI-Powered IT Certification Training Insights & Tips',
   description:
     'Discover the latest insights, tips, and strategies for IT certification success with AI-powered learning. Expert advice on certification preparation, study techniques, and career advancement.',
   keywords: [
-    'CertifAI blog',
+    'Certestic blog',
     'IT certification tips',
     'AI learning insights',
     'certification study strategies',
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     'certification preparation guide',
     'career advancement tips',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -33,38 +33,38 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Blog | CertifAI - IT Certification Training Insights & Tips',
+    title: 'Blog | Certestic - IT Certification Training Insights & Tips',
     description:
       'Discover expert insights and strategies for IT certification success with AI-powered learning techniques and proven study methods.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/blog',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/blog',
+    siteName: 'Certestic',
     images: [
       {
-        url: '/images/blog/certifai-blog-og.jpg',
+        url: '/images/blog/certestic-blog-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI Blog - IT Certification Training Insights',
+        alt: 'Certestic Blog - IT Certification Training Insights',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog | CertifAI - IT Certification Training Insights',
+    title: 'Blog | Certestic - IT Certification Training Insights',
     description:
       'Expert insights and strategies for IT certification success with AI-powered learning.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    creator: '@Certestic',
+    site: '@Certestic',
     images: [
       {
-        url: '/images/blog/certifai-blog-twitter.jpg',
-        alt: 'CertifAI Blog - IT Certification Training Insights',
+        url: '/images/blog/certestic-blog-twitter.jpg',
+        alt: 'Certestic Blog - IT Certification Training Insights',
       },
     ],
   },
   alternates: {
-    canonical: 'https://certifai.app/blog',
+    canonical: 'https://certestic.com/blog',
   },
   category: 'Education',
 };

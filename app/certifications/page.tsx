@@ -6,20 +6,20 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export const metadata: Metadata = {
-  title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | CertifAI',
+  title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | Certestic',
   description:
     'Browse all available IT certifications organized by leading technology companies. Simulate exams by AI and prepare for IT certification by self exams with AWS, Microsoft, Google, Cisco, and more certification programs.',
   keywords:
     'IT certifications, simulate exams by AI, prepare for IT certification by self exams, AWS certifications, Microsoft certifications, Google Cloud certifications, Cisco certifications, certification catalog, IT training programs, technology certifications, self exam preparation',
   openGraph: {
-    title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | CertifAI',
+    title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | Certestic',
     description:
       'Browse all available IT certifications organized by leading technology companies. Simulate exams by AI and prepare for IT certification by self exams with AWS, Microsoft, Google, Cisco, and more certification programs.',
     type: 'website',
-    url: 'https://certifai.app/certifications',
+    url: 'https://certestic.com/certifications',
   },
   twitter: {
-    title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | CertifAI',
+    title: 'All IT Certifications - Simulate Exams by AI & Prepare by Self Exams | Certestic',
     description:
       'Browse all available IT certifications organized by leading technology companies. Simulate exams by AI and prepare for IT certification by self exams with AWS, Microsoft, Google, Cisco, and more certification programs.',
     card: 'summary_large_image',

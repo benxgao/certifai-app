@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the implementation of automatic URL linkification in the "About This Certification" sections across the CertifAI application.
+This document describes the implementation of automatic URL linkification in the "About This Certification" sections across the Certestic application.
 
 ## Problem Statement
 

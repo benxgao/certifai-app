@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | CertifAI - Legal Terms & Conditions',
+  title: 'Terms of Service | Certestic - Legal Terms & Conditions',
   description:
-    "Read CertifAI's comprehensive Terms of Service. Understand your rights, responsibilities, and legal terms when using our AI-powered IT certification training platform.",
+    "Read Certestic's comprehensive Terms of Service. Understand your rights, responsibilities, and legal terms when using our AI-powered IT certification training platform.",
   keywords: [
-    'CertifAI terms of service',
+    'Certestic terms of service',
     'legal terms and conditions',
     'user agreement',
     'platform terms',
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     'service agreement',
     'platform policies',
   ].join(', '),
-  authors: [{ name: 'CertifAI Legal Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Legal Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -31,23 +31,23 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Terms of Service | CertifAI - Legal Terms & Conditions',
+    title: 'Terms of Service | Certestic - Legal Terms & Conditions',
     description:
-      "Read CertifAI's comprehensive Terms of Service and legal terms for our AI-powered IT certification training platform.",
+      "Read Certestic's comprehensive Terms of Service and legal terms for our AI-powered IT certification training platform.",
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/terms',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/terms',
+    siteName: 'Certestic',
   },
   twitter: {
     card: 'summary',
-    title: 'Terms of Service | CertifAI',
-    description: 'Legal terms and conditions for CertifAI AI-powered certification platform.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    title: 'Terms of Service | Certestic',
+    description: 'Legal terms and conditions for Certestic AI-powered certification platform.',
+    creator: '@Certestic',
+    site: '@Certestic',
   },
   alternates: {
-    canonical: 'https://certifai.app/terms',
+    canonical: 'https://certestic.com/terms',
   },
   category: 'Legal',
 };

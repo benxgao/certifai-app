@@ -7,7 +7,7 @@ export async function GET() {
     webSocketDebuggerUrl: '',
     devtoolsFrontendUrl: '',
     description: 'Next.js Application',
-    title: 'CertifAI App',
+    title: 'Certestic App',
     type: 'page',
     url: 'http://localhost:3000',
     // Add basic debugging info but don't expose sensitive details

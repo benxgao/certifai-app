@@ -322,13 +322,16 @@ export default function CertificationDetail({ certId, initialData }: Props) {
               Ready to Start Your Certification Journey?
             </h3>
             <p className="text-gray-700 mb-6">
-              Join thousands of professionals who have advanced their careers with CertifAI&apos;s
+              Join thousands of professionals who have advanced their careers with Certestic&apos;s
               AI-powered certification training. Get personalized study plans, practice questions,
               and detailed progress tracking.
             </p>
             <div className="space-x-4">
               <Link href="/signup">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
+                <Button
+                  size="lg"
+                  className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                >
                   Get Started Free
                 </Button>
               </Link>

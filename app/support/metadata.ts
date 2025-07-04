@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Support | CertifAI - Help Center & Customer Support',
+  title: 'Support | Certestic - Help Center & Customer Support',
   description:
-    'Get help with CertifAI platform. Access customer support, troubleshooting guides, and assistance for your AI-powered IT certification training journey.',
+    'Get help with Certestic platform. Access customer support, troubleshooting guides, and assistance for your AI-powered IT certification training journey.',
   keywords: [
-    'CertifAI support',
+    'Certestic support',
     'customer support',
     'help center',
     'technical support',
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     'help desk',
     'customer service',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -33,37 +33,37 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Support | CertifAI - Help Center & Customer Support',
+    title: 'Support | Certestic - Help Center & Customer Support',
     description:
-      'Get help with CertifAI platform. Access customer support and assistance for your AI-powered certification training.',
+      'Get help with Certestic platform. Access customer support and assistance for your AI-powered certification training.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/support',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/support',
+    siteName: 'Certestic',
     images: [
       {
-        url: '/images/support/certifai-support-og.jpg',
+        url: '/images/support/certestic-support-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI Support - Help Center & Customer Support',
+        alt: 'Certestic Support - Help Center & Customer Support',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Support | CertifAI - Help Center',
-    description: 'Get help with CertifAI platform and your certification training journey.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    title: 'Support | Certestic - Help Center',
+    description: 'Get help with Certestic platform and your certification training journey.',
+    creator: '@Certestic',
+    site: '@Certestic',
     images: [
       {
-        url: '/images/support/certifai-support-twitter.jpg',
-        alt: 'CertifAI Support - Help Center & Customer Support',
+        url: '/images/support/certestic-support-twitter.jpg',
+        alt: 'Certestic Support - Help Center & Customer Support',
       },
     ],
   },
   alternates: {
-    canonical: 'https://certifai.app/support',
+    canonical: 'https://certestic.com/support',
   },
   category: 'Education',
 };

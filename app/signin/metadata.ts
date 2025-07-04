@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sign In | CertifAI - Access Your AI-Powered Training Account',
+  title: 'Sign In | Certestic - Access Your AI-Powered Training Account',
   description:
-    'Sign in to your CertifAI account to access AI-powered IT certification training, personalized study plans, and practice exams. Secure login for beta users.',
+    'Sign in to your Certestic account to access AI-powered IT certification training, personalized study plans, and practice exams. Secure login for beta users.',
   keywords: [
-    'CertifAI sign in',
+    'Certestic sign in',
     'login',
     'user account access',
     'certification training login',
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     'platform access',
     'user authentication',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: false,
     follow: false,
@@ -28,23 +28,23 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Sign In | CertifAI - Access Your Training Account',
+    title: 'Sign In | Certestic - Access Your Training Account',
     description:
       'Sign in to access your AI-powered IT certification training account and personalized study materials.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/signin',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/signin',
+    siteName: 'Certestic',
   },
   twitter: {
     card: 'summary',
-    title: 'Sign In | CertifAI',
+    title: 'Sign In | Certestic',
     description: 'Access your AI-powered IT certification training account.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    creator: '@Certestic',
+    site: '@Certestic',
   },
   alternates: {
-    canonical: 'https://certifai.app/signin',
+    canonical: 'https://certestic.com/signin',
   },
   category: 'Authentication',
 };

@@ -11,7 +11,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
       <div className="sr-only">
         <h2>Create Exams on Particular Topics - Master Your Knowledge with AI</h2>
         <p>
-          CertifAI revolutionizes IT certification preparation by letting you create exams on
+          Certestic revolutionizes IT certification preparation by letting you create exams on
           particular exam topics to test if you have mastered knowledge. Tell AI to generate exams
           on your particular needs like focusing on specific concepts, technologies, or
           certification domains.
@@ -35,7 +35,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
           comprehensive preparation and knowledge validation.
         </p>
 
-        <h3>Why CertifAI Beats AI Chatbots for Exam Generation</h3>
+        <h3>Why Certestic Beats AI Chatbots for Exam Generation</h3>
         <ul>
           <li>Professional exam interface vs basic text responses in AI chatbots</li>
           <li>Real timed exam sessions instead of manual copy-paste workflow</li>
@@ -47,9 +47,9 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
 
         <h3>Superior Experience for Topic-Focused Learning</h3>
         <p>
-          Unlike generating exam tests in AI chatbots directly, CertifAI provides a purpose-built
+          Unlike generating exam tests in AI chatbots directly, Certestic provides a purpose-built
           platform with superior user experience. Join thousands of IT professionals who choose
-          CertifAI over basic AI chatbots for comprehensive certification preparation with
+          Certestic over basic AI chatbots for comprehensive certification preparation with
           professional exam formatting, timed sessions, and dedicated progress tracking. features,
           allowing you to experience the future of certification preparation without any cost.
         </p>
@@ -77,13 +77,13 @@ export const seoKeywords = [
 // SEO meta descriptions for different contexts
 export const seoDescriptions = {
   homepage:
-    'Simulate exams by AI and prepare for IT certification by self exams with CertifAI. Join a growing number of professionals using AI-powered practice questions and personalized study recommendations.',
+    'Simulate exams by AI and prepare for IT certification by self exams with Certestic. Join a growing number of professionals using AI-powered practice questions and personalized study recommendations.',
   certifications:
     'Browse IT certifications and simulate exams by AI for AWS, Microsoft, Google Cloud, and more. Prepare for IT certification by self exams with our comprehensive catalog.',
   individual: (certName: string, firmCode: string) =>
     `Simulate exams by AI for ${certName} certification. Prepare for ${firmCode} IT certification by self exams with personalized study plans and AI-powered practice questions.`,
   about:
-    'Learn how CertifAI helps professionals simulate exams by AI and prepare for IT certification by self exams. Discover our mission to revolutionize certification training with artificial intelligence.',
+    'Learn how Certestic helps professionals simulate exams by AI and prepare for IT certification by self exams. Discover our mission to revolutionize certification training with artificial intelligence.',
   pricing:
     'Affordable pricing to simulate exams by AI and prepare for IT certification by self exams. Choose the perfect plan for your certification goals with flexible self exam preparation options.',
 };

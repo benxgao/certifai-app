@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | CertifAI',
+  title: 'Terms of Service | Certestic',
   description:
-    "Read CertifAI's Terms of Service. Understand your rights and responsibilities when using our AI-powered IT certification training platform.",
+    "Read Certestic's Terms of Service. Understand your rights and responsibilities when using our AI-powered IT certification training platform.",
   robots: 'index, follow',
 };
 
@@ -39,11 +39,11 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement
-                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and CertifAI
-                  Limited, a company incorporated in New Zealand (&quot;CertifAI,&quot;
+                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and Certestic
+                  Limited, a company incorporated in New Zealand (&quot;Certestic,&quot;
                   &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). By accessing or using the
-                  CertifAI platform, you acknowledge that you have read, understood, and agree to be
-                  bound by these Terms.
+                  Certestic platform, you acknowledge that you have read, understood, and agree to
+                  be bound by these Terms.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   <strong>
@@ -61,7 +61,7 @@ export default function TermsOfService() {
                 </h2>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
                   <li>
-                    <strong>&quot;Platform&quot;</strong> means the CertifAI website, applications,
+                    <strong>&quot;Platform&quot;</strong> means the Certestic website, applications,
                     and related services
                   </li>
                   <li>
@@ -74,7 +74,7 @@ export default function TermsOfService() {
                     post, or transmit through the Platform
                   </li>
                   <li>
-                    <strong>&quot;Services&quot;</strong> means all services provided by CertifAI
+                    <strong>&quot;Services&quot;</strong> means all services provided by Certestic
                     including AI-powered exam generation, performance analytics, and study
                     recommendations
                   </li>
@@ -100,8 +100,8 @@ export default function TermsOfService() {
                     ⚠️ Important Beta Notice
                   </p>
                   <p className="text-amber-700 dark:text-amber-300 text-sm">
-                    CertifAI is currently in beta testing. The Platform may contain bugs, errors, or
-                    incomplete features.
+                    Certestic is currently in beta testing. The Platform may contain bugs, errors,
+                    or incomplete features.
                   </p>
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
@@ -132,11 +132,11 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement
-                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and CertifAI
-                  Limited, a company incorporated in New Zealand (&quot;CertifAI,&quot;
+                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and Certestic
+                  Limited, a company incorporated in New Zealand (&quot;Certestic,&quot;
                   &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). By accessing or using the
-                  CertifAI platform, you acknowledge that you have read, understood, and agree to be
-                  bound by these Terms.
+                  Certestic platform, you acknowledge that you have read, understood, and agree to
+                  be bound by these Terms.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   <strong>
@@ -157,7 +157,7 @@ export default function TermsOfService() {
                     🚨 Important: Practice and Preparation Tool Only
                   </p>
                   <p className="text-red-700 dark:text-red-300 text-sm">
-                    CertifAI is designed exclusively for practice and preparation purposes. We do
+                    Certestic is designed exclusively for practice and preparation purposes. We do
                     not guarantee or take responsibility for your actual certification exam results.
                   </p>
                 </div>
@@ -166,7 +166,7 @@ export default function TermsOfService() {
                   Platform Purpose
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  CertifAI is a practice and preparation platform designed to help you study for IT
+                  Certestic is a practice and preparation platform designed to help you study for IT
                   certification exams. You acknowledge and agree that:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
@@ -192,7 +192,7 @@ export default function TermsOfService() {
                   No Responsibility for Actual Exam Results
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>IMPORTANT DISCLAIMER:</strong> CertifAI explicitly disclaims any
+                  <strong>IMPORTANT DISCLAIMER:</strong> Certestic explicitly disclaims any
                   responsibility for your actual certification exam results. You understand and
                   agree that:
                 </p>
@@ -542,7 +542,7 @@ export default function TermsOfService() {
                       maximum extent permitted by law
                     </p>
                     <ul className="list-disc pl-6 text-slate-600 dark:text-slate-400 text-sm space-y-1">
-                      <li>No copyright claims asserted by CertifAI</li>
+                      <li>No copyright claims asserted by Certestic</li>
                       <li>Intended for public domain treatment where legally possible</li>
                       <li>Users may freely use, reproduce, and distribute such content</li>
                       <li>No enforcement action will be taken for use of this content</li>
@@ -644,7 +644,7 @@ export default function TermsOfService() {
                   Regardless of content copyright status, we retain rights in:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
-                  <li>The CertifAI platform software and technology infrastructure</li>
+                  <li>The Certestic platform software and technology infrastructure</li>
                   <li>Our proprietary AI models, algorithms, and training methodologies</li>
                   <li>Platform design, user interface, branding, and visual elements</li>
                   <li>Database compilation and content organization systems</li>
@@ -675,7 +675,7 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   The Platform and its original content, features, and functionality are owned by
-                  CertifAI and are protected by international copyright, trademark, patent, trade
+                  Certestic and are protected by international copyright, trademark, patent, trade
                   secret, and other intellectual property laws, except as specifically detailed in
                   Section 9 regarding different content creation methods and their copyright
                   implications.
@@ -1078,8 +1078,8 @@ export default function TermsOfService() {
                   </p>
                   <ul className="list-disc pl-6 text-green-800 dark:text-green-200 text-sm space-y-1 mb-4">
                     <li>
-                      Email us at privacy@certifai.com with &quot;AI Data Usage&quot; in the subject
-                      line
+                      Email us at privacy@certestic.com with &quot;AI Data Usage&quot; in the
+                      subject line
                     </li>
                     <li>Use our privacy request form (link in Privacy Policy)</li>
                     <li>
@@ -1230,7 +1230,7 @@ export default function TermsOfService() {
                   13. Indemnification
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  You agree to indemnify, defend, and hold harmless CertifAI, its officers,
+                  You agree to indemnify, defend, and hold harmless Certestic, its officers,
                   directors, employees, agents, and affiliates from and against any and all claims,
                   damages, obligations, losses, liabilities, costs, or debt, and expenses (including
                   attorney&apos;s fees) arising from:
@@ -1257,7 +1257,7 @@ export default function TermsOfService() {
                   in your account settings or contacting our support team.
                 </p>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Termination by CertifAI
+                  Termination by Certestic
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   We may suspend or terminate your access to the Platform immediately, without prior
@@ -1478,7 +1478,7 @@ export default function TermsOfService() {
                   </p>
                   <ol className="list-decimal pl-6 text-amber-800 dark:text-amber-200 text-sm space-y-1">
                     <li>
-                      Contact our legal team at legal@certifai.com with &quot;International
+                      Contact our legal team at legal@certestic.com with &quot;International
                       Rights&quot; in the subject line
                     </li>
                     <li>
@@ -1512,7 +1512,7 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   These Terms, together with our Privacy Policy and any other legal notices
-                  published by us, constitute the entire agreement between you and CertifAI
+                  published by us, constitute the entire agreement between you and Certestic
                   regarding the Platform and supersede all prior agreements and understandings.
                 </p>
               </section>
@@ -1528,19 +1528,19 @@ export default function TermsOfService() {
                 <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600">
                   <div className="space-y-2 text-slate-700 dark:text-slate-300">
                     <p>
-                      <strong>CertifAI Limited</strong>
+                      <strong>Certestic Limited</strong>
                     </p>
                     <p>
-                      <strong>Email:</strong> legal@certifai.com
+                      <strong>Email:</strong> legal@certestic.com
                     </p>
                     <p>
                       <strong>Support:</strong>{' '}
                       <Link href="/support" className="text-primary hover:underline">
-                        support.certifai.com
+                        support.certestic.com
                       </Link>
                     </p>
                     <p>
-                      <strong>Business Hours:</strong> Monday-Friday, 9:00 AM - 5:00 PM NZST
+                      <strong>Business Hours:</strong> Daily, 8:00 PM - 10:00 PM NZST
                     </p>
                     <p>
                       <strong>Response Time:</strong> We aim to respond to legal inquiries within 5
@@ -1554,7 +1554,7 @@ export default function TermsOfService() {
               <div className="bg-slate-100 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600 text-center">
                 <p className="text-slate-600 dark:text-slate-400 text-sm">
                   These Terms of Service are effective as of June 26, 2025, and apply to all users
-                  of the CertifAI platform.
+                  of the Certestic platform.
                 </p>
               </div>
             </div>

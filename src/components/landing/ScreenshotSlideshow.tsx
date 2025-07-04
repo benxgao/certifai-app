@@ -18,22 +18,22 @@ const ScreenshotSlideshow: React.FC<ScreenshotSlideshowProps> = ({ className }) 
     () => [
       {
         src: '/images/landing/screenshots/1.png',
-        alt: 'CertifAI Dashboard - Practice Exams',
+        alt: 'Certestic Dashboard - Practice Exams',
         title: 'AI-Powered Practice Exams',
       },
       {
         src: '/images/landing/screenshots/2.png',
-        alt: 'CertifAI Exam Interface - Real-time Results',
+        alt: 'Certestic Exam Interface - Real-time Results',
         title: 'Real-time Performance Analytics',
       },
       {
         src: '/images/landing/screenshots/3.png',
-        alt: 'CertifAI Progress Tracking - Detailed Insights',
+        alt: 'Certestic Progress Tracking - Detailed Insights',
         title: 'Comprehensive Progress Tracking',
       },
       {
         src: '/images/landing/screenshots/4.png',
-        alt: 'CertifAI Study Materials - Interactive Learning',
+        alt: 'Certestic Study Materials - Interactive Learning',
         title: 'Interactive Study Materials',
       },
     ],

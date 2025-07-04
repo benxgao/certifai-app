@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Validate certId is a number
   if (!/^\d+$/.test(certId)) {
     return {
-      title: 'Certification Not Found | CertifAI',
+      title: 'Certification Not Found | Certestic',
       description: 'The requested certification could not be found.',
     };
   }
@@ -35,13 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     if (certData) {
       return {
-        title: `${certData.name} | CertifAI`,
+        title: `${certData.name} | Certestic`,
         description:
           certData.description ||
           `Learn about ${certData.name} certification - exam details, study materials, and career benefits.`,
         keywords: `${certData.name}, IT certification, exam preparation, practice questions, training`,
         openGraph: {
-          title: `${certData.name} | CertifAI`,
+          title: `${certData.name} | Certestic`,
           description: certData.description || `Learn about ${certData.name} certification`,
           type: 'website',
         },
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Certification Details | CertifAI`,
+    title: `Certification Details | Certestic`,
     description: 'Explore certification details, exam information, and study materials.',
   };
 }

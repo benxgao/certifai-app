@@ -1,8 +1,8 @@
 {
   "webSocketDebuggerUrl": "",
   "devtoolsFrontendUrl": "",
-  "description": "Next.js Application - CertifAI",
-  "title": "CertifAI App",
+  "description": "Next.js Application - Certestic",
+  "title": "Certestic App",
   "type": "page",
   "url": "http://localhost:3000",
   "metadata": {

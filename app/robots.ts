@@ -39,7 +39,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/main/', '/api/', '/admin/', '/private/'],
       },
     ],
-    sitemap: 'https://certifai.app/sitemap.xml',
-    host: 'https://certifai.app',
+    sitemap: 'https://certestic.com/sitemap.xml',
+    host: 'https://certestic.com',
   };
 }

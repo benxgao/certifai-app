@@ -1,4 +1,3 @@
-// filepath: /Users/xingbingao/workplace/certifai-app/app/api/users/[api_user_id]/certifications/[cert_id]/exams/submit/route.ts
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 import { NextRequest, NextResponse } from 'next/server';
 

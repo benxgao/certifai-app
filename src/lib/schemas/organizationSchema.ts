@@ -2,19 +2,20 @@
 export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'CertifAI',
-  alternateName: 'CertifAI Platform',
-  description: 'AI-powered IT certification training platform providing personalized learning experiences, intelligent practice questions, and adaptive study recommendations for IT professionals worldwide.',
-  url: 'https://certifai.app',
+  name: 'Certestic',
+  alternateName: 'Certestic Platform',
+  description:
+    'AI-powered IT certification training platform providing personalized learning experiences, intelligent practice questions, and adaptive study recommendations for IT professionals worldwide.',
+  url: 'https://certestic.com',
   logo: {
     '@type': 'ImageObject',
-    url: 'https://certifai.app/images/logo.png',
+    url: 'https://certestic.com/images/logo.png',
     width: 512,
     height: 512,
   },
   image: {
     '@type': 'ImageObject',
-    url: 'https://certifai.app/images/certifai-og-image.jpg',
+    url: 'https://certestic.com/images/certestic-og-image.jpg',
     width: 1200,
     height: 630,
   },
@@ -22,31 +23,32 @@ export const organizationSchema = {
   founders: [
     {
       '@type': 'Person',
-      name: 'CertifAI Development Team',
+      name: 'Certestic Development Team',
       jobTitle: 'AI Education Platform Developers',
-      description: 'Experienced developers passionate about making IT certification training accessible through artificial intelligence.',
+      description:
+        'Experienced developers passionate about making IT certification training accessible through artificial intelligence.',
     },
   ],
   sameAs: [
-    'https://twitter.com/CertifAI',
-    'https://linkedin.com/company/certifai',
-    'https://github.com/certifai',
-    'https://facebook.com/CertifAI',
+    'https://twitter.com/Certestic',
+    'https://linkedin.com/company/certestic',
+    'https://github.com/certestic',
+    'https://facebook.com/Certestic',
   ],
   contactPoint: [
     {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'support@certifai.app',
-      url: 'https://certifai.app/support',
+      email: 'support@certestic.com',
+      url: 'https://certestic.com/support',
       availableLanguage: ['English'],
       areaServed: 'Worldwide',
     },
     {
       '@type': 'ContactPoint',
       contactType: 'technical support',
-      email: 'tech@certifai.app',
-      url: 'https://certifai.app/documentation',
+      email: 'tech@certestic.com',
+      url: 'https://certestic.com/documentation',
       availableLanguage: ['English'],
       areaServed: 'Worldwide',
     },
@@ -58,7 +60,7 @@ export const organizationSchema = {
   },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'CertifAI Training Services',
+    name: 'Certestic Training Services',
     itemListElement: [
       {
         '@type': 'Offer',
@@ -93,22 +95,23 @@ export const organizationSchema = {
 export const softwareApplicationSchema = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'CertifAI',
-  alternateName: 'CertifAI Platform',
-  description: 'AI-powered IT certification training platform with personalized learning, intelligent practice questions, adaptive study recommendations, and comprehensive progress tracking for IT professionals.',
+  name: 'Certestic',
+  alternateName: 'Certestic Platform',
+  description:
+    'AI-powered IT certification training platform with personalized learning, intelligent practice questions, adaptive study recommendations, and comprehensive progress tracking for IT professionals.',
   applicationCategory: 'EducationalApplication',
   operatingSystem: ['Web Browser', 'iOS', 'Android', 'Windows', 'macOS', 'Linux'],
-  downloadUrl: 'https://certifai.app',
-  installUrl: 'https://certifai.app/signup',
+  downloadUrl: 'https://certestic.com',
+  installUrl: 'https://certestic.com/signup',
   screenshot: [
     {
       '@type': 'ImageObject',
-      url: 'https://certifai.app/images/screenshots/dashboard.png',
-      description: 'CertifAI Dashboard Screenshot',
+      url: 'https://certestic.com/images/screenshots/dashboard.png',
+      description: 'Certestic Dashboard Screenshot',
     },
     {
       '@type': 'ImageObject',
-      url: 'https://certifai.app/images/screenshots/practice-exam.png',
+      url: 'https://certestic.com/images/screenshots/practice-exam.png',
       description: 'Practice Exam Interface',
     },
   ],
@@ -154,7 +157,8 @@ export const softwareApplicationSchema = {
         ratingValue: '5',
         bestRating: '5',
       },
-      reviewBody: 'CertifAI has revolutionized my certification study approach. The AI-generated questions are incredibly relevant and help me focus on my weak areas.',
+      reviewBody:
+        'Certestic has revolutionized my certification study approach. The AI-generated questions are incredibly relevant and help me focus on my weak areas.',
     },
   ],
   featureList: [
@@ -174,21 +178,21 @@ export const softwareApplicationSchema = {
   releaseNotes: 'Initial beta release with AI-powered certification training features',
   maintainer: {
     '@type': 'Organization',
-    name: 'CertifAI Team',
+    name: 'Certestic Team',
   },
   creator: {
     '@type': 'Organization',
-    name: 'CertifAI',
+    name: 'Certestic',
   },
   datePublished: '2025-01-01',
   dateModified: new Date().toISOString().split('T')[0],
   inLanguage: 'en-US',
   copyrightHolder: {
     '@type': 'Organization',
-    name: 'CertifAI',
+    name: 'Certestic',
   },
   copyrightYear: '2025',
-  license: 'https://certifai.app/terms',
+  license: 'https://certestic.com/terms',
   isAccessibleForFree: true,
   isFamilyFriendly: true,
 };

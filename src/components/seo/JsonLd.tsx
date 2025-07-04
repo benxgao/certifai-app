@@ -48,7 +48,7 @@ export default function CertificationJsonLd({ certification }: CertificationJson
     },
     educationalLevel: 'Professional Certification',
     teaches: [`${certification.name} skills and knowledge`, 'IT Certification preparation'],
-    url: `https://certifai.app/certifications/${certification.cert_id}`,
+    url: `https://certestic.com/certifications/${certification.cert_id}`,
     dateModified: certification.updated_at,
     dateCreated: certification.created_at,
     aggregateRating:
@@ -73,7 +73,7 @@ export default function CertificationJsonLd({ certification }: CertificationJson
       courseMode: 'online',
       instructor: {
         '@type': 'Organization',
-        name: 'CertifAI AI System',
+        name: 'Certestic AI System',
         description: 'AI-powered certification training platform',
       },
     },
@@ -122,7 +122,7 @@ export function CertificationsCatalogJsonLd({
     '@type': 'CollectionPage',
     name: 'IT Certifications Catalog',
     description: `Browse ${totalCertifications} IT certifications from ${totalFirms} leading technology companies with AI-powered training.`,
-    url: 'https://certifai.app/certifications',
+    url: 'https://certestic.com/certifications',
     mainEntity: {
       '@type': 'ItemList',
       name: 'IT Certifications',
@@ -136,13 +136,13 @@ export function CertificationsCatalogJsonLd({
           '@type': 'ListItem',
           position: 1,
           name: 'Home',
-          item: 'https://certifai.app',
+          item: 'https://certestic.com',
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'Certifications',
-          item: 'https://certifai.app/certifications',
+          item: 'https://certestic.com/certifications',
         },
       ],
     },

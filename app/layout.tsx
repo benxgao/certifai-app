@@ -7,11 +7,11 @@ import './globals.css';
 
 // SEO and metadata
 const META_CONTENT = {
-  TITLE: 'CertifAI | AI-Powered IT Certification Training Platform',
+  TITLE: 'Certestic | AI-Powered IT Certification Training Platform',
   DESCRIPTION:
     'Master IT certifications with AI-powered practice questions, personalized study recommendations, and adaptive learning. Join a growing number of beta users advancing their careers through intelligent technology.',
   KEYWORDS:
-    'CertifAI, AI-powered IT certification training, artificial intelligence learning platform, IT certification practice exams, personalized study recommendations, adaptive certification training, AI-generated practice questions, IT professional development, certification exam simulator, beta testing platform, free certification training, machine learning education, IT career advancement, online certification preparation, smart study technology, certification success platform',
+    'Certestic, AI-powered IT certification training, artificial intelligence learning platform, IT certification practice exams, personalized study recommendations, adaptive certification training, AI-generated practice questions, IT professional development, certification exam simulator, beta testing platform, free certification training, machine learning education, IT career advancement, online certification preparation, smart study technology, certification success platform',
   OG_DESCRIPTION:
     'Master IT certifications with AI-powered practice questions and personalized study recommendations. Join a growing number of beta users advancing their careers.',
 } as const;
@@ -28,35 +28,35 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: META_CONTENT.TITLE,
-    template: '%s | CertifAI - AI-Powered IT Certification Training',
+    template: '%s | Certestic - AI-Powered IT Certification Training',
   },
   description: META_CONTENT.DESCRIPTION,
   keywords: META_CONTENT.KEYWORDS,
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://certifai.app'),
+  metadataBase: new URL('https://certestic.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app',
+    url: 'https://certestic.com',
     title: META_CONTENT.TITLE,
     description: META_CONTENT.OG_DESCRIPTION,
-    siteName: 'CertifAI',
+    siteName: 'Certestic',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI - AI-Powered IT Certification Training Platform',
+        alt: 'Certestic - AI-Powered IT Certification Training Platform',
       },
     ],
   },
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: META_CONTENT.TITLE,
     description: META_CONTENT.OG_DESCRIPTION,
-    creator: '@CertifAI',
+    creator: '@Certestic',
     images: ['/images/twitter-card.jpg'],
   },
   robots: {
@@ -118,7 +118,7 @@ export default function RootLayout({
         <title>{META_CONTENT.TITLE}</title>
         <meta name="description" content={META_CONTENT.DESCRIPTION} />
         <meta name="keywords" content={META_CONTENT.KEYWORDS} />
-        <meta name="author" content="CertifAI Team" />
+        <meta name="author" content="Certestic Team" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#6366f1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -128,21 +128,21 @@ export default function RootLayout({
         <meta property="og:title" content={META_CONTENT.TITLE} />
         <meta property="og:description" content={META_CONTENT.OG_DESCRIPTION} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://certifai.app/" />
-        <meta property="og:image" content="https://certifai.app/images/og-image.jpg" />
+        <meta property="og:url" content="https://certestic.com/" />
+        <meta property="og:image" content="https://certestic.com/images/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="CertifAI - AI-Powered IT Certification Training" />
-        <meta property="og:site_name" content="CertifAI" />
+        <meta property="og:image:alt" content="Certestic - AI-Powered IT Certification Training" />
+        <meta property="og:site_name" content="Certestic" />
         <meta property="og:locale" content="en_US" />
 
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@CertifAI" />
-        <meta name="twitter:creator" content="@CertifAI" />
+        <meta name="twitter:site" content="@Certestic" />
+        <meta name="twitter:creator" content="@Certestic" />
         <meta name="twitter:title" content={META_CONTENT.TITLE} />
         <meta name="twitter:description" content={META_CONTENT.OG_DESCRIPTION} />
-        <meta name="twitter:image" content="https://certifai.app/images/twitter-card.jpg" />
+        <meta name="twitter:image" content="https://certestic.com/images/twitter-card.jpg" />
 
         {/* Additional SEO Tags */}
         <meta
@@ -150,7 +150,7 @@ export default function RootLayout({
           content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
         />
         <meta name="googlebot" content="index, follow" />
-        <link rel="canonical" href="https://certifai.app/" />
+        <link rel="canonical" href="https://certestic.com/" />
 
         {/* Favicon and Icons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -169,15 +169,15 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'CertifAI',
+              name: 'Certestic',
               description: 'AI-powered IT certification training platform',
-              url: 'https://certifai.app',
-              logo: 'https://certifai.app/images/logo.png',
-              sameAs: ['https://twitter.com/CertifAI', 'https://linkedin.com/company/certifai'],
+              url: 'https://certestic.com',
+              logo: 'https://certestic.com/images/logo.png',
+              sameAs: ['https://twitter.com/certestic', 'https://linkedin.com/company/certestic'],
               contactPoint: {
                 '@type': 'ContactPoint',
                 contactType: 'customer service',
-                email: 'support@certifai.app',
+                email: 'support@certestic.com',
               },
             }),
           }}

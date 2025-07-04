@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | CertifAI - Data Protection & Privacy',
+  title: 'Privacy Policy | Certestic - Data Protection & Privacy',
   description:
-    'Learn how CertifAI protects your privacy and handles your personal data. Comprehensive privacy policy for our AI-powered IT certification training platform.',
+    'Learn how Certestic protects your privacy and handles your personal data. Comprehensive privacy policy for our AI-powered IT certification training platform.',
   keywords: [
-    'CertifAI privacy policy',
+    'Certestic privacy policy',
     'data protection',
     'personal data handling',
     'privacy rights',
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     'data usage policy',
     'privacy protection',
   ].join(', '),
-  authors: [{ name: 'CertifAI Legal Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Legal Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -31,23 +31,23 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Privacy Policy | CertifAI - Data Protection & Privacy',
+    title: 'Privacy Policy | Certestic - Data Protection & Privacy',
     description:
-      'Learn how CertifAI protects your privacy and handles your personal data in our AI-powered certification platform.',
+      'Learn how Certestic protects your privacy and handles your personal data in our AI-powered certification platform.',
     type: 'website',
     locale: 'en_US',
-    url: 'https://certifai.app/privacy',
-    siteName: 'CertifAI',
+    url: 'https://certestic.com/privacy',
+    siteName: 'Certestic',
   },
   twitter: {
     card: 'summary',
-    title: 'Privacy Policy | CertifAI',
-    description: 'Data protection and privacy policy for CertifAI certification platform.',
-    creator: '@CertifAI',
-    site: '@CertifAI',
+    title: 'Privacy Policy | Certestic',
+    description: 'Data protection and privacy policy for Certestic certification platform.',
+    creator: '@Certestic',
+    site: '@Certestic',
   },
   alternates: {
-    canonical: 'https://certifai.app/privacy',
+    canonical: 'https://certestic.com/privacy',
   },
   category: 'Legal',
 };

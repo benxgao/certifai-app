@@ -21,13 +21,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (firm) {
     return {
-      title: `${firm.name} Certifications | CertifAI`,
+      title: `${firm.name} Certifications | Certestic`,
       description:
         firm.description ||
         `Explore ${firm.name} certification programs with AI-powered training materials, practice questions, and detailed study guides.`,
       keywords: `${firm.name}, ${firmCode}, IT certification, exam preparation, practice questions, training`,
       openGraph: {
-        title: `${firm.name} Certifications | CertifAI`,
+        title: `${firm.name} Certifications | Certestic`,
         description:
           firm.description ||
           `Explore ${firm.name} certification programs with AI-powered training materials.`,
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${firmCode.toUpperCase()} Certifications | CertifAI`,
+    title: `${firmCode.toUpperCase()} Certifications | Certestic`,
     description: `Explore ${firmCode.toUpperCase()} certification programs with AI-powered training materials, practice questions, and detailed study guides.`,
     keywords: `${firmCode}, IT certification, exam preparation, practice questions, training`,
   };

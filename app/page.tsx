@@ -9,35 +9,35 @@ import LandingPageContent from '@/src/components/landing/LandingPageContent';
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'CertifAI',
+  name: 'Certestic',
   description:
     'AI-powered IT certification training platform to create exams on particular exam topics and test knowledge mastery. Tell AI to generate exams on your particular needs focusing on specific concepts and technologies',
-  url: 'https://certifai.app',
-  logo: 'https://certifai.app/images/logo.png',
+  url: 'https://certestic.com',
+  logo: 'https://certestic.com/images/logo.png',
   foundingDate: '2025',
   founders: [
     {
       '@type': 'Person',
-      name: 'CertifAI Development Team',
+      name: 'Certestic Development Team',
       jobTitle: 'AI Education Platform Developers',
     },
   ],
   sameAs: [
-    'https://twitter.com/CertifAI',
-    'https://linkedin.com/company/certifai',
-    'https://github.com/certifai',
+    'https://twitter.com/Certestic',
+    'https://linkedin.com/company/certestic',
+    'https://github.com/certestic',
   ],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
-    email: 'support@certifai.app',
+    email: 'support@certestic.com',
   },
 };
 
 const softwareApplicationSchema = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'CertifAI',
+  name: 'Certestic',
   description:
     'Create exams on particular exam topics to test knowledge mastery and tell AI to generate exams on your particular needs. AI-powered training platform featuring topic-focused practice exams, personalized learning, and adaptive study recommendations',
   applicationCategory: 'EducationalApplication',
@@ -70,13 +70,13 @@ const softwareApplicationSchema = {
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'CertifAI - Create Exams on Particular Topics & Test Knowledge Mastery with AI',
+  name: 'Certestic - Create Exams on Particular Topics & Test Knowledge Mastery with AI',
   description:
     'Create exams on particular exam topics to test if you have mastered knowledge. Tell AI to generate exams on your particular needs like focusing on specific concepts, technologies, or certification domains',
-  url: 'https://certifai.app',
+  url: 'https://certestic.com',
   mainEntity: {
     '@type': 'EducationalOrganization',
-    name: 'CertifAI',
+    name: 'Certestic',
     description: 'AI-powered IT certification training platform',
   },
 };

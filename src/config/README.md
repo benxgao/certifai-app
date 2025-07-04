@@ -203,4 +203,4 @@ To modify feature flags:
 3. Update this documentation if needed
 4. Deploy and monitor for any issues
 
-The feature flag system provides a robust foundation for managing the display of token-related features and improving the overall user experience of the CertifAI platform.
+The feature flag system provides a robust foundation for managing the display of token-related features and improving the overall user experience of the Certestic platform.

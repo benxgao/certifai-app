@@ -68,25 +68,25 @@ export interface SoftwareApplicationSchema {
 export const generateOrganizationSchema = (): OrganizationSchema => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'CertifAI',
-  description: 'AI-powered IT certification training platform providing personalized learning experiences',
-  url: 'https://certifai.app',
-  logo: 'https://certifai.app/images/logo.png',
+  name: 'Certestic',
+  description:
+    'AI-powered IT certification training platform providing personalized learning experiences',
+  url: 'https://certestic.com',
+  logo: 'https://certestic.com/images/logo.png',
   foundingDate: '2025',
-  founders: [{
-    '@type': 'Person',
-    name: 'CertifAI Founder',
-    jobTitle: 'Solo Developer & AI Enthusiast'
-  }],
-  sameAs: [
-    'https://twitter.com/CertifAI',
-    'https://linkedin.com/company/certifai'
+  founders: [
+    {
+      '@type': 'Person',
+      name: 'Certestic Founder',
+      jobTitle: 'Solo Developer & AI Enthusiast',
+    },
   ],
+  sameAs: ['https://twitter.com/certestic', 'https://linkedin.com/company/certestic'],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer service',
-    email: 'support@certifai.app'
-  }
+    email: 'support@certestic.com',
+  },
 });
 
 // Generate webpage schema
@@ -94,7 +94,7 @@ export const generateWebPageSchema = (
   name: string,
   description: string,
   url: string,
-  breadcrumbs?: Array<{ name: string; url: string }>
+  breadcrumbs?: Array<{ name: string; url: string }>,
 ): WebPageSchema => {
   const schema: WebPageSchema = {
     '@context': 'https://schema.org',
@@ -104,8 +104,8 @@ export const generateWebPageSchema = (
     url,
     mainEntity: {
       '@type': 'Organization',
-      name: 'CertifAI'
-    }
+      name: 'Certestic',
+    },
   };
 
   if (breadcrumbs && breadcrumbs.length > 0) {
@@ -115,8 +115,8 @@ export const generateWebPageSchema = (
         '@type': 'ListItem',
         position: index + 1,
         name: crumb.name,
-        item: crumb.url
-      }))
+        item: crumb.url,
+      })),
     };
   }
 
@@ -127,43 +127,44 @@ export const generateWebPageSchema = (
 export const generateSoftwareApplicationSchema = (): SoftwareApplicationSchema => ({
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'CertifAI',
-  description: 'AI-powered IT certification training platform with personalized learning and practice exams',
+  name: 'Certestic',
+  description:
+    'AI-powered IT certification training platform with personalized learning and practice exams',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web Browser',
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    description: 'Free beta access with 300 credit coins'
+    description: 'Free beta access with 300 credit coins',
   },
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.8',
     ratingCount: '500',
-    bestRating: '5'
+    bestRating: '5',
   },
   featureList: [
     'AI-generated practice questions',
     'Personalized study recommendations',
     'Multiple IT certification tracks',
     'Progress tracking and analytics',
-    'Community learning features'
-  ]
+    'Community learning features',
+  ],
 });
 
 // Generate FAQ schema for pages with FAQ content
 export const generateFAQSchema = (faqs: Array<{ question: string; answer: string }>) => ({
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(faq => ({
+  mainEntity: faqs.map((faq) => ({
     '@type': 'Question',
     name: faq.question,
     acceptedAnswer: {
       '@type': 'Answer',
-      text: faq.answer
-    }
-  }))
+      text: faq.answer,
+    },
+  })),
 });
 
 // SEO meta tag generator
@@ -186,7 +187,7 @@ export interface SEOMetaTags {
 }
 
 export const generateMetaTags = (config: SEOMetaTags) => {
-  const baseUrl = 'https://certifai.app';
+  const baseUrl = 'https://certestic.com';
 
   return {
     title: config.title,
@@ -199,15 +200,15 @@ export const generateMetaTags = (config: SEOMetaTags) => {
       image: config.openGraph?.image || `${baseUrl}/images/og-default.jpg`,
       url: config.openGraph?.url || baseUrl,
       type: 'website',
-      siteName: 'CertifAI'
+      siteName: 'Certestic',
     },
     twitter: {
       card: 'summary_large_image',
       title: config.twitter?.title || config.title,
       description: config.twitter?.description || config.description,
       image: config.twitter?.image || `${baseUrl}/images/twitter-default.jpg`,
-      creator: '@CertifAI'
-    }
+      creator: '@Certestic',
+    },
   };
 };
 
@@ -217,7 +218,7 @@ export const PRIMARY_KEYWORDS = [
   'IT certification training',
   'personalized learning platform',
   'practice exam simulator',
-  'certification study guide'
+  'certification study guide',
 ];
 
 export const SECONDARY_KEYWORDS = [
@@ -227,7 +228,7 @@ export const SECONDARY_KEYWORDS = [
   'professional development platform',
   'IT career advancement',
   'online certification prep',
-  'beta testing platform'
+  'beta testing platform',
 ];
 
 export const LONG_TAIL_KEYWORDS = [
@@ -236,22 +237,24 @@ export const LONG_TAIL_KEYWORDS = [
   'machine learning certification training platform',
   'adaptive IT certification learning experience',
   'free IT certification practice questions',
-  'beta IT certification training software'
+  'beta IT certification training software',
 ];
 
 // Content optimization helpers
 export const optimizeHeading = (text: string, keywords: string[]): string => {
   // Simple keyword integration - in real implementation, this would be more sophisticated
-  const keywordToAdd = keywords.find(keyword => !text.toLowerCase().includes(keyword.toLowerCase()));
+  const keywordToAdd = keywords.find(
+    (keyword) => !text.toLowerCase().includes(keyword.toLowerCase()),
+  );
   return keywordToAdd ? `${text} | ${keywordToAdd}` : text;
 };
 
 export const generateBreadcrumbs = (pathname: string) => {
   const paths = pathname.split('/').filter(Boolean);
-  const breadcrumbs = [{ name: 'Home', url: 'https://certifai.app' }];
+  const breadcrumbs = [{ name: 'Home', url: 'https://certestic.com' }];
 
-  let currentPath = 'https://certifai.app';
-  paths.forEach(path => {
+  let currentPath = 'https://certestic.com';
+  paths.forEach((path) => {
     currentPath += `/${path}`;
     const name = path.charAt(0).toUpperCase() + path.slice(1).replace('-', ' ');
     breadcrumbs.push({ name, url: currentPath });
@@ -270,7 +273,7 @@ const SEOUtils = {
   generateBreadcrumbs,
   PRIMARY_KEYWORDS,
   SECONDARY_KEYWORDS,
-  LONG_TAIL_KEYWORDS
+  LONG_TAIL_KEYWORDS,
 };
 
 export default SEOUtils;

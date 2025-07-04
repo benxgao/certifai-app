@@ -1,13 +1,13 @@
-# Certifai App: Firms & Certifications API Endpoints Summary
+# App: Firms & Certifications API Endpoints Summary
 
 This document provides a simple summary of the main API endpoints related to **firms** and **certifications** in the `certifai-app` project.
 
 ---
 
-
 ## Firms Endpoints
 
 - **GET /api/public/firms/search**
+
   - **Description:** Search for firms. Used by public certification pages.
   - **Frontend Route:** `app/api/public/firms/search/route.ts` (Next.js API route)
   - **How it works:**
@@ -21,6 +21,7 @@ This document provides a simple summary of the main API endpoints related to **f
   - **Response:** List of firms matching search criteria.
 
 - **GET /api/public/firms/:id**
+
   - **Description:** Get details of a specific firm by its ID.
   - **Frontend Route:** `app/api/public/firms/[id]/route.ts` (Next.js API route)
   - **How it works:**
@@ -33,6 +34,7 @@ This document provides a simple summary of the main API endpoints related to **f
   - **Response:** Firm details object.
 
 - **GET /api/public/firms**
+
   - **Description:** List all firms.
   - **Frontend Route:** `app/api/public/firms/route.ts` (Next.js API route)
   - **How it works:**
@@ -58,10 +60,10 @@ This document provides a simple summary of the main API endpoints related to **f
 
 ---
 
-
 ## Certifications Endpoints
 
 - **GET /api/public/certifications/search**
+
   - **Description:** Search for certifications. Used for public access to certification data.
   - **Frontend Route:** `app/api/public/certifications/search/route.ts` (Next.js API route)
   - **How it works:**
@@ -74,6 +76,7 @@ This document provides a simple summary of the main API endpoints related to **f
   - **Response:** List of certifications matching search criteria.
 
 - **GET /api/public/certifications/:id**
+
   - **Description:** Get details of a specific certification by its ID.
   - **Frontend Route:** `app/api/public/certifications/[id]/route.ts` (Next.js API route)
   - **How it works:**

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return {
         title: `${
           certification.name
-        } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
+        } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | Certestic`,
         description:
           certification.description ||
           `${
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         openGraph: {
           title: `${
             certification.name
-          } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
+          } - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | Certestic`,
           description:
             certification.description ||
             `${
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Certification ${certId} - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | CertifAI`,
+    title: `Certification ${certId} - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | Certestic`,
     description: `${firmCode.toUpperCase()} certification information and training materials. Simulate exams by AI and prepare for IT certification by self exams with AI-powered practice questions and study materials.`,
     keywords: `${firmCode}, certification ${certId}, IT certification, exam preparation, practice questions, training`,
   };

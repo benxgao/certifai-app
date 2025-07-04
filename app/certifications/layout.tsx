@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | CertifAI Certifications',
-    default: 'IT Certifications | CertifAI',
+    template: '%s | Certestic Certifications',
+    default: 'IT Certifications | Certestic',
   },
   description:
     'Explore IT certifications from leading technology companies with AI-powered training.',

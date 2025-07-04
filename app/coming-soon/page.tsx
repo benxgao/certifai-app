@@ -53,7 +53,7 @@ export default function ComingSoonPage() {
         feature: 'Documentation',
         expectedDate: 'Q3 2025',
         description:
-          'Comprehensive guides, API references, and tutorials to help you master CertifAI.',
+          'Comprehensive guides, API references, and tutorials to help you master Certestic.',
         icon: FileText,
       },
       '/blog': {

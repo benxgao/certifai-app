@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title:
-    'About CertifAI | Simulate Exams by AI & Prepare for IT Certification by Self Exams | Learn Our Story',
+    'About Certestic | Simulate Exams by AI & Prepare for IT Certification by Self Exams | Learn Our Story',
   description:
-    "Discover CertifAI's mission to revolutionize how professionals simulate exams by AI and prepare for IT certification by self exams. Learn about our developer journey, core values, and AI-powered exam simulation technology.",
+    "Discover Certestic's mission to revolutionize how professionals simulate exams by AI and prepare for IT certification by self exams. Learn about our developer journey, core values, and AI-powered exam simulation technology.",
   keywords: [
-    'CertifAI about us',
+    'Certestic about us',
     'simulate exams by AI',
     'prepare for IT certification by self exams',
     'AI-powered IT certification training',
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
     'adaptive learning platform',
     'beta software development',
   ].join(', '),
-  authors: [{ name: 'CertifAI Team' }],
-  creator: 'CertifAI',
-  publisher: 'CertifAI',
+  authors: [{ name: 'Certestic Team' }],
+  creator: 'Certestic',
+  publisher: 'Certestic',
   robots: {
     index: true,
     follow: true,
@@ -38,31 +38,31 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'About CertifAI | AI-Powered IT Certification Training Platform',
+    title: 'About Certestic | AI-Powered IT Certification Training Platform',
     description:
-      'Discover how CertifAI is revolutionizing IT certification training with AI-powered personalized learning. Join our growing community of beta users.',
+      'Discover how Certestic is revolutionizing IT certification training with AI-powered personalized learning. Join our growing community of beta users.',
     type: 'website',
     locale: 'en_US',
-    siteName: 'CertifAI',
+    siteName: 'Certestic',
     images: [
       {
-        url: '/images/about-certifai-og.jpg',
+        url: '/images/about-certestic-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'CertifAI - AI-Powered IT Certification Training Platform',
+        alt: 'Certestic - AI-Powered IT Certification Training Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About CertifAI | AI-Powered IT Certification Training',
+    title: 'About Certestic | AI-Powered IT Certification Training',
     description:
-      'Learn how CertifAI is transforming IT certification training with AI technology. Discover our mission, values, and development journey.',
-    images: ['/images/about-certifai-twitter.jpg'],
-    creator: '@CertifAI',
+      'Learn how Certestic is transforming IT certification training with AI technology. Discover our mission, values, and development journey.',
+    images: ['/images/about-certestic-twitter.jpg'],
+    creator: '@Certestic',
   },
   alternates: {
-    canonical: 'https://certifai.app/about',
+    canonical: 'https://certestic.com/about',
   },
   category: 'Technology',
 };
