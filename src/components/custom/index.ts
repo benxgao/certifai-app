@@ -5,6 +5,7 @@ export { default as Breadcrumb } from './Breadcrumb';
 export { default as BreadcrumbSkeleton } from './BreadcrumbSkeleton';
 export { default as CertificationGrid } from './CertificationGrid';
 export { default as CertificationsSection } from './CertificationsSection';
+export { CoffeeButton } from './CoffeeButton';
 export { default as DashboardLoading } from './DashboardLoading';
 export { default as DashboardStats } from './DashboardStats';
 export { default as ErrorBoundary } from './ErrorBoundary';

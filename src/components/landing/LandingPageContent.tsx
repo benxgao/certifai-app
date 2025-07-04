@@ -40,165 +40,171 @@ export default function LandingPageContent() {
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-16">
-            {/* Hero Content */}
-            <div className="flex-1 max-w-2xl text-center lg:text-left">
-              {/* Beta badge */}
-              <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-6">
-                <div
-                  className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"
-                  aria-hidden="true"
-                ></div>
-                <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                  Beta Access Available
-                </span>
+          {/* Hero Content - Centered */}
+          <div className="text-center max-w-5xl mx-auto">
+            {/* Beta badge */}
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-6">
+              <div
+                className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"
+                aria-hidden="true"
+              ></div>
+              <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
+                Beta Access Available
+              </span>
+            </div>
+
+            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                Get Ready For Certifications
+              </span>
+              <br />
+              with AI-Generated Exams
+            </h1>
+
+            <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
+              Master IT certifications by creating exams on particular exam topics to test your
+              knowledge. We are a wonderful addition to IT training by self-testing the knowledge
+              you&apos;ve gained. Tell AI to generate exams on your particular needs like focusing
+              on specific concepts, technologies, or certification domains. Join our growing
+              community of professionals advancing their careers through intelligent exam
+              simulation.
+            </p>
+
+            {/* Enhanced Stats with SEO keywords */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+                  Growing
+                </div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Self Exam Users</div>
               </div>
-
-              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  Create Exams on Particular Topics
-                </span>
-                <br />& Test Knowledge Mastery
-              </h1>
-
-              <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
-                Master IT certifications by creating exams on particular exam topics to test your
-                knowledge. We are a wonderful addition to IT training by self-testing the knowledge
-                you&apos;ve gained. Tell AI to generate exams on your particular needs like focusing
-                on specific concepts, technologies, or certification domains. Join our growing
-                community of professionals advancing their careers through intelligent exam
-                simulation.
-              </p>
-
-              {/* Enhanced Stats with SEO keywords */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-8 mb-10">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    Growing
-                  </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Self Exam Users</div>
+              <div
+                className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
+                aria-hidden="true"
+              ></div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+                  AI Exam
                 </div>
-                <div
-                  className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
-                  aria-hidden="true"
-                ></div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    AI Exam
-                  </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Simulation</div>
-                </div>
-                <div
-                  className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
-                  aria-hidden="true"
-                ></div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                    Free
-                  </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
-                </div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Simulation</div>
               </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
-                <Link href="/signup">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
-                  >
-                    <svg
-                      className="w-5 h-5 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
-                    Start Beta Trial
-                  </Button>
-                </Link>
-                <Link href="/signin">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Trust indicators */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-sm text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  No credit card required
-                </div>
-                <div className="hidden sm:block">•</div>
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  14-day free trial
-                </div>
-                <div className="hidden sm:block">•</div>
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  Cancel anytime
-                </div>
+              <div
+                className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
+                aria-hidden="true"
+              ></div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">Free</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
               </div>
             </div>
 
-            {/* Hero Visual - Made bigger */}
-            <div className="flex-1 max-w-2xl lg:max-w-4xl">
-              <div className="relative">
-                {/* Decorative background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-3 scale-105"></div>
-                <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-2">
-                  <ScreenshotSlideshow className="group rounded-xl overflow-hidden" />
-                </div>
-                {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 bg-green-500 text-white rounded-full p-3 shadow-lg">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <Link href="/signup">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M5 13l4 4L19 7"
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
                     />
                   </svg>
-                </div>
-                <div className="absolute -bottom-4 -left-4 bg-violet-500 text-white rounded-full p-3 shadow-lg">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                </div>
+                  Start Beta Trial
+                </Button>
+              </Link>
+              <Link href="/signin">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                >
+                  Sign In
+                </Button>
+              </Link>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                No credit card required
+              </div>
+              <div className="hidden sm:block">•</div>
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                14-day free trial
+              </div>
+              <div className="hidden sm:block">•</div>
+              <div className="flex items-center gap-2">
+                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Cancel anytime
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Screenshot Slideshow Section - Full Width */}
+      <section className="relative py-16 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+        <div className="absolute top-10 right-20 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-10 left-20 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="relative">
+              {/* Decorative background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-1 scale-105"></div>
+              <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 md:p-6">
+                <ScreenshotSlideshow className="group rounded-xl overflow-hidden w-full" />
+              </div>
+              {/* Floating elements */}
+              <div className="absolute -top-6 -right-6 bg-green-500 text-white rounded-full p-4 shadow-lg">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-violet-500 text-white rounded-full p-4 shadow-lg">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
               </div>
             </div>
           </div>

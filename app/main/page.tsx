@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
 import { useAllAvailableCertifications } from '@/swr/certifications';
+import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { Toaster } from 'sonner';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
@@ -14,6 +15,7 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
+import { CoffeeButton } from '@/components/custom';
 
 const MainPage = () => {
   const { firebaseUser } = useFirebaseAuth();
@@ -23,10 +25,14 @@ const MainPage = () => {
     isError: profileError,
     displayName,
   } = useProfileData();
+  const { userCertifications } = useUserCertifications();
   // ...existing code...
   const { availableCertifications, isLoadingAvailableCertifications } =
     useAllAvailableCertifications();
   const router = useRouter();
+
+  // Check if user has registered for at least one certification
+  const hasRegisteredCertifications = userCertifications && userCertifications.length > 0;
 
   useEffect(() => {
     if (firebaseUser) {
@@ -41,13 +47,13 @@ const MainPage = () => {
         <Breadcrumb items={[{ label: 'Dashboard', current: true }]} />
 
         {/* Welcome Section */}
-        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                 Welcome back, {displayName}!
               </h1>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
                 {profile
                   ? 'Ready to continue your certification journey.'
                   : isLoadingProfile
@@ -56,6 +62,19 @@ const MainPage = () => {
                   ? 'Ready to continue your certification journey.'
                   : 'Ready to continue your certification journey.'}
               </p>
+            </div>
+            <div className="flex items-center justify-end sm:justify-start space-x-2 sm:space-x-3">
+              {hasRegisteredCertifications && (
+                <>
+                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                    Love this app?
+                  </span>
+                  <CoffeeButton
+                    className="flex-shrink-0"
+                    coffeeUrl="https://buymeacoffee.com/certestickh/e/428261"
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -68,7 +87,7 @@ const MainPage = () => {
               <div className="flex items-center space-x-3">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
               </div>
-              <div className="flex-shrink-0">
+              <div className="flex items-center space-x-3">
                 <Button
                   variant="secondary"
                   onClick={() => router.push('/main/certifications')}

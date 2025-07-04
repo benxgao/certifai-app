@@ -37,7 +37,7 @@ const AppHeader: React.FC = () => {
   const navigationItems = [
     { label: 'Dashboard', href: '/main' },
     { label: 'Certifications', href: '/main/certifications' },
-    { label: 'AI Assistant', href: '/main/ai' },
+    // { label: 'AI Assistant', href: '/main/ai' },
   ];
 
   // Helper function to determine if a nav item is active

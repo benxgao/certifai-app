@@ -21,6 +21,12 @@ export default function SimpleAppFooter() {
 
           {/* Right side - Quick links */}
           <div className="flex items-center space-x-6">
+            {/* <CoffeeButton
+              size="sm"
+              variant="ghost"
+              className="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200"
+              text="Support"
+            /> */}
             <Link
               href="/support"
               className="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 text-sm transition-colors duration-200"
@@ -40,8 +46,8 @@ export default function SimpleAppFooter() {
               Terms
             </Link>
             <div className="flex items-center space-x-2 text-gray-500 dark:text-slate-400 text-sm">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>Online</span>
+              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+              <span>Beta version</span>
             </div>
           </div>
         </div>
