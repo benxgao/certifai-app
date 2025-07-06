@@ -13,7 +13,7 @@ export default function MainLoading() {
         {/* Dashboard Header Loading */}
         <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Skeleton className="h-8 w-48" />
@@ -60,7 +60,7 @@ export default function MainLoading() {
                 className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
               >
                 {/* Header skeleton */}
-                <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+                <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 space-y-3">
                       <Skeleton className="h-6 w-32" />

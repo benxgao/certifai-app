@@ -33,54 +33,58 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-      <div className="max-w-6xl mx-auto px-2 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8">
+      <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
         {/* Breadcrumb Loading */}
         {showBreadcrumb && (
-          <div className="mb-8">
-            <Skeleton className="h-4 w-48" />
+          <div className="mb-6 md:mb-8">
+            <Skeleton className="h-4 w-32 sm:w-48" />
           </div>
         )}
 
         {/* Page Header Loading */}
         {showHeader && (
-          <div className="mb-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-3">
-                <Skeleton className="h-8 w-64" />
-                <Skeleton className="h-4 w-96" />
+          <div className="mb-6 md:mb-8 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-6">
+            <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+              <div className="space-y-3 flex-1 min-w-0">
+                <Skeleton className="h-6 sm:h-8 w-full max-w-64" />
+                <Skeleton className="h-4 w-full max-w-80 sm:max-w-96" />
               </div>
-              <Skeleton className="h-10 w-32" />
+              <div className="flex-shrink-0">
+                <Skeleton className="h-10 w-full sm:w-32" />
+              </div>
             </div>
           </div>
         )}
 
         {/* Content Cards Loading */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-6">
           {Array.from({ length: cardCount }).map((_, index) => (
             <div
               key={index}
               className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
             >
               {/* Card Header */}
-              <div className="p-6 border-b border-slate-100 dark:border-slate-700">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-2 flex-1">
-                    <Skeleton className="h-6 w-3/4" />
+              <div className="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-700">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2 flex-1 min-w-0">
+                    <Skeleton className="h-6 w-full max-w-48" />
                     <Skeleton className="h-4 w-full" />
                   </div>
-                  <Skeleton className="h-8 w-8 rounded-full ml-3" />
+                  <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
                 </div>
               </div>
 
               {/* Card Content */}
-              <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-16" />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-4 w-12" />
+              <div className="p-4 sm:p-6 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-12" />
+                  </div>
                 </div>
                 <Skeleton className="h-10 w-full mt-4" />
               </div>
@@ -88,11 +92,11 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
           ))}
         </div>
 
-        {/* Loading spinner overlay - improved for mobile */}
-        <div className="fixed inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-8">
-          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto text-center space-y-4 loading-fade-in">
+        {/* Loading spinner overlay - mobile optimized */}
+        <div className="fixed inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="w-full max-w-xs mx-auto text-center space-y-4 loading-fade-in">
             <UnifiedLoadingSpinner size="lg" variant="primary" className="mx-auto" />
-            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 break-words">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 break-words px-2">
               {title}
             </p>
           </div>

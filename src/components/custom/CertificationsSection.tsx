@@ -74,14 +74,14 @@ const CertificationsSection = () => {
           key={`user-${cert.cert_id}`}
           className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden group"
         >
-          <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+          <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
             <div className="flex items-start justify-between">
               <CardTitle className="text-lg leading-relaxed flex-1 mr-4">
                 <div className="space-y-3">
                   <div className="inline-flex items-center px-3 py-1 rounded-lg bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 text-sm font-normal border border-violet-100 dark:border-violet-800/50">
                     Certification #{index + 1}
                   </div>
-                  <div className="text-slate-900 dark:text-slate-100 font-semibold text-xl leading-relaxed group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                  <div className="text-slate-900 dark:text-slate-50 font-semibold text-xl leading-relaxed group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
                     {cert.certification.name}
                   </div>
                 </div>

@@ -18,7 +18,7 @@ export const DashboardLoading: React.FC<DashboardLoadingProps> = ({
     <div className="space-y-6">
       {/* Welcome Section Skeleton */}
       {showWelcome && (
-        <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
+        <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div className="space-y-3">
               <Skeleton className="h-7 w-64" />
@@ -40,7 +40,7 @@ export const DashboardLoading: React.FC<DashboardLoadingProps> = ({
 
       {/* Dashboard Header Skeleton */}
       <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Skeleton className="h-7 w-28" />
@@ -88,7 +88,7 @@ export const DashboardLoading: React.FC<DashboardLoadingProps> = ({
                 className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
               >
                 {/* Header skeleton */}
-                <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+                <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 space-y-3">
                       <Skeleton className="h-5 w-32" />

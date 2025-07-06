@@ -47,13 +47,13 @@ const MainPage = () => {
         <Breadcrumb items={[{ label: 'Dashboard', current: true }]} />
 
         {/* Welcome Section */}
-        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 sm:p-6">
+        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                 Welcome back, {displayName}!
               </h1>
-              <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
                 {profile
                   ? 'Ready to continue your certification journey.'
                   : isLoadingProfile
@@ -82,10 +82,10 @@ const MainPage = () => {
         {/* Dashboard Header */}
         <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Dashboard</h1>
               </div>
               <div className="flex items-center space-x-3">
                 <Button

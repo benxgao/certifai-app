@@ -101,15 +101,15 @@ function CertificationExamsContent() {
 
   // Update numberOfQuestions when certification data changes
   useEffect(() => {
-    if (displayCertification?.max_quiz_counts) {
-      setNumberOfQuestions(displayCertification.max_quiz_counts);
+    if (displayCertification?.min_quiz_counts) {
+      setNumberOfQuestions(displayCertification.min_quiz_counts);
     }
-  }, [displayCertification?.max_quiz_counts]);
+  }, [displayCertification?.min_quiz_counts]);
 
   // State for create exam modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [numberOfQuestions, setNumberOfQuestions] = useState(
-    displayCertification?.max_quiz_counts || 20,
+    displayCertification?.min_quiz_counts || 1,
   );
   const [customPromptText, setCustomPromptText] = useState('');
   const [navigatingExamId, setNavigatingExamId] = useState<string | null>(null);
@@ -144,7 +144,7 @@ function CertificationExamsContent() {
 
       await mutateExams(); // Refresh the exams list
       await mutateRateLimit(); // Refresh rate limit info
-      setNumberOfQuestions(displayCertification?.max_quiz_counts || 20);
+      setNumberOfQuestions(displayCertification?.min_quiz_counts || 1);
       setCustomPromptText('');
       setIsCreateModalOpen(false);
 
@@ -207,11 +207,11 @@ function CertificationExamsContent() {
         {/* Certification Status Card */}
         <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
           {/* Status Header */}
-          <div className="px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+          <div className="px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
             {/* Mobile-friendly layout */}
             <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3">
-                <h2 className="text-lg font-medium text-slate-900 dark:text-slate-100">
+                <h2 className="text-lg font-medium text-slate-900 dark:text-slate-50">
                   {displayCertification?.name || 'Certification Overview'}
                 </h2>
               </div>
@@ -557,19 +557,19 @@ function CertificationExamsContent() {
                   key={exam.exam_id}
                   className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden group"
                 >
-                  <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+                  <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
                     <div className="flex items-start justify-between gap-4">
                       {/* Left section: Title and metadata */}
                       <div className="flex-1 min-w-0">
                         {/* Exam ID indicator */}
                         <div className="mb-3">
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-medium border border-slate-200 dark:border-slate-600">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-600">
                             Exam #{exam.exam_id.toString().substring(0, 7)}
                           </span>
                         </div>
 
                         {/* Timing information */}
-                        <div className="text-sm text-slate-500 dark:text-slate-400 space-y-1">
+                        <div className="text-sm text-slate-500 dark:text-slate-300 space-y-1">
                           {isCompleted && exam.submitted_at ? (
                             <>
                               {/* Show started date for completed exams */}

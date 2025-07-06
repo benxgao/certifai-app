@@ -34,7 +34,7 @@ import Breadcrumb from '@/components/custom/Breadcrumb';
 const ProfileSkeleton: React.FC = () => (
   <div className="space-y-6">
     {/* Profile Header Skeleton */}
-    <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
+    <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
       <div className="flex items-center space-x-4">
         <Skeleton className="h-16 w-16 rounded-full" />
         <div className="space-y-2 flex-1">
@@ -50,7 +50,7 @@ const ProfileSkeleton: React.FC = () => (
 
     {/* Profile Content Skeleton */}
     <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
         <Skeleton className="h-8 w-32" />
       </div>
       <div className="p-6 space-y-6">
@@ -278,7 +278,7 @@ const ProfileClientPage: React.FC = () => {
         />
 
         {/* Welcome Section */}
-        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 md:p-6">
+        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 md:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
             <div className="flex items-center space-x-3 md:space-x-4">
               <Avatar className="w-12 h-12 md:w-16 md:h-16">
@@ -308,10 +308,10 @@ const ProfileClientPage: React.FC = () => {
         {/* Profile Content */}
         <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
                   Account Settings
                 </h2>
               </div>
