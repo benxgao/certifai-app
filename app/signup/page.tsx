@@ -133,6 +133,28 @@ export default function SignUpPage() {
         // Don't block signup for registration errors
       }
 
+      // Subscribe user to marketing list (non-blocking)
+      try {
+        const { subscribeUserToMarketing } = await import('@/src/lib/marketing-api');
+        const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
+
+        const marketingResult = await subscribeUserToMarketing(
+          email,
+          firstName.trim(),
+          lastName.trim(),
+          userAgent,
+        );
+
+        if (marketingResult.success) {
+          console.log('User successfully subscribed to marketing list');
+        } else {
+          console.warn('Marketing subscription failed:', marketingResult.error);
+        }
+      } catch (marketingError) {
+        console.error('Error during marketing subscription:', marketingError);
+        // Don't block signup for marketing subscription errors
+      }
+
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
