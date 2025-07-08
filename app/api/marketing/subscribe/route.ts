@@ -1,20 +1,5 @@
 import 'server-only';
-
-/**
- * Server-side Marketing API utilities for subscribing users
- *
- * ⚠️ WARNING: This file contains server-side only functions that use environment variables
- * and JWT generation. Do NOT use these functions on the client side.
- *
- * For client-side marketing subscription, use:
- * import { subscribeUserToMarketing } from '@/src/lib/marketing-client';
- *
- * This file should only be imported in:
- * - API routes (app/api/*)
- * - Server components
- * - Server actions
- */
-
+import { NextRequest, NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
 
 interface SubscriptionRequest {
@@ -41,7 +26,7 @@ interface MarketingApiResult {
 
 /**
  * Generate JWT token for marketing API access
- * ⚠️ SERVER-SIDE ONLY - Contains sensitive environment variables
+ * Server-side only function
  */
 async function generateMarketingJWT(): Promise<string | null> {
   try {
@@ -63,6 +48,8 @@ async function generateMarketingJWT(): Promise<string | null> {
       .setExpirationTime('1h')
       .sign(secretKey);
 
+    console.log(`marketing api jwt: ${jwt}`);
+
     return jwt;
   } catch (error) {
     console.error('Failed to generate marketing JWT:', error);
@@ -72,14 +59,9 @@ async function generateMarketingJWT(): Promise<string | null> {
 
 /**
  * Subscribe user to marketing list via AWS Lambda
- * ⚠️ SERVER-SIDE ONLY - This function uses sensitive environment variables and JWT generation
- *
- * For client-side usage, use the API route: POST /api/marketing/subscribe
- * or import from '@/src/lib/marketing-client'
- *
  * This function is non-blocking and will not prevent signup completion if it fails
  */
-export async function subscribeUserToMarketing(
+async function subscribeUserToMarketing(
   email: string,
   firstName?: string,
   lastName?: string,
@@ -141,6 +123,8 @@ export async function subscribeUserToMarketing(
 
     const result: SubscriptionResponse = await response.json();
 
+    console.log(`marketing api result: ${JSON.stringify(result)}`);
+
     if (result.success) {
       console.log('User successfully subscribed to marketing:', result.subscriberId);
       return {
@@ -161,5 +145,27 @@ export async function subscribeUserToMarketing(
       success: false,
       error: `Marketing subscription error: ${errorMessage}`,
     };
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { email, firstName, lastName, userAgent } = body;
+
+    // Validate required fields
+    if (!email) {
+      return NextResponse.json({ success: false, error: 'Email is required' }, { status: 400 });
+    }
+
+    // Subscribe user to marketing
+    const result = await subscribeUserToMarketing(email, firstName, lastName, userAgent);
+
+    return NextResponse.json(result, {
+      status: result.success ? 200 : 500,
+    });
+  } catch (error) {
+    console.error('Marketing subscription API error:', error);
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

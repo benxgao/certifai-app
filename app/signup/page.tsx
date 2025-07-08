@@ -135,7 +135,7 @@ export default function SignUpPage() {
 
       // Subscribe user to marketing list (non-blocking)
       try {
-        const { subscribeUserToMarketing } = await import('@/src/lib/marketing-api');
+        const { subscribeUserToMarketing } = await import('@/src/lib/marketing-client');
         const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
 
         const marketingResult = await subscribeUserToMarketing(

@@ -11,13 +11,17 @@ This implementation automatically subscribes users to the marketing list (Mailer
 1. User completes signup form in `app/signup/page.tsx`
 2. Firebase Auth account is created
 3. User is registered in the CertifAI backend API
-4. **NEW**: User is automatically subscribed to marketing list via AWS Lambda
-5. Email verification is sent
+4. **Client-side**: Marketing subscription request is sent to internal API route (`/api/marketing/subscribe`)
+5. **Server-side**: API route generates JWT token and calls AWS Lambda
+6. **AWS Lambda**: Processes subscription request and communicates with MailerLite
+7. Email verification is sent
 
 ### Components
 
 - **Frontend**: `app/signup/page.tsx` - Handles the signup flow
-- **Marketing API Utility**: `src/lib/marketing-api.ts` - Handles JWT generation and API calls
+- **Client-side API**: `src/lib/marketing-client.ts` - Client-safe marketing subscription calls
+- **API Route**: `app/api/marketing/subscribe/route.ts` - Server-side API route that handles JWT generation and AWS Lambda calls
+- **Server-side Utility**: `src/lib/marketing-api.ts` - Server-only JWT generation and AWS Lambda communication
 - **AWS Lambda**: `certifai-aws/src/handlers/userSubscription.ts` - Processes subscription requests
 - **MailerLite**: Third-party email marketing service
 
