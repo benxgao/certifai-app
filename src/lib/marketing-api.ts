@@ -56,7 +56,6 @@ async function generateMarketingJWT(): Promise<string | null> {
     const jwt = await new SignJWT({
       sub: 'certifai-app',
       scope: 'marketing:write',
-      iat: Math.floor(Date.now() / 1000),
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()

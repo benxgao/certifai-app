@@ -13,6 +13,7 @@ interface MarketingApiResult {
  * Subscribe user to marketing list via internal API route
  * This function is client-safe and calls the server-side API
  * This function is non-blocking and will not prevent signup completion if it fails
+ * The API now always returns 200 status to prevent frontend error popups
  */
 export async function subscribeUserToMarketing(
   email: string,
@@ -36,16 +37,7 @@ export async function subscribeUserToMarketing(
       signal: AbortSignal.timeout(15000), // 15 second timeout (longer for client-server-AWS chain)
     });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-      console.error('Marketing subscription API failed:', response.status, errorData);
-
-      return {
-        success: false,
-        error: errorData.error || `Request failed with status ${response.status}`,
-      };
-    }
-
+    // The API now always returns 200, so we check the response body for success/failure
     const result = await response.json();
 
     if (result.success) {

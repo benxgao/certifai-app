@@ -26,6 +26,7 @@ import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
+import { toast, Toaster } from 'sonner';
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -134,6 +135,7 @@ export default function SignUpPage() {
       }
 
       // Subscribe user to marketing list (non-blocking)
+      // Note: Marketing API now always returns 200 to prevent frontend error popups
       try {
         const { subscribeUserToMarketing } = await import('@/src/lib/marketing-client');
         const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
@@ -148,11 +150,11 @@ export default function SignUpPage() {
         if (marketingResult.success) {
           console.log('User successfully subscribed to marketing list');
         } else {
-          console.warn('Marketing subscription failed:', marketingResult.error);
+          console.warn('Marketing subscription failed (non-blocking):', marketingResult.error);
         }
       } catch (marketingError) {
-        console.error('Error during marketing subscription:', marketingError);
-        // Don't block signup for marketing subscription errors
+        console.error('Error during marketing subscription (non-blocking):', marketingError);
+        // Marketing subscription errors are non-blocking and won't affect signup flow
       }
 
       // Check if component is still mounted before proceeding
@@ -166,7 +168,12 @@ export default function SignUpPage() {
         if (!isMountedRef.current) return;
 
         setShowVerificationStep(true);
-        setSuccess('Account created successfully! Please check your email to verify your account.');
+        const successMessage =
+          'Account created successfully! Please check your email to verify your account.';
+        setSuccess(successMessage);
+        toast.success('Welcome to Certifai!', {
+          description: 'Please check your email and verify your account to complete registration.',
+        });
       } catch (verificationError: any) {
         console.error('Email verification error:', verificationError);
 
@@ -181,9 +188,13 @@ export default function SignUpPage() {
         ) {
           // Still show verification step even if email sending failed
           setShowVerificationStep(true);
-          setError(
-            'Account created but verification email may not have been sent. You can resend it below.',
-          );
+          const emailFailedMessage =
+            'Account created but verification email may not have been sent. You can resend it below.';
+          setError(emailFailedMessage);
+          toast.warning('Account created successfully!', {
+            description:
+              'However, the verification email may not have been sent. You can resend it from the next screen.',
+          });
         } else {
           throw verificationError; // Re-throw other errors to be handled by outer catch
         }
@@ -202,22 +213,46 @@ export default function SignUpPage() {
 
       switch (error.code) {
         case 'auth/email-already-in-use':
-          setError('An account with this email already exists');
+          const emailInUseMessage =
+            'This email address is already registered. Please use a different email or try signing in instead.';
+          setError(emailInUseMessage);
+          toast.error(emailInUseMessage, {
+            description: 'If you forgot your password, you can reset it from the sign-in page.',
+            action: {
+              label: 'Go to Sign In',
+              onClick: () => router.push('/signin'),
+            },
+          });
           break;
         case 'auth/invalid-email':
-          setError('Please enter a valid email address');
+          const invalidEmailMessage = 'Please enter a valid email address';
+          setError(invalidEmailMessage);
+          toast.error(invalidEmailMessage);
           break;
         case 'auth/weak-password':
-          setError('Password is too weak. Please choose a stronger password');
+          const weakPasswordMessage = 'Password is too weak. Please choose a stronger password';
+          setError(weakPasswordMessage);
+          toast.error(weakPasswordMessage, {
+            description: 'Try using at least 6 characters with a mix of letters and numbers.',
+          });
           break;
         case 'auth/operation-not-allowed':
-          setError('Email/password accounts are not enabled. Please contact support.');
+          const operationMessage =
+            'Email/password accounts are not enabled. Please contact support.';
+          setError(operationMessage);
+          toast.error(operationMessage);
           break;
         case 'auth/network-request-failed':
-          setError('Network error. Please check your connection and try again.');
+          const networkMessage = 'Network error. Please check your connection and try again.';
+          setError(networkMessage);
+          toast.error(networkMessage);
           break;
         default:
-          setError(error.message || 'An error occurred during signup');
+          const defaultMessage = error.message || 'An error occurred during signup';
+          setError(defaultMessage);
+          toast.error('Signup failed', {
+            description: defaultMessage,
+          });
       }
     } finally {
       // Check if component is still mounted before updating loading state
@@ -239,7 +274,11 @@ export default function SignUpPage() {
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
 
-      setSuccess('Verification email sent! Please check your inbox.');
+      const successMessage = 'Verification email sent! Please check your inbox.';
+      setSuccess(successMessage);
+      toast.success('Verification email sent!', {
+        description: 'Please check your inbox (and spam folder) for the verification email.',
+      });
     } catch (error: any) {
       console.error('Error resending verification:', error);
 
@@ -248,13 +287,21 @@ export default function SignUpPage() {
 
       // Handle signal aborted errors specifically
       if (error.message?.includes('signal is aborted')) {
-        setError('Operation was interrupted. Please try again.');
+        const interruptedMessage = 'Operation was interrupted. Please try again.';
+        setError(interruptedMessage);
+        toast.error(interruptedMessage);
       } else if (error.message?.includes('timeout')) {
-        setError('Request timed out. Please check your connection and try again.');
+        const timeoutMessage = 'Request timed out. Please check your connection and try again.';
+        setError(timeoutMessage);
+        toast.error(timeoutMessage);
       } else if (error.code === 'auth/internal-error') {
-        setError('Internal error occurred. Please try again in a moment.');
+        const internalErrorMessage = 'Internal error occurred. Please try again in a moment.';
+        setError(internalErrorMessage);
+        toast.error(internalErrorMessage);
       } else {
-        setError('Failed to resend verification email. Please try again.');
+        const failedMessage = 'Failed to resend verification email. Please try again.';
+        setError(failedMessage);
+        toast.error(failedMessage);
       }
     } finally {
       // Check if component is still mounted before updating loading state
@@ -450,6 +497,7 @@ export default function SignUpPage() {
             </Card>
           </div>
         </div>
+        <Toaster richColors />
       </div>
     );
   }
@@ -679,6 +727,7 @@ export default function SignUpPage() {
           </Card>
         </div>
       </div>
+      <Toaster richColors />
     </div>
   );
 }

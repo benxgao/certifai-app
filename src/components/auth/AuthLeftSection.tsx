@@ -15,10 +15,10 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
       title: 'Transform Your Career',
       description:
         'Join a growing number of beta users who are accelerating their certification success with AI-powered learning.',
-      stats: {
-        primary: { value: '90%', label: 'Beta Success Rate' },
-        secondary: { value: '500+', label: 'Early Adopters' },
-      },
+      // stats: {
+      //   primary: { value: 'Looks positive', label: 'Beta Success Rate' },
+      //   secondary: { value: 'A growing number', label: 'Early Adopters' },
+      // },
       features: [
         {
           icon: 'check',
@@ -219,7 +219,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
           {isSignup && 'stats' in currentContent && (
             <div className="relative">
               <div className="bg-gradient-to-r from-violet-50/80 to-purple-50/80 backdrop-blur-sm rounded-2xl p-6 border border-violet-200/50 shadow-xl">
-                <div className="grid grid-cols-2 gap-6">
+                {/* <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-violet-700 mb-1">
                       {currentContent.stats.primary.value}
@@ -236,7 +236,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                       {currentContent.stats.secondary.label}
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* Decorative elements */}
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-violet-400 to-purple-500 rounded-full opacity-60"></div>
                 <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full opacity-60"></div>

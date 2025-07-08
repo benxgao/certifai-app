@@ -2,6 +2,14 @@ import 'server-only';
 import { NextRequest, NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
 
+/**
+ * Marketing Subscription API Route
+ *
+ * IMPORTANT: This API always returns HTTP 200 status code to prevent frontend error popups.
+ * Success/failure is indicated in the response body via the 'success' field.
+ * This ensures that marketing subscription failures don't disrupt the user signup flow.
+ */
+
 interface SubscriptionRequest {
   email: string;
   firstName?: string;
@@ -32,7 +40,7 @@ async function generateMarketingJWT(): Promise<string | null> {
   try {
     const secret = process.env.MARKETING_API_JWT_SECRET;
     if (!secret) {
-      console.warn('MARKETING_API_JWT_SECRET environment variable is not set');
+      console.warn('marketing_api: environment variable is not set');
       return null;
     }
 
@@ -41,18 +49,18 @@ async function generateMarketingJWT(): Promise<string | null> {
     const jwt = await new SignJWT({
       sub: 'certifai-app',
       scope: 'marketing:write',
-      iat: Math.floor(Date.now() / 1000),
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('1h')
       .sign(secretKey);
 
-    console.log(`marketing api jwt: ${jwt}`);
+    console.log(`marketing_api: jwt: ${jwt}`);
+    console.log(`marketing_api: jwt payload:`, JSON.parse(atob(jwt.split('.')[1])));
 
     return jwt;
   } catch (error) {
-    console.error('Failed to generate marketing JWT:', error);
+    console.error('marketing_api: Failed to generate marketing JWT:', error);
     return null;
   }
 }
@@ -60,6 +68,7 @@ async function generateMarketingJWT(): Promise<string | null> {
 /**
  * Subscribe user to marketing list via AWS Lambda
  * This function is non-blocking and will not prevent signup completion if it fails
+ * The API always returns 200 status to prevent frontend error popups
  */
 async function subscribeUserToMarketing(
   email: string,
@@ -72,7 +81,7 @@ async function subscribeUserToMarketing(
 
     if (!marketingApiUrl) {
       console.warn(
-        'MARKETING_API_URL environment variable is not set, skipping marketing subscription',
+        'marketing_api: environment variable is not set, skipping marketing subscription',
       );
       return { success: false, error: 'Marketing API URL not configured' };
     }
@@ -80,7 +89,9 @@ async function subscribeUserToMarketing(
     // Generate JWT token for authentication
     const jwtToken = await generateMarketingJWT();
     if (!jwtToken) {
-      console.warn('Failed to generate JWT token for marketing API, skipping subscription');
+      console.warn(
+        'marketing_api: Failed to generate JWT token for marketing API, skipping subscription',
+      );
       return { success: false, error: 'Failed to generate authentication token' };
     }
 
@@ -89,14 +100,21 @@ async function subscribeUserToMarketing(
       email,
       firstName: firstName?.trim(),
       lastName: lastName?.trim(),
-      fields: {
-        source: 'certestic-app-signup',
-        signup_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
-        ...(userAgent && { user_agent: userAgent }),
-      },
-      groups: ['new-users', 'newsletter'],
+      // fields: {
+      //   source: 'certestic-app-signup',
+      //   signup_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+      //   ...(userAgent && { user_agent: userAgent }),
+      // },
+      // groups: ['new-users', 'newsletter'],
       status: 'active',
     };
+
+    console.log(`marketing_api: userAgent: ${userAgent}`);
+
+    console.log(
+      'marketing_api: Sending subscription data to AWS Lambda:',
+      JSON.stringify(subscriptionData, null, 2),
+    );
 
     // Make request to marketing API
     const response = await fetch(`${marketingApiUrl}/subscribe`, {
@@ -112,21 +130,25 @@ async function subscribeUserToMarketing(
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
-      console.error('Marketing API subscription failed:', response.status, errorText);
+      console.error(
+        'marketing_api: Marketing API subscription failed:',
+        response.status,
+        errorText,
+      );
 
       // Return non-blocking error for better user experience
       return {
         success: false,
-        error: `Marketing subscription failed: ${response.status}`,
+        error: `marketing_api: Marketing subscription failed: ${response.status}`,
       };
     }
 
     const result: SubscriptionResponse = await response.json();
 
-    console.log(`marketing api result: ${JSON.stringify(result)}`);
+    console.log(`marketing_api: result: ${JSON.stringify(result)}`);
 
     if (result.success) {
-      console.log('User successfully subscribed to marketing:', result.subscriberId);
+      console.log('marketing_api: User successfully subscribed to marketing:', result.subscriberId);
       return {
         success: true,
         subscriberId: result.subscriberId,
@@ -143,7 +165,7 @@ async function subscribeUserToMarketing(
     // Don't block signup for marketing subscription errors
     return {
       success: false,
-      error: `Marketing subscription error: ${errorMessage}`,
+      error: `marketing_api: Marketing subscription error: ${errorMessage}`,
     };
   }
 }
@@ -155,17 +177,33 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!email) {
-      return NextResponse.json({ success: false, error: 'Email is required' }, { status: 400 });
+      // Always return 200 but with success: false for validation errors
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Email is required',
+        },
+        { status: 200 },
+      );
     }
 
     // Subscribe user to marketing
     const result = await subscribeUserToMarketing(email, firstName, lastName, userAgent);
 
-    return NextResponse.json(result, {
-      status: result.success ? 200 : 500,
-    });
+    // Always return 200 status code regardless of subscription success/failure
+    // The success/failure is indicated in the response body
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
-    console.error('Marketing subscription API error:', error);
-    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
+    console.error('marketing_api: Marketing subscription API error:', error);
+
+    // Always return 200 even for internal server errors
+    // This prevents frontend error popups for non-critical marketing functionality
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Internal server error',
+      },
+      { status: 200 },
+    );
   }
 }
