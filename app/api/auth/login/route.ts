@@ -73,9 +73,17 @@ export async function POST(request: NextRequest) {
 
       // Set custom claims with the api_user_id for future use
       try {
-        await auth.setCustomUserClaims(uid, {
+        const customClaims: any = {
           api_user_id: apiUserId,
-        });
+        };
+
+        // Preserve existing init_cert_id if it exists
+        const existingRecord = await auth.getUser(uid);
+        if (existingRecord.customClaims?.init_cert_id) {
+          customClaims.init_cert_id = existingRecord.customClaims.init_cert_id;
+        }
+
+        await auth.setCustomUserClaims(uid, customClaims);
         console.log(
           'Successfully set custom claims for user:',
           uid,

@@ -20,24 +20,33 @@ export async function POST(request: NextRequest) {
     const decodedToken = await auth.verifyIdToken(firebaseToken);
     const uid = decodedToken.uid;
 
-    // Get the api_user_id from request body
+    // Get the api_user_id and init_cert_id from request body
     const body = await request.json();
-    const { api_user_id } = body;
+    const { api_user_id, init_cert_id } = body;
 
     if (!api_user_id) {
       return NextResponse.json({ message: 'api_user_id is required' }, { status: 400 });
     }
 
-    // Set custom claims with the api_user_id
-    await auth.setCustomUserClaims(uid, {
+    // Build custom claims object
+    const customClaims: any = {
       api_user_id: api_user_id,
-    });
+    };
+
+    // Add init_cert_id if provided
+    if (init_cert_id) {
+      customClaims.init_cert_id = init_cert_id;
+    }
+
+    // Set custom claims with the api_user_id and optionally init_cert_id
+    await auth.setCustomUserClaims(uid, customClaims);
 
     return NextResponse.json(
       {
         message: 'Custom claims set successfully',
         uid,
         api_user_id,
+        init_cert_id: init_cert_id || null,
       },
       { status: 200 },
     );

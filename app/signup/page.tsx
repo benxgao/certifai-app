@@ -27,6 +27,7 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { toast, Toaster } from 'sonner';
+import CertificationSelector from '@/src/components/custom/CertificationSelector';
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -35,6 +36,7 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [selectedCertId, setSelectedCertId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -120,6 +122,7 @@ export default function SignUpPage() {
           body: JSON.stringify({
             firstName: firstName.trim(),
             lastName: lastName.trim(),
+            initCertId: selectedCertId,
           }),
         });
 
@@ -670,6 +673,12 @@ export default function SignUpPage() {
                     className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
                   />
                 </div>
+
+                <CertificationSelector
+                  selectedCertId={selectedCertId}
+                  onCertificationChange={setSelectedCertId}
+                  disabled={loading}
+                />
 
                 <div className="flex items-start space-x-3 py-2">
                   <Checkbox

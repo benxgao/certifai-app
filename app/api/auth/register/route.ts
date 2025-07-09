@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     // Get additional user data from request body
     const body = await request.json();
-    const { firstName, lastName } = body;
+    const { firstName, lastName, initCertId } = body;
 
     // Try to create user in external API first
     let apiUserId = null;
@@ -77,18 +77,33 @@ export async function POST(request: NextRequest) {
       console.log('Using fallback api_user_id:', apiUserId);
     }
 
-    // Set custom claims with the api_user_id
-    await auth.setCustomUserClaims(uid, {
+    // Set custom claims with the api_user_id and init_cert_id
+    const customClaims: any = {
       api_user_id: apiUserId,
-    });
+    };
 
-    console.log('Successfully set custom claims for user:', uid, 'with api_user_id:', apiUserId);
+    // Add init_cert_id to custom claims if provided
+    if (initCertId) {
+      customClaims.init_cert_id = initCertId;
+    }
+
+    await auth.setCustomUserClaims(uid, customClaims);
+
+    console.log(
+      'Successfully set custom claims for user:',
+      uid,
+      'with api_user_id:',
+      apiUserId,
+      'and init_cert_id:',
+      initCertId || 'none',
+    );
 
     return NextResponse.json(
       {
         message: 'User registered successfully',
         uid,
         api_user_id: apiUserId,
+        init_cert_id: initCertId || null,
       },
       { status: 200 },
     );

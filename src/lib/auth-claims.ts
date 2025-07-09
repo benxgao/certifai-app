@@ -24,6 +24,28 @@ export async function getApiUserIdFromClaims(): Promise<string | null> {
 }
 
 /**
+ * Client-side utility to get init_cert_id from Firebase Auth custom claims
+ * This requires the user to refresh their token to get updated custom claims
+ */
+export async function getInitCertIdFromClaims(): Promise<number | null> {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return null;
+    }
+
+    // Force refresh to get latest custom claims
+    const idTokenResult = await user.getIdTokenResult(true);
+    const customClaims = idTokenResult.claims;
+
+    return (customClaims.init_cert_id as number) || null;
+  } catch (error) {
+    console.error('Error getting init_cert_id from custom claims:', error);
+    return null;
+  }
+}
+
+/**
  * Server-side utility to get api_user_id from Firebase Auth custom claims
  * Use this in API routes and server components
  */
@@ -35,6 +57,22 @@ export async function getApiUserIdFromToken(firebaseToken: string): Promise<stri
     return (decodedToken.api_user_id as string) || null;
   } catch (error) {
     console.error('Error verifying token and getting api_user_id:', error);
+    return null;
+  }
+}
+
+/**
+ * Server-side utility to get init_cert_id from Firebase Auth custom claims
+ * Use this in API routes and server components
+ */
+export async function getInitCertIdFromToken(firebaseToken: string): Promise<number | null> {
+  try {
+    const { auth } = getAdminSDK();
+    const decodedToken = await auth.verifyIdToken(firebaseToken);
+
+    return (decodedToken.init_cert_id as number) || null;
+  } catch (error) {
+    console.error('Error verifying token and getting init_cert_id:', error);
     return null;
   }
 }
