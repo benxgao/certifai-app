@@ -167,9 +167,9 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
     <>
       <CertificationJsonLd certification={certification} />
 
-      <div className="space-y-12">
+      <div className="space-y-8 sm:space-y-12">
         {/* Hero Section */}
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-4 sm:space-y-6 px-4 sm:px-0">
           <div className="flex items-center justify-center gap-3 mb-4">
             {certification.firm.logo_url && (
               <Image
@@ -177,33 +177,37 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
                 alt={`${certification.firm.name} logo`}
                 width={48}
                 height={48}
-                className="h-12 w-auto"
+                className="h-10 sm:h-12 w-auto"
               />
             )}
-            <Badge variant="secondary" className="text-lg px-4 py-2">
+            <Badge variant="secondary" className="text-base sm:text-lg px-3 sm:px-4 py-1.5 sm:py-2">
               {certification.firm.name}
             </Badge>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight px-2">
             Master the {certification.name}
           </h1>
 
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-2">
             Advance your career with comprehensive training for the {certification.name}. Join{' '}
             {certification.enrollment_count.toLocaleString()}+ professionals who have already
             started their journey.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
             <Link href={`/certifications/${firmCode}/${certId}`}>
-              <Button size="lg" className="px-8 py-3 text-lg">
+              <Button size="lg" className="w-full sm:w-auto px-6 sm:px-8 py-3 text-base sm:text-lg">
                 <FaGraduationCap className="mr-2" />
                 Start Learning Now
               </Button>
             </Link>
             <Link href={`/certifications/${firmCode}`}>
-              <Button variant="outline" size="lg" className="px-8 py-3 text-lg">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 text-base sm:text-lg"
+              >
                 <FaBook className="mr-2" />
                 View All {certification.firm.name} Certs
               </Button>
@@ -212,14 +216,14 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
         </div>
 
         {/* Key Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
           <Card className="text-center hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <FaBullseye className="text-4xl text-blue-600 mx-auto mb-4" />
-              <CardTitle>Comprehensive Coverage</CardTitle>
+            <CardHeader className="pb-4">
+              <FaBullseye className="text-3xl sm:text-4xl text-blue-600 mx-auto mb-3 sm:mb-4" />
+              <CardTitle className="text-lg sm:text-xl">Comprehensive Coverage</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
+            <CardContent className="pt-0">
+              <p className="text-gray-600 text-sm sm:text-base">
                 {certification.min_quiz_counts} to {certification.max_quiz_counts} practice
                 questions covering all exam topics to ensure you&apos;re fully prepared.
               </p>
@@ -227,24 +231,24 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
           </Card>
 
           <Card className="text-center hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <FaChartLine className="text-4xl text-green-600 mx-auto mb-4" />
-              <CardTitle>High Success Rate</CardTitle>
+            <CardHeader className="pb-4">
+              <FaChartLine className="text-3xl sm:text-4xl text-green-600 mx-auto mb-3 sm:mb-4" />
+              <CardTitle className="text-lg sm:text-xl">High Success Rate</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
+            <CardContent className="pt-0">
+              <p className="text-gray-600 text-sm sm:text-base">
                 Achieve success with our proven study methodology and expert-crafted practice exams.
               </p>
             </CardContent>
           </Card>
 
           <Card className="text-center hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <FaUsers className="text-4xl text-purple-600 mx-auto mb-4" />
-              <CardTitle>Join the Community</CardTitle>
+            <CardHeader className="pb-4">
+              <FaUsers className="text-3xl sm:text-4xl text-purple-600 mx-auto mb-3 sm:mb-4" />
+              <CardTitle className="text-lg sm:text-xl">Join the Community</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
+            <CardContent className="pt-0">
+              <p className="text-gray-600 text-sm sm:text-base">
                 Connect with {certification.enrollment_count.toLocaleString()}+ learners and get
                 support throughout your certification journey.
               </p>
@@ -253,62 +257,70 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
         </div>
 
         {/* Stats Section */}
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50">
-          <CardContent className="p-8">
-            <h2 className="text-3xl font-bold text-center mb-8">Why Choose Our Training?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 mx-4 sm:mx-0">
+          <CardContent className="p-6 sm:p-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">
+              Why Choose Our Training?
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
               <div>
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-2">
                   {certification.enrollment_count.toLocaleString()}+
                 </div>
-                <p className="text-gray-600">Students Enrolled</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Students Enrolled</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-purple-600 mb-2">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-2">
                   {certification.max_quiz_counts}
                 </div>
-                <p className="text-gray-600">Practice Questions</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Practice Questions</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-orange-600 mb-2">
+                <div className="text-2xl sm:text-3xl font-bold text-orange-600 mb-2">
                   <FaStar className="inline" />
                 </div>
-                <p className="text-gray-600">Expert Content</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Expert Content</p>
+              </div>
+              <div className="col-span-2 md:col-span-1">
+                <div className="text-2xl sm:text-3xl font-bold text-green-600 mb-2">
+                  {certification.pass_score}%
+                </div>
+                <p className="text-gray-600 text-xs sm:text-sm">Pass Score</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* What You'll Learn */}
-        <Card>
+        <Card className="mx-4 sm:mx-0">
           <CardHeader>
-            <CardTitle className="text-2xl flex items-center gap-2">
+            <CardTitle className="text-xl sm:text-2xl flex items-center gap-2">
               <FaCheckCircle className="text-green-600" />
               What You&apos;ll Learn
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="prose max-w-none">
-              <p className="text-gray-700 text-lg leading-relaxed">
+              <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
                 {linkifyText(certification.description)}
               </p>
 
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 <div className="flex items-start gap-3">
                   <FaCheckCircle className="text-green-600 mt-1 flex-shrink-0" />
-                  <span>Comprehensive exam preparation</span>
+                  <span className="text-sm sm:text-base">Comprehensive exam preparation</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <FaCheckCircle className="text-green-600 mt-1 flex-shrink-0" />
-                  <span>Real-world application examples</span>
+                  <span className="text-sm sm:text-base">Real-world application examples</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <FaCheckCircle className="text-green-600 mt-1 flex-shrink-0" />
-                  <span>Practice tests and quizzes</span>
+                  <span className="text-sm sm:text-base">Practice tests and quizzes</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <FaCheckCircle className="text-green-600 mt-1 flex-shrink-0" />
-                  <span>Expert tips and strategies</span>
+                  <span className="text-sm sm:text-base">Expert tips and strategies</span>
                 </div>
               </div>
             </div>
@@ -318,23 +330,23 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
         {/* Related Certifications */}
         {certification.related_certifications &&
           certification.related_certifications.length > 0 && (
-            <Card>
+            <Card className="mx-4 sm:mx-0">
               <CardHeader>
-                <CardTitle className="text-2xl">Related Certifications</CardTitle>
-                <p className="text-gray-600">
+                <CardTitle className="text-xl sm:text-2xl">Related Certifications</CardTitle>
+                <p className="text-gray-600 text-sm sm:text-base">
                   Expand your expertise with these related {certification.firm.name} certifications
                 </p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {certification.related_certifications.map((related) => (
                     <Card key={related.cert_id} className="hover:shadow-md transition-shadow">
                       <CardContent className="p-4">
-                        <h3 className="font-semibold text-lg mb-2">{related.name}</h3>
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        <h3 className="font-semibold text-base sm:text-lg mb-2">{related.name}</h3>
+                        <p className="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2">
                           {related.description}
                         </p>
-                        <div className="flex justify-between items-center text-sm text-gray-500">
+                        <div className="flex justify-between items-center text-xs sm:text-sm text-gray-500">
                           <span>
                             {related.min_quiz_counts}-{related.max_quiz_counts} questions
                           </span>
@@ -343,7 +355,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
                           href={`/certifications/${firmCode}/${related.cert_id}`}
                           className="mt-3 block"
                         >
-                          <Button variant="outline" size="sm" className="w-full">
+                          <Button variant="outline" size="sm" className="w-full text-xs sm:text-sm">
                             Learn More
                           </Button>
                         </Link>
@@ -356,15 +368,19 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
           )}
 
         {/* Call to Action */}
-        <Card className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-          <CardContent className="p-8 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Get Certified?</h2>
-            <p className="text-xl mb-6 opacity-90">
+        <Card className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white mx-4 sm:mx-0">
+          <CardContent className="p-6 sm:p-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Ready to Get Certified?</h2>
+            <p className="text-lg sm:text-xl mb-4 sm:mb-6 opacity-90">
               Start your journey to {certification.name} certification today
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <Link href={`/certifications/${firmCode}/${certId}`}>
-                <Button size="lg" variant="secondary" className="px-8 py-3 text-lg">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto px-6 sm:px-8 py-3 text-base sm:text-lg"
+                >
                   <FaGraduationCap className="mr-2" />
                   Begin Training
                 </Button>
@@ -374,7 +390,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
                   <Button
                     size="lg"
                     variant="outline"
-                    className="px-8 py-3 text-lg border-white text-white hover:bg-white hover:text-blue-600 dark:border-slate-300 dark:text-slate-100 dark:hover:bg-slate-200 dark:hover:text-slate-900"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 text-base sm:text-lg border-white text-white hover:bg-white hover:text-blue-600 dark:border-slate-300 dark:text-slate-100 dark:hover:bg-slate-200 dark:hover:text-slate-900"
                   >
                     <FaExternalLinkAlt className="mr-2" />
                     Official {certification.firm.name} Site

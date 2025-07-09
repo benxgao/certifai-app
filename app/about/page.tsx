@@ -188,7 +188,7 @@ export default function AboutPage() {
         <LandingHeader showFeaturesLink={false} />
 
         {/* Main Content with proper semantic structure */}
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12" role="main">
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" role="main">
           {/* Hero Section with optimized heading hierarchy */}
           <header className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">

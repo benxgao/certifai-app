@@ -67,17 +67,17 @@ export default function PricingPage() {
         <LandingHeader showFeaturesLink={true} />
 
         {/* Main Content */}
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20" role="main">
+        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20" role="main">
           {/* Header Section */}
-          <header className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Star className="w-4 h-4" />
+          <header className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <Star className="w-3 sm:w-4 h-3 sm:h-4" />
               <span>Free Beta - We Value Your Feedback</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6 px-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 lg:mb-6 px-2">
               Join Our Beta Program
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
               Help us build the future of AI-powered IT certification training. Access all features
               completely free during our beta phase while we gather feedback and improve the
               platform.
@@ -87,64 +87,64 @@ export default function PricingPage() {
           {/* Beta Access Card */}
           <div className="max-w-2xl mx-auto px-2 sm:px-4">
             <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-xl">
-              <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-primary text-white px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
+              <div className="absolute -top-2 sm:-top-3 lg:-top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-primary text-white px-3 sm:px-4 lg:px-6 py-1 sm:py-1.5 lg:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
                   FREE BETA ACCESS
                 </span>
               </div>
 
-              <div className="text-center mb-6 sm:mb-8 mt-6 sm:mt-4 lg:mt-0">
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
+              <div className="text-center mb-6 sm:mb-8 mt-4 sm:mt-6 lg:mt-0">
+                <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground mb-2">
                   Beta Program
                 </h3>
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-2">
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-2">
                   FREE
                 </div>
-                <p className="text-sm sm:text-base text-muted-foreground px-2">
+                <p className="text-xs sm:text-sm lg:text-base text-muted-foreground px-2">
                   Complete access while we build the future together
                 </p>
               </div>
 
-              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-foreground leading-relaxed">
+              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 lg:mb-8">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
                     Unlimited AI-Generated Practice Exams
                   </span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-foreground leading-relaxed">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
                     All IT Certifications Supported
                   </span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-foreground leading-relaxed">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
                     Advanced Performance Analytics
                   </span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-foreground leading-relaxed">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
                     Personalized Study Recommendations
                   </span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-foreground leading-relaxed">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
                     Community Access & Support
                   </span>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm sm:text-base text-foreground leading-relaxed">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
                     Direct Feedback Channel to Development Team
                   </span>
                 </div>
               </div>
 
-              <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-3 sm:p-4 mb-6 border border-primary/20">
+              <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-primary/20">
                 <p className="text-xs sm:text-sm text-primary dark:text-primary text-center leading-relaxed">
                   <strong>Beta Promise:</strong> Your feedback directly shapes our platform. Help us
                   build the best AI-powered certification training experience.
@@ -152,7 +152,7 @@ export default function PricingPage() {
               </div>
 
               <Link href="/signup" className="block">
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base lg:text-lg py-3 sm:py-4 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base lg:text-lg py-2.5 sm:py-3 lg:py-4 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
                   Join Beta Program
                 </Button>
               </Link>
@@ -160,12 +160,12 @@ export default function PricingPage() {
           </div>
 
           {/* FAQ Section */}
-          <div className="mt-16 sm:mt-20 px-2 sm:px-4">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center text-foreground mb-8 sm:mb-12">
+          <div className="mt-12 sm:mt-16 lg:mt-20 px-2 sm:px-4">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-foreground mb-6 sm:mb-8 lg:mb-12">
               Beta Program Questions
             </h2>
 
-            <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
+            <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
                   How long will the beta program last?

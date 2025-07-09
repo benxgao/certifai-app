@@ -18,42 +18,21 @@ export default function LandingPageContent() {
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
-          {/* Trust indicators */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 rounded-full px-4 py-2 mb-6">
-              <svg
-                className="w-4 h-4 text-green-600 dark:text-green-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Early Beta - Join a Growing Number of Users Already Learning
-              </span>
-            </div>
-          </div>
-
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
           {/* Hero Content - Centered */}
           <div className="text-center max-w-5xl mx-auto">
             {/* Beta badge */}
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-6">
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-4 sm:mb-6">
               <div
                 className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"
                 aria-hidden="true"
               ></div>
-              <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
+              <span className="text-xs sm:text-sm font-medium text-violet-700 dark:text-violet-300">
                 Beta Access Available
               </span>
             </div>
 
-            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                 Get Ready For Certifications
               </span>
@@ -61,7 +40,7 @@ export default function LandingPageContent() {
               with AI-Generated Exams
             </h1>
 
-            <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed font-light">
+            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
               Master IT certifications by creating exams on particular exam topics to test your
               knowledge. We are a wonderful addition to IT training by self-testing the knowledge
               you&apos;ve gained. Tell AI to generate exams on your particular needs like focusing

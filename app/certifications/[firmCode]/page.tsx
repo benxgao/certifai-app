@@ -76,14 +76,14 @@ export default async function FirmCertificationsPage({ params }: Props) {
       {/* Header with Navigation */}
       <LandingHeader showFeaturesLink={false} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Breadcrumb items={breadcrumbItems} />
 
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             {firm?.name || firmCode.toUpperCase()} Certifications
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl">
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl">
             {firm?.description ||
               `Explore certification programs from ${firmCode.toUpperCase()}. Each certification is designed to validate your skills and advance your career in the ever-evolving tech industry.`}
           </p>

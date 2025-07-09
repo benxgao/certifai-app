@@ -3,21 +3,21 @@ import Link from 'next/link';
 export default function MarketingFooter() {
   return (
     <footer className="mt-auto bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-700">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Brand Section */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">C</span>
+              <div className="h-7 sm:h-8 w-7 sm:w-8 rounded-lg bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-base sm:text-lg">C</span>
               </div>
-              <span className="font-bold text-xl text-white">Certestic</span>
+              <span className="font-bold text-lg sm:text-xl text-white">Certestic</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
               Master IT certifications with AI-powered practice exams, real-time performance
               analysis, and personalized study recommendations.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 sm:space-x-4">
               {/* Social Media Links */}
               <a
                 href="#"
@@ -55,9 +55,9 @@ export default function MarketingFooter() {
           </div>
 
           {/* Platform Section */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3 className="text-white font-semibold text-sm uppercase tracking-wider">Platform</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/main"
@@ -102,9 +102,9 @@ export default function MarketingFooter() {
           </div>
 
           {/* Resources Section */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3 className="text-white font-semibold text-sm uppercase tracking-wider">Resources</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/documentation"
@@ -149,9 +149,9 @@ export default function MarketingFooter() {
           </div>
 
           {/* Company Section */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <h3 className="text-white font-semibold text-sm uppercase tracking-wider">Company</h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/about"
@@ -189,10 +189,10 @@ export default function MarketingFooter() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-slate-700">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-700">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0">
             <div className="text-slate-400 text-sm">© 2025 Certestic. All rights reserved.</div>
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2 text-slate-400 text-sm">
                 <span>🌟</span>
                 <span>Beta Version</span>

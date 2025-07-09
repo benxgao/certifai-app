@@ -316,6 +316,43 @@ body {
     display: none;
   }
 
+  /* Mobile-optimized marketing page layouts */
+  .marketing-page-mobile {
+    @media (max-width: 640px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /* Enhanced mobile container responsive design */
+  .mobile-container {
+    @media (max-width: 640px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      max-width: 100%;
+    }
+    @media (min-width: 641px) and (max-width: 768px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  /* Mobile-first card spacing */
+  .mobile-card-spacing {
+    @media (max-width: 640px) {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+
+  /* Mobile text scaling */
+  .mobile-text-scale {
+    @media (max-width: 640px) {
+      font-size: 0.875rem; /* 14px */
+      line-height: 1.25rem; /* 20px */
+    }
+  }
+
   /* Custom scrollbar for better UX */
   .scrollbar-thin {
     scrollbar-width: thin;
