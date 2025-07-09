@@ -28,34 +28,32 @@ export default function LandingPageContent() {
                 aria-hidden="true"
               ></div>
               <span className="text-xs sm:text-sm font-medium text-violet-700 dark:text-violet-300">
-                Beta Access Available
+                Join My Beta Adventure! 🚀
               </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                Get Ready For Certifications
+                Ace Your IT Certifications
               </span>
               <br />
-              with AI-Generated Exams
+              with AI That Actually Gets It
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Master IT certifications by creating exams on particular exam topics to test your
-              knowledge. We are a wonderful addition to IT training by self-testing the knowledge
-              you&apos;ve gained. Tell AI to generate exams on your particular needs like focusing
-              on specific concepts, technologies, or certification domains. Join our growing
-              community of professionals advancing their careers through intelligent exam
-              simulation.
+              Hey there! 👋 I&apos;m building something I wish I had when studying for my own
+              certifications. Create custom practice exams on exactly what you need to learn, tell
+              the AI to focus on your weak spots, and actually enjoy the learning process. It&apos;s
+              like having a study buddy who never gets tired of making practice questions!
             </p>
 
             {/* Enhanced Stats with SEO keywords */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Growing
+                  Growing Family
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Self Exam Users</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Beta Testers</div>
               </div>
               <div
                 className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
@@ -63,17 +61,19 @@ export default function LandingPageContent() {
               ></div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  AI Exam
+                  Smart AI
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Simulation</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Study Helper</div>
               </div>
               <div
                 className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
                 aria-hidden="true"
               ></div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">Free</div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
+                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+                  100% Free
+                </div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">While We Build</div>
               </div>
             </div>
 
@@ -96,7 +96,7 @@ export default function LandingPageContent() {
                       d="M13 7l5 5m0 0l-5 5m5-5H6"
                     />
                   </svg>
-                  Start Beta Trial
+                  Let&apos;s Do This Together! 🎉
                 </Button>
               </Link>
               <Link href="/signin">
@@ -105,7 +105,7 @@ export default function LandingPageContent() {
                   size="lg"
                   className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                 >
-                  Sign In
+                  I&apos;m Already In!
                 </Button>
               </Link>
             </div>
@@ -120,7 +120,7 @@ export default function LandingPageContent() {
                     clipRule="evenodd"
                   />
                 </svg>
-                No credit card required
+                No credit card needed
               </div>
               <div className="hidden sm:block">•</div>
               <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ export default function LandingPageContent() {
                     clipRule="evenodd"
                   />
                 </svg>
-                14-day free trial
+                Free while I build it
               </div>
               <div className="hidden sm:block">•</div>
               <div className="flex items-center gap-2">
@@ -142,7 +142,7 @@ export default function LandingPageContent() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Cancel anytime
+                Your feedback shapes it
               </div>
             </div>
           </div>
@@ -215,21 +215,21 @@ export default function LandingPageContent() {
                 />
               </svg>
               <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                AI-Powered Features
+                What I&apos;m Building For You ✨
               </span>
             </div>
 
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-              Simulate Exams by AI &
+              Study Smart with AI &
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
-                Prepare by Self Exams
+                Actually Enjoy Learning
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Create exams on particular exam topics to test your knowledge mastery. Tell AI to
-              generate exams on your particular needs - whether focusing on specific concepts,
-              technologies, or certification domains. Currently in early beta with features driven
-              by your feedback.
+              I&apos;m creating custom practice exams that focus on exactly what you need to learn.
+              Tell the AI what you&apos;re struggling with, and it&apos;ll create questions to help
+              you master those concepts. It&apos;s still early days, but I&apos;m building this
+              based on real feedback from people like you!
             </p>
           </div>
 
@@ -252,15 +252,16 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
-                AI Exam Simulation
+                AI Study Buddy 🤖
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Create exams on particular exam topics to test if you have mastered knowledge. AI
-                generates intelligent questions for various IT certifications, with quality
-                improving through user feedback and continuous learning.
+                Think of it as having a super smart study partner who never gets tired of making
+                practice questions! Tell the AI exactly what you want to focus on, and it&apos;ll
+                create custom exams just for you. The more you use it, the better it gets at helping
+                you learn.
               </p>
               <div className="mt-6 flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
+                <span className="mr-2">See how it works</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -290,14 +291,15 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                Self Exam Environment
+                Practice Like It&apos;s the Real Thing 📝
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Prepare for IT certification by self exams in a realistic practice environment that
-                simulates real exam conditions with timing and question formats.
+                I&apos;ve recreated that slightly stressful exam feeling (but in a good way!) with
+                timed sessions and realistic question formats. Practice until you feel confident,
+                then go crush that real certification exam!
               </p>
               <div className="mt-6 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
+                <span className="mr-2">Try it out</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -327,14 +329,15 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
-                Detailed Analytics
+                See How You&apos;re Doing 📊
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Working on basic performance tracking to help identify areas for improvement.
-                Analytics features are in early development.
+                I&apos;m working on some cool ways to show your progress and help you spot what
+                needs more work. It&apos;s still pretty basic right now, but getting better based on
+                what people tell me they need!
               </p>
               <div className="mt-6 flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
+                <span className="mr-2">Check it out</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -364,15 +367,16 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300">
-                Topic-Focused AI Exams
+                Focus on What You Need 🎯
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Tell AI to generate exams on your particular needs like focusing on a specific
-                topic, concept, or weak area. Create targeted practice tests to master knowledge in
-                areas that matter most.
+                This is my favorite feature! Tell the AI exactly what you&apos;re struggling with -
+                like &quot;I need help with AWS security groups&quot; - and it&apos;ll create
+                targeted questions just for that topic. No more wasting time on stuff you already
+                know!
               </p>
               <div className="mt-6 flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
+                <span className="mr-2">Love this feature</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -402,14 +406,15 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                Progress Monitoring
+                Watch Yourself Improve 📈
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Visualize your improvement over time with detailed progress charts, milestone
-                tracking, and achievement badges to stay motivated.
+                There&apos;s nothing more motivating than seeing your scores go up! I&apos;m
+                building charts and progress tracking so you can celebrate those wins and see
+                exactly how far you&apos;ve come.
               </p>
               <div className="mt-6 flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
+                <span className="mr-2">Track progress</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -439,15 +444,15 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
-                Better Than AI Chatbots
+                Way Better Than ChatGPT 🎉
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Unlike generating exam tests in AI chatbots directly, Certestic provides a dedicated
-                interface with proper exam formatting, timed sessions, progress tracking, and
-                seamless user experience designed specifically for certification preparation.
+                Sure, you could ask ChatGPT to make you some practice questions, but then you&apos;d
+                have to copy-paste, format everything, time yourself... ugh! I&apos;ve built this
+                specifically for studying, with all the bells and whistles you actually need.
               </p>
               <div className="mt-6 flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Learn more</span>
+                <span className="mr-2">See the difference</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -481,46 +486,47 @@ export default function LandingPageContent() {
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-6 py-3 mb-8">
                 <div className="w-3 h-3 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full animate-pulse"></div>
                 <span className="text-sm font-semibold text-violet-700 dark:text-violet-300">
-                  Limited Time Beta Access
+                  Come Build This With Me! 🚀
                 </span>
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Create Exams on Particular Topics &
+                Help Me Build the Study Tool &
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  Shape the Future
+                  You Actually Want
                 </span>
                 <br />
-                of Knowledge Testing
+                to Use Every Day
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Join our growing beta community to help develop the next generation of topic-focused
-                AI exam tools. Help us perfect how to create exams on particular exam topics and
-                tell AI to generate exams on your particular needs.
+                I&apos;m not just building another study app - I&apos;m creating something based on
+                real feedback from real people preparing for real certifications. Your input
+                literally shapes what gets built next. Plus, it&apos;s completely free while I
+                figure this all out!
               </p>
 
               {/* Enhanced stats for CTA */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Open
+                    Open Door
                   </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Active
+                    Your Voice
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Development</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Shapes Features</div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Free
+                    100% Free
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">During Beta</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">While We Build</div>
                 </div>
               </div>
 
@@ -543,7 +549,7 @@ export default function LandingPageContent() {
                         d="M13 7l5 5m0 0l-5 5m5-5H6"
                       />
                     </svg>
-                    Start Beta Trial
+                    Count Me In! 🎉
                   </Button>
                 </Link>
                 <Link href="/signin">
@@ -552,7 +558,7 @@ export default function LandingPageContent() {
                     size="lg"
                     className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 transform hover:scale-105"
                   >
-                    Sign In
+                    I&apos;m Already Here!
                   </Button>
                 </Link>
               </div>
@@ -573,7 +579,7 @@ export default function LandingPageContent() {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">No credit card required</span>
+                  <span className="font-medium">No credit card needed</span>
                 </div>
                 <div className="hidden sm:block">•</div>
                 <div className="flex items-center gap-3">
@@ -590,7 +596,7 @@ export default function LandingPageContent() {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Free during beta</span>
+                  <span className="font-medium">Free while I build it</span>
                 </div>
                 <div className="hidden sm:block">•</div>
                 <div className="flex items-center gap-3">
@@ -607,7 +613,7 @@ export default function LandingPageContent() {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Cancel anytime</span>
+                  <span className="font-medium">Your feedback matters</span>
                 </div>
               </div>
             </div>

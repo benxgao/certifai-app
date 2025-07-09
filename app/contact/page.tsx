@@ -53,50 +53,53 @@ export default function ContactPage() {
   const contactInfo = [
     {
       icon: Mail,
-      title: 'Email',
+      title: 'Email Me Directly',
       content: 'contact@certestic.com',
-      description: 'Best way to reach the developer - usually responds within a day or two',
+      description:
+        'The best way to reach me! I usually reply within a day (sometimes sooner if I&apos;m having a coding session)',
     },
     {
       icon: MessageSquare,
-      title: 'Beta Feedback',
+      title: 'Join Our Beta Community',
       content: 'Community Discord',
-      description: 'Join our beta community for discussions and feedback',
+      description:
+        'Hang out with other beta testers, share ideas, and get help from fellow learners',
     },
     {
       icon: Phone,
-      title: 'Live Support Hours',
+      title: 'Catch Me Online',
       content: 'NZDT 8pm-10pm',
-      description: 'When the developer is online and available for real-time chat',
+      description:
+        'When I&apos;m usually online and available for real-time chat (between work and sleep!)',
     },
     {
       icon: MapPin,
-      title: 'Remote',
-      content: 'Distributed Development',
-      description: 'Built remotely with love for the community',
+      title: 'Built From Home',
+      content: 'Remote & Proud',
+      description: 'Working from my home office, building something I believe in',
     },
   ];
 
   const faqs = [
     {
-      question: 'Is this a real company?',
+      question: 'So... is this actually a real company?',
       answer:
-        "Certestic is currently a solo developer project exploring AI applications in education. It's in early beta and may evolve into something bigger based on community interest.",
+        'Great question! Right now it&apos;s just me in my home office building something I believe in. I&apos;m treating it seriously, but I&apos;m honest about it being a one-person passion project that might grow into something bigger.',
     },
     {
-      question: 'Which certifications do you support?',
+      question: 'Which certifications can I study for?',
       answer:
-        'Currently focusing on a few core certifications like AWS basics. Support is limited during beta but expanding based on user feedback.',
+        'I&apos;m starting with AWS basics since that&apos;s what I know best. As the community grows and I get feedback, I&apos;ll add more. What certification are YOU working on? Let me know!',
     },
     {
-      question: 'Is there a cost?',
+      question: 'How much does this cost?',
       answer:
-        'The beta is completely free while we develop and improve the platform. Future pricing will be determined based on community feedback.',
+        'Right now? Absolutely nothing! The beta is completely free because I want to focus on making it genuinely helpful before worrying about money. Future pricing will be fair and community-informed.',
     },
     {
-      question: 'How can I help or contribute?',
+      question: 'Can I help make this better somehow?',
       answer:
-        'Join the beta, provide feedback, contribute to the GitHub repo, or simply spread the word if you find it useful!',
+        'YES! Please! Use the beta, tell me what works and what doesn&apos;t, spread the word if you like it, or even contribute code if you&apos;re technical. Every bit of help means the world to me!',
     },
   ];
 
@@ -110,11 +113,12 @@ export default function ContactPage() {
         {/* Hero Section */}
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-            Get in Touch
+            Let&apos;s Chat! 💬
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Questions about the beta? Want to contribute? Have feedback to share? I&apos;d love to
-            hear from you and learn how we can make Certestic better together.
+            Got questions about Certestic? Found a bug? Have an idea that could make things better?
+            Or just want to say hi? I&apos;d genuinely love to hear from you! Every message helps me
+            understand what you need and how I can improve.
           </p>
         </div>
 
@@ -123,9 +127,10 @@ export default function ContactPage() {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Send a Message</CardTitle>
+                <CardTitle className="text-2xl">Drop Me a Line 📝</CardTitle>
                 <CardDescription>
-                  Share your thoughts, report issues, or just say hello!
+                  Whether it&apos;s feedback, a bug report, a feature idea, or just to say hello - I
+                  read every message!
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -133,10 +138,11 @@ export default function ContactPage() {
                   <div className="text-center py-8">
                     <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-foreground mb-2">
-                      Message Sent Successfully!
+                      Got Your Message! 🎉
                     </h3>
                     <p className="text-muted-foreground">
-                      Thank you for contacting us. We&apos;ll respond within 24 hours.
+                      Thanks for reaching out! I&apos;ll get back to you within a day or two. In the
+                      meantime, feel free to explore more of what we&apos;re building!
                     </p>
                   </div>
                 ) : (
@@ -155,7 +161,7 @@ export default function ContactPage() {
                           type="text"
                           value={formData.name}
                           onChange={handleInputChange}
-                          placeholder="Enter your full name"
+                          placeholder="What should I call you?"
                           required
                         />
                       </div>
@@ -172,7 +178,7 @@ export default function ContactPage() {
                           type="email"
                           value={formData.email}
                           onChange={handleInputChange}
-                          placeholder="Enter your email"
+                          placeholder="your.email@example.com"
                           required
                         />
                       </div>
@@ -191,7 +197,7 @@ export default function ContactPage() {
                         type="text"
                         value={formData.subject}
                         onChange={handleInputChange}
-                        placeholder="                      What's this about?"
+                        placeholder="What's on your mind?"
                         required
                       />
                     </div>
@@ -208,7 +214,7 @@ export default function ContactPage() {
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
-                        placeholder="Tell us more about your inquiry..."
+                        placeholder="Tell me what you're thinking... I read every word! 😊"
                         rows={6}
                         required
                       />
@@ -218,12 +224,12 @@ export default function ContactPage() {
                       {isSubmitting ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                          Sending...
+                          Sending Your Message...
                         </>
                       ) : (
                         <>
                           <Send className="h-4 w-4 mr-2" />
-                          Send Message
+                          Send My Message ✉️
                         </>
                       )}
                     </Button>
@@ -238,8 +244,8 @@ export default function ContactPage() {
             {/* Contact Info */}
             <Card>
               <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-                <CardDescription>Other ways to reach our team</CardDescription>
+                <CardTitle>Ways to Reach Me 📞</CardTitle>
+                <CardDescription>Pick whatever works best for you!</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 {contactInfo.map((item, index) => (
@@ -262,8 +268,8 @@ export default function ContactPage() {
             {/* Quick FAQ */}
             <Card>
               <CardHeader>
-                <CardTitle>Quick FAQ</CardTitle>
-                <CardDescription>Common questions we receive</CardDescription>
+                <CardTitle>Quick Answers 🤔</CardTitle>
+                <CardDescription>The questions I get asked most often</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {faqs.map((faq, index) => (
@@ -283,21 +289,22 @@ export default function ContactPage() {
         {/* Support Section */}
         <div className="mt-16 text-center">
           <div className="bg-card border rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Need Immediate Help?</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Need Help Right Now? 🚀</h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Join our community Discord server for real-time support from our team and fellow
-              learners, or check out our comprehensive documentation. For direct developer support,
-              I&apos;m usually available <strong>NZDT 8pm-10pm</strong> for live chat.
+              Jump into our Discord community where you can chat with other beta testers and get
+              help in real-time! Or browse through our documentation if you prefer to figure things
+              out yourself. And hey, if you catch me online during <strong>NZDT 8pm-10pm</strong>,
+              I&apos;m usually up for a quick chat!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/community">
                 <Button variant="outline" size="lg">
-                  Join Discord Community
+                  Join Our Discord Family
                 </Button>
               </Link>
               <Link href="/documentation">
                 <Button variant="outline" size="lg">
-                  View Documentation
+                  Browse the Docs
                 </Button>
               </Link>
             </div>

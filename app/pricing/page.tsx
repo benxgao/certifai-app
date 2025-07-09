@@ -10,9 +10,9 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 const pricingSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: 'Certestic IT Certification Training Platform - Beta',
+  name: 'Certestic IT Certification Training Platform - Free Beta Access',
   description:
-    'Free AI-powered IT certification training platform in beta - helping us improve through user feedback',
+    'Join our friendly community of IT professionals! Completely free beta access while we build the future of certification training together',
   brand: {
     '@type': 'Brand',
     name: 'Certestic',
@@ -20,8 +20,9 @@ const pricingSchema = {
   offers: [
     {
       '@type': 'Offer',
-      name: 'Beta Access',
-      description: 'Free beta access to all features - feedback appreciated',
+      name: 'Free Beta Family Access',
+      description:
+        'Join our community of passionate learners - completely free while we grow together!',
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
@@ -39,13 +40,13 @@ const pricingSchema = {
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Certestic - Free Beta Access | AI-Powered IT Certification Training',
+  name: 'Certestic - Join Our Free Beta Family! | AI-Powered IT Certification Training',
   description:
-    'Join our free beta program and help us build the future of AI-powered IT certification training. Your feedback shapes our platform.',
+    'Come build the future of IT certification training with us! Join our friendly community of passionate learners - everything is completely free while we grow together.',
   url: 'https://certestic.com/pricing',
   mainEntity: {
     '@type': 'Product',
-    name: 'Certestic IT Certification Training Platform - Beta',
+    name: 'Certestic IT Certification Training Platform - Free Beta Family Access',
   },
 };
 
@@ -72,15 +73,16 @@ export default function PricingPage() {
           <header className="text-center mb-8 sm:mb-12 lg:mb-16">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <Star className="w-3 sm:w-4 h-3 sm:h-4" />
-              <span>Free Beta - We Value Your Feedback</span>
+              <span>100% Free Beta - Your Ideas Matter! 💫</span>
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 lg:mb-6 px-2">
-              Join Our Beta Program
+              Come Build This With Me! 🚀
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-              Help us build the future of AI-powered IT certification training. Access all features
-              completely free during our beta phase while we gather feedback and improve the
-              platform.
+              Hey there! 👋 I&apos;m building something special for IT folks like us, and I&apos;d
+              love for you to be part of it. Everything&apos;s completely free right now because
+              honestly? I need your help to make this amazing. Your feedback literally shapes what
+              we build next!
             </p>
           </header>
 
@@ -95,13 +97,13 @@ export default function PricingPage() {
 
               <div className="text-center mb-6 sm:mb-8 mt-4 sm:mt-6 lg:mt-0">
                 <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground mb-2">
-                  Beta Program
+                  Beta Family Access ✨
                 </h3>
                 <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-2">
                   FREE
                 </div>
                 <p className="text-xs sm:text-sm lg:text-base text-muted-foreground px-2">
-                  Complete access while we build the future together
+                  Join our little community of passionate learners! 🎯
                 </p>
               </div>
 
@@ -109,51 +111,53 @@ export default function PricingPage() {
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Unlimited AI-Generated Practice Exams
+                    🧠 Unlimited AI-Generated Practice Exams (they&apos;re getting smarter every
+                    day!)
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    All IT Certifications Supported
+                    📚 All IT Certifications Supported (seriously, all of them!)
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Advanced Performance Analytics
+                    📊 Advanced Performance Analytics (see exactly where you&apos;re crushing it)
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Personalized Study Recommendations
+                    🎯 Personalized Study Recommendations (like having a study buddy who knows you)
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Community Access & Support
+                    🤝 Community Access & Support (we&apos;re all in this together)
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Direct Feedback Channel to Development Team
+                    💬 Direct Line to Me (yes, I actually read every message!)
                   </span>
                 </div>
               </div>
 
               <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-primary/20">
                 <p className="text-xs sm:text-sm text-primary dark:text-primary text-center leading-relaxed">
-                  <strong>Beta Promise:</strong> Your feedback directly shapes our platform. Help us
-                  build the best AI-powered certification training experience.
+                  <strong>My Promise to You:</strong> 🤝 Every suggestion you share directly
+                  influences what I build next. You&apos;re not just using this platform -
+                  you&apos;re helping create the certification training tool we all wish existed!
                 </p>
               </div>
 
               <Link href="/signup" className="block">
                 <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base lg:text-lg py-2.5 sm:py-3 lg:py-4 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
-                  Join Beta Program
+                  Let&apos;s Do This Together! 🚀
                 </Button>
               </Link>
             </div>
@@ -162,50 +166,55 @@ export default function PricingPage() {
           {/* FAQ Section */}
           <div className="mt-12 sm:mt-16 lg:mt-20 px-2 sm:px-4">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-foreground mb-6 sm:mb-8 lg:mb-12">
-              Beta Program Questions
+              Questions? I&apos;ve Got Answers! 💭
             </h2>
 
             <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  How long will the beta program last?
+                  How long will this free ride last? 🎢
                 </h4>
                 <p className="text-muted-foreground text-sm sm:text-base">
-                  We&apos;re in active development and expect the beta phase to continue throughout
-                  2025. We&apos;ll give plenty of notice before any changes, and early beta users
-                  will receive special benefits.
+                  Great question! We&apos;re planning to keep things free throughout 2025 while I
+                  perfect the platform. When we do eventually introduce pricing, early beta folks
+                  like you will get some pretty sweet perks. Think of it as my way of saying thanks
+                  for believing in this crazy project! 😊
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  What happens to my data during beta?
+                  What about my study progress and data? 📊
                 </h4>
                 <p className="text-muted-foreground text-sm sm:text-base">
-                  Your progress and data are secure and will be preserved. We&apos;re committed to
-                  maintaining your study history and achievements as we evolve the platform.
+                  Don&apos;t worry - your progress is safe with me! 🔒 I treat your study data like
+                  my own (because honestly, I use this platform too). All your achievements,
+                  progress, and study history will stick around as we grow. Your success story is
+                  part of our success story!
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  How can I provide feedback?
+                  How can I share my brilliant ideas? 💡
                 </h4>
                 <p className="text-muted-foreground text-sm sm:text-base">
-                  We&apos;ve built feedback mechanisms directly into the platform. You can also
-                  reach out through our support channels. Your input directly influences our
-                  development roadmap.
+                  Oh, I&apos;m so glad you asked! 🎉 I&apos;ve built feedback tools right into the
+                  platform, plus you can always hit me up through our contact page. Seriously, I
+                  read every single message - your ideas literally shape what I work on next. Got a
+                  wild idea? Send it my way!
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  Are there any limitations during beta?
+                  Will there be any hiccups along the way? 🛠️
                 </h4>
                 <p className="text-muted-foreground text-sm sm:text-base">
-                  While we&apos;re in beta, you may occasionally experience new features being
-                  tested or minor issues as we improve. We work quickly to address any problems and
-                  appreciate your patience.
+                  I&apos;ll be honest with you - we&apos;re building this thing live! 🚧 Sometimes
+                  you might see me testing new features or fixing little bugs. Think of it as
+                  getting a behind-the-scenes look at how software gets made. I work fast to fix
+                  anything that pops up, and I really appreciate your patience as we grow together!
                 </p>
               </div>
             </div>
@@ -214,11 +223,12 @@ export default function PricingPage() {
           {/* CTA Section */}
           <div className="mt-16 sm:mt-20 text-center bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/5 dark:to-primary/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mx-2 sm:mx-4 border border-primary/10">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-3 sm:mb-4">
-              Ready to Shape the Future of IT Certification Training?
+              Ready to Join Our Little Revolution? 🔥
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-              Join our beta community and help us build the most effective AI-powered certification
-              training platform. Your feedback drives our innovation.
+              Come be part of something special! 🌟 Join our growing family of IT professionals who
+              are helping shape the future of certification training. Plus, did I mention it&apos;s
+              completely free? Your success is our success - let&apos;s make it happen together! 💪
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <Link href="/signup" className="w-full sm:w-auto">
@@ -226,7 +236,7 @@ export default function PricingPage() {
                   size="lg"
                   className="w-full sm:w-auto px-6 sm:px-8 bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  Join Beta Program
+                  Count Me In! 🚀
                 </Button>
               </Link>
               <Link href="/contact" className="w-full sm:w-auto">
@@ -235,7 +245,7 @@ export default function PricingPage() {
                   size="lg"
                   className="w-full sm:w-auto px-6 sm:px-8 border-primary/20 dark:border-primary/40 text-primary hover:bg-primary/10 font-semibold transition-all duration-200"
                 >
-                  Share Your Ideas
+                  Let&apos;s Chat! 💬
                 </Button>
               </Link>
             </div>
