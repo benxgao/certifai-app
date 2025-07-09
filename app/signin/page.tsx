@@ -37,7 +37,7 @@ const LoginPage = () => {
   const [showVerificationPrompt, setShowVerificationPrompt] = useState(false);
   const [verificationLoading, setVerificationLoading] = useState(false);
   const router = useRouter();
-  const { firebaseUser, loading } = useFirebaseAuth();
+  const { firebaseUser, loading, apiUserId } = useFirebaseAuth();
 
   // Clear any existing auth state when signin page loads to ensure legacy tokens are not effective
   // This is a security measure to prevent any lingering authentication tokens from being used
@@ -147,6 +147,7 @@ const LoginPage = () => {
       !authProcessing &&
       !isLoading &&
       firebaseUser &&
+      apiUserId && // Also ensure we have the API user ID
       !isRedirecting &&
       !isAuthError
     ) {
@@ -160,7 +161,7 @@ const LoginPage = () => {
         router.replace('/main');
       }, 50);
     }
-  }, [firebaseUser, loading, authProcessing, isLoading, isRedirecting, error, router]);
+  }, [firebaseUser, loading, authProcessing, isLoading, isRedirecting, error, router, apiUserId]);
 
   // Clear any error messages from URL params and handle signup success
   useEffect(() => {
@@ -408,6 +409,39 @@ const LoginPage = () => {
     }
   };
 
+  // Function to handle refresh when user is stuck
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  // Safety mechanism: if user is stuck in loading state for too long, show a refresh option
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    // Only start timeout if we're in a loading/processing state
+    if (loading || authProcessing || isLoading) {
+      timeoutId = setTimeout(() => {
+        console.warn('Authentication process taking too long, user might be stuck');
+        // Set a specific error to help user understand what to do
+        if (!error) {
+          setError(
+            'Authentication is taking longer than expected. Please refresh the page and try again.',
+          );
+        }
+        // Clear loading states
+        setIsLoading(false);
+        setAuthProcessing(false);
+        setIsRedirecting(false);
+      }, 30000); // 30 second timeout
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [loading, authProcessing, isLoading, error]);
+
   // Don't show signin form if user is already authenticated and will be redirected
   // Only show loading if there's no authentication error
   const isAuthError =
@@ -417,7 +451,7 @@ const LoginPage = () => {
     !error.includes('verified successfully') &&
     !error.includes('reset successful');
 
-  if (!loading && firebaseUser && !isAuthError) {
+  if (!loading && firebaseUser && apiUserId && !isAuthError) {
     return (
       <PageTransitionLoader
         isLoading={true}
@@ -545,6 +579,18 @@ const LoginPage = () => {
                       </svg>
                       <div className="flex-1">
                         {error}
+                        {error.includes('taking longer than expected') && (
+                          <div className="mt-3">
+                            <Button
+                              onClick={handleRefresh}
+                              variant="outline"
+                              size="sm"
+                              className="text-xs"
+                            >
+                              Refresh Page
+                            </Button>
+                          </div>
+                        )}
                         {showVerificationPrompt && (
                           <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg">
                             <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">

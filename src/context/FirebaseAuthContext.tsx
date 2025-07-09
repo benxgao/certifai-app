@@ -89,14 +89,10 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         | firebase.uid: ${JSON.stringify(authUser?.uid)}`);
 
       if (authUser) {
-        console.log('Setting new Firebase auth user, clearing any existing state...');
+        console.log('Setting new Firebase auth user...');
 
-        // Clear any existing auth state first to ensure clean slate
-        setFirebaseUser(null);
-        setFirebaseToken(null);
-        setApiUserId(null);
-
-        // Now set the new user
+        // Set the new user immediately without clearing state first
+        // This prevents race conditions in components that depend on auth state
         setFirebaseUser(authUser);
 
         try {
@@ -128,11 +124,29 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
           if (isTimeoutError) {
             console.warn(
-              'Auth setup timed out, but keeping Firebase user authenticated. Will retry on next auth state change.',
+              'Auth setup timed out, but keeping Firebase user authenticated. Will retry in 2 seconds.',
             );
             // Don't clear Firebase auth state for timeout errors - user is still authenticated
-            // Just clear the API-related state
+            // Just clear the API-related state temporarily
             setApiUserId(null);
+
+            // Retry auth setup after a short delay
+            setTimeout(async () => {
+              try {
+                console.log('Retrying auth setup after timeout...');
+                // Get a fresh token for the retry
+                const retryToken = await authUser.getIdToken(true);
+                const retrySetupResult = await performAuthSetup(authUser, retryToken);
+                if (retrySetupResult.success && retrySetupResult.apiUserId) {
+                  setApiUserId(retrySetupResult.apiUserId);
+                  console.log('Auth setup retry successful');
+                } else {
+                  console.warn('Auth setup retry failed:', retrySetupResult.error);
+                }
+              } catch (retryError) {
+                console.error('Auth setup retry failed:', retryError);
+              }
+            }, 2000);
           } else {
             // For other critical errors, clear all auth state
             setFirebaseUser(null);

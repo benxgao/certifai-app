@@ -8,9 +8,6 @@ export default function MarketingFooter() {
           {/* Brand Section */}
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="h-7 sm:h-8 w-7 sm:w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-base sm:text-lg">C</span>
-              </div>
               <span className="font-bold text-lg sm:text-xl text-white">Certestic</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
