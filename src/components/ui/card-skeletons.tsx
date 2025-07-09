@@ -135,34 +135,32 @@ export function UserCertificationCardSkeleton({
           <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
             <div className="flex items-start justify-between">
               <div className="flex-1 space-y-3">
-                <Skeleton className="h-5 w-32" />
-                <Skeleton className="h-7 w-3/4" />
+                <Skeleton className="h-6 w-3/4" />
               </div>
-              <Skeleton className="h-8 w-24 rounded-lg" />
             </div>
           </div>
 
           {/* Content skeleton */}
-          <div className="p-6 pt-4">
-            <div className="flex flex-col space-y-5">
+          <div className="p-6">
+            <div className="flex flex-col space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={`inner-skeleton-${i}`}
-                    className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50"
+                    className="bg-slate-50 dark:bg-slate-800/80 rounded-xl px-5 py-4 border border-slate-100 dark:border-slate-700/50"
                   >
-                    <div className="flex items-center space-x-3">
-                      <Skeleton className="w-8 h-8 rounded-lg" />
-                      <div className="flex-1 space-y-2">
-                        <Skeleton className="h-3 w-24" />
-                        <Skeleton className="h-5 w-16" />
+                    <div className="flex items-center space-x-4">
+                      <Skeleton className="w-10 h-10 rounded-lg flex-shrink-0" />
+                      <div className="flex-1 space-y-2 min-w-0">
+                        <Skeleton className="h-4 w-16" />
+                        <Skeleton className="h-5 w-12" />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="flex justify-center mt-2">
-                <Skeleton className="h-12 w-64 rounded-xl" />
+              <div className="flex justify-end pt-2">
+                <Skeleton className="h-12 w-48 rounded-xl" />
               </div>
             </div>
           </div>

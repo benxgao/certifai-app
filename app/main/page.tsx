@@ -67,7 +67,7 @@ const MainPage = () => {
           <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Dashboard</h1>
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Overview</h1>
               </div>
               <div className="flex items-center space-x-3">
                 <Button

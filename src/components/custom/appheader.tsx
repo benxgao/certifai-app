@@ -79,9 +79,6 @@ const AppHeader: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/main" className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">C</span>
-              </div>
               <span className="font-bold text-xl text-foreground">Certestic</span>
             </Link>
           </div>
@@ -115,7 +112,7 @@ const AppHeader: React.FC = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-10 w-auto px-2 rounded-full border-2 border-transparent hover:border-primary/30 hover:bg-accent/50 transition-all duration-200 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  className="relative h-10 w-auto px-2 rounded-full border-2 border-transparent transition-all duration-200"
                 >
                   <div className="flex items-center space-x-3">
                     <Avatar className="h-8 w-8">

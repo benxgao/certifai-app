@@ -20,9 +20,7 @@ export default function SimpleAppFooter() {
           {/* Left side - Brand and copyright */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="h-6 w-6 rounded-lg bg-violet-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">C</span>
-              </div>
+             
               <span className="font-semibold text-gray-900 dark:text-slate-100">Certestic</span>
             </div>
             <span className="text-gray-500 dark:text-slate-400 text-sm">

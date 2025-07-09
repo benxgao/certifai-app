@@ -535,6 +535,38 @@ export default function SignUpPage() {
               <CardDescription className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
                 Sign up to get started with Certestic
               </CardDescription>
+
+              {/* Demo Account Highlight Section */}
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800/50 shadow-sm mt-4">
+                <div className="text-center">
+                  <h4 className="text-lg font-bold text-emerald-800 dark:text-emerald-100 mb-3">
+                    🚀 Try Before You Sign Up!
+                  </h4>
+                  <p className="text-sm text-emerald-700 dark:text-emerald-200 mb-4">
+                    Want to experience the platform first? Use our demo account:
+                  </p>
+                  <div className="bg-white dark:bg-emerald-900/30 p-3 rounded-lg border border-emerald-200 dark:border-emerald-700/50">
+                    <div className="grid grid-cols-1 gap-2 text-sm">
+                      <div>
+                        <span className="font-medium text-emerald-800 dark:text-emerald-200">
+                          Email:
+                        </span>
+                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/50 rounded text-emerald-800 dark:text-emerald-200">
+                          demo@certestic.com
+                        </code>
+                      </div>
+                      <div>
+                        <span className="font-medium text-emerald-800 dark:text-emerald-200">
+                          Password:
+                        </span>
+                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/50 rounded text-emerald-800 dark:text-emerald-200">
+                          demo@certestic.com
+                        </code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </CardHeader>
             <form onSubmit={handleSignUp} autoComplete="off">
               <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
