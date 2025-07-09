@@ -23,9 +23,7 @@ export default function PrivacyPolicy() {
             <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
               Privacy Policy
             </h1>
-            <p className="text-lg text-slate-600 dark:text-slate-400">
-              Last updated: June 18, 2025
-            </p>
+            <p className="text-lg text-slate-600 dark:text-slate-400">Last updated: July 9, 2025</p>
           </div>
 
           {/* Content */}
@@ -37,78 +35,77 @@ export default function PrivacyPolicy() {
                   Introduction
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Certestic Limited (Company Number: [TBC], &quot;we,&quot; &quot;us,&quot; or
-                  &quot;our&quot;) is committed to protecting your privacy and ensuring the security
-                  of your personal information in accordance with applicable privacy laws, including
-                  the New Zealand Privacy Act 2020 and international privacy standards. This Privacy
-                  Policy explains how we collect, use, disclose, store, and safeguard your personal
-                  information when you use our AI-powered IT certification training platform.
+                  Certestic (&quot;this project,&quot; &quot;the platform,&quot; or &quot;I&quot;)
+                  is a personal side project operated by an individual developer. This Privacy
+                  Policy explains how I collect, use, and protect your personal information when you
+                  use this AI-powered IT certification training platform. As a personal project with
+                  limited resources, this policy reflects the practical realities of operating a
+                  small-scale educational platform.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>Your Rights:</strong> You have specific rights regarding your personal
-                  information, including the right to access, correct, and request deletion of your
-                  information. These rights may vary depending on your jurisdiction.
+                  <strong>Your Rights:</strong> You have rights regarding your personal information,
+                  including the right to access, correct, and request deletion of your information.
+                  I will honor these rights to the best of my ability as a solo developer.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  By using Certestic, you consent to the collection, use, and disclosure of your
-                  personal information as described in this policy. If you do not agree with this
-                  policy, please do not use our platform.
+                  By using Certestic, you acknowledge that this is a personal project and agree to
+                  the collection, use, and disclosure of your personal information as described in
+                  this policy. If you do not agree with this policy, please do not use this
+                  platform.
                 </p>
               </section>
 
               {/* Legal Basis and Purpose */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Legal Basis and Purpose for Collection
+                  Why I Collect Your Information
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  We are required to have a lawful purpose for collecting your personal information.
-                  We collect and process your personal information for the following purposes:
+                  As a personal project, I collect and process your personal information for these
+                  essential purposes:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
                   <li>
-                    <strong>Service Provision:</strong> To provide you with our AI-powered
-                    certification training platform and related services
+                    <strong>Platform Operation:</strong> To provide you with access to the
+                    certification training platform and its features
                   </li>
                   <li>
-                    <strong>Contract Performance:</strong> To fulfill our contractual obligations to
-                    you as a user or subscriber
+                    <strong>User Experience:</strong> To personalize your learning experience and
+                    track your progress
                   </li>
                   <li>
-                    <strong>Legitimate Business Interests:</strong> To improve our platform, analyze
-                    usage patterns, and develop new features
+                    <strong>Platform Improvement:</strong> To understand how the platform is used
+                    and improve its functionality (as time and resources permit)
                   </li>
                   <li>
-                    <strong>Legal Compliance:</strong> To comply with our legal obligations under
-                    applicable laws and regulations
+                    <strong>Communication:</strong> To send you essential service-related
+                    communications
                   </li>
                   <li>
-                    <strong>Consent:</strong> Where you have explicitly consented to specific uses
-                    of your information
+                    <strong>Legal Requirements:</strong> To comply with applicable laws when
+                    required
                   </li>
                 </ul>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  We will only collect personal information that is necessary for these purposes and
-                  will not collect information indiscriminately.
+                  I aim to collect only information that is necessary for these purposes, though as
+                  a solo developer, data minimization practices may evolve over time.
                 </p>
               </section>
 
               {/* Information We Collect */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Personal Information We Collect (Privacy Principle 1 & 2)
+                  Information I Collect
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under the Privacy Act 2020, &quot;personal information&quot; means information
-                  about an identifiable individual. We collect the following types of personal
-                  information directly from you and through your use of our platform:
+                  I collect the following types of personal information to operate this platform:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Information You Provide Directly
+                  Information You Provide
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  When you register or use our platform, we collect:
+                  When you register or use the platform:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
@@ -351,52 +348,38 @@ export default function PrivacyPolicy() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Legal and Regulatory Requirements
+                  Legal Requirements (Limited Capacity)
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  We may disclose your information when required or permitted by applicable law:
+                  As a personal project, I may disclose your information only when legally required:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Court Orders:</strong> To comply with valid court orders, warrants, or
-                    subpoenas
+                    <strong>Legal Orders:</strong> To comply with valid court orders or legal
+                    processes (though I may lack resources for complex legal responses)
                   </li>
                   <li>
-                    <strong>Law Enforcement:</strong> To assist law enforcement agencies with
-                    legitimate investigations
+                    <strong>Safety Concerns:</strong> To prevent serious harm or illegal activity
+                    when I become aware of it
                   </li>
                   <li>
-                    <strong>Regulatory Compliance:</strong> To meet requirements of government
-                    agencies or regulatory bodies
-                  </li>
-                  <li>
-                    <strong>Legal Protection:</strong> To protect the rights, property, or safety of
-                    Certestic, our users, or the public
-                  </li>
-                  <li>
-                    <strong>Emergency Situations:</strong> To prevent serious harm or illegal
-                    activity
+                    <strong>Platform Protection:</strong> To protect the basic operation and
+                    security of the platform
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Business Transfers (With Notice)
+                  Project Discontinuation
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  In the event of a merger, acquisition, reorganization, or sale of assets:
+                  If I decide to discontinue this personal project:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>I will attempt to provide 30 days&apos; notice (resources permitting)</li>
+                  <li>I will make reasonable efforts to delete or anonymize user data</li>
+                  <li>No guarantee of data preservation or transfer to another service</li>
                   <li>
-                    We will provide at least 30 days&apos; notice before your information is
-                    transferred
-                  </li>
-                  <li>
-                    The acquiring entity must agree to protect your information under terms at least
-                    as protective as this policy
-                  </li>
-                  <li>
-                    You will have the right to object to the transfer and request deletion of your
-                    information
+                    Users are responsible for backing up their own data before discontinuation
                   </li>
                 </ul>
 
@@ -421,81 +404,74 @@ export default function PrivacyPolicy() {
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Technical Security Measures
+                  Basic Security Measures (Personal Project)
                 </h3>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Encryption:</strong> All data is encrypted in transit using TLS 1.3 and
-                    at rest using AES-256 encryption
+                    <strong>Platform Security:</strong> Basic security measures provided by hosting
+                    platforms (Firebase/Google Cloud)
                   </li>
                   <li>
-                    <strong>Access Controls:</strong> Multi-factor authentication and role-based
-                    access controls for our systems
+                    <strong>Standard Encryption:</strong> Standard HTTPS encryption for data
+                    transmission
                   </li>
                   <li>
-                    <strong>Network Security:</strong> Firewalls, intrusion detection systems, and
-                    regular security monitoring
+                    <strong>Access Control:</strong> Basic authentication and authorization controls
                   </li>
                   <li>
-                    <strong>Secure Infrastructure:</strong> Enterprise-grade cloud infrastructure
-                    with SOC 2 compliance
+                    <strong>Updates:</strong> Security updates applied when time and knowledge
+                    permit
                   </li>
                   <li>
-                    <strong>Regular Updates:</strong> Automatic security patches and regular system
-                    updates
+                    <strong>Limited Monitoring:</strong> Basic automated monitoring where available
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Organizational Security Measures
+                  Personal Project Limitations
                 </h3>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Staff Training:</strong> Regular privacy and security training for all
-                    employees
+                    <strong>Solo Operation:</strong> No dedicated security team or 24/7 monitoring
                   </li>
                   <li>
-                    <strong>Access Limitations:</strong> Strict need-to-know access policies for
-                    personal information
+                    <strong>Limited Expertise:</strong> Security measures depend on my personal
+                    knowledge and available time
                   </li>
                   <li>
-                    <strong>Background Checks:</strong> Security screening for staff with access to
-                    personal information
+                    <strong>Best Effort Response:</strong> Security incidents will be addressed on a
+                    best-effort basis
                   </li>
                   <li>
-                    <strong>Incident Response:</strong> Documented procedures for responding to
-                    security breaches
+                    <strong>No Formal Procedures:</strong> No enterprise-level incident response
+                    procedures or security audits
                   </li>
                   <li>
-                    <strong>Regular Audits:</strong> Periodic security assessments and vulnerability
-                    testing
+                    <strong>Dependency on Providers:</strong> Security heavily relies on third-party
+                    service providers
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Privacy Breach Notification
+                  Breach Notification (Best Effort)
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  In accordance with the Privacy Act 2020, if a privacy breach occurs that is likely
-                  to cause serious harm, we will:
+                  If I become aware of a privacy breach, I will make reasonable efforts to:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
+                  <li>Notify affected users via email when reasonably possible</li>
                   <li>
-                    Notify the Privacy Commissioner within 72 hours of becoming aware of the breach
+                    Notify relevant authorities if required and I&apos;m aware of the requirements
                   </li>
-                  <li>Notify affected individuals as soon as reasonably practicable</li>
-                  <li>
-                    Provide clear information about what information was involved and what steps we
-                    are taking
-                  </li>
-                  <li>Offer assistance and support to affected individuals</li>
+                  <li>Take basic steps to secure the platform and prevent further breaches</li>
+                  <li>Provide available information about the incident</li>
                 </ul>
 
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  <strong>Important:</strong> While we implement robust security measures, no method
-                  of transmission over the internet or electronic storage is 100% secure. You also
-                  play a role in protecting your information by keeping your login credentials
-                  secure.
+                  <strong>Important Security Notice:</strong> As a personal project, security
+                  measures are basic and you should not store any sensitive, confidential, or
+                  critical information on this platform. Use this service at your own risk and
+                  maintain your own backups.
                 </p>
               </section>
 
@@ -1005,15 +981,18 @@ export default function PrivacyPolicy() {
                   </p>
                   <ul className="text-amber-800 dark:text-amber-200 text-sm space-y-1">
                     <li>
-                      <strong>Email:</strong> info@certestic.com
+                      <strong>Email:</strong> privacy@certestic.com
                     </li>
                     <li>
-                      <strong>Subject Line:</strong> &quot;International Privacy Rights
-                      Request&quot;
+                      <strong>Subject Line:</strong> &quot;Privacy Rights Request&quot;
                     </li>
                     <li>
                       <strong>Include:</strong> Your country of residence, specific right you wish
                       to exercise, and verification details
+                    </li>
+                    <li>
+                      <strong>Response Time:</strong> Please allow up to 30 days for response as
+                      this is managed by a solo developer
                     </li>
                   </ul>
                 </div>
@@ -1022,132 +1001,124 @@ export default function PrivacyPolicy() {
               {/* Limitation of Liability for Privacy Matters */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Limitation of Liability and Disclaimers
+                  Limitation of Liability - Personal Project Disclaimers
                 </h2>
 
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
                   <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    ⚠️ Important Legal Notice - Data Processing Disclaimers
+                    ⚠️ Important Notice - Personal Project Limitations
                   </p>
                   <p className="text-red-700 dark:text-red-300 text-sm">
-                    This section limits Certestic&apos;s liability regarding data processing
-                    activities to the maximum extent permitted under applicable law.
+                    This platform is operated as a personal side project by an individual developer
+                    with limited resources, time, and expertise. Your use of this platform is at
+                    your own risk.
                   </p>
                 </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  Data Processing Disclaimers
+                  Personal Project Disclaimers
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:
+                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, AS A PERSONAL PROJECT:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>AI Processing Accuracy:</strong> We do not warrant the accuracy,
-                    completeness, or reliability of AI-processed personal information or automated
-                    decisions
+                    <strong>Best Effort Basis:</strong> I operate this platform on a best-effort
+                    basis in my spare time with no guarantee of continuous availability or support
                   </li>
                   <li>
-                    <strong>Third-Party Services:</strong> We disclaim liability for data processing
-                    errors by third-party service providers, including cloud storage and analytics
-                    services
+                    <strong>Limited Resources:</strong> I have limited time, technical resources,
+                    and expertise to implement comprehensive data protection measures
                   </li>
                   <li>
-                    <strong>Data Recovery:</strong> While we maintain reasonable backups, we do not
-                    guarantee data recovery in all circumstances
+                    <strong>No Service Level Guarantees:</strong> I make no warranties about uptime,
+                    data backup, recovery capabilities, or response times
                   </li>
                   <li>
-                    <strong>Processing Delays:</strong> We are not liable for delays in processing
-                    privacy requests due to technical limitations or high volume
+                    <strong>Volunteer Effort:</strong> Privacy request processing depends on my
+                    availability and may experience significant delays
                   </li>
                   <li>
-                    <strong>External Breaches:</strong> We disclaim liability for security breaches
-                    of third-party systems beyond our reasonable control
+                    <strong>Platform Evolution:</strong> Features, security measures, and data
+                    practices may change as the project develops
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  Limitation of Liability - Privacy Matters
+                  Maximum Liability Limitation
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, Certestic&apos;s LIABILITY FOR
-                  ANY PRIVACY-RELATED CLAIMS SHALL BE LIMITED TO:
+                  TO THE FULLEST EXTENT PERMITTED BY LAW:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Direct Damages Only:</strong> We exclude liability for indirect,
-                    consequential, or punitive damages arising from privacy breaches or data
-                    processing errors
+                    <strong>No Monetary Liability:</strong> My total liability for any
+                    privacy-related claims is limited to $0 (zero dollars), as this is provided as a
+                    free personal project
                   </li>
                   <li>
-                    <strong>Monetary Cap:</strong> Our total liability for privacy-related claims
-                    shall not exceed NZD $1,000 or the amount you paid us in the 12 months preceding
-                    the claim, whichever is greater
+                    <strong>No Damages:</strong> I exclude all liability for direct, indirect,
+                    consequential, punitive, or any other damages arising from privacy issues
                   </li>
                   <li>
-                    <strong>Time Limitation:</strong> Claims must be brought within 12 months of
-                    discovery of the alleged privacy breach or processing error
+                    <strong>Use At Your Own Risk:</strong> You acknowledge that you use this
+                    platform entirely at your own risk
                   </li>
                   <li>
-                    <strong>Mitigation Requirement:</strong> You must take reasonable steps to
-                    mitigate any damages arising from privacy incidents
+                    <strong>No Professional Standards:</strong> This platform is not held to
+                    commercial or professional data protection standards
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  Force Majeure - Data Processing
+                  Technical Limitations
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  We shall not be liable for any failure or delay in data processing obligations due
-                  to circumstances beyond our reasonable control, including:
+                  As a solo developer, I cannot guarantee:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>Natural disasters, pandemics, or acts of God</li>
-                  <li>Government actions, sanctions, or regulatory changes</li>
-                  <li>Third-party service provider outages or failures</li>
-                  <li>Cyber attacks on infrastructure beyond our control</li>
-                  <li>Internet service provider failures or network congestion</li>
+                  <li>Enterprise-level security implementations</li>
+                  <li>24/7 monitoring or incident response</li>
+                  <li>Professional data backup and recovery procedures</li>
+                  <li>Immediate response to security vulnerabilities</li>
+                  <li>Compliance with all international privacy regulations</li>
+                  <li>Continuous platform availability or data access</li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  User Data Indemnification
+                  User Responsibility and Indemnification
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  You agree to indemnify and hold Certestic harmless from any claims, damages, or
-                  losses arising from:
+                  By using this platform, you agree to:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>False Information:</strong> Providing false, misleading, or inaccurate
-                    personal information
+                    <strong>Assume All Risk:</strong> Accept full responsibility for any
+                    consequences of using this personal project
                   </li>
                   <li>
-                    <strong>Unauthorized Data:</strong> Submitting personal information of third
-                    parties without proper consent
+                    <strong>No Sensitive Data:</strong> Not upload or store any sensitive,
+                    confidential, or critical personal information
                   </li>
                   <li>
-                    <strong>Illegal Content:</strong> Uploading content that violates applicable
-                    laws or regulations
+                    <strong>Backup Your Data:</strong> Maintain your own backups of any important
+                    information
                   </li>
                   <li>
-                    <strong>Account Misuse:</strong> Allowing unauthorized access to your account or
-                    sharing account credentials
-                  </li>
-                  <li>
-                    <strong>Privacy Violations:</strong> Your violation of this Privacy Policy or
-                    applicable privacy laws
+                    <strong>Indemnify Developer:</strong> Hold harmless and indemnify the developer
+                    from any claims, damages, or losses arising from your use of the platform
                   </li>
                 </ul>
 
                 <div className="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
-                    Consumer Rights Protection
+                    Consumer Rights Notice
                   </h3>
                   <p className="text-yellow-800 dark:text-yellow-200 text-sm">
-                    <strong>Important:</strong> Nothing in this section excludes, restricts, or
-                    modifies any consumer guarantee, warranty, or right that cannot be excluded
-                    under applicable law. Where local or international laws provide stronger
-                    protections, those protections will apply.
+                    <strong>Important:</strong> While I limit liability to the maximum extent
+                    permitted, nothing in this policy excludes rights that cannot be excluded under
+                    applicable consumer protection laws. This is provided as a free personal project
+                    with no commercial warranties or guarantees.
                   </p>
                 </div>
               </section>
@@ -1158,12 +1129,13 @@ export default function PrivacyPolicy() {
                   Privacy Policy Effective Date
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 text-sm mb-2">
-                  This Privacy Policy is effective as of June 18, 2025, and applies to all users of
+                  This Privacy Policy is effective as of July 9, 2025, and applies to all users of
                   the Certestic platform.
                 </p>
                 <p className="text-slate-600 dark:text-slate-400 text-xs">
-                  This policy complies with applicable privacy laws and regulations, including the
-                  New Zealand Privacy Act 2020 and international privacy standards.
+                  This policy reflects the operational realities of a personal side project and
+                  complies with applicable privacy laws to the extent reasonably practicable for an
+                  individual developer.
                 </p>
               </div>
             </div>
