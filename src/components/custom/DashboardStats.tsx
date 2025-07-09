@@ -1,19 +1,21 @@
 import React from 'react';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
-import { FaGraduationCap, FaCertificate, FaTrophy } from 'react-icons/fa';
+import { useExamStats } from '@/src/context/ExamStatsContext';
+import { FaGraduationCap, FaCertificate, FaClipboardList } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
   const { isError: profileError } = useUserProfileContext();
+  const { totalExamCount, certificationCount } = useExamStats();
 
   // Show loading skeleton only while certifications are loading
   // Profile loading can continue in background since we mainly need certifications here
   if (isLoadingUserCertifications) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        {Array.from({ length: 5 }).map((_, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 3 }).map((_, i) => (
           <div
             key={i}
             className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm"
@@ -53,9 +55,10 @@ const DashboardStats = () => {
             value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
           />
           <StatsCard
-            icon={<FaTrophy className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
-            title="Completed"
-            value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
+            icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+            title="Total Exams"
+            value={totalExamCount}
+            subtitle="Estimated"
           />
         </div>
       </div>
@@ -68,7 +71,7 @@ const DashboardStats = () => {
       <StatsCard
         icon={<FaCertificate className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
         title="Certifications"
-        value={userCertifications?.length || 0}
+        value={certificationCount}
       />
 
       {/* Learning Progress */}
@@ -78,11 +81,12 @@ const DashboardStats = () => {
         value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
       />
 
-      {/* Completed */}
+      {/* Total Exams Created */}
       <StatsCard
-        icon={<FaTrophy className="w-4 h-4 text-violet-600 dark:text-violet-400" />}
-        title="Completed"
-        value={userCertifications?.filter((cert) => cert.status === 'completed')?.length || 0}
+        icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+        title="Total Exams"
+        value={totalExamCount}
+        subtitle="Estimated"
       />
     </div>
   );

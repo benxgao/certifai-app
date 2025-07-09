@@ -68,157 +68,123 @@ const CertificationsSection = () => {
   }
 
   return (
-    <div className="space-y-6">
-      {userCertifications.map((cert: UserRegisteredCertification, index: number) => (
+    <div className="space-y-4">
+      {userCertifications.map((cert: UserRegisteredCertification) => (
         <Card
           key={`user-${cert.cert_id}`}
           className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden group"
         >
-          <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-            <div className="flex items-start justify-between">
-              <CardTitle className="text-lg leading-relaxed flex-1 mr-4">
-                <div className="space-y-3">
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 text-sm font-normal border border-violet-100 dark:border-violet-800/50">
-                    Certification #{index + 1}
-                  </div>
-                  <div className="text-slate-900 dark:text-slate-50 font-semibold text-xl leading-relaxed group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-                    {cert.certification.name}
-                  </div>
-                </div>
-              </CardTitle>
-              <div className="flex-shrink-0">
-                <span
-                  className={`inline-flex items-center rounded-lg px-4 py-2.5 text-sm font-medium border shadow-sm ${
-                    cert.status === 'active'
-                      ? 'bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/50'
-                      : cert.status === 'completed'
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50'
-                      : 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900/20 dark:text-slate-400 dark:border-slate-800/50'
-                  }`}
-                >
-                  {cert.status === 'active' && <FaGraduationCap className="w-4 h-4 mr-2" />}
-                  {cert.status === 'completed' && <FaTrophy className="w-4 h-4 mr-2" />}
-                  {cert.status === 'active'
-                    ? 'In Progress'
-                    : cert.status === 'completed'
-                    ? 'Completed'
-                    : cert.status}
-                </span>
-              </div>
-            </div>
+          <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-4">
+            <CardTitle className="text-lg font-medium text-slate-900 dark:text-slate-50 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+              {cert.certification.name}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="p-6 pt-4">
-            <div className="flex flex-col space-y-5">
-              {/* Certification Details - Three columns for key info */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <CardContent className="p-4">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              {/* Certification Details - Horizontal layout for better space usage */}
+              <div className="flex flex-wrap gap-4 flex-1">
                 {/* Certification ID */}
-                <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="w-8 h-8 bg-violet-50 dark:bg-violet-900/30 rounded-lg flex items-center justify-center">
-                      <svg
-                        className="w-4 h-4 text-blue-600 dark:text-blue-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.99 1.99 0 013 12V7a4 4 0 014-4z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        Certification ID
-                      </p>
-                      <p className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-tight">
-                        #{cert.cert_id}
-                      </p>
-                    </div>
+                <div className="flex items-center space-x-2 bg-slate-50 dark:bg-slate-800/80 rounded-lg px-3 py-2 border border-slate-100 dark:border-slate-700/50">
+                  <div className="w-6 h-6 bg-violet-50 dark:bg-violet-900/30 rounded-md flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-blue-600 dark:text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.99 1.99 0 013 12V7a4 4 0 014-4z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                      ID
+                    </p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      #{cert.cert_id}
+                    </p>
                   </div>
                 </div>
 
                 {/* Start Date */}
-                <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="w-8 h-8 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                      <svg
-                        className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4V9a2 2 0 012-2h4a2 2 0 012 2v2m-6 4h.01M16 15h.01M8 19h.01M16 19h.01"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        Started On
-                      </p>
-                      <p className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-tight">
-                        {new Date(cert.assigned_at).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: '2-digit',
-                        })}
-                      </p>
-                    </div>
+                <div className="flex items-center space-x-2 bg-slate-50 dark:bg-slate-800/80 rounded-lg px-3 py-2 border border-slate-100 dark:border-slate-700/50">
+                  <div className="w-6 h-6 bg-emerald-50 dark:bg-emerald-900/30 rounded-md flex items-center justify-center">
+                    <svg
+                      className="w-3 h-3 text-emerald-600 dark:text-emerald-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 4V9a2 2 0 012-2h4a2 2 0 012 2v2m-6 4h.01M16 15h.01M8 19h.01M16 19h.01"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                      Started
+                    </p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {new Date(cert.assigned_at).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: '2-digit',
+                      })}
+                    </p>
                   </div>
                 </div>
 
                 {/* Status */}
-                <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4 border border-slate-100 dark:border-slate-700/50">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center
-                        ${
-                          cert.status === 'active'
-                            ? 'bg-blue-50 dark:bg-blue-900/30'
-                            : cert.status === 'completed'
-                            ? 'bg-emerald-50 dark:bg-emerald-900/30'
-                            : 'bg-slate-100 dark:bg-slate-700/50'
-                        }`}
-                    >
-                      {cert.status === 'active' && (
-                        <FaGraduationCap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      )}
-                      {cert.status === 'completed' && (
-                        <FaTrophy className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                        Current Status
-                      </p>
-                      <p className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-tight">
-                        {cert.status === 'active'
-                          ? 'Active'
+                <div className="flex items-center space-x-2 bg-slate-50 dark:bg-slate-800/80 rounded-lg px-3 py-2 border border-slate-100 dark:border-slate-700/50">
+                  <div
+                    className={`w-6 h-6 rounded-md flex items-center justify-center
+                      ${
+                        cert.status === 'active'
+                          ? 'bg-blue-50 dark:bg-blue-900/30'
                           : cert.status === 'completed'
-                          ? 'Complete'
-                          : cert.status}
-                      </p>
-                    </div>
+                          ? 'bg-emerald-50 dark:bg-emerald-900/30'
+                          : 'bg-slate-100 dark:bg-slate-700/50'
+                      }`}
+                  >
+                    {cert.status === 'active' && (
+                      <FaGraduationCap className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                    )}
+                    {cert.status === 'completed' && (
+                      <FaTrophy className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                      Status
+                    </p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {cert.status === 'active'
+                        ? 'Active'
+                        : cert.status === 'completed'
+                        ? 'Complete'
+                        : cert.status}
+                    </p>
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/50">
+              <div className="flex-shrink-0">
                 <Button
-                  size="lg"
+                  size="sm"
                   onClick={() => router.push(`/main/certifications/${cert.cert_id}/exams`)}
-                  className="w-full"
+                  className="font-medium"
                 >
-                  Continue Your Certification Journey
+                  Continue
                   <svg
-                    className="w-5 h-5 ml-3"
+                    className="w-4 h-4 ml-2"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

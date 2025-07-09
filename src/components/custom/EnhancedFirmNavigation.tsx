@@ -99,7 +99,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
         <CardHeader
           className={cn('bg-white dark:bg-slate-800 flex-shrink-0', isCompact ? 'p-3' : 'p-6')}
         >
-          <div className="flex items-start justify-between mb-4">
+          <div className="mb-4">
             <div className="flex-1 min-w-0">
               <h3
                 className={cn(
@@ -117,16 +117,6 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 </div>
               )}
             </div>
-            {isRegistered && (
-              <div className="flex-shrink-0 ml-3">
-                <Badge
-                  variant="default"
-                  className="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400"
-                >
-                  Registered
-                </Badge>
-              </div>
-            )}
           </div>
 
           {!isCompact && (

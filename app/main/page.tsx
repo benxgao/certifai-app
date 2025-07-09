@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
 import { useAllAvailableCertifications } from '@/swr/certifications';
-import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { Toaster } from 'sonner';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
@@ -15,7 +14,6 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
-import { CoffeeButton } from '@/components/custom';
 
 const MainPage = () => {
   const { firebaseUser } = useFirebaseAuth();
@@ -25,14 +23,11 @@ const MainPage = () => {
     isError: profileError,
     displayName,
   } = useProfileData();
-  const { userCertifications } = useUserCertifications();
-  // ...existing code...
   const { availableCertifications, isLoadingAvailableCertifications } =
     useAllAvailableCertifications();
   const router = useRouter();
 
   // Check if user has registered for at least one certification
-  const hasRegisteredCertifications = userCertifications && userCertifications.length > 0;
 
   useEffect(() => {
     if (firebaseUser) {
@@ -62,19 +57,6 @@ const MainPage = () => {
                   ? 'Ready to continue your certification journey.'
                   : 'Ready to continue your certification journey.'}
               </p>
-            </div>
-            <div className="flex items-center justify-end sm:justify-start space-x-2 sm:space-x-3">
-              {hasRegisteredCertifications && (
-                <>
-                  <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                    Love this app?
-                  </span>
-                  <CoffeeButton
-                    className="flex-shrink-0"
-                    coffeeUrl="https://buymeacoffee.com/certestickh/e/428261"
-                  />
-                </>
-              )}
             </div>
           </div>
         </div>
@@ -116,13 +98,6 @@ const MainPage = () => {
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
               Your Registered Certifications
             </h2>
-            <Button
-              variant="outline"
-              onClick={() => router.push('/main/certifications')}
-              className="border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700"
-            >
-              Explore More
-            </Button>
           </div>
 
           <Suspense fallback={<UserCertificationCardSkeleton count={3} />}>

@@ -1,7 +1,18 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+// import { Coffee } from 'lucide-react';
+// import { useShouldShowBuyMeACoffee } from '@/src/context/ExamStatsContext';
 
 export default function SimpleAppFooter() {
+  // const { shouldShow: showBuyMeACoffee } = useShouldShowBuyMeACoffee();
+
+  // const handleBuyMeACoffee = () => {
+  //   // Replace with your actual Buy Me a Coffee URL
+  //   window.open('https://coff.ee/certestickh', '_blank');
+  // };
+
   return (
     <footer className="mt-auto bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -21,12 +32,15 @@ export default function SimpleAppFooter() {
 
           {/* Right side - Quick links */}
           <div className="flex items-center space-x-6">
-            {/* <CoffeeButton
-              size="sm"
-              variant="ghost"
-              className="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200"
-              text="Support"
-            /> */}
+            {/* {showBuyMeACoffee && (
+              <button
+                onClick={handleBuyMeACoffee}
+                className="flex items-center space-x-2 text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 text-sm transition-colors duration-200 px-3 py-1.5 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 font-medium"
+              >
+                <Coffee className="h-4 w-4" />
+                <span>Buy Me a Coffee</span>
+              </button>
+            )} */}
             <Link
               href="/support"
               className="text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 text-sm transition-colors duration-200"

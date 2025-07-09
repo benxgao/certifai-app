@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { UserCertificationsProvider } from '@/context/UserCertificationsContext';
 import { UserProfileProvider } from '@/src/context/UserProfileContext';
+import { ExamStatsProvider } from '@/src/context/ExamStatsContext';
 import AppHeader from '@/components/custom/appheader';
 import PageLoader from '@/components/custom/PageLoader';
 import ErrorBoundary from '@/components/custom/ErrorBoundary';
@@ -12,25 +13,27 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <ErrorBoundary>
       <AuthGuard>
         <UserCertificationsProvider>
-          <UserProfileProvider>
-            <div className="min-h-screen flex flex-col">
-              <AppHeader />
-              <div className="flex-1">
-                <Suspense
-                  fallback={
-                    <PageLoader
-                      isLoading={true}
-                      text="Loading your dashboard..."
-                      showSpinner={true}
-                    />
-                  }
-                >
-                  {children}
-                </Suspense>
+          <ExamStatsProvider>
+            <UserProfileProvider>
+              <div className="min-h-screen flex flex-col">
+                <AppHeader />
+                <div className="flex-1">
+                  <Suspense
+                    fallback={
+                      <PageLoader
+                        isLoading={true}
+                        text="Loading your dashboard..."
+                        showSpinner={true}
+                      />
+                    }
+                  >
+                    {children}
+                  </Suspense>
+                </div>
+                <SimpleAppFooter />
               </div>
-              <SimpleAppFooter />
-            </div>
-          </UserProfileProvider>
+            </UserProfileProvider>
+          </ExamStatsProvider>
         </UserCertificationsProvider>
       </AuthGuard>
     </ErrorBoundary>

@@ -77,7 +77,7 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
         className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full"
       >
         <CardHeader className="bg-white dark:bg-slate-800 flex-shrink-0 p-6">
-          <div className="flex items-start justify-between mb-4">
+          <div className="mb-4">
             <div className="flex-1 min-w-0">
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2 leading-tight mb-3">
                 {cert.name}
@@ -90,18 +90,6 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
                   </span>
                 </div>
               )}
-            </div>
-            <div className="flex-shrink-0 ml-3">
-              <Badge
-                variant={isRegistered ? 'default' : 'secondary'}
-                className={`${
-                  isRegistered
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
-                    : 'bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-400'
-                }`}
-              >
-                {isRegistered ? 'Registered' : 'Available'}
-              </Badge>
             </div>
           </div>
 
