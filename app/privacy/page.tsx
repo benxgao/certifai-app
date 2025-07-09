@@ -246,6 +246,11 @@ export default function PrivacyPolicy() {
                     responding to inquiries
                   </li>
                   <li>
+                    <strong>Platform Communications:</strong> Delivering essential platform updates,
+                    feature announcements, security notifications, and service changes via our
+                    marketing email service providers
+                  </li>
+                  <li>
                     <strong>Security:</strong> Detecting and preventing fraud, unauthorized access,
                     and security breaches
                   </li>
@@ -254,6 +259,29 @@ export default function PrivacyPolicy() {
                     Zealand law
                   </li>
                 </ul>
+
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-6">
+                  <h4 className="text-amber-900 dark:text-amber-100 font-semibold mb-2">
+                    📬 Essential Platform Communications
+                  </h4>
+                  <p className="text-amber-800 dark:text-amber-200 text-sm mb-3">
+                    By creating an account, you automatically consent to receiving platform update
+                    emails through our marketing email services. These communications include:
+                  </p>
+                  <ul className="list-disc pl-6 text-amber-800 dark:text-amber-200 text-sm space-y-1">
+                    <li>Critical security updates and notifications</li>
+                    <li>New feature releases and platform improvements</li>
+                    <li>Service maintenance schedules and downtime notices</li>
+                    <li>Terms of service and privacy policy updates</li>
+                    <li>Account status changes and billing notifications</li>
+                    <li>Important certification and study-related announcements</li>
+                  </ul>
+                  <p className="text-amber-700 dark:text-amber-300 text-xs mt-3">
+                    <strong>Note:</strong> While you can unsubscribe from promotional content,
+                    essential service communications are required for platform operation and cannot
+                    be opted out of.
+                  </p>
+                </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Platform Improvement (With Your Consent)
@@ -333,10 +361,36 @@ export default function PrivacyPolicy() {
                     communications only
                   </li>
                   <li>
+                    <strong>Marketing Email Services:</strong> Third-party marketing email services
+                    (such as MailerLite or similar providers) for delivering platform updates,
+                    feature announcements, and service notifications
+                  </li>
+                  <li>
                     <strong>Analytics:</strong> Anonymized usage analytics to improve platform
                     performance
                   </li>
                 </ul>
+
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
+                  <h4 className="text-blue-900 dark:text-blue-100 font-semibold mb-2">
+                    📧 Marketing Email Service Notice
+                  </h4>
+                  <p className="text-blue-800 dark:text-blue-200 text-sm mb-3">
+                    We use marketing email services to send important platform communications. By
+                    creating an account, you consent to receiving these essential updates.
+                  </p>
+                  <p className="text-blue-700 dark:text-blue-300 text-sm mb-3">
+                    <strong>Information Shared with Marketing Email Services:</strong>
+                  </p>
+                  <ul className="list-disc pl-6 text-blue-700 dark:text-blue-300 text-sm space-y-1">
+                    <li>Your email address and name for delivery purposes</li>
+                    <li>Basic account status (active/inactive) for list management</li>
+                    <li>Subscription preferences and communication settings</li>
+                    <li>
+                      Anonymized engagement data (open rates, click rates) for service improvement
+                    </li>
+                  </ul>
+                </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-6">
                   <strong>Service Provider Requirements:</strong> All service providers must:
                 </p>

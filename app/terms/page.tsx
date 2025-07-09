@@ -1047,6 +1047,67 @@ export default function TermsOfService() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Marketing Email Service and Platform Updates
+                </h3>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-4">
+                  <p className="text-blue-800 dark:text-blue-200 font-semibold mb-2">
+                    📧 Marketing Email Service Notice
+                  </p>
+                  <p className="text-blue-700 dark:text-blue-300 text-sm">
+                    We use third-party marketing email services to send important platform updates,
+                    feature announcements, and service notifications. By using our Platform, you
+                    consent to receiving these communications.
+                  </p>
+                </div>
+
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>You acknowledge and consent that:</strong>
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>Platform Updates:</strong> We use marketing email services (such as
+                    MailerLite or similar providers) to deliver important platform updates, new
+                    feature announcements, security notifications, and service changes
+                  </li>
+                  <li>
+                    <strong>Automatic Enrollment:</strong> By creating an account, you are
+                    automatically enrolled to receive platform update emails, which are essential
+                    for staying informed about changes that may affect your use of the service
+                  </li>
+                  <li>
+                    <strong>Data Sharing:</strong> Your email address and basic account information
+                    may be shared with our marketing email service providers solely for the purpose
+                    of delivering platform communications
+                  </li>
+                  <li>
+                    <strong>Third-Party Processing:</strong> Marketing email services may process
+                    your data according to their own privacy policies, and we cannot guarantee their
+                    data handling practices
+                  </li>
+                  <li>
+                    <strong>Communication Types:</strong> You may receive emails about platform
+                    updates, new certifications, feature releases, maintenance schedules, policy
+                    changes, and other service-related announcements
+                  </li>
+                  <li>
+                    <strong>Unsubscribe Options:</strong> While platform update emails are important
+                    for service continuity, you may unsubscribe from promotional emails while
+                    continuing to receive essential service notifications
+                  </li>
+                </ul>
+
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-6">
+                  <p className="text-amber-800 dark:text-amber-200 font-semibold mb-2">
+                    ⚠️ Essential Communications
+                  </p>
+                  <p className="text-amber-700 dark:text-amber-300 text-sm">
+                    Certain platform update emails are considered essential service communications
+                    and may not be subject to unsubscribe options. These include critical security
+                    updates, terms of service changes, and service discontinuation notices.
+                  </p>
+                </div>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Data Retention and Technical Limitations
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
@@ -1397,6 +1458,15 @@ export default function TermsOfService() {
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Termination by Me
                 </h3>
+                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-4">
+                  <p className="text-orange-800 dark:text-orange-200 font-semibold mb-2">
+                    ⚠️ Account Deletion Notice
+                  </p>
+                  <p className="text-orange-700 dark:text-orange-300 text-sm">
+                    User accounts may be deleted without prior notice at my discretion, including
+                    for violations of these Terms, inactivity, or operational requirements.
+                  </p>
+                </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   I may suspend or terminate your access to the Platform immediately, without prior
                   notice, if:
@@ -1408,6 +1478,14 @@ export default function TermsOfService() {
                   </li>
                   <li>Required by law or at the request of law enforcement</li>
                   <li>The Platform is discontinued (with reasonable notice during beta)</li>
+                  <li>
+                    <strong>Account inactivity</strong> for extended periods (as determined by
+                    platform usage patterns and operational needs)
+                  </li>
+                  <li>
+                    <strong>Operational requirements</strong> including database maintenance,
+                    storage limitations, or technical constraints
+                  </li>
                 </ul>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Effect of Termination
