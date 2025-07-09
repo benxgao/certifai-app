@@ -478,8 +478,8 @@ export default function AboutPage() {
                     Full-Stack Developer | AI Enthusiast | Believer in Better Education
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    I&apos;m a <strong>full-stack developer</strong> who got fed up with how
-                    expensive and boring IT certification training had become. After struggling
+                    I&apos;m Ben Gao, a <strong>full-stack developer</strong> who got fed up with
+                    how expensive and boring IT certification training had become. After struggling
                     through my own certifications and watching friends do the same, I thought
                     &quot;someone should fix this!&quot; Then I realized... maybe that someone could
                     be me.

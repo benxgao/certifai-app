@@ -56,7 +56,7 @@ export default function ContactPage() {
       title: 'Email Me Directly',
       content: 'contact@certestic.com',
       description:
-        'The best way to reach me! I usually reply within a day (sometimes sooner if I&apos;m having a coding session)',
+        "The best way to reach me! I usually reply within a day (sometimes sooner if I'm having a coding session)",
     },
     {
       icon: MessageSquare,
@@ -70,7 +70,7 @@ export default function ContactPage() {
       title: 'Catch Me Online',
       content: 'NZDT 8pm-10pm',
       description:
-        'When I&apos;m usually online and available for real-time chat (between work and sleep!)',
+        "When I'm usually online and available for real-time chat (between work and sleep!)",
     },
     {
       icon: MapPin,
@@ -84,12 +84,12 @@ export default function ContactPage() {
     {
       question: 'So... is this actually a real company?',
       answer:
-        'Great question! Right now it&apos;s just me in my home office building something I believe in. I&apos;m treating it seriously, but I&apos;m honest about it being a one-person passion project that might grow into something bigger.',
+        "Great question! Right now it's just me in my home office building something I believe in. I'm treating it seriously, but I'm honest about it being a one-person passion project that might grow into something bigger.",
     },
     {
       question: 'Which certifications can I study for?',
       answer:
-        'I&apos;m starting with AWS basics since that&apos;s what I know best. As the community grows and I get feedback, I&apos;ll add more. What certification are YOU working on? Let me know!',
+        "I'm starting with AWS basics since that's what I know best. As the community grows and I get feedback, I'll add more. What certification are YOU working on? Let me know!",
     },
     {
       question: 'How much does this cost?',
@@ -99,7 +99,7 @@ export default function ContactPage() {
     {
       question: 'Can I help make this better somehow?',
       answer:
-        'YES! Please! Use the beta, tell me what works and what doesn&apos;t, spread the word if you like it, or even contribute code if you&apos;re technical. Every bit of help means the world to me!',
+        "YES! Please! Use the beta, tell me what works and what doesn't, spread the word if you like it, or even contribute code if you're technical. Every bit of help means the world to me!",
     },
   ];
 
@@ -113,11 +113,11 @@ export default function ContactPage() {
         {/* Hero Section */}
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-            Let&apos;s Chat! 💬
+            {"Let's Chat! 💬"}
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
             Got questions about Certestic? Found a bug? Have an idea that could make things better?
-            Or just want to say hi? I&apos;d genuinely love to hear from you! Every message helps me
+            Or just want to say hi? {"I'd"} genuinely love to hear from you! Every message helps me
             understand what you need and how I can improve.
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle className="text-2xl">Drop Me a Line 📝</CardTitle>
                 <CardDescription>
-                  Whether it&apos;s feedback, a bug report, a feature idea, or just to say hello - I
+                  {"Whether it's"} feedback, a bug report, a feature idea, or just to say hello - I
                   read every message!
                 </CardDescription>
               </CardHeader>
@@ -141,8 +141,8 @@ export default function ContactPage() {
                       Got Your Message! 🎉
                     </h3>
                     <p className="text-muted-foreground">
-                      Thanks for reaching out! I&apos;ll get back to you within a day or two. In the
-                      meantime, feel free to explore more of what we&apos;re building!
+                      Thanks for reaching out! {"I'll"} get back to you within a day or two. In the
+                      meantime, feel free to explore more of what {"we're"} building!
                     </p>
                   </div>
                 ) : (
@@ -294,7 +294,7 @@ export default function ContactPage() {
               Jump into our Discord community where you can chat with other beta testers and get
               help in real-time! Or browse through our documentation if you prefer to figure things
               out yourself. And hey, if you catch me online during <strong>NZDT 8pm-10pm</strong>,
-              I&apos;m usually up for a quick chat!
+              {"I'm"} usually up for a quick chat!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/community">

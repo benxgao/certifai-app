@@ -28,7 +28,7 @@ export default function LandingPageContent() {
                 aria-hidden="true"
               ></div>
               <span className="text-xs sm:text-sm font-medium text-violet-700 dark:text-violet-300">
-                Join My Beta Adventure! 🚀
+                Join My Beta Adventure!
               </span>
             </div>
 
@@ -41,7 +41,7 @@ export default function LandingPageContent() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Hey there! 👋 I&apos;m building something I wish I had when studying for my own
+              Hey there! I&apos;m building something I wish I had when studying for my own
               certifications. Create custom practice exams on exactly what you need to learn, tell
               the AI to focus on your weak spots, and actually enjoy the learning process. It&apos;s
               like having a study buddy who never gets tired of making practice questions!
@@ -96,7 +96,7 @@ export default function LandingPageContent() {
                       d="M13 7l5 5m0 0l-5 5m5-5H6"
                     />
                   </svg>
-                  Let&apos;s Do This Together! 🎉
+                  Let&apos;s Do This Together!
                 </Button>
               </Link>
               <Link href="/signin">
@@ -215,7 +215,7 @@ export default function LandingPageContent() {
                 />
               </svg>
               <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                What I&apos;m Building For You ✨
+                What I&apos;m Building For You
               </span>
             </div>
 
@@ -252,7 +252,7 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
-                AI Study Buddy 🤖
+                AI Study Buddy
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Think of it as having a super smart study partner who never gets tired of making
@@ -291,7 +291,7 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                Practice Like It&apos;s the Real Thing 📝
+                Practice Like It&apos;s the Real Thing
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 I&apos;ve recreated that slightly stressful exam feeling (but in a good way!) with
@@ -329,7 +329,7 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
-                See How You&apos;re Doing 📊
+                See How You&apos;re Doing
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 I&apos;m working on some cool ways to show your progress and help you spot what
@@ -367,7 +367,7 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300">
-                Focus on What You Need 🎯
+                Focus on What You Need
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 This is my favorite feature! Tell the AI exactly what you&apos;re struggling with -
@@ -406,7 +406,7 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                Watch Yourself Improve 📈
+                Watch Yourself Improve
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 There&apos;s nothing more motivating than seeing your scores go up! I&apos;m
@@ -444,7 +444,7 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
-                Way Better Than ChatGPT 🎉
+                Way Better Than ChatGPT
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
                 Sure, you could ask ChatGPT to make you some practice questions, but then you&apos;d
@@ -486,7 +486,7 @@ export default function LandingPageContent() {
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-6 py-3 mb-8">
                 <div className="w-3 h-3 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full animate-pulse"></div>
                 <span className="text-sm font-semibold text-violet-700 dark:text-violet-300">
-                  Come Build This With Me! 🚀
+                  Come Build This With Me!
                 </span>
               </div>
 
@@ -549,7 +549,7 @@ export default function LandingPageContent() {
                         d="M13 7l5 5m0 0l-5 5m5-5H6"
                       />
                     </svg>
-                    Count Me In! 🎉
+                    Count Me In!
                   </Button>
                 </Link>
                 <Link href="/signin">
