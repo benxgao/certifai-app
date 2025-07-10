@@ -13,11 +13,15 @@ import {
  */
 export async function generateMarketingJWT(): Promise<string | null> {
   try {
+    console.log('marketing_api: generateMarketingJWT called');
+
     const secret = process.env.MARKETING_API_JWT_SECRET;
     if (!secret) {
       console.warn('marketing_api: MARKETING_API_JWT_SECRET environment variable is not set');
       return null;
     }
+
+    console.log('marketing_api: JWT secret is configured');
 
     const secretKey = new TextEncoder().encode(secret);
 
@@ -55,6 +59,8 @@ export async function subscribeUserToMarketing(
   userAgent?: string,
 ): Promise<MarketingApiResult> {
   try {
+    console.log('marketing_api: subscribeUserToMarketing called');
+
     const marketingApiUrl = process.env.MARKETING_API_URL;
 
     if (!marketingApiUrl) {
@@ -64,7 +70,10 @@ export async function subscribeUserToMarketing(
       return { success: false, error: 'Marketing API URL not configured' };
     }
 
+    console.log('marketing_api: Marketing API URL configured:', marketingApiUrl);
+
     // Generate JWT token for authentication
+    console.log('marketing_api: Generating JWT token...');
     const jwtToken = await generateMarketingJWT();
     if (!jwtToken) {
       console.warn(
@@ -72,6 +81,8 @@ export async function subscribeUserToMarketing(
       );
       return { success: false, error: 'Failed to generate authentication token' };
     }
+
+    console.log('marketing_api: JWT token generated successfully');
 
     // Prepare subscription data using the shared utility
     const subscriptionData = createSubscriptionData(email, firstName, lastName, userAgent);
@@ -83,6 +94,7 @@ export async function subscribeUserToMarketing(
     );
 
     // Make request to marketing API
+    console.log('marketing_api: Making request to marketing API...');
     const response = await fetch(`${marketingApiUrl}/subscribe`, {
       method: 'POST',
       headers: {
@@ -93,6 +105,8 @@ export async function subscribeUserToMarketing(
       // Add timeout to prevent hanging
       signal: AbortSignal.timeout(10000), // 10 second timeout
     });
+
+    console.log('marketing_api: Marketing API response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
@@ -127,6 +141,7 @@ export async function subscribeUserToMarketing(
     // Handle network errors, timeouts, etc.
     const errorMessage = error.message || 'Unknown error occurred';
     console.error('marketing_api: Error during marketing subscription:', errorMessage);
+    console.error('marketing_api: Full error object:', error);
 
     // Don't block signup for marketing subscription errors
     return {

@@ -58,17 +58,28 @@ export default function EmailActionHandler() {
               try {
                 // Get the current user information
                 const currentUser = auth.currentUser;
-                if (currentUser) {
+
+                // Get user email from the action code info if current user is not available
+                const userEmail = currentUser?.email || actionCodeInfo.data.email;
+
+                if (userEmail) {
                   const userAgent =
                     typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
 
                   // Extract name from displayName if available
-                  const displayName = currentUser.displayName || '';
+                  const displayName = currentUser?.displayName || '';
                   const nameParts = displayName.split(' ');
                   const firstName = nameParts[0] || '';
                   const lastName = nameParts.slice(1).join(' ') || '';
 
-                  console.log('Subscribing verified user to marketing list:', currentUser.email);
+                  console.log('Subscribing verified user to marketing list:', userEmail);
+                  console.log('User data available:', {
+                    hasCurrentUser: !!currentUser,
+                    email: userEmail,
+                    displayName: displayName,
+                    firstName: firstName.trim(),
+                    lastName: lastName.trim(),
+                  });
 
                   const marketingResponse = await fetch('/api/marketing/subscribe', {
                     method: 'POST',
@@ -76,7 +87,7 @@ export default function EmailActionHandler() {
                       'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                      email: currentUser.email,
+                      email: userEmail,
                       firstName: firstName.trim(),
                       lastName: lastName.trim(),
                       userAgent,
@@ -85,11 +96,16 @@ export default function EmailActionHandler() {
                     signal: AbortSignal.timeout(15000),
                   });
 
+                  if (!marketingResponse.ok) {
+                    throw new Error(`Marketing API returned status: ${marketingResponse.status}`);
+                  }
+
                   const marketingResult = await marketingResponse.json();
 
                   if (marketingResult.success) {
                     console.log(
-                      'User successfully subscribed to marketing list after email verification',
+                      'User successfully subscribed to marketing list after email verification:',
+                      marketingResult.subscriberId,
                     );
                   } else {
                     console.warn(
@@ -97,6 +113,8 @@ export default function EmailActionHandler() {
                       marketingResult.error,
                     );
                   }
+                } else {
+                  console.warn('No email address available for marketing subscription');
                 }
               } catch (marketingError) {
                 console.error(

@@ -497,17 +497,17 @@ export default function SignUpPage() {
         <AuthLeftSection mode="signup" />
 
         {/* Right Column - Signup Form */}
-        <div className="flex items-center justify-center py-4 sm:py-6 lg:py-12 px-4 sm:px-6 lg:px-8 relative bg-gradient-to-br from-slate-50 via-slate-100 to-gray-50 dark:from-slate-900 dark:via-slate-800 dark:to-gray-900 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+        <div className="flex items-center justify-center py-4 sm:py-6 lg:py-12 px-4 sm:px-6 lg:px-8 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 min-h-full lg:min-h-0 auth-container auth-form-mobile">
           {/* Subtle background decoration for mobile - improved contrast */}
           <div className="absolute inset-0 lg:hidden overflow-hidden">
-            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/30 to-purple-300/30 dark:from-violet-700/20 dark:to-purple-800/20 rounded-full"></div>
-            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-slate-200/30 to-blue-300/30 dark:from-slate-700/20 dark:to-blue-800/20 rounded-full"></div>
+            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 rounded-full"></div>
+            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 rounded-full"></div>
           </div>
 
           {/* Additional subtle patterns for desktop right section */}
           <div className="absolute inset-0 hidden lg:block overflow-hidden">
-            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-700/20 dark:to-purple-800/20 rounded-xl rotate-12 animate-pulse delay-3000"></div>
-            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-slate-200/30 to-violet-200/30 dark:from-slate-700/20 dark:to-violet-800/20 rounded-lg rotate-45 animate-pulse delay-4000"></div>
+            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 rounded-xl rotate-12 animate-pulse delay-3000"></div>
+            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 rounded-lg rotate-45 animate-pulse delay-4000"></div>
           </div>
 
           <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/80 dark:border-slate-700/80 shadow-2xl relative z-10">

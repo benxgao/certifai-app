@@ -34,11 +34,21 @@ import { subscribeUserToMarketing } from '@/src/lib/marketing-api';
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('marketing_api: Subscribe API called');
+
     const body = await request.json();
     const { email, firstName, lastName, userAgent } = body;
 
+    console.log('marketing_api: Request data:', {
+      email: email ? `${email.substring(0, 3)}***@${email.split('@')[1]}` : 'null',
+      firstName: firstName || 'null',
+      lastName: lastName || 'null',
+      hasUserAgent: !!userAgent,
+    });
+
     // Validate required fields
     if (!email) {
+      console.warn('marketing_api: Email is missing from request');
       // Always return 200 but with success: false for validation errors
       return NextResponse.json(
         {
@@ -50,7 +60,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Subscribe user to marketing using the centralized function
+    console.log('marketing_api: Calling subscribeUserToMarketing...');
     const result = await subscribeUserToMarketing(email, firstName, lastName, userAgent);
+
+    console.log('marketing_api: Subscribe result:', {
+      success: result.success,
+      hasSubscriberId: !!result.subscriberId,
+      error: result.error || 'none',
+    });
 
     // Always return 200 status code regardless of subscription success/failure
     // The success/failure is indicated in the response body
