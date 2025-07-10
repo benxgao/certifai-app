@@ -3,11 +3,7 @@
  * This file provides functions to subscribe users to marketing from the client side
  */
 
-interface MarketingApiResult {
-  success: boolean;
-  error?: string;
-  subscriberId?: string;
-}
+import { type MarketingApiResult } from '@/src/lib/marketing-types';
 
 /**
  * Subscribe user to marketing list via internal API route

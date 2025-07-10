@@ -140,15 +140,25 @@ export default function SignUpPage() {
       // Subscribe user to marketing list (non-blocking)
       // Note: Marketing API now always returns 200 to prevent frontend error popups
       try {
-        const { subscribeUserToMarketing } = await import('@/src/lib/marketing-client');
         const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
 
-        const marketingResult = await subscribeUserToMarketing(
-          email,
-          firstName.trim(),
-          lastName.trim(),
-          userAgent,
-        );
+        const marketingResponse = await fetch('/api/marketing/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            userAgent,
+          }),
+          // Add timeout to prevent hanging
+          signal: AbortSignal.timeout(15000), // 15 second timeout (longer for client-server-AWS chain)
+        });
+
+        // The API always returns 200, so we check the response body for success/failure
+        const marketingResult = await marketingResponse.json();
 
         if (marketingResult.success) {
           console.log('User successfully subscribed to marketing list');

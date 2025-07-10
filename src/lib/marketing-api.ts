@@ -1,53 +1,21 @@
 import 'server-only';
 
-/**
- * Server-side Marketing API utilities for subscribing users
- *
- * ⚠️ WARNING: This file contains server-side only functions that use environment variables
- * and JWT generation. Do NOT use these functions on the client side.
- *
- * For client-side marketing subscription, use:
- * import { subscribeUserToMarketing } from '@/src/lib/marketing-client';
- *
- * This file should only be imported in:
- * - API routes (app/api/*)
- * - Server components
- * - Server actions
- */
-
 import { SignJWT } from 'jose';
-
-interface SubscriptionRequest {
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  fields?: Record<string, string | number>;
-  groups?: string[];
-  ip_address?: string;
-  status?: string;
-}
-
-interface SubscriptionResponse {
-  success: boolean;
-  message: string;
-  subscriberId?: string;
-}
-
-interface MarketingApiResult {
-  success: boolean;
-  error?: string;
-  subscriberId?: string;
-}
+import {
+  type SubscriptionResponse,
+  type MarketingApiResult,
+  createSubscriptionData
+} from '@/src/lib/marketing-types';
 
 /**
  * Generate JWT token for marketing API access
  * ⚠️ SERVER-SIDE ONLY - Contains sensitive environment variables
  */
-async function generateMarketingJWT(): Promise<string | null> {
+export async function generateMarketingJWT(): Promise<string | null> {
   try {
     const secret = process.env.MARKETING_API_JWT_SECRET;
     if (!secret) {
-      console.warn('MARKETING_API_JWT_SECRET environment variable is not set');
+      console.warn('marketing_api: MARKETING_API_JWT_SECRET environment variable is not set');
       return null;
     }
 
@@ -62,9 +30,12 @@ async function generateMarketingJWT(): Promise<string | null> {
       .setExpirationTime('1h')
       .sign(secretKey);
 
+    console.log(`marketing_api: jwt: ${jwt}`);
+    console.log(`marketing_api: jwt payload:`, JSON.parse(atob(jwt.split('.')[1])));
+
     return jwt;
   } catch (error) {
-    console.error('Failed to generate marketing JWT:', error);
+    console.error('marketing_api: Failed to generate marketing JWT:', error);
     return null;
   }
 }
@@ -89,7 +60,7 @@ export async function subscribeUserToMarketing(
 
     if (!marketingApiUrl) {
       console.warn(
-        'MARKETING_API_URL environment variable is not set, skipping marketing subscription',
+        'marketing_api: MARKETING_API_URL environment variable is not set, skipping marketing subscription',
       );
       return { success: false, error: 'Marketing API URL not configured' };
     }
@@ -97,23 +68,18 @@ export async function subscribeUserToMarketing(
     // Generate JWT token for authentication
     const jwtToken = await generateMarketingJWT();
     if (!jwtToken) {
-      console.warn('Failed to generate JWT token for marketing API, skipping subscription');
+      console.warn('marketing_api: Failed to generate JWT token for marketing API, skipping subscription');
       return { success: false, error: 'Failed to generate authentication token' };
     }
 
-    // Prepare subscription data
-    const subscriptionData: SubscriptionRequest = {
-      email,
-      firstName: firstName?.trim(),
-      lastName: lastName?.trim(),
-      fields: {
-        source: 'certestic-app-signup',
-        signup_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
-        ...(userAgent && { user_agent: userAgent }),
-      },
-      groups: ['new-users', 'newsletter'],
-      status: 'active',
-    };
+    // Prepare subscription data using the shared utility
+    const subscriptionData = createSubscriptionData(email, firstName, lastName, userAgent);
+
+    console.log(`marketing_api: userAgent: ${userAgent}`);
+    console.log(
+      'marketing_api: Sending subscription data to AWS Lambda:',
+      JSON.stringify(subscriptionData, null, 2),
+    );
 
     // Make request to marketing API
     const response = await fetch(`${marketingApiUrl}/subscribe`, {
@@ -129,36 +95,42 @@ export async function subscribeUserToMarketing(
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error');
-      console.error('Marketing API subscription failed:', response.status, errorText);
+      console.error(
+        'marketing_api: Marketing API subscription failed:',
+        response.status,
+        errorText,
+      );
 
       // Return non-blocking error for better user experience
       return {
         success: false,
-        error: `Marketing subscription failed: ${response.status}`,
+        error: `marketing_api: Marketing subscription failed: ${response.status}`,
       };
     }
 
     const result: SubscriptionResponse = await response.json();
 
+    console.log(`marketing_api: result: ${JSON.stringify(result)}`);
+
     if (result.success) {
-      console.log('User successfully subscribed to marketing:', result.subscriberId);
+      console.log('marketing_api: User successfully subscribed to marketing:', result.subscriberId);
       return {
         success: true,
         subscriberId: result.subscriberId,
       };
     } else {
-      console.warn('Marketing subscription failed:', result.message);
+      console.warn('marketing_api: Marketing subscription failed:', result.message);
       return { success: false, error: result.message };
     }
   } catch (error: any) {
     // Handle network errors, timeouts, etc.
     const errorMessage = error.message || 'Unknown error occurred';
-    console.error('Error during marketing subscription:', errorMessage);
+    console.error('marketing_api: Error during marketing subscription:', errorMessage);
 
     // Don't block signup for marketing subscription errors
     return {
       success: false,
-      error: `Marketing subscription error: ${errorMessage}`,
+      error: `marketing_api: Marketing subscription error: ${errorMessage}`,
     };
   }
 }
