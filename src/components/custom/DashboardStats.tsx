@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
 import { useExamStats } from '@/src/context/ExamStatsContext';
@@ -9,6 +9,11 @@ const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
   const { isError: profileError } = useUserProfileContext();
   const { totalExamCount, certificationCount } = useExamStats();
+
+  // Memoize calculated values to prevent unnecessary re-calculations
+  const inProgressCount = useMemo(() => {
+    return userCertifications?.filter((cert) => cert.status === 'active')?.length || 0;
+  }, [userCertifications]);
 
   // Show loading skeleton only while certifications are loading
   // Profile loading can continue in background since we mainly need certifications here
@@ -52,7 +57,7 @@ const DashboardStats = () => {
           <StatsCard
             icon={<FaGraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
             title="In Progress"
-            value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
+            value={inProgressCount}
           />
           <StatsCard
             icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
@@ -78,7 +83,7 @@ const DashboardStats = () => {
       <StatsCard
         icon={<FaGraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />}
         title="In Progress"
-        value={userCertifications?.filter((cert) => cert.status === 'active')?.length || 0}
+        value={inProgressCount}
       />
 
       {/* Total Exams Created */}

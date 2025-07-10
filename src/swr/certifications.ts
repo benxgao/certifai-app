@@ -158,9 +158,19 @@ export function useAllAvailableCertifications() {
     Error
   >('all-certifications', fetchAllCertificationsPaginated, {
     revalidateOnFocus: false,
-    revalidateOnReconnect: true,
-    dedupingInterval: 60000, // Cache for 60 seconds since we're loading all data
+    revalidateOnReconnect: false, // Reduced reconnection fetching
+    dedupingInterval: 300000, // Increased cache time to 5 minutes for better performance
     refreshInterval: 0, // Don't auto-refresh
+    refreshWhenHidden: false,
+    refreshWhenOffline: false,
+    focusThrottleInterval: 60000, // Throttle focus revalidation to 1 minute
+    errorRetryCount: 1, // Reduced retry count
+    errorRetryInterval: 5000,
+    keepPreviousData: true, // Keep previous data while revalidating
+    // Only retry on network errors, not on API errors
+    shouldRetryOnError: (error) => {
+      return (error as any)?.name === 'NetworkError';
+    },
   });
 
   // Optionally, expose a function to fetch all pages on demand
@@ -190,22 +200,22 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
     apiUserId ? `/api/users/${apiUserId}/certifications` : null, // Conditional fetching
     {
       revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-      dedupingInterval: 30000, // Increased cache time for better performance
+      revalidateOnReconnect: false, // Reduced reconnection fetching
+      dedupingInterval: 120000, // Increased cache time to 2 minutes for better performance
       refreshInterval: 0, // Don't auto-refresh
       refreshWhenHidden: false,
       refreshWhenOffline: false,
-      focusThrottleInterval: 15000,
-      errorRetryCount: 2,
-      errorRetryInterval: 3000,
+      focusThrottleInterval: 30000, // Increased throttle to 30 seconds
+      errorRetryCount: 1, // Reduced retry count for faster failure recovery
+      errorRetryInterval: 5000,
       keepPreviousData: true, // Keep previous data while revalidating for better UX
-      // Prevent multiple rapid requests
+      // Be more selective about retries
       shouldRetryOnError: (error) => {
-        // Don't retry on cancellation errors
-        if ((error as any)?.name === 'CancelledError') {
+        // Don't retry on cancellation errors or auth errors
+        if ((error as any)?.name === 'CancelledError' || (error as any)?.status === 401) {
           return false;
         }
-        // Retry on timeout and network errors
+        // Only retry on network/timeout errors
         return (error as any)?.name === 'TimeoutError' || (error as any)?.name === 'NetworkError';
       },
     },

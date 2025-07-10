@@ -66,9 +66,9 @@ export default function AboutPage() {
       year: 'Mid 2025',
       title: 'My First Beta Launch',
       description:
-        'After countless late nights (and way too much coffee), I finally launched the first beta version! I started with basic AI-generated questions and have been adding features based on feedback from early users.',
+        'After lots of focused work sessions (and way too much coffee), I finally launched the first beta version! I started with basic AI-generated questions and have been adding features based on feedback from early users.',
       icon: Rocket,
-      keywords: 'late nights, coffee addiction, beta launch, user feedback',
+      keywords: 'focused development, coffee addiction, beta launch, user feedback',
     },
     {
       year: 'Current',
@@ -92,7 +92,7 @@ export default function AboutPage() {
       value: 'Just Me (For Now!)',
       label: 'Team Size',
       icon: Brain,
-      description: 'One passionate developer with big dreams',
+      description: 'One focused developer working on something useful',
     },
     {
       value: 'Free Beta',
@@ -197,16 +197,15 @@ export default function AboutPage() {
             </h1>
             <div className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
               <p className="mb-4">
-                <strong>Certestic</strong> is my labor of love - a project I&apos;m building because
-                I genuinely believe IT certification training can be so much better. What started as
-                me being frustrated with expensive, boring study materials has turned into something
-                I wake up excited to work on every day.
+                <strong>Certestic</strong> is my side project - something I&apos;m building because
+                I think IT certification training can be better. What started as me being frustrated
+                with expensive, boring study materials has turned into something I genuinely enjoy
+                working on.
               </p>
               <p>
-                I&apos;m <strong>one person</strong> with a laptop, a lot of determination, and a
-                belief that good tools can make a real difference. No corporate fluff, no fancy
-                offices - just me, my code, and the valuable feedback from users who help me
-                understand what actually works.
+                I&apos;m <strong>one person</strong> with a laptop and some ideas about how learning
+                could work better. No corporate fluff, no fancy offices - just me, my code, and the
+                feedback from users who help me understand what actually works.
               </p>
             </div>
             <nav
@@ -277,10 +276,10 @@ export default function AboutPage() {
                     helped me pass my exams.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    My mission is personal: create{' '}
-                    <strong>AI-powered, affordable, and actually effective</strong> certification
-                    training that I wish I had when I was studying. I want every IT professional to
-                    have access to quality tools they need to succeed, without breaking the bank.
+                    My mission is straightforward: create{' '}
+                    <strong>AI-powered, affordable, and effective</strong> certification training
+                    that actually works. I want IT professionals to have access to quality tools
+                    without paying ridiculous amounts.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -330,16 +329,15 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed mb-4">
-                    Right now, Certestic is my nights-and-weekends passion project, but I have big
-                    dreams for where this can go. I want to prove that with dedication, great
-                    feedback from users, and a genuine desire to help people, a small project can
-                    make a real difference.
+                    Right now, Certestic is my nights-and-weekends project, and I&apos;m pretty
+                    happy with how it&apos;s going. I want to see if dedication, good user feedback,
+                    and a focus on actually helping people can make something worthwhile.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
-                    My vision is ambitious but simple: make Certestic the place where{' '}
-                    <strong>every IT professional</strong> can get top-quality, AI-powered training
-                    without worrying about cost. If I can help even one person land their dream job
-                    or advance their career, all the late nights will be worth it.
+                    My goal is simple: make Certestic the place where{' '}
+                    <strong>IT professionals</strong> can get quality, AI-powered training without
+                    the usual headaches. If I can help people advance their careers along the way,
+                    that&apos;s pretty cool.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -348,8 +346,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Global Impact:</strong> Helping IT professionals worldwide achieve
-                        their dreams (starting one person at a time)
+                        <strong>Global Impact:</strong> Helping IT professionals worldwide advance
+                        their careers (one person at a time)
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -473,7 +471,7 @@ export default function AboutPage() {
                     <Brain className="h-12 w-12 text-primary" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground mb-2">
-                    A Developer with a Dream (And Probably Too Much Coffee)
+                    A Developer with Some Ideas (And Probably Too Much Coffee)
                   </h3>
                   <p className="text-primary mb-4 font-medium">
                     Full-Stack Developer | AI Enthusiast | Believer in Better Education
@@ -487,14 +485,15 @@ export default function AboutPage() {
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
                     Certestic isn&apos;t my day job (yet!) - it&apos;s the project I work on when I
-                    get home from work, on weekends, and sometimes at 2 AM when I have a brilliant
-                    idea. Every line of code is written with the hope that it might help someone
-                    achieve their career goals. That&apos;s what keeps me going.
+                    get home from work, on weekends, and during focused coding sessions when I have
+                    an idea that might actually work. Every line of code is written with the hope
+                    that it might help someone move forward in their career. That&apos;s what keeps
+                    me going.
                   </p>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="flex items-center justify-center space-x-2">
                       <Code className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>Late Night Coding</span>
+                      <span>Focused Coding</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
                       <Brain className="h-4 w-4 text-primary" aria-hidden="true" />

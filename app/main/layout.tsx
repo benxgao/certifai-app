@@ -12,9 +12,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   return (
     <ErrorBoundary>
       <AuthGuard>
-        <UserCertificationsProvider>
-          <ExamStatsProvider>
-            <UserProfileProvider>
+        {/* Nest providers to minimize re-renders and optimize data flow */}
+        <UserProfileProvider>
+          <UserCertificationsProvider>
+            <ExamStatsProvider>
               <div className="min-h-screen flex flex-col">
                 <AppHeader />
                 <div className="flex-1">
@@ -35,9 +36,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 </div>
                 <SimpleAppFooter />
               </div>
-            </UserProfileProvider>
-          </ExamStatsProvider>
-        </UserCertificationsProvider>
+            </ExamStatsProvider>
+          </UserCertificationsProvider>
+        </UserProfileProvider>
       </AuthGuard>
     </ErrorBoundary>
   );

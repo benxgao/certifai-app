@@ -107,6 +107,9 @@ export default function SignUpPage() {
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
+      // Wait for user record to be fully created before updating profile
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Update user profile with display name
       await updateProfile(user, {
         displayName: `${firstName.trim()} ${lastName.trim()}`,
@@ -114,6 +117,9 @@ export default function SignUpPage() {
 
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
+
+      // Wait for profile update to propagate
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Register user in external API and set custom claims
       try {
@@ -144,6 +150,9 @@ export default function SignUpPage() {
 
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
+
+      // Wait for registration to complete before sending verification
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Send email verification with retry mechanism
       try {

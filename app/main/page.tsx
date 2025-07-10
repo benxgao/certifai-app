@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, Suspense, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
-import { useAllAvailableCertifications } from '@/swr/certifications';
 import { Toaster } from 'sonner';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
@@ -15,6 +13,11 @@ import {
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
 
+// Lazy load the all certifications hook to avoid blocking initial render
+const LazyAvailableCertificationsButton = React.lazy(
+  () => import('@/components/custom/LazyAvailableCertificationsButton'),
+);
+
 const MainPage = () => {
   const { firebaseUser } = useFirebaseAuth();
   const {
@@ -23,11 +26,16 @@ const MainPage = () => {
     isError: profileError,
     displayName,
   } = useProfileData();
-  const { availableCertifications, isLoadingAvailableCertifications } =
-    useAllAvailableCertifications();
-  const router = useRouter();
 
-  // Check if user has registered for at least one certification
+  // Memoize static content to prevent unnecessary re-renders
+  const breadcrumbItems = useMemo(() => [{ label: 'Dashboard', current: true }], []);
+
+  const welcomeMessage = useMemo(() => {
+    if (profile) return 'Ready to continue your certification journey.';
+    if (isLoadingProfile) return 'Loading your account information...';
+    if (profileError) return 'Ready to continue your certification journey.';
+    return 'Ready to continue your certification journey.';
+  }, [profile, isLoadingProfile, profileError]);
 
   useEffect(() => {
     if (firebaseUser) {
@@ -39,7 +47,7 @@ const MainPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
       <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
         {/* Breadcrumb Navigation */}
-        <Breadcrumb items={[{ label: 'Dashboard', current: true }]} />
+        <Breadcrumb items={breadcrumbItems} />
 
         {/* Welcome Section */}
         <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 sm:p-6">
@@ -49,13 +57,7 @@ const MainPage = () => {
                 Welcome back, {displayName}!
               </h1>
               <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
-                {profile
-                  ? 'Ready to continue your certification journey.'
-                  : isLoadingProfile
-                  ? 'Loading your account information...'
-                  : profileError
-                  ? 'Ready to continue your certification journey.'
-                  : 'Ready to continue your certification journey.'}
+                {welcomeMessage}
               </p>
             </div>
           </div>
@@ -70,23 +72,22 @@ const MainPage = () => {
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Overview</h1>
               </div>
               <div className="flex items-center space-x-3">
-                <Button
-                  variant="secondary"
-                  onClick={() => router.push('/main/certifications')}
-                  disabled={
-                    isLoadingAvailableCertifications ||
-                    (availableCertifications && availableCertifications.length === 0)
+                <Suspense
+                  fallback={
+                    <Button variant="secondary" disabled>
+                      Loading...
+                    </Button>
                   }
                 >
-                  {isLoadingAvailableCertifications ? 'Loading...' : 'Register for Certification'}
-                </Button>
+                  <LazyAvailableCertificationsButton />
+                </Suspense>
               </div>
             </div>
           </div>
 
           {/* Dashboard Stats */}
           <div className="px-6 py-6">
-            <Suspense fallback={<DashboardStatSkeleton count={5} />}>
+            <Suspense fallback={<DashboardStatSkeleton count={3} />}>
               <DashboardStats />
             </Suspense>
           </div>
@@ -100,7 +101,7 @@ const MainPage = () => {
             </h2>
           </div>
 
-          <Suspense fallback={<UserCertificationCardSkeleton count={3} />}>
+          <Suspense fallback={<UserCertificationCardSkeleton count={2} />}>
             <CertificationsSection />
           </Suspense>
         </section>
