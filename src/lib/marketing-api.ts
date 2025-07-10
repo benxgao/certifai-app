@@ -4,7 +4,7 @@ import { SignJWT } from 'jose';
 import {
   type SubscriptionResponse,
   type MarketingApiResult,
-  createSubscriptionData
+  createSubscriptionData,
 } from '@/src/lib/marketing-types';
 
 /**
@@ -44,8 +44,7 @@ export async function generateMarketingJWT(): Promise<string | null> {
  * Subscribe user to marketing list via AWS Lambda
  * ⚠️ SERVER-SIDE ONLY - This function uses sensitive environment variables and JWT generation
  *
- * For client-side usage, use the API route: POST /api/marketing/subscribe
- * or import from '@/src/lib/marketing-client'
+ * For client-side usage, call the API route directly: POST /api/marketing/subscribe
  *
  * This function is non-blocking and will not prevent signup completion if it fails
  */
@@ -68,7 +67,9 @@ export async function subscribeUserToMarketing(
     // Generate JWT token for authentication
     const jwtToken = await generateMarketingJWT();
     if (!jwtToken) {
-      console.warn('marketing_api: Failed to generate JWT token for marketing API, skipping subscription');
+      console.warn(
+        'marketing_api: Failed to generate JWT token for marketing API, skipping subscription',
+      );
       return { success: false, error: 'Failed to generate authentication token' };
     }
 
@@ -77,7 +78,7 @@ export async function subscribeUserToMarketing(
 
     console.log(`marketing_api: userAgent: ${userAgent}`);
     console.log(
-      'marketing_api: Sending subscription data to AWS Lambda:',
+      'marketing_api: Subscribing user after email verification - Sending subscription data to AWS Lambda:',
       JSON.stringify(subscriptionData, null, 2),
     );
 

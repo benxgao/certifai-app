@@ -8,6 +8,28 @@ import { subscribeUserToMarketing } from '@/src/lib/marketing-api';
  * IMPORTANT: This API always returns HTTP 200 status code to prevent frontend error popups.
  * Success/failure is indicated in the response body via the 'success' field.
  * This ensures that marketing subscription failures don't disrupt the user signup flow.
+ *
+ * USAGE: This API is automatically called when users successfully verify their email addresses
+ * after signup. It can also be called manually for other marketing subscription needs.
+ *
+ * CLIENT-SIDE USAGE EXAMPLE:
+ * ```typescript
+ * const response = await fetch('/api/marketing/subscribe', {
+ *   method: 'POST',
+ *   headers: { 'Content-Type': 'application/json' },
+ *   body: JSON.stringify({
+ *     email: 'user@example.com',
+ *     firstName: 'John',
+ *     lastName: 'Doe',
+ *     userAgent: navigator.userAgent
+ *   }),
+ *   signal: AbortSignal.timeout(15000)
+ * });
+ * const result = await response.json();
+ * if (result.success) {
+ *   console.log('Subscribed:', result.subscriberId);
+ * }
+ * ```
  */
 
 export async function POST(request: NextRequest) {

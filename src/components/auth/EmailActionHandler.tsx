@@ -51,6 +51,62 @@ export default function EmailActionHandler() {
             // Handle email verification (signup or email change)
             await applyActionCode(auth, oobCode);
             console.log('Email verified successfully');
+
+            // Subscribe user to marketing list after successful email verification
+            // Only for new user signups (VERIFY_EMAIL), not email changes (EMAIL_SIGNIN)
+            if (operation === 'VERIFY_EMAIL') {
+              try {
+                // Get the current user information
+                const currentUser = auth.currentUser;
+                if (currentUser) {
+                  const userAgent =
+                    typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
+
+                  // Extract name from displayName if available
+                  const displayName = currentUser.displayName || '';
+                  const nameParts = displayName.split(' ');
+                  const firstName = nameParts[0] || '';
+                  const lastName = nameParts.slice(1).join(' ') || '';
+
+                  console.log('Subscribing verified user to marketing list:', currentUser.email);
+
+                  const marketingResponse = await fetch('/api/marketing/subscribe', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      email: currentUser.email,
+                      firstName: firstName.trim(),
+                      lastName: lastName.trim(),
+                      userAgent,
+                    }),
+                    // Add timeout to prevent hanging
+                    signal: AbortSignal.timeout(15000),
+                  });
+
+                  const marketingResult = await marketingResponse.json();
+
+                  if (marketingResult.success) {
+                    console.log(
+                      'User successfully subscribed to marketing list after email verification',
+                    );
+                  } else {
+                    console.warn(
+                      'Marketing subscription failed (non-blocking):',
+                      marketingResult.error,
+                    );
+                  }
+                }
+              } catch (marketingError) {
+                console.error(
+                  'Error during marketing subscription (non-blocking):',
+                  marketingError,
+                );
+                // Marketing subscription errors are non-blocking and won't affect email verification
+              }
+            }
+
             setStatus('success');
             break;
 

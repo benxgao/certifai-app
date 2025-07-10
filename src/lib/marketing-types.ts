@@ -46,3 +46,26 @@ export function createSubscriptionData(
     status: 'active',
   };
 }
+
+/**
+ * Create subscription data for profile updates (existing users)
+ */
+export function createProfileUpdateSubscriptionData(
+  email: string,
+  firstName?: string,
+  lastName?: string,
+  userAgent?: string,
+): SubscriptionRequest {
+  return {
+    email,
+    firstName: firstName?.trim(),
+    lastName: lastName?.trim(),
+    fields: {
+      source: 'certifai-app-profile-update',
+      update_date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+      ...(userAgent && { user_agent: userAgent }),
+    },
+    groups: ['new-users', 'newsletter'],
+    status: 'active',
+  };
+}

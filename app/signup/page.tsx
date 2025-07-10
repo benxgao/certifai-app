@@ -137,39 +137,6 @@ export default function SignUpPage() {
         // Don't block signup for registration errors
       }
 
-      // Subscribe user to marketing list (non-blocking)
-      // Note: Marketing API now always returns 200 to prevent frontend error popups
-      try {
-        const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : undefined;
-
-        const marketingResponse = await fetch('/api/marketing/subscribe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            firstName: firstName.trim(),
-            lastName: lastName.trim(),
-            userAgent,
-          }),
-          // Add timeout to prevent hanging
-          signal: AbortSignal.timeout(15000), // 15 second timeout (longer for client-server-AWS chain)
-        });
-
-        // The API always returns 200, so we check the response body for success/failure
-        const marketingResult = await marketingResponse.json();
-
-        if (marketingResult.success) {
-          console.log('User successfully subscribed to marketing list');
-        } else {
-          console.warn('Marketing subscription failed (non-blocking):', marketingResult.error);
-        }
-      } catch (marketingError) {
-        console.error('Error during marketing subscription (non-blocking):', marketingError);
-        // Marketing subscription errors are non-blocking and won't affect signup flow
-      }
-
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
