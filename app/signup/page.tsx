@@ -88,7 +88,12 @@ export default function SignUpPage() {
     }
 
     if (!acceptTerms) {
-      setError('Please accept the Terms of Service and Privacy Policy to continue');
+      setError('Please agree to the Terms of Service and Privacy Policy to continue');
+      return;
+    }
+
+    if (!selectedCertId) {
+      setError('Please select a certification exam to attend');
       return;
     }
 
@@ -492,46 +497,46 @@ export default function SignUpPage() {
         <AuthLeftSection mode="signup" />
 
         {/* Right Column - Signup Form */}
-        <div className="flex items-center justify-center py-3 sm:py-6 lg:py-12 px-3 sm:px-6 lg:px-8 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 min-h-full lg:min-h-0 auth-container auth-form-mobile">
-          {/* Subtle background decoration for mobile */}
+        <div className="flex items-center justify-center py-4 sm:py-6 lg:py-12 px-4 sm:px-6 lg:px-8 relative bg-gradient-to-br from-slate-50 via-slate-100 to-gray-50 dark:from-slate-900 dark:via-slate-800 dark:to-gray-900 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+          {/* Subtle background decoration for mobile - improved contrast */}
           <div className="absolute inset-0 lg:hidden overflow-hidden">
-            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 rounded-full"></div>
-            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 rounded-full"></div>
+            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/30 to-purple-300/30 dark:from-violet-700/20 dark:to-purple-800/20 rounded-full"></div>
+            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-slate-200/30 to-blue-300/30 dark:from-slate-700/20 dark:to-blue-800/20 rounded-full"></div>
           </div>
 
           {/* Additional subtle patterns for desktop right section */}
           <div className="absolute inset-0 hidden lg:block overflow-hidden">
-            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 rounded-xl rotate-12 animate-pulse delay-3000"></div>
-            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 rounded-lg rotate-45 animate-pulse delay-4000"></div>
+            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-700/20 dark:to-purple-800/20 rounded-xl rotate-12 animate-pulse delay-3000"></div>
+            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-slate-200/30 to-violet-200/30 dark:from-slate-700/20 dark:to-violet-800/20 rounded-lg rotate-45 animate-pulse delay-4000"></div>
           </div>
 
-          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-2xl relative z-10">
-            <CardHeader className="text-center space-y-1 pb-2 sm:pb-3 lg:pb-6 px-4 sm:px-6">
-              {/* Small decorative element */}
-              <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-3 sm:mb-4"></div>
-              <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent auth-title-mobile">
+          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/80 dark:border-slate-700/80 shadow-2xl relative z-10">
+            <CardHeader className="text-center space-y-2 pb-3 sm:pb-4 lg:pb-6 px-4 sm:px-6">
+              {/* Improved decorative element */}
+              <div className="w-12 h-1 bg-gradient-to-r from-violet-600 to-purple-600 dark:from-violet-500 dark:to-purple-500 rounded-full mx-auto mb-3 sm:mb-4"></div>
+              <CardTitle className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 auth-title-mobile">
                 Create Account
               </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
                 Sign up to get started with Certestic
               </CardDescription>
 
-              {/* Demo Account Highlight Section */}
-              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800/50 shadow-sm mt-4">
+              {/* Demo Account Highlight Section - improved colors */}
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 p-4 rounded-xl border border-emerald-200/80 dark:border-emerald-700/50 shadow-sm mt-4">
                 <div className="text-center">
-                  <h4 className="text-lg font-bold text-emerald-800 dark:text-emerald-100 mb-3">
+                  <h4 className="text-lg font-bold text-emerald-800 dark:text-emerald-200 mb-3">
                     🚀 Try Before You Sign Up!
                   </h4>
-                  <p className="text-sm text-emerald-700 dark:text-emerald-200 mb-4">
+                  <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-4 leading-relaxed">
                     Want to experience the platform first? Use our demo account:
                   </p>
-                  <div className="bg-white dark:bg-emerald-900/30 p-3 rounded-lg border border-emerald-200 dark:border-emerald-700/50">
+                  <div className="bg-white dark:bg-emerald-900/40 p-3 rounded-lg border border-emerald-200/80 dark:border-emerald-700/40">
                     <div className="grid grid-cols-1 gap-2 text-sm">
                       <div>
                         <span className="font-medium text-emerald-800 dark:text-emerald-200">
                           Email:
                         </span>
-                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/50 rounded text-emerald-800 dark:text-emerald-200">
+                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/60 rounded text-emerald-800 dark:text-emerald-200 font-mono text-xs">
                           demo@certestic.com
                         </code>
                       </div>
@@ -539,7 +544,7 @@ export default function SignUpPage() {
                         <span className="font-medium text-emerald-800 dark:text-emerald-200">
                           Password:
                         </span>
-                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/50 rounded text-emerald-800 dark:text-emerald-200">
+                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/60 rounded text-emerald-800 dark:text-emerald-200 font-mono text-xs">
                           demo@certestic.com
                         </code>
                       </div>
@@ -549,14 +554,14 @@ export default function SignUpPage() {
               </div>
             </CardHeader>
             <form onSubmit={handleSignUp} autoComplete="off">
-              <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
-                  <div className="space-y-1.5 sm:space-y-2">
+              <CardContent className="space-y-3 sm:space-y-4 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-2">
                     <Label
                       htmlFor="firstName"
-                      className="text-slate-700 dark:text-slate-300 font-medium"
+                      className="text-slate-700 dark:text-slate-200 font-medium text-sm"
                     >
-                      First Name
+                      First Name <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="firstName"
@@ -567,16 +572,16 @@ export default function SignUpPage() {
                       required
                       disabled={loading}
                       autoComplete="given-name"
-                      className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                      className="border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-violet-500 focus:border-violet-500 dark:focus:ring-violet-400 dark:focus:border-violet-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500"
                     />
                   </div>
 
-                  <div className="space-y-1.5 sm:space-y-2">
+                  <div className="space-y-2">
                     <Label
                       htmlFor="lastName"
-                      className="text-slate-700 dark:text-slate-300 font-medium"
+                      className="text-slate-700 dark:text-slate-200 font-medium text-sm"
                     >
-                      Last Name
+                      Last Name <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       id="lastName"
@@ -587,14 +592,17 @@ export default function SignUpPage() {
                       required
                       disabled={loading}
                       autoComplete="family-name"
-                      className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                      className="border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-violet-500 focus:border-violet-500 dark:focus:ring-violet-400 dark:focus:border-violet-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-1.5 sm:space-y-2">
-                  <Label htmlFor="email" className="text-slate-700 dark:text-slate-300 font-medium">
-                    Email address
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="email"
+                    className="text-slate-700 dark:text-slate-200 font-medium text-sm"
+                  >
+                    Email address <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="email"
@@ -605,16 +613,16 @@ export default function SignUpPage() {
                     required
                     disabled={loading}
                     autoComplete="off"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-violet-500 focus:border-violet-500 dark:focus:ring-violet-400 dark:focus:border-violet-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500"
                   />
                 </div>
 
-                <div className="space-y-1.5 sm:space-y-2">
+                <div className="space-y-2">
                   <Label
                     htmlFor="password"
-                    className="text-slate-700 dark:text-slate-300 font-medium"
+                    className="text-slate-700 dark:text-slate-200 font-medium text-sm"
                   >
-                    Password
+                    Password <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="password"
@@ -626,16 +634,16 @@ export default function SignUpPage() {
                     disabled={loading}
                     minLength={6}
                     autoComplete="new-password"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-violet-500 focus:border-violet-500 dark:focus:ring-violet-400 dark:focus:border-violet-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500"
                   />
                 </div>
 
-                <div className="space-y-1.5 sm:space-y-2">
+                <div className="space-y-2">
                   <Label
                     htmlFor="confirmPassword"
-                    className="text-slate-700 dark:text-slate-300 font-medium"
+                    className="text-slate-700 dark:text-slate-200 font-medium text-sm"
                   >
-                    Confirm Password
+                    Confirm Password <span className="text-red-500">*</span>
                   </Label>
                   <Input
                     id="confirmPassword"
@@ -647,7 +655,7 @@ export default function SignUpPage() {
                     disabled={loading}
                     minLength={6}
                     autoComplete="new-password"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-violet-500 focus:border-violet-500 dark:focus:ring-violet-400 dark:focus:border-violet-400 transition-all duration-200 hover:border-slate-400 dark:hover:border-slate-500"
                   />
                 </div>
 
@@ -655,6 +663,7 @@ export default function SignUpPage() {
                   selectedCertId={selectedCertId}
                   onCertificationChange={setSelectedCertId}
                   disabled={loading}
+                  required={true}
                 />
 
                 <div className="flex items-start space-x-3 py-2">
@@ -669,7 +678,7 @@ export default function SignUpPage() {
                     htmlFor="acceptTerms"
                     className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed cursor-pointer"
                   >
-                    I agree to the{' '}
+                    <span className="text-red-500">*</span> I agree to the
                     <Link
                       href="/terms"
                       className="font-medium text-violet-600 hover:text-violet-500 hover:underline transition-colors duration-200"
@@ -719,7 +728,8 @@ export default function SignUpPage() {
                     !email ||
                     !password ||
                     !confirmPassword ||
-                    !acceptTerms
+                    !acceptTerms ||
+                    !selectedCertId
                   }
                   size="lg"
                 >
