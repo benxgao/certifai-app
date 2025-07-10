@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Textarea } from '@/src/components/ui/textarea';
 import {
   Card,
   CardContent,
@@ -12,58 +10,23 @@ import {
   CardHeader,
   CardTitle,
 } from '@/src/components/ui/card';
-import { Mail, MessageSquare, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
+import { Mail, MessageSquare, Phone, MapPin } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-
-    // Reset form after successful submission
-    setTimeout(() => {
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setIsSubmitted(false);
-    }, 3000);
-  };
-
   const contactInfo = [
     {
       icon: Mail,
       title: 'Email Me Directly',
-      content: 'contact@certestic.com',
+      content: 'info@certestic.com',
       description:
         "The best way to reach me! I usually reply within a day (sometimes sooner if I'm having a coding session)",
     },
     {
       icon: MessageSquare,
-      title: 'Join Our Beta Community',
+      title: 'Beta User Community',
       content: 'Community Discord',
-      description:
-        'Hang out with other beta testers, share ideas, and get help from fellow learners',
+      description: 'Chat with other beta testers, share experiences, and help each other out',
     },
     {
       icon: Phone,
@@ -75,8 +38,8 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Built From Home',
-      content: 'Remote & Proud',
-      description: 'Working from my home office, building something I believe in',
+      content: 'Remote Development',
+      description: 'Working from my home office, one feature at a time',
     },
   ];
 
@@ -89,17 +52,17 @@ export default function ContactPage() {
     {
       question: 'Which certifications can I study for?',
       answer:
-        "I'm starting with AWS basics since that's what I know best. As the community grows and I get feedback, I'll add more. What certification are YOU working on? Let me know!",
+        "I'm starting with AWS basics since that's what I know best. As I get more feedback and understand what users need most, I'll add more. What certification are YOU working on? Let me know!",
     },
     {
       question: 'How much does this cost?',
       answer:
-        'Right now? Absolutely nothing! The beta is completely free because I want to focus on making it genuinely helpful before worrying about money. Future pricing will be fair and community-informed.',
+        'Right now? Absolutely nothing! The beta is completely free because I want to focus on making it genuinely helpful before worrying about money. Future pricing will be fair and user-informed.',
     },
     {
       question: 'Can I help make this better somehow?',
       answer:
-        "YES! Please! Use the beta, tell me what works and what doesn't, spread the word if you like it, or even contribute code if you're technical. Every bit of help means the world to me!",
+        "YES! Please! Use the beta, tell me what works and what doesn't, spread the word if you like it, or even contribute code if you're technical. Every bit of feedback helps me understand what to build next!",
     },
   ];
 
@@ -117,124 +80,48 @@ export default function ContactPage() {
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
             Got questions about Certestic? Found a bug? Have an idea that could make things better?
-            Or just want to say hi? {"I'd"} genuinely love to hear from you! Every message helps me
-            understand what you need and how I can improve.
+            Or just want to say hi? {"I'd"} genuinely love to hear from you! Drop me an email and
+            I&apos;ll get back to you within a day.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 sm:gap-12">
-          {/* Contact Form */}
-          <div className="lg:col-span-2">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
+          {/* Email Contact Section */}
+          <div>
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Drop Me a Line 📝</CardTitle>
+                <CardTitle className="text-2xl">Send Me an Email �</CardTitle>
                 <CardDescription>
-                  {"Whether it's"} feedback, a bug report, a feature idea, or just to say hello - I
-                  read every message!
+                  The best way to reach me! I read every email and usually reply within a day.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                {isSubmitted ? (
-                  <div className="text-center py-8">
-                    <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-foreground mb-2">
-                      Got Your Message! 🎉
-                    </h3>
-                    <p className="text-muted-foreground">
-                      Thanks for reaching out! {"I'll"} get back to you within a day or two. In the
-                      meantime, feel free to explore more of what {"we're"} building!
-                    </p>
+              <CardContent className="text-center py-8">
+                <div className="mb-6">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Mail className="h-8 w-8 text-primary" />
                   </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label
-                          htmlFor="name"
-                          className="block text-sm font-medium text-foreground mb-2"
-                        >
-                          Full Name *
-                        </label>
-                        <Input
-                          id="name"
-                          name="name"
-                          type="text"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          placeholder="What should I call you?"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium text-foreground mb-2"
-                        >
-                          Email Address *
-                        </label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          placeholder="your.email@example.com"
-                          required
-                        />
-                      </div>
-                    </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
+                    Direct Email Contact
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    Whether it&apos;s feedback, a bug report, a feature idea, or just to say hello -
+                    I genuinely read every message!
+                  </p>
+                </div>
 
-                    <div>
-                      <label
-                        htmlFor="subject"
-                        className="block text-sm font-medium text-foreground mb-2"
-                      >
-                        Subject *
-                      </label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        type="text"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        placeholder="What's on your mind?"
-                        required
-                      />
-                    </div>
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
+                  <p className="text-lg font-semibold text-primary mb-2">info@certestic.com</p>
+                  <p className="text-sm text-muted-foreground">
+                    Copy the email above or click the button below to open your email client
+                  </p>
+                </div>
 
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block text-sm font-medium text-foreground mb-2"
-                      >
-                        Message *
-                      </label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        placeholder="Tell me what you're thinking... I read every word! 😊"
-                        rows={6}
-                        required
-                      />
-                    </div>
-
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
-                      {isSubmitting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                          Sending Your Message...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="h-4 w-4 mr-2" />
-                          Send My Message ✉️
-                        </>
-                      )}
-                    </Button>
-                  </form>
-                )}
+                <Button asChild className="w-full">
+                  <a href="mailto:info@certestic.com?subject=Hello from Certestic user">
+                    <Mail className="h-4 w-4 mr-2" />
+                    Open Email Client 📬
+                  </a>
+                </Button>
               </CardContent>
             </Card>
           </div>
@@ -291,15 +178,21 @@ export default function ContactPage() {
           <div className="bg-card border rounded-xl p-8">
             <h2 className="text-2xl font-bold text-foreground mb-4">Need Help Right Now? 🚀</h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Jump into our Discord community where you can chat with other beta testers and get
-              help in real-time! Or browse through our documentation if you prefer to figure things
-              out yourself. And hey, if you catch me online during <strong>NZDT 8pm-10pm</strong>,
-              {"I'm"} usually up for a quick chat!
+              For the fastest response, send me an email at <strong>info@certestic.com</strong> - I
+              usually reply within a day! You can also jump into the Discord to chat with other beta
+              testers, or browse through the documentation if you prefer to figure things out
+              yourself.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg">
+                <a href="mailto:info@certestic.com">
+                  <Mail className="mr-2 h-4 w-4" />
+                  Email Me Directly
+                </a>
+              </Button>
               <Link href="/community">
                 <Button variant="outline" size="lg">
-                  Join Our Discord Family
+                  Join the Discord
                 </Button>
               </Link>
               <Link href="/documentation">

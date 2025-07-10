@@ -51,7 +51,7 @@ export default function LandingPageContent() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Growing Family
+                  Growing Community
                 </div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">Beta Testers</div>
               </div>
@@ -444,12 +444,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
-                Way Better Than ChatGPT
+                Way Better Than Chatbots
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Sure, you could ask ChatGPT to make you some practice questions, but then you&apos;d
-                have to copy-paste, format everything, time yourself... ugh! I&apos;ve built this
-                specifically for studying, with all the bells and whistles you actually need.
+                Sure, you could ask Chatbots to make you some practice questions, but then
+                you&apos;d have to copy-paste, format everything, time yourself... ugh! I&apos;ve
+                built this specifically for studying, with all the bells and whistles you actually
+                need.
               </p>
               <div className="mt-6 flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
                 <span className="mr-2">See the difference</span>

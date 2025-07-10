@@ -31,7 +31,7 @@ const aboutPageSchema = {
   '@type': 'AboutPage',
   name: 'About Certestic - My Personal Journey Building an AI Learning Platform',
   description:
-    "Get to know the story behind Certestic and the developer who's passionate about making IT certification training better for everyone.",
+    'Get to know the story behind Certestic and the developer who&apos;s passionate about making IT certification training better for everyone.',
   url: 'https://certestic.com/about',
   mainEntity: {
     '@type': 'Person',
@@ -66,27 +66,27 @@ export default function AboutPage() {
       year: 'Mid 2025',
       title: 'My First Beta Launch',
       description:
-        'After countless late nights (and way too much coffee), I finally launched the first beta version! I started with basic AI-generated questions and have been steadily adding features based on amazing feedback from people like you.',
+        'After countless late nights (and way too much coffee), I finally launched the first beta version! I started with basic AI-generated questions and have been adding features based on feedback from early users.',
       icon: Rocket,
-      keywords: 'late nights, coffee addiction, beta launch, community feedback',
+      keywords: 'late nights, coffee addiction, beta launch, user feedback',
     },
     {
       year: 'Current',
-      title: 'Building Our Future Together',
+      title: 'Growing Through Real Feedback',
       description:
-        "I'm still working on Certestic every spare moment I get, balancing it with my day job. But honestly? Every message from users, every success story, every piece of feedback makes all those late nights worth it. We're building something special together!",
+        'I&apos;m still working on Certestic every spare moment I get, balancing it with my day job. Every message from users, every success story, every piece of feedback helps me understand what actually matters and guides my development priorities.',
       icon: TrendingUp,
-      keywords: 'passion project, user success stories, collaborative building',
+      keywords: 'passion project, user feedback, iterative development',
     },
   ];
 
   // Personal project stats
   const stats = [
     {
-      value: 'A growing family',
+      value: 'Growing Daily',
       label: 'Beta Users',
       icon: Users,
-      description: 'Amazing people helping me build something better',
+      description: 'People trying out what I&apos;ve built and sharing feedback',
     },
     {
       value: 'Just Me (For Now!)',
@@ -98,7 +98,7 @@ export default function AboutPage() {
       value: 'Free Beta',
       label: 'Access',
       icon: Rocket,
-      description: 'Free while we build something amazing together',
+      description: 'Free while I figure out how to make this sustainable',
     },
     {
       value: 'Nights & Weekends',
@@ -120,11 +120,11 @@ export default function AboutPage() {
     },
     {
       icon: Users,
-      title: 'You&apos;re Part of the Team',
+      title: 'Your Feedback Shapes Development',
       description:
-        'Since it&apos;s just me building this, I rely on incredible people like you to help make Certestic better. Every message, suggestion, and bug report you send directly shapes what I work on next. You&apos;re not just users - you&apos;re collaborators!',
-      benefits: ['Direct line to me', 'Your ideas matter', 'Real collaboration'],
-      keywords: 'community feedback, solo development, user input',
+        'Since it&apos;s just me building this, I really value the feedback from users. Every message, suggestion, and bug report you send helps me understand what&apos;s working and what needs improvement. Your input directly influences my development priorities.',
+      benefits: ['Direct feedback channel', 'Real user insights', 'Responsive development'],
+      keywords: 'user feedback, solo development, responsive iteration',
     },
     {
       icon: Shield,
@@ -204,18 +204,19 @@ export default function AboutPage() {
               </p>
               <p>
                 I&apos;m <strong>one person</strong> with a laptop, a lot of determination, and a
-                belief that we can create something amazing together. No corporate fluff, no fancy
-                offices - just me, my code, and the incredible feedback from people like you who
-                make this journey worthwhile.
+                belief that good tools can make a real difference. No corporate fluff, no fancy
+                offices - just me, my code, and the valuable feedback from users who help me
+                understand what actually works.
               </p>
             </div>
             <nav
               className="flex flex-col sm:flex-row gap-4 justify-center"
               aria-label="CTA Navigation"
             >
+              {' '}
               <Button size="lg" className="rounded-lg" aria-label="Try Certestic Beta Version">
                 <Rocket className="mr-2 h-5 w-5" />
-                Come Try What I&apos;ve Built
+                Try What I&apos;ve Built
               </Button>
               <Button
                 variant="outline"
@@ -224,7 +225,7 @@ export default function AboutPage() {
                 aria-label="Share feedback about Certestic"
               >
                 <Heart className="mr-2 h-5 w-5" />
-                Tell Me What You Think
+                Share Your Feedback
               </Button>
             </nav>
           </header>
@@ -279,7 +280,7 @@ export default function AboutPage() {
                     My mission is personal: create{' '}
                     <strong>AI-powered, affordable, and actually effective</strong> certification
                     training that I wish I had when I was studying. I want every IT professional to
-                    have access to the tools they need to succeed, without breaking the bank.
+                    have access to quality tools they need to succeed, without breaking the bank.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -308,8 +309,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-sm text-muted-foreground">
-                        <strong>Community-Driven:</strong> Built with input from amazing people who
-                        believe in this vision
+                        <strong>Community Input:</strong> Guided by feedback from users who share
+                        this vision
                       </span>
                     </div>
                   </div>
@@ -324,15 +325,15 @@ export default function AboutPage() {
                     <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <Eye className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
-                    <CardTitle className="text-2xl">Where We&apos;re Heading Together</CardTitle>
+                    <CardTitle className="text-2xl">Where I&apos;m Heading</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed mb-4">
                     Right now, Certestic is my nights-and-weekends passion project, but I have big
-                    dreams for where we can take this together. I want to prove that with
-                    dedication, great feedback from users like you, and a genuine desire to help
-                    people, we can build something that challenges the big players.
+                    dreams for where this can go. I want to prove that with dedication, great
+                    feedback from users, and a genuine desire to help people, a small project can
+                    make a real difference.
                   </p>
                   <p className="text-muted-foreground leading-relaxed mb-6">
                     My vision is ambitious but simple: make Certestic the place where{' '}
@@ -519,13 +520,13 @@ export default function AboutPage() {
               <CardContent className="p-12">
                 <Star className="h-12 w-12 text-primary mx-auto mb-6" aria-hidden="true" />
                 <h2 id="join-beta" className="text-3xl font-bold text-foreground mb-4">
-                  Want to Help Me Build Something Amazing? 🚀
+                  Want to Try What I&apos;m Building? 🚀
                 </h2>
                 <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
                   Certestic is still in beta, which means it&apos;s not perfect - but that&apos;s
-                  where you come in! I need people like you to try it out, tell me what works, what
-                  doesn&apos;t, and what you wish it could do. Your feedback literally shapes what I
-                  build next.
+                  part of the journey! I&apos;m looking for people to try it out, share what works,
+                  what doesn&apos;t, and what could be better. Your feedback helps me understand
+                  what to focus on next.
                 </p>
                 <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
                   <div className="text-center">
@@ -533,18 +534,18 @@ export default function AboutPage() {
                     <div className="text-sm text-muted-foreground">Beta Access</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">Direct Line</div>
-                    <div className="text-sm text-muted-foreground">To Me (The Builder)</div>
+                    <div className="text-2xl font-bold text-primary">Direct Access</div>
+                    <div className="text-sm text-muted-foreground">To The Developer</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">Real Impact</div>
-                    <div className="text-sm text-muted-foreground">On What Gets Built</div>
+                    <div className="text-2xl font-bold text-primary">Real Feedback</div>
+                    <div className="text-sm text-muted-foreground">Actually Gets Heard</div>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button size="lg" className="rounded-lg" aria-label="Try Certestic beta">
                     <Rocket className="mr-2 h-5 w-5" />
-                    Let&apos;s Do This Together!
+                    Give It a Try!
                   </Button>
                   <Button
                     variant="outline"
@@ -553,7 +554,7 @@ export default function AboutPage() {
                     aria-label="Contact the developer"
                   >
                     <Heart className="mr-2 h-5 w-5" />
-                    Share Your Thoughts
+                    Send Feedback
                   </Button>
                 </div>
               </CardContent>

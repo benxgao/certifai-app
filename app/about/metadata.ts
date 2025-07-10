@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Discover Certestic's mission to revolutionize how professionals simulate exams by AI and prepare for IT certification by self exams. Learn about our developer journey, core values, and AI-powered exam simulation technology.",
   keywords: [
-    'Certestic about us',
+    'Certestic about',
     'simulate exams by AI',
     'prepare for IT certification by self exams',
     'AI-powered IT certification training',

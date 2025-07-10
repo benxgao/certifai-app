@@ -154,7 +154,7 @@ export default function MarketingFooter() {
                   href="/about"
                   className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
                 >
-                  About Us
+                  About
                 </Link>
               </li>
               <li>
