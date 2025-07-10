@@ -50,18 +50,43 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   // Case 1: Still checking authentication - show loading
   if (loading) {
     return (
-      <PageLoader isLoading={true} text="Verifying your authentication..." showSpinner={true} />
+      <PageLoader
+        isLoading={true}
+        text="Verifying your authentication..."
+        showSpinner={true}
+        variant="auth"
+        fullScreen={true}
+        showBrand={true}
+      />
     );
   }
 
   // Case 2: User authenticated but email not verified - show loading while redirect happens
   if (firebaseUser && !firebaseUser.emailVerified) {
-    return <PageLoader isLoading={true} text="Email verification required..." showSpinner={true} />;
+    return (
+      <PageLoader
+        isLoading={true}
+        text="Email verification required..."
+        showSpinner={true}
+        variant="auth"
+        fullScreen={true}
+        showBrand={true}
+      />
+    );
   }
 
   // Case 3: User authenticated but waiting for API setup - show loading (max 5 seconds)
   if (firebaseUser && !apiUserId && !apiTimeout) {
-    return <PageLoader isLoading={true} text="Setting up your account..." showSpinner={true} />;
+    return (
+      <PageLoader
+        isLoading={true}
+        text="Setting up your account..."
+        showSpinner={true}
+        variant="default"
+        fullScreen={true}
+        showBrand={true}
+      />
+    );
   }
 
   // Case 4: User is authenticated and verified - render the protected content
@@ -70,7 +95,16 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   // Case 5: User not authenticated - show loading while redirect happens
-  return <PageLoader isLoading={true} text="Redirecting to sign in..." showSpinner={true} />;
+  return (
+    <PageLoader
+      isLoading={true}
+      text="Redirecting to sign in..."
+      showSpinner={true}
+      variant="redirect"
+      fullScreen={true}
+      showBrand={true}
+    />
+  );
 };
 
 export default AuthGuard;

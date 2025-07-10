@@ -7,16 +7,16 @@ import SEOContentBlock from '@/src/components/seo/SEOContentBlock';
 
 export default function LandingPageContent() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
       {/* Header with Navigation */}
       <LandingHeader showFeaturesLink={true} />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden" role="banner">
-        {/* Background decorative elements */}
+        {/* Background decorative elements - mobile responsive */}
         <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
-        <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-2 sm:right-10 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-2 sm:left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
           {/* Hero Content - Centered */}
@@ -150,11 +150,11 @@ export default function LandingPageContent() {
       </section>
 
       {/* Screenshot Slideshow Section - Full Width */}
-      <section className="relative py-16 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900">
-        {/* Background decorative elements */}
+      <section className="relative py-16 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 overflow-hidden">
+        {/* Background decorative elements - mobile responsive */}
         <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
-        <div className="absolute top-10 right-20 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-10 left-20 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+        <div className="absolute top-10 right-4 sm:right-20 w-32 sm:w-48 h-32 sm:h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-10 left-4 sm:left-20 w-48 sm:w-64 h-48 sm:h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
@@ -164,9 +164,14 @@ export default function LandingPageContent() {
               <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 md:p-6">
                 <ScreenshotSlideshow className="group rounded-xl overflow-hidden w-full" />
               </div>
-              {/* Floating elements */}
-              <div className="absolute -top-6 -right-6 bg-green-500 text-white rounded-full p-4 shadow-lg">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Floating elements - mobile responsive positioning */}
+              <div className="absolute -top-3 -right-3 sm:-top-6 sm:-right-6 bg-green-500 text-white rounded-full p-2 sm:p-4 shadow-lg">
+                <svg
+                  className="w-4 h-4 sm:w-8 sm:h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -175,8 +180,13 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-violet-500 text-white rounded-full p-4 shadow-lg">
-                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-6 bg-violet-500 text-white rounded-full p-2 sm:p-4 shadow-lg">
+                <svg
+                  className="w-4 h-4 sm:w-8 sm:h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -191,11 +201,14 @@ export default function LandingPageContent() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="relative py-24 bg-slate-50/50 dark:bg-slate-800/30">
-        {/* Background decorative elements */}
+      <section
+        id="features"
+        className="relative py-16 sm:py-24 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden"
+      >
+        {/* Background decorative elements - mobile responsive */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
-        <div className="absolute top-20 left-1/4 w-64 h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-10 sm:top-20 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 sm:bottom-20 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
@@ -469,14 +482,14 @@ export default function LandingPageContent() {
       </section>
 
       {/* Call-to-Action Section */}
-      <section className="relative py-24 overflow-hidden">
-        {/* Background decorative elements */}
+      <section className="relative py-16 sm:py-24 overflow-hidden">
+        {/* Background decorative elements - mobile responsive */}
         <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-transparent to-blue-50/60 dark:from-violet-900/20 dark:via-transparent dark:to-blue-900/15"></div>
-        <div className="absolute top-10 right-20 w-80 h-80 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-10 right-4 sm:right-20 w-48 sm:w-80 h-48 sm:h-80 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-4 sm:left-20 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-2 border-slate-200 dark:border-slate-700 shadow-2xl rounded-3xl p-12 lg:p-16 text-center overflow-hidden">
+          <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-2 border-slate-200 dark:border-slate-700 shadow-2xl rounded-3xl p-8 sm:p-12 lg:p-16 text-center overflow-hidden">
             {/* Decorative background pattern */}
             <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 to-blue-50/30 dark:from-violet-900/10 dark:to-blue-900/5 rounded-3xl"></div>
             <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>

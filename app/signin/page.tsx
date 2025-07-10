@@ -20,7 +20,8 @@ import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import { resetAuthenticationState } from '@/src/lib/auth-utils';
 import { setAuthCookie } from '@/src/lib/auth-setup';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { PageTransitionLoader, ButtonLoadingText } from '@/src/components/ui/loading-spinner';
+import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
+import PageLoader from '@/src/components/custom/PageLoader';
 
 import { auth } from '@/src/firebase/firebaseWebConfig';
 
@@ -453,11 +454,12 @@ const LoginPage = () => {
 
   if (!loading && firebaseUser && apiUserId && !isAuthError) {
     return (
-      <PageTransitionLoader
+      <PageLoader
         isLoading={true}
         text="Already signed in. Redirecting..."
-        variant="inline"
-        className="min-h-screen"
+        variant="redirect"
+        fullScreen={true}
+        showBrand={true}
       />
     );
   }

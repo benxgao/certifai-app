@@ -24,6 +24,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         isLoading={true}
                         text="Loading your dashboard..."
                         showSpinner={true}
+                        variant="default"
+                        fullScreen={false}
+                        showBrand={false}
                       />
                     }
                   >

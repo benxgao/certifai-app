@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import EmailActionHandler from '@/src/components/auth/EmailActionHandler';
 import LandingPageContent from '@/src/components/landing/LandingPageContent';
+import PageLoader from '@/src/components/custom/PageLoader';
 
 // Structured Data for SEO
 const organizationSchema = {
@@ -117,12 +118,14 @@ export default function LandingPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
-          <div className="text-center space-y-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-violet-600 border-t-transparent mx-auto"></div>
-            <p className="text-sm text-slate-600 dark:text-slate-400">Loading Certestic...</p>
-          </div>
-        </div>
+        <PageLoader
+          isLoading={true}
+          text="Loading Certestic..."
+          showSpinner={true}
+          variant="default"
+          fullScreen={true}
+          showBrand={true}
+        />
       }
     >
       <MainPage />
