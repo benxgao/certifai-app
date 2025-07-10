@@ -23,7 +23,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   const containerClasses = fullScreen
     ? 'fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-violet-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-violet-950/20 relative overflow-hidden'
-    : 'flex items-center justify-center min-h-[60vh] w-full bg-gradient-to-br from-slate-50/50 via-white/50 to-violet-50/20 dark:from-slate-950/50 dark:via-slate-900/50 dark:to-violet-950/10 relative overflow-hidden';
+    : 'flex items-center justify-center min-h-screen w-full bg-gradient-to-br from-slate-50/50 via-white/50 to-violet-50/20 dark:from-slate-950/50 dark:via-slate-900/50 dark:to-violet-950/10 relative overflow-hidden';
 
   // Get appropriate icon and styling based on variant
   const getVariantConfig = () => {
