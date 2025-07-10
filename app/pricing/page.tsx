@@ -73,16 +73,14 @@ export default function PricingPage() {
           <header className="text-center mb-8 sm:mb-12 lg:mb-16">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <Star className="w-3 sm:w-4 h-3 sm:h-4" />
-              <span>100% Free Beta - Your Ideas Matter!</span>
+              <span>100% Free Beta</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 lg:mb-6 px-2">
-              Come Build This With Me!
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4 lg:mb-6 px-2">
+              Join the Beta
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-              Hey there! I&apos;m building something special for IT folks like us, and I&apos;d love
-              for you to be part of it. Everything&apos;s completely free right now because
-              honestly? I need your help to make this amazing. Your feedback literally shapes what
-              we build next!
+            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
+              Help build the future of IT certification training. Everything&apos;s free while in
+              beta.
             </p>
           </header>
 
@@ -96,67 +94,66 @@ export default function PricingPage() {
               </div>
 
               <div className="text-center mb-6 sm:mb-8 mt-4 sm:mt-6 lg:mt-0">
-                <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-foreground mb-2">
-                  Beta Community Access
+                <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                  Beta Access
                 </h3>
-                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-2">
+                <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary mb-2">
                   FREE
                 </div>
                 <p className="text-xs sm:text-sm lg:text-base text-muted-foreground px-2">
-                  Join our little community of passionate learners!
+                  Join the community of learners
                 </p>
               </div>
 
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 lg:mb-8">
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Unlimited AI-Generated Practice Exams (they&apos;re getting smarter every day!)
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Unlimited AI-generated practice exams
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    All IT Certifications Supported (seriously, all of them!)
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                    All IT certification tracks
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Advanced Performance Analytics (see exactly where you&apos;re crushing it)
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Performance analytics & insights
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Personalized Study Recommendations (like having a study buddy who knows you)
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Personalized study recommendations
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Community Access & Support (we&apos;re all in this together)
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Community support
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-foreground leading-relaxed">
-                    Direct Line to Me (yes, I actually read every message!)
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                    Direct developer feedback
                   </span>
                 </div>
               </div>
 
               <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-primary/20">
-                <p className="text-xs sm:text-sm text-primary dark:text-primary text-center leading-relaxed">
-                  <strong>My Promise to You:</strong> Every suggestion you share directly influences
-                  what I build next. You&apos;re not just using this platform - you&apos;re helping
-                  create the certification training tool we all wish existed!
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 text-center leading-relaxed">
+                  <strong>Beta Promise:</strong> Your feedback shapes what gets built next. Help
+                  create the platform you actually want to use.
                 </p>
               </div>
 
               <Link href="/signup" className="block">
                 <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm sm:text-base lg:text-lg py-2.5 sm:py-3 lg:py-4 font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
-                  Let&apos;s Do This Together!
+                  Get Started
                 </Button>
               </Link>
             </div>
@@ -164,56 +161,38 @@ export default function PricingPage() {
 
           {/* FAQ Section */}
           <div className="mt-12 sm:mt-16 lg:mt-20 px-2 sm:px-4">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-foreground mb-6 sm:mb-8 lg:mb-12">
-              Questions? I&apos;ve Got Answers!
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-center text-slate-900 dark:text-slate-100 mb-6 sm:mb-8 lg:mb-12">
+              Frequently Asked Questions
             </h2>
 
             <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
-                <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  How long will this free ride last?
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
+                  How long is the beta free?
                 </h4>
-                <p className="text-muted-foreground text-sm sm:text-base">
-                  Great question! We&apos;re planning to keep things free throughout 2025 while I
-                  perfect the platform. When we do eventually introduce pricing, early beta folks
-                  like you will get some pretty sweet perks. Think of it as my way of saying thanks
-                  for believing in this crazy project!
+                <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                  The platform stays free throughout 2025. Early users will get special benefits
+                  when pricing is introduced.
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
-                <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  What about my study progress and data?
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
+                  What happens to my data?
                 </h4>
-                <p className="text-muted-foreground text-sm sm:text-base">
-                  Don&apos;t worry - your progress is safe with me! I treat your study data like my
-                  own (because honestly, I use this platform too). All your achievements, progress,
-                  and study history will stick around as we grow. Your success story is part of our
-                  success story!
+                <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                  Your progress and achievements are secure. Everything stays with you as the
+                  platform grows.
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
-                <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  How can I share my brilliant ideas?
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
+                  How can I provide feedback?
                 </h4>
-                <p className="text-muted-foreground text-sm sm:text-base">
-                  Oh, I&apos;m so glad you asked! I&apos;ve built feedback tools right into the
-                  platform, plus you can always hit me up through our contact page. Seriously, I
-                  read every single message - your ideas literally shape what I work on next. Got a
-                  wild idea? Send it my way!
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
-                <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">
-                  Will there be any hiccups along the way?
-                </h4>
-                <p className="text-muted-foreground text-sm sm:text-base">
-                  I&apos;ll be honest with you - we&apos;re building this thing live! Sometimes you
-                  might see me testing new features or fixing little bugs. Think of it as getting a
-                  behind-the-scenes look at how software gets made. I work fast to fix anything that
-                  pops up, and I really appreciate your patience as we grow together!
+                <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                  Use the built-in feedback tools or contact directly. Your input drives development
+                  priorities.
                 </p>
               </div>
             </div>
@@ -221,13 +200,12 @@ export default function PricingPage() {
 
           {/* CTA Section */}
           <div className="mt-16 sm:mt-20 text-center bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/5 dark:to-primary/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mx-2 sm:mx-4 border border-primary/10">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-3 sm:mb-4">
-              Ready to Join Our Little Revolution?
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
+              Ready to Get Started?
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-              Come be part of something special! Join the growing community of IT professionals who
-              are using and improving this platform. Plus, did I mention it&apos;s completely free?
-              Your feedback helps me build something better!
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+              Join IT professionals who are already using and improving the platform. Completely
+              free.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <Link href="/signup" className="w-full sm:w-auto">
@@ -235,7 +213,7 @@ export default function PricingPage() {
                   size="lg"
                   className="w-full sm:w-auto px-6 sm:px-8 bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  Count Me In!
+                  Start Free
                 </Button>
               </Link>
               <Link href="/contact" className="w-full sm:w-auto">
@@ -244,7 +222,7 @@ export default function PricingPage() {
                   size="lg"
                   className="w-full sm:w-auto px-6 sm:px-8 border-primary/20 dark:border-primary/40 text-primary hover:bg-primary/10 font-semibold transition-all duration-200"
                 >
-                  Let&apos;s Chat!
+                  Contact Us
                 </Button>
               </Link>
             </div>

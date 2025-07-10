@@ -29,14 +29,14 @@ import {
 const aboutPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About Certestic - My Personal Journey Building an AI Learning Platform',
+  name: 'About Certestic - AI-Powered Certification Training Platform',
   description:
-    'Get to know the story behind Certestic and the developer who&apos;s passionate about making IT certification training better for everyone.',
+    'Learn about Certestic, an AI-powered platform for IT certification training designed to be effective and accessible.',
   url: 'https://certestic.com/about',
   mainEntity: {
-    '@type': 'Person',
-    name: 'Certestic Developer',
-    jobTitle: 'Full-Stack Developer & AI Enthusiast',
+    '@type': 'Organization',
+    name: 'Certestic',
+    description: 'AI-powered certification training platform',
   },
   isPartOf: {
     '@type': 'WebSite',
@@ -46,7 +46,7 @@ const aboutPageSchema = {
   inLanguage: 'en-US',
   author: {
     '@type': 'Person',
-    name: 'Certestic Developer',
+    name: 'Ben Gao',
   },
 };
 
@@ -55,56 +55,55 @@ export default function AboutPage() {
   const milestones = [
     {
       year: 'Early 2025',
-      title: 'The Journey Begins',
+      title: 'Started Building',
       description:
-        'I started Certestic because I saw an amazing opportunity to revolutionize IT certification training! After going through my own certification journey, I realized we could use AI to make studying so much more effective and enjoyable. So I started experimenting with AI in my spare time, and wow - the possibilities were endless!',
+        'Began developing Certestic to improve IT certification training using AI. Focused on creating more effective study methods.',
       icon: Brain,
-      keywords:
-        'opportunity and innovation, weekend experiments, AI curiosity, endless possibilities',
+      keywords: 'AI development, certification training',
     },
     {
       year: 'Mid 2025',
-      title: 'My First Beta Launch',
+      title: 'Beta Launch',
       description:
-        'After lots of focused work sessions (and way too much coffee), I finally launched the first beta version! I started with basic AI-generated questions and have been adding features based on feedback from early users.',
+        'Released the first beta version with AI-generated questions. Iterating based on user feedback.',
       icon: Rocket,
-      keywords: 'focused development, coffee addiction, beta launch, user feedback',
+      keywords: 'beta launch, user feedback',
     },
     {
       year: 'Current',
-      title: 'Growing Through Real Feedback',
+      title: 'Growing Platform',
       description:
-        'I&apos;m still working on Certestic every spare moment I get, balancing it with my day job. Every message from users, every success story, every piece of feedback helps me understand what actually matters and guides my development priorities.',
+        'Continuously improving the platform with new features. Building a community of learners.',
       icon: TrendingUp,
-      keywords: 'passion project, user feedback, iterative development',
+      keywords: 'platform growth, community building',
     },
   ];
 
   // Personal project stats
   const stats = [
     {
-      value: 'Growing Daily',
-      label: 'Beta Users',
+      value: 'Growing',
+      label: 'User Base',
       icon: Users,
-      description: 'People trying out what I&apos;ve built and sharing feedback',
+      description: 'Active beta users providing feedback',
     },
     {
-      value: 'Just Me (For Now!)',
-      label: 'Team Size',
+      value: 'One Developer',
+      label: 'Team',
       icon: Brain,
-      description: 'One focused developer working on something useful',
+      description: 'Focused development approach',
     },
     {
       value: 'Free Beta',
       label: 'Access',
       icon: Rocket,
-      description: 'Free while I figure out how to make this sustainable',
+      description: 'Open access during development',
     },
     {
-      value: 'Nights & Weekends',
-      label: 'Development Time',
+      value: 'AI-Powered',
+      label: 'Technology',
       icon: Globe,
-      description: 'Built with love and lots of coffee',
+      description: 'Modern learning algorithms',
     },
   ];
 
@@ -112,51 +111,51 @@ export default function AboutPage() {
   const values = [
     {
       icon: Brain,
-      title: 'AI That Actually Helps (Not Just Hype)',
+      title: 'AI-Powered Learning',
       description:
-        'I&apos;m genuinely fascinated by AI and spend my weekends experimenting with ways to make learning more personalized. I&apos;m not chasing trends - I&apos;m trying to solve real problems using technology I&apos;m passionate about.',
-      benefits: ['Hand-crafted with care', 'Real problem solving', 'Weekend experiments'],
-      keywords: 'AI passion, machine learning, personal development',
+        'Using artificial intelligence to create personalized study experiences that adapt to individual learning patterns.',
+      benefits: ['Adaptive algorithms', 'Personalized content', 'Smart recommendations'],
+      keywords: 'AI technology, personalized learning',
     },
     {
       icon: Users,
-      title: 'Your Feedback Shapes Development',
+      title: 'Community Feedback',
       description:
-        'Since it&apos;s just me building this, I really value the feedback from users. Every message, suggestion, and bug report you send helps me understand what&apos;s working and what needs improvement. Your input directly influences my development priorities.',
-      benefits: ['Direct feedback channel', 'Real user insights', 'Responsive development'],
-      keywords: 'user feedback, solo development, responsive iteration',
+        'Building based on real user needs and feedback. Every suggestion helps improve the platform for everyone.',
+      benefits: ['User-driven development', 'Regular updates', 'Community input'],
+      keywords: 'user feedback, community-driven development',
     },
     {
       icon: Shield,
-      title: 'Honest & Real (No Corporate Speak)',
+      title: 'Transparent Development',
       description:
-        'I&apos;ll always be upfront about where Certestic stands. Sometimes things break, sometimes I&apos;m behind schedule, and sometimes I have amazing breakthroughs. I&apos;ll share it all because authenticity matters more than polished marketing.',
-      benefits: ['Real talk always', 'No sugar coating', 'Genuine updates'],
-      keywords: 'transparency, honest development, authentic communication',
+        'Open about progress, challenges, and improvements. No marketing fluff, just honest updates about development.',
+      benefits: ['Clear communication', 'Regular updates', 'Honest progress'],
+      keywords: 'transparency, authentic development',
     },
     {
       icon: Heart,
-      title: 'Free Because Education Should Be',
+      title: 'Accessible Education',
       description:
-        'Right now, Certestic is completely free because I believe good education shouldn&apos;t be a luxury. I&apos;m still figuring out how to make this sustainable long-term, but making it accessible is more important than making it profitable right now.',
-      benefits: ['Completely free', 'No hidden agenda', 'Education-first mindset'],
-      keywords: 'free access, educational mission, affordable learning',
+        'Quality certification training should be available to everyone, regardless of budget or background.',
+      benefits: ['Free beta access', 'No hidden costs', 'Global availability'],
+      keywords: 'accessible education, affordable learning',
     },
     {
       icon: Zap,
-      title: 'Moving Fast & Learning Faster',
+      title: 'Fast Iteration',
       description:
-        'One of the perks of being a one-person team? I can try new things, experiment, and iterate quickly without getting stuck in meetings. If something doesn&apos;t work, I can pivot immediately. If it does work, I can build on it right away.',
-      benefits: ['Quick experiments', 'Fast iterations', 'No bureaucracy'],
-      keywords: 'rapid development, experimentation, agile solo work',
+        'Small team means quick decisions and rapid improvements. New features and fixes roll out regularly.',
+      benefits: ['Quick updates', 'Rapid fixes', 'Fast innovation'],
+      keywords: 'agile development, rapid iteration',
     },
     {
       icon: Target,
-      title: 'Solving Real Problems (I&apos;ve Been There)',
+      title: 'Problem-Focused',
       description:
-        'Every feature in Certestic comes from a real problem I&apos;ve experienced or heard about from others. I&apos;m not building features because they sound cool - I&apos;m building them because they solve actual pain points in certification training.',
-      benefits: ['Real-world tested', 'Problem-focused', 'Experience-driven'],
-      keywords: 'practical solutions, career advancement, real-world application',
+        'Every feature addresses real certification training challenges. Built to solve actual problems, not add complexity.',
+      benefits: ['Practical solutions', 'Real-world focus', 'User-centered design'],
+      keywords: 'problem-solving, practical solutions',
     },
   ];
 
@@ -192,30 +191,22 @@ export default function AboutPage() {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" role="main">
           {/* Hero Section with optimized heading hierarchy */}
           <header className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Hey There! I&apos;m Building Certestic 👋
-            </h1>
-            <div className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
-              <p className="mb-4">
-                <strong>Certestic</strong> is my side project - something I&apos;m building because
-                I think IT certification training can be better. What started as me being frustrated
-                with expensive, boring study materials has turned into something I genuinely enjoy
-                working on.
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-8">About Certestic</h1>
+            <div className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8">
+              <p className="mb-6">
+                AI-powered certification training built to be effective and accessible.
               </p>
-              <p>
-                I&apos;m <strong>one person</strong> with a laptop and some ideas about how learning
-                could work better. No corporate fluff, no fancy offices - just me, my code, and the
-                feedback from users who help me understand what actually works.
+              <p className="text-lg">
+                Made by one developer who believes learning should be better.
               </p>
             </div>
             <nav
               className="flex flex-col sm:flex-row gap-4 justify-center"
               aria-label="CTA Navigation"
             >
-              {' '}
               <Button size="lg" className="rounded-lg" aria-label="Try Certestic Beta Version">
                 <Rocket className="mr-2 h-5 w-5" />
-                Try What I&apos;ve Built
+                Try Certestic
               </Button>
               <Button
                 variant="outline"
@@ -224,7 +215,7 @@ export default function AboutPage() {
                 aria-label="Share feedback about Certestic"
               >
                 <Heart className="mr-2 h-5 w-5" />
-                Share Your Feedback
+                Share Feedback
               </Button>
             </nav>
           </header>
@@ -241,11 +232,13 @@ export default function AboutPage() {
                     <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
                       <stat.icon className="h-6 w-6 text-primary" aria-hidden="true" />
                     </div>
-                    <div className="text-2xl font-bold text-foreground mb-1">{stat.value}</div>
-                    <div className="text-sm font-medium text-muted-foreground mb-2">
+                    <div className="text-2xl md:text-3xl font-bold text-foreground mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-base md:text-lg font-medium text-muted-foreground mb-2">
                       {stat.label}
                     </div>
-                    <div className="text-xs text-muted-foreground">{stat.description}</div>
+                    <div className="text-sm text-muted-foreground">{stat.description}</div>
                   </CardContent>
                 </Card>
               ))}
@@ -255,7 +248,7 @@ export default function AboutPage() {
           {/* Mission & Vision with enhanced SEO content */}
           <section className="grid lg:grid-cols-2 gap-12 mb-16" aria-labelledby="mission-vision">
             <h2 id="mission-vision" className="sr-only">
-              My Personal Mission and Vision for Certestic
+              Mission and Vision for Certestic
             </h2>
 
             <article>
@@ -265,21 +258,17 @@ export default function AboutPage() {
                     <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <Target className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
-                    <CardTitle className="text-2xl">Why I Started This Journey</CardTitle>
+                    <CardTitle className="text-2xl md:text-3xl">Mission</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    I started Certestic because I was tired of watching friends (and myself!)
-                    struggle with overpriced, outdated certification training. I&apos;ve been
-                    through the pain of spending hundreds of dollars on boring materials that barely
-                    helped me pass my exams.
+                  <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                    Create effective, AI-powered certification training that&apos;s accessible to
+                    everyone.
                   </p>
-                  <p className="text-muted-foreground leading-relaxed mb-6">
-                    My mission is straightforward: create{' '}
-                    <strong>AI-powered, affordable, and effective</strong> certification training
-                    that actually works. I want IT professionals to have access to quality tools
-                    without paying ridiculous amounts.
+                  <p className="text-base text-muted-foreground leading-relaxed mb-6">
+                    Traditional certification training is expensive and often ineffective.
+                    We&apos;re building something better using modern AI technology.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -287,9 +276,8 @@ export default function AboutPage() {
                         className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Personal AI Magic:</strong> Algorithms I&apos;ve crafted with care
-                        based on how people actually learn
+                      <span className="text-base text-muted-foreground">
+                        <strong>Smart Learning:</strong> AI adapts to how you learn best
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -297,9 +285,9 @@ export default function AboutPage() {
                         className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Real-World Experience:</strong> Content based on my own
-                        certification journey (and struggles!)
+                      <span className="text-base text-muted-foreground">
+                        <strong>Real Experience:</strong> Content based on actual certification
+                        paths
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -307,9 +295,8 @@ export default function AboutPage() {
                         className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Community Input:</strong> Guided by feedback from users who share
-                        this vision
+                      <span className="text-base text-muted-foreground">
+                        <strong>Community Driven:</strong> Built with user feedback
                       </span>
                     </div>
                   </div>
@@ -324,20 +311,16 @@ export default function AboutPage() {
                     <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <Eye className="h-5 w-5 text-primary" aria-hidden="true" />
                     </div>
-                    <CardTitle className="text-2xl">Where I&apos;m Heading</CardTitle>
+                    <CardTitle className="text-2xl md:text-3xl">Vision</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    Right now, Certestic is my nights-and-weekends project, and I&apos;m pretty
-                    happy with how it&apos;s going. I want to see if dedication, good user feedback,
-                    and a focus on actually helping people can make something worthwhile.
+                  <p className="text-lg text-muted-foreground leading-relaxed mb-4">
+                    Make quality IT certification training available to professionals worldwide.
                   </p>
-                  <p className="text-muted-foreground leading-relaxed mb-6">
-                    My goal is simple: make Certestic the place where{' '}
-                    <strong>IT professionals</strong> can get quality, AI-powered training without
-                    the usual headaches. If I can help people advance their careers along the way,
-                    that&apos;s pretty cool.
+                  <p className="text-base text-muted-foreground leading-relaxed mb-6">
+                    Every IT professional should have access to effective training that helps
+                    advance their career without breaking the bank.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
@@ -345,9 +328,8 @@ export default function AboutPage() {
                         className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Global Impact:</strong> Helping IT professionals worldwide advance
-                        their careers (one person at a time)
+                      <span className="text-base text-muted-foreground">
+                        <strong>Global Access:</strong> Available to IT professionals everywhere
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -355,9 +337,8 @@ export default function AboutPage() {
                         className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Smarter AI:</strong> Technology that learns and improves with every
-                        interaction
+                      <span className="text-base text-muted-foreground">
+                        <strong>Continuous Learning:</strong> Technology that evolves with the field
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -365,9 +346,8 @@ export default function AboutPage() {
                         className="h-5 w-5 text-primary mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Sustainable Growth:</strong> Building something that lasts while
-                        keeping education accessible
+                      <span className="text-base text-muted-foreground">
+                        <strong>Career Growth:</strong> Tools that help professionals advance
                       </span>
                     </div>
                   </div>
@@ -378,8 +358,11 @@ export default function AboutPage() {
 
           {/* Core Values Section with enhanced SEO */}
           <section className="mb-16" aria-labelledby="core-values">
-            <h2 id="core-values" className="text-3xl font-bold text-foreground text-center mb-8">
-              How I&apos;m Building Certestic (And Why It Matters)
+            <h2
+              id="core-values"
+              className="text-3xl md:text-4xl font-bold text-foreground text-center mb-8"
+            >
+              Our Approach
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {values.map((value, index) => (
@@ -391,13 +374,17 @@ export default function AboutPage() {
                           <value.icon className="h-5 w-5 text-primary" aria-hidden="true" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground mb-2">{value.title}</h3>
-                          <p className="text-sm text-muted-foreground mb-3">{value.description}</p>
+                          <h3 className="text-lg font-semibold text-foreground mb-2">
+                            {value.title}
+                          </h3>
+                          <p className="text-base text-muted-foreground mb-3">
+                            {value.description}
+                          </p>
                           <div className="space-y-1">
                             {value.benefits.map((benefit, idx) => (
                               <div key={idx} className="flex items-center space-x-2">
                                 <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                                <span className="text-xs text-muted-foreground">{benefit}</span>
+                                <span className="text-sm text-muted-foreground">{benefit}</span>
                               </div>
                             ))}
                           </div>
@@ -414,9 +401,9 @@ export default function AboutPage() {
           <section className="mb-16" aria-labelledby="development-timeline">
             <h2
               id="development-timeline"
-              className="text-3xl font-bold text-foreground text-center mb-8"
+              className="text-3xl md:text-4xl font-bold text-foreground text-center mb-8"
             >
-              My Journey So Far (The Real Story)
+              Development Timeline
             </h2>
             <div className="relative">
               <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-border"></div>
@@ -432,19 +419,19 @@ export default function AboutPage() {
                       <Card className="hover:shadow-lg transition-shadow">
                         <CardContent className="p-6">
                           <div className="flex items-center space-x-2 mb-3">
-                            <Badge variant="secondary" className="font-medium">
+                            <Badge variant="secondary" className="font-medium text-base">
                               {milestone.year}
                             </Badge>
-                            <milestone.icon className="h-4 w-4 text-primary" aria-hidden="true" />
+                            <milestone.icon className="h-5 w-5 text-primary" aria-hidden="true" />
                           </div>
-                          <h3 className="font-semibold text-foreground mb-2 text-lg">
+                          <h3 className="font-semibold text-foreground mb-2 text-xl">
                             {milestone.title}
                           </h3>
-                          <p className="text-sm text-muted-foreground mb-3">
+                          <p className="text-base text-muted-foreground mb-3">
                             {milestone.description}
                           </p>
-                          <div className="text-xs text-primary font-medium">
-                            Key Focus: {milestone.keywords}
+                          <div className="text-sm text-primary font-medium">
+                            {milestone.keywords}
                           </div>
                         </CardContent>
                       </Card>
@@ -461,8 +448,11 @@ export default function AboutPage() {
 
           {/* Enhanced Developer Section */}
           <section className="mb-16" aria-labelledby="developer-info">
-            <h2 id="developer-info" className="text-3xl font-bold text-foreground text-center mb-8">
-              Let Me Introduce Myself 😊
+            <h2
+              id="developer-info"
+              className="text-3xl md:text-4xl font-bold text-foreground text-center mb-8"
+            >
+              About the Developer
             </h2>
             <div className="max-w-2xl mx-auto">
               <Card className="hover:shadow-lg transition-shadow">
@@ -470,42 +460,34 @@ export default function AboutPage() {
                   <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-6 flex items-center justify-center">
                     <Brain className="h-12 w-12 text-primary" aria-hidden="true" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">
-                    A Developer with Some Ideas (And Probably Too Much Coffee)
-                  </h3>
-                  <p className="text-primary mb-4 font-medium">
-                    Full-Stack Developer | AI Enthusiast | Believer in Better Education
+                  <h3 className="text-2xl font-semibold text-foreground mb-2">Ben Gao</h3>
+                  <p className="text-lg text-primary mb-4 font-medium">
+                    Full-Stack Developer | AI Enthusiast
                   </p>
-                  <p className="text-muted-foreground leading-relaxed mb-6">
-                    I&apos;m Ben Gao, a <strong>full-stack developer</strong> who got fed up with
-                    how expensive and boring IT certification training had become. After struggling
-                    through my own certifications and watching friends do the same, I thought
-                    &quot;someone should fix this!&quot; Then I realized... maybe that someone could
-                    be me.
+                  <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                    A developer passionate about making IT certification training more effective and
+                    accessible through modern technology.
                   </p>
-                  <p className="text-muted-foreground leading-relaxed mb-6">
-                    Certestic isn&apos;t my day job (yet!) - it&apos;s the project I work on when I
-                    get home from work, on weekends, and during focused coding sessions when I have
-                    an idea that might actually work. Every line of code is written with the hope
-                    that it might help someone move forward in their career. That&apos;s what keeps
-                    me going.
+                  <p className="text-base text-muted-foreground leading-relaxed mb-6">
+                    Certestic combines years of software development experience with firsthand
+                    knowledge of certification challenges to create better learning tools.
                   </p>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-2 gap-4 text-base">
                     <div className="flex items-center justify-center space-x-2">
-                      <Code className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>Focused Coding</span>
+                      <Code className="h-5 w-5 text-primary" aria-hidden="true" />
+                      <span>Full-Stack Development</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
-                      <Brain className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>AI Experimenting</span>
+                      <Brain className="h-5 w-5 text-primary" aria-hidden="true" />
+                      <span>AI & Machine Learning</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
-                      <BookOpen className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>Learning by Doing</span>
+                      <BookOpen className="h-5 w-5 text-primary" aria-hidden="true" />
+                      <span>Educational Technology</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2">
-                      <Users className="h-4 w-4 text-primary" aria-hidden="true" />
-                      <span>Community Love</span>
+                      <Users className="h-5 w-5 text-primary" aria-hidden="true" />
+                      <span>User-Centered Design</span>
                     </div>
                   </div>
                 </CardContent>
@@ -518,33 +500,31 @@ export default function AboutPage() {
             <Card className="bg-primary/5 border-primary/20">
               <CardContent className="p-12">
                 <Star className="h-12 w-12 text-primary mx-auto mb-6" aria-hidden="true" />
-                <h2 id="join-beta" className="text-3xl font-bold text-foreground mb-4">
-                  Want to Try What I&apos;m Building? 🚀
+                <h2 id="join-beta" className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                  Try Certestic Today
                 </h2>
                 <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto">
-                  Certestic is still in beta, which means it&apos;s not perfect - but that&apos;s
-                  part of the journey! I&apos;m looking for people to try it out, share what works,
-                  what doesn&apos;t, and what could be better. Your feedback helps me understand
-                  what to focus on next.
+                  Join the beta and experience AI-powered certification training. Free access while
+                  in development.
                 </p>
                 <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">100% Free</div>
-                    <div className="text-sm text-muted-foreground">Beta Access</div>
+                    <div className="text-2xl font-bold text-primary">Free Beta</div>
+                    <div className="text-base text-muted-foreground">No cost to try</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">Direct Access</div>
-                    <div className="text-sm text-muted-foreground">To The Developer</div>
+                    <div className="text-2xl font-bold text-primary">AI-Powered</div>
+                    <div className="text-base text-muted-foreground">Smart learning</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary">Real Feedback</div>
-                    <div className="text-sm text-muted-foreground">Actually Gets Heard</div>
+                    <div className="text-2xl font-bold text-primary">Community</div>
+                    <div className="text-base text-muted-foreground">Shape the future</div>
                   </div>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button size="lg" className="rounded-lg" aria-label="Try Certestic beta">
                     <Rocket className="mr-2 h-5 w-5" />
-                    Give It a Try!
+                    Start Learning
                   </Button>
                   <Button
                     variant="outline"
@@ -553,7 +533,7 @@ export default function AboutPage() {
                     aria-label="Contact the developer"
                   >
                     <Heart className="mr-2 h-5 w-5" />
-                    Send Feedback
+                    Get in Touch
                   </Button>
                 </div>
               </CardContent>

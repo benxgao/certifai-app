@@ -105,10 +105,10 @@ export default function ForgotPasswordPage() {
           <CardHeader className="text-center space-y-1 pb-6">
             {/* Small decorative element */}
             <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-4"></div>
-            <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+            <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
               Forgot Password
             </CardTitle>
-            <CardDescription className="text-slate-600 text-sm sm:text-base">
+            <CardDescription className="text-slate-600 dark:text-slate-200 text-sm sm:text-base">
               Enter your email address and we&apos;ll send you a link to reset your password.
             </CardDescription>
           </CardHeader>
@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
           <form onSubmit={handleSubmit} autoComplete="off">
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-slate-700 font-medium">
+                <Label htmlFor="email" className="text-slate-700 dark:text-slate-100 font-medium">
                   Email address
                 </Label>
                 <Input
@@ -187,7 +187,7 @@ export default function ForgotPasswordPage() {
               </Button>
             </CardContent>
 
-            <CardFooter className="flex justify-center text-sm text-slate-600 pt-3 border-t border-slate-100">
+            <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-3 border-t border-slate-100 dark:border-slate-700/50">
               Remember your password?&nbsp;
               <Link
                 href="/signin"

@@ -494,14 +494,14 @@ const LoginPage = () => {
               <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent auth-title-mobile">
                 Sign In
               </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+              <CardDescription className="text-slate-600 dark:text-slate-200 text-sm sm:text-base">
                 Enter your credentials to access your Certestic account.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleSignin} autoComplete="on">
               <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
                 <div className="space-y-1.5 sm:space-y-2">
-                  <Label htmlFor="email" className="text-slate-700 dark:text-slate-300 font-medium">
+                  <Label htmlFor="email" className="text-slate-700 dark:text-slate-100 font-medium">
                     Email address
                   </Label>
                   <Input
@@ -521,7 +521,7 @@ const LoginPage = () => {
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="password"
-                      className="text-slate-700 dark:text-slate-300 font-medium"
+                      className="text-slate-700 dark:text-slate-100 font-medium"
                     >
                       Password
                     </Label>
@@ -630,7 +630,7 @@ const LoginPage = () => {
                   />
                 </Button>
               </CardContent>
-              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-400 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 sm:px-6">
+              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 sm:px-6">
                 Don&apos;t have an account?&nbsp;
                 <Link
                   href="/signup"

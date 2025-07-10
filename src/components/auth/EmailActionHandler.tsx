@@ -387,8 +387,10 @@ export default function EmailActionHandler() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900">Processing</CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
+                    Processing
+                  </CardTitle>
+                  <CardDescription className="text-gray-600 dark:text-slate-300">
                     Please wait while we process your request.
                   </CardDescription>
                 </div>
@@ -413,10 +415,10 @@ export default function EmailActionHandler() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900">
+                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     {getSuccessMessage().title}
                   </CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-gray-600 dark:text-slate-300">
                     {getSuccessMessage().description}
                   </CardDescription>
                 </div>
@@ -441,10 +443,10 @@ export default function EmailActionHandler() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900">
+                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     Reset Password
                   </CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-gray-600 dark:text-slate-300">
                     Enter your new password for {email}
                   </CardDescription>
                 </div>
@@ -469,10 +471,12 @@ export default function EmailActionHandler() {
                   </svg>
                 </div>
                 <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900">
+                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
                     {status === 'expired' ? 'Link Expired' : 'Action Failed'}
                   </CardTitle>
-                  <CardDescription className="text-gray-600">{errorMessage}</CardDescription>
+                  <CardDescription className="text-gray-600 dark:text-slate-300">
+                    {errorMessage}
+                  </CardDescription>
                 </div>
               </>
             )}
@@ -492,7 +496,9 @@ export default function EmailActionHandler() {
             {status === 'password-reset' && (
               <form onSubmit={handlePasswordReset} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
+                  <Label htmlFor="newPassword" className="text-slate-700 dark:text-slate-200">
+                    New Password
+                  </Label>
                   <Input
                     id="newPassword"
                     type="password"
@@ -504,7 +510,9 @@ export default function EmailActionHandler() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-slate-200">
+                    Confirm Password
+                  </Label>
                   <Input
                     id="confirmPassword"
                     type="password"
@@ -515,7 +523,9 @@ export default function EmailActionHandler() {
                     minLength={6}
                   />
                 </div>
-                {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
+                {errorMessage && (
+                  <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
+                )}
                 <Button
                   type="submit"
                   disabled={isResetting || !newPassword || !confirmPassword}
@@ -549,7 +559,7 @@ export default function EmailActionHandler() {
                 <Button
                   onClick={() => router.push('/support')}
                   variant="outline"
-                  className="w-full border-gray-300 hover:bg-gray-50"
+                  className="w-full border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
                   size="lg"
                 >
                   Contact Support
@@ -558,7 +568,7 @@ export default function EmailActionHandler() {
             )}
 
             {status === 'loading' && (
-              <div className="bg-blue-50 border border-blue-200 text-blue-800 text-sm p-4 rounded-lg">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 text-blue-800 dark:text-blue-200 text-sm p-4 rounded-lg">
                 <div className="flex items-center">
                   <svg
                     className="w-4 h-4 mr-2 flex-shrink-0"

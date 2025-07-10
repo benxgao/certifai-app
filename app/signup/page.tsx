@@ -381,7 +381,7 @@ export default function SignUpPage() {
                 <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent auth-title-mobile">
                   Check Your Email
                 </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                <CardDescription className="text-slate-600 dark:text-slate-200 text-sm sm:text-base">
                   We&apos;ve sent a verification link to {email}
                 </CardDescription>
               </CardHeader>
@@ -526,7 +526,7 @@ export default function SignUpPage() {
               <CardTitle className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 auth-title-mobile">
                 Create Account
               </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+              <CardDescription className="text-slate-600 dark:text-slate-200 text-sm sm:text-base leading-relaxed">
                 Sign up to get started with Certestic
               </CardDescription>
 
@@ -685,7 +685,7 @@ export default function SignUpPage() {
                   />
                   <Label
                     htmlFor="acceptTerms"
-                    className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed cursor-pointer"
+                    className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed cursor-pointer"
                   >
                     <span className="text-red-500">*</span> I agree to the
                     <Link
@@ -751,7 +751,7 @@ export default function SignUpPage() {
                   />
                 </Button>
               </CardContent>
-              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-400 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 sm:px-6">
+              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 sm:px-6">
                 Already have an account?&nbsp;
                 <Link
                   href="/signin"
