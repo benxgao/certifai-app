@@ -148,7 +148,7 @@ const LoginPage = () => {
       !authProcessing &&
       !isLoading &&
       firebaseUser &&
-      apiUserId && // Also ensure we have the API user ID
+      (apiUserId || error.includes('Authentication timed out')) && // Allow redirect on timeout error
       !isRedirecting &&
       !isAuthError
     ) {

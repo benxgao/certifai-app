@@ -172,21 +172,46 @@ export const resetAuthenticationState = async (): Promise<void> => {
   try {
     console.log('Performing complete authentication state reset...');
 
-    // Clear server-side cookies
-    await fetch('/api/auth-cookie/clear', {
-      method: 'POST',
-    });
+    // Clear server-side cookies with retry logic
+    try {
+      await fetch('/api/auth-cookie/clear', {
+        method: 'POST',
+      });
+      console.log('Server-side cookies cleared successfully');
+    } catch (cookieError) {
+      console.warn('Failed to clear server-side cookies:', cookieError);
+      // Continue with client-side clearing even if server-side fails
+    }
 
     // Clear any client-side storage
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('firebaseToken');
-      localStorage.removeItem('apiUserId');
-      localStorage.removeItem('authToken');
+      // Clear localStorage
+      const localStorageKeys = ['firebaseToken', 'apiUserId', 'authToken'];
+      localStorageKeys.forEach((key) => {
+        try {
+          localStorage.removeItem(key);
+        } catch (e) {
+          console.warn(`Failed to clear localStorage key: ${key}`, e);
+        }
+      });
 
-      // Clear any session storage
-      sessionStorage.removeItem('firebaseToken');
-      sessionStorage.removeItem('apiUserId');
-      sessionStorage.removeItem('authToken');
+      // Clear sessionStorage
+      const sessionStorageKeys = ['firebaseToken', 'apiUserId', 'authToken'];
+      sessionStorageKeys.forEach((key) => {
+        try {
+          sessionStorage.removeItem(key);
+        } catch (e) {
+          console.warn(`Failed to clear sessionStorage key: ${key}`, e);
+        }
+      });
+
+      // Force clear cookies via document.cookie as additional measure
+      try {
+        document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+        document.cookie = 'joseToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      } catch (e) {
+        console.warn('Failed to clear cookies via document.cookie:', e);
+      }
     }
 
     console.log('Authentication state reset completed');

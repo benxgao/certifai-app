@@ -47,13 +47,15 @@ export async function middleware(request: NextRequest) {
       console.log('middleware: Found legacy token, clearing it and redirecting to signin');
       const response = NextResponse.redirect(
         new URL(
-          '/signin?error=' +
-            encodeURIComponent('Please sign in again with your current credentials.'),
+          '/signin?error=' + encodeURIComponent('Your session has expired. Please sign in again.'),
           request.url,
         ),
       );
       response.cookies.delete('joseToken');
       response.cookies.delete(COOKIE_AUTH_NAME);
+      // Add explicit cookie expiration
+      response.cookies.set('joseToken', '', { maxAge: 0, path: '/' });
+      response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
       return response;
     }
 

@@ -10,5 +10,22 @@ export async function POST() {
   // Also clear legacy cookie name if it exists
   response.cookies.delete('joseToken');
 
+  // Add additional cookie clearing options to handle browser caching
+  response.cookies.set(COOKIE_AUTH_NAME, '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 0, // Expire immediately
+  });
+
+  response.cookies.set('joseToken', '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 0, // Expire immediately
+  });
+
   return response;
 }

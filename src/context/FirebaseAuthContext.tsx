@@ -86,7 +86,20 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       console.log(`FirebaseAuthProvider auth state changed
-        | firebase.uid: ${JSON.stringify(authUser?.uid)}`);
+        | firebase.uid: ${JSON.stringify(authUser?.uid)}
+        | previous_uid: ${firebaseUser?.uid || 'none'}`);
+
+      // If switching users (different UID), clear previous state first
+      if (firebaseUser && authUser && firebaseUser.uid !== authUser.uid) {
+        console.log('Different user detected, clearing previous auth state...');
+        setFirebaseUser(null);
+        setFirebaseToken(null);
+        setApiUserId(null);
+        // Clear cookies to prevent cross-user contamination
+        clearAuthCookie();
+        // Small delay to ensure state is cleared
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
 
       if (authUser) {
         console.log('Setting new Firebase auth user...');
@@ -110,6 +123,8 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             console.log('Authentication setup completed successfully');
           } else {
             console.warn('Authentication setup failed:', setupResult.error);
+            // Set null explicitly to trigger timeout in AuthGuard
+            setApiUserId(null);
           }
         } catch (error) {
           console.error('Critical authentication setup failed:', error);
@@ -142,13 +157,17 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
                   console.log('Auth setup retry successful');
                 } else {
                   console.warn('Auth setup retry failed:', retrySetupResult.error);
+                  // After retry failure, explicitly set null to trigger AuthGuard timeout
+                  setApiUserId(null);
                 }
               } catch (retryError) {
                 console.error('Auth setup retry failed:', retryError);
+                setApiUserId(null);
               }
             }, 2000);
           } else {
             // For other critical errors, clear all auth state
+            console.error('Non-timeout auth setup error, clearing all auth state');
             setFirebaseUser(null);
             setFirebaseToken(null);
             setApiUserId(null);
@@ -180,7 +199,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [router, firebaseUser]);
 
   // Optionally, provide stable setters
   const setUser = useCallback((user: User | null) => setFirebaseUser(user), []);

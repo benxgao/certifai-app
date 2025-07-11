@@ -21,6 +21,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   // Set a 5-second timeout if API user ID doesn't load (increased from 3s for better stability)
   useEffect(() => {
     if (firebaseUser && !apiUserId && !apiTimeout) {
+      console.log('Starting API user ID timeout timer (5 seconds)');
       const timer = setTimeout(() => {
         console.warn('API user ID not available after 5 seconds - proceeding without it');
         setApiTimeout(true);
@@ -32,9 +33,21 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   // Reset API timeout when apiUserId becomes available
   useEffect(() => {
     if (apiUserId && apiTimeout) {
+      console.log('API user ID received, resetting timeout state');
       setApiTimeout(false);
     }
   }, [apiUserId, apiTimeout]);
+
+  // Add debugging for auth state changes
+  useEffect(() => {
+    console.log('AuthGuard state update:', {
+      loading,
+      firebaseUser: !!firebaseUser,
+      emailVerified: firebaseUser?.emailVerified,
+      apiUserId: !!apiUserId,
+      apiTimeout,
+    });
+  }, [loading, firebaseUser, apiUserId, apiTimeout]);
 
   // Check if user needs email verification
   useEffect(() => {
@@ -46,6 +59,18 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       );
     }
   }, [firebaseUser, router]);
+
+  // Emergency redirect if user is stuck in loading state too long (20 seconds)
+  useEffect(() => {
+    if (loading || (firebaseUser && !apiUserId && !apiTimeout)) {
+      const emergencyTimer = setTimeout(() => {
+        console.error('AuthGuard: User stuck in loading state for 20 seconds, forcing redirect');
+        router.push('/signin?error=' + encodeURIComponent('Authentication timed out. Please try signing in again.'));
+      }, 20000); // 20 seconds emergency timeout
+
+      return () => clearTimeout(emergencyTimer);
+    }
+  }, [loading, firebaseUser, apiUserId, apiTimeout, router]);
 
   // Case 1: Still checking authentication - show loading
   if (loading) {
@@ -90,7 +115,11 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   // Case 4: User is authenticated and verified - render the protected content
-  if (firebaseUser && firebaseUser.emailVerified) {
+  // Allow access if we have a verified Firebase user, regardless of API timeout
+  if (firebaseUser && firebaseUser.emailVerified && (apiUserId || apiTimeout)) {
+    if (apiTimeout && !apiUserId) {
+      console.warn('AuthGuard: Proceeding without API user ID due to timeout');
+    }
     return <>{children}</>;
   }
 
