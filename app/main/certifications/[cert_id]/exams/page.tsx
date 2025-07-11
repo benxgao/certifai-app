@@ -21,7 +21,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@/src/components/ui/too
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams'; // Import SWR hook
 import { useCreateExam } from '@/src/swr/createExam'; // Import create exam hook
-import { useRateLimitInfo } from '@/src/swr/rateLimitInfo'; // Import rate limit hook
+import { useRateLimitFromExams } from '@/src/hooks/useRateLimitFromExams'; // Import optimized rate limit hook
 import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay'; // Import rate limit display
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
 import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
@@ -62,7 +62,10 @@ function CertificationExamsContent() {
   const [isLoadingCertification, setIsLoadingCertification] = useState(true);
 
   // Use SWR hook for exams data
-  const { exams, isLoadingExams, mutateExams } = useExamsForCertification(apiUserId, certId);
+  const { exams, rateLimit, isLoadingExams, mutateExams } = useExamsForCertification(
+    apiUserId,
+    certId,
+  );
 
   // Fetch certification details separately to ensure we always have certification info
   const fetchCertification = async () => {
@@ -120,8 +123,13 @@ function CertificationExamsContent() {
   // Use the delete exam hook
   const { deleteExam, isDeletingExam, deleteExamError } = useDeleteExam();
 
-  // Use the rate limit info hook
-  const { rateLimitInfo, isLoadingRateLimit, mutateRateLimit } = useRateLimitInfo(apiUserId);
+  // Use the rate limit info hook that extracts data from exam responses
+  const { rateLimitInfo, isLoadingRateLimit, mutateRateLimit } = useRateLimitFromExams(
+    rateLimit,
+    exams,
+    isLoadingExams,
+    mutateExams,
+  );
 
   const handleStartExam = (examId: string) => {
     setNavigatingExamId(examId);
@@ -225,7 +233,7 @@ function CertificationExamsContent() {
                       className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white border-violet-600 hover:border-violet-700 shadow-sm"
                       disabled={
                         createExamError?.status === 429 || // Disable if rate limited
-                        (rateLimitInfo && !rateLimitInfo.canCreateExam) // Disable if at limit
+                        (rateLimitInfo ? !rateLimitInfo.canCreateExam : false) // Disable if at limit
                       }
                     >
                       <FaRegFileAlt className="w-4 h-4 mr-2" />

@@ -49,6 +49,9 @@ export async function GET(
     }
 
     const data = await response.json();
+
+    console.log(`get_user_exams: ${JSON.stringify(data)}`);
+
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error('Error fetching user exams:', error);

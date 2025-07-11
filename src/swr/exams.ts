@@ -4,6 +4,19 @@ import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
+import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
+
+// Enhanced response that includes rate limit information
+export interface EnhancedExamListResponse extends PaginatedApiResponse<ExamListItem[]> {
+  rateLimit: {
+    maxExamsAllowed: number;
+    currentCount: number;
+    remainingCount: number;
+    canCreateExam: boolean;
+    resetTime: string;
+    error?: string;
+  };
+}
 
 export interface ExamListItem {
   exam_id: string;
@@ -28,10 +41,10 @@ export interface ExamListItem {
   status: string; // Computed status from API
 }
 
-// Hook to get all exams for a user across all certifications
+// Hook to get all exams for a user across all certifications with rate limit info
 export function useAllUserExams(apiUserId: string | null) {
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    PaginatedApiResponse<ExamListItem[]>,
+    EnhancedExamListResponse,
     Error
   >(
     apiUserId ? `/api/users/${apiUserId}/exams?pageSize=50` : null, // Fetch larger page size to get more exams
@@ -63,7 +76,7 @@ export function useAllUserExams(apiUserId: string | null) {
       calculatedTotalExamCount: totalExamCount,
       fullMeta: data?.meta,
       hasData: !!data?.data,
-      apiUserId: apiUserId
+      apiUserId: apiUserId,
     });
   }
 
@@ -73,10 +86,17 @@ export function useAllUserExams(apiUserId: string | null) {
     return fetchAllPages<ExamListItem>(`/api/users/${apiUserId}/exams`, {}, 50, 20);
   };
 
+  // Function to get rate limit info with fallback calculation
+  const getRateLimitFromData = () => {
+    return getRateLimitInfo(data?.rateLimit, data?.data);
+  };
+
   return {
     allExams: data?.data,
     totalExamCount: totalExamCount,
     pagination: data?.meta,
+    rateLimit: data?.rateLimit, // Include rate limit information from the enhanced response
+    getRateLimitInfo: getRateLimitFromData, // Convenience function to get rate limit info
     isLoadingAllExams: isLoading,
     isAllExamsError: error,
     isValidatingAllExams: isValidating,
@@ -87,7 +107,7 @@ export function useAllUserExams(apiUserId: string | null) {
 
 export function useExamsForCertification(apiUserId: string | null, certId: number | null) {
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    PaginatedApiResponse<ExamListItem[]>,
+    EnhancedExamListResponse,
     Error
   >(
     apiUserId && certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
@@ -108,6 +128,7 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
   return {
     exams: data?.data,
     pagination: data?.meta,
+    rateLimit: data?.rateLimit, // Include rate limit information from the enhanced response
     isLoadingExams: isLoading,
     isExamsError: error,
     isValidatingExams: isValidating,
