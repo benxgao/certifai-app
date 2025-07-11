@@ -3,6 +3,7 @@ import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { BackendExamStatus } from '../types/exam-status';
+import { fetchAllPages } from '@/src/lib/pagination-utils';
 
 export interface ExamListItem {
   exam_id: string;
@@ -25,6 +26,63 @@ export interface ExamListItem {
     pass_score: number;
   };
   status: string; // Computed status from API
+}
+
+// Hook to get all exams for a user across all certifications
+export function useAllUserExams(apiUserId: string | null) {
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
+    PaginatedApiResponse<ExamListItem[]>,
+    Error
+  >(
+    apiUserId ? `/api/users/${apiUserId}/exams?pageSize=50` : null, // Fetch larger page size to get more exams
+    {
+      // Enable polling if there are exams in generating status
+      refreshInterval: (data) => {
+        const hasGeneratingExams = data?.data?.some(
+          (exam) =>
+            exam.exam_status === 'QUESTIONS_GENERATING' || exam.status === 'QUESTIONS_GENERATING',
+        );
+        return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating
+      },
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+    },
+  );
+
+  // Use totalItems from pagination metadata if available, otherwise fall back to data length
+  const totalExamCount =
+    data?.meta?.totalItems !== undefined && data.meta.totalItems > (data.data?.length || 0)
+      ? data.meta.totalItems
+      : data?.data?.length || 0;
+
+  // Debug logging to understand what's being returned
+  if (data && apiUserId) {
+    console.log('🔍 Debug - useAllUserExams API Response:', {
+      dataLength: data?.data?.length,
+      metaTotalItems: data?.meta?.totalItems,
+      calculatedTotalExamCount: totalExamCount,
+      fullMeta: data?.meta,
+      hasData: !!data?.data,
+      apiUserId: apiUserId
+    });
+  }
+
+  // Function to fetch all exams across all pages
+  const fetchAllExams = async (): Promise<ExamListItem[]> => {
+    if (!apiUserId) return [];
+    return fetchAllPages<ExamListItem>(`/api/users/${apiUserId}/exams`, {}, 50, 20);
+  };
+
+  return {
+    allExams: data?.data,
+    totalExamCount: totalExamCount,
+    pagination: data?.meta,
+    isLoadingAllExams: isLoading,
+    isAllExamsError: error,
+    isValidatingAllExams: isValidating,
+    mutateAllExams: mutate,
+    fetchAllExams, // Add this function for cases where all data is needed
+  };
 }
 
 export function useExamsForCertification(apiUserId: string | null, certId: number | null) {

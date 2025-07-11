@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
   const { isError: profileError } = useUserProfileContext();
-  const { totalExamCount, certificationCount } = useExamStats();
+  const { totalExamCount, certificationCount, isLoading, isError } = useExamStats();
 
   // Memoize calculated values to prevent unnecessary re-calculations
   const inProgressCount = useMemo(() => {
@@ -62,8 +62,12 @@ const DashboardStats = () => {
           <StatsCard
             icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
             title="Total Exams"
-            value={totalExamCount}
-            subtitle="Estimated"
+            value={
+              isLoading ? <Skeleton className="h-6 w-8 mx-auto" /> :
+              isError ? '—' :
+              totalExamCount
+            }
+            subtitle={isError ? 'Error' : undefined}
           />
         </div>
       </div>
@@ -90,8 +94,12 @@ const DashboardStats = () => {
       <StatsCard
         icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
         title="Total Exams"
-        value={totalExamCount}
-        subtitle="Estimated"
+        value={
+          isLoading ? <Skeleton className="h-6 w-8 mx-auto" /> :
+          isError ? '—' :
+          totalExamCount
+        }
+        subtitle={isError ? 'Error' : undefined}
       />
     </div>
   );
@@ -101,7 +109,7 @@ const DashboardStats = () => {
 const StatsCard: React.FC<{
   icon: React.ReactNode;
   title: string;
-  value: number | string;
+  value: number | string | React.ReactNode;
   subtitle?: string;
 }> = ({ icon, title, value, subtitle }) => (
   <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -113,9 +121,9 @@ const StatsCard: React.FC<{
         </p>
       </div>
       <div className="text-center">
-        <p className="text-lg font-medium text-slate-800 dark:text-slate-100">
+        <div className="text-lg font-medium text-slate-800 dark:text-slate-100">
           {typeof value === 'number' ? value.toLocaleString() : value}
-        </p>
+        </div>
         {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{subtitle}</p>}
       </div>
     </div>

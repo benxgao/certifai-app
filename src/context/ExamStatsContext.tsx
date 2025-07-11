@@ -1,9 +1,9 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import { 
-  useUserTotalExamCount as useHookUserTotalExamCount, 
-  useShouldShowBuyMeACoffee as useHookShouldShowBuyMeACoffee 
+import {
+  useUserTotalExamCount as useHookUserTotalExamCount,
+  useShouldShowBuyMeACoffee as useHookShouldShowBuyMeACoffee,
 } from '@/src/hooks/useUserExamStats';
 
 // Define the context type
@@ -13,9 +13,11 @@ interface ExamStatsContextType {
   shouldShowBuyMeACoffee: boolean;
   engagementReason: string;
   stats: {
-    estimatedExams: number;
+    actualExams: number;
     certifications: number;
   };
+  isLoading: boolean;
+  isError: any;
 }
 
 // Create the context
@@ -23,8 +25,14 @@ const ExamStatsContext = createContext<ExamStatsContextType | undefined>(undefin
 
 // Provider component
 export function ExamStatsProvider({ children }: { children: React.ReactNode }) {
-  const { totalExamCount, certificationCount } = useHookUserTotalExamCount();
-  const { shouldShow, reason, stats } = useHookShouldShowBuyMeACoffee();
+  const { totalExamCount, certificationCount, isLoading, isError } = useHookUserTotalExamCount();
+  const {
+    shouldShow,
+    reason,
+    stats,
+    isLoading: buyMeLoading,
+    isError: buyMeError,
+  } = useHookShouldShowBuyMeACoffee();
 
   const value: ExamStatsContextType = {
     totalExamCount,
@@ -32,13 +40,11 @@ export function ExamStatsProvider({ children }: { children: React.ReactNode }) {
     shouldShowBuyMeACoffee: shouldShow,
     engagementReason: reason,
     stats,
+    isLoading: isLoading || buyMeLoading,
+    isError: isError || buyMeError,
   };
 
-  return (
-    <ExamStatsContext.Provider value={value}>
-      {children}
-    </ExamStatsContext.Provider>
-  );
+  return <ExamStatsContext.Provider value={value}>{children}</ExamStatsContext.Provider>;
 }
 
 // Hook to use the context
@@ -52,19 +58,23 @@ export function useExamStats() {
 
 // Re-export the hook for backward compatibility
 export function useShouldShowBuyMeACoffee() {
-  const { shouldShowBuyMeACoffee, engagementReason, stats } = useExamStats();
+  const { shouldShowBuyMeACoffee, engagementReason, stats, isLoading, isError } = useExamStats();
   return {
     shouldShow: shouldShowBuyMeACoffee,
     reason: engagementReason,
     stats,
+    isLoading,
+    isError,
   };
 }
 
 // Re-export other useful functions
 export function useUserTotalExamCount() {
-  const { totalExamCount, certificationCount } = useExamStats();
+  const { totalExamCount, certificationCount, isLoading, isError } = useExamStats();
   return {
     totalExamCount,
     certificationCount,
+    isLoading,
+    isError,
   };
 }

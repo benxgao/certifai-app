@@ -1,57 +1,67 @@
 import { useMemo } from 'react';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
+import { useAllUserExams } from '@/src/swr/exams';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 /**
  * Custom hook to get the total count of exams created by the user across all certifications
- * This hook uses heuristic calculations since fetching all exams across certifications
- * would require multiple API calls or a new aggregated endpoint
+ * Uses the actual API to fetch real exam count instead of heuristics
  */
 export function useUserTotalExamCount() {
   const { userCertifications } = useUserCertifications();
+  const { firebaseUser } = useFirebaseAuth();
+  const { allExams, totalExamCount, isLoadingAllExams, isAllExamsError } = useAllUserExams(
+    firebaseUser?.uid || null
+  );
+
+  // Debug logging
+  console.log('🔍 Debug - useUserTotalExamCount:', {
+    firebaseUserId: firebaseUser?.uid,
+    totalExamCount,
+    allExamsLength: allExams?.length,
+    isLoadingAllExams,
+    isAllExamsError: isAllExamsError?.message,
+    userCertifications: userCertifications?.length
+  });
 
   // Get list of certification IDs the user is registered for
   const certificationIds = useMemo(() => {
     return userCertifications?.map(cert => cert.cert_id) || [];
   }, [userCertifications]);
 
-  // Heuristic calculation for estimated total exams
-  const estimatedTotalExams = useMemo(() => {
-    if (!userCertifications || userCertifications.length === 0) {
-      return 0;
-    }
-
-    // Heuristic calculation:
-    // - Users with 1 certification: likely 1-3 exams
-    // - Users with 2+ certifications: likely 3-8 exams
-    // - Active users (multiple certifications) tend to create more exams
-    
-    const certCount = userCertifications.length;
-    
-    if (certCount === 1) {
-      return 2; // Conservative estimate for single certification users
-    } else if (certCount === 2) {
-      return 4; // Users with 2 certs likely have tried multiple exams
-    } else {
-      return certCount * 2; // Power users with 3+ certs
-    }
-  }, [userCertifications]);
-
   return {
-    totalExamCount: estimatedTotalExams,
-    isEstimated: true, // Flag to indicate this is an estimation
+    totalExamCount: totalExamCount,
+    isEstimated: false, // Now using actual data
     certificationCount: certificationIds.length,
+    isLoading: isLoadingAllExams,
+    isError: isAllExamsError,
+    allExams: allExams,
   };
 }
 
 /**
  * Hook specifically for determining if Buy Me a Coffee should be shown
- * Based on user engagement heuristics
+ * Based on user engagement using actual exam counts
  */
 export function useShouldShowBuyMeACoffee() {
-  const { totalExamCount, certificationCount } = useUserTotalExamCount();
+  const { totalExamCount, certificationCount, isLoading, isError } = useUserTotalExamCount();
+  
+  // Don't show if we're still loading or there's an error
+  if (isLoading || isError) {
+    return {
+      shouldShow: false,
+      reason: 'Loading or error',
+      stats: {
+        actualExams: 0,
+        certifications: 0,
+      },
+      isLoading,
+      isError,
+    };
+  }
   
   // Show Buy Me a Coffee if:
-  // 1. User has created more than 2 exams (estimated), OR
+  // 1. User has created more than 2 exams (actual count), OR
   // 2. User has registered for 2+ certifications (shows engagement)
   const shouldShow = totalExamCount > 2 || certificationCount >= 2;
   
@@ -63,8 +73,10 @@ export function useShouldShowBuyMeACoffee() {
         : 'User has created multiple exams'
       : 'User needs more engagement',
     stats: {
-      estimatedExams: totalExamCount,
+      actualExams: totalExamCount,
       certifications: certificationCount,
-    }
+    },
+    isLoading,
+    isError,
   };
 }
