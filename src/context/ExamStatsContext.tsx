@@ -10,11 +10,13 @@ import {
 interface ExamStatsContextType {
   totalExamCount: number;
   certificationCount: number;
+  completedExamsCount: number;
   shouldShowBuyMeACoffee: boolean;
   engagementReason: string;
   stats: {
     actualExams: number;
     certifications: number;
+    completedExams: number;
   };
   isLoading: boolean;
   isError: any;
@@ -37,6 +39,7 @@ export function ExamStatsProvider({ children }: { children: React.ReactNode }) {
   const value: ExamStatsContextType = {
     totalExamCount,
     certificationCount,
+    completedExamsCount: stats.completedExams || 0,
     shouldShowBuyMeACoffee: shouldShow,
     engagementReason: reason,
     stats,
