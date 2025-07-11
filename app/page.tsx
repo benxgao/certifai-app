@@ -122,7 +122,7 @@ export default function LandingPage() {
           isLoading={true}
           text="Loading Certestic..."
           showSpinner={true}
-          variant="default"
+          variant="auth"
           fullScreen={true}
           showBrand={true}
         />

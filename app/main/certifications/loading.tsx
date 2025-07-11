@@ -7,7 +7,7 @@ export default function CertificationsLoading() {
       isLoading={true}
       text="Loading certifications..."
       showSpinner={true}
-      variant="default"
+      variant="auth"
       fullScreen={true}
       showBrand={false}
     />

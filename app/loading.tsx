@@ -7,7 +7,7 @@ export default function RootLoading() {
       isLoading={true}
       text="Preparing your experience..."
       showSpinner={true}
-      variant="default"
+      variant="auth"
       fullScreen={true}
       showBrand={true}
     />

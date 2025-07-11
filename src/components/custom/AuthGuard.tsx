@@ -65,7 +65,10 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     if (loading || (firebaseUser && !apiUserId && !apiTimeout)) {
       const emergencyTimer = setTimeout(() => {
         console.error('AuthGuard: User stuck in loading state for 20 seconds, forcing redirect');
-        router.push('/signin?error=' + encodeURIComponent('Authentication timed out. Please try signing in again.'));
+        router.push(
+          '/signin?error=' +
+            encodeURIComponent('Authentication timed out. Please try signing in again.'),
+        );
       }, 20000); // 20 seconds emergency timeout
 
       return () => clearTimeout(emergencyTimer);
@@ -107,7 +110,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         isLoading={true}
         text="Setting up your account..."
         showSpinner={true}
-        variant="default"
+        variant="auth"
         fullScreen={true}
         showBrand={true}
       />

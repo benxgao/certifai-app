@@ -7,7 +7,7 @@ export default function MainLoading() {
       isLoading={true}
       text="Loading your dashboard..."
       showSpinner={true}
-      variant="default"
+      variant="auth"
       fullScreen={true}
       showBrand={false}
     />

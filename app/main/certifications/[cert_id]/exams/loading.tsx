@@ -7,7 +7,7 @@ export default function ExamsLoading() {
       isLoading={true}
       text="Loading exams..."
       showSpinner={true}
-      variant="default"
+      variant="auth"
       fullScreen={true}
       showBrand={false}
     />
