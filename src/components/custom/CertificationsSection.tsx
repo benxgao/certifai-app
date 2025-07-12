@@ -95,9 +95,15 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
                 </p>
                 <p className="text-lg font-medium text-slate-800 dark:text-slate-100">
                   {cert.status === 'active'
-                    ? 'Active'
+                    ? 'In Progress'
                     : cert.status === 'completed'
-                    ? 'Complete'
+                    ? 'Completed'
+                    : cert.status === 'PASSED'
+                    ? 'Passed'
+                    : cert.status === 'IN_PROGRESS'
+                    ? 'In Progress'
+                    : cert.status === 'INTERESTED'
+                    ? 'Interested'
                     : cert.status}
                 </p>
               </div>
@@ -109,7 +115,7 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
             <Button
               size="lg"
               onClick={() => router.push(`/main/certifications/${cert.cert_id}/exams`)}
-              className="font-medium px-8 py-3 bg-slate-600 hover:bg-slate-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              className="font-medium px-8 py-3 bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
             >
               Continue Learning
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -29,25 +29,41 @@ export interface ExamStatusInfo {
 // Helper function to determine derived exam status from exam data
 export const getDerivedExamStatus = (exam: {
   submitted_at: number | null;
-  started_at: string | null;
+  started_at: string | null; // Fixed: should be string | null to match API response
   exam_status?: BackendExamStatus;
+  score?: number | null;
+  certification?: {
+    pass_score?: number;
+  };
 }): DerivedExamStatus => {
   const isCompleted = exam.submitted_at !== null;
   const hasStarted = exam.started_at !== null;
   const backendStatus = exam.exam_status;
 
+  // Priority order: backend status first, then user actions
   if (backendStatus === 'QUESTIONS_GENERATING') {
     return 'generating';
   } else if (backendStatus === 'QUESTION_GENERATION_FAILED') {
     return 'generation_failed';
   } else if (isCompleted) {
-    // You can add logic here to determine if it's successful or needs review
-    // based on score or other criteria
+    // If we have score and pass score, determine if passed
+    if (
+      exam.score !== null &&
+      exam.score !== undefined &&
+      exam.certification?.pass_score !== undefined
+    ) {
+      return exam.score >= exam.certification.pass_score
+        ? 'completed_successful'
+        : 'completed_review';
+    }
+    // Default to completed if no score/pass criteria available
     return 'completed';
   } else if (hasStarted) {
     return 'in_progress';
   } else if (backendStatus === 'READY') {
     return 'ready';
+  } else if (backendStatus === 'PENDING_QUESTIONS') {
+    return 'not_started';
   }
 
   return 'not_started';
@@ -88,7 +104,7 @@ export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => 
     },
     completed: {
       status: 'completed',
-      label: 'Submitted',
+      label: 'Completed',
       bgColor: 'bg-blue-25 dark:bg-blue-950/20',
       borderColor: 'border-blue-100 dark:border-blue-900/30',
     },
@@ -100,9 +116,9 @@ export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => 
     },
     completed_review: {
       status: 'completed_review',
-      label: 'Review',
-      bgColor: 'bg-blue-25 dark:bg-blue-950/20',
-      borderColor: 'border-blue-100 dark:border-blue-900/30',
+      label: 'Failed',
+      bgColor: 'bg-red-25 dark:bg-red-950/20',
+      borderColor: 'border-red-100 dark:border-red-900/30',
     },
   };
 

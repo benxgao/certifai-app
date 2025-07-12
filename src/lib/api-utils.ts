@@ -148,7 +148,11 @@ export async function handleApiResponse(
     );
   }
 
-  const data = await response.json();
+  let data = await response.json();
+  // If backend returns a string, wrap it in an object
+  if (typeof data === 'string') {
+    data = { result: data };
+  }
   return NextResponse.json(data, { status: 200 });
 }
 

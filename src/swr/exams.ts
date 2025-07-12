@@ -27,8 +27,8 @@ export interface ExamListItem {
   token_cost: number;
   total_questions: number; // Actual number of questions in this exam
   custom_prompt_text?: string | null; // Custom prompt used for question generation
-  started_at: string;
-  submitted_at: number | null;
+  started_at: string | null; // Fixed: should be string | null to match backend
+  submitted_at: number | null; // Fixed: should be number | null to match backend timestamp
   certification: {
     cert_id: number;
     // cert_category_id: number;

@@ -59,6 +59,10 @@ export function calculateRateLimitFromExams(exams: ExamListItem[]): RateLimitInf
 
   // Filter exams created in the last 24 hours
   const recentExams = exams.filter((exam) => {
+    // Skip exams that don't have a started_at timestamp
+    if (!exam.started_at) {
+      return false;
+    }
     const startedAt = new Date(exam.started_at);
     return startedAt >= twentyFourHoursAgo;
   });
@@ -71,14 +75,14 @@ export function calculateRateLimitFromExams(exams: ExamListItem[]): RateLimitInf
   let resetTime = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
   if (recentExams.length > 0) {
-    // Sort by started_at to find the oldest exam
+    // Sort by started_at to find the oldest exam (we already filtered out null values)
     const sortedExams = recentExams.sort(
-      (a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime(),
+      (a, b) => new Date(a.started_at!).getTime() - new Date(b.started_at!).getTime(),
     );
     const oldestExam = sortedExams[0];
 
     // Reset time is 24 hours after the oldest exam
-    const resetTimeMs = new Date(oldestExam.started_at).getTime() + 24 * 60 * 60 * 1000;
+    const resetTimeMs = new Date(oldestExam.started_at!).getTime() + 24 * 60 * 60 * 1000;
     resetTime = new Date(resetTimeMs).toISOString();
   }
 
