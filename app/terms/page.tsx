@@ -25,7 +25,7 @@ export default function TermsOfService() {
               Terms of Service
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
-              Last updated: July 09, 2025
+              Last updated: July 12, 2025
             </p>
             <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 max-w-2xl mx-auto">
               <p className="text-blue-800 dark:text-blue-200 text-sm">
@@ -780,12 +780,135 @@ export default function TermsOfService() {
                     fitness for purpose.
                   </p>
                 </div>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Certification Provider Trademarks and Intellectual Property Disclaimers
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  Certestic acknowledges and respects the intellectual property rights of
+                  certification providers and technology companies. The following disclaimers apply
+                  to all certification-related content on our platform:
+                </p>
+
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-4">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">
+                    🏢 Third-Party Certification Provider Disclaimers
+                  </h4>
+                  <ul className="list-disc pl-6 text-blue-800 dark:text-blue-200 space-y-2 text-sm">
+                    <li>
+                      <strong>Amazon Web Services (AWS):</strong> AWS, Amazon Web Services, and all
+                      related trademarks, service marks, and certification names (including but not
+                      limited to AWS Certified Solutions Architect, AWS Certified Developer, AWS
+                      Certified SysOps Administrator) are trademarks of Amazon.com, Inc. or its
+                      affiliates. Certestic is not affiliated with, endorsed by, or sponsored by
+                      Amazon Web Services.
+                    </li>
+                    <li>
+                      <strong>Google Cloud Platform (GCP):</strong> Google Cloud, Google Cloud
+                      Platform, GCP, and all related certification names (including but not limited
+                      to Google Cloud Professional Cloud Architect, Google Cloud Associate Cloud
+                      Engineer) are trademarks of Google LLC. Certestic is not affiliated with,
+                      endorsed by, or sponsored by Google LLC.
+                    </li>
+                    <li>
+                      <strong>Microsoft Azure:</strong> Microsoft, Azure, Microsoft Azure, and all
+                      related certification names (including but not limited to Azure Fundamentals,
+                      Azure Administrator, Azure Solutions Architect) are trademarks of Microsoft
+                      Corporation. Certestic is not affiliated with, endorsed by, or sponsored by
+                      Microsoft Corporation.
+                    </li>
+                    <li>
+                      <strong>Cisco:</strong> Cisco, CCNA, CCNP, CCIE, and all related certification
+                      names are trademarks of Cisco Systems, Inc. Certestic is not affiliated with,
+                      endorsed by, or sponsored by Cisco Systems, Inc.
+                    </li>
+                    <li>
+                      <strong>CompTIA:</strong> CompTIA, Security+, Network+, A+, and all related
+                      certification names are trademarks of the Computing Technology Industry
+                      Association, Inc. Certestic is not affiliated with, endorsed by, or sponsored
+                      by CompTIA.
+                    </li>
+                    <li>
+                      <strong>Oracle:</strong> Oracle, Java, MySQL, and all related certification
+                      names are trademarks of Oracle Corporation. Certestic is not affiliated with,
+                      endorsed by, or sponsored by Oracle Corporation.
+                    </li>
+                    <li>
+                      <strong>VMware:</strong> VMware, vSphere, vCenter, and all related
+                      certification names are trademarks of VMware, Inc. Certestic is not affiliated
+                      with, endorsed by, or sponsored by VMware, Inc.
+                    </li>
+                    <li>
+                      <strong>Salesforce:</strong> Salesforce and all related certification names
+                      are trademarks of Salesforce.com, Inc. Certestic is not affiliated with,
+                      endorsed by, or sponsored by Salesforce.com, Inc.
+                    </li>
+                  </ul>
+                </div>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  General Intellectual Property Disclaimer
+                </h4>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  All certification provider names, product names, service names, trademarks,
+                  service marks, and logos mentioned on this platform are the property of their
+                  respective owners. The use of these names and marks is for identification and
+                  reference purposes only and does not imply any association with, endorsement by,
+                  or sponsorship from the respective certification providers.
+                </p>
+
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 mb-4">
+                  <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
+                    ⚠️ Important Legal Notice
+                  </h4>
+                  <ul className="list-disc pl-6 text-yellow-800 dark:text-yellow-200 space-y-2 text-sm">
+                    <li>
+                      Certestic practice exams and study materials are independently created and are
+                      not official exam questions from any certification provider.
+                    </li>
+                    <li>
+                      We do not have access to, nor do we use, any proprietary exam questions,
+                      answers, or materials from certification providers.
+                    </li>
+                    <li>
+                      Our content is developed based on publicly available documentation,
+                      whitepapers, and general industry knowledge.
+                    </li>
+                    <li>
+                      Users should always refer to official certification provider resources for the
+                      most current and authoritative exam information.
+                    </li>
+                    <li>
+                      Any resemblance to actual exam questions is purely coincidental and
+                      unintentional.
+                    </li>
+                  </ul>
+                </div>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Fair Use and Educational Purpose
+                </h4>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  Our use of certification provider names and related terms falls under fair use
+                  principles for educational and informational purposes. Certestic operates as an
+                  independent educational platform designed to help users prepare for various IT
+                  certifications through practice questions and study materials that we create
+                  independently.
+                </p>
+
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>DMCA Compliance:</strong> If you believe that any content on our platform
+                  infringes your intellectual property rights, please contact us immediately with
+                  detailed information about the alleged infringement. We will investigate and take
+                  appropriate action in accordance with the Digital Millennium Copyright Act (DMCA)
+                  and other applicable laws.
+                </p>
               </section>
 
               {/* Privacy and Data Protection */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  10. Privacy and Data Protection
+                  11. Privacy and Data Protection
                 </h2>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
@@ -1177,7 +1300,7 @@ export default function TermsOfService() {
               {/* Payment Terms */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  11. Payment Terms
+                  12. Payment Terms
                 </h2>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Beta Pricing
@@ -1214,7 +1337,7 @@ export default function TermsOfService() {
               {/* Disclaimers and Limitation of Liability */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  12. Disclaimers and Limitation of Liability
+                  13. Disclaimers and Limitation of Liability
                 </h2>
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-4">
                   <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
@@ -1358,7 +1481,7 @@ export default function TermsOfService() {
               {/* Indemnification */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  13. Indemnification - Personal Project Protection
+                  14. Indemnification - Personal Project Protection
                 </h2>
 
                 <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6 mb-6">
@@ -1446,7 +1569,7 @@ export default function TermsOfService() {
               {/* Termination */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  14. Termination
+                  15. Termination
                 </h2>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Termination by You
@@ -1501,7 +1624,7 @@ export default function TermsOfService() {
               {/* Governing Law and Jurisdiction */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  15. Governing Law and Jurisdiction
+                  16. Governing Law and Jurisdiction
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   These Terms are governed by the laws of the jurisdiction most closely connected to
@@ -1540,7 +1663,7 @@ export default function TermsOfService() {
               {/* Force Majeure */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  16. Force Majeure
+                  17. Force Majeure
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   I shall not be liable for any failure or delay in performance under these Terms
@@ -1554,7 +1677,7 @@ export default function TermsOfService() {
               {/* Changes to Terms */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  17. Changes to Terms
+                  18. Changes to Terms
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   I reserve the right to modify these Terms at any time. I will notify you of
@@ -1575,7 +1698,7 @@ export default function TermsOfService() {
               {/* International Customer Rights */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  18. International Customer Rights and Regional Compliance
+                  19. International Customer Rights and Regional Compliance
                 </h2>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg mb-6">
@@ -1728,7 +1851,7 @@ export default function TermsOfService() {
               {/* Severability */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  19. Severability
+                  20. Severability
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   If any provision of these Terms is held to be invalid, illegal, or unenforceable,

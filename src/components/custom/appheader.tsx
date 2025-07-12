@@ -15,7 +15,7 @@ import { auth } from '@/firebase/firebaseWebConfig';
 import { useProfileData } from '@/src/hooks/useProfileData';
 import { useShouldShowBuyMeACoffee } from '@/src/hooks/useUserExamStats';
 import Link from 'next/link';
-import { LogOut, Settings, UserCircle, Home, Award, ChevronDown, Coffee } from 'lucide-react';
+import { LogOut, UserCircle, Home, Award, ChevronDown, Coffee } from 'lucide-react';
 
 const AppHeader: React.FC = () => {
   const router = useRouter();
@@ -215,14 +215,6 @@ const AppHeader: React.FC = () => {
                       {pathname === '/main/profile' && (
                         <div className="ml-auto w-2 h-2 bg-primary rounded-full shadow-sm"></div>
                       )}
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem
-                      onSelect={() => router.push('/main/profile?tab=settings')}
-                      className="cursor-pointer rounded-lg p-3 hover:bg-accent/80 hover:shadow-sm transition-all duration-200 group"
-                    >
-                      <Settings className="h-4 w-4 mr-3 text-muted-foreground group-hover:text-foreground transition-colors" />
-                      <span>Account Settings</span>
                     </DropdownMenuItem>
 
                     {/* Buy Me a Coffee - Only show if user has created more than 2 exams */}

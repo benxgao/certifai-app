@@ -20,12 +20,6 @@ import {
   DialogTrigger,
 } from '@/src/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/src/components/ui/accordion';
 import { CalendarIcon, UserIcon, Settings, Award, Shield, Bell, Edit3, Check } from 'lucide-react';
 import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 import EmailUpdateDialog from '@/src/components/custom/EmailUpdateDialog';
@@ -278,20 +272,20 @@ const ProfileClientPage: React.FC = () => {
         />
 
         {/* Welcome Section */}
-        <div className="mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 md:p-6">
+        <div className="mb-8 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 md:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
             <div className="flex items-center space-x-3 md:space-x-4">
-              <Avatar className="w-12 h-12 md:w-16 md:h-16">
+              <Avatar className="w-12 h-12 md:w-16 md:h-16 border-2 border-primary/20 shadow-sm">
                 <AvatarImage src={profile.avatar_url || undefined} alt={displayName || 'User'} />
-                <AvatarFallback className="text-base md:text-lg">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-base md:text-lg">
                   {displayName?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 md:mb-2">
-                  {displayName}&apos;s Profile
+                  Welcome back, {displayName}!
                 </h1>
-                <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                   <span className="block sm:inline">{email}</span>
                   <span className="hidden sm:inline"> • </span>
                   <span className="block sm:inline">
@@ -306,12 +300,12 @@ const ProfileClientPage: React.FC = () => {
         </div>
 
         {/* Profile Content */}
-        <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
+          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+                <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
                   Account Settings
                 </h2>
               </div>
@@ -319,448 +313,391 @@ const ProfileClientPage: React.FC = () => {
           </div>
 
           {/* Tabs Content */}
-          <div className="p-3 md:p-6">
+          <div className="p-6">
             <Tabs defaultValue="personal" className="w-full">
-              {/* Mobile-optimized TabsList */}
+              {/* Improved TabsList */}
               <div className="relative mb-6">
-                <TabsList className="w-full h-auto p-1 bg-slate-100/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm md:grid md:grid-cols-4 overflow-x-auto scrollbar-none">
+                <TabsList className="w-full h-auto p-1 bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm rounded-lg md:grid md:grid-cols-3 overflow-x-auto scrollbar-none">
                   <div className="flex md:contents min-w-max md:min-w-0">
                     <TabsTrigger
                       value="personal"
-                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
-                      <UserIcon className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
-                      <span className="hidden xs:inline">Personal</span>
-                      <span className="xs:hidden">Info</span>
+                      <UserIcon className="w-4 h-4 shrink-0" />
+                      <span>Personal</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="account"
-                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
-                      <Award className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                      <Award className="w-4 h-4 shrink-0" />
                       <span>Account</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="settings"
-                      className="flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
-                      <Settings className="hidden md:block w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" />
+                      <Settings className="w-4 h-4 shrink-0" />
                       <span>Settings</span>
                     </TabsTrigger>
                   </div>
                 </TabsList>
-
-                {/* Mobile scroll indicator */}
-                <div className="md:hidden absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent pointer-events-none"></div>
               </div>
 
               {/* Personal Information Tab */}
               <TabsContent value="personal">
-                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <CardHeader className="pb-3 md:pb-6">
-                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg text-slate-900 dark:text-slate-100">
                       Personal Information
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem
-                        value="basic-info"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Basic Information
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                            <div>
-                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                Full Name
-                              </label>
-                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                {displayName || 'Not provided'}
-                              </p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                Email
-                              </label>
-                              <div className="flex items-center justify-between mt-1">
-                                <p className="text-sm text-slate-600 dark:text-slate-400">
-                                  {email || 'Not provided'}
-                                </p>
-                                <EmailUpdateDialog
-                                  trigger={
-                                    <Button variant="ghost" size="sm" className="h-6 text-xs">
-                                      Update
-                                    </Button>
-                                  }
-                                />
-                              </div>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                User Role
-                              </label>
-                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                {profile.role || 'User'}
-                              </p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                Registration Date
-                              </label>
-                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                {registrationDate}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                            <EditableDisplayName
-                              currentDisplayName={displayName || 'User'}
-                              onNameUpdate={handleNameUpdate}
+                  <CardContent className="pt-0 space-y-6">
+                    {/* Basic Information */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Basic Information
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            Full Name
+                          </label>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            {displayName || 'Not provided'}
+                          </p>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            Email
+                          </label>
+                          <div className="flex items-center justify-between mt-1">
+                            <p className="text-sm text-slate-600 dark:text-slate-400">
+                              {email || 'Not provided'}
+                            </p>
+                            <EmailUpdateDialog
+                              trigger={
+                                <Button variant="outline" size="sm" className="h-7 text-xs">
+                                  Update
+                                </Button>
+                              }
                             />
-                            <Button variant="outline" className="text-sm">
-                              Edit Information
-                            </Button>
                           </div>
-                        </AccordionContent>
-                      </AccordionItem>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            User Role
+                          </label>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            {profile.role || 'User'}
+                          </p>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            Registration Date
+                          </label>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            {registrationDate}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-4 flex flex-col sm:flex-row gap-2">
+                        <EditableDisplayName
+                          currentDisplayName={displayName || 'User'}
+                          onNameUpdate={handleNameUpdate}
+                        />
+                        <Button variant="outline" className="text-sm">
+                          Edit Information
+                        </Button>
+                      </div>
+                    </div>
 
-                      <AccordionItem
-                        value="avatar"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Profile Picture
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                            <Avatar className="h-16 w-16 md:h-20 md:w-20 mx-auto sm:mx-0">
-                              <AvatarImage
-                                src={profile.avatar_url || undefined}
-                                alt={displayName || 'User'}
-                              />
-                              <AvatarFallback className="text-base md:text-lg">
-                                {displayName?.charAt(0).toUpperCase() || 'U'}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div className="space-y-2 text-center sm:text-left flex-1">
-                              <p className="text-sm text-slate-600 dark:text-slate-400">
-                                Upload a new profile picture
-                              </p>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
-                              >
-                                Change Picture
-                              </Button>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
+                    {/* Profile Picture */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Profile Picture
+                      </h3>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <Avatar className="h-16 w-16 md:h-20 md:w-20 mx-auto sm:mx-0 border-2 border-primary/20 shadow-sm">
+                          <AvatarImage
+                            src={profile.avatar_url || undefined}
+                            alt={displayName || 'User'}
+                          />
+                          <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground text-base md:text-lg">
+                            {displayName?.charAt(0).toUpperCase() || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="space-y-2 text-center sm:text-left flex-1">
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            Upload a new profile picture
+                          </p>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
+                          >
+                            Change Picture
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
 
-                      <AccordionItem
-                        value="subscription"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Subscription Details
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              <div>
-                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                  Current Plan
-                                </label>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                  {profile.subscription_plan || 'Free Tier'}
-                                </p>
-                              </div>
-                              <div>
-                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                  Status
-                                </label>
-                                <div className="mt-1">
-                                  <Badge variant="secondary">Active</Badge>
-                                </div>
-                              </div>
-                            </div>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
-                            >
-                              Manage Subscription
-                            </Button>
+                    {/* Subscription */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Subscription Details
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            Current Plan
+                          </label>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                            {profile.subscription_plan || 'Free Tier'}
+                          </p>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                            Status
+                          </label>
+                          <div className="mt-1">
+                            <Badge variant="secondary">Active</Badge>
                           </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
+                      >
+                        Manage Subscription
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
               {/* Account Tab */}
               <TabsContent value="account">
-                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <CardHeader className="pb-3 md:pb-6">
-                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg text-slate-900 dark:text-slate-100">
                       Account Information
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem
-                        value="account-details"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Account Details
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                              <span className="text-sm font-medium">User ID:</span>
-                              <Badge variant="outline" className="font-mono text-xs w-fit">
-                                {profile.user_id}
-                              </Badge>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                              <span className="text-sm font-medium">Account Type:</span>
-                              <Badge variant="secondary" className="w-fit">
-                                {profile.role || 'User'}
-                              </Badge>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                              <span className="text-sm font-medium">Registration Date:</span>
-                              <span className="text-sm text-muted-foreground">
-                                {registrationDate}
-                              </span>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
+                  <CardContent className="pt-0 space-y-6">
+                    {/* Account Details */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Account Details
+                      </h3>
+                      <div className="space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                          <span className="text-sm font-medium">User ID:</span>
+                          <Badge variant="outline" className="font-mono text-xs w-fit">
+                            {profile.user_id}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                          <span className="text-sm font-medium">Account Type:</span>
+                          <Badge variant="secondary" className="w-fit">
+                            {profile.role || 'User'}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                          <span className="text-sm font-medium">Registration Date:</span>
+                          <span className="text-sm text-muted-foreground">{registrationDate}</span>
+                        </div>
+                      </div>
+                    </div>
 
-                      <AccordionItem
-                        value="subscription-info"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Subscription Information
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                              <span className="text-sm font-medium">Current Plan:</span>
-                              <Badge variant="default" className="w-fit">
-                                {profile.subscription_plan || 'Free Tier'}
-                              </Badge>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                              <span className="text-sm font-medium">Plan Status:</span>
-                              <Badge variant="secondary" className="w-fit">
-                                Active
-                              </Badge>
-                            </div>
-                            <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                              Upgrade Plan
-                            </Button>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
+                    {/* Subscription Information */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Subscription Information
+                      </h3>
+                      <div className="space-y-3 mb-4">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                          <span className="text-sm font-medium">Current Plan:</span>
+                          <Badge variant="default" className="w-fit">
+                            {profile.subscription_plan || 'Free Tier'}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                          <span className="text-sm font-medium">Plan Status:</span>
+                          <Badge variant="secondary" className="w-fit">
+                            Active
+                          </Badge>
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                        Upgrade Plan
+                      </Button>
+                    </div>
 
-                      <AccordionItem
-                        value="activity"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Account Activity
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-3">
-                            <p className="text-sm text-muted-foreground">Recent account activity</p>
-                            <div className="border rounded-lg p-3 bg-slate-50 dark:bg-slate-800/50">
-                              <div className="flex items-center gap-2">
-                                <CalendarIcon className="w-4 h-4 text-muted-foreground shrink-0" />
-                                <span className="text-sm">Last login: Today</span>
-                              </div>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                    {/* Account Activity */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Account Activity
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-3">Recent account activity</p>
+                      <div className="border rounded-lg p-3 bg-white dark:bg-slate-800 shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <CalendarIcon className="w-4 h-4 text-muted-foreground shrink-0" />
+                          <span className="text-sm">Last login: Today</span>
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
               {/* Settings Tab */}
               <TabsContent value="settings">
-                <Card className="border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <CardHeader className="pb-3 md:pb-6">
-                    <CardTitle className="text-lg md:text-xl text-slate-900 dark:text-slate-100">
+                <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg text-slate-900 dark:text-slate-100">
                       Account Settings
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem
-                        value="account-security"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          <div className="flex items-center gap-2">
-                            <Shield className="w-4 h-4 shrink-0" />
-                            <span>Account Security</span>
+                  <CardContent className="pt-0 space-y-6">
+                    {/* Account Security */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Shield className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+                        <h3 className="text-base font-medium text-slate-900 dark:text-slate-100">
+                          Account Security
+                        </h3>
+                      </div>
+                      <div className="space-y-4">
+                        {[
+                          {
+                            title: 'Password',
+                            description: 'Update your password',
+                            button: 'Change Password',
+                          },
+                          {
+                            title: 'Two-Factor Authentication',
+                            description: 'Add an extra layer of security',
+                            button: 'Enable 2FA',
+                          },
+                          {
+                            title: 'Login Sessions',
+                            description: 'Manage your active sessions',
+                            button: 'View Sessions',
+                          },
+                        ].map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0"
+                          >
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{item.title}</h4>
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                            </div>
+                            <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                              {item.button}
+                            </Button>
                           </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-sm md:text-base">Password</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Update your password
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                Change Password
-                              </Button>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-sm md:text-base">
-                                  Two-Factor Authentication
-                                </h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Add an extra layer of security
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                Enable 2FA
-                              </Button>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-sm md:text-base">Login Sessions</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Manage your active sessions
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                View Sessions
-                              </Button>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
+                        ))}
+                      </div>
+                    </div>
 
-                      <AccordionItem
-                        value="notifications"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          <div className="flex items-center gap-2">
-                            <Bell className="w-4 h-4 shrink-0" />
-                            <span>Notifications</span>
+                    {/* Notifications */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Bell className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+                        <h3 className="text-base font-medium text-slate-900 dark:text-slate-100">
+                          Notifications
+                        </h3>
+                      </div>
+                      <div className="space-y-4">
+                        {[
+                          {
+                            name: 'Email Notifications',
+                            description: 'Receive updates via email',
+                            enabled: true,
+                          },
+                          {
+                            name: 'Browser Notifications',
+                            description: 'Get notified in your browser',
+                            enabled: false,
+                          },
+                          {
+                            name: 'Account Security',
+                            description: 'Security-related notifications',
+                            enabled: true,
+                          },
+                        ].map((setting, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0"
+                          >
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{setting.name}</h4>
+                              <p className="text-sm text-muted-foreground">{setting.description}</p>
+                            </div>
+                            <Button
+                              variant={setting.enabled ? 'default' : 'outline'}
+                              size="sm"
+                              className="w-full sm:w-auto"
+                            >
+                              {setting.enabled ? 'Enabled' : 'Disabled'}
+                            </Button>
                           </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            {[
-                              {
-                                name: 'Email Notifications',
-                                description: 'Receive updates via email',
-                                enabled: true,
-                              },
-                              {
-                                name: 'Browser Notifications',
-                                description: 'Get notified in your browser',
-                                enabled: false,
-                              },
-                              {
-                                name: 'Account Security',
-                                description: 'Security-related notifications',
-                                enabled: true,
-                              },
-                            ].map((setting, index) => (
-                              <div
-                                key={index}
-                                className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3"
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Privacy Settings */}
+                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
+                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                        Privacy Settings
+                      </h3>
+                      <div className="space-y-4">
+                        {[
+                          {
+                            title: 'Profile Visibility',
+                            description: 'Control who can see your profile',
+                            button: 'Manage',
+                            variant: 'outline' as const,
+                          },
+                          {
+                            title: 'Data Export',
+                            description: 'Download your account data',
+                            button: 'Export',
+                            variant: 'outline' as const,
+                          },
+                          {
+                            title: 'Delete Account',
+                            description: 'Permanently delete your account',
+                            button: 'Delete',
+                            variant: 'destructive' as const,
+                          },
+                        ].map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0"
+                          >
+                            <div className="flex-1">
+                              <h4
+                                className={`font-medium text-sm ${
+                                  item.variant === 'destructive'
+                                    ? 'text-destructive'
+                                    : 'text-foreground'
+                                }`}
                               >
-                                <div className="flex-1">
-                                  <h4 className="font-medium text-sm md:text-base">
-                                    {setting.name}
-                                  </h4>
-                                  <p className="text-sm text-muted-foreground">
-                                    {setting.description}
-                                  </p>
-                                </div>
-                                <Button
-                                  variant={setting.enabled ? 'default' : 'outline'}
-                                  size="sm"
-                                  className="w-full sm:w-auto"
-                                >
-                                  {setting.enabled ? 'Enabled' : 'Disabled'}
-                                </Button>
-                              </div>
-                            ))}
+                                {item.title}
+                              </h4>
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                            </div>
+                            <Button variant={item.variant} size="sm" className="w-full sm:w-auto">
+                              {item.button}
+                            </Button>
                           </div>
-                        </AccordionContent>
-                      </AccordionItem>
-
-                      <AccordionItem
-                        value="privacy"
-                        className="border-slate-200 dark:border-slate-700"
-                      >
-                        <AccordionTrigger className="text-sm md:text-base py-3 md:py-4 hover:no-underline">
-                          Privacy Settings
-                        </AccordionTrigger>
-                        <AccordionContent className="pb-4 md:pb-6">
-                          <div className="space-y-4">
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-sm md:text-base">
-                                  Profile Visibility
-                                </h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Control who can see your profile
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                Manage
-                              </Button>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-sm md:text-base">Data Export</h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Download your account data
-                                </p>
-                              </div>
-                              <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                                Export
-                              </Button>
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
-                              <div className="flex-1">
-                                <h4 className="font-medium text-destructive text-sm md:text-base">
-                                  Delete Account
-                                </h4>
-                                <p className="text-sm text-muted-foreground">
-                                  Permanently delete your account
-                                </p>
-                              </div>
-                              <Button variant="destructive" size="sm" className="w-full sm:w-auto">
-                                Delete
-                              </Button>
-                            </div>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
+                        ))}
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
