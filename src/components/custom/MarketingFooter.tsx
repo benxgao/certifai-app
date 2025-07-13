@@ -131,7 +131,7 @@ export default function MarketingFooter() {
                   href="/community"
                   className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
                 >
-                  Community
+                  Discussion Forum
                 </Link>
               </li>
               <li>

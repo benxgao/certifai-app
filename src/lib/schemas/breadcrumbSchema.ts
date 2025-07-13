@@ -22,7 +22,7 @@ export const commonBreadcrumbs = {
   documentation: { name: 'Documentation', url: 'https://certestic.com/documentation' },
   support: { name: 'Support', url: 'https://certestic.com/support' },
   contact: { name: 'Contact', url: 'https://certestic.com/contact' },
-  community: { name: 'Community', url: 'https://certestic.com/community' },
+  community: { name: 'Discussion Forum', url: 'https://certestic.com/community' },
 };
 
 // Predefined breadcrumb schemas for main pages

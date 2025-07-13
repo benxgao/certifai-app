@@ -166,7 +166,7 @@ export const softwareApplicationSchema = {
     'Personalized study recommendations',
     'Multiple IT certification tracks',
     'Progress tracking and analytics',
-    'Community learning features',
+    'Discussion forum features',
     'Adaptive difficulty adjustment',
     'Real-time performance insights',
     'Mobile-responsive design',

@@ -149,7 +149,7 @@ export const generateSoftwareApplicationSchema = (): SoftwareApplicationSchema =
     'Personalized study recommendations',
     'Multiple IT certification tracks',
     'Progress tracking and analytics',
-    'Community learning features',
+    'Discussion forum features',
   ],
 });
 

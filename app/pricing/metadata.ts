@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 const description =
-  'Join our free beta program and help build the future of AI-powered IT certification training. Complete access to all features while we gather feedback and improve together.';
+  'Get free access to our AI-powered IT certification training platform. Complete access to all features while we gather feedback and improve the platform.';
 
 const keywords = [
   'Certestic beta program',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Beta Program | Certestic - Shape the Future of IT Certification Training',
     description:
-      'Join our free beta program and help build the most effective AI-powered IT certification training platform. Complete access while we develop together.',
+      'Get free access to our AI-powered IT certification training platform. Complete access while we develop and improve.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certestic.com/pricing',

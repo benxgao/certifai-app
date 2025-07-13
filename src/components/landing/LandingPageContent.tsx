@@ -51,9 +51,9 @@ export default function LandingPageContent() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Growing Community
+                  Free Beta
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Beta Testers</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Access</div>
               </div>
               <div
                 className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
@@ -83,19 +83,6 @@ export default function LandingPageContent() {
                   size="lg"
                   className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                 >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
                   Let&apos;s Do This Together!
                 </Button>
               </Link>
@@ -550,19 +537,6 @@ export default function LandingPageContent() {
                     size="lg"
                     className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 transform hover:scale-105"
                   >
-                    <svg
-                      className="w-6 h-6 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
                     Count Me In!
                   </Button>
                 </Link>

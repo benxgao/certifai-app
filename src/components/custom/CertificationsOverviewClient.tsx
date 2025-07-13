@@ -70,9 +70,16 @@ export default function CertificationsOverviewClient({
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 text-lg mb-4">Error loading certifications</div>
-        <p className="text-gray-600 mb-4">{error}</p>
-        <Button onClick={() => window.location.reload()}>Refresh Page</Button>
+        <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 rounded-xl p-6 max-w-md mx-auto">
+          <div className="text-red-600 dark:text-red-400 text-lg mb-4">Error loading certifications</div>
+          <p className="text-red-600/80 dark:text-red-400/80 mb-4">{error}</p>
+          <Button 
+            onClick={() => window.location.reload()}
+            className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white"
+          >
+            Refresh Page
+          </Button>
+        </div>
       </div>
     );
   }
@@ -86,40 +93,40 @@ export default function CertificationsOverviewClient({
       />
 
       {/* Stats and Search */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-1">{firms.length}</div>
-            <div className="text-gray-600">Technology Firms</div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-1">{firms.length}</div>
+            <div className="text-slate-600 dark:text-slate-400">Technology Firms</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-600 mb-1">{totalCertifications}</div>
-            <div className="text-gray-600">Total Certifications</div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-1">{totalCertifications}</div>
+            <div className="text-slate-600 dark:text-slate-400">Total Certifications</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-1">
+            <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-1">
               {Math.round(totalCertifications / firms.length)}
             </div>
-            <div className="text-gray-600">Avg per Firm</div>
+            <div className="text-slate-600 dark:text-slate-400">Avg per Firm</div>
           </div>
         </div>
 
         {/* Search Controls */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="relative">
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
             <Input
               type="text"
               placeholder="Search certifications or firms..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
             />
           </div>
           <select
             value={selectedFirm || ''}
             onChange={(e) => setSelectedFirm(e.target.value || null)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
           >
             <option value="">All Firms</option>
             {firms.map((firm) => (
@@ -133,8 +140,8 @@ export default function CertificationsOverviewClient({
 
       {/* Results Summary */}
       {(searchTerm || selectedFirm) && (
-        <div className="bg-blue-50 rounded-lg p-4">
-          <p className="text-blue-800">
+        <div className="bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20 rounded-xl p-4 border border-violet-200/60 dark:border-violet-800/50">
+          <p className="text-violet-800 dark:text-violet-200">
             Showing {filteredFirms.length} firm{filteredFirms.length !== 1 ? 's' : ''} with{' '}
             {filteredFirms.reduce((sum, firm) => sum + firm.certification_count, 0)} certification
             {filteredFirms.reduce((sum, firm) => sum + firm.certification_count, 0) !== 1
@@ -151,7 +158,7 @@ export default function CertificationsOverviewClient({
                 setSearchTerm('');
                 setSelectedFirm(null);
               }}
-              className="mt-2 text-blue-600 hover:text-blue-800"
+              className="mt-2 text-violet-600 hover:text-violet-800 dark:text-violet-400 dark:hover:text-violet-300"
             >
               Clear filters
             </Button>
@@ -163,29 +170,29 @@ export default function CertificationsOverviewClient({
       <div className="space-y-6">
         {filteredFirms.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-gray-500 text-lg mb-2">No certifications found</div>
-            <p className="text-gray-400">Try adjusting your search criteria</p>
+            <div className="text-slate-500 dark:text-slate-400 text-lg mb-2">No certifications found</div>
+            <p className="text-slate-400 dark:text-slate-500">Try adjusting your search criteria</p>
           </div>
         ) : (
           filteredFirms.map((firm) => (
-            <Card key={firm.id} className="bg-white shadow-md hover:shadow-lg transition-shadow">
+            <Card key={firm.id} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg dark:shadow-slate-900/20 hover:shadow-xl dark:hover:shadow-slate-900/30 transition-all duration-300 border border-slate-200/60 dark:border-slate-700/60 hover:border-violet-300/60 dark:hover:border-violet-600/60 rounded-2xl">
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <CardTitle className="text-2xl text-gray-900">{firm.name}</CardTitle>
-                      <Badge variant="secondary" className="text-sm">
+                      <CardTitle className="text-2xl text-slate-900 dark:text-slate-100">{firm.name}</CardTitle>
+                      <Badge variant="secondary" className="text-sm bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800/50">
                         {firm.certification_count} certification
                         {firm.certification_count !== 1 ? 's' : ''}
                       </Badge>
                     </div>
-                    <p className="text-gray-600 mb-2">{linkifyText(firm.description)}</p>
+                    <p className="text-slate-600 dark:text-slate-400 mb-2">{linkifyText(firm.description)}</p>
                     {firm.website_url && (
                       <a
                         href={firm.website_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm"
+                        className="inline-flex items-center gap-1 text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300 text-sm transition-colors duration-200"
                       >
                         Visit Website <FaExternalLinkAlt className="w-3 h-3" />
                       </a>
@@ -196,8 +203,8 @@ export default function CertificationsOverviewClient({
               <CardContent>
                 {!Array.isArray(firm.certifications) || firm.certifications.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-gray-500 italic mb-2">No certifications available yet</p>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-slate-500 dark:text-slate-400 italic mb-2">No certifications available yet</p>
+                    <p className="text-sm text-slate-400 dark:text-slate-500">
                       Expected: {firm.certification_count} certification
                       {firm.certification_count !== 1 ? 's' : ''}
                     </p>
@@ -210,17 +217,17 @@ export default function CertificationsOverviewClient({
                         href={`/certifications/${firm.code}/${cert.cert_id}`}
                         className="group"
                       >
-                        <div className="p-4 border border-gray-200 dark:border-slate-700 rounded-lg hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-slate-700/50 transition-colors cursor-pointer">
+                        <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-violet-300 dark:hover:border-violet-600 hover:bg-gradient-to-br hover:from-violet-50/50 hover:to-blue-50/50 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 transition-all duration-300 cursor-pointer hover:shadow-md dark:hover:shadow-slate-900/20">
                           <div className="flex items-start gap-2 mb-2">
-                            <FaAward className="text-blue-600 mt-1 flex-shrink-0" />
-                            <h4 className="font-medium text-gray-900 group-hover:text-blue-800 line-clamp-2">
+                            <FaAward className="text-violet-600 dark:text-violet-400 mt-1 flex-shrink-0" />
+                            <h4 className="font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-800 dark:group-hover:text-violet-300 line-clamp-2 transition-colors duration-200">
                               {cert.name}
                             </h4>
                           </div>
-                          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">
                             {cert.description}
                           </p>
-                          <div className="flex items-center justify-between text-xs text-gray-500">
+                          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                             <span>
                               {cert.min_quiz_counts}-{cert.max_quiz_counts} questions
                             </span>

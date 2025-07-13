@@ -245,12 +245,12 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
           <Card className="text-center hover:shadow-lg transition-shadow">
             <CardHeader className="pb-4">
               <FaUsers className="text-3xl sm:text-4xl text-purple-600 mx-auto mb-3 sm:mb-4" />
-              <CardTitle className="text-lg sm:text-xl">Join the Community</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">Track Your Progress</CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <p className="text-gray-600 text-sm sm:text-base">
-                Connect with {certification.enrollment_count.toLocaleString()}+ learners and get
-                support throughout your certification journey.
+                Monitor your progress with {certification.enrollment_count.toLocaleString()}+
+                practice questions and get insights throughout your certification journey.
               </p>
             </CardContent>
           </Card>

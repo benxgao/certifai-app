@@ -123,7 +123,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
     if (isSignup) {
       return (
         <svg
-          className="w-8 h-8 text-violet-600"
+          className="w-8 h-8 text-violet-600 dark:text-violet-300"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -139,7 +139,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
     } else {
       return (
         <svg
-          className="w-8 h-8 text-violet-600"
+          className="w-8 h-8 text-violet-600 dark:text-violet-300"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -156,19 +156,19 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
   };
 
   return (
-    <div className="hidden lg:flex lg:items-center lg:justify-center relative overflow-hidden bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 min-h-full">
+    <div className="hidden lg:flex lg:items-center lg:justify-center relative overflow-hidden bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full">
       {/* Light geometric background patterns */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Subtle geometric shapes */}
-        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-violet-100/50 to-purple-100/50 rounded-2xl rotate-12 animate-pulse"></div>
-        <div className="absolute bottom-32 right-16 w-24 h-24 bg-gradient-to-br from-cyan-100/50 to-blue-100/50 rounded-xl rotate-45 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 bg-gradient-to-br from-pink-100/50 to-rose-100/50 rounded-lg rotate-6 animate-pulse delay-2000"></div>
+        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-violet-100/50 to-purple-100/50 dark:from-violet-800/30 dark:to-purple-700/30 rounded-2xl rotate-12 animate-pulse"></div>
+        <div className="absolute bottom-32 right-16 w-24 h-24 bg-gradient-to-br from-cyan-100/50 to-blue-100/50 dark:from-cyan-800/30 dark:to-blue-700/30 rounded-xl rotate-45 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-10 w-16 h-16 bg-gradient-to-br from-pink-100/50 to-rose-100/50 dark:from-pink-800/30 dark:to-rose-700/30 rounded-lg rotate-6 animate-pulse delay-2000"></div>
 
         {/* Modern grid pattern */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute top-16 right-32 w-2 h-20 bg-gradient-to-b from-violet-300 to-transparent rounded-full"></div>
-          <div className="absolute bottom-24 left-24 w-20 h-2 bg-gradient-to-r from-cyan-300 to-transparent rounded-full"></div>
-          <div className="absolute top-1/3 right-20 w-1 h-12 bg-gradient-to-b from-pink-300 to-transparent rounded-full"></div>
+        <div className="absolute inset-0 opacity-40 dark:opacity-20">
+          <div className="absolute top-16 right-32 w-2 h-20 bg-gradient-to-b from-violet-300 dark:from-violet-600 to-transparent rounded-full"></div>
+          <div className="absolute bottom-24 left-24 w-20 h-2 bg-gradient-to-r from-cyan-300 dark:from-cyan-600 to-transparent rounded-full"></div>
+          <div className="absolute top-1/3 right-20 w-1 h-12 bg-gradient-to-b from-pink-300 dark:from-pink-600 to-transparent rounded-full"></div>
         </div>
       </div>
 
@@ -177,11 +177,11 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
           {/* Modern header with integrated icon */}
           <div className="space-y-6">
             <div className="flex items-center space-x-4">
-              <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
+              <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 dark:from-violet-600 dark:to-purple-700 rounded-lg flex items-center justify-center shadow-lg">
                 {getMainIcon()}
               </div>
               <div className="flex-1">
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 leading-tight">
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50 leading-tight">
                   {currentContent.title}
                 </h2>
               </div>
@@ -196,7 +196,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
             {currentContent.features.map((feature, index) => (
               <div
                 key={index}
-                className="group flex items-start space-x-4 p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-slate-200/50 hover:bg-white/80 hover:border-slate-300/60 hover:shadow-lg transition-all duration-300"
+                className="group flex items-start space-x-4 p-4 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-slate-300/60 dark:hover:border-slate-600/60 hover:shadow-lg transition-all duration-300"
               >
                 <div
                   className={`flex-shrink-0 w-10 h-10 bg-gradient-to-br ${feature.bgColor} rounded-lg flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-200`}
@@ -204,7 +204,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                   {renderIcon(feature.icon, 'w-5 h-5 text-white')}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 text-base leading-tight">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-50 text-base leading-tight">
                     {feature.title}
                   </h3>
                   <p className="text-slate-600 dark:text-slate-300 text-sm mt-1 leading-relaxed">

@@ -469,39 +469,39 @@ const LoginPage = () => {
       {/* Header */}
       <LandingHeader showFeaturesLink={false} />
 
-      <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 lg:bg-none auth-container">
+      <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 lg:bg-none auth-container">
         {/* Left Column - Welcome Section */}
         <AuthLeftSection mode="signin" />
 
         {/* Right Column - Signin Form */}
-        <div className="flex items-center justify-center py-3 sm:py-6 lg:py-12 px-3 sm:px-6 lg:px-8 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+        <div className="flex items-center justify-center py-3 sm:py-6 lg:py-12 px-3 sm:px-6 lg:px-8 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full lg:min-h-0 auth-container auth-form-mobile">
           {/* Subtle background decoration for mobile */}
           <div className="absolute inset-0 lg:hidden overflow-hidden">
-            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 rounded-full"></div>
-            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 rounded-full"></div>
+            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 dark:from-violet-800/10 dark:to-purple-700/10 rounded-full"></div>
+            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 dark:from-cyan-800/10 dark:to-blue-700/10 rounded-full"></div>
           </div>
 
           {/* Additional subtle patterns for desktop right section */}
           <div className="absolute inset-0 hidden lg:block overflow-hidden">
-            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 rounded-xl rotate-12 animate-pulse delay-3000"></div>
-            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 rounded-lg rotate-45 animate-pulse delay-4000"></div>
+            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-xl rotate-12 animate-pulse delay-3000"></div>
+            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 dark:from-indigo-800/20 dark:to-violet-700/20 rounded-lg rotate-45 animate-pulse delay-4000"></div>
           </div>
 
-          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-2xl relative z-10">
+          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10">
             <CardHeader className="text-center space-y-1 pb-2 sm:pb-3 lg:pb-6 px-4 sm:px-6">
               {/* Small decorative element */}
               <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-3 sm:mb-4"></div>
-              <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent auth-title-mobile">
+              <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-200 bg-clip-text text-transparent auth-title-mobile">
                 Sign In
               </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-200 text-sm sm:text-base">
+              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
                 Enter your credentials to access your Certestic account.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleSignin} autoComplete="on">
               <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
                 <div className="space-y-1.5 sm:space-y-2">
-                  <Label htmlFor="email" className="text-slate-700 dark:text-slate-100 font-medium">
+                  <Label htmlFor="email" className="text-slate-700 dark:text-slate-200 font-medium">
                     Email address
                   </Label>
                   <Input
@@ -514,20 +514,20 @@ const LoginPage = () => {
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
                     autoComplete="on"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   />
                 </div>
                 <div className="space-y-1.5 sm:space-y-2">
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="password"
-                      className="text-slate-700 dark:text-slate-100 font-medium"
+                      className="text-slate-700 dark:text-slate-200 font-medium"
                     >
                       Password
                     </Label>
                     <Link
                       href="/forgot-password"
-                      className="text-sm font-medium text-violet-600 hover:text-violet-500 hover:underline transition-colors duration-200"
+                      className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
                     >
                       Forgot password?
                     </Link>
@@ -542,7 +542,7 @@ const LoginPage = () => {
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
                     autoComplete="on"
-                    className="border-slate-200 dark:border-slate-700 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
+                    className="border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   />
                 </div>
                 {error && (
@@ -552,8 +552,8 @@ const LoginPage = () => {
                       error.includes('sent!') ||
                       error.includes('verified successfully') ||
                       error.includes('reset successful')
-                        ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-100 border-green-200 dark:border-green-800/50'
-                        : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-100 border-red-200 dark:border-red-800/50'
+                        ? 'bg-green-50 dark:bg-green-950/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-800/50'
+                        : 'bg-red-50 dark:bg-red-950/50 text-red-800 dark:text-red-200 border-red-200 dark:border-red-800/50'
                     }`}
                   >
                     <div className="flex items-start">
@@ -594,8 +594,8 @@ const LoginPage = () => {
                           </div>
                         )}
                         {showVerificationPrompt && (
-                          <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-lg">
-                            <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
+                          <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50 rounded-lg">
+                            <p className="text-sm text-blue-700 dark:text-blue-200 mb-2">
                               Didn&apos;t receive the email? Check your spam folder or resend it.
                             </p>
                             <Button
@@ -630,11 +630,11 @@ const LoginPage = () => {
                   />
                 </Button>
               </CardContent>
-              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/50 px-4 sm:px-6">
+              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/70 px-4 sm:px-6">
                 Don&apos;t have an account?&nbsp;
                 <Link
                   href="/signup"
-                  className="font-medium text-violet-600 hover:text-violet-500 hover:underline transition-colors duration-200"
+                  className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
                 >
                   Sign up
                 </Link>

@@ -12,7 +12,7 @@ const pricingSchema = {
   '@type': 'Product',
   name: 'Certestic IT Certification Training Platform - Free Beta Access',
   description:
-    'Join our friendly community of IT professionals! Completely free beta access while we build the future of certification training together',
+    'Free beta access to AI-powered IT certification training platform! Practice with unlimited questions while we build the future of certification training',
   brand: {
     '@type': 'Brand',
     name: 'Certestic',
@@ -20,9 +20,8 @@ const pricingSchema = {
   offers: [
     {
       '@type': 'Offer',
-      name: 'Free Beta Community Access',
-      description:
-        'Join our community of passionate learners - completely free while we grow together!',
+      name: 'Free Beta Access',
+      description: 'Free access to all features while we develop the platform!',
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
@@ -40,13 +39,13 @@ const pricingSchema = {
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Certestic - Join Our Free Beta Community! | AI-Powered IT Certification Training',
+  name: 'Certestic - Free Beta Access! | AI-Powered IT Certification Training',
   description:
-    'Come build the future of IT certification training with us! Join our friendly community of passionate learners - everything is completely free while we grow together.',
+    'Get free access to AI-powered IT certification training! Practice with unlimited questions and advance your career with our beta platform.',
   url: 'https://certestic.com/pricing',
   mainEntity: {
     '@type': 'Product',
-    name: 'Certestic IT Certification Training Platform - Free Beta Community Access',
+    name: 'Certestic IT Certification Training Platform - Free Beta Access',
   },
 };
 
@@ -101,7 +100,7 @@ export default function PricingPage() {
                   FREE
                 </div>
                 <p className="text-xs sm:text-sm lg:text-base text-muted-foreground px-2">
-                  Join the community of learners
+                  Start your certification journey
                 </p>
               </div>
 
@@ -133,7 +132,7 @@ export default function PricingPage() {
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                    Community support
+                    Email support & feedback
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
