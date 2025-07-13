@@ -172,14 +172,21 @@ export const resetAuthenticationState = async (): Promise<void> => {
   try {
     console.log('Performing complete authentication state reset...');
 
-    // Clear server-side cookies with retry logic
+    // Clear server-side cookies AND token cache with retry logic
     try {
+      // Clear cookies
       await fetch('/api/auth-cookie/clear', {
         method: 'POST',
       });
-      console.log('Server-side cookies cleared successfully');
-    } catch (cookieError) {
-      console.warn('Failed to clear server-side cookies:', cookieError);
+
+      // Clear server-side token cache to prevent stuck states
+      await fetch('/api/auth-cookie/clear-cache', {
+        method: 'POST',
+      });
+
+      console.log('Server-side cookies and cache cleared successfully');
+    } catch (serverError) {
+      console.warn('Failed to clear server-side state:', serverError);
       // Continue with client-side clearing even if server-side fails
     }
 
@@ -207,10 +214,36 @@ export const resetAuthenticationState = async (): Promise<void> => {
 
       // Force clear cookies via document.cookie as additional measure
       try {
-        document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-        document.cookie = 'joseToken=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+        const cookiesToClear = ['authToken', 'joseToken'];
+        cookiesToClear.forEach((cookieName) => {
+          // Clear for current path
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+          // Clear for root domain
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+          // Clear for parent domain (if subdomain)
+          const parts = window.location.hostname.split('.');
+          if (parts.length > 2) {
+            const parentDomain = '.' + parts.slice(-2).join('.');
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${parentDomain}`;
+          }
+        });
       } catch (e) {
         console.warn('Failed to clear cookies via document.cookie:', e);
+      }
+
+      // Clear any browser cache for auth endpoints
+      try {
+        if ('caches' in window) {
+          caches.keys().then((cacheNames) => {
+            cacheNames.forEach((cacheName) => {
+              if (cacheName.includes('auth') || cacheName.includes('api')) {
+                caches.delete(cacheName);
+              }
+            });
+          });
+        }
+      } catch (e) {
+        console.warn('Failed to clear browser caches:', e);
       }
     }
 

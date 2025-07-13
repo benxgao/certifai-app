@@ -45,6 +45,16 @@ const LoginPage = () => {
   useEffect(() => {
     const clearLegacyAuthState = async () => {
       try {
+        // Check if this is a recovery mode (from AuthGuard emergency timeout)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isRecovery = urlParams.get('recovery') === 'true';
+
+        if (isRecovery) {
+          console.log('Recovery mode detected - performing thorough cache cleanup');
+          // Show user feedback for recovery mode
+          setError('Session recovered. Please sign in again.');
+        }
+
         // First, immediately clear any client-side tokens synchronously
         if (typeof window !== 'undefined') {
           localStorage.removeItem('firebaseToken');
@@ -64,8 +74,22 @@ const LoginPage = () => {
           console.log('No existing Firebase session to sign out');
         }
 
-        // Then clear server-side cookies
+        // Then clear server-side cookies and cache
         await resetAuthenticationState();
+
+        // In recovery mode, also clear server-side token cache
+        if (isRecovery) {
+          try {
+            await fetch('/api/auth/clear-cache', {
+              method: 'POST',
+              credentials: 'include',
+            });
+            console.log('Server-side token cache cleared for recovery');
+          } catch (error) {
+            console.warn('Failed to clear server cache during recovery:', error);
+          }
+        }
+
         console.log('Legacy auth state cleared on signin page load');
       } catch (error) {
         console.error('Failed to clear legacy auth state on signin page load:', error);

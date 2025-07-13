@@ -125,13 +125,23 @@ export async function middleware(request: NextRequest) {
 
         console.log(`middleware: attempting enhanced server-side token refresh at ${refreshUrl}`);
 
+        // Set a timeout for the refresh request to prevent hanging
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+          console.warn('middleware: token refresh timed out after 10 seconds');
+        }, 10000); // 10 second timeout
+
         const refreshResponse = await fetch(refreshUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Cookie: request.headers.get('cookie') || '',
           },
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
 
         if (refreshResponse.ok) {
           console.log('middleware: token refreshed successfully');
@@ -181,13 +191,23 @@ export async function middleware(request: NextRequest) {
         | BASE_URL: ${BASE_URL}
         | url: ${url}`);
 
+      // Set a timeout for the verification request to prevent hanging
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+        console.warn('middleware: token verification timed out after 15 seconds');
+      }, 15000); // 15 second timeout
+
       const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${joseToken}`,
         },
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!res.ok) {
         console.error(`fetch error: ${JSON.stringify(res.status)}`);

@@ -165,7 +165,7 @@ export default function SignUpPage() {
         const successMessage =
           'Account created successfully! Please check your email to verify your account.';
         setSuccess(successMessage);
-        toast.success('Welcome to Certifai!', {
+        toast.success('Welcome to Certestic!', {
           description: 'Please check your email and verify your account to complete registration.',
         });
       } catch (verificationError: any) {
