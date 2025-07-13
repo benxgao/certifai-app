@@ -182,7 +182,7 @@ const CertificationsSection = () => {
               No Certifications Yet
             </h3>
             <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-              You haven&apos;t registered for any certifications yet. Explore our catalog to start
+              You haven&apos;t registered for any certifications yet. Explore the catalog to start
               your learning journey.
             </p>
           </div>

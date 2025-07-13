@@ -73,7 +73,7 @@ export default function LandingPageContent() {
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
                   100% Free
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">While We Build</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">While I Build</div>
               </div>
             </div>
 
@@ -83,7 +83,7 @@ export default function LandingPageContent() {
                   size="lg"
                   className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                 >
-                  Let&apos;s Do This Together!
+                  Start Your Journey!
                 </Button>
               </Link>
               <Link href="/signin">
@@ -527,7 +527,7 @@ export default function LandingPageContent() {
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                     100% Free
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">While We Build</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">While I Build</div>
                 </div>
               </div>
 

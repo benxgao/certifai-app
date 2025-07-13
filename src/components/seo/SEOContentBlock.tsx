@@ -28,7 +28,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
 
         <h3>Topic-Focused Certification Preparation</h3>
         <p>
-          Our platform supports major IT certification programs including AWS, Microsoft Azure,
+          The platform supports major IT certification programs including AWS, Microsoft Azure,
           Google Cloud, Cisco, CompTIA, and many more. Create exams on particular exam topics
           whether you want to focus on cloud computing, cybersecurity, networking, or software
           development certifications. Tell AI to generate exams on your particular needs for

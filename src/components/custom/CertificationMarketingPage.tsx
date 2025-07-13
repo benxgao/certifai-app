@@ -237,7 +237,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
             </CardHeader>
             <CardContent className="pt-0">
               <p className="text-gray-600 text-sm sm:text-base">
-                Achieve success with our proven study methodology and expert-crafted practice exams.
+                Achieve success with my proven study methodology and AI-crafted practice exams.
               </p>
             </CardContent>
           </Card>
@@ -260,7 +260,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
         <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 mx-4 sm:mx-0">
           <CardContent className="p-6 sm:p-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">
-              Why Choose Our Training?
+              Why Choose This Training?
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
               <div>

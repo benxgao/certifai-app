@@ -474,7 +474,7 @@ const LoginPage = () => {
         <AuthLeftSection mode="signin" />
 
         {/* Right Column - Signin Form */}
-        <div className="flex items-center justify-center py-3 sm:py-6 lg:py-12 px-3 sm:px-6 lg:px-8 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full lg:min-h-0 auth-container auth-form-mobile">
           {/* Subtle background decoration for mobile */}
           <div className="absolute inset-0 lg:hidden overflow-hidden">
             <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 dark:from-violet-800/10 dark:to-purple-700/10 rounded-full"></div>
@@ -488,20 +488,23 @@ const LoginPage = () => {
           </div>
 
           <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10">
-            <CardHeader className="text-center space-y-1 pb-2 sm:pb-3 lg:pb-6 px-4 sm:px-6">
+            <CardHeader className="text-center space-y-2 sm:space-y-4 lg:space-y-6 pt-4 sm:pt-8 lg:pt-12 pb-3 sm:pb-6 lg:pb-10 px-6 sm:px-8 lg:px-12">
               {/* Small decorative element */}
-              <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-3 sm:mb-4"></div>
-              <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-200 bg-clip-text text-transparent auth-title-mobile">
+              <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-3 sm:mb-6"></div>
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-200 bg-clip-text text-transparent auth-title-mobile">
                 Sign In
               </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
+              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg">
                 Enter your credentials to access your Certestic account.
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleSignin} autoComplete="on">
-              <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
-                <div className="space-y-1.5 sm:space-y-2">
-                  <Label htmlFor="email" className="text-slate-700 dark:text-slate-200 font-medium">
+              <CardContent className="space-y-4 sm:space-y-6 lg:space-y-10 px-6 sm:px-8 lg:px-12 pb-6 sm:pb-8 lg:pb-12 auth-content-mobile">
+                <div className="space-y-2 sm:space-y-3">
+                  <Label
+                    htmlFor="email"
+                    className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
+                  >
                     Email address
                   </Label>
                   <Input
@@ -514,20 +517,20 @@ const LoginPage = () => {
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
                     autoComplete="on"
-                    className="border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   />
                 </div>
-                <div className="space-y-1.5 sm:space-y-2">
+                <div className="space-y-2 sm:space-y-3">
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="password"
-                      className="text-slate-700 dark:text-slate-200 font-medium"
+                      className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
                     >
                       Password
                     </Label>
                     <Link
                       href="/forgot-password"
-                      className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
+                      className="text-xs sm:text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
                     >
                       Forgot password?
                     </Link>
@@ -542,12 +545,12 @@ const LoginPage = () => {
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
                     autoComplete="on"
-                    className="border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   />
                 </div>
                 {error && (
                   <div
-                    className={`text-sm p-3 rounded-xl border animate-in slide-in-from-top-2 duration-300 ${
+                    className={`text-sm p-4 sm:p-5 lg:p-6 rounded-xl border animate-in slide-in-from-top-2 duration-300 ${
                       error.includes('created successfully') ||
                       error.includes('sent!') ||
                       error.includes('verified successfully') ||
@@ -558,7 +561,7 @@ const LoginPage = () => {
                   >
                     <div className="flex items-start">
                       <svg
-                        className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5"
+                        className="w-4 h-4 mr-3 flex-shrink-0 mt-0.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -582,7 +585,7 @@ const LoginPage = () => {
                       <div className="flex-1">
                         {error}
                         {error.includes('taking longer than expected') && (
-                          <div className="mt-3">
+                          <div className="mt-4">
                             <Button
                               onClick={handleRefresh}
                               variant="outline"
@@ -594,8 +597,8 @@ const LoginPage = () => {
                           </div>
                         )}
                         {showVerificationPrompt && (
-                          <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50 rounded-lg">
-                            <p className="text-sm text-blue-700 dark:text-blue-200 mb-2">
+                          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50 rounded-lg">
+                            <p className="text-sm text-blue-700 dark:text-blue-200 mb-3">
                               Didn&apos;t receive the email? Check your spam folder or resend it.
                             </p>
                             <Button
@@ -615,7 +618,7 @@ const LoginPage = () => {
                 )}
                 <Button
                   type="submit"
-                  className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
+                  className="w-full h-11 sm:h-12 lg:h-14 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] text-sm sm:text-base"
                   disabled={
                     isLoading || isRedirecting || !form.email.trim() || !form.password.trim()
                   }
@@ -630,7 +633,7 @@ const LoginPage = () => {
                   />
                 </Button>
               </CardContent>
-              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-700/70 px-4 sm:px-6">
+              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-4 lg:pt-6 border-t border-slate-100 dark:border-slate-700/70 px-6 sm:px-8 lg:px-12 pb-4 sm:pb-6 lg:pb-10">
                 Don&apos;t have an account?&nbsp;
                 <Link
                   href="/signup"
