@@ -169,26 +169,39 @@ const LoginPage = () => {
       !error.includes('created successfully') &&
       !error.includes('sent!') &&
       !error.includes('verified successfully') &&
-      !error.includes('reset successful');
+      !error.includes('reset successful') &&
+      !error.includes('Session recovered');
 
     if (
       !loading &&
       !authProcessing &&
       !isLoading &&
       firebaseUser &&
+      firebaseUser.emailVerified &&
       (apiUserId || error.includes('Authentication timed out')) && // Allow redirect on timeout error
       !isRedirecting &&
       !isAuthError
     ) {
       console.log('Authentication successful, initiating redirect to /main');
-      // Clear any success messages before redirecting
+      // Clear any success messages and URL parameters before redirecting
       setError('');
       setShowVerificationPrompt(false);
-      // Use a minimal delay to ensure state is fully settled
+
+      // Clear any error parameters from URL
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('error') || url.searchParams.has('recovery')) {
+          url.searchParams.delete('error');
+          url.searchParams.delete('recovery');
+          window.history.replaceState({}, '', url.pathname);
+        }
+      }
+
+      // Use a slightly longer delay to ensure all state and URL cleanup is complete
       setTimeout(() => {
         setIsRedirecting(true);
         router.replace('/main');
-      }, 50);
+      }, 100);
     }
   }, [firebaseUser, loading, authProcessing, isLoading, isRedirecting, error, router, apiUserId]);
 
@@ -375,8 +388,8 @@ const LoginPage = () => {
         return;
       }
 
-      // Small delay to ensure cookie is properly set in browser (reduced from 200ms to 100ms)
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Small delay to ensure cookie is properly set in browser and page state is settled
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Clear any previous error messages on successful authentication
       setError('');

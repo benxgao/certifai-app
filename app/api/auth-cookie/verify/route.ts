@@ -31,11 +31,20 @@ async function validateAndGetFirebaseToken(authorization: string | null): Promis
 
   // Check if token has unique identifier (jti) - legacy tokens won't have this
   if (!jti) {
-    console.error('Token missing unique identifier - legacy token detected');
-    throw {
-      message: 'Legacy token detected, please sign in again',
-      status: 401,
-    } as TokenValidationError;
+    console.log('Token missing unique identifier - checking if recent token');
+
+    // Check if token is recent (less than 2 hours old) - allow recent tokens without jti
+    const tokenAge = Math.floor(Date.now() / 1000) - issuedAt;
+    if (tokenAge > 7200) {
+      // 2 hours
+      console.error('Legacy token older than 2 hours detected');
+      throw {
+        message: 'Legacy token detected, please sign in again',
+        status: 401,
+      } as TokenValidationError;
+    } else {
+      console.log('Recent token without jti accepted');
+    }
   }
 
   // Check if token is too old (older than 24 hours should be refreshed for security)

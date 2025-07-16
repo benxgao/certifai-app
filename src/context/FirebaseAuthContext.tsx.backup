@@ -84,16 +84,28 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   }, [firebaseUser, firebaseToken, refreshToken]);
 
   useEffect(() => {
-    let unsubscribe: (() => void) | null = null;
-
     // Check for session expiration on component mount
     const urlParams = new URLSearchParams(window.location.search);
     const sessionError = urlParams.get('error');
 
-    if (
-      sessionError &&
-      (sessionError.includes('Session expired') || sessionError === 'session_expired')
-    ) {
+    if (sessionError && sessionError.includes('Session expired')) {
+      console.log('Session expiration detected, clearing auth state');
+      setFirebaseUser(null);
+      setFirebaseToken(null);
+      setApiUserId(null);
+      clearAuthCookie();
+      setLoading(false);
+      return;
+    }
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | null = null;
+    
+    // Check for session expiration on component mount
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionError = urlParams.get('error');
+
+    if (sessionError && (sessionError.includes('Session expired') || sessionError === 'session_expired')) {
       console.log('Session expiration detected, clearing auth state');
       setFirebaseUser(null);
       setFirebaseToken(null);

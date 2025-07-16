@@ -33,8 +33,12 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       if (error && (error.includes('session_expired') || error.includes('Session expired'))) {
         console.log('Session expiration detected in AuthGuard');
         setSessionExpired(true);
-        // Clear URL parameter
-        window.history.replaceState({}, '', window.location.pathname);
+        // Clear URL parameter immediately
+        urlParams.delete('error');
+        const newUrl = urlParams.toString()
+          ? `${window.location.pathname}?${urlParams.toString()}`
+          : window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
         // Redirect to signin after a brief moment
         setTimeout(() => {
           router.push(

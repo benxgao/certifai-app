@@ -31,6 +31,43 @@ import { COOKIE_AUTH_NAME } from './src/config/constants';
  * and the cookie contains a Jose token, and Firebase Token can be seen by decoding joseToken.
  */
 export async function middleware(request: NextRequest) {
+  // Skip middleware for static assets and images
+  const pathname = request.nextUrl.pathname;
+
+  // Define static file extensions that should bypass authentication
+  const staticFileExtensions = [
+    '.svg',
+    '.png',
+    '.jpg',
+    '.jpeg',
+    '.gif',
+    '.webp',
+    '.ico',
+    '.css',
+    '.js',
+    '.woff',
+    '.woff2',
+    '.ttf',
+    '.eot',
+    '.json',
+    '.xml',
+    '.txt',
+    '.pdf',
+    '.doc',
+    '.docx',
+    '.zip',
+  ];
+
+  // Check if the request is for a static file or image
+  const isStaticFile = staticFileExtensions.some((ext) => pathname.endsWith(ext));
+  const isImagePath = pathname.startsWith('/images/') || pathname.includes('/_next/image/');
+  const isNextStatic = pathname.startsWith('/_next/static/');
+
+  if (isStaticFile || isImagePath || isNextStatic) {
+    console.log(`middleware: skipping static asset: ${pathname}`);
+    return NextResponse.next();
+  }
+
   try {
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
     const legacyToken = request.cookies.get('joseToken')?.value; // Check for legacy cookie
@@ -89,15 +126,26 @@ export async function middleware(request: NextRequest) {
     }
 
     // For additional security, we can check if the token has our unique identifier (jti)
-    // Tokens without jti are likely legacy tokens
+    // Tokens without jti are likely legacy tokens, but we'll give them a grace period
     if (!jti) {
-      console.log('middleware: Token missing unique identifier, treating as legacy');
-      const response = NextResponse.redirect(
-        new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
-      );
-      response.cookies.delete(COOKIE_AUTH_NAME);
-      response.cookies.delete('joseToken');
-      return response;
+      console.log('middleware: Token missing unique identifier - checking if recent token');
+
+      // Check if token is recent (less than 1 hour old) - allow recent tokens without jti
+      const tokenIssuedAt = decodedPayload.iat || 0;
+      const tokenAge = Math.floor(Date.now() / 1000) - tokenIssuedAt;
+
+      if (tokenAge > 3600) {
+        // 1 hour
+        console.log('middleware: Legacy token older than 1 hour, requiring refresh');
+        const response = NextResponse.redirect(
+          new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
+        );
+        response.cookies.delete(COOKIE_AUTH_NAME);
+        response.cookies.delete('joseToken');
+        return response;
+      } else {
+        console.log('middleware: Recent token without jti accepted, will refresh on next request');
+      }
     }
 
     if (exp && exp < Date.now() / 1000) {
@@ -257,6 +305,7 @@ export async function middleware(request: NextRequest) {
 }
 
 // Add the paths that should be protected
+// Only protect /main/* paths, exclude static assets via regex
 export const config = {
   matcher: ['/main/:path*'],
 };
