@@ -15,6 +15,7 @@ export interface CreateExamResponse {
   total_questions: number;
   token_cost: number;
   total_batches: number;
+  topics_generated: number; // NEW: Number of AI-generated topics
   custom_prompt: string;
 }
 

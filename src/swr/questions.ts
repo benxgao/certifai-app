@@ -18,7 +18,7 @@ export interface Question {
   difficulty: string;
   // topic_id: number;
   cert_id: number;
-  exam_topic?: string | null; // Add exam topic field
+  exam_topic?: string | null; // AI-generated exam topic for this question
   user_answer_id: string;
   explanations?: string;
   user_answer_is_correct: boolean | null;
@@ -147,5 +147,48 @@ export function useSubmitAnswer() {
     submitError: error, // Error state of the mutation
     submitData: data, // Data returned from a successful mutation
     resetSubmitState: reset, // Function to reset the mutation state
+  };
+}
+
+// ...existing code...
+
+// Utility function to extract topics from questions
+export function extractTopicsFromQuestions(questions: Question[]): {
+  topics: Array<{
+    topic_name: string;
+    question_count: number;
+    question_ids: string[];
+  }>;
+  totalTopics: number;
+  totalQuestions: number;
+} {
+  if (!questions || questions.length === 0) {
+    return { topics: [], totalTopics: 0, totalQuestions: 0 };
+  }
+
+  // Group questions by topic
+  const topicMap = new Map<string, { question_count: number; question_ids: string[] }>();
+
+  questions.forEach((question) => {
+    const topicName = question.exam_topic || 'General';
+    if (!topicMap.has(topicName)) {
+      topicMap.set(topicName, { question_count: 0, question_ids: [] });
+    }
+    const topicData = topicMap.get(topicName)!;
+    topicData.question_count++;
+    topicData.question_ids.push(question.quiz_question_id);
+  });
+
+  // Convert to array format
+  const topics = Array.from(topicMap.entries()).map(([topic_name, data]) => ({
+    topic_name,
+    question_count: data.question_count,
+    question_ids: data.question_ids,
+  }));
+
+  return {
+    topics,
+    totalTopics: topics.length,
+    totalQuestions: questions.length,
   };
 }

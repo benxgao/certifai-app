@@ -157,7 +157,20 @@ function CertificationExamsContent() {
       setIsCreateModalOpen(false);
 
       if (result.data?.status === 'QUESTIONS_GENERATING') {
-        console.log('Exam created successfully. Questions are being generated in the background.');
+        const topicsCount = result.data.topics_generated || result.data.total_questions;
+        const successMessage = result.data.topics_generated
+          ? `Exam created successfully! ${topicsCount} AI-generated topics created. Questions are being generated in the background.`
+          : 'Exam created successfully. Questions are being generated in the background.';
+
+        console.log(successMessage);
+
+        // Show a more detailed success notification if available
+        if (result.data.topics_generated) {
+          // You could add a toast notification here in the future
+          console.log(
+            `AI generated ${topicsCount} specialized topics for ${displayCertification?.name} certification`,
+          );
+        }
       }
     } catch (error) {
       console.error('Error creating exam:', error);
@@ -330,34 +343,32 @@ function CertificationExamsContent() {
                               </span>
                             </TooltipTrigger>
                             <TooltipContent sideOffset={4} className="max-w-[300px]">
-                              Enter keywords or topics to focus your exam (e.g., &quot;risk
-                              management, portfolio theory&quot;). Leave blank for a general exam.
+                              Enter keywords or topics to focus your exam (e.g., &quot;security best
+                              practices, network architecture&quot;). Our AI will generate
+                              specialized topics based on your input.
                             </TooltipContent>
                           </Tooltip>
                         </div>
                         <Textarea
                           id="custom-prompt"
-                          placeholder="Keywords like a concept, a topic, etc"
+                          placeholder="Enter keywords, topics, or concepts to focus your exam (e.g., 'security best practices', 'network architecture', 'cost optimization')"
                           value={customPromptText}
                           onChange={(e) => setCustomPromptText(e.target.value)}
                           rows={3}
                         />
                       </div>
-                      <div className="flex items-center gap-1 pt-2">
-                        <span className="text-sm text-slate-600 dark:text-slate-400">
-                          Generation will happen in the background
-                        </span>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="cursor-pointer text-slate-400 dark:text-slate-500">
-                              <FaLightbulb className="w-3 h-3" />
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent sideOffset={4} className="max-w-[280px]">
-                            Questions will be generated in the background. You can monitor the
-                            progress in your exams list.
-                          </TooltipContent>
-                        </Tooltip>
+                      <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 rounded-lg p-3 mt-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                            AI Topic Generation
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+                          Our AI will generate {numberOfQuestions} specialized topics tailored to
+                          the {displayCertification?.name} certification. Questions are created in
+                          the background - you can monitor progress in your exams list.
+                        </p>
                       </div>
                     </div>
                     <DialogFooter>
@@ -790,8 +801,8 @@ function CertificationExamsContent() {
                                 'Exam Submitted Successfully'}
                               {examStatus === 'in_progress' && 'Resume Your Exam'}
                               {examStatus === 'generating' && 'Questions Being Generated'}
-                              {examStatus === 'generation_failed' && 'Question Generation Failed'}
-                              {examStatus === 'ready' && 'Ready to Begin Assessment'}
+                              {examStatus === 'generation_failed' && 'AI Topic Generation Failed'}
+                              {examStatus === 'ready' && 'AI Topics Ready - Begin Assessment'}
                               {(examStatus === 'not_started' ||
                                 (!examStatus && !exam.started_at)) &&
                                 'Begin Your Assessment'}
@@ -822,11 +833,11 @@ function CertificationExamsContent() {
                                 'Your responses are being evaluated'}
                               {examStatus === 'in_progress' && 'Continue from where you left off'}
                               {examStatus === 'generating' &&
-                                'Please wait while we prepare your personalized questions'}
+                                'AI is generating specialized topics and questions for your exam'}
                               {examStatus === 'generation_failed' &&
-                                'Please contact support or try creating a new exam'}
+                                'Topic or question generation failed - please contact support or try creating a new exam'}
                               {examStatus === 'ready' &&
-                                'Your personalized exam questions are ready'}
+                                'Your personalized exam with AI-generated topics is ready'}
                               {(examStatus === 'not_started' ||
                                 (!examStatus && !exam.started_at)) &&
                                 'Demonstrate your knowledge and earn your certification'}

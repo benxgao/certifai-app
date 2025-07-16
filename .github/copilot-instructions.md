@@ -1,8 +1,8 @@
-# Certifai AI Coding Instructions
+# certifai AI Coding Instructions
 
 ## Architecture Overview
 
-**Certifai** is a dual-repo AI-powered certification training platform:
+**certifai** is a dual-repo AI-powered certification training platform:
 
 - `certifai-app`: Next.js 15 frontend with App Router, TypeScript, Tailwind CSS, Firebase Auth
 - `certifai-api`: Firebase Functions backend with Express.js, Prisma, PostgreSQL, Redis caching

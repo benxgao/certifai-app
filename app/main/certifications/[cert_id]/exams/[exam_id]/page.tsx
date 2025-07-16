@@ -14,10 +14,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'; //  npx shadcn@latest add dialog
-import { useExamQuestions, Question, useSubmitAnswer } from '@/swr/questions'; // Import useSubmitAnswer
+import {
+  useExamQuestions,
+  Question,
+  useSubmitAnswer,
+  extractTopicsFromQuestions,
+} from '@/swr/questions'; // Import useSubmitAnswer and extractTopicsFromQuestions
 import { useSubmitExam, useExamState } from '@/swr/exams'; // Import useSubmitExam and useExamState
 import ErrorMessage from '@/components/custom/ErrorMessage'; // Import ErrorMessage
 import PageLoader from '@/components/custom/PageLoader'; // Import PageLoader
+import ExamTopicsDisplay from '@/components/custom/ExamTopicsDisplay'; // Import ExamTopicsDisplay
 import { Checkbox } from '@/components/ui/checkbox'; // Import Checkbox
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import {
@@ -57,10 +63,7 @@ export default function ExamAttemptPage() {
     examId,
   );
 
-  // Extract values from exam state for easier access
-  const score = examState?.score ?? null;
-  const submittedAt = examState?.submitted_at ?? null;
-
+  // Get exam questions first
   const {
     questions,
     pagination,
@@ -68,6 +71,17 @@ export default function ExamAttemptPage() {
     isQuestionsError,
     mutateQuestions, // Ensure mutateQuestions is destructured
   } = useExamQuestions(questionsApiUrl);
+
+  // Use the SWR hook to get exam topics from questions
+  const topicData = React.useMemo(() => {
+    return extractTopicsFromQuestions(questions || []);
+  }, [questions]);
+
+  const { topics, totalTopics, totalQuestions } = topicData;
+
+  // Extract values from exam state for easier access
+  const score = examState?.score ?? null;
+  const submittedAt = examState?.submitted_at ?? null;
 
   // Use the new SWR Mutation hook for submitting answers
   const { submitAnswer, isAnswering, submitError } = useSubmitAnswer();
@@ -522,6 +536,17 @@ export default function ExamAttemptPage() {
         {/* Display general submission error messages */}
         <ErrorMessage error={submissionResult?.error} className="mt-4" />
         <ErrorMessage error={submitExamError} className="mt-4" />
+
+        {/* Display AI-Generated Topics */}
+        {topics && topics.length > 0 && (
+          <ExamTopicsDisplay
+            topics={topics}
+            totalTopics={totalTopics}
+            totalQuestions={totalQuestions}
+            isLoading={isLoadingQuestions}
+            className="mb-6"
+          />
+        )}
 
         {questions && questions.length > 0 ? (
           <div className="space-y-6 sm:space-y-8">
