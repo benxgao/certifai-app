@@ -48,11 +48,15 @@ const LoginPage = () => {
         // Check if this is a recovery mode (from AuthGuard emergency timeout)
         const urlParams = new URLSearchParams(window.location.search);
         const isRecovery = urlParams.get('recovery') === 'true';
+        const hasSessionExpired = urlParams.get('error') === 'session_expired';
 
         if (isRecovery) {
           console.log('Recovery mode detected - performing thorough cache cleanup');
           // Show user feedback for recovery mode
           setError('Session recovered. Please sign in again.');
+        } else if (hasSessionExpired) {
+          console.log('Session expiration detected - clearing auth state immediately');
+          setError('Your session has expired. Please sign in again.');
         }
 
         // First, immediately clear any client-side tokens synchronously
@@ -77,16 +81,16 @@ const LoginPage = () => {
         // Then clear server-side cookies and cache
         await resetAuthenticationState();
 
-        // In recovery mode, also clear server-side token cache
-        if (isRecovery) {
+        // In recovery mode or session expiry, also clear server-side token cache
+        if (isRecovery || hasSessionExpired) {
           try {
             await fetch('/api/auth/clear-cache', {
               method: 'POST',
               credentials: 'include',
             });
-            console.log('Server-side token cache cleared for recovery');
+            console.log('Server-side token cache cleared for recovery/session expiry');
           } catch (error) {
-            console.warn('Failed to clear server cache during recovery:', error);
+            console.warn('Failed to clear server cache during recovery/session expiry:', error);
           }
         }
 
@@ -197,7 +201,11 @@ const LoginPage = () => {
     const passwordResetParam = urlParams.get('passwordReset');
 
     if (errorParam) {
-      setError(decodeURIComponent(errorParam));
+      if (errorParam === 'session_expired') {
+        setError('Your session has expired. Please sign in again.');
+      } else {
+        setError(decodeURIComponent(errorParam));
+      }
     }
 
     if (signupParam === 'success') {

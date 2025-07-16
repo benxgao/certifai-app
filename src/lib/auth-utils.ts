@@ -282,3 +282,34 @@ export const isCurrentJWTToken = (token: string): boolean => {
     return false;
   }
 };
+
+/**
+ * Handle session expiration specifically
+ */
+export const handleSessionExpiration = (): boolean => {
+  if (typeof window === 'undefined') return false;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const error = urlParams.get('error');
+
+  return (
+    error === 'session_expired' ||
+    (error !== null && (error.includes('session_expired') || error.includes('Session expired')))
+  );
+};
+
+/**
+ * Clear session expired error from URL
+ */
+export const clearSessionExpiredFromUrl = (): void => {
+  if (typeof window === 'undefined') return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('error')) {
+    urlParams.delete('error');
+    const newUrl = `${window.location.pathname}${
+      urlParams.toString() ? '?' + urlParams.toString() : ''
+    }`;
+    window.history.replaceState({}, '', newUrl);
+  }
+};

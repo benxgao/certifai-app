@@ -84,6 +84,20 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   }, [firebaseUser, firebaseToken, refreshToken]);
 
   useEffect(() => {
+    // Check for session expiration on component mount
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionError = urlParams.get('error');
+
+    if (sessionError && sessionError.includes('Session expired')) {
+      console.log('Session expiration detected, clearing auth state');
+      setFirebaseUser(null);
+      setFirebaseToken(null);
+      setApiUserId(null);
+      clearAuthCookie();
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       console.log(`FirebaseAuthProvider auth state changed
         | firebase.uid: ${JSON.stringify(authUser?.uid)}
@@ -98,7 +112,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         // Clear cookies to prevent cross-user contamination
         clearAuthCookie();
         // Small delay to ensure state is cleared
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
       if (authUser) {

@@ -20,13 +20,35 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const [apiTimeout, setApiTimeout] = useState(false);
   const [emergencyTimeout, setEmergencyTimeout] = useState(false);
   const [isRecovering, setIsRecovering] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
   const router = useRouter();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const loadingStartTime = useRef<number>(Date.now());
 
+  // Check for session expiration on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      if (error && (error.includes('session_expired') || error.includes('Session expired'))) {
+        console.log('Session expiration detected in AuthGuard');
+        setSessionExpired(true);
+        // Clear URL parameter
+        window.history.replaceState({}, '', window.location.pathname);
+        // Redirect to signin after a brief moment
+        setTimeout(() => {
+          router.push(
+            '/signin?error=' +
+              encodeURIComponent('Your session has expired. Please sign in again.'),
+          );
+        }, 100);
+      }
+    }
+  }, [router]);
+
   // Set a 5-second timeout if API user ID doesn't load (increased from 3s for better stability)
   useEffect(() => {
-    if (firebaseUser && !apiUserId && !apiTimeout) {
+    if (firebaseUser && !apiUserId && !apiTimeout && !sessionExpired) {
       console.log('Starting API user ID timeout timer (5 seconds)');
       const timer = setTimeout(() => {
         console.warn('API user ID not available after 5 seconds - proceeding without it');
@@ -34,7 +56,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [firebaseUser, apiUserId, apiTimeout]);
+  }, [firebaseUser, apiUserId, apiTimeout, sessionExpired]);
 
   // Reset API timeout when apiUserId becomes available
   useEffect(() => {
@@ -52,23 +74,24 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       emailVerified: firebaseUser?.emailVerified,
       apiUserId: !!apiUserId,
       apiTimeout,
+      sessionExpired,
     });
-  }, [loading, firebaseUser, apiUserId, apiTimeout]);
+  }, [loading, firebaseUser, apiUserId, apiTimeout, sessionExpired]);
 
   // Check if user needs email verification
   useEffect(() => {
-    if (firebaseUser && !firebaseUser.emailVerified) {
+    if (firebaseUser && !firebaseUser.emailVerified && !sessionExpired) {
       console.log('User email not verified, redirecting to signin');
       router.push(
         '/signin?error=' +
           encodeURIComponent('Please verify your email address before accessing your account.'),
       );
     }
-  }, [firebaseUser, router]);
+  }, [firebaseUser, router, sessionExpired]);
 
   // Emergency redirect if user is stuck in loading state too long (20 seconds)
   useEffect(() => {
-    if (loading || (firebaseUser && !apiUserId && !apiTimeout)) {
+    if ((loading || (firebaseUser && !apiUserId && !apiTimeout)) && !sessionExpired) {
       const emergencyTimer = setTimeout(() => {
         console.error('AuthGuard: User stuck in loading state for 20 seconds, forcing redirect');
         router.push(
@@ -79,13 +102,13 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
       return () => clearTimeout(emergencyTimer);
     }
-  }, [loading, firebaseUser, apiUserId, apiTimeout, router]);
+  }, [loading, firebaseUser, apiUserId, apiTimeout, router, sessionExpired]);
 
   // Emergency timeout to prevent infinite loading
   useEffect(() => {
     loadingStartTime.current = Date.now();
 
-    if (loading) {
+    if (loading && !sessionExpired) {
       // Clear any existing timeout
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -93,7 +116,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
       // Set emergency timeout - if loading takes more than 15 seconds, trigger recovery
       timeoutRef.current = setTimeout(() => {
-        if (loading) {
+        if (loading && !sessionExpired) {
           console.warn('AuthGuard emergency timeout triggered after 15 seconds');
           setEmergencyTimeout(true);
         }
@@ -112,7 +135,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [loading]);
+  }, [loading, sessionExpired]);
 
   // Handle emergency recovery
   const handleEmergencyRecovery = async () => {
@@ -155,7 +178,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   };
 
   // Show emergency recovery UI if timeout triggered
-  if (emergencyTimeout || isRecovering) {
+  if ((emergencyTimeout || isRecovering) && !sessionExpired) {
     const loadingDuration = Math.round((Date.now() - loadingStartTime.current) / 1000);
 
     return (
@@ -211,7 +234,21 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
-  // Case 1: Still checking authentication - show loading
+  // Case 1: Session expired - show loading while redirecting
+  if (sessionExpired) {
+    return (
+      <PageLoader
+        isLoading={true}
+        text="Session expired. Redirecting to sign in..."
+        showSpinner={true}
+        variant="redirect"
+        fullScreen={true}
+        showBrand={true}
+      />
+    );
+  }
+
+  // Case 2: Still checking authentication - show loading
   if (loading) {
     return (
       <PageLoader
@@ -225,7 +262,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
-  // Case 2: User authenticated but email not verified - show loading while redirect happens
+  // Case 3: User authenticated but email not verified - show loading while redirect happens
   if (firebaseUser && !firebaseUser.emailVerified) {
     return (
       <PageLoader
@@ -239,7 +276,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
-  // Case 3: User authenticated but waiting for API setup - show loading (max 5 seconds)
+  // Case 4: User authenticated but waiting for API setup - show loading (max 5 seconds)
   if (firebaseUser && !apiUserId && !apiTimeout) {
     return (
       <PageLoader
@@ -255,7 +292,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
-  // Case 4: User is authenticated and verified - render the protected content
+  // Case 5: User is authenticated and verified - render the protected content
   // Allow access if we have a verified Firebase user, regardless of API timeout
   if (firebaseUser && firebaseUser.emailVerified && (apiUserId || apiTimeout)) {
     if (apiTimeout && !apiUserId) {
@@ -264,7 +301,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     return <>{children}</>;
   }
 
-  // Case 5: User not authenticated - show loading while redirect happens
+  // Case 6: User not authenticated - show loading while redirect happens
   return (
     <PageLoader
       isLoading={true}
