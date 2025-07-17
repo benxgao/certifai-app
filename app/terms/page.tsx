@@ -14,7 +14,7 @@ export default function TermsOfService() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Header */}
-      <LandingHeader showFeaturesLink={false} />
+      <LandingHeader />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">

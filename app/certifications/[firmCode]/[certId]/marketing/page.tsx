@@ -123,7 +123,7 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header with Navigation */}
-      <LandingHeader showFeaturesLink={false} />
+      <LandingHeader />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <Breadcrumb items={breadcrumbItems} />

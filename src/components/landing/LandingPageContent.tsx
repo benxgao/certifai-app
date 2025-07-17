@@ -9,7 +9,7 @@ export default function LandingPageContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
       {/* Header with Navigation */}
-      <LandingHeader showFeaturesLink={true} />
+      <LandingHeader />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden" role="banner">

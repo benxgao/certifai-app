@@ -48,7 +48,7 @@ export default async function CertificationsPage({
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
       {/* Header with Navigation */}
-      <LandingHeader showFeaturesLink={false} />
+      <LandingHeader />
 
       {/* Hero Section with decorative background */}
       <section className="relative overflow-hidden" role="banner">
@@ -81,8 +81,8 @@ export default async function CertificationsPage({
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light">
               Explore certification programs from leading technology companies and prepare for IT
-              certification by self exams. Each certification is designed to validate your skills and
-              advance your career with AI-powered exam simulation technology.
+              certification by self exams. Each certification is designed to validate your skills
+              and advance your career with AI-powered exam simulation technology.
             </p>
           </div>
         </div>
@@ -130,7 +130,10 @@ function CertificationsOverviewSkeleton() {
 
       {/* Firm cards skeleton */}
       {[1, 2, 3].map((i) => (
-        <div key={i} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6">
+        <div
+          key={i}
+          className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6"
+        >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
             <div className="space-y-2">

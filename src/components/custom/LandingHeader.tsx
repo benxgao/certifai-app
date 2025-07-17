@@ -5,22 +5,16 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 
-interface LandingHeaderProps {
-  showFeaturesLink?: boolean;
-}
-
-export default function LandingHeader({ showFeaturesLink = true }: LandingHeaderProps) {
+export default function LandingHeader() {
   const [navOpen, setNavOpen] = React.useState(false);
   const pathname = usePathname();
 
   // Define navigation items in consistent order
   const navigationItems = [
     { href: '/', label: 'Home' },
-    ...(showFeaturesLink ? [{ href: '/#features', label: 'Features' }] : []),
     { href: '/certifications', label: 'Certifications' },
-    { href: '/about', label: 'About' },
     { href: '/pricing', label: 'Pricing' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/about', label: 'About' },
   ];
 
   // Helper function to determine if a nav item is active
@@ -56,8 +50,8 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
                   key={item.href}
                   href={item.href}
                   className={`text-sm font-medium transition-all duration-200 relative group px-3 py-2 rounded-lg ${
-                    isActive 
-                      ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20' 
+                    isActive
+                      ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
                       : 'text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                   }`}
                 >
@@ -71,8 +65,8 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
             <Link
               href="/signin"
               className={`text-sm font-medium transition-all duration-200 relative group px-3 py-2 rounded-lg ${
-                pathname === '/signin' 
-                  ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20' 
+                pathname === '/signin'
+                  ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
                   : 'text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
               }`}
             >
@@ -82,9 +76,9 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
               )}
             </Link>
             <Link href="/signup">
-              <Button 
-                variant="default" 
-                size="sm" 
+              <Button
+                variant="default"
+                size="sm"
                 className="rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 px-6"
               >
                 Get Started
@@ -148,12 +142,8 @@ export default function LandingHeader({ showFeaturesLink = true }: LandingHeader
                   Sign In
                 </Link>
                 <div className="pt-2">
-                  <Link
-                    href="/signup"
-                    className="block w-full"
-                    onClick={() => setNavOpen(false)}
-                  >
-                    <Button 
+                  <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
+                    <Button
                       className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                       size="sm"
                     >

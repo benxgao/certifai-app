@@ -92,7 +92,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="flex flex-col min-h-screen auth-page-mobile">
       {/* Header */}
-      <LandingHeader showFeaturesLink={false} />
+      <LandingHeader />
 
       <div className="flex-1 flex items-center justify-center py-6 lg:py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50">
         {/* Subtle background decoration */}

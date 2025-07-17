@@ -353,7 +353,7 @@ export default function SignUpPage() {
     return (
       <div className="flex flex-col min-h-screen auth-page-mobile">
         {/* Header */}
-        <LandingHeader showFeaturesLink={false} />
+        <LandingHeader />
 
         <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 lg:bg-none auth-container">
           {/* Left Column - Welcome Section */}
@@ -499,7 +499,7 @@ export default function SignUpPage() {
   return (
     <div className="flex flex-col min-h-screen auth-page-mobile">
       {/* Header */}
-      <LandingHeader showFeaturesLink={false} />
+      <LandingHeader />
 
       <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 lg:bg-none auth-container">
         {/* Left Column - Welcome Section */}

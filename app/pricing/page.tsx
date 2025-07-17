@@ -64,7 +64,7 @@ export default function PricingPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
         {/* Header with Navigation */}
-        <LandingHeader showFeaturesLink={true} />
+        <LandingHeader />
 
         {/* Main Content */}
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20" role="main">

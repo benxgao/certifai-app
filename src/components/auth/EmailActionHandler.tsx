@@ -358,7 +358,7 @@ export default function EmailActionHandler() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader showFeaturesLink={false} />
+      <LandingHeader />
 
       <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <Card className="w-full max-w-md bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm">
