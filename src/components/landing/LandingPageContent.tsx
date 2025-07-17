@@ -28,7 +28,7 @@ export default function LandingPageContent() {
                 aria-hidden="true"
               ></div>
               <span className="text-xs sm:text-sm font-medium text-violet-700 dark:text-violet-300">
-                Join My Beta Adventure!
+                Free Beta Access Available!
               </span>
             </div>
 
@@ -41,10 +41,10 @@ export default function LandingPageContent() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Hey there! I&apos;m building something I wish I had when studying for my own
-              certifications. Create custom practice exams on exactly what you need to learn, tell
-              the AI to focus on your weak spots, and actually enjoy the learning process. It&apos;s
-              like having a study buddy who never gets tired of making practice questions!
+              Get AI-powered practice exams tailored to your specific learning needs. Create custom
+              study sessions focused on your weak spots and master IT certifications faster. Our
+              smart AI adapts to your learning style and creates targeted questions that actually
+              help you pass your exams.
             </p>
 
             {/* Enhanced Stats with SEO keywords */}
@@ -61,9 +61,9 @@ export default function LandingPageContent() {
               ></div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Smart AI
+                  Advanced AI
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Study Helper</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Exam Generator</div>
               </div>
               <div
                 className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
@@ -73,7 +73,7 @@ export default function LandingPageContent() {
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
                   100% Free
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">While I Build</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
               </div>
             </div>
 
@@ -83,7 +83,7 @@ export default function LandingPageContent() {
                   size="lg"
                   className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                 >
-                  Start Your Journey!
+                  Start Learning Now!
                 </Button>
               </Link>
               <Link href="/signin">
@@ -92,7 +92,7 @@ export default function LandingPageContent() {
                   size="lg"
                   className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                 >
-                  I&apos;m Already In!
+                  Sign In
                 </Button>
               </Link>
             </div>
@@ -118,7 +118,7 @@ export default function LandingPageContent() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Free while I build it
+                Free beta access
               </div>
               <div className="hidden sm:block">•</div>
               <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export default function LandingPageContent() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Your feedback shapes it
+                Personalized learning
               </div>
             </div>
           </div>
@@ -215,30 +215,32 @@ export default function LandingPageContent() {
                 />
               </svg>
               <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                What I&apos;m Building For You
+                Platform Features
               </span>
             </div>
 
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
               Study Smart with AI &
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
-                Actually Enjoy Learning
+                Master Your Certifications
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              I&apos;m creating custom practice exams that focus on exactly what you need to learn.
-              Tell the AI what you&apos;re struggling with, and it&apos;ll create questions to help
-              you master those concepts. It&apos;s still early days, but I&apos;m building this
-              based on real feedback from people like you!
+              Our AI creates custom practice exams that focus exactly on what you need to learn. Get
+              targeted questions for your weak spots and master certification concepts faster with
+              personalized study sessions designed for your success.
             </p>
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {/* Feature 1: AI-Generated Questions */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-transparent dark:from-violet-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+              <div className="relative w-20 h-20 bg-gradient-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-400/20 to-violet-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <svg
-                  className="w-8 h-8 text-violet-600 dark:text-violet-400"
+                  className="relative w-10 h-10 text-violet-600 dark:text-violet-400 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -251,33 +253,38 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300">
-                AI Study Buddy
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
+                AI-Powered Learning
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Think of it as having a super smart study partner who never gets tired of making
-                practice questions! Tell the AI exactly what you want to focus on, and it&apos;ll
-                create custom exams just for you. The more you use it, the better it gets at helping
-                you learn.
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+                Advanced AI technology that creates personalized practice questions tailored to your
+                learning needs. Specify exactly what topics you want to focus on, and get custom
+                exams that adapt to your knowledge level and help you master challenging concepts.
               </p>
-              <div className="mt-6 flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">See how it works</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+              <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 group-hover:translate-x-3 transition-all duration-300">
+                <span className="mr-3">Learn more</span>
+                <div className="w-8 h-8 bg-violet-100 dark:bg-violet-900/40 rounded-full flex items-center justify-center group-hover:bg-violet-200 dark:group-hover:bg-violet-800/60 transition-colors duration-300">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* Feature 2: Real Exam Simulation */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent dark:from-blue-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+
+              <div className="relative w-20 h-20 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <svg
-                  className="w-8 h-8 text-blue-600 dark:text-blue-400"
+                  className="relative w-10 h-10 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -290,32 +297,38 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-                Practice Like It&apos;s the Real Thing
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                Realistic Exam Simulation
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                I&apos;ve recreated that slightly stressful exam feeling (but in a good way!) with
-                timed sessions and realistic question formats. Practice until you feel confident,
-                then go crush that real certification exam!
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+                Experience authentic exam conditions with timed sessions and realistic question
+                formats. Practice with confidence-building exercises that mirror actual
+                certification exams, helping you feel prepared and reduce test anxiety.
               </p>
-              <div className="mt-6 flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Try it out</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+              <div className="relative mt-auto flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:text-blue-700 dark:group-hover:text-blue-300 group-hover:translate-x-3 transition-all duration-300">
+                <span className="mr-3">Try demo</span>
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/60 transition-colors duration-300">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* Feature 3: Performance Analytics */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900/30 dark:to-emerald-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-emerald-300/60 dark:hover:border-emerald-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent dark:from-emerald-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+
+              <div className="relative w-20 h-20 bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 dark:from-emerald-900/40 dark:via-emerald-800/40 dark:to-emerald-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <svg
-                  className="w-8 h-8 text-emerald-600 dark:text-emerald-400"
+                  className="relative w-10 h-10 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -328,32 +341,38 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
-                See How You&apos;re Doing
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300">
+                Progress Analytics
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                I&apos;m working on some cool ways to show your progress and help you spot what
-                needs more work. It&apos;s still pretty basic right now, but getting better based on
-                what people tell me they need!
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+                Track your learning progress with detailed analytics and performance insights.
+                Identify knowledge gaps, monitor improvement over time, and get data-driven
+                recommendations for more effective study sessions.
               </p>
-              <div className="mt-6 flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Check it out</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+              <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 group-hover:translate-x-3 transition-all duration-300">
+                <span className="mr-3">View analytics</span>
+                <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/60 transition-colors duration-300">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* Feature 4: Custom Exam Creation */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-amber-300/60 dark:hover:border-amber-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-transparent to-transparent dark:from-amber-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+
+              <div className="relative w-20 h-20 bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300 dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <svg
-                  className="w-8 h-8 text-amber-600 dark:text-amber-400"
+                  className="relative w-10 h-10 text-amber-600 dark:text-amber-400 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -366,33 +385,38 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300">
-                Focus on What You Need
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
+                Targeted Study Sessions
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                This is my favorite feature! Tell the AI exactly what you&apos;re struggling with -
-                like &quot;I need help with AWS security groups&quot; - and it&apos;ll create
-                targeted questions just for that topic. No more wasting time on stuff you already
-                know!
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+                Focus your study time efficiently with AI-generated questions for specific topics.
+                Whether you need help with AWS security groups or specific certification domains,
+                get targeted practice that addresses your exact learning needs.
               </p>
-              <div className="mt-6 flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Love this feature</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+              <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 group-hover:translate-x-3 transition-all duration-300">
+                <span className="mr-3">Explore feature</span>
+                <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center group-hover:bg-amber-200 dark:group-hover:bg-amber-800/60 transition-colors duration-300">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* Feature 6: Progress Tracking */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 to-indigo-200 dark:from-indigo-900/30 dark:to-indigo-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-indigo-300/60 dark:hover:border-indigo-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-transparent to-transparent dark:from-indigo-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+
+              <div className="relative w-20 h-20 bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-indigo-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <svg
-                  className="w-8 h-8 text-indigo-600 dark:text-indigo-400"
+                  className="relative w-10 h-10 text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -405,32 +429,38 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                Watch Yourself Improve
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
+                Performance Tracking
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                There&apos;s nothing more motivating than seeing your scores go up! I&apos;m
-                building charts and progress tracking so you can celebrate those wins and see
-                exactly how far you&apos;ve come.
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+                Monitor your certification progress with comprehensive performance metrics. Watch
+                your scores improve over time, celebrate achievements, and stay motivated with clear
+                visual feedback on your learning journey.
               </p>
-              <div className="mt-6 flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">Track progress</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+              <div className="relative mt-auto flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 group-hover:translate-x-3 transition-all duration-300">
+                <span className="mr-3">View progress</span>
+                <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/60 transition-colors duration-300">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* Feature 7: Better Than AI Chatbots */}
-            <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg rounded-2xl p-8 hover:shadow-2xl hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 transform hover:-translate-y-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/30 dark:to-orange-800/30 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-orange-300/60 dark:hover:border-orange-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-transparent dark:from-orange-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+
+              <div className="relative w-20 h-20 bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 dark:from-orange-900/40 dark:via-orange-800/40 dark:to-orange-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <svg
-                  className="w-8 h-8 text-orange-600 dark:text-orange-400"
+                  className="relative w-10 h-10 text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -443,25 +473,26 @@ export default function LandingPageContent() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-300">
-                Way Better Than Chatbots
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300">
+                Purpose-Built for Studying
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
-                Sure, you could ask Chatbots to make you some practice questions, but then
-                you&apos;d have to copy-paste, format everything, time yourself... ugh! I&apos;ve
-                built this specifically for studying, with all the bells and whistles you actually
-                need.
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+                Unlike generic AI chatbots, our platform is specifically designed for certification
+                preparation. Get properly formatted questions, built-in timers, automatic scoring,
+                and all the study tools you need in one integrated platform.
               </p>
-              <div className="mt-6 flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:translate-x-2 transition-transform duration-300">
-                <span className="mr-2">See the difference</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+              <div className="relative mt-auto flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:text-orange-700 dark:group-hover:text-orange-300 group-hover:translate-x-3 transition-all duration-300">
+                <span className="mr-3">Learn more</span>
+                <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/40 rounded-full flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-800/60 transition-colors duration-300">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -487,47 +518,50 @@ export default function LandingPageContent() {
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-6 py-3 mb-8">
                 <div className="w-3 h-3 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full animate-pulse"></div>
                 <span className="text-sm font-semibold text-violet-700 dark:text-violet-300">
-                  Come Build This With Me!
+                  Start Your Success Journey!
                 </span>
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Help Me Build the Study Tool &
+                Get the Study Platform
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  You Actually Want
+                  That Actually Works
                 </span>
                 <br />
-                to Use Every Day
+                for Your Certification Success
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                I&apos;m not just building another study app - I&apos;m creating something based on
-                real feedback from real people preparing for real certifications. Your input
-                literally shapes what gets built next. Plus, it&apos;s completely free while I
-                figure this all out!
+                Experience AI-powered certification training designed specifically for your success.
+                Our intelligent platform adapts to your learning style, creates targeted practice
+                exams, and helps you master IT certifications faster and more effectively.
               </p>
 
               {/* Enhanced stats for CTA */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Open Door
+                    Free Access
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Platform</div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Your Voice
+                    Smart AI
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Shapes Features</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Personalized Learning
+                  </div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    100% Free
+                    Proven Results
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">While I Build</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Certification Success
+                  </div>
                 </div>
               </div>
 
@@ -537,7 +571,7 @@ export default function LandingPageContent() {
                     size="lg"
                     className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 transform hover:scale-105"
                   >
-                    Count Me In!
+                    Get Free Access
                   </Button>
                 </Link>
                 <Link href="/signin">
@@ -546,7 +580,7 @@ export default function LandingPageContent() {
                     size="lg"
                     className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 transform hover:scale-105"
                   >
-                    I&apos;m Already Here!
+                    Sign In
                   </Button>
                 </Link>
               </div>
@@ -584,7 +618,7 @@ export default function LandingPageContent() {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Free while I build it</span>
+                  <span className="font-medium">Free during beta</span>
                 </div>
                 <div className="hidden sm:block">•</div>
                 <div className="flex items-center gap-3">
@@ -601,7 +635,7 @@ export default function LandingPageContent() {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Your feedback matters</span>
+                  <span className="font-medium">Continuous updates</span>
                 </div>
               </div>
             </div>

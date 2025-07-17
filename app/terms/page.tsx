@@ -25,7 +25,7 @@ export default function TermsOfService() {
               Terms of Service
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
-              Last updated: July 12, 2025
+              Last updated: July 17, 2025
             </p>
             <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 max-w-2xl mx-auto">
               <p className="text-blue-800 dark:text-blue-200 text-sm">
@@ -100,7 +100,7 @@ export default function TermsOfService() {
               {/* Beta Platform Disclaimer */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  3. Beta Platform Disclaimer
+                  2. Beta Platform Disclaimer
                 </h2>
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-4">
                   <p className="text-amber-800 dark:text-amber-200 font-semibold mb-2">
@@ -145,31 +145,10 @@ export default function TermsOfService() {
                 </ul>
               </section>
 
-              {/* Acceptance of Terms */}
-              <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  1. Acceptance of Terms
-                </h2>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement
-                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and the
-                  creator and operator of Certestic (&quot;I,&quot; &quot;me,&quot; or
-                  &quot;my&quot;). By accessing or using the Certestic platform, you acknowledge
-                  that you have read, understood, and agree to be bound by these Terms.
-                </p>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  <strong>
-                    IF YOU DO NOT AGREE TO THESE TERMS, YOU MUST NOT ACCESS OR USE THE PLATFORM.
-                  </strong>{' '}
-                  Your continued use of the platform constitutes acceptance of any modifications to
-                  these Terms.
-                </p>
-              </section>
-
               {/* Platform Purpose and Exam Result Disclaimer */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  4. Platform Purpose and Exam Result Disclaimer
+                  3. Platform Purpose and Exam Result Disclaimer
                 </h2>
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
                   <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
@@ -264,7 +243,7 @@ export default function TermsOfService() {
               {/* Account Registration and Eligibility */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  5. Account Registration and Eligibility
+                  4. Account Registration and Eligibility
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   To access certain features of the Platform, you must create an account. You
@@ -293,7 +272,7 @@ export default function TermsOfService() {
               {/* Permitted Use */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  6. Permitted Use
+                  5. Permitted Use
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   Subject to these Terms, we grant you a limited, non-exclusive, non-transferable,
@@ -321,7 +300,7 @@ export default function TermsOfService() {
               {/* Prohibited Conduct */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  7. Prohibited Conduct
+                  6. Prohibited Conduct
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   You agree not to:
@@ -349,7 +328,7 @@ export default function TermsOfService() {
               {/* AI Services and Content Creation Disclaimer */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  8. AI Services and Content Creation Disclaimer
+                  7. AI Services and Content Creation Disclaimer
                 </h2>
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-4">
                   <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
@@ -491,7 +470,7 @@ export default function TermsOfService() {
               {/* Content Creation and Copyright Considerations */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  9. Content Creation and Copyright Considerations
+                  8. Content Creation and Copyright Considerations
                 </h2>
 
                 <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6 mb-6">
@@ -689,19 +668,120 @@ export default function TermsOfService() {
               {/* Intellectual Property Rights */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  10. Intellectual Property Rights
+                  9. Intellectual Property Rights
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   The Platform and its original content, features, and functionality are owned by
                   Certestic and are protected by international copyright, trademark, patent, trade
                   secret, and other intellectual property laws, except as specifically detailed in
-                  Section 9 regarding different content creation methods and their copyright
+                  Section 8 regarding different content creation methods and their copyright
                   implications.
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Our Content (Human-Authored and Platform Technology)
+                  Platform-Generated Content Ownership
                 </h3>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
+                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
+                    🚨 Critical IP Disclaimer: Platform Content Ownership
+                  </p>
+                  <p className="text-red-700 dark:text-red-300 text-sm">
+                    Users do NOT own any copyrights to content generated by the platform, including
+                    exams, questions, user interface, software, or any other platform-generated
+                    materials.
+                  </p>
+                </div>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT:</strong>
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>No Ownership Rights:</strong> You do not acquire any ownership rights,
+                    copyright, or intellectual property rights in any content generated by or on the
+                    Platform, including but not limited to:
+                    <ul className="list-disc pl-6 mt-2 space-y-1">
+                      <li>Exam questions and practice tests</li>
+                      <li>Study materials and explanations</li>
+                      <li>User interface design and layout</li>
+                      <li>Software code and algorithms</li>
+                      <li>Performance analytics and reports</li>
+                      <li>AI-generated recommendations</li>
+                      <li>Platform branding and visual elements</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>Platform Ownership:</strong> All platform-generated content remains the
+                    exclusive property of Certestic, regardless of whether you contributed data that
+                    may have influenced its creation
+                  </li>
+                  <li>
+                    <strong>Limited License Only:</strong> Your access to platform content is
+                    governed by a limited, non-exclusive, non-transferable license for personal
+                    study purposes only
+                  </li>
+                  <li>
+                    <strong>No Commercial Rights:</strong> You may not use, reproduce, distribute,
+                    or commercialize any platform-generated content without explicit written
+                    permission
+                  </li>
+                </ul>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  User-Provided Intellectual Property Protection
+                </h3>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-6">
+                  <p className="text-green-800 dark:text-green-200 font-semibold mb-2">
+                    ✅ Your IP Rights Protected
+                  </p>
+                  <p className="text-green-700 dark:text-green-300 text-sm">
+                    You retain full ownership of your personal intellectual property that you bring
+                    to the platform.
+                  </p>
+                </div>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>YOU RETAIN FULL OWNERSHIP RIGHTS TO:</strong>
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>Your name, likeness, and personal identifiers</li>
+                  <li>Images, photos, or other media you upload</li>
+                  <li>Any pre-existing intellectual property you bring to the platform</li>
+                  <li>Your personal account information and profile data</li>
+                </ul>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>Certestic Disclaims Ownership:</strong> We do not claim any ownership
+                  rights to your personal intellectual property. However, by using the platform, you
+                  grant us a limited license to use this information solely for providing platform
+                  services (such as displaying your name on your account or using uploaded images in
+                  your profile).
+                </p>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  AI-Generated Content and Copyright Law Compliance
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  Our approach to AI-generated content follows established copyright principles:
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
+                  <li>
+                    <strong>Pure AI Content:</strong> Content created entirely by AI systems without
+                    human creative input may not be eligible for copyright protection under current
+                    law, and we disclaim ownership where legally permissible
+                  </li>
+                  <li>
+                    <strong>Human-Enhanced Content:</strong> Content involving substantial human
+                    creativity and authorship may be protected by copyright law
+                  </li>
+                  <li>
+                    <strong>Platform Technology:</strong> Our software, algorithms, and technical
+                    infrastructure remain our proprietary intellectual property regardless of
+                    content creation methods
+                  </li>
+                  <li>
+                    <strong>Legal Evolution:</strong> As copyright law regarding AI-generated
+                    content continues to develop, our policies may be updated to reflect legal
+                    changes
+                  </li>
+                </ul>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   Content on the Platform that involves human authorship or substantial human
                   creative input, including platform software, user interface design, human-authored
@@ -714,7 +794,7 @@ export default function TermsOfService() {
                   Mixed Content Rights
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  As detailed in Section 9, our Platform contains content created through various
+                  As detailed in Section 8, our Platform contains content created through various
                   methods with different copyright implications:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
@@ -908,7 +988,7 @@ export default function TermsOfService() {
               {/* Privacy and Data Protection */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  11. Privacy and Data Protection
+                  10. Privacy and Data Protection
                 </h2>
 
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
@@ -1863,7 +1943,7 @@ export default function TermsOfService() {
               {/* Entire Agreement */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  20. Entire Agreement
+                  21. Entire Agreement
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   These Terms, together with the Privacy Policy and any other legal notices
@@ -1875,7 +1955,7 @@ export default function TermsOfService() {
               {/* Contact Information */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  21. Contact Information - Personal Project Support
+                  22. Contact Information - Personal Project Support
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   If you have any questions about these Terms, please contact me. Please note the
@@ -1929,8 +2009,8 @@ export default function TermsOfService() {
               {/* Effective Date */}
               <div className="bg-slate-100 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600 text-center">
                 <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">
-                  These Terms of Service are effective as of July 9, 2025, and apply to all users of
-                  the Certestic platform worldwide.
+                  These Terms of Service are effective as of July 17, 2025, and apply to all users
+                  of the Certestic platform worldwide.
                 </p>
                 <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded p-4">
                   <p className="text-blue-800 dark:text-blue-200 text-sm font-semibold mb-2">
