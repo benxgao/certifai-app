@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/support/certestic-support-og.jpg',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Certestic Support - Help Center & Customer Support',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     site: '@Certestic',
     images: [
       {
-        url: '/images/support/certestic-support-twitter.jpg',
+        url: '/favicon.ico',
         alt: 'Certestic Support - Help Center & Customer Support',
       },
     ],

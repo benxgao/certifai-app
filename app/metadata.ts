@@ -60,9 +60,9 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/landing/certestic-homepage-og.jpg',
-        width: 1200,
-        height: 630,
+        url: '/favicon.ico',
+        width: 256,
+        height: 256,
         alt: 'Certestic - AI-Powered IT Certification Training Platform Homepage',
       },
     ],
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     site: '@Certestic',
     images: [
       {
-        url: '/images/landing/certestic-homepage-twitter.jpg',
+        url: '/favicon.ico',
         alt: 'Certestic - AI-Powered IT Certification Training Platform',
       },
     ],

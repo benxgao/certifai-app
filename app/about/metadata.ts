@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/about-certestic-og.jpg',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Certestic - AI-Powered IT Certification Training Platform',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     title: 'About Certestic | AI-Powered IT Certification Training',
     description:
       'Learn how Certestic is transforming IT certification training with AI technology. Discover our mission, values, and development journey.',
-    images: ['/images/about-certestic-twitter.jpg'],
+    images: ['/favicon.ico'],
     creator: '@Certestic',
   },
   alternates: {

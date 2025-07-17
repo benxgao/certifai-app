@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/signup/certestic-signup-og.jpg',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Join Certestic - Free Beta Access Available',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     site: '@Certestic',
     images: [
       {
-        url: '/images/signup/certestic-signup-twitter.jpg',
+        url: '/favicon.ico',
         alt: 'Join Certestic - Free Beta Access Available',
       },
     ],

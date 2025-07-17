@@ -14,7 +14,7 @@ const organizationSchema = {
   description:
     'AI-powered IT certification training platform to create exams on particular exam topics and test knowledge mastery. Tell AI to generate exams on your particular needs focusing on specific concepts and technologies',
   url: 'https://certestic.com',
-  logo: 'https://certestic.com/images/logo.png',
+  logo: 'https://certestic.com/favicon.ico',
   foundingDate: '2025',
   founders: [
     {

@@ -9,15 +9,15 @@ export const organizationSchema = {
   url: 'https://certestic.com',
   logo: {
     '@type': 'ImageObject',
-    url: 'https://certestic.com/images/logo.png',
-    width: 512,
-    height: 512,
+    url: 'https://certestic.com/favicon.ico',
+    width: 256,
+    height: 256,
   },
   image: {
     '@type': 'ImageObject',
-    url: 'https://certestic.com/images/certestic-og-image.jpg',
-    width: 1200,
-    height: 630,
+    url: 'https://certestic.com/favicon.ico',
+    width: 256,
+    height: 256,
   },
   foundingDate: '2025',
   founders: [
@@ -106,12 +106,12 @@ export const softwareApplicationSchema = {
   screenshot: [
     {
       '@type': 'ImageObject',
-      url: 'https://certestic.com/images/screenshots/dashboard.png',
+      url: 'https://certestic.com/favicon.ico',
       description: 'Certestic Dashboard Screenshot',
     },
     {
       '@type': 'ImageObject',
-      url: 'https://certestic.com/images/screenshots/practice-exam.png',
+      url: 'https://certestic.com/favicon.ico',
       description: 'Practice Exam Interface',
     },
   ],

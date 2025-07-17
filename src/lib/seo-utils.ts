@@ -72,7 +72,7 @@ export const generateOrganizationSchema = (): OrganizationSchema => ({
   description:
     'AI-powered IT certification training platform providing personalized learning experiences',
   url: 'https://certestic.com',
-  logo: 'https://certestic.com/images/logo.png',
+  logo: 'https://certestic.com/favicon.ico',
   foundingDate: '2025',
   founders: [
     {
@@ -197,7 +197,7 @@ export const generateMetaTags = (config: SEOMetaTags) => {
     openGraph: {
       title: config.openGraph?.title || config.title,
       description: config.openGraph?.description || config.description,
-      image: config.openGraph?.image || `${baseUrl}/images/og-default.jpg`,
+      image: config.openGraph?.image || `${baseUrl}/favicon.ico`,
       url: config.openGraph?.url || baseUrl,
       type: 'website',
       siteName: 'Certestic',
@@ -206,7 +206,7 @@ export const generateMetaTags = (config: SEOMetaTags) => {
       card: 'summary_large_image',
       title: config.twitter?.title || config.title,
       description: config.twitter?.description || config.description,
-      image: config.twitter?.image || `${baseUrl}/images/twitter-default.jpg`,
+      image: config.twitter?.image || `${baseUrl}/favicon.ico`,
       creator: '@Certestic',
     },
   };

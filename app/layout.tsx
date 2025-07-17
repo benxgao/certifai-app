@@ -53,9 +53,9 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 630,
+        url: '/favicon.ico',
+        width: 256,
+        height: 256,
         alt: 'Certestic - AI-Powered IT Certification Training Platform',
       },
     ],
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: META_CONTENT.TITLE,
     description: META_CONTENT.OG_DESCRIPTION,
     creator: '@Certestic',
-    images: ['/images/twitter-card.jpg'],
+    images: ['/favicon.ico'],
   },
   robots: {
     index: true,
@@ -129,9 +129,9 @@ export default function RootLayout({
         <meta property="og:description" content={META_CONTENT.OG_DESCRIPTION} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://certestic.com/" />
-        <meta property="og:image" content="https://certestic.com/images/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image" content="https://certestic.com/favicon.ico" />
+        <meta property="og:image:width" content="256" />
+        <meta property="og:image:height" content="256" />
         <meta property="og:image:alt" content="Certestic - AI-Powered IT Certification Training" />
         <meta property="og:site_name" content="Certestic" />
         <meta property="og:locale" content="en_US" />
@@ -142,7 +142,7 @@ export default function RootLayout({
         <meta name="twitter:creator" content="@Certestic" />
         <meta name="twitter:title" content={META_CONTENT.TITLE} />
         <meta name="twitter:description" content={META_CONTENT.OG_DESCRIPTION} />
-        <meta name="twitter:image" content="https://certestic.com/images/twitter-card.jpg" />
+        <meta name="twitter:image" content="https://certestic.com/favicon.ico" />
 
         {/* Additional SEO Tags */}
         <meta
@@ -172,7 +172,7 @@ export default function RootLayout({
               name: 'Certestic',
               description: 'AI-powered IT certification training platform',
               url: 'https://certestic.com',
-              logo: 'https://certestic.com/images/logo.png',
+              logo: 'https://certestic.com/favicon.ico',
               sameAs: ['https://twitter.com/certestic', 'https://linkedin.com/company/certestic'],
               contactPoint: {
                 '@type': 'ContactPoint',

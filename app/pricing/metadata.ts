@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/pricing/certestic-pricing-og.jpg',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Certestic Free Beta Program - Help Build the Future of IT Certification Training',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     site: '@Certestic',
     images: [
       {
-        url: '/images/pricing/certestic-pricing-twitter.jpg',
+        url: '/favicon.ico',
         alt: 'Certestic Free Beta Program - Help Build the Future',
       },
     ],

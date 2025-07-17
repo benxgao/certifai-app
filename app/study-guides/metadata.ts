@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/study-guides/certestic-study-guides-og.jpg',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Certestic Study Guides - AI-Powered IT Certification Materials',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     site: '@Certestic',
     images: [
       {
-        url: '/images/study-guides/certestic-study-guides-twitter.jpg',
+        url: '/favicon.ico',
         alt: 'Certestic Study Guides - AI-Powered IT Certification Materials',
       },
     ],

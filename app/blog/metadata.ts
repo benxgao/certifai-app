@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: 'Certestic',
     images: [
       {
-        url: '/images/blog/certestic-blog-og.jpg',
+        url: '/favicon.ico',
         width: 1200,
         height: 630,
         alt: 'Certestic Blog - IT Certification Training Insights',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     site: '@Certestic',
     images: [
       {
-        url: '/images/blog/certestic-blog-twitter.jpg',
+        url: '/favicon.ico',
         alt: 'Certestic Blog - IT Certification Training Insights',
       },
     ],
