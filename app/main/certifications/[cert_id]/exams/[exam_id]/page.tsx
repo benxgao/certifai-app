@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -297,18 +298,84 @@ export default function ExamAttemptPage() {
     );
   }
 
+  // Check if this is a 404 error (exam not found) and redirect to not-found page
+  const is404Error =
+    (isQuestionsError as any)?.status === 404 || (isExamStateError as any)?.status === 404;
+
+  if (is404Error) {
+    notFound(); // Redirect to the global not-found page
+  }
+
+  // Handle other types of errors (network errors, server errors, etc.)
   if (isQuestionsError || isExamStateError) {
     return (
-      <div className="min-h-screen bg-background text-foreground pt-16">
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-          <div className="text-center space-y-4">
-            <h1 className="text-2xl font-bold text-destructive">Error Loading Exam {examId}</h1>
-            <p className="text-muted-foreground max-w-md">
-              {isQuestionsError?.message || isExamStateError?.message || 'Error loading exam data.'}
-            </p>
-            <Button onClick={() => window.location.reload()} className="mt-4">
-              Try Again
-            </Button>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+        <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb
+            items={[
+              { label: 'Certifications', href: '/main/certifications' },
+              {
+                label: `Certification ${certId}`,
+                href: `/main/certifications/${certId}/exams`,
+              },
+              { label: 'Error Loading Exam', current: true },
+            ]}
+          />
+
+          {/* Error Card */}
+          <div className="mt-8">
+            <Card className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-800 shadow-lg rounded-xl overflow-hidden">
+              <CardContent className="p-8">
+                <div className="text-center space-y-6">
+                  {/* Error Icon */}
+                  <div className="flex justify-center">
+                    <div className="w-16 h-16 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-red-600 dark:text-red-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Error Title */}
+                  <div className="space-y-2">
+                    <h1 className="text-2xl font-bold text-red-600 dark:text-red-400">
+                      Error Loading Exam {examId}
+                    </h1>
+                    <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+                      {isQuestionsError?.message ||
+                        isExamStateError?.message ||
+                        'Error loading exam data.'}
+                    </p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                    <Button
+                      onClick={() => window.location.reload()}
+                      variant="outline"
+                      className="min-w-[120px]"
+                    >
+                      Try Again
+                    </Button>
+                    <Button onClick={() => window.history.back()} className="min-w-[120px]">
+                      <FaArrowLeft className="w-4 h-4 mr-2" />
+                      Go Back
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
