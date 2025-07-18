@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { resetAuthenticationState } from '@/lib/auth-utils';
-import { toast } from 'sonner';
+import { toastHelpers } from '@/src/lib/toast';
 import PageLoader from './EnhancedPageLoader';
 
 interface AuthGuardProps {
@@ -164,9 +164,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       }
 
       // Force page reload to reset all state
-      toast.info('Recovering authentication state...', {
-        description: 'Please wait while we refresh your session.',
-      });
+      toastHelpers.info.loadingData();
 
       // Small delay before reload to let the toast show
       setTimeout(() => {
@@ -174,9 +172,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       }, 1000);
     } catch (error) {
       console.error('Emergency recovery failed:', error);
-      toast.error('Recovery failed', {
-        description: 'Please try refreshing the page manually.',
-      });
+      toastHelpers.error.generic('Recovery failed. Please try refreshing the page manually.');
       setIsRecovering(false);
     }
   };

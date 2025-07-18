@@ -16,6 +16,7 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent } from '@/components/ui/card';
 import { Mail, AlertCircle, CheckCircle, Shield } from 'lucide-react';
+import { toastHelpers } from '@/src/lib/toast';
 import { useEmailUpdate } from '@/src/hooks/useEmailUpdate';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
@@ -40,15 +41,24 @@ const EmailUpdateDialog: React.FC<EmailUpdateDialogProps> = ({ trigger, classNam
     const result = await updateEmail(newEmail, requiresPassword ? currentPassword : undefined);
 
     if (result) {
+      // Show success toast notification
+      toastHelpers.success.emailVerificationSent();
+
       // Success - close dialog and reset form
       setIsOpen(false);
       setNewEmail('');
       setCurrentPassword('');
       setRequiresPassword(false);
     } else if (error?.includes('requires-recent-login') && !requiresPassword) {
+      // Show info toast for reauthentication requirement
+      toastHelpers.info.passwordRequired();
+
       // Need to reauthenticate
       setRequiresPassword(true);
       clearMessages();
+    } else if (error && !error.includes('requires-recent-login')) {
+      // Show error toast for other types of errors
+      toastHelpers.error.generic(error || 'Email update failed. Please try again.');
     }
   };
 

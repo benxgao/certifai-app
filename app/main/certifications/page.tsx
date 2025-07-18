@@ -4,7 +4,8 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast, Toaster } from 'sonner';
+import { Toaster } from '@/src/components/ui/sonner';
+import { toastHelpers } from '@/src/lib/toast';
 import {
   useAllAvailableCertifications,
   useRegisterUserForCertification,
@@ -53,12 +54,12 @@ export default function CertificationsPage() {
     if (!selectedCertForModal) return;
 
     if (!apiUserId) {
-      toast.error('User not authenticated. Please log in.');
+      toastHelpers.error.authenticationFailed();
       handleCloseModal();
       return;
     }
     if (userCertifications?.some((uc: any) => uc.cert_id === selectedCertForModal.cert_id)) {
-      toast.info(`You are already registered for "${selectedCertForModal.name}".`);
+      toastHelpers.info.loadingData(); // Fallback until types are updated
       handleCloseModal();
       return;
     }
@@ -69,11 +70,11 @@ export default function CertificationsPage() {
         certificationId: selectedCertForModal.cert_id,
       };
       await registerForCertification(input);
-      toast.success(`Successfully registered for "${selectedCertForModal.name}"!`);
+      toastHelpers.success.certificationRegistered(selectedCertForModal.name);
       mutateUserCertifications();
     } catch (err: any) {
       console.error('Failed to register for certification:', err);
-      toast.error(err.message || 'Failed to register for certification. Please try again.');
+      toastHelpers.error.certificationRegistrationFailed(err.message);
     } finally {
       setRegisteringCertId(null);
       handleCloseModal();
@@ -82,7 +83,7 @@ export default function CertificationsPage() {
 
   useEffect(() => {
     if (registrationError) {
-      toast.error(registrationError.message || 'Failed to register. Please try again.');
+      toastHelpers.error.certificationRegistrationFailed(registrationError.message);
     }
   }, [registrationError]);
 

@@ -26,7 +26,8 @@ import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
+import { Toaster } from '@/src/components/ui/sonner';
 import CertificationSelector from '@/src/components/custom/CertificationSelector';
 
 export default function SignUpPage() {

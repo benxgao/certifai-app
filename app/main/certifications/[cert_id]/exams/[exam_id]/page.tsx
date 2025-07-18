@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { FaCheck, FaEdit, FaLightbulb, FaTimes, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { toastHelpers } from '@/src/lib/toast';
 import {
   Dialog,
   DialogContent,
@@ -121,6 +122,10 @@ export default function ExamAttemptPage() {
           optionId,
         });
         console.log('Answer saved successfully for question:', questionId);
+
+        // Show subtle success toast notification for answer submission
+        toastHelpers.success.answerSaved();
+
         // After successful submission, you might want to revalidate the questions
         // if the backend response could affect the overall list or pagination.
         // mutateQuestions(undefined, true);
@@ -130,6 +135,10 @@ export default function ExamAttemptPage() {
           'Failed to save answer (from handleOptionChange catch):',
           (error as Error).message,
         );
+
+        // Show error toast notification for answer submission failure
+        toastHelpers.error.answerSaveFailed((error as Error).message);
+
         // Revert optimistic update on failure by revalidating the original questions data
         mutateQuestions(undefined, true);
       }
@@ -140,7 +149,10 @@ export default function ExamAttemptPage() {
   useEffect(() => {
     if (submitError) {
       console.error('Failed to save answer (from submitError effect):', submitError.message);
-      // Optionally, show a toast notification or other UI feedback for the error
+
+      // Show error toast notification for persistent submission errors
+      toastHelpers.error.answerSaveFailed(submitError.message);
+
       // And ensure optimistic UI is reverted if not already handled by the catch block in handleOptionChange
       mutateQuestions(undefined, true);
     }
@@ -185,7 +197,10 @@ export default function ExamAttemptPage() {
     setShowConfirmModal(false);
     if (!apiUserId || certId === null || !examId) {
       console.error('Missing user, certification, or exam ID for submission.');
-      // alert('Could not submit exam. Missing necessary information.'); // Replaced by ErrorMessage
+
+      // Show error toast notification
+      toastHelpers.error.missingInformation();
+
       setSubmissionResult({ error: 'Could not submit exam. Missing necessary information.' });
       return;
     }
@@ -197,14 +212,20 @@ export default function ExamAttemptPage() {
       const result = await submitExam({ apiUserId, certId, examId, body: {} });
       console.log('Exam submitted successfully:', result);
       setSubmissionResult(result);
-      alert('Exam submitted successfully!');
+
+      // Show success toast notification
+      toastHelpers.success.examSubmitted();
+
       // Revalidate exam state to get updated score and submission status
       mutateExamState();
       // Optionally, redirect the user or show a summary page
       // router.push(`/main/certifications/${certId}/exams/${examId}/results`);
     } catch (error: any) {
       console.error('Failed to submit exam:', error.message);
-      // alert(`Failed to submit exam: ${error.message}`); // Replaced by ErrorMessage
+
+      // Show error toast notification
+      toastHelpers.error.examSubmissionFailed(error.message);
+
       setSubmissionResult({ error: error.message });
     } finally {
       setIsSubmittingExamFlag(false);

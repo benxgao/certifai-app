@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/src/components/ui/slider';
+import { toastHelpers } from '@/src/lib/toast';
 import {
   Dialog,
   DialogContent,
@@ -164,17 +165,50 @@ function CertificationExamsContent() {
 
         console.log(successMessage);
 
-        // Show a more detailed success notification if available
+        // Show toast notification for exam creation success
         if (result.data.topics_generated) {
-          // You could add a toast notification here in the future
-          console.log(
-            `AI generated ${topicsCount} specialized topics for ${displayCertification?.name} certification`,
-          );
+          toastHelpers.success.examCreated(result.data.exam_id);
+        } else {
+          toastHelpers.success.examCreated(result.data.exam_id);
         }
+
+        // Check if user is approaching rate limit after successful creation
+        // Wait a moment for rate limit info to refresh, then check
+        setTimeout(() => {
+          if (
+            rateLimitInfo &&
+            rateLimitInfo.remainingCount <= 1 &&
+            rateLimitInfo.maxExamsAllowed > 1
+          ) {
+            toastHelpers.warning.examLimitWarning(
+              rateLimitInfo.remainingCount,
+              rateLimitInfo.maxExamsAllowed,
+            );
+          }
+        }, 1000);
       }
     } catch (error) {
       console.error('Error creating exam:', error);
-      // Error is handled by the hook and component will show rate limit info if needed
+
+      const createExamError = error as any; // Type as any to access custom properties
+
+      // Check if this is a rate limit error (429)
+      if (createExamError.status === 429 && createExamError.rateLimitInfo) {
+        const { maxExamsAllowed, currentCount, resetTime } = createExamError.rateLimitInfo;
+
+        // Show specific rate limit toast notification with enhanced details
+        toastHelpers.error.examRateLimitExceeded(maxExamsAllowed, resetTime);
+
+        console.log('Rate limit exceeded:', {
+          maxAllowed: maxExamsAllowed,
+          current: currentCount,
+          resetTime: resetTime,
+        });
+      } else {
+        // Show generic error toast notification for other types of failures
+        toastHelpers.error.examCreationFailed(createExamError.message);
+      }
+
       // Also refresh rate limit info in case of rate limit error
       await mutateRateLimit();
     }
@@ -191,8 +225,14 @@ function CertificationExamsContent() {
 
       await mutateExams(); // Refresh the exams list
       console.log('Exam deleted successfully');
+
+      // Show success toast notification for exam deletion
+      toastHelpers.success.examDeleted();
     } catch (error) {
       console.error('Error deleting exam:', error);
+
+      // Show error toast notification for exam deletion failure
+      toastHelpers.error.examDeletionFailed((error as Error).message);
     }
   };
 

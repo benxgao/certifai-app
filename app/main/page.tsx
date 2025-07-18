@@ -4,7 +4,6 @@ import React, { useEffect, Suspense, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
-import { Toaster } from 'sonner';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
 import DashboardStats from '@/components/custom/DashboardStats';
@@ -106,8 +105,6 @@ const MainPage = () => {
           </Suspense>
         </section>
       </div>
-
-      <Toaster richColors />
     </div>
   );
 };

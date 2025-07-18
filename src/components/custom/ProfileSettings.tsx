@@ -12,6 +12,7 @@ import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
 import { useUpdateUserProfile } from '@/src/swr/profile';
 import { Settings } from 'lucide-react';
+import { toastHelpers } from '@/src/lib/toast';
 import EmailUpdateDialog from './EmailUpdateDialog';
 
 interface ProfileSettingsProps {
@@ -45,10 +46,20 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
         handleCodeInApp: true,
       };
       await sendEmailVerification(firebaseUser, actionCodeSettings);
+
+      // Show success toast notification
+      toastHelpers.success.emailVerificationSent();
+
       setSuccess('Verification email sent! Please check your inbox.');
       setErrorMsg(null);
     } catch (error) {
       console.error('Failed to send verification email:', error);
+
+      // Show error toast notification
+      toastHelpers.error.generic(
+        'Failed to send verification email. Please try again in a few moments.',
+      );
+
       setErrorMsg('Failed to send verification email. Please try again.');
       setSuccess(null);
     } finally {
@@ -62,10 +73,17 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
     try {
       // Call the update profile mutation (only displayName is editable here)
       await updateProfile({ displayName: formData.displayName });
+
+      // Show success toast notification
+      toastHelpers.success.profileUpdated();
+
       setSuccess('Profile updated successfully!');
       await mutate();
       setIsEditing(false);
     } catch (error: any) {
+      // Show error toast notification
+      toastHelpers.error.generic(error?.message || 'Failed to update profile. Please try again.');
+
       setErrorMsg(error?.message || 'Error updating profile');
       console.error('Error updating profile:', error);
     }
