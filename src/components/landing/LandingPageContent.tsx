@@ -37,7 +37,11 @@ export default function LandingPageContent() {
                 Ace Your IT Certifications
               </span>
               <br />
-              with AI That Actually Gets It
+              with{' '}
+              <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent font-extrabold">
+                Certestic
+              </span>{' '}
+              AI That Actually Gets It
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
