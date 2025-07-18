@@ -27,7 +27,7 @@ export default function LandingHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-slate-900/60 shadow-sm">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">

@@ -376,4 +376,21 @@ body {
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background-color: rgb(100 116 139);
   }
+
+  /* Fix autofill background color in dark mode */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: black !important;
+  }
+
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(30 41 59 / 0.5) inset !important;
+    -webkit-text-fill-color: rgb(241 245 249) !important;
+  }
 }
