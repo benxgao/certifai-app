@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -17,16 +16,21 @@ import {
 } from '@/components/ui/card';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
-import { resetAuthenticationState } from '@/src/lib/auth-utils';
-import { setAuthCookie } from '@/src/lib/auth-setup';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import PageLoader from '@/src/components/custom/PageLoader';
-
-import { auth } from '@/src/firebase/firebaseWebConfig';
+import {
+  parseAuthURLParams,
+  clearLegacyAuthState,
+  processURLParamsError,
+  cleanupURLParams,
+  performSignin,
+  resendVerificationEmail,
+  type SigninFormData,
+} from '@/src/lib/signin-helpers';
 
 const LoginPage = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SigninFormData>({
     email: '',
     password: '',
   });
@@ -43,65 +47,15 @@ const LoginPage = () => {
   // Clear any existing auth state when signin page loads to ensure legacy tokens are not effective
   // This is a security measure to prevent any lingering authentication tokens from being used
   useEffect(() => {
-    const clearLegacyAuthState = async () => {
-      try {
-        // Check if this is a recovery mode (from AuthGuard emergency timeout)
-        const urlParams = new URLSearchParams(window.location.search);
-        const isRecovery = urlParams.get('recovery') === 'true';
-        const hasSessionExpired = urlParams.get('error') === 'session_expired';
-
-        if (isRecovery) {
-          console.log('Recovery mode detected - performing thorough cache cleanup');
-          // Show user feedback for recovery mode
-          setError('Session recovered. Please sign in again.');
-        } else if (hasSessionExpired) {
-          console.log('Session expiration detected - clearing auth state immediately');
-          setError('Your session has expired. Please sign in again.');
-        }
-
-        // First, immediately clear any client-side tokens synchronously
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('firebaseToken');
-          localStorage.removeItem('apiUserId');
-          localStorage.removeItem('authToken');
-          sessionStorage.removeItem('firebaseToken');
-          sessionStorage.removeItem('apiUserId');
-          sessionStorage.removeItem('authToken');
-        }
-
-        // Sign out any existing Firebase auth session explicitly
-        try {
-          await signOut(auth);
-          console.log('Existing Firebase auth session signed out');
-        } catch {
-          // Ignore signOut errors as user might not be signed in
-          console.log('No existing Firebase session to sign out');
-        }
-
-        // Then clear server-side cookies and cache
-        await resetAuthenticationState();
-
-        // In recovery mode or session expiry, also clear server-side token cache
-        if (isRecovery || hasSessionExpired) {
-          try {
-            await fetch('/api/auth/clear-cache', {
-              method: 'POST',
-              credentials: 'include',
-            });
-            console.log('Server-side token cache cleared for recovery/session expiry');
-          } catch (error) {
-            console.warn('Failed to clear server cache during recovery/session expiry:', error);
-          }
-        }
-
-        console.log('Legacy auth state cleared on signin page load');
-      } catch (error) {
-        console.error('Failed to clear legacy auth state on signin page load:', error);
-        // Even if server call fails, we've cleared client-side tokens and Firebase session
+    const initializeSigninPage = async () => {
+      const urlParams = parseAuthURLParams();
+      const errorMessage = await clearLegacyAuthState(urlParams);
+      if (errorMessage) {
+        setError(errorMessage);
       }
     };
 
-    clearLegacyAuthState();
+    initializeSigninPage();
   }, []); // Run only once on component mount
 
   // Safeguard to ensure form remains functional after auth errors
@@ -112,48 +66,6 @@ const LoginPage = () => {
       setIsRedirecting(false);
     }
   }, [error, authProcessing, isLoading]);
-
-  // Additional safeguard: Clear any lingering auth state when error occurs
-  useEffect(() => {
-    if (
-      error &&
-      error !==
-        'Account created! Please check your email and verify your account before signing in.' &&
-      error !== 'Account created successfully! You can now sign in.' &&
-      !error.includes('sent!')
-    ) {
-      // Only clear auth state for actual error conditions, not success messages
-      const clearAuthOnError = async () => {
-        try {
-          // Small delay to ensure any ongoing auth operations complete
-          await new Promise((resolve) => setTimeout(resolve, 50));
-
-          // Clear any client-side tokens immediately
-          if (typeof window !== 'undefined') {
-            localStorage.removeItem('firebaseToken');
-            localStorage.removeItem('apiUserId');
-            localStorage.removeItem('authToken');
-            sessionStorage.removeItem('firebaseToken');
-            sessionStorage.removeItem('apiUserId');
-            sessionStorage.removeItem('authToken');
-          }
-
-          // Also ensure Firebase is signed out
-          try {
-            await signOut(auth);
-          } catch {
-            // Ignore if already signed out
-          }
-
-          console.log('Cleared auth state due to error condition');
-        } catch (clearError) {
-          console.error('Failed to clear auth state on error:', clearError);
-        }
-      };
-
-      clearAuthOnError();
-    }
-  }, [error]);
 
   // Monitor authentication state and redirect when both firebaseUser and apiUserId are available
   useEffect(() => {
@@ -207,64 +119,23 @@ const LoginPage = () => {
 
   // Clear any error messages from URL params and handle signup success
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorParam = urlParams.get('error');
-    const signupParam = urlParams.get('signup');
-    const verificationParam = urlParams.get('verification');
-    const passwordResetParam = urlParams.get('passwordReset');
+    const urlParams = parseAuthURLParams();
+    const errorMessage = processURLParamsError(urlParams);
 
-    if (errorParam) {
-      if (errorParam === 'session_expired') {
-        setError('Your session has expired. Please sign in again.');
-      } else {
-        setError(decodeURIComponent(errorParam));
-      }
-    }
-
-    if (signupParam === 'success') {
-      if (verificationParam === 'pending') {
-        setError(
-          'Account created! Please check your email and verify your account before signing in.',
-        );
-      } else {
-        setError('Account created successfully! You can now sign in.');
-      }
-    }
-
-    if (verificationParam === 'success') {
-      setError('Email verified successfully! You can now sign in.');
-    }
-
-    if (passwordResetParam === 'success') {
-      setError('Password reset successful! You can now sign in with your new password.');
+    if (errorMessage) {
+      setError(errorMessage);
     }
 
     // Clean up URL
-    if (errorParam || signupParam || verificationParam || passwordResetParam) {
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, '', newUrl);
-    }
+    cleanupURLParams(urlParams);
   }, []);
 
   // Function to resend verification email
-  const resendVerificationEmail = async () => {
-    if (!auth.currentUser) {
-      setError('Please sign in first to resend verification email.');
-      return;
-    }
-
+  const handleResendVerificationEmail = async () => {
     try {
       setVerificationLoading(true);
-      // Configure action code settings to use the new URL structure
-      const actionCodeSettings = {
-        url: `${window.location.origin}?mode=verifyEmail`,
-        handleCodeInApp: true,
-      };
-      await sendEmailVerification(auth.currentUser, actionCodeSettings);
-      setError('Verification email sent! Please check your inbox.');
-    } catch (error) {
-      console.error('Failed to resend verification email:', error);
-      setError('Failed to send verification email. Please try again.');
+      const message = await resendVerificationEmail();
+      setError(message);
     } finally {
       setVerificationLoading(false);
     }
@@ -308,26 +179,17 @@ const LoginPage = () => {
       setIsLoading(true);
       setAuthProcessing(true);
 
-      // Clear any existing auth state/cookies before signing in
-      await resetAuthenticationState();
+      const result = await performSignin(form);
 
-      // Start the authentication process
-      const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
-
-      // Check if email is verified
-      if (!signedIn.user.emailVerified) {
-        setShowVerificationPrompt(true);
-        setError(
-          'Please verify your email address before signing in. Check your inbox for a verification link.',
-        );
-
-        // Sign out the user since email is not verified - prevent token persistence
-        try {
-          await signOut(auth);
-          await resetAuthenticationState();
-          console.log('Signed out unverified user and cleared auth state');
-        } catch (signOutError) {
-          console.error('Failed to sign out unverified user:', signOutError);
+      if (result.success) {
+        // Clear any previous error messages on successful authentication
+        setError('');
+        setShowVerificationPrompt(false);
+        // Don't redirect here - let the useEffect with auth state monitoring handle it
+      } else if (result.error) {
+        setError(result.error.message);
+        if (result.error.showVerificationPrompt) {
+          setShowVerificationPrompt(true);
         }
 
         // Small delay to ensure auth state has settled before clearing loading states
@@ -337,118 +199,9 @@ const LoginPage = () => {
         }, 100);
         return;
       }
-
-      // Force refresh to get a brand new Firebase token
-      const firebaseToken = await signedIn.user.getIdToken(true);
-
-      // Set the authentication cookie with brand new token using our retry logic
-      try {
-        const cookieResult = await setAuthCookie(firebaseToken);
-
-        if (!cookieResult.success) {
-          // If cookie setting fails, show error and clear any auth state
-          const errorMessage = cookieResult.error || 'Failed to set authentication cookie.';
-          setError(errorMessage);
-
-          // Clear any lingering auth state on cookie failure
-          try {
-            await resetAuthenticationState();
-            await signOut(auth);
-          } catch (clearError) {
-            console.error('Failed to clear auth state after cookie error:', clearError);
-          }
-
-          return;
-        }
-      } catch (cookieError: any) {
-        // Handle any exceptions during cookie setting
-        let errorMessage = 'Failed to set authentication cookie.';
-
-        if (
-          cookieError.message?.includes('timeout') ||
-          cookieError.message?.includes('signal is aborted') ||
-          cookieError.name === 'TimeoutError'
-        ) {
-          errorMessage = 'Authentication timed out. Please try again.';
-        } else if (cookieError.name === 'NetworkError') {
-          errorMessage =
-            'Network error during authentication. Please check your connection and try again.';
-        }
-
-        setError(errorMessage);
-
-        // Clear any lingering auth state on cookie failure
-        try {
-          await resetAuthenticationState();
-          await signOut(auth);
-        } catch (clearError) {
-          console.error('Failed to clear auth state after cookie error:', clearError);
-        }
-
-        return;
-      }
-
-      // Small delay to ensure cookie is properly set in browser and page state is settled
-      await new Promise((resolve) => setTimeout(resolve, 150));
-
-      // Clear any previous error messages on successful authentication
-      setError('');
-      setShowVerificationPrompt(false);
-
-      // Don't redirect here - let the useEffect with auth state monitoring handle it
-      // The FirebaseAuthContext will handle getting the API user ID
     } catch (error: any) {
-      let errorMessage = 'An unexpected error occurred. Please try again.';
-
-      // Handle specific signal abortion errors first
-      if (error.message?.includes('signal is aborted')) {
-        errorMessage = 'Request timed out. Please check your connection and try again.';
-      } else if (error.message?.includes('timeout')) {
-        errorMessage = 'Connection timeout. Please try again.';
-      } else if (error.message?.includes('network') || error.message?.includes('Network')) {
-        errorMessage = 'Network error. Please check your connection and try again.';
-      } else if (error.name === 'AbortError') {
-        errorMessage = 'Request was cancelled. Please try again.';
-      } else if (error.code) {
-        switch (error.code) {
-          case 'auth/user-not-found':
-          case 'auth/wrong-password':
-            errorMessage = 'Invalid email or password.';
-            break;
-          case 'auth/invalid-email':
-            errorMessage = 'Please enter a valid email address.';
-            break;
-          case 'auth/too-many-requests':
-            errorMessage = 'Too many failed attempts. Please try again later.';
-            break;
-          case 'auth/user-disabled':
-            errorMessage = 'This account has been disabled.';
-            break;
-          case 'auth/network-request-failed':
-            errorMessage = 'Network error. Please check your connection and try again.';
-            break;
-          case 'auth/internal-error':
-            errorMessage = 'Internal error occurred. Please try again in a moment.';
-            break;
-        }
-      }
-
-      setError(errorMessage);
-
-      // Clear any lingering auth state on signin error to prevent token reuse
-      try {
-        await resetAuthenticationState();
-        await signOut(auth);
-        console.log('Auth state cleared after signin error');
-      } catch (clearError) {
-        console.error('Failed to clear auth state after signin error:', clearError);
-        // Continue even if clearing fails - user will see the error
-      }
-
-      // Ensure all loading states are properly cleared on error
-      setIsLoading(false);
-      setIsRedirecting(false);
-      setAuthProcessing(false);
+      console.error('Unexpected signin error:', error);
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
       setAuthProcessing(false);
@@ -647,7 +400,7 @@ const LoginPage = () => {
                               Didn&apos;t receive the email? Check your spam folder or resend it.
                             </p>
                             <Button
-                              onClick={resendVerificationEmail}
+                              onClick={handleResendVerificationEmail}
                               disabled={verificationLoading}
                               variant="outline"
                               size="sm"
