@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,14 +19,17 @@ import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import PageLoader from '@/src/components/custom/PageLoader';
 import {
-  parseAuthURLParams,
-  clearLegacyAuthState,
-  processURLParamsError,
-  cleanupURLParams,
   performSignin,
   resendVerificationEmail,
+  isAuthenticationError,
   type SigninFormData,
 } from '@/src/lib/signin-helpers';
+import {
+  useAuthTimeout,
+  useAuthRedirect,
+  useFormValidation,
+  useSigninInitialization,
+} from '@/src/hooks/useSigninHooks';
 
 const LoginPage = () => {
   const [form, setForm] = useState<SigninFormData>({
@@ -41,94 +43,39 @@ const LoginPage = () => {
   const [lastLoginAttempt, setLastLoginAttempt] = useState(0); // Add request deduplication
   const [showVerificationPrompt, setShowVerificationPrompt] = useState(false);
   const [verificationLoading, setVerificationLoading] = useState(false);
-  const router = useRouter();
   const { firebaseUser, loading, apiUserId } = useFirebaseAuth();
 
-  // Clear any existing auth state when signin page loads to ensure legacy tokens are not effective
-  // This is a security measure to prevent any lingering authentication tokens from being used
-  useEffect(() => {
-    const initializeSigninPage = async () => {
-      const urlParams = parseAuthURLParams();
-      const errorMessage = await clearLegacyAuthState(urlParams);
-      if (errorMessage) {
-        setError(errorMessage);
-      }
-    };
+  // Initialize signin page - handle auth state clearing and URL params
+  useSigninInitialization(setError);
 
-    initializeSigninPage();
-  }, []); // Run only once on component mount
+  // Form validation and loading state management
+  useFormValidation(error, authProcessing, isLoading, setIsRedirecting);
 
-  // Safeguard to ensure form remains functional after auth errors
-  useEffect(() => {
-    // If there's an error and we're not currently processing/loading,
-    // ensure all loading states are cleared to keep the form functional
-    if (error && !authProcessing && !isLoading) {
-      setIsRedirecting(false);
-    }
-  }, [error, authProcessing, isLoading]);
+  // Authentication redirect monitoring
+  useAuthRedirect(
+    loading,
+    authProcessing,
+    isLoading,
+    firebaseUser,
+    apiUserId,
+    isRedirecting,
+    error,
+    setError,
+    setShowVerificationPrompt,
+    setIsRedirecting,
+  );
 
-  // Monitor authentication state and redirect when both firebaseUser and apiUserId are available
-  useEffect(() => {
-    // Only redirect if:
-    // 1. Auth context loading is complete
-    // 2. No auth processing in progress
-    // 3. No signin loading in progress
-    // 4. User is authenticated
-    // 5. Not already redirecting
-    // 6. No current error state that indicates authentication failure (allow redirect for success messages)
-    const isAuthError =
-      error &&
-      !error.includes('created successfully') &&
-      !error.includes('sent!') &&
-      !error.includes('verified successfully') &&
-      !error.includes('reset successful') &&
-      !error.includes('Session recovered');
-
-    if (
-      !loading &&
-      !authProcessing &&
-      !isLoading &&
-      firebaseUser &&
-      firebaseUser.emailVerified &&
-      (apiUserId || error.includes('Authentication timed out')) && // Allow redirect on timeout error
-      !isRedirecting &&
-      !isAuthError
-    ) {
-      console.log('Authentication successful, initiating redirect to /main');
-      // Clear any success messages and URL parameters before redirecting
-      setError('');
-      setShowVerificationPrompt(false);
-
-      // Clear any error parameters from URL
-      if (typeof window !== 'undefined') {
-        const url = new URL(window.location.href);
-        if (url.searchParams.has('error') || url.searchParams.has('recovery')) {
-          url.searchParams.delete('error');
-          url.searchParams.delete('recovery');
-          window.history.replaceState({}, '', url.pathname);
-        }
-      }
-
-      // Use a slightly longer delay to ensure all state and URL cleanup is complete
-      setTimeout(() => {
-        setIsRedirecting(true);
-        router.replace('/main');
-      }, 100);
-    }
-  }, [firebaseUser, loading, authProcessing, isLoading, isRedirecting, error, router, apiUserId]);
-
-  // Clear any error messages from URL params and handle signup success
-  useEffect(() => {
-    const urlParams = parseAuthURLParams();
-    const errorMessage = processURLParamsError(urlParams);
-
-    if (errorMessage) {
-      setError(errorMessage);
-    }
-
-    // Clean up URL
-    cleanupURLParams(urlParams);
-  }, []);
+  // Authentication timeout safety mechanism
+  useAuthTimeout(
+    loading,
+    authProcessing,
+    isLoading,
+    error,
+    setError,
+    setIsLoading,
+    setAuthProcessing,
+    setIsRedirecting,
+  );
 
   // Function to resend verification email
   const handleResendVerificationEmail = async () => {
@@ -213,42 +160,9 @@ const LoginPage = () => {
     window.location.reload();
   };
 
-  // Safety mechanism: if user is stuck in loading state for too long, show a refresh option
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
-    // Only start timeout if we're in a loading/processing state
-    if (loading || authProcessing || isLoading) {
-      timeoutId = setTimeout(() => {
-        console.warn('Authentication process taking too long, user might be stuck');
-        // Set a specific error to help user understand what to do
-        if (!error) {
-          setError(
-            'Authentication is taking longer than expected. Please refresh the page and try again.',
-          );
-        }
-        // Clear loading states
-        setIsLoading(false);
-        setAuthProcessing(false);
-        setIsRedirecting(false);
-      }, 30000); // 30 second timeout
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [loading, authProcessing, isLoading, error]);
-
   // Don't show signin form if user is already authenticated and will be redirected
   // Only show loading if there's no authentication error
-  const isAuthError =
-    error &&
-    !error.includes('created successfully') &&
-    !error.includes('sent!') &&
-    !error.includes('verified successfully') &&
-    !error.includes('reset successful');
+  const isAuthError = isAuthenticationError(error);
 
   if (!loading && firebaseUser && apiUserId && !isAuthError) {
     return (

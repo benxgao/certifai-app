@@ -344,3 +344,76 @@ export const performSignin = async (
     return { success: false, error: { message: errorMessage } };
   }
 };
+
+/**
+ * Check if error message indicates authentication failure
+ */
+export const isAuthenticationError = (error: string): boolean => {
+  return !!(
+    error &&
+    !error.includes('created successfully') &&
+    !error.includes('sent!') &&
+    !error.includes('verified successfully') &&
+    !error.includes('reset successful') &&
+    !error.includes('Session recovered')
+  );
+};
+
+/**
+ * Clear URL error parameters
+ */
+export const clearURLErrorParams = (): void => {
+  if (typeof window !== 'undefined') {
+    const url = new URL(window.location.href);
+    if (url.searchParams.has('error') || url.searchParams.has('recovery')) {
+      url.searchParams.delete('error');
+      url.searchParams.delete('recovery');
+      window.history.replaceState({}, '', url.pathname);
+    }
+  }
+};
+
+/**
+ * Check if user should be redirected to main page
+ */
+export const shouldRedirectToMain = (
+  loading: boolean,
+  authProcessing: boolean,
+  isLoading: boolean,
+  firebaseUser: any,
+  apiUserId: string | null,
+  isRedirecting: boolean,
+  error: string,
+): boolean => {
+  const isAuthError = isAuthenticationError(error);
+
+  return (
+    !loading &&
+    !authProcessing &&
+    !isLoading &&
+    firebaseUser &&
+    firebaseUser.emailVerified &&
+    (apiUserId || error.includes('Authentication timed out')) &&
+    !isRedirecting &&
+    !isAuthError
+  );
+};
+
+/**
+ * Initialize signin page - handles both auth state clearing and URL params
+ */
+export const initializeSigninPage = async (): Promise<string | null> => {
+  const urlParams = parseAuthURLParams();
+
+  // Handle legacy auth state clearing
+  const legacyErrorMessage = await clearLegacyAuthState(urlParams);
+
+  // Handle URL params error messages
+  const urlErrorMessage = processURLParamsError(urlParams);
+
+  // Clean up URL params
+  cleanupURLParams(urlParams);
+
+  // Return the first available error message
+  return legacyErrorMessage || urlErrorMessage;
+};
