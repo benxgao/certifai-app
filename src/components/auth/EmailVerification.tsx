@@ -27,18 +27,37 @@ export default function EmailVerification() {
       }
 
       try {
-        // Check if the action code is valid
-        await checkActionCode(auth, oobCode);
+        // Add timeout for verification operations
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+        }, 10000); // 10 second timeout
 
-        // Apply the email verification
-        await applyActionCode(auth, oobCode);
+        // Check if the action code is valid and apply it
+        await Promise.race([
+          checkActionCode(auth, oobCode),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Verification timeout')), 10000),
+          ),
+        ]);
 
+        await Promise.race([
+          applyActionCode(auth, oobCode),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Verification timeout')), 10000),
+          ),
+        ]);
+
+        clearTimeout(timeoutId);
         console.log('Email verified successfully');
         setStatus('success');
       } catch (error: any) {
         console.error('Email verification failed:', error);
 
-        if (error.code === 'auth/expired-action-code') {
+        if (error.message?.includes('timeout')) {
+          setStatus('error');
+          setErrorMessage('Verification timed out. Please try again or request a new link.');
+        } else if (error.code === 'auth/expired-action-code') {
           setStatus('expired');
           setErrorMessage('This verification link has expired. Please request a new one.');
         } else if (error.code === 'auth/invalid-action-code') {

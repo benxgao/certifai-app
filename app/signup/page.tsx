@@ -29,6 +29,11 @@ import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { toast } from 'sonner';
 import { Toaster } from '@/src/components/ui/sonner';
 import CertificationSelector from '@/src/components/custom/CertificationSelector';
+import {
+  signupDebugger,
+  validateSignupForm,
+  getFirebaseErrorMessage,
+} from '@/src/utils/signup-debug';
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -50,6 +55,9 @@ export default function SignUpPage() {
 
   // Cleanup on unmount
   useEffect(() => {
+    // Check environment on component mount
+    signupDebugger.checkEnvironment();
+
     return () => {
       isMountedRef.current = false;
     };
@@ -68,186 +76,137 @@ export default function SignUpPage() {
     setError('');
     setSuccess('');
 
-    if (!firstName.trim()) {
-      setError('Please enter your first name');
+    signupDebugger.pending('form-validation', 'Starting form validation');
+
+    // Use the validation utility
+    const validationResult = validateSignupForm({
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      acceptTerms,
+      selectedCertId,
+    });
+
+    if (!validationResult.isValid) {
+      const firstError = validationResult.errors[0];
+      setError(firstError);
+      signupDebugger.error('form-validation', firstError);
       return;
     }
 
-    if (!lastName.trim()) {
-      setError('Please enter your last name');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
-      return;
-    }
-
-    if (!acceptTerms) {
-      setError('Please agree to the Terms of Service and Privacy Policy to continue');
-      return;
-    }
-
-    if (!selectedCertId) {
-      setError('Please select a certification exam to attend');
-      return;
-    }
-
+    signupDebugger.success('form-validation', 'Form validation passed');
     setLoading(true);
+    signupDebugger.pending('firebase-signup', 'Creating Firebase user account');
 
     try {
       // Create user account
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      signupDebugger.success('firebase-signup', `User created with UID: ${user.uid}`);
+
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
-      // Wait for user record to be fully created before updating profile
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      signupDebugger.pending('profile-update', 'Updating user profile');
 
-      // Update user profile with display name
+      // Update user profile with display name immediately
       await updateProfile(user, {
         displayName: `${firstName.trim()} ${lastName.trim()}`,
       });
 
-      // Check if component is still mounted before proceeding
-      if (!isMountedRef.current) return;
+      signupDebugger.success('profile-update', 'User profile updated successfully');
 
-      // Wait for profile update to propagate
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Sequential execution to avoid race conditions and provide better error handling
+      console.log('User account created, proceeding with registration...');
 
-      // Register user in external API and set custom claims
+      // Step 1: Register user in backend API first
+      let registrationSuccess = false;
+      signupDebugger.pending('api-registration', 'Registering user in backend API');
+
       try {
-        const token = await user.getIdToken();
-        const registerResponse = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            firstName: firstName.trim(),
-            lastName: lastName.trim(),
-            initCertId: selectedCertId,
-          }),
-        });
-
-        if (registerResponse.ok) {
-          const result = await registerResponse.json();
-          console.log('User registered successfully with api_user_id:', result.api_user_id);
-        } else {
-          console.warn('Failed to register user in external API, but proceeding with signup');
-        }
-      } catch (registrationError) {
-        console.error('Error during user registration:', registrationError);
-        // Don't block signup for registration errors
+        const apiUserId = await handleUserRegistration(user, firstName, lastName, selectedCertId!);
+        console.log('User registered successfully with API ID:', apiUserId);
+        signupDebugger.success('api-registration', `Registered with API ID: ${apiUserId}`);
+        registrationSuccess = true;
+      } catch (registrationError: any) {
+        console.warn('Backend registration failed (non-blocking):', registrationError.message);
+        signupDebugger.error('api-registration', registrationError.message, registrationError);
+        // Continue with email verification even if registration fails
       }
 
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
-      // Wait for registration to complete before sending verification
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Step 2: Send email verification
+      signupDebugger.pending('email-verification', 'Sending email verification');
 
-      // Send email verification with retry mechanism
       try {
         await sendEmailVerificationWithRetry(user);
-
-        // Check if component is still mounted before updating state
-        if (!isMountedRef.current) return;
+        console.log('Email verification sent successfully');
+        signupDebugger.success('email-verification', 'Email verification sent successfully');
 
         setShowVerificationStep(true);
-        const successMessage =
-          'Account created successfully! Please check your email to verify your account.';
-        setSuccess(successMessage);
+        setSuccess('Account created successfully! Please check your email to verify your account.');
+
         toast.success('Welcome to Certestic!', {
           description: 'Please check your email and verify your account to complete registration.',
         });
-      } catch (verificationError: any) {
-        console.error('Email verification error:', verificationError);
 
-        // Check if component is still mounted before updating state
-        if (!isMountedRef.current) return;
-
-        // Handle specific verification errors
-        if (
-          verificationError.message?.includes('signal is aborted') ||
-          verificationError.message?.includes('timeout') ||
-          verificationError.code === 'auth/internal-error'
-        ) {
-          // Still show verification step even if email sending failed
-          setShowVerificationStep(true);
-          const emailFailedMessage =
-            'Account created but verification email may not have been sent. You can resend it below.';
-          setError(emailFailedMessage);
-          toast.warning('Account created successfully!', {
-            description:
-              'However, the verification email may not have been sent. You can resend it from the next screen.',
-          });
-        } else {
-          throw verificationError; // Re-throw other errors to be handled by outer catch
+        // Show additional message if registration failed but verification succeeded
+        if (!registrationSuccess) {
+          console.log('Showing additional message about registration status');
+          setTimeout(() => {
+            if (isMountedRef.current) {
+              toast.info('Account Setup', {
+                description:
+                  'Your account was created successfully. Some features may be limited until backend registration completes.',
+              });
+            }
+          }, 2000);
         }
+      } catch (verificationError: any) {
+        console.error('Email verification failed:', verificationError);
+        signupDebugger.error('email-verification', verificationError.message, verificationError);
+
+        // Still show verification step but with error message
+        setShowVerificationStep(true);
+        setError(`Account created but verification email failed: ${verificationError.message}`);
+
+        toast.warning('Account created successfully!', {
+          description:
+            'However, the verification email failed to send. You can resend it from the next screen.',
+        });
       }
     } catch (error: any) {
       console.error('Signup error:', error);
+      signupDebugger.error('signup-process', 'Signup process failed', error);
 
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
 
-      // Handle signal aborted errors specifically
-      if (error.message?.includes('signal is aborted')) {
-        setError('Operation was interrupted. Please try again.');
-        return;
-      }
+      // Parse error and set appropriate message using the utility
+      const errorMessage = getFirebaseErrorMessage(error);
 
-      switch (error.code) {
-        case 'auth/email-already-in-use':
-          const emailInUseMessage =
-            'This email address is already registered. Please use a different email or try signing in instead.';
-          setError(emailInUseMessage);
-          toast.error(emailInUseMessage, {
-            description: 'If you forgot your password, you can reset it from the sign-in page.',
-            action: {
-              label: 'Go to Sign In',
-              onClick: () => router.push('/signin'),
-            },
-          });
-          break;
-        case 'auth/invalid-email':
-          const invalidEmailMessage = 'Please enter a valid email address';
-          setError(invalidEmailMessage);
-          toast.error(invalidEmailMessage);
-          break;
-        case 'auth/weak-password':
-          const weakPasswordMessage = 'Password is too weak. Please choose a stronger password';
-          setError(weakPasswordMessage);
-          toast.error(weakPasswordMessage, {
-            description: 'Try using at least 6 characters with a mix of letters and numbers.',
-          });
-          break;
-        case 'auth/operation-not-allowed':
-          const operationMessage =
-            'Email/password accounts are not enabled. Please contact support.';
-          setError(operationMessage);
-          toast.error(operationMessage);
-          break;
-        case 'auth/network-request-failed':
-          const networkMessage = 'Network error. Please check your connection and try again.';
-          setError(networkMessage);
-          toast.error(networkMessage);
-          break;
-        default:
-          const defaultMessage = error.message || 'An error occurred during signup';
-          setError(defaultMessage);
-          toast.error('Signup failed', {
-            description: defaultMessage,
-          });
+      setError(errorMessage);
+
+      // Enhanced toast messages for specific errors
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error(errorMessage, {
+          description: 'If you forgot your password, you can reset it from the sign-in page.',
+          action: {
+            label: 'Go to Sign In',
+            onClick: () => router.push('/signin'),
+          },
+        });
+      } else if (error.code === 'auth/weak-password') {
+        toast.error(errorMessage, {
+          description: 'Try using at least 6 characters with a mix of letters and numbers.',
+        });
+      } else {
+        toast.error('Signup failed', { description: errorMessage });
       }
     } finally {
       // Check if component is still mounted before updating loading state
@@ -258,19 +217,25 @@ export default function SignUpPage() {
   };
 
   const handleResendVerification = async () => {
-    if (!auth.currentUser) return;
+    if (!auth.currentUser) {
+      setError('No user found. Please try signing up again.');
+      return;
+    }
 
     setResendingVerification(true);
     setError('');
+    setSuccess('');
 
     try {
+      // Refresh the user state before sending verification
+      await auth.currentUser.reload();
+
       await sendEmailVerificationWithRetry(auth.currentUser);
 
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
 
-      const successMessage = 'Verification email sent! Please check your inbox.';
-      setSuccess(successMessage);
+      setSuccess('Verification email sent! Please check your inbox.');
       toast.success('Verification email sent!', {
         description: 'Please check your inbox (and spam folder) for the verification email.',
       });
@@ -280,24 +245,11 @@ export default function SignUpPage() {
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
 
-      // Handle signal aborted errors specifically
-      if (error.message?.includes('signal is aborted')) {
-        const interruptedMessage = 'Operation was interrupted. Please try again.';
-        setError(interruptedMessage);
-        toast.error(interruptedMessage);
-      } else if (error.message?.includes('timeout')) {
-        const timeoutMessage = 'Request timed out. Please check your connection and try again.';
-        setError(timeoutMessage);
-        toast.error(timeoutMessage);
-      } else if (error.code === 'auth/internal-error') {
-        const internalErrorMessage = 'Internal error occurred. Please try again in a moment.';
-        setError(internalErrorMessage);
-        toast.error(internalErrorMessage);
-      } else {
-        const failedMessage = 'Failed to resend verification email. Please try again.';
-        setError(failedMessage);
-        toast.error(failedMessage);
-      }
+      const errorMessage = getEmailVerificationErrorMessage(error);
+      setError(errorMessage);
+      toast.error('Failed to send verification email', {
+        description: errorMessage,
+      });
     } finally {
       // Check if component is still mounted before updating loading state
       if (isMountedRef.current) {
@@ -311,42 +263,116 @@ export default function SignUpPage() {
     router.push('/signin?message=verification-sent');
   };
 
-  // Helper function to retry email verification with exponential backoff
-  const sendEmailVerificationWithRetry = async (user: any, maxRetries = 2): Promise<void> => {
-    // Configure action code settings to use the new URL structure
+  // Enhanced user registration with better error handling and timeout management
+  const handleUserRegistration = async (
+    user: any,
+    firstName: string,
+    lastName: string,
+    selectedCertId: number,
+  ): Promise<string> => {
+    try {
+      const token = await user.getIdToken();
+
+      // Create AbortController for timeout management
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
+      const registerResponse = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          initCertId: selectedCertId,
+        }),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!registerResponse.ok) {
+        const errorData = await registerResponse.json().catch(() => ({}));
+        const errorMessage =
+          errorData.message || `Registration failed with status: ${registerResponse.status}`;
+        throw new Error(errorMessage);
+      }
+
+      const result = await registerResponse.json();
+
+      if (!result.api_user_id) {
+        throw new Error('Registration succeeded but no user ID was returned');
+      }
+
+      return result.api_user_id;
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        throw new Error('Registration request timed out. Please try again.');
+      }
+
+      // Re-throw with original message for other errors
+      throw error;
+    }
+  };
+
+  // Enhanced email verification with better error handling and user account propagation wait
+  const sendEmailVerificationWithRetry = async (user: any, maxRetries = 3): Promise<void> => {
     const actionCodeSettings = {
       url: `${window.location.origin}?mode=verifyEmail`,
       handleCodeInApp: true,
     };
 
+    // Wait for user account to propagate in Firebase systems
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       try {
-        // Add timeout for each attempt
-        const verificationPromise = sendEmailVerification(user, actionCodeSettings);
-        const timeoutPromise = new Promise<never>((_, reject) => {
-          setTimeout(() => reject(new Error('Email verification timeout')), 15000); // 15 second timeout per attempt
-        });
+        // Refresh the user object to ensure we have the latest state
+        await user.reload();
+        await sendEmailVerification(user, actionCodeSettings);
 
-        await Promise.race([verificationPromise, timeoutPromise]);
+        console.log(`Email verification sent successfully on attempt ${attempt + 1}`);
         return; // Success, exit the retry loop
       } catch (error: any) {
         console.error(`Email verification attempt ${attempt + 1} failed:`, error);
 
-        // If this is the last attempt or it's a non-retryable error, throw the error
-        if (
-          attempt === maxRetries ||
-          (!error.message?.includes('signal is aborted') &&
-            !error.message?.includes('timeout') &&
-            !error.message?.includes('network') &&
-            error.code !== 'auth/internal-error')
-        ) {
-          throw error;
+        // Check if this is a retryable error
+        const isRetriableError =
+          error.message?.includes('network') ||
+          error.message?.includes('timeout') ||
+          error.code === 'auth/internal-error' ||
+          error.code === 'auth/user-not-found' ||
+          error.code === 'auth/too-many-requests';
+
+        if (attempt === maxRetries || !isRetriableError) {
+          // If all retries failed, provide a helpful error message
+          const userFriendlyError = getEmailVerificationErrorMessage(error);
+          throw new Error(userFriendlyError);
         }
 
-        // Wait before retrying (exponential backoff)
-        const delay = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s...
+        // Wait before retrying with exponential backoff
+        const delay = Math.min(Math.pow(2, attempt) * 1000, 5000); // Cap at 5 seconds
+        console.log(`Retrying email verification in ${delay}ms...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
+    }
+  };
+
+  // Helper function to provide user-friendly error messages for email verification
+  const getEmailVerificationErrorMessage = (error: any): string => {
+    switch (error.code) {
+      case 'auth/user-not-found':
+        return 'User account not found. This might be a temporary issue, please try resending the verification email.';
+      case 'auth/too-many-requests':
+        return 'Too many verification emails sent. Please wait a few minutes before requesting another.';
+      case 'auth/internal-error':
+        return 'Internal error occurred. Please try again in a moment.';
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your connection and try again.';
+      default:
+        return error.message || 'Failed to send verification email. Please try again.';
     }
   };
 

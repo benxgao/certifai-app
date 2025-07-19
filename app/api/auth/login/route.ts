@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
     // Verify the token and get user info
     const decodedToken = await auth.verifyIdToken(firebaseToken);
-    const uid = decodedToken.uid;
+    const firebaseUserId = decodedToken.uid; // Firebase UID (not our api_user_id)
     const email = decodedToken.email;
 
     if (!email) {
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
               Authorization: `Bearer ${firebaseToken}`,
             },
             body: JSON.stringify({
-              firebase_user_id: uid,
+              firebase_user_id: firebaseUserId, // Send Firebase UID to backend
               email,
             }),
           });
@@ -66,27 +66,27 @@ export async function POST(request: NextRequest) {
 
       // If external API failed or isn't configured, generate a fallback ID
       if (!apiUserId) {
-        // Generate a fallback user ID based on Firebase UID
-        apiUserId = `fb_${uid}`;
+        // Generate a fallback api_user_id based on Firebase UID
+        apiUserId = `fb_${firebaseUserId}`;
         console.log('Using fallback api_user_id:', apiUserId);
       }
 
       // Set custom claims with the api_user_id for future use
       try {
         const customClaims: any = {
-          api_user_id: apiUserId,
+          api_user_id: apiUserId, // Our internal UUID for API operations
         };
 
         // Preserve existing init_cert_id if it exists
-        const existingRecord = await auth.getUser(uid);
+        const existingRecord = await auth.getUser(firebaseUserId);
         if (existingRecord.customClaims?.init_cert_id) {
           customClaims.init_cert_id = existingRecord.customClaims.init_cert_id;
         }
 
-        await auth.setCustomUserClaims(uid, customClaims);
+        await auth.setCustomUserClaims(firebaseUserId, customClaims);
         console.log(
-          'Successfully set custom claims for user:',
-          uid,
+          'Successfully set custom claims for Firebase UID:',
+          firebaseUserId,
           'with api_user_id:',
           apiUserId,
         );
@@ -101,9 +101,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         message: 'Authentication successful',
-        uid,
-        api_user_id: apiUserId,
+        firebase_user_id: firebaseUserId, // Firebase UID for reference
+        api_user_id: apiUserId, // Our internal UUID for API operations
         email,
+        // Deprecated: keeping for backward compatibility only
+        uid: firebaseUserId, // @deprecated Use firebase_user_id instead
       },
       { status: 200 },
     );

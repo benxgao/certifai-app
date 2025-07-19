@@ -74,27 +74,45 @@ export default function EmailActionHandler() {
 
           switch (mode) {
             case 'verifyEmail':
-              // Handle email verification (signup or email change)
+              // Handle email verification (signup or email change) with improved retry logic
               try {
                 await applyActionCode(auth, oobCode);
                 console.log('Email verified successfully');
               } catch (verifyError: any) {
                 console.error('Initial email verification failed:', verifyError);
 
-                // If user-not-found, wait a moment and retry once
-                if (verifyError.code === 'auth/user-not-found') {
-                  console.log('User not found, waiting 2 seconds and retrying verification...');
-                  await new Promise((resolve) => setTimeout(resolve, 2000));
+                // Enhanced retry logic for newly created accounts
+                if (verifyError.code === 'auth/user-not-found' && retryCount < maxRetries) {
+                  console.log(
+                    `User not found (attempt ${
+                      retryCount + 1
+                    }/${maxRetries}), waiting for account propagation...`,
+                  );
+
+                  // Progressive delay: 2s, 4s, 6s
+                  const delay = Math.min(2000 + retryCount * 2000, 6000);
+                  await new Promise((resolve) => setTimeout(resolve, delay));
 
                   try {
+                    // Try to refresh auth state and retry verification
+                    await auth.signOut(); // Clear any stale auth state
                     await applyActionCode(auth, oobCode);
                     console.log('Email verified successfully on retry');
                   } catch (retryError: any) {
-                    console.error('Email verification retry failed:', retryError);
-                    throw retryError; // Re-throw the retry error
+                    console.error(`Email verification retry ${retryCount + 1} failed:`, retryError);
+                    throw retryError;
                   }
+                } else if (verifyError.code === 'auth/invalid-action-code') {
+                  // Action code might be expired or already used
+                  throw new Error(
+                    'This verification link has expired or has already been used. Please request a new verification email.',
+                  );
+                } else if (verifyError.code === 'auth/expired-action-code') {
+                  throw new Error(
+                    'This verification link has expired. Please request a new verification email.',
+                  );
                 } else {
-                  throw verifyError; // Re-throw if not user-not-found
+                  throw verifyError;
                 }
               }
 
