@@ -10,59 +10,30 @@ import {
   CardHeader,
   CardTitle,
 } from '@/src/components/ui/card';
-import { Mail, MessageSquare, Phone, MapPin } from 'lucide-react';
+import { Mail, BookOpen } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 
 export default function ContactPage() {
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: 'Email Me Directly',
-      content: 'info@certestic.com',
-      description:
-        "The best way to reach me! I usually reply within a day (sometimes sooner if I'm having a coding session)",
-    },
-    {
-      icon: MessageSquare,
-      title: 'Beta User Community',
-      content: 'Community Discord',
-      description: 'Chat with other beta testers, share experiences, and help each other out',
-    },
-    {
-      icon: Phone,
-      title: 'Catch Me Online',
-      content: 'NZDT 8pm-10pm',
-      description:
-        "When I'm usually online and available for real-time chat (between work and sleep!)",
-    },
-    {
-      icon: MapPin,
-      title: 'Built From Home',
-      content: 'Remote Development',
-      description: 'Working from my home office, one feature at a time',
-    },
-  ];
-
   const faqs = [
     {
-      question: 'So... is this actually a real company?',
+      question: 'What is Certestic exactly?',
       answer:
-        "Great question! Right now it's just me in my home office building something I believe in. I'm treating it seriously, but I'm honest about it being a one-person passion project that might grow into something bigger.",
+        'Certestic is my personal project to help people prepare for IT certifications using AI. I built it because I wanted to create smarter, more personalized study tools than what was available.',
     },
     {
       question: 'Which certifications can I study for?',
       answer:
-        "I'm starting with AWS basics since that's what I know best. As I get more feedback and understand what users need most, I'll add more. What certification are YOU working on? Let me know!",
+        "I'm continuously adding new certifications based on user feedback and demand. Currently focusing on major cloud providers and IT fundamentals. What certification are you working on? Let me know!",
     },
     {
-      question: 'How much does this cost?',
+      question: 'Is this free to use?',
       answer:
-        'Right now? Absolutely nothing! The beta is completely free because I want to focus on making it genuinely helpful before worrying about money. Future pricing will be fair and user-informed.',
+        'Yes! This is currently a passion project and I want to keep core features accessible. As the platform grows, I may introduce premium features, but the goal is to keep it affordable and valuable.',
     },
     {
-      question: 'Can I help make this better somehow?',
+      question: 'How can I help improve Certestic?',
       answer:
-        "YES! Please! Use the beta, tell me what works and what doesn't, spread the word if you like it, or even contribute code if you're technical. Every bit of feedback helps me understand what to build next!",
+        "I'd love your help! Use the platform, share feedback, report bugs, suggest features, or spread the word. Every bit of input helps me understand what to build next and how to make it better.",
     },
   ];
 
@@ -76,36 +47,36 @@ export default function ContactPage() {
         {/* Hero Section */}
         <div className="text-center mb-12 sm:mb-16">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 sm:mb-6">
-            {"Let's Chat! 💬"}
+            Get in Touch
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Got questions about Certestic? Found a bug? Have an idea that could make things better?
-            Or just want to say hi? {"I'd"} genuinely love to hear from you! Drop me an email and
-            I&apos;ll get back to you within a day.
+            Have questions about Certestic? Found a bug? Have feedback or ideas? I&apos;d love to
+            hear from you! Drop me an email and I&apos;ll get back to you soon.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
-          {/* Email Contact Section */}
-          <div>
+        <div className="max-w-4xl mx-auto">
+          {/* Direct Email Contact */}
+          <div className="mb-12">
             <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">Send Me an Email �</CardTitle>
+              <CardHeader className="text-center px-8">
+                <CardTitle className="text-2xl flex items-center justify-center gap-2">
+                  <Mail className="h-6 w-6" />
+                  Send Me an Email
+                </CardTitle>
                 <CardDescription>
-                  The best way to reach me! I read every email and usually reply within a day.
+                  The best way to reach me! I read every email personally.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="text-center py-8">
+              <CardContent className="text-center py-8 px-8">
                 <div className="mb-6">
-                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Mail className="h-8 w-8 text-primary" />
+                  <div className="h-16 w-16 rounded-full bg-gradient-to-r from-violet-600 to-blue-600 flex items-center justify-center mx-auto mb-4">
+                    <Mail className="h-8 w-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">
-                    Direct Email Contact
-                  </h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Direct Email</h3>
                   <p className="text-muted-foreground mb-4">
-                    Whether it&apos;s feedback, a bug report, a feature idea, or just to say hello -
-                    I genuinely read every message!
+                    Whether it&apos;s feedback, a bug report, feature ideas, or just to say hello -
+                    I genuinely read and respond to every message!
                   </p>
                 </div>
 
@@ -116,56 +87,36 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                <Button asChild className="w-full">
+                <Button
+                  asChild
+                  className="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                >
                   <a href="mailto:info@certestic.com?subject=Hello from Certestic user">
                     <Mail className="h-4 w-4 mr-2" />
-                    Open Email Client 📬
+                    Open Email Client
                   </a>
                 </Button>
               </CardContent>
             </Card>
           </div>
+        </div>
 
-          {/* Contact Information & FAQ */}
-          <div className="space-y-8">
-            {/* Contact Info */}
+        <div className="max-w-4xl mx-auto">
+          {/* FAQ */}
+          <div className="mb-16">
             <Card>
-              <CardHeader>
-                <CardTitle>Ways to Reach Me 📞</CardTitle>
-                <CardDescription>Pick whatever works best for you!</CardDescription>
+              <CardHeader className="pb-8">
+                <CardTitle>Frequently Asked Questions</CardTitle>
+                <CardDescription>Quick answers to common questions</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                {contactInfo.map((item, index) => (
-                  <div key={index} className="flex items-start space-x-4">
-                    <div className="flex-shrink-0">
-                      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <item.icon className="h-5 w-5 text-primary" />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-foreground">{item.title}</h3>
-                      <p className="text-sm font-medium text-primary">{item.content}</p>
-                      <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Quick FAQ */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Answers 🤔</CardTitle>
-                <CardDescription>The questions I get asked most often</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-6 px-8 pb-8">
                 {faqs.map((faq, index) => (
                   <div
                     key={index}
-                    className="border-b border-border last:border-b-0 pb-4 last:pb-0"
+                    className="border-b border-border last:border-b-0 pb-6 last:pb-0"
                   >
-                    <h4 className="font-semibold text-foreground text-sm mb-2">{faq.question}</h4>
-                    <p className="text-sm text-muted-foreground">{faq.answer}</p>
+                    <h4 className="font-semibold text-foreground text-sm mb-3">{faq.question}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.answer}</p>
                   </div>
                 ))}
               </CardContent>
@@ -173,33 +124,36 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Support Section */}
-        <div className="mt-16 text-center">
-          <div className="bg-card border rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Need Help Right Now? 🚀</h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              For the fastest response, send me an email at <strong>info@certestic.com</strong> - I
-              usually reply within a day! You can also jump into the Discord to chat with other beta
-              testers, or browse through the documentation if you prefer to figure things out
-              yourself.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg">
-                <a href="mailto:info@certestic.com">
-                  <Mail className="mr-2 h-4 w-4" />
-                  Email Me Directly
-                </a>
-              </Button>
-              <Link href="/community">
-                <Button variant="outline" size="lg">
-                  Join the Discord
+        {/* Bottom CTA Section */}
+        <div className="mt-10">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-card border rounded-xl p-12 text-center">
+              <h2 className="text-2xl font-bold text-foreground mb-8">
+                Questions? Ideas? Just Want to Chat?
+              </h2>
+              <p className="text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
+                I&apos;m always happy to hear from users! Whether you&apos;ve found a bug, have a
+                feature request, or just want to share your certification journey - drop me a line
+                at <strong className="text-primary">info@certestic.com</strong>.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                >
+                  <a href="mailto:info@certestic.com">
+                    <Mail className="mr-2 h-4 w-4" />
+                    Send me an Email
+                  </a>
                 </Button>
-              </Link>
-              <Link href="/documentation">
-                <Button variant="outline" size="lg">
-                  Browse the Docs
-                </Button>
-              </Link>
+                <Link href="/documentation">
+                  <Button variant="outline" size="lg">
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    Browse Documentation
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
