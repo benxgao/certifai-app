@@ -11,7 +11,6 @@ import { faqSchema } from '@/src/lib/schemas/faqSchema';
 import { breadcrumbSchemas } from '@/src/lib/schemas/breadcrumbSchema';
 import {
   Target,
-  Eye,
   Heart,
   Users,
   Globe,
@@ -20,7 +19,6 @@ import {
   Shield,
   Brain,
   Rocket,
-  Star,
   TrendingUp,
   Code,
 } from 'lucide-react';
@@ -196,32 +194,26 @@ export default function AboutPage() {
             <div className="absolute top-10 right-4 sm:right-20 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-10 left-4 sm:left-20 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
-            <header className="text-center mb-16 relative z-10">
-              <div className="flex justify-center mb-6">
-                <div className="h-16 w-16 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Brain className="h-8 w-8 text-violet-600 dark:text-violet-400" />
-                </div>
-              </div>
-
+            <header className="text-center mb-20 relative z-10">
               <Badge
                 variant="secondary"
-                className="mb-6 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-800 dark:text-violet-200"
+                className="mb-8 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-800 dark:text-violet-200 px-4 py-2"
               >
-                <Rocket className="h-3 w-3 mr-1 text-violet-600 dark:text-violet-400" />
+                <Rocket className="h-4 w-4 mr-2 text-violet-600 dark:text-violet-400" />
                 Built with passion
               </Badge>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   About Certestic
                 </span>
               </h1>
 
-              <div className="text-lg sm:text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto mb-8 leading-relaxed">
-                <p className="mb-4">
+              <div className="max-w-4xl mx-auto mb-12">
+                <p className="text-xl sm:text-2xl text-slate-700 dark:text-slate-200 mb-6 leading-relaxed">
                   AI-powered certification training built to be effective and accessible.
                 </p>
-                <p className="text-base sm:text-lg">
+                <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
                   Made by one developer who believes learning should be better.
                 </p>
               </div>
@@ -252,30 +244,30 @@ export default function AboutPage() {
           </div>
 
           {/* Enhanced Stats Section with rich descriptions */}
-          <section className="mb-16" aria-labelledby="platform-stats">
+          <section className="mb-20" aria-labelledby="platform-stats">
             <h2 id="platform-stats" className="sr-only">
               Certestic Platform Statistics
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {stats.map((stat, index) => (
                 <Card
                   key={index}
-                  className="text-center bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="text-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <CardContent className="p-6">
-                    <div className="h-12 w-12 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-md">
+                    <div className="h-12 w-12 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                       <stat.icon
                         className="h-6 w-6 text-violet-600 dark:text-violet-400"
                         aria-hidden="true"
                       />
                     </div>
-                    <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent mb-1">
+                    <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent mb-2">
                       {stat.value}
                     </div>
-                    <div className="text-base md:text-lg font-medium text-slate-600 dark:text-slate-300 mb-2">
+                    <div className="text-base font-medium text-slate-700 dark:text-slate-200 mb-2">
                       {stat.label}
                     </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-300">
+                    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                       {stat.description}
                     </div>
                   </CardContent>
@@ -286,7 +278,7 @@ export default function AboutPage() {
 
           {/* Mission & Vision with enhanced SEO content */}
           <section
-            className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16"
+            className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-20"
             aria-labelledby="mission-vision"
           >
             <h2 id="mission-vision" className="sr-only">
@@ -294,36 +286,28 @@ export default function AboutPage() {
             </h2>
 
             <article>
-              <Card className="h-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="h-12 w-12 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center shadow-md">
-                      <Target
-                        className="h-6 w-6 text-violet-600 dark:text-violet-400"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <CardTitle className="text-2xl md:text-3xl bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-                      Mission
-                    </CardTitle>
-                  </div>
+              <Card className="h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-md hover:shadow-lg transition-all duration-300">
+                <CardHeader className="pb-6">
+                  <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
+                    Mission
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <CardContent className="px-8 pb-8">
+                  <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed mb-6">
                     Create effective, AI-powered certification training that&apos;s accessible to
                     everyone.
                   </p>
-                  <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
                     Traditional certification training is expensive and often ineffective. I&apos;m
                     building something better using modern AI technology.
                   </p>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div className="flex items-start space-x-3">
                       <Zap
                         className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-base text-slate-600 dark:text-slate-300">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         <strong>Smart Learning:</strong> AI adapts to how you learn best
                       </span>
                     </div>
@@ -332,7 +316,7 @@ export default function AboutPage() {
                         className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-base text-slate-600 dark:text-slate-300">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         <strong>Real Experience:</strong> Content based on actual certification
                         paths
                       </span>
@@ -342,7 +326,7 @@ export default function AboutPage() {
                         className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-base text-slate-600 dark:text-slate-300">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         <strong>Community Driven:</strong> Built with user feedback
                       </span>
                     </div>
@@ -352,35 +336,27 @@ export default function AboutPage() {
             </article>
 
             <article>
-              <Card className="h-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="h-12 w-12 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-xl flex items-center justify-center shadow-md">
-                      <Eye
-                        className="h-6 w-6 text-blue-600 dark:text-blue-400"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <CardTitle className="text-2xl md:text-3xl bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-                      Vision
-                    </CardTitle>
-                  </div>
+              <Card className="h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-md hover:shadow-lg transition-all duration-300">
+                <CardHeader className="pb-6">
+                  <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
+                    Vision
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <CardContent className="px-8 pb-8">
+                  <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed mb-6">
                     Make quality IT certification training available to professionals worldwide.
                   </p>
-                  <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
+                  <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
                     Every IT professional should have access to effective training that helps
                     advance their career without breaking the bank.
                   </p>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div className="flex items-start space-x-3">
                       <Globe
                         className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-base text-slate-600 dark:text-slate-300">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         <strong>Global Access:</strong> Available to IT professionals everywhere
                       </span>
                     </div>
@@ -389,7 +365,7 @@ export default function AboutPage() {
                         className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-base text-slate-600 dark:text-slate-300">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         <strong>Continuous Learning:</strong> Technology that evolves with the field
                       </span>
                     </div>
@@ -398,7 +374,7 @@ export default function AboutPage() {
                         className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0"
                         aria-hidden="true"
                       />
-                      <span className="text-base text-slate-600 dark:text-slate-300">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         <strong>Career Growth:</strong> Tools that help professionals advance
                       </span>
                     </div>
@@ -409,42 +385,39 @@ export default function AboutPage() {
           </section>
 
           {/* Core Values Section with enhanced SEO */}
-          <section className="mb-16" aria-labelledby="core-values">
-            <h2
-              id="core-values"
-              className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent"
-            >
-              My Approach
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <section className="mb-20" aria-labelledby="core-values">
+            <div className="text-center mb-12">
+              <h2
+                id="core-values"
+                className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-slate-100"
+              >
+                My Approach
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                Building Certestic with clear principles and user-focused development
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {values.map((value, index) => (
                 <article key={index}>
-                  <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 h-full">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <div className="h-12 w-12 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-                          <value.icon
-                            className="h-6 w-6 text-violet-600 dark:text-violet-400"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                            {value.title}
-                          </h3>
-                          <p className="text-base text-slate-600 dark:text-slate-300 mb-3">
-                            {value.description}
-                          </p>
-                          <div className="space-y-1">
-                            {value.benefits.map((benefit, idx) => (
-                              <div key={idx} className="flex items-center space-x-2">
-                                <div className="w-1.5 h-1.5 bg-violet-600 dark:bg-violet-400 rounded-full"></div>
-                                <span className="text-sm text-slate-600 dark:text-slate-300">
-                                  {benefit}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
+                  <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full">
+                    <CardContent className="p-8">
+                      <div>
+                        <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                          {value.title}
+                        </h3>
+                        <p className="text-base text-slate-700 dark:text-slate-200 mb-6 leading-relaxed">
+                          {value.description}
+                        </p>
+                        <div className="space-y-2">
+                          {value.benefits.map((benefit, idx) => (
+                            <div key={idx} className="flex items-center space-x-3">
+                              <div className="w-1.5 h-1.5 bg-violet-600 dark:bg-violet-400 rounded-full flex-shrink-0"></div>
+                              <span className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                {benefit}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </CardContent>
@@ -455,16 +428,21 @@ export default function AboutPage() {
           </section>
 
           {/* Development Timeline with rich content */}
-          <section className="mb-16" aria-labelledby="development-timeline">
-            <h2
-              id="development-timeline"
-              className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent"
-            >
-              Development Timeline
-            </h2>
-            <div className="relative">
+          <section className="mb-20" aria-labelledby="development-timeline">
+            <div className="text-center mb-12">
+              <h2
+                id="development-timeline"
+                className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-slate-100"
+              >
+                Development Journey
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                The story of how Certestic came to life and where it&apos;s heading
+              </p>
+            </div>
+            <div className="relative max-w-4xl mx-auto">
               <div className="absolute left-1/2 transform -translate-x-0.5 h-full w-0.5 bg-gradient-to-b from-violet-200 to-blue-200 dark:from-violet-800 dark:to-blue-800"></div>
-              <div className="space-y-8">
+              <div className="space-y-12">
                 {milestones.map((milestone, index) => (
                   <article
                     key={index}
@@ -473,24 +451,20 @@ export default function AboutPage() {
                     }`}
                   >
                     <div className={`flex-1 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
-                      <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <CardContent className="p-6">
-                          <div className="flex items-center space-x-2 mb-3">
+                      <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <CardContent className="p-8">
+                          <div className="mb-4">
                             <Badge
                               variant="secondary"
-                              className="font-medium text-base bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50"
+                              className="font-medium text-base bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 px-3 py-1"
                             >
                               {milestone.year}
                             </Badge>
-                            <milestone.icon
-                              className="h-5 w-5 text-violet-600 dark:text-violet-400"
-                              aria-hidden="true"
-                            />
                           </div>
-                          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-xl">
+                          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 text-xl">
                             {milestone.title}
                           </h3>
-                          <p className="text-base text-slate-600 dark:text-slate-300 mb-3">
+                          <p className="text-base text-slate-700 dark:text-slate-200 mb-4 leading-relaxed">
                             {milestone.description}
                           </p>
                           <div className="text-sm text-violet-600 dark:text-violet-400 font-medium">
@@ -500,7 +474,7 @@ export default function AboutPage() {
                       </Card>
                     </div>
                     <div className="flex-shrink-0 z-10">
-                      <div className="h-4 w-4 rounded-full bg-gradient-to-r from-violet-600 to-blue-600 border-4 border-white dark:border-slate-900 shadow-lg"></div>
+                      <div className="h-4 w-4 rounded-full bg-gradient-to-r from-violet-600 to-blue-600 border-4 border-white dark:border-slate-900 shadow-md"></div>
                     </div>
                     <div className="flex-1"></div>
                   </article>
@@ -510,70 +484,71 @@ export default function AboutPage() {
           </section>
 
           {/* Enhanced Developer Section */}
-          <section className="mb-16" aria-labelledby="developer-info">
-            <h2
-              id="developer-info"
-              className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent"
-            >
-              About the Developer
-            </h2>
-            <div className="max-w-2xl mx-auto">
-              <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-8 text-center">
-                  <div className="w-24 h-24 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
-                    <Brain
-                      className="h-12 w-12 text-violet-600 dark:text-violet-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+          <section className="mb-20" aria-labelledby="developer-info">
+            <div className="text-center mb-12">
+              <h2
+                id="developer-info"
+                className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-slate-100"
+              >
+                About the Developer
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                The person behind Certestic and the vision for better certification training
+              </p>
+            </div>
+            <div className="max-w-3xl mx-auto">
+              <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-md hover:shadow-lg transition-all duration-300">
+                <CardContent className="p-8 sm:p-12 text-center">
+                  <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
                     Ben Gao
                   </h3>
-                  <p className="text-lg text-violet-600 dark:text-violet-400 mb-4 font-medium">
+                  <p className="text-lg text-violet-600 dark:text-violet-400 mb-8 font-medium">
                     Full-Stack Developer | AI Enthusiast
                   </p>
-                  <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    A developer passionate about making IT certification training more effective and
-                    accessible through modern technology.
-                  </p>
-                  <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
-                    Certestic combines years of software development experience with firsthand
-                    knowledge of certification challenges to create better learning tools.
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-base">
-                    <div className="flex items-center justify-center space-x-2">
+                  <div className="space-y-6 text-left">
+                    <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
+                      A developer passionate about making IT certification training more effective
+                      and accessible through modern technology.
+                    </p>
+                    <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Certestic combines years of software development experience with firsthand
+                      knowledge of certification challenges to create better learning tools.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6 mt-10 text-base">
+                    <div className="flex items-center justify-center space-x-3 p-4 bg-violet-50/50 dark:bg-violet-900/20 rounded-lg">
                       <Code
                         className="h-5 w-5 text-violet-600 dark:text-violet-400"
                         aria-hidden="true"
                       />
-                      <span className="text-slate-600 dark:text-slate-300">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium">
                         Full-Stack Development
                       </span>
                     </div>
-                    <div className="flex items-center justify-center space-x-2">
+                    <div className="flex items-center justify-center space-x-3 p-4 bg-violet-50/50 dark:bg-violet-900/20 rounded-lg">
                       <Brain
                         className="h-5 w-5 text-violet-600 dark:text-violet-400"
                         aria-hidden="true"
                       />
-                      <span className="text-slate-600 dark:text-slate-300">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium">
                         AI & Machine Learning
                       </span>
                     </div>
-                    <div className="flex items-center justify-center space-x-2">
+                    <div className="flex items-center justify-center space-x-3 p-4 bg-violet-50/50 dark:bg-violet-900/20 rounded-lg">
                       <BookOpen
                         className="h-5 w-5 text-violet-600 dark:text-violet-400"
                         aria-hidden="true"
                       />
-                      <span className="text-slate-600 dark:text-slate-300">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium">
                         Educational Technology
                       </span>
                     </div>
-                    <div className="flex items-center justify-center space-x-2">
+                    <div className="flex items-center justify-center space-x-3 p-4 bg-violet-50/50 dark:bg-violet-900/20 rounded-lg">
                       <Users
                         className="h-5 w-5 text-violet-600 dark:text-violet-400"
                         aria-hidden="true"
                       />
-                      <span className="text-slate-600 dark:text-slate-300">
+                      <span className="text-slate-700 dark:text-slate-200 font-medium">
                         User-Centered Design
                       </span>
                     </div>
@@ -585,54 +560,45 @@ export default function AboutPage() {
 
           {/* Enhanced Call to Action */}
           <section className="text-center" aria-labelledby="join-beta">
-            <Card className="bg-gradient-to-br from-violet-50/80 to-blue-50/60 dark:from-violet-900/20 dark:to-blue-900/15 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-2xl relative overflow-hidden">
+            <Card className="bg-gradient-to-br from-violet-50/90 to-blue-50/70 dark:from-violet-900/30 dark:to-blue-900/20 border border-violet-200/60 dark:border-violet-700/50 shadow-lg relative overflow-hidden">
               {/* Decorative background pattern */}
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 to-blue-50/30 dark:from-violet-900/10 dark:to-blue-900/5 rounded-3xl"></div>
-              <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 to-blue-50/20 dark:from-violet-900/10 dark:to-blue-900/5"></div>
+              <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl"></div>
 
-              <CardContent className="p-8 sm:p-12 relative z-10">
-                <div className="flex justify-center mb-6">
-                  <div className="h-16 w-16 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Star
-                      className="h-8 w-8 text-violet-600 dark:text-violet-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                </div>
-
+              <CardContent className="p-8 sm:p-16 relative z-10">
                 <h2
                   id="join-beta"
-                  className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent"
+                  className="text-3xl md:text-4xl font-bold mb-6 text-slate-900 dark:text-slate-100"
                 >
                   Try Certestic Today
                 </h2>
-                <p className="text-xl text-slate-600 dark:text-slate-300 mb-6 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-xl text-slate-700 dark:text-slate-200 mb-10 max-w-3xl mx-auto leading-relaxed">
                   Join the beta and experience AI-powered certification training. Free access while
                   in development.
                 </p>
-                <div className="grid md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
+                  <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                       Free Beta
                     </div>
-                    <div className="text-base text-slate-500 dark:text-slate-400">
+                    <div className="text-base text-slate-600 dark:text-slate-400">
                       No cost to try
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                  <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                       AI-Powered
                     </div>
-                    <div className="text-base text-slate-500 dark:text-slate-400">
+                    <div className="text-base text-slate-600 dark:text-slate-400">
                       Smart learning
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                  <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                       Community
                     </div>
-                    <div className="text-base text-slate-500 dark:text-slate-400">
+                    <div className="text-base text-slate-600 dark:text-slate-400">
                       Shape the future
                     </div>
                   </div>
@@ -649,7 +615,7 @@ export default function AboutPage() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                    className="rounded-xl px-8 py-4 text-lg font-semibold border-2 bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 transition-all duration-200"
                     aria-label="Contact the developer"
                   >
                     <Heart className="mr-2 h-5 w-5" />
