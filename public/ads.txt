@@ -1,0 +1,12 @@
+# ads.txt for certestic.com
+# This file is used to authorize digital advertising sellers
+# Add your advertising partners here when you start monetizing
+
+# Google AdSense (example - replace with your actual publisher ID)
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Google Ad Manager (example)
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+
+# Contact information
+# contact=info@certestic.com

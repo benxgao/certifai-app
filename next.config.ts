@@ -14,7 +14,8 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['firebase', '@radix-ui/react-checkbox', '@radix-ui/react-label'],
   },
-  // Add headers to handle Chrome DevTools endpoint properly
+
+  // Add headers for SEO and performance
   async headers() {
     return [
       {
@@ -34,18 +35,104 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/robots.txt',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, s-maxage=86400',
+          },
+        ],
+      },
+      {
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=43200, s-maxage=43200',
+          },
+        ],
+      },
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
           },
         ],
       },
     ];
   },
-  // Add proper support for serving static files
+
+  // Add proper support for serving static files and SEO files
   async rewrites() {
     return [
       {
         source: '/.well-known/:path*',
         destination: '/.well-known/:path*',
+      },
+      {
+        source: '/robots.txt',
+        destination: '/api/robots',
+      },
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+      },
+    ];
+  },
+
+  // Redirects for SEO
+  async redirects() {
+    return [
+      // Redirect www to non-www for consistency
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.certestic.com',
+          },
+        ],
+        destination: 'https://certestic.com/:path*',
+        permanent: true,
+      },
+      // Redirect old paths if any exist
+      {
+        source: '/login',
+        destination: '/signin',
+        permanent: true,
+      },
+      {
+        source: '/register',
+        destination: '/signup',
+        permanent: true,
       },
     ];
   },

@@ -3,90 +3,91 @@ import { fetchCertificationsData } from '@/src/lib/server-actions/certifications
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://certestic.com';
+  const currentDate = new Date();
 
-  // Static pages
+  // Static pages with optimized priorities and change frequencies
   const staticPages = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'daily' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
+      priority: 1.0,
     },
     {
       url: `${baseUrl}/certifications`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/study-guides`,
-      lastModified: new Date(),
+      url: `${baseUrl}/about`,
+      lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      url: `${baseUrl}/pricing`,
+      lastModified: currentDate,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/documentation`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/support`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/community`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
     },
     {
       url: `${baseUrl}/signup`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/signin`,
-      lastModified: new Date(),
+      url: `${baseUrl}/study-guides`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/documentation`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     },
     {
+      url: `${baseUrl}/support`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/community`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/signin`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'yearly' as const,
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: 'yearly' as const,
       priority: 0.3,
     },
@@ -104,14 +105,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // Firm-specific certifications page
         {
           url: `${baseUrl}/certifications/${firm.code.toLowerCase()}`,
-          lastModified: new Date(),
+          lastModified: currentDate,
           changeFrequency: 'weekly' as const,
           priority: 0.8,
         },
         // Individual certification pages for this firm
         ...firm.certifications.map((cert) => ({
           url: `${baseUrl}/certifications/${firm.code.toLowerCase()}/${cert.cert_id}`,
-          lastModified: new Date(),
+          lastModified: currentDate,
           changeFrequency: 'weekly' as const,
           priority: 0.7,
         })),

@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import ConditionalFirebaseAuthProvider from '@/src/components/auth/ConditionalFirebaseAuthProvider';
 import ConditionalFooter from '@/src/components/custom/ConditionalFooter';
+import GoogleAnalytics from '@/src/components/analytics/GoogleAnalytics';
+import PageViewTracker from '@/src/components/analytics/PageViewTracker';
 import './globals.css';
 
 // SEO and metadata
@@ -80,9 +82,12 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'your-google-site-verification-code',
     yandex: 'your-yandex-verification-code',
     yahoo: 'your-yahoo-verification-code',
+    other: {
+      'msvalidate.01': 'your-bing-verification-code',
+    },
   },
   category: 'Education',
 };
@@ -171,21 +176,115 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Certestic',
-              description: 'AI-powered IT certification training platform',
+              alternateName: 'Certestic - AI-Powered IT Certification Training',
+              description:
+                'AI-powered IT certification training platform with personalized study recommendations',
               url: 'https://certestic.com',
-              logo: 'https://certestic.com/favicon.ico',
-              sameAs: ['https://twitter.com/certestic', 'https://linkedin.com/company/certestic'],
-              contactPoint: {
-                '@type': 'ContactPoint',
-                contactType: 'customer service',
-                email: 'support@certestic.com',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://certestic.com/favicon.ico',
+                width: 256,
+                height: 256,
+              },
+              sameAs: [
+                'https://twitter.com/certestic',
+                'https://linkedin.com/company/certestic',
+                'https://github.com/certestic',
+              ],
+              contactPoint: [
+                {
+                  '@type': 'ContactPoint',
+                  contactType: 'customer service',
+                  email: 'support@certestic.com',
+                  availableLanguage: 'English',
+                },
+                {
+                  '@type': 'ContactPoint',
+                  contactType: 'sales',
+                  email: 'sales@certestic.com',
+                  availableLanguage: 'English',
+                },
+              ],
+              address: {
+                '@type': 'PostalAddress',
+                addressCountry: 'US',
+                addressRegion: 'California',
+              },
+              foundingDate: '2024',
+              numberOfEmployees: {
+                '@type': 'QuantitativeValue',
+                value: '1-10',
+              },
+              industry: 'Education Technology',
+              keywords: 'AI, IT Certification, Training, Education, Machine Learning',
+            }),
+          }}
+        />
+
+        {/* Schema.org structured data for Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Certestic',
+              url: 'https://certestic.com',
+              description: 'AI-powered IT certification training platform',
+              publisher: {
+                '@type': 'Organization',
+                name: 'Certestic',
+              },
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: 'https://certestic.com/search?q={search_term_string}',
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+
+        {/* Schema.org structured data for Educational Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'EducationalOrganization',
+              name: 'Certestic',
+              url: 'https://certestic.com',
+              description:
+                'AI-powered IT certification training platform offering personalized study recommendations and practice exams',
+              educationalCredentialAwarded: 'IT Certification Preparation',
+              hasCredential: {
+                '@type': 'EducationalOccupationalCredential',
+                name: 'IT Certification Training',
+                description:
+                  'Comprehensive training for various IT certifications using AI-powered learning',
+              },
+              offers: {
+                '@type': 'Offer',
+                category: 'Education',
+                availability: 'https://schema.org/InStock',
+                priceCurrency: 'USD',
+                description:
+                  'AI-powered IT certification training with personalized recommendations',
               },
             }),
           }}
         />
       </head>
       <body className="antialiased">
+        {/* Google Analytics */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
+
         <ConditionalFirebaseAuthProvider>
+          <PageViewTracker />
           <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-slate-100">
             <Suspense
               fallback={

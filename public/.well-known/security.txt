@@ -1,0 +1,8 @@
+Contact: mailto:info@certestic.com
+Contact: https://certestic.com/contact
+Expires: 2026-07-19T23:59:59.000Z
+Encryption: https://certestic.com/.well-known/pgp-key.txt
+Acknowledgments: https://certestic.com/security-acknowledgments
+Preferred-Languages: en
+Canonical: https://certestic.com/.well-known/security.txt
+Policy: https://certestic.com/security-policy

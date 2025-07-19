@@ -1,0 +1,31 @@
+/* TEAM */
+
+Developer: Certestic Team
+Contact: info@certestic.com
+Location: NEW ZEALAND
+
+/* THANKS */
+
+Thanks to all beta users who are helping us improve the platform.
+Special thanks to the open-source community.
+
+/* SITE */
+
+Last update: 2025/07/19
+Standards: HTML5, CSS3, JavaScript ES6+, TypeScript
+Components: Next.js, React, Tailwind CSS, Firebase
+Software: VS Code, Git, GitHub
+Frameworks: Next.js 15, React 19, Prisma
+Languages: TypeScript, JavaScript, PostgreSQL
+Hosting: Firebase App Hosting
+Analytics: Google Analytics 4
+AI: Custom AI models for certification question generation
+
+/* VALUES */
+
+Education first
+AI-powered learning
+Community driven
+Open to feedback
+Continuous improvement
+User privacy respected
