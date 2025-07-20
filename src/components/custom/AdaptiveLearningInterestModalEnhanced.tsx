@@ -146,10 +146,12 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
     setSuccess(false);
   };
 
-  const handleDialogClose = () => {
+  const handleDialogClose = (open: boolean) => {
     if (!isSubmitting) {
-      setIsOpen(false);
-      resetForm();
+      setIsOpen(open);
+      if (!open) {
+        resetForm();
+      }
     }
   };
 
@@ -163,11 +165,11 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
   const defaultTrigger = (
     <Button
       variant="default"
-      size="sm"
-      className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
+      size="default"
+      className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-sm hover:shadow-md transition-all duration-200"
     >
       <Sparkles className="mr-2 h-4 w-4" />
-      Stay Updated
+      Notify Me of Progress
     </Button>
   );
 
@@ -308,7 +310,7 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
             <Button
               type="button"
               variant="outline"
-              onClick={handleDialogClose}
+              onClick={() => handleDialogClose(false)}
               disabled={isSubmitting}
             >
               Cancel
@@ -327,7 +329,7 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
               ) : (
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4" />
-                  Stay Updated
+                  Notify Me of Progress
                 </div>
               )}
             </Button>

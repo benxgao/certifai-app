@@ -17,7 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/src/components/ui/tooltip';
+import ResponsiveTooltip from '@/src/components/custom/ResponsiveTooltip';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams'; // Import SWR hook
@@ -28,12 +28,10 @@ import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb co
 import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
 import {
   FaPlay,
-  FaCheck,
   FaRegFileAlt,
   FaClipboardList,
   FaChartLine,
   FaTrophy,
-  FaPause,
   FaLightbulb,
   FaArrowRight, // Added missing icon
   FaTrash, // Added delete icon
@@ -297,30 +295,29 @@ function CertificationExamsContent() {
                     <DialogHeader>
                       <div className="flex items-center gap-2">
                         <DialogTitle>Generate New Exam</DialogTitle>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <span className="cursor-pointer text-slate-400 dark:text-slate-500">
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent sideOffset={4} className="max-w-[300px]">
-                            Generate a new exam for{' '}
-                            {displayCertification?.name || 'this certification'}. Configure the
-                            number of questions and any specific requirements.
-                          </TooltipContent>
-                        </Tooltip>
+                        <ResponsiveTooltip
+                          content={
+                            <>
+                              Generate a new exam for{' '}
+                              {displayCertification?.name || 'this certification'}. Configure the
+                              number of questions and any specific requirements.
+                            </>
+                          }
+                        >
+                          <svg
+                            className="w-5 h-5 sm:w-4 sm:h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </ResponsiveTooltip>
                       </div>
                     </DialogHeader>
 
@@ -347,17 +344,9 @@ function CertificationExamsContent() {
                           <Label htmlFor="number-of-questions">
                             Number of Questions: {numberOfQuestions}
                           </Label>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className="ml-1 cursor-pointer text-slate-400 dark:text-slate-500">
-                                <FaLightbulb className="w-3 h-3" />
-                              </span>
-                            </TooltipTrigger>
-                            <TooltipContent sideOffset={4} className="max-w-[300px]">
-                              Choose how many questions you want in your exam. Each question costs 2
-                              tokens. Recommended: 20-50.
-                            </TooltipContent>
-                          </Tooltip>
+                          <ResponsiveTooltip content="Choose how many questions you want in your exam. Each question costs 2 tokens. Recommended: 20-50.">
+                            <FaLightbulb className="w-5 h-5 sm:w-4 sm:h-4" />
+                          </ResponsiveTooltip>
                         </div>
                         <Slider
                           id="number-of-questions"
@@ -376,18 +365,17 @@ function CertificationExamsContent() {
                       <div className="grid gap-2">
                         <div className="flex items-center gap-1">
                           <Label htmlFor="custom-prompt">Focus on Specific Topics (Optional)</Label>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className="ml-1 cursor-pointer text-slate-400 dark:text-slate-500">
-                                <FaLightbulb className="w-3 h-3" />
-                              </span>
-                            </TooltipTrigger>
-                            <TooltipContent sideOffset={4} className="max-w-[300px]">
-                              Enter keywords or topics to focus your exam (e.g., &quot;security best
-                              practices, network architecture&quot;). Our AI will generate
-                              specialized topics based on your input.
-                            </TooltipContent>
-                          </Tooltip>
+                          <ResponsiveTooltip
+                            content={
+                              <>
+                                Enter keywords or topics to focus your exam (e.g., &quot;security
+                                best practices, network architecture&quot;). Our AI will generate
+                                specialized topics based on your input.
+                              </>
+                            }
+                          >
+                            <FaLightbulb className="w-5 h-5 sm:w-4 sm:h-4" />
+                          </ResponsiveTooltip>
                         </div>
                         <Textarea
                           id="custom-prompt"
@@ -464,29 +452,24 @@ function CertificationExamsContent() {
                       <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
                         Exam Creation Limit
                       </span>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="cursor-pointer text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent sideOffset={4} className="max-w-[280px]">
-                          You can create at most 3 exams every 24 hours to ensure fair usage and
-                          optimal system performance.
-                        </TooltipContent>
-                      </Tooltip>
+                      <ResponsiveTooltip
+                        content="You can create at most 3 exams every 24 hours to ensure fair usage and optimal system performance."
+                        className="max-w-[280px]"
+                      >
+                        <svg
+                          className="w-5 h-5 sm:w-4 sm:h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </ResponsiveTooltip>
                     </div>
                     <div className="flex items-center justify-center sm:justify-start space-x-2 mt-1">
                       <span className="text-xl font-bold text-blue-900 dark:text-blue-100">
@@ -562,37 +545,6 @@ function CertificationExamsContent() {
                             exams.length
                           }`
                         : '0/0'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="bg-blue-25 dark:bg-blue-950/20 p-5 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-sm">
-                <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-50 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4 text-blue-500 dark:text-blue-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-base font-medium text-blue-600 dark:text-blue-300 mb-1">
-                      Certification Journey
-                    </p>
-                    <p className="text-base text-blue-500 dark:text-blue-400 leading-relaxed">
-                      Complete these comprehensive exams to demonstrate your knowledge and earn your
-                      certification. Each exam is designed to test your understanding of key
-                      concepts and practical applications.
                     </p>
                   </div>
                 </div>
@@ -740,153 +692,8 @@ function CertificationExamsContent() {
                       </div>
                     </div>
 
-                    {/* Custom Prompt Display */}
-                    {exam.custom_prompt_text && (
-                      <div className="mb-6">
-                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-200 dark:border-blue-700/50">
-                          <div className="flex items-start space-x-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center mt-0.5">
-                              <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                            </div>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-1">
-                                Custom Focus Area
-                              </h4>
-                              <p className="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
-                                {exam.custom_prompt_text}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Status Information - Simplified */}
-                    <div className="mb-6">
-                      <div
-                        className={`p-4 rounded-xl border ${statusInfo.bgColor} ${statusInfo.borderColor}`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div
-                            className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                              examStatus === 'completed_successful'
-                                ? 'bg-emerald-50 dark:bg-emerald-900/30'
-                                : examStatus === 'completed_review'
-                                ? 'bg-blue-50 dark:bg-blue-900/30'
-                                : examStatus === 'in_progress'
-                                ? 'bg-green-50 dark:bg-green-900/30'
-                                : examStatus === 'generating'
-                                ? 'bg-yellow-50 dark:bg-yellow-900/30'
-                                : examStatus === 'generation_failed'
-                                ? 'bg-red-50 dark:bg-red-900/30'
-                                : examStatus === 'ready'
-                                ? 'bg-green-50 dark:bg-green-900/30'
-                                : 'bg-blue-50 dark:bg-blue-900/30'
-                            }`}
-                          >
-                            {examStatus === 'completed_successful' ? (
-                              <FaTrophy className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                            ) : examStatus === 'completed_review' ? (
-                              <FaChartLine className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            ) : examStatus === 'completed' ? (
-                              <FaCheck className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                            ) : examStatus === 'in_progress' ? (
-                              <FaPause className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            ) : examStatus === 'generating' ? (
-                              <div className="animate-spin rounded-full h-5 w-5 border-2 border-yellow-600 dark:border-yellow-400 border-t-transparent"></div>
-                            ) : examStatus === 'generation_failed' ? (
-                              <svg
-                                className="w-5 h-5 text-red-600 dark:text-red-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                            ) : examStatus === 'ready' ? (
-                              <FaLightbulb className="w-5 h-5 text-green-600 dark:text-green-400" />
-                            ) : (
-                              <FaPlay className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p
-                              className={`font-medium mb-1 ${
-                                examStatus === 'completed_successful'
-                                  ? 'text-emerald-600 dark:text-emerald-300'
-                                  : examStatus === 'completed_review'
-                                  ? 'text-blue-600 dark:text-blue-300'
-                                  : examStatus === 'in_progress'
-                                  ? 'text-green-600 dark:text-green-300'
-                                  : examStatus === 'generating'
-                                  ? 'text-yellow-600 dark:text-yellow-300'
-                                  : examStatus === 'generation_failed'
-                                  ? 'text-red-600 dark:text-red-300'
-                                  : examStatus === 'ready'
-                                  ? 'text-green-600 dark:text-green-300'
-                                  : 'text-blue-600 dark:text-blue-300'
-                              }`}
-                            >
-                              {examStatus === 'completed_successful' &&
-                                'Congratulations! Certification Earned'}
-                              {examStatus === 'completed_review' &&
-                                'Review Available with Explanations'}
-                              {examStatus === 'completed' &&
-                                !exam.score &&
-                                'Exam Submitted Successfully'}
-                              {examStatus === 'in_progress' && 'Resume Your Exam'}
-                              {examStatus === 'generating' && 'Questions Being Generated'}
-                              {examStatus === 'generation_failed' && 'AI Topic Generation Failed'}
-                              {examStatus === 'ready' && 'AI Topics Ready - Begin Assessment'}
-                              {(examStatus === 'not_started' ||
-                                (!examStatus && !exam.started_at)) &&
-                                'Begin Your Assessment'}
-                            </p>
-                            <p
-                              className={`text-sm ${
-                                examStatus === 'completed_successful'
-                                  ? 'text-emerald-500 dark:text-emerald-400'
-                                  : examStatus === 'completed_review'
-                                  ? 'text-blue-500 dark:text-blue-400'
-                                  : examStatus === 'in_progress'
-                                  ? 'text-green-500 dark:text-green-400'
-                                  : examStatus === 'generating'
-                                  ? 'text-yellow-500 dark:text-yellow-400'
-                                  : examStatus === 'generation_failed'
-                                  ? 'text-red-500 dark:text-red-400'
-                                  : examStatus === 'ready'
-                                  ? 'text-green-500 dark:text-green-400'
-                                  : 'text-blue-500 dark:text-blue-400'
-                              }`}
-                            >
-                              {examStatus === 'completed_successful' &&
-                                `You've achieved the required score with ${exam.score}%`}
-                              {examStatus === 'completed_review' &&
-                                `Score: ${exam.score}% - View detailed explanations and learning resources`}
-                              {examStatus === 'completed' &&
-                                !exam.score &&
-                                'Your responses are being evaluated'}
-                              {examStatus === 'in_progress' && 'Continue from where you left off'}
-                              {examStatus === 'generating' &&
-                                'AI is generating specialized topics and questions for your exam'}
-                              {examStatus === 'generation_failed' &&
-                                'Topic or question generation failed - please contact support or try creating a new exam'}
-                              {examStatus === 'ready' &&
-                                'Your personalized exam with AI-generated topics is ready'}
-                              {(examStatus === 'not_started' ||
-                                (!examStatus && !exam.started_at)) &&
-                                'Demonstrate your knowledge and earn your certification'}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons Section */}
+                    {/* Action Buttons Section */}
+                    <div className="space-y-3">
                       <div className="space-y-3">
                         {/* Delete button for failed exams */}
                         {examStatus === 'generation_failed' && (

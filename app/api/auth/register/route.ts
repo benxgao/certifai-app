@@ -63,8 +63,13 @@ export async function POST(request: NextRequest) {
 
         if (response.ok) {
           const result = await response.json();
-          apiUserId = result.user_id || result.api_user_id || result.id;
+          console.log('External API response:', result);
+          apiUserId = result.api_user_id || result.user_id || result.id;
           console.log('Successfully registered user in external API:', apiUserId);
+
+          if (!apiUserId) {
+            console.warn('External API response missing api_user_id field:', result);
+          }
         } else {
           // Try to get error details from response
           let errorDetails = 'Unknown error';
@@ -96,12 +101,42 @@ export async function POST(request: NextRequest) {
       console.warn('NEXT_PUBLIC_SERVER_API_URL not configured, skipping external API registration');
     }
 
-    // If external API failed or isn't configured, generate a fallback ID
-    // This fallback is still an api_user_id, but based on Firebase UID
+    // If external API failed or isn't configured, try to fall back to valid existing custom claims only
     if (!apiUserId) {
-      // Generate a fallback api_user_id based on Firebase UID
-      apiUserId = `fb_${firebaseUserId}`;
-      console.log('Using fallback api_user_id:', apiUserId);
+      console.log(
+        'External API failed during registration, checking for valid existing custom claims',
+      );
+
+      // Check if user already has api_user_id in custom claims (for re-registration scenarios)
+      const existingApiUserId = decodedToken.api_user_id as string | undefined;
+
+      if (existingApiUserId) {
+        if (existingApiUserId.startsWith('fb_')) {
+          console.warn(
+            'Rejecting fb_ prefixed api_user_id, user needs proper registration:',
+            existingApiUserId,
+          );
+          // Don't use fb_ prefixed IDs as they are invalid
+        } else {
+          apiUserId = existingApiUserId;
+          console.log('Using existing valid api_user_id from custom claims:', existingApiUserId);
+        }
+      }
+    }
+
+    // If we still don't have an api_user_id after all attempts, return error
+    if (!apiUserId) {
+      console.error(
+        'Registration failed: Unable to get valid api_user_id from backend API or existing claims',
+      );
+      return NextResponse.json(
+        {
+          message:
+            'Registration service temporarily unavailable. Please contact support to complete your registration.',
+          error: 'Unable to register with valid credentials',
+        },
+        { status: 503 }, // Service Unavailable
+      );
     }
 
     // Set custom claims with the api_user_id and init_cert_id

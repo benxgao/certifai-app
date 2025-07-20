@@ -31,8 +31,18 @@ export async function POST(request: NextRequest) {
     // Check if user already has api_user_id in custom claims
     let apiUserId = decodedToken.api_user_id as string | undefined;
 
-    // If no api_user_id in claims, try to get it from external API or generate fallback
-    if (!apiUserId) {
+    // If api_user_id starts with 'fb_', it's a fallback ID that needs to be fixed
+    const needsApiUserIdFix = apiUserId && apiUserId.startsWith('fb_');
+
+    // If no api_user_id in claims, or if it's a fallback ID, try to get the correct one from external API
+    if (!apiUserId || needsApiUserIdFix) {
+      if (needsApiUserIdFix) {
+        console.log(
+          'Detected fallback api_user_id, attempting to get correct ID from backend:',
+          apiUserId,
+        );
+      }
+
       // Try to authenticate with external API first
       if (process.env.NEXT_PUBLIC_SERVER_API_URL) {
         try {
@@ -50,13 +60,20 @@ export async function POST(request: NextRequest) {
 
           if (response.ok) {
             const result = await response.json();
-            apiUserId = result.user_id || result.api_user_id || result.id;
+            console.log('External API response:', result);
+            apiUserId = result.api_user_id || result.user_id || result.id;
             console.log('Successfully authenticated with external API:', apiUserId);
+
+            if (!apiUserId) {
+              console.warn('External API response missing api_user_id field:', result);
+            }
           } else {
+            const errorText = await response.text();
             console.warn(
               'Failed to authenticate with external API:',
               response.status,
               response.statusText,
+              errorText,
             );
           }
         } catch (apiError) {
@@ -64,38 +81,87 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // If external API failed or isn't configured, generate a fallback ID
+      // If external API failed or isn't configured, try to fall back to valid custom claims only
       if (!apiUserId) {
-        // Generate a fallback api_user_id based on Firebase UID
-        apiUserId = `fb_${firebaseUserId}`;
-        console.log('Using fallback api_user_id:', apiUserId);
-      }
+        console.log('External API failed, attempting to use valid custom claims as fallback');
 
-      // Set custom claims with the api_user_id for future use
-      try {
-        const customClaims: any = {
-          api_user_id: apiUserId, // Our internal UUID for API operations
-        };
+        // Get the original api_user_id from custom claims, but reject fb_ prefixed ones
+        const fallbackApiUserId = decodedToken.api_user_id as string | undefined;
 
-        // Preserve existing init_cert_id if it exists
-        const existingRecord = await auth.getUser(firebaseUserId);
-        if (existingRecord.customClaims?.init_cert_id) {
-          customClaims.init_cert_id = existingRecord.customClaims.init_cert_id;
+        if (fallbackApiUserId) {
+          if (fallbackApiUserId.startsWith('fb_')) {
+            console.warn(
+              'Rejecting fb_ prefixed api_user_id, user needs proper authentication:',
+              fallbackApiUserId,
+            );
+            // Don't use fb_ prefixed IDs as they are invalid
+          } else {
+            apiUserId = fallbackApiUserId;
+            console.log(
+              'Using valid api_user_id from custom claims as fallback:',
+              fallbackApiUserId,
+            );
+          }
         }
-
-        await auth.setCustomUserClaims(firebaseUserId, customClaims);
-        console.log(
-          'Successfully set custom claims for Firebase UID:',
-          firebaseUserId,
-          'with api_user_id:',
-          apiUserId,
-        );
-      } catch (claimsError) {
-        console.error('Failed to set custom claims:', claimsError);
-        // Continue anyway since we have the api_user_id
       }
-    } else {
-      console.log('Found existing api_user_id in custom claims:', apiUserId);
+
+      // If we still don't have an api_user_id after all attempts, return error
+      if (!apiUserId) {
+        console.error(
+          'Authentication failed: Unable to get valid api_user_id from backend API or custom claims',
+        );
+        return NextResponse.json(
+          {
+            message:
+              'Authentication service temporarily unavailable. Please contact support to resolve your account.',
+            error: 'Unable to authenticate with valid credentials',
+          },
+          { status: 503 }, // Service Unavailable
+        );
+      }
+
+      // If we successfully got a new api_user_id from API (not fallback), update claims
+      const usingFallbackFromClaims = !needsApiUserIdFix && decodedToken.api_user_id === apiUserId;
+
+      if ((needsApiUserIdFix || !decodedToken.api_user_id) && !usingFallbackFromClaims) {
+        // Set custom claims with the api_user_id for future use
+        try {
+          const customClaims: any = {
+            api_user_id: apiUserId, // Our internal UUID for API operations
+          };
+
+          // Preserve existing init_cert_id if it exists
+          const existingRecord = await auth.getUser(firebaseUserId);
+          if (existingRecord.customClaims?.init_cert_id) {
+            customClaims.init_cert_id = existingRecord.customClaims.init_cert_id;
+          }
+
+          await auth.setCustomUserClaims(firebaseUserId, customClaims);
+
+          if (needsApiUserIdFix) {
+            console.log(
+              'Successfully fixed fallback api_user_id for Firebase UID:',
+              firebaseUserId,
+              'new api_user_id:',
+              apiUserId,
+            );
+          } else {
+            console.log(
+              'Successfully set custom claims for Firebase UID:',
+              firebaseUserId,
+              'with api_user_id:',
+              apiUserId,
+            );
+          }
+        } catch (claimsError) {
+          console.error('Failed to set custom claims:', claimsError);
+          // Continue anyway since we have the api_user_id
+        }
+      } else if (usingFallbackFromClaims) {
+        console.log('Using existing api_user_id from custom claims (fallback mode):', apiUserId);
+      } else {
+        console.log('Found existing valid api_user_id in custom claims:', apiUserId);
+      }
     }
 
     return NextResponse.json(

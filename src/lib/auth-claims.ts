@@ -15,8 +15,15 @@ export async function getApiUserIdFromClaims(): Promise<string | null> {
     // Force refresh to get latest custom claims
     const idTokenResult = await user.getIdTokenResult(true);
     const customClaims = idTokenResult.claims;
+    const apiUserId = (customClaims.api_user_id as string) || null;
 
-    return (customClaims.api_user_id as string) || null;
+    // Check if this is a fallback ID that needs to be fixed
+    if (apiUserId && apiUserId.startsWith('fb_')) {
+      console.warn('Detected fallback api_user_id in claims, needs to be fixed:', apiUserId);
+      return null; // Return null so the system will try to get the correct ID
+    }
+
+    return apiUserId;
   } catch (error) {
     console.error('Error getting api_user_id from custom claims:', error);
     return null;

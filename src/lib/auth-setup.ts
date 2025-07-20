@@ -125,6 +125,12 @@ export const getApiUserIdFromClaims = async (authUser: User): Promise<string | n
     const apiUserId = (customClaims.api_user_id as string) || null;
 
     if (apiUserId) {
+      // Check if this is a fallback ID that needs to be fixed
+      if (apiUserId.startsWith('fb_')) {
+        console.warn('Detected fallback api_user_id in claims, needs to be fixed:', apiUserId);
+        return null; // Return null so the system will try to get the correct ID
+      }
+
       console.log('Got api_user_id from custom claims:', apiUserId);
     }
 
@@ -152,6 +158,15 @@ export const retryGetApiUserIdFromClaims = async (
     const retryApiUserId = (retryClaims.api_user_id as string) || null;
 
     if (retryApiUserId) {
+      // Check if this is a fallback ID that needs to be fixed
+      if (retryApiUserId.startsWith('fb_')) {
+        console.warn(
+          'Detected fallback api_user_id in retry claims, needs to be fixed:',
+          retryApiUserId,
+        );
+        return null; // Return null so the system will try to get the correct ID
+      }
+
       console.log('Got api_user_id on retry:', retryApiUserId);
     }
 

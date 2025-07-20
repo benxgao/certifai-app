@@ -11,7 +11,8 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
-import AdaptiveLearningNotification from '@/src/components/custom/AdaptiveLearningNotification';
+import AdaptiveLearningInterestModal from '@/src/components/custom/AdaptiveLearningInterestModalEnhanced';
+import { Brain, Bell } from 'lucide-react';
 
 // Lazy load the all certifications hook to avoid blocking initial render
 const LazyAvailableCertificationsButton = React.lazy(
@@ -20,22 +21,15 @@ const LazyAvailableCertificationsButton = React.lazy(
 
 const MainPage = () => {
   const { firebaseUser } = useFirebaseAuth();
-  const {
-    profile,
-    isLoading: isLoadingProfile,
-    isError: profileError,
-    displayName,
-  } = useProfileData();
+  const { isLoading: isLoadingProfile, displayName } = useProfileData();
 
   // Memoize static content to prevent unnecessary re-renders
   const breadcrumbItems = useMemo(() => [{ label: 'Dashboard', current: true }], []);
 
   const welcomeMessage = useMemo(() => {
-    if (profile) return 'Ready to continue your certification journey.';
     if (isLoadingProfile) return 'Loading your account information...';
-    if (profileError) return 'Ready to continue your certification journey.';
-    return 'Ready to continue your certification journey.';
-  }, [profile, isLoadingProfile, profileError]);
+    return "We're developing an advanced adaptive learning engine with AI-powered question selection, real-time difficulty adjustment, and personalized study paths to revolutionize your certification experience.";
+  }, [isLoadingProfile]);
 
   useEffect(() => {
     if (firebaseUser) {
@@ -54,18 +48,26 @@ const MainPage = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-                Welcome back, {displayName}!
+                Great to see you again, {displayName}!
               </h1>
-              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base mb-4">
                 {welcomeMessage}
               </p>
+              <div className="flex items-center gap-3">
+                <AdaptiveLearningInterestModal
+                  trigger={
+                    <Button
+                      variant="outline"
+                      className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0"
+                    >
+                      <Bell className="mr-2 h-4 w-4" />
+                      Get Notified When Ready
+                    </Button>
+                  }
+                />
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Adaptive Learning Notification */}
-        <div className="mb-8">
-          <AdaptiveLearningNotification />
         </div>
 
         {/* Dashboard Header */}
