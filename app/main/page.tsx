@@ -12,7 +12,7 @@ import {
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
 import AdaptiveLearningInterestModal from '@/src/components/custom/AdaptiveLearningInterestModalEnhanced';
-import { Brain, Bell } from 'lucide-react';
+import { Bell } from 'lucide-react';
 
 // Lazy load the all certifications hook to avoid blocking initial render
 const LazyAvailableCertificationsButton = React.lazy(
@@ -78,7 +78,7 @@ const MainPage = () => {
               <div className="flex items-center space-x-3">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Overview</h1>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="hidden sm:flex items-center space-x-3">
                 <Suspense
                   fallback={
                     <Button variant="secondary" disabled>
@@ -96,6 +96,19 @@ const MainPage = () => {
           <div className="px-6 py-6">
             <Suspense fallback={<DashboardStatSkeleton count={3} />}>
               <DashboardStats />
+            </Suspense>
+          </div>
+
+          {/* Mobile Register Button */}
+          <div className="sm:hidden px-6 pb-6">
+            <Suspense
+              fallback={
+                <Button variant="secondary" disabled className="w-full">
+                  Loading...
+                </Button>
+              }
+            >
+              <LazyAvailableCertificationsButton />
             </Suspense>
           </div>
         </div>

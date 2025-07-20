@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { UserRegisteredCertification } from '@/swr/certifications';
-import { FaCertificate, FaClipboardList } from 'react-icons/fa';
+import { FaCertificate, FaClipboardList, FaBookOpen } from 'react-icons/fa';
 import { UserCertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { useExamCountForCertification } from '@/src/hooks/useExamCounts';
 
@@ -110,22 +110,15 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
             </div>
           </div>
 
-          {/* Action Button - Separate row, aligned to the right */}
-          <div className="flex justify-end pt-2">
+          {/* Action Button - Mobile responsive layout */}
+          <div className="flex justify-center sm:justify-end pt-2">
             <Button
               size="lg"
               onClick={() => router.push(`/main/certifications/${cert.cert_id}/exams`)}
-              className="font-medium px-8 py-3 bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              className="exam-action-button w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              Continue Learning
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              <FaBookOpen className="w-4 h-4 mr-2" />
+              <span className="block sm:inline">Continue Learning</span>
             </Button>
           </div>
         </div>

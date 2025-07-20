@@ -33,7 +33,7 @@ import {
   FaChartLine,
   FaTrophy,
   FaLightbulb,
-  FaArrowRight, // Added missing icon
+  FaRedo, // Changed from FaArrowRight to FaRedo for Resume action
   FaTrash, // Added delete icon
 } from 'react-icons/fa';
 
@@ -276,12 +276,12 @@ function CertificationExamsContent() {
               </div>
 
               {/* Action Buttons - full width on mobile, auto on desktop */}
-              <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+              <div className="hidden sm:flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
                 <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
                   <DialogTrigger asChild>
                     <Button
-                      size="sm"
-                      className="w-full sm:w-auto bg-violet-600 hover:bg-violet-700 text-white border-violet-600 hover:border-violet-700 shadow-sm"
+                      size="lg"
+                      className="exam-action-button w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-slate-500 hover:bg-slate-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                       disabled={
                         createExamError?.status === 429 || // Disable if rate limited
                         (rateLimitInfo ? !rateLimitInfo.canCreateExam : false) // Disable if at limit
@@ -549,12 +549,162 @@ function CertificationExamsContent() {
                   </div>
                 </div>
               </div>
+
+              {/* Mobile New Exam Button */}
+              <div className="sm:hidden mt-6">
+                <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      size="lg"
+                      className="exam-action-button w-full font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-slate-500 hover:bg-slate-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                      disabled={
+                        createExamError?.status === 429 || // Disable if rate limited
+                        (rateLimitInfo ? !rateLimitInfo.canCreateExam : false) // Disable if at limit
+                      }
+                    >
+                      <FaRegFileAlt className="w-4 h-4 mr-2" />
+                      New Exam
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <div className="flex items-center gap-2">
+                        <DialogTitle>Generate New Exam</DialogTitle>
+                        <ResponsiveTooltip
+                          content={
+                            <>
+                              Generate a new exam for{' '}
+                              {displayCertification?.name || 'this certification'}. Configure the
+                              number of questions and any specific requirements.
+                            </>
+                          }
+                        >
+                          <svg
+                            className="w-5 h-5 sm:w-4 sm:h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                        </ResponsiveTooltip>
+                      </div>
+                    </DialogHeader>
+
+                    {/* Rate Limiting Error Display */}
+                    {createExamError?.status === 429 && createExamError.rateLimitInfo && (
+                      <RateLimitDisplay
+                        rateLimitInfo={createExamError.rateLimitInfo}
+                        className="mb-4"
+                      />
+                    )}
+
+                    {/* General Error Display */}
+                    {createExamError && createExamError.status !== 429 && (
+                      <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <p className="text-sm text-red-800 dark:text-red-200">
+                          {createExamError.message || 'Failed to create exam. Please try again.'}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <div className="flex items-center gap-1">
+                          <Label htmlFor="number-of-questions">
+                            Number of Questions: {numberOfQuestions}
+                          </Label>
+                          <ResponsiveTooltip content="Choose how many questions you want in your exam. Each question costs 2 tokens. Recommended: 20-50.">
+                            <FaLightbulb className="w-5 h-5 sm:w-4 sm:h-4" />
+                          </ResponsiveTooltip>
+                        </div>
+                        <Slider
+                          id="number-of-questions"
+                          min={displayCertification?.min_quiz_counts || 1}
+                          max={displayCertification?.max_quiz_counts || 100}
+                          step={1}
+                          value={[numberOfQuestions]}
+                          onValueChange={(value) => setNumberOfQuestions(value[0])}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+                          <span>Min: {displayCertification?.min_quiz_counts || 1}</span>
+                          <span>Max: {displayCertification?.max_quiz_counts || 100}</span>
+                        </div>
+                      </div>
+                      <div className="grid gap-2">
+                        <div className="flex items-center gap-1">
+                          <Label htmlFor="custom-prompt">Focus on Specific Topics (Optional)</Label>
+                          <ResponsiveTooltip
+                            content={
+                              <>
+                                Enter keywords or topics to focus your exam (e.g., &quot;security
+                                best practices, network architecture&quot;). Our AI will generate
+                                specialized topics based on your input.
+                              </>
+                            }
+                          >
+                            <FaLightbulb className="w-5 h-5 sm:w-4 sm:h-4" />
+                          </ResponsiveTooltip>
+                        </div>
+                        <Textarea
+                          id="custom-prompt"
+                          placeholder="Enter keywords, topics, or concepts to focus your exam (e.g., 'security best practices', 'network architecture', 'cost optimization')"
+                          value={customPromptText}
+                          onChange={(e) => setCustomPromptText(e.target.value)}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 rounded-lg p-3 mt-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                            AI Topic Generation
+                          </span>
+                        </div>
+                        <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+                          Our AI will generate {numberOfQuestions} specialized topics tailored to
+                          the {displayCertification?.name} certification. Questions are created in
+                          the background - you can monitor progress in your exams list.
+                        </p>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsCreateModalOpen(false)}
+                        disabled={isCreatingExam}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handleCreateExam}
+                        disabled={
+                          isCreatingExam ||
+                          !numberOfQuestions ||
+                          numberOfQuestions < 1 ||
+                          createExamError?.status === 429 // Disable if rate limited
+                        }
+                      >
+                        {isCreatingExam ? 'Creating...' : 'Create Exam'}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
           </div>
         </div>
 
         {exams && exams.length > 0 ? (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {exams.map((exam: ExamListItem) => {
               // Get typed exam status and info
               const examStatus = getDerivedExamStatus(exam);
@@ -568,12 +718,12 @@ function CertificationExamsContent() {
                   key={exam.exam_id}
                   className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden group"
                 >
-                  <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+                  <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-4">
                     <div className="flex items-start justify-between gap-4">
                       {/* Left section: Title and metadata */}
                       <div className="flex-1 min-w-0">
                         {/* Exam ID indicator */}
-                        <div className="mb-3">
+                        <div className="mb-2">
                           <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-600">
                             Exam #{exam.exam_id.toString().substring(0, 7)}
                           </span>
@@ -645,12 +795,12 @@ function CertificationExamsContent() {
                       {/* Right section: Score display (if available) or progress for in-progress exams */}
                       {hasScore || examStatus === 'in_progress' ? (
                         <div className="flex-shrink-0 text-right">
-                          <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-600 shadow-sm">
+                          <div className="bg-white dark:bg-slate-800 rounded-lg p-2 border border-slate-200 dark:border-slate-600 shadow-sm">
                             <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">
                               Score
                             </p>
                             <p
-                              className={`text-2xl font-bold ${
+                              className={`text-xl font-bold ${
                                 hasScore
                                   ? 'text-blue-600 dark:text-blue-400'
                                   : 'text-slate-400 dark:text-slate-500'
@@ -663,13 +813,13 @@ function CertificationExamsContent() {
                       ) : null}
                     </div>
                   </CardHeader>
-                  <CardContent className="p-6">
+                  <CardContent className="p-4">
                     {/* Exam Statistics */}
-                    <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
-                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
-                        <div className="flex items-center space-x-2 mb-2">
+                    <div className="grid grid-cols-2 lg:grid-cols-2 gap-3 mb-4">
+                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-100 dark:border-slate-600/50">
+                        <div className="flex items-center space-x-2 mb-1">
                           <FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                          <span className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                             Questions
                           </span>
                         </div>
@@ -679,10 +829,10 @@ function CertificationExamsContent() {
                       </div>
 
                       {/* Show pass rate or attempts info */}
-                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-100 dark:border-slate-600/50">
-                        <div className="flex items-center space-x-2 mb-2">
+                      <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-100 dark:border-slate-600/50">
+                        <div className="flex items-center space-x-2 mb-1">
                           <FaTrophy className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
-                          <span className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                             Status
                           </span>
                         </div>
@@ -693,8 +843,8 @@ function CertificationExamsContent() {
                     </div>
 
                     {/* Action Buttons Section */}
-                    <div className="space-y-3">
-                      <div className="space-y-3">
+                    <div className="space-y-2">
+                      <div className="space-y-2">
                         {/* Delete button for failed exams */}
                         {examStatus === 'generation_failed' && (
                           <div className="flex gap-2">
@@ -703,7 +853,7 @@ function CertificationExamsContent() {
                               disabled={isDeletingExam}
                               variant="outline"
                               size="sm"
-                              className="flex-1 h-10 text-sm font-medium rounded-lg border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300 hover:text-red-800 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:border-red-700 dark:hover:text-red-300"
+                              className="flex-1 h-9 text-sm font-medium rounded-lg border-red-200 text-red-700 hover:bg-red-50 hover:border-red-300 hover:text-red-800 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:border-red-700 dark:hover:text-red-300"
                             >
                               <span className="flex items-center justify-center space-x-2">
                                 {isDeletingExam ? (
@@ -724,7 +874,7 @@ function CertificationExamsContent() {
 
                         {/* Error display for delete operation */}
                         {deleteExamError && (
-                          <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                          <div className="p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                             <p className="text-sm text-red-800 dark:text-red-200">
                               {deleteExamError.message ||
                                 'Failed to delete exam. Please try again.'}
@@ -733,45 +883,45 @@ function CertificationExamsContent() {
                         )}
 
                         {/* Main Action Button */}
-                        <Button
-                          onClick={() => handleStartExam(exam.exam_id)}
-                          disabled={
-                            navigatingExamId === exam.exam_id ||
-                            examStatus === 'generating' ||
-                            examStatus === 'generation_failed'
-                          }
-                          variant="outline"
-                          className={`w-full h-12 text-base font-medium rounded-xl transition-all duration-200 group ${
-                            examStatus === 'completed_successful'
-                              ? 'border-emerald-200 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 hover:text-emerald-800 dark:border-emerald-800 dark:text-emerald-400 dark:hover:bg-emerald-900/30 dark:hover:border-emerald-700 dark:hover:text-emerald-300'
-                              : examStatus === 'completed_review'
-                              ? 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
-                              : examStatus === 'in_progress'
-                              ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
-                              : examStatus === 'generating'
-                              ? 'border-yellow-200 text-yellow-600 bg-yellow-50 dark:border-yellow-800 dark:text-yellow-400 dark:bg-yellow-900/20 cursor-not-allowed opacity-60'
-                              : examStatus === 'generation_failed'
-                              ? 'border-red-200 text-red-600 bg-red-50 dark:border-red-800 dark:text-red-400 dark:bg-red-900/20 cursor-not-allowed opacity-60'
-                              : examStatus === 'ready'
-                              ? 'border-green-200 text-green-700 hover:bg-green-100 hover:border-green-300 hover:text-green-800 dark:border-green-800 dark:text-green-400 dark:hover:bg-green-900/30 dark:hover:border-green-700 dark:hover:text-green-300'
-                              : 'border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-800 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-900/30 dark:hover:border-blue-700 dark:hover:text-blue-300'
-                          }`}
-                        >
-                          <span className="flex items-center justify-center space-x-2">
+                        <div className="flex justify-end pt-1">
+                          <Button
+                            onClick={() => handleStartExam(exam.exam_id)}
+                            disabled={
+                              navigatingExamId === exam.exam_id ||
+                              examStatus === 'generating' ||
+                              examStatus === 'generation_failed'
+                            }
+                            size="lg"
+                            className={`exam-action-button w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200 ${
+                              examStatus === 'completed_successful'
+                                ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                                : examStatus === 'completed_review'
+                                ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                                : examStatus === 'in_progress'
+                                ? 'bg-green-600 hover:bg-green-700 text-white'
+                                : examStatus === 'generating'
+                                ? 'bg-yellow-100 text-yellow-600 cursor-not-allowed opacity-60 dark:bg-yellow-900/20 dark:text-yellow-400'
+                                : examStatus === 'generation_failed'
+                                ? 'bg-red-100 text-red-600 cursor-not-allowed opacity-60 dark:bg-red-900/20 dark:text-red-400'
+                                : examStatus === 'ready'
+                                ? 'bg-green-600 hover:bg-green-700 text-white'
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            }`}
+                          >
                             {navigatingExamId === exam.exam_id ? (
                               <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                                <span>Loading Exam...</span>
+                                <span className="ml-2">Loading Exam...</span>
                               </>
                             ) : examStatus === 'generating' ? (
                               <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                                <span>Generating Questions...</span>
+                                <span className="ml-2">Generating Questions...</span>
                               </>
                             ) : examStatus === 'generation_failed' ? (
                               <>
                                 <svg
-                                  className="w-4 h-4 text-red-600 dark:text-red-400"
+                                  className="w-4 h-4"
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -783,41 +933,41 @@ function CertificationExamsContent() {
                                     d="M6 18L18 6M6 6l12 12"
                                   />
                                 </svg>
-                                <span>Generation Failed</span>
+                                <span className="ml-2">Generation Failed</span>
                               </>
                             ) : examStatus === 'completed_successful' ? (
                               <>
-                                <FaTrophy className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-200" />
-                                <span>View Certificate</span>
+                                <FaTrophy className="w-4 h-4" />
+                                <span className="ml-2">View Certificate</span>
                               </>
                             ) : examStatus === 'completed_review' ? (
                               <>
-                                <FaChartLine className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-200" />
-                                <span>View Results & Explanations</span>
+                                <FaChartLine className="w-4 h-4" />
+                                <span className="ml-2">View Results & Explanations</span>
                               </>
                             ) : examStatus === 'completed' ? (
                               <>
-                                <FaChartLine className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-200" />
-                                <span>View Results</span>
+                                <FaChartLine className="w-4 h-4" />
+                                <span className="ml-2">View Results</span>
                               </>
                             ) : examStatus === 'in_progress' ? (
                               <>
-                                <FaArrowRight className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:translate-x-1 transition-all duration-200" />
-                                <span>Resume Exam</span>
+                                <FaRedo className="w-4 h-4" />
+                                <span className="ml-2">Resume Exam</span>
                               </>
                             ) : examStatus === 'ready' ? (
                               <>
-                                <FaPlay className="w-4 h-4 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200" />
-                                <span>Begin Exam</span>
+                                <FaPlay className="w-4 h-4" />
+                                <span className="ml-2">Begin Exam</span>
                               </>
                             ) : (
                               <>
-                                <FaPlay className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-200" />
-                                <span>Begin Exam</span>
+                                <FaPlay className="w-4 h-4" />
+                                <span className="ml-2">Begin Exam</span>
                               </>
                             )}
-                          </span>
-                        </Button>
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
