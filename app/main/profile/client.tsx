@@ -10,6 +10,7 @@ import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
+import { Checkbox } from '@/src/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -604,48 +605,88 @@ const ProfileClientPage: React.FC = () => {
                     </div>
 
                     {/* Notifications */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Bell className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-                        <h3 className="text-base font-medium text-slate-900 dark:text-slate-100">
-                          Notifications
-                        </h3>
+                    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm overflow-hidden">
+                      <div className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
+                            <Bell className="w-4 h-4 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                              Notification Preferences
+                            </h3>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">
+                              Choose how you want to receive updates
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="space-y-4">
+                      
+                      <div className="p-6 space-y-6">
                         {[
                           {
                             name: 'Email Notifications',
-                            description: 'Receive updates via email',
+                            description: 'Receive exam updates, certification progress, and course announcements',
                             enabled: true,
+                            category: 'primary',
                           },
                           {
                             name: 'Browser Notifications',
-                            description: 'Get notified in your browser',
+                            description: 'Get real-time alerts in your browser for time-sensitive updates',
                             enabled: false,
+                            category: 'secondary',
                           },
                           {
-                            name: 'Account Security',
-                            description: 'Security-related notifications',
+                            name: 'Security Alerts',
+                            description: 'Important notifications about account security and login activity',
                             enabled: true,
+                            category: 'security',
                           },
                         ].map((setting, index) => (
-                          <div
-                            key={index}
-                            className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0"
-                          >
-                            <div className="flex-1">
-                              <h4 className="font-medium text-sm">{setting.name}</h4>
-                              <p className="text-sm text-muted-foreground">{setting.description}</p>
+                          <div key={index} className="group">
+                            <div className="flex items-start gap-4 p-4 rounded-lg bg-slate-50/50 dark:bg-slate-800/30 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200">
+                              <div className="flex items-center pt-0.5">
+                                <Checkbox
+                                  id={`notification-${index}`}
+                                  defaultChecked={setting.enabled}
+                                  className="scale-110"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <label
+                                    htmlFor={`notification-${index}`}
+                                    className="text-sm font-medium text-slate-900 dark:text-slate-100 cursor-pointer"
+                                  >
+                                    {setting.name}
+                                  </label>
+                                  {setting.category === 'security' && (
+                                    <Badge variant="secondary" className="text-xs bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                                      Required
+                                    </Badge>
+                                  )}
+                                  {setting.category === 'primary' && (
+                                    <Badge variant="secondary" className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                                      Recommended
+                                    </Badge>
+                                  )}
+                                </div>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                                  {setting.description}
+                                </p>
+                              </div>
                             </div>
-                            <Button
-                              variant={setting.enabled ? 'default' : 'outline'}
-                              size="sm"
-                              className="w-full sm:w-auto"
-                            >
-                              {setting.enabled ? 'Enabled' : 'Disabled'}
-                            </Button>
                           </div>
                         ))}
+                        
+                        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                          <div className="text-sm text-slate-500 dark:text-slate-400">
+                            Changes are saved automatically
+                          </div>
+                          <Button variant="outline" size="sm" className="text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-900/20">
+                            Manage Email Preferences
+                          </Button>
+                        </div>
                       </div>
                     </div>
 
