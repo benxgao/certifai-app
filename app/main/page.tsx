@@ -11,6 +11,7 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
+import AdaptiveLearningNotification from '@/src/components/custom/AdaptiveLearningNotification';
 
 // Lazy load the all certifications hook to avoid blocking initial render
 const LazyAvailableCertificationsButton = React.lazy(
@@ -60,6 +61,11 @@ const MainPage = () => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Adaptive Learning Notification */}
+        <div className="mb-8">
+          <AdaptiveLearningNotification />
         </div>
 
         {/* Dashboard Header */}
