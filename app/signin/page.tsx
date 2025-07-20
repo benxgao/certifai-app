@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/card';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
+import NotificationBar from '@/src/components/custom/NotificationBar';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import PageLoader from '@/src/components/custom/PageLoader';
@@ -181,29 +182,38 @@ const LoginPage = () => {
       {/* Header */}
       <LandingHeader />
 
-      <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 lg:bg-none auth-container">
+      {/* Notification Bar */}
+      <NotificationBar
+        message="🚀 Try our platform instantly with demo account - username/password: demo@certestic.com"
+        ctaText=""
+        ctaLink="/signin"
+        variant="promo"
+      />
+
+      <div className="flex-1 w-full lg:relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 lg:bg-none auth-container">
         {/* Left Column - Welcome Section */}
         <AuthLeftSection mode="signin" />
 
         {/* Right Column - Signin Form */}
-        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full lg:min-h-0 auth-container auth-form-mobile">
-          {/* Subtle background decoration for mobile */}
-          <div className="absolute inset-0 lg:hidden overflow-hidden">
-            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 dark:from-violet-800/10 dark:to-purple-700/10 rounded-full"></div>
-            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 dark:from-cyan-800/10 dark:to-blue-700/10 rounded-full"></div>
-          </div>
+        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 lg:ml-[50%] relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+          {/* Enhanced background decoration matching signup page */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Large gradient orbs for depth */}
+            <div className="absolute top-10 right-10 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl lg:hidden"></div>
+            <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl lg:hidden"></div>
 
-          {/* Additional subtle patterns for desktop right section */}
-          <div className="absolute inset-0 hidden lg:block overflow-hidden">
-            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-xl rotate-12 animate-pulse delay-3000"></div>
-            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 dark:from-indigo-800/20 dark:to-violet-700/20 rounded-lg rotate-45 animate-pulse delay-4000"></div>
+            {/* Desktop patterns */}
+            <div className="absolute top-20 right-16 w-32 h-32 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl hidden lg:block"></div>
+            <div className="absolute bottom-32 left-16 w-40 h-40 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl hidden lg:block"></div>
+
+            {/* Subtle geometric accent shapes */}
+            <div className="absolute top-32 right-20 w-16 h-16 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-2xl rotate-12 animate-pulse delay-3000 hidden lg:block"></div>
+            <div className="absolute bottom-40 left-20 w-12 h-12 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 dark:from-blue-800/20 dark:to-cyan-700/20 rounded-xl rotate-45 animate-pulse delay-4000 hidden lg:block"></div>
           </div>
 
           <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10">
             <CardHeader className="text-center space-y-2 sm:space-y-4 lg:space-y-6 pt-4 sm:pt-8 lg:pt-12 pb-3 sm:pb-6 lg:pb-10 px-6 sm:px-8 lg:px-12">
-              {/* Small decorative element */}
-              <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-3 sm:mb-6"></div>
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-200 bg-clip-text text-transparent auth-title-mobile">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent auth-title-mobile">
                 Sign In
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg">
@@ -211,8 +221,8 @@ const LoginPage = () => {
               </CardDescription>
             </CardHeader>
             <form onSubmit={handleSignin} autoComplete="on">
-              <CardContent className="space-y-4 sm:space-y-6 lg:space-y-10 px-6 sm:px-8 lg:px-12 pb-6 sm:pb-8 lg:pb-12 auth-content-mobile">
-                <div className="space-y-2 sm:space-y-3">
+              <CardContent className="space-y-3 sm:space-y-4 lg:space-y-6 px-6 sm:px-8 lg:px-12 pb-6 sm:pb-8 lg:pb-12 auth-content-mobile">
+                <div className="space-y-1 sm:space-y-2">
                   <Label
                     htmlFor="email"
                     className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
@@ -229,10 +239,10 @@ const LoginPage = () => {
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
                     autoComplete="on"
-                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   />
                 </div>
-                <div className="space-y-2 sm:space-y-3">
+                <div className="space-y-1 sm:space-y-2">
                   <div className="flex items-center justify-between">
                     <Label
                       htmlFor="password"
@@ -257,7 +267,7 @@ const LoginPage = () => {
                     onChange={onChange}
                     disabled={isLoading || isRedirecting}
                     autoComplete="on"
-                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
                   />
                 </div>
                 {error && (
@@ -333,7 +343,7 @@ const LoginPage = () => {
                 )}
                 <Button
                   type="submit"
-                  className="w-full h-11 sm:h-12 lg:h-14 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] text-sm sm:text-base"
+                  className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] text-sm sm:text-base"
                   disabled={
                     isLoading || isRedirecting || !form.email.trim() || !form.password.trim()
                   }

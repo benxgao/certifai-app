@@ -22,9 +22,10 @@ import {
 import { CheckCircle, AlertCircle, Mail, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
+import NotificationBar from '@/src/components/custom/NotificationBar';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { toast } from 'sonner';
 import { Toaster } from '@/src/components/ui/sonner';
@@ -409,37 +410,43 @@ export default function SignUpPage() {
         {/* Header */}
         <LandingHeader />
 
-        <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 lg:bg-none auth-container">
+        <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 lg:bg-none auth-container">
           {/* Left Column - Welcome Section */}
           <AuthLeftSection mode="signup" />
 
           {/* Right Column - Verification Step */}
-          <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full lg:min-h-0 auth-container auth-form-mobile">
-            {/* Subtle background decoration for mobile */}
-            <div className="absolute inset-0 lg:hidden overflow-hidden">
-              <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 dark:from-violet-800/10 dark:to-purple-700/10 rounded-full"></div>
-              <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 dark:from-cyan-800/10 dark:to-blue-700/10 rounded-full"></div>
+          <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+            {/* Enhanced background decoration matching main form */}
+            <div className="absolute inset-0 overflow-hidden">
+              {/* Large gradient orbs for depth */}
+              <div className="absolute top-10 right-10 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl lg:hidden"></div>
+              <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl lg:hidden"></div>
+
+              {/* Desktop patterns */}
+              <div className="absolute top-20 right-16 w-32 h-32 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl hidden lg:block"></div>
+              <div className="absolute bottom-32 left-16 w-40 h-40 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl hidden lg:block"></div>
+
+              {/* Subtle geometric accent shapes */}
+              <div className="absolute top-32 right-20 w-16 h-16 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-2xl rotate-12 animate-pulse delay-3000 hidden lg:block"></div>
+              <div className="absolute bottom-40 left-20 w-12 h-12 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 dark:from-blue-800/20 dark:to-cyan-700/20 rounded-xl rotate-45 animate-pulse delay-4000 hidden lg:block"></div>
             </div>
 
-            {/* Additional subtle patterns for desktop right section */}
-            <div className="absolute inset-0 hidden lg:block overflow-hidden">
-              <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-xl rotate-12 animate-pulse delay-3000"></div>
-              <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 dark:from-indigo-800/20 dark:to-violet-700/20 rounded-lg rotate-45 animate-pulse delay-4000"></div>
-            </div>
-
-            <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10">
-              <CardHeader className="text-center space-y-1 pb-2 sm:pb-3 lg:pb-6 px-4 sm:px-6">
-                <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                  <Mail className="w-8 h-8 text-blue-600" />
+            <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10 rounded-3xl overflow-hidden">
+              <CardHeader className="text-center space-y-4 pb-6 sm:pb-8 lg:pb-10 px-6 sm:px-8 lg:px-12 pt-8 sm:pt-10 lg:pt-12">
+                <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                  <Mail className="w-10 h-10 text-white" />
                 </div>
-                <CardTitle className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent auth-title-mobile">
+                <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent auth-title-mobile">
                   Check Your Email
                 </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-200 text-sm sm:text-base">
-                  We&apos;ve sent a verification link to {email}
+                <CardDescription className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+                  We&apos;ve sent a verification link to{' '}
+                  <span className="font-semibold text-violet-600 dark:text-violet-400">
+                    {email}
+                  </span>
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2 sm:space-y-3 lg:space-y-6 px-4 sm:px-6 auth-content-mobile">
+              <CardContent className="space-y-6 sm:space-y-8 px-6 sm:px-8 lg:px-12 auth-content-mobile">
                 {success && (
                   <div className="text-sm p-3 rounded-xl border animate-in slide-in-from-top-2 duration-300 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-100 border-green-200 dark:border-green-800/50">
                     <div className="flex items-start">
@@ -555,71 +562,46 @@ export default function SignUpPage() {
       {/* Header */}
       <LandingHeader />
 
-      <div className="flex-1 w-full lg:grid lg:grid-cols-2 bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 lg:bg-none auth-container">
+      {/* Notification Bar */}
+      <NotificationBar
+        message="🚀 Try our platform instantly with demo account - username/password: demo@certestic.com"
+        ctaText=""
+        ctaLink="/signin"
+        variant="promo"
+      />
+
+      <div className="flex-1 w-full lg:relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 lg:bg-none auth-container">
         {/* Left Column - Welcome Section */}
         <AuthLeftSection mode="signup" />
 
         {/* Right Column - Signup Form */}
-        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 relative bg-gradient-to-br from-violet-50 via-purple-25 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 min-h-full lg:min-h-0 auth-container auth-form-mobile">
-          {/* Subtle background decoration for mobile */}
-          <div className="absolute inset-0 lg:hidden overflow-hidden">
-            <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-br from-violet-200/20 to-purple-300/20 dark:from-violet-800/10 dark:to-purple-700/10 rounded-full"></div>
-            <div className="absolute bottom-20 left-10 w-28 h-28 bg-gradient-to-br from-cyan-200/20 to-blue-300/20 dark:from-cyan-800/10 dark:to-blue-700/10 rounded-full"></div>
+        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 lg:ml-[50%] relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+          {/* Enhanced background decoration matching home page */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Large gradient orbs for depth */}
+            <div className="absolute top-10 right-10 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl lg:hidden"></div>
+            <div className="absolute bottom-10 left-10 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl lg:hidden"></div>
+
+            {/* Desktop patterns */}
+            <div className="absolute top-20 right-16 w-32 h-32 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl hidden lg:block"></div>
+            <div className="absolute bottom-32 left-16 w-40 h-40 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl hidden lg:block"></div>
+
+            {/* Subtle geometric accent shapes */}
+            <div className="absolute top-32 right-20 w-16 h-16 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-2xl rotate-12 animate-pulse delay-3000 hidden lg:block"></div>
+            <div className="absolute bottom-40 left-20 w-12 h-12 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 dark:from-blue-800/20 dark:to-cyan-700/20 rounded-xl rotate-45 animate-pulse delay-4000 hidden lg:block"></div>
           </div>
 
-          {/* Additional subtle patterns for desktop right section */}
-          <div className="absolute inset-0 hidden lg:block overflow-hidden">
-            <div className="absolute top-32 right-20 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-xl rotate-12 animate-pulse delay-3000"></div>
-            <div className="absolute bottom-40 left-16 w-16 h-16 bg-gradient-to-br from-indigo-200/30 to-violet-200/30 dark:from-indigo-800/20 dark:to-violet-700/20 rounded-lg rotate-45 animate-pulse delay-4000"></div>
-          </div>
-
-          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10">
-            <CardHeader className="text-center space-y-2 sm:space-y-4 lg:space-y-6 pt-4 sm:pt-8 lg:pt-12 pb-3 sm:pb-6 lg:pb-10 px-6 sm:px-8 lg:px-12">
-              {/* Small decorative element */}
-              <div className="w-12 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto mb-3 sm:mb-6"></div>
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-50 dark:to-slate-200 bg-clip-text text-transparent auth-title-mobile">
+          <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10 rounded-3xl overflow-hidden">
+            <CardHeader className="text-center space-y-2 sm:space-y-4 lg:space-y-6 pt-6 sm:pt-8 lg:pt-12 pb-3 sm:pb-6 lg:pb-8 px-6 sm:px-8 lg:px-12">
+              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent auth-title-mobile">
                 Create Account
               </CardTitle>
-              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg">
-                Sign up to get started with Certestic
-              </CardDescription>
-
-              {/* Demo Account Highlight Section - improved colors */}
-              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 p-4 rounded-xl border border-emerald-200/80 dark:border-emerald-700/50 shadow-sm mt-4">
-                <div className="text-center">
-                  <h4 className="text-lg font-bold text-emerald-800 dark:text-emerald-200 mb-3">
-                    🚀 Try Before You Sign Up!
-                  </h4>
-                  <p className="text-sm text-emerald-700 dark:text-emerald-300 mb-4 leading-relaxed">
-                    Want to experience the platform first? Use our demo account:
-                  </p>
-                  <div className="bg-white dark:bg-emerald-900/40 p-3 rounded-lg border border-emerald-200/80 dark:border-emerald-700/40">
-                    <div className="grid grid-cols-1 gap-2 text-sm">
-                      <div>
-                        <span className="font-medium text-emerald-800 dark:text-emerald-200">
-                          Email:
-                        </span>
-                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/60 rounded text-emerald-800 dark:text-emerald-200 font-mono text-xs">
-                          demo@certestic.com
-                        </code>
-                      </div>
-                      <div>
-                        <span className="font-medium text-emerald-800 dark:text-emerald-200">
-                          Password:
-                        </span>
-                        <code className="ml-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-800/60 rounded text-emerald-800 dark:text-emerald-200 font-mono text-xs">
-                          demo@certestic.com
-                        </code>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed"></CardDescription>
             </CardHeader>
             <form onSubmit={handleSignUp} autoComplete="off">
-              <CardContent className="space-y-4 sm:space-y-6 lg:space-y-10 px-6 sm:px-8 lg:px-12 pb-6 sm:pb-8 lg:pb-12 auth-content-mobile">
+              <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 px-6 sm:px-8 lg:px-12 pb-6 sm:pb-8 lg:pb-12 auth-content-mobile">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="space-y-2 sm:space-y-3">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label
                       htmlFor="firstName"
                       className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
@@ -635,11 +617,11 @@ export default function SignUpPage() {
                       required
                       disabled={loading}
                       autoComplete="given-name"
-                      className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                      className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/50 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                     />
                   </div>
 
-                  <div className="space-y-2 sm:space-y-3">
+                  <div className="space-y-1 sm:space-y-2">
                     <Label
                       htmlFor="lastName"
                       className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
@@ -655,12 +637,12 @@ export default function SignUpPage() {
                       required
                       disabled={loading}
                       autoComplete="family-name"
-                      className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                      className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/50 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
+                <div className="space-y-1 sm:space-y-2">
                   <Label
                     htmlFor="email"
                     className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
@@ -676,11 +658,11 @@ export default function SignUpPage() {
                     required
                     disabled={loading}
                     autoComplete="off"
-                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/50 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                   />
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
+                <div className="space-y-1 sm:space-y-2">
                   <Label
                     htmlFor="password"
                     className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
@@ -697,11 +679,11 @@ export default function SignUpPage() {
                     disabled={loading}
                     minLength={6}
                     autoComplete="new-password"
-                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/50 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                   />
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
+                <div className="space-y-1 sm:space-y-2">
                   <Label
                     htmlFor="confirmPassword"
                     className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
@@ -718,7 +700,7 @@ export default function SignUpPage() {
                     disabled={loading}
                     minLength={6}
                     autoComplete="new-password"
-                    className="h-11 sm:h-12 lg:h-14 text-sm sm:text-base border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+                    className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/50 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                   />
                 </div>
 
@@ -783,7 +765,7 @@ export default function SignUpPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-11 sm:h-12 lg:h-14 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] text-sm sm:text-base"
+                  className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-0.5 text-base sm:text-lg relative overflow-hidden group"
                   disabled={
                     loading ||
                     !firstName.trim() ||
@@ -796,6 +778,8 @@ export default function SignUpPage() {
                   }
                   size="lg"
                 >
+                  {/* Button shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   <ButtonLoadingText
                     isLoading={loading}
                     loadingText="Creating Account..."
@@ -805,11 +789,11 @@ export default function SignUpPage() {
                   />
                 </Button>
               </CardContent>
-              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-4 lg:pt-6 border-t border-slate-100 dark:border-slate-700/70 px-6 sm:px-8 lg:px-12 pb-4 sm:pb-6 lg:pb-10">
-                Already have an account?&nbsp;
+              <CardFooter className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-4 sm:pt-6 lg:pt-8 border-t border-slate-100/80 dark:border-slate-700/50 px-6 sm:px-8 lg:px-12 pb-6 sm:pb-8 lg:pb-10 bg-slate-50/50 dark:bg-slate-800/30">
+                <span>Already have an account?</span>&nbsp;
                 <Link
                   href="/signin"
-                  className="font-medium text-violet-600 hover:text-violet-500 hover:underline transition-colors duration-200"
+                  className="font-semibold text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
                 >
                   Sign in
                 </Link>

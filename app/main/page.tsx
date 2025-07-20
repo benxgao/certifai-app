@@ -28,7 +28,7 @@ const MainPage = () => {
 
   const welcomeMessage = useMemo(() => {
     if (isLoadingProfile) return 'Loading your account information...';
-    return "We're developing an advanced adaptive learning engine with AI-powered question selection, real-time difficulty adjustment, and personalized study paths to revolutionize your certification experience.";
+    return 'An advanced adaptive learning engine is under development, with AI-powered question selection, real-time difficulty adjustment, and personalized study paths to revolutionize your certification experience.';
   }, [isLoadingProfile]);
 
   useEffect(() => {

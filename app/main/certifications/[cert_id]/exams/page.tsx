@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import ResponsiveTooltip from '@/src/components/custom/ResponsiveTooltip';
+import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams'; // Import SWR hook
@@ -281,7 +282,7 @@ function CertificationExamsContent() {
                   <DialogTrigger asChild>
                     <Button
                       size="lg"
-                      className="exam-action-button w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-slate-500 hover:bg-slate-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="exam-action-button w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-slate-500 hover:bg-slate-600 focus:bg-slate-600 active:bg-slate-300 text-white dark:bg-slate-700 dark:hover:bg-slate-600 dark:focus:bg-slate-600 dark:active:bg-slate-500 dark:text-slate-100 shadow-lg hover:shadow-xl transition-all duration-200"
                       disabled={
                         createExamError?.status === 429 || // Disable if rate limited
                         (rateLimitInfo ? !rateLimitInfo.canCreateExam : false) // Disable if at limit
@@ -291,7 +292,7 @@ function CertificationExamsContent() {
                       New Exam
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
+                  <DialogContent className="sm:max-w-[425px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                     <DialogHeader>
                       <div className="flex items-center gap-2">
                         <DialogTitle>Generate New Exam</DialogTitle>
@@ -418,7 +419,17 @@ function CertificationExamsContent() {
                           createExamError?.status === 429 // Disable if rate limited
                         }
                       >
-                        {isCreatingExam ? 'Creating...' : 'Create Exam'}
+                        {isCreatingExam ? (
+                          <ButtonLoadingText
+                            isLoading={true}
+                            loadingText="Creating..."
+                            defaultText="Creating..."
+                            showSpinner={true}
+                            spinnerSize="sm"
+                          />
+                        ) : (
+                          'Create Exam'
+                        )}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -556,7 +567,7 @@ function CertificationExamsContent() {
                   <DialogTrigger asChild>
                     <Button
                       size="lg"
-                      className="exam-action-button w-full font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-slate-500 hover:bg-slate-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="exam-action-button w-full font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-slate-100 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-300 text-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 dark:focus:bg-slate-600 dark:active:bg-slate-500 dark:text-slate-100 shadow-lg hover:shadow-xl transition-all duration-200"
                       disabled={
                         createExamError?.status === 429 || // Disable if rate limited
                         (rateLimitInfo ? !rateLimitInfo.canCreateExam : false) // Disable if at limit
@@ -566,7 +577,7 @@ function CertificationExamsContent() {
                       New Exam
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
+                  <DialogContent className="sm:max-w-[425px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                     <DialogHeader>
                       <div className="flex items-center gap-2">
                         <DialogTitle>Generate New Exam</DialogTitle>
@@ -693,7 +704,17 @@ function CertificationExamsContent() {
                           createExamError?.status === 429 // Disable if rate limited
                         }
                       >
-                        {isCreatingExam ? 'Creating...' : 'Create Exam'}
+                        {isCreatingExam ? (
+                          <ButtonLoadingText
+                            isLoading={true}
+                            loadingText="Creating..."
+                            defaultText="Creating..."
+                            showSpinner={true}
+                            spinnerSize="sm"
+                          />
+                        ) : (
+                          'Create Exam'
+                        )}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -725,7 +746,7 @@ function CertificationExamsContent() {
                         {/* Exam ID indicator */}
                         <div className="mb-2">
                           <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-600">
-                            Exam #{exam.exam_id.toString().substring(0, 7)}
+                            Exam #{exam.exam_id.toString().substring(0, 8)}
                           </span>
                         </div>
 
@@ -857,10 +878,13 @@ function CertificationExamsContent() {
                             >
                               <span className="flex items-center justify-center space-x-2">
                                 {isDeletingExam ? (
-                                  <>
-                                    <div className="animate-spin rounded-full h-3 w-3 border-2 border-current border-t-transparent"></div>
-                                    <span>Deleting...</span>
-                                  </>
+                                  <ButtonLoadingText
+                                    isLoading={true}
+                                    loadingText="Deleting..."
+                                    defaultText="Deleting..."
+                                    showSpinner={true}
+                                    spinnerSize="xs"
+                                  />
                                 ) : (
                                   <>
                                     <FaTrash className="w-3 h-3" />
@@ -909,15 +933,21 @@ function CertificationExamsContent() {
                             }`}
                           >
                             {navigatingExamId === exam.exam_id ? (
-                              <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                                <span className="ml-2">Loading Exam...</span>
-                              </>
+                              <ButtonLoadingText
+                                isLoading={true}
+                                loadingText="Loading Exam..."
+                                defaultText="Loading Exam..."
+                                showSpinner={true}
+                                spinnerSize="sm"
+                              />
                             ) : examStatus === 'generating' ? (
-                              <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
-                                <span className="ml-2">Generating Questions...</span>
-                              </>
+                              <ButtonLoadingText
+                                isLoading={true}
+                                loadingText="Generating Questions..."
+                                defaultText="Generating Questions..."
+                                showSpinner={true}
+                                spinnerSize="sm"
+                              />
                             ) : examStatus === 'generation_failed' ? (
                               <>
                                 <svg

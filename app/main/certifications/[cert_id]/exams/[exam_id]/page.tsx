@@ -350,7 +350,7 @@ export default function ExamAttemptPage() {
                   {/* Error Title */}
                   <div className="space-y-2">
                     <h1 className="text-2xl font-bold text-red-600 dark:text-red-400">
-                      Error Loading Exam {examId}
+                      Error Loading Exam {examId?.substring(0, 8)}
                     </h1>
                     <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
                       {isQuestionsError?.message ||
@@ -394,7 +394,7 @@ export default function ExamAttemptPage() {
               label: examState?.certification?.name || `Certification ${certId}`,
               href: `/main/certifications/${certId}/exams`,
             },
-            { label: `Exam ${examId}`, current: true },
+            { label: `Exam ${examId?.substring(0, 8)}`, current: true },
           ]}
         />
 
