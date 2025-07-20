@@ -284,7 +284,9 @@ export default function RootLayout({
         )}
 
         <ConditionalFirebaseAuthProvider>
-          <PageViewTracker />
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
           <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-slate-100">
             <Suspense
               fallback={
