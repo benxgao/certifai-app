@@ -164,15 +164,29 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
                 }
               }, 2000);
             } else {
-              // For other critical errors, clear all auth state
+              // For other critical errors, clear all auth state only if this isn't a session expiry recovery
               console.error('Non-timeout auth setup error, clearing all auth state');
-              setFirebaseUser(null);
-              setFirebaseToken(null);
-              setApiUserId(null);
-              clearAuthCookie();
 
-              if (shouldRedirectToSignIn()) {
-                router.push('/signin');
+              // Don't clear auth state if user just signed in after session expiry
+              const urlParams = new URLSearchParams(window.location.search);
+              const isSessionExpired = urlParams.get('error') === 'session_expired';
+
+              if (!isSessionExpired) {
+                setFirebaseUser(null);
+                setFirebaseToken(null);
+                setApiUserId(null);
+                clearAuthCookie();
+
+                if (shouldRedirectToSignIn()) {
+                  router.push('/signin');
+                }
+              } else {
+                // For session expiry, keep Firebase user but set apiUserId to null
+                // This allows the redirect logic to work based on the updated shouldRedirectToMain function
+                console.log(
+                  'Session expiry detected, keeping Firebase user but clearing API user ID',
+                );
+                setApiUserId(null);
               }
             }
           }

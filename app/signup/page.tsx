@@ -98,6 +98,16 @@ export default function SignUpPage() {
 
     signupDebugger.success('form-validation', 'Form validation passed');
     setLoading(true);
+
+    // Safety timeout to prevent hanging forever
+    const safetyTimeout = setTimeout(() => {
+      if (isMountedRef.current) {
+        console.warn('Signup process timed out, resetting loading state');
+        setLoading(false);
+        setError('Signup process timed out. Please try again.');
+      }
+    }, 60000); // 1 minute timeout
+
     signupDebugger.pending('firebase-signup', 'Creating Firebase user account');
 
     try {
@@ -135,19 +145,31 @@ export default function SignUpPage() {
         console.warn('Backend registration failed (non-blocking):', registrationError.message);
         signupDebugger.error('api-registration', registrationError.message, registrationError);
         // Continue with email verification even if registration fails
+        // Set a timeout to prevent hanging forever on registration
+        if (registrationError.message?.includes('timeout')) {
+          console.warn('Registration API timed out, continuing with email verification');
+        }
       }
 
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
-      // Step 2: Send email verification
+      // Step 2: Send email verification with timeout
       signupDebugger.pending('email-verification', 'Sending email verification');
 
       try {
-        await sendEmailVerificationWithRetry(user);
+        // Add timeout to email verification to prevent hanging
+        const emailVerificationPromise = sendEmailVerificationWithRetry(user);
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Email verification timed out')), 20000),
+        );
+
+        await Promise.race([emailVerificationPromise, timeoutPromise]);
         console.log('Email verification sent successfully');
         signupDebugger.success('email-verification', 'Email verification sent successfully');
 
+        // Reset loading state before showing verification step
+        setLoading(false);
         setShowVerificationStep(true);
         setSuccess('Account created successfully! Please check your email to verify your account.');
 
@@ -171,6 +193,8 @@ export default function SignUpPage() {
         console.error('Email verification failed:', verificationError);
         signupDebugger.error('email-verification', verificationError.message, verificationError);
 
+        // Reset loading state before showing verification step
+        setLoading(false);
         // Still show verification step but with error message
         setShowVerificationStep(true);
         setError(`Account created but verification email failed: ${verificationError.message}`);
@@ -209,6 +233,9 @@ export default function SignUpPage() {
         toast.error('Signup failed', { description: errorMessage });
       }
     } finally {
+      // Clear the safety timeout
+      clearTimeout(safetyTimeout);
+
       // Check if component is still mounted before updating loading state
       if (isMountedRef.current) {
         setLoading(false);

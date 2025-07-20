@@ -40,7 +40,7 @@ export const useAuthTimeout = (
         // Set a specific error to help user understand what to do
         if (!error) {
           setError(
-            'Authentication is taking longer than expected. Please refresh the page and try again.',
+            'Authentication timed out. If you are already signed in, please refresh the page.',
           );
         }
 

@@ -387,13 +387,20 @@ export const shouldRedirectToMain = (
 ): boolean => {
   const isAuthError = isAuthenticationError(error);
 
+  // Check if we should allow redirect without apiUserId in certain scenarios
+  const allowRedirectWithoutApiUserId =
+    error.includes('Authentication timed out') ||
+    error.includes('Session expired') ||
+    error.includes('session_expired') ||
+    (firebaseUser?.emailVerified && !error); // Allow if user is verified and no errors
+
   return (
     !loading &&
     !authProcessing &&
     !isLoading &&
     firebaseUser &&
     firebaseUser.emailVerified &&
-    (apiUserId || error.includes('Authentication timed out')) &&
+    (apiUserId || allowRedirectWithoutApiUserId) &&
     !isRedirecting &&
     !isAuthError
   );

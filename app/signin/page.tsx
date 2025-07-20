@@ -296,7 +296,10 @@ const LoginPage = () => {
                       </svg>
                       <div className="flex-1">
                         {error}
-                        {error.includes('taking longer than expected') && (
+                        {(error.includes('taking longer than expected') ||
+                          error.includes('session_expired') ||
+                          error.includes('Session expired') ||
+                          error.includes('Authentication timed out')) && (
                           <div className="mt-4">
                             <Button
                               onClick={handleRefresh}
