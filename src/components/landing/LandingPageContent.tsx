@@ -34,21 +34,20 @@ export default function LandingPageContent() {
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                Ace Your IT Certifications
+                AI That Learns How YOU Learn
               </span>
               <br />
-              with{' '}
               <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent font-extrabold">
                 Certestic
               </span>{' '}
-              AI That Actually Gets It
+              - Your Personal Certification Success Engine
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Get AI-powered practice exams tailored to your specific learning needs. Create custom
-              study sessions focused on your weak spots and master IT certifications faster. Our
-              smart AI adapts to your learning style and creates targeted questions that actually
-              help you pass your exams.
+              Stop wasting study time on topics you already know. Our adaptive AI creates
+              personalized exams that get smarter with every test - focusing on your weak areas
+              while challenging your strengths. Experience intelligent questions that evolve with
+              your progress and accelerate your certification success.
             </p>
 
             {/* Enhanced Stats with SEO keywords */}
@@ -224,15 +223,15 @@ export default function LandingPageContent() {
             </div>
 
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-              Study Smart with AI &
+              No More Wasted Study Time &
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
-                Master Your Certifications
+                Adaptive Learning That Actually Works
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Our AI creates custom practice exams that focus exactly on what you need to learn. Get
-              targeted questions for your weak spots and master certification concepts faster with
-              personalized study sessions designed for your success.
+              Our adaptive AI analyzes your performance history to create personalized exams. Weak
+              areas get more questions, strong areas get harder challenges, and your study sessions
+              become laser-focused on what you need to master next.
             </p>
           </div>
 
@@ -258,12 +257,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
-                AI-Powered Learning
+                Adaptive AI Learning Engine
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Advanced AI technology that creates personalized practice questions tailored to your
-                learning needs. Specify exactly what topics you want to focus on, and get custom
-                exams that adapt to your knowledge level and help you master challenging concepts.
+                Revolutionary AI technology that learns from your performance history. Each exam
+                adapts based on your previous results - more questions for weak areas, advanced
+                challenges for strengths. Experience truly personalized learning that evolves with
+                your progress and maximizes study efficiency.
               </p>
               <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Learn more</span>
@@ -346,12 +346,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300">
-                Progress Analytics
+                Smart Performance Analytics
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Track your learning progress with detailed analytics and performance insights.
-                Identify knowledge gaps, monitor improvement over time, and get data-driven
-                recommendations for more effective study sessions.
+                Advanced analytics that identify your knowledge gaps and learning patterns. Track
+                improvement trends, mastery levels, and confidence scores across all certification
+                topics. Get actionable insights that guide your next study session for maximum
+                learning efficiency.
               </p>
               <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">View analytics</span>
@@ -390,12 +391,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
-                Targeted Study Sessions
+                Zero-Waste Study Sessions
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Focus your study time efficiently with AI-generated questions for specific topics.
-                Whether you need help with AWS security groups or specific certification domains,
-                get targeted practice that addresses your exact learning needs.
+                Stop wasting time on topics you&apos;ve already mastered. Our adaptive algorithm
+                allocates 50% of questions to your weak areas, 25% for mastery validation of strong
+                topics, and explores new areas strategically. Every minute counts toward
+                certification success.
               </p>
               <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Explore feature</span>
@@ -527,44 +529,46 @@ export default function LandingPageContent() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Get the Study Platform
+                Your Personal Certification
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  That Actually Works
+                  Success Engine
                 </span>
                 <br />
-                for Your Certification Success
+                Awaits You
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Experience AI-powered certification training designed specifically for your success.
-                Our intelligent platform adapts to your learning style, creates targeted practice
-                exams, and helps you master IT certifications faster and more effectively.
+                Experience adaptive AI that learns from your performance, eliminates study waste,
+                and creates truly personalized exams. Join professionals who are already mastering
+                certifications faster with our intelligent learning platform.
               </p>
 
               {/* Enhanced stats for CTA */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Free Access
-                  </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">Beta Platform</div>
-                </div>
-                <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Smart AI
+                    Adaptive AI
                   </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Personalized Learning
+                    Learns How You Learn
                   </div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Proven Results
+                    Zero Waste
                   </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Certification Success
+                    Targeted Study Time
+                  </div>
+                </div>
+                <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                    Personal Engine
+                  </div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
+                    Your Success System
                   </div>
                 </div>
               </div>

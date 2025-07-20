@@ -109,11 +109,23 @@ export default function AboutPage() {
   const values = [
     {
       icon: Brain,
-      title: 'AI-Powered Learning',
+      title: 'Adaptive AI Learning',
       description:
-        'Using artificial intelligence to create personalized study experiences that adapt to individual learning patterns.',
-      benefits: ['Adaptive algorithms', 'Personalized content', 'Smart recommendations'],
-      keywords: 'AI technology, personalized learning',
+        'Revolutionary AI that learns from your exam performance to create truly personalized study experiences. Each test gets smarter, focusing on your weak areas while challenging your strengths.',
+      benefits: [
+        'Performance-based adaptation',
+        'Intelligent topic allocation',
+        'Zero study waste',
+      ],
+      keywords: 'adaptive AI, personalized learning, performance analysis',
+    },
+    {
+      icon: Target,
+      title: 'Precision Learning',
+      description:
+        'Stop wasting time on topics you already know. Our algorithm allocates 50% of questions to weak areas, 25% for mastery validation, ensuring every study minute counts toward certification success.',
+      benefits: ['Targeted weak area focus', 'Mastery validation', 'Efficient study time'],
+      keywords: 'precision learning, targeted study, efficiency',
     },
     {
       icon: Users,
@@ -211,10 +223,12 @@ export default function AboutPage() {
 
               <div className="max-w-4xl mx-auto mb-12">
                 <p className="text-xl sm:text-2xl text-slate-700 dark:text-slate-200 mb-6 leading-relaxed">
-                  AI-powered certification training built to be effective and accessible.
+                  Adaptive AI-powered certification training that learns from your performance and
+                  eliminates study waste.
                 </p>
                 <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Made by one developer who believes learning should be better.
+                  Built by a developer who believes learning should be intelligent, adaptive, and
+                  personalized for every student.
                 </p>
               </div>
 
@@ -294,12 +308,14 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent className="px-8 pb-8">
                   <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed mb-6">
-                    Create effective, AI-powered certification training that&apos;s accessible to
-                    everyone.
+                    Create adaptive, AI-powered certification training that learns from your
+                    performance and eliminates study waste.
                   </p>
                   <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                    Traditional certification training is expensive and often ineffective. I&apos;m
-                    building something better using modern AI technology.
+                    Traditional certification training wastes time on topics you already know. Our
+                    adaptive AI analyzes your performance history to create personalized exams -
+                    more questions for weak areas, advanced challenges for strengths, zero time
+                    wasted.
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
@@ -308,7 +324,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-base text-slate-700 dark:text-slate-200">
-                        <strong>Smart Learning:</strong> AI adapts to how you learn best
+                        <strong>Adaptive Intelligence:</strong> AI that learns from your performance
+                        history
                       </span>
                     </div>
                     <div className="flex items-start space-x-3">
@@ -327,7 +344,8 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-base text-slate-700 dark:text-slate-200">
-                        <strong>Community Driven:</strong> Built with user feedback
+                        <strong>Zero Study Waste:</strong> Focus time only on what you need to
+                        master
                       </span>
                     </div>
                   </div>
@@ -344,11 +362,14 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent className="px-8 pb-8">
                   <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed mb-6">
-                    Make quality IT certification training available to professionals worldwide.
+                    Build the world&apos;s most intelligent certification training platform that
+                    adapts to each learner.
                   </p>
                   <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                    Every IT professional should have access to effective training that helps
-                    advance their career without breaking the bank.
+                    Every IT professional should have access to adaptive learning that gets smarter
+                    with every test. No more wasted study time, no more generic questions - just
+                    personalized exams that evolve with your progress and accelerate your
+                    certification success.
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
@@ -574,32 +595,32 @@ export default function AboutPage() {
                   Try Certestic Today
                 </h2>
                 <p className="text-xl text-slate-700 dark:text-slate-200 mb-10 max-w-3xl mx-auto leading-relaxed">
-                  Join the beta and experience AI-powered certification training. Free access while
-                  in development.
+                  Experience adaptive AI that learns how you learn. Join professionals using our
+                  intelligent exam engine to master certifications faster and more efficiently.
                 </p>
                 <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
                   <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
                     <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                      Free Beta
+                      Adaptive AI
                     </div>
                     <div className="text-base text-slate-600 dark:text-slate-400">
-                      No cost to try
+                      Learns from you
                     </div>
                   </div>
                   <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
                     <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                      AI-Powered
+                      Zero Waste
                     </div>
                     <div className="text-base text-slate-600 dark:text-slate-400">
-                      Smart learning
+                      Efficient study time
                     </div>
                   </div>
                   <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
                     <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                      Community
+                      Personal Engine
                     </div>
                     <div className="text-base text-slate-600 dark:text-slate-400">
-                      Shape the future
+                      Your success system
                     </div>
                   </div>
                 </div>
