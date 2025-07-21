@@ -7,8 +7,6 @@ interface AuthLeftSectionProps {
 }
 
 const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
-  const isSignup = mode === 'signup';
-
   // Marketing copy
   const content = {
     signup: {
@@ -121,95 +119,61 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
 
   return (
     <div className="hidden lg:flex lg:flex-col lg:justify-center relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full">
-      {/* Enhanced background patterns matching home page */}
+      {/* Enhanced background decoration matching signin/signup right side */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Large gradient orbs for depth */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-purple-200/15 dark:bg-purple-600/8 rounded-full blur-3xl"></div>
+        <div className="absolute top-10 left-10 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl lg:block"></div>
+        <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl lg:block"></div>
+
+        {/* Desktop patterns */}
+        <div className="absolute top-20 left-16 w-32 h-32 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl lg:block"></div>
+        <div className="absolute bottom-32 right-16 w-40 h-40 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl lg:block"></div>
 
         {/* Subtle geometric accent shapes */}
-        <div className="absolute top-32 left-32 w-20 h-20 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-3xl rotate-12 animate-pulse delay-3000"></div>
-        <div className="absolute bottom-40 right-24 w-16 h-16 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 dark:from-blue-800/20 dark:to-cyan-700/20 rounded-2xl rotate-45 animate-pulse delay-4000"></div>
-        <div className="absolute top-1/3 left-16 w-12 h-12 bg-gradient-to-br from-purple-200/30 to-pink-200/30 dark:from-purple-800/20 dark:to-pink-700/20 rounded-xl rotate-6 animate-pulse delay-5000"></div>
+        <div className="absolute top-32 left-20 w-16 h-16 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-2xl rotate-12 animate-pulse delay-3000 lg:block"></div>
+        <div className="absolute bottom-40 right-20 w-12 h-12 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 dark:from-blue-800/20 dark:to-cyan-700/20 rounded-xl rotate-45 animate-pulse delay-4000 lg:block"></div>
       </div>
 
-      {/* Content container positioned relative to viewport */}
-      <div className="relative z-10 flex flex-col justify-center min-h-screen lg:fixed lg:top-0 lg:left-0 lg:w-1/2 lg:h-screen lg:flex lg:items-center lg:justify-center lg:pointer-events-none">
-        <div className="max-w-xl p-12 mx-auto w-full lg:pointer-events-auto">
-          <div className="space-y-8">
-            {/* Modern header with integrated icon */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50 leading-tight">
-                    {currentContent.title}
-                  </h2>
-                </div>
+      {/* Content container with precise form alignment */}
+      <div className="relative z-10 flex flex-col lg:fixed lg:top-30 lg:left-0 lg:w-1/2 lg:h-screen lg:pointer-events-none">
+        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16  lg:pointer-events-auto">
+          <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl">
+            {/* Main content container matching form card positioning */}
+            <div className="pt-4 sm:pt-6 lg:pt-6">
+              {/* Header section with exact form alignment */}
+              <div className="mb-6 sm:mb-8 lg:mb-10">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-3 sm:mb-4 leading-tight">
+                  {currentContent.title}
+                </h2>
+                <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed">
+                  {currentContent.description}
+                </p>
               </div>
-              <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-                {currentContent.description}
-              </p>
-            </div>
 
-            {/* Feature List - Enhanced cards matching home page style */}
-            <div className="space-y-4">
-              {currentContent.features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg rounded-2xl p-6 hover:shadow-xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-1 hover:scale-[1.02] overflow-hidden"
-                >
-                  {/* Background gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-transparent dark:from-violet-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-
-                  <div className="relative flex items-start space-x-4">
+              {/* Feature list with form-like spacing */}
+              <div className="space-y-3 sm:space-y-4 lg:space-y-6">
+                {currentContent.features.map((feature, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center space-x-4 p-4 sm:p-5 lg:p-6 rounded-xl sm:rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-violet-300/60 dark:hover:border-violet-700/60"
+                  >
                     <div
-                      className={`flex-shrink-0 w-12 h-12 bg-gradient-to-br ${feature.bgColor} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                      className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br ${feature.bgColor} rounded-xl flex items-center justify-center shadow-md`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      {renderIcon(feature.icon, 'relative w-6 h-6 text-white')}
+                      {renderIcon(feature.icon, 'w-5 h-5 sm:w-6 sm:h-6 text-white')}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="relative font-bold text-slate-900 dark:text-slate-50 text-lg leading-tight mb-2 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
+                      <h3 className="font-semibold text-slate-900 dark:text-slate-50 text-sm sm:text-base lg:text-lg leading-tight mb-1 sm:mb-2">
                         {feature.title}
                       </h3>
-                      <p className="relative text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                      <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Stats section - Integrated glass morphism design */}
-            {isSignup && 'stats' in currentContent && (
-              <div className="relative">
-                <div className="bg-gradient-to-r from-violet-50/80 to-purple-50/80 backdrop-blur-sm rounded-2xl p-6 border border-violet-200/50 shadow-xl">
-                  {/* <div className="grid grid-cols-2 gap-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-violet-700 mb-1">
-                        {currentContent.stats.primary.value}
-                      </div>
-                      <div className="text-sm text-slate-600 font-medium">
-                        {currentContent.stats.primary.label}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-violet-700 mb-1">
-                        {currentContent.stats.secondary.value}
-                      </div>
-                      <div className="text-sm text-slate-600 font-medium">
-                        {currentContent.stats.secondary.label}
-                      </div>
-                    </div>
-                  </div> */}
-                  {/* Decorative elements */}
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-violet-400 to-purple-500 rounded-full opacity-60"></div>
-                  <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full opacity-60"></div>
-                </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

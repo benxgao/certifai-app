@@ -64,6 +64,21 @@ export default function SignUpPage() {
     };
   }, []);
 
+  // Safety mechanism to reset loading state if it gets stuck
+  useEffect(() => {
+    if (loading) {
+      const timeout = setTimeout(() => {
+        if (loading && isMountedRef.current) {
+          console.warn('Loading state stuck, force resetting after 60 seconds');
+          setLoading(false);
+          setError('Request timed out. Please try again.');
+        }
+      }, 60000); // 60 second safety timeout
+
+      return () => clearTimeout(timeout);
+    }
+  }, [loading]);
+
   // Redirect if already signed in
   useEffect(() => {
     if (firebaseUser && !loading && !showVerificationStep && !isRedirectingToSignin) {
@@ -209,38 +224,59 @@ export default function SignUpPage() {
       console.error('Signup error:', error);
       signupDebugger.error('signup-process', 'Signup process failed', error);
 
+      // Always reset loading state first to re-enable the button
+      setLoading(false);
+
       // Check if component is still mounted before updating state
-      if (!isMountedRef.current) return;
+      if (!isMountedRef.current) {
+        console.warn('Component unmounted during error handling, skipping state updates');
+        return;
+      }
 
       // Parse error and set appropriate message using the utility
       const errorMessage = getFirebaseErrorMessage(error);
 
+      console.log('Setting error message:', errorMessage);
+      console.log('Error code:', error.code);
+      console.log('Original error:', error);
+
+      // Force state update to ensure error is visible
       setError(errorMessage);
+
+      // Force re-render by updating timestamp (if error doesn't show)
+      console.log('Error state set, current timestamp:', Date.now());
 
       // Enhanced toast messages for specific errors
       if (error.code === 'auth/email-already-in-use') {
+        console.log('Showing email-already-in-use toast');
         toast.error(errorMessage, {
           description: 'If you forgot your password, you can reset it from the sign-in page.',
           action: {
             label: 'Go to Sign In',
             onClick: () => router.push('/signin'),
           },
+          duration: 10000, // Show for 10 seconds
         });
       } else if (error.code === 'auth/weak-password') {
+        console.log('Showing weak-password toast');
         toast.error(errorMessage, {
           description: 'Try using at least 6 characters with a mix of letters and numbers.',
+          duration: 8000,
         });
       } else {
-        toast.error('Signup failed', { description: errorMessage });
+        console.log('Showing generic error toast');
+        toast.error('Signup failed', {
+          description: errorMessage,
+          duration: 8000,
+        });
       }
     } finally {
       // Clear the safety timeout
       clearTimeout(safetyTimeout);
 
-      // Check if component is still mounted before updating loading state
-      if (isMountedRef.current) {
-        setLoading(false);
-      }
+      // Always ensure loading state is reset to re-enable the button
+      // regardless of component mount status
+      setLoading(false);
     }
   };
 
@@ -592,8 +628,8 @@ export default function SignUpPage() {
           </div>
 
           <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10 rounded-3xl overflow-hidden">
-            <CardHeader className="text-center space-y-2 sm:space-y-4 lg:space-y-6 pt-6 sm:pt-8 lg:pt-12 pb-3 sm:pb-6 lg:pb-8 px-6 sm:px-8 lg:px-12">
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent auth-title-mobile">
+            <CardHeader className="text-center pt-4 sm:pt-6 lg:pt-6 pb-3 sm:pb-6 lg:pb-6 px-6 sm:px-8 lg:px-12">
+              <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent auth-title-mobile">
                 Create Account
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed"></CardDescription>
@@ -613,7 +649,11 @@ export default function SignUpPage() {
                       type="text"
                       placeholder="John"
                       value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                        // Clear error when user starts typing again
+                        if (error) setError('');
+                      }}
                       required
                       disabled={loading}
                       autoComplete="given-name"
@@ -633,7 +673,11 @@ export default function SignUpPage() {
                       type="text"
                       placeholder="Doe"
                       value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                        // Clear error when user starts typing again
+                        if (error) setError('');
+                      }}
                       required
                       disabled={loading}
                       autoComplete="family-name"
@@ -654,7 +698,11 @@ export default function SignUpPage() {
                     type="email"
                     placeholder="you@example.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      // Clear error when user starts typing again
+                      if (error) setError('');
+                    }}
                     required
                     disabled={loading}
                     autoComplete="off"
@@ -674,7 +722,11 @@ export default function SignUpPage() {
                     type="password"
                     placeholder="••••••••"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      // Clear error when user starts typing again
+                      if (error) setError('');
+                    }}
                     required
                     disabled={loading}
                     minLength={6}
@@ -695,7 +747,11 @@ export default function SignUpPage() {
                     type="password"
                     placeholder="••••••••"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      // Clear error when user starts typing again
+                      if (error) setError('');
+                    }}
                     required
                     disabled={loading}
                     minLength={6}
@@ -760,6 +816,13 @@ export default function SignUpPage() {
                       </svg>
                       <div className="flex-1">{error}</div>
                     </div>
+                  </div>
+                )}
+
+                {/* Debug info in development - only show when there's an actual error or loading state */}
+                {process.env.NODE_ENV === 'development' && (loading || error) && (
+                  <div className="text-xs text-gray-500 p-2 bg-gray-100 rounded">
+                    Loading: {loading.toString()} | Error: {error || 'none'}
                   </div>
                 )}
 

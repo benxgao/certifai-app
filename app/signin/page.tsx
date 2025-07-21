@@ -195,7 +195,7 @@ const LoginPage = () => {
         <AuthLeftSection mode="signin" />
 
         {/* Right Column - Signin Form */}
-        <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 lg:ml-[50%] relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full lg:min-h-0 auth-container auth-form-mobile">
+        <div className="flex justify-center py-4 sm:py-8 lg:py-20 px-4 sm:px-6 lg:px-16 lg:ml-[50%] relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full lg:min-h-0 auth-form-mobile">
           {/* Enhanced background decoration matching signup page */}
           <div className="absolute inset-0 overflow-hidden">
             {/* Large gradient orbs for depth */}
@@ -212,8 +212,8 @@ const LoginPage = () => {
           </div>
 
           <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl dark:shadow-slate-900/50 relative z-10">
-            <CardHeader className="text-center space-y-2 sm:space-y-4 lg:space-y-6 pt-4 sm:pt-8 lg:pt-12 pb-3 sm:pb-6 lg:pb-10 px-6 sm:px-8 lg:px-12">
-              <CardTitle className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent auth-title-mobile">
+            <CardHeader className="text-center pt-4 sm:pt-6 lg:pt-6 pb-3 sm:pb-6 lg:pb-6 px-6 sm:px-8 lg:px-12">
+              <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent auth-title-mobile">
                 Sign In
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg">

@@ -79,7 +79,7 @@ export default async function CertificationsPage({
               <br />
               Simulate Exams by AI
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light">
+            <p className="text-base sm:text-lg lg:text-xl text-slate-500 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light">
               Explore certification programs from leading technology companies and prepare for IT
               certification by self exams. Each certification is designed to validate your skills
               and advance your career with AI-powered exam simulation technology.

@@ -70,7 +70,7 @@ export default function PricingPage() {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20" role="main">
           {/* Header Section */}
           <header className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
               <Star className="w-3 sm:w-4 h-3 sm:h-4" />
               <span>100% Free Beta</span>
             </div>
@@ -87,7 +87,7 @@ export default function PricingPage() {
           <div className="max-w-2xl mx-auto px-2 sm:px-4">
             <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-xl">
               <div className="absolute -top-2 sm:-top-3 lg:-top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-primary text-white px-3 sm:px-4 lg:px-6 py-1 sm:py-1.5 lg:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
+                <span className="bg-violet-600 dark:bg-violet-700 text-white px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 lg:py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg">
                   FREE BETA ACCESS
                 </span>
               </div>
@@ -99,7 +99,7 @@ export default function PricingPage() {
                 <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary mb-2">
                   FREE
                 </div>
-                <p className="text-xs sm:text-sm lg:text-base text-muted-foreground px-2">
+                <p className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 px-2">
                   Start your certification journey
                 </p>
               </div>
@@ -107,25 +107,25 @@ export default function PricingPage() {
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 lg:mb-8">
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     Unlimited AI-generated practice exams
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     All IT certification tracks
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     Performance analytics & insights
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     Personalized study recommendations
                   </span>
                 </div>

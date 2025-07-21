@@ -209,7 +209,7 @@ export default function AboutPage() {
             <header className="text-center mb-20 relative z-10">
               <Badge
                 variant="secondary"
-                className="mb-8 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-800 dark:text-violet-200 px-4 py-2"
+                className="mb-8 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full"
               >
                 <Rocket className="h-4 w-4 mr-2 text-violet-600 dark:text-violet-400" />
                 Built with passion
@@ -278,10 +278,10 @@ export default function AboutPage() {
                     <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent mb-2">
                       {stat.value}
                     </div>
-                    <div className="text-base font-medium text-slate-700 dark:text-slate-200 mb-2">
+                    <div className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-2">
                       {stat.label}
                     </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <div className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                       {stat.description}
                     </div>
                   </CardContent>
@@ -433,7 +433,7 @@ export default function AboutPage() {
                           {value.benefits.map((benefit, idx) => (
                             <div key={idx} className="flex items-center space-x-3">
                               <div className="w-1.5 h-1.5 bg-violet-600 dark:bg-violet-400 rounded-full flex-shrink-0"></div>
-                              <span className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                              <span className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                                 {benefit}
                               </span>
                             </div>
@@ -476,7 +476,7 @@ export default function AboutPage() {
                           <div className="mb-4">
                             <Badge
                               variant="secondary"
-                              className="font-medium text-base bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 px-3 py-1"
+                              className="font-medium text-xs sm:text-sm bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full"
                             >
                               {milestone.year}
                             </Badge>
