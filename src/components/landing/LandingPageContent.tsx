@@ -44,10 +44,10 @@ export default function LandingPageContent() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Stop wasting study time on topics you already know. Our adaptive AI creates
-              personalized exams that get smarter with every test - focusing on your weak areas
-              while challenging your strengths. Experience intelligent questions that evolve with
-              your progress and accelerate your certification success.
+              Maximize your study efficiency by focusing on exactly what you need to learn. Our
+              adaptive AI creates personalized exams that get smarter with every test - targeting
+              your growth areas while reinforcing your strengths. Experience intelligent questions
+              that evolve with your progress and accelerate your certification success.
             </p>
 
             {/* Enhanced Stats with SEO keywords */}
@@ -223,15 +223,15 @@ export default function LandingPageContent() {
             </div>
 
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-              No More Wasted Study Time &
+              Optimized Study Time &
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
                 Adaptive Learning That Actually Works
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Our adaptive AI analyzes your performance history to create personalized exams. Weak
-              areas get more questions, strong areas get harder challenges, and your study sessions
-              become laser-focused on what you need to master next.
+              Our adaptive AI analyzes your performance history to create personalized exams. Growth
+              areas get more questions, strong areas get advanced challenges, and your study
+              sessions become laser-focused on what you need to master next.
             </p>
           </div>
 
@@ -261,7 +261,7 @@ export default function LandingPageContent() {
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
                 Revolutionary AI technology that learns from your performance history. Each exam
-                adapts based on your previous results - more questions for weak areas, advanced
+                adapts based on your previous results - more questions for growth areas, advanced
                 challenges for strengths. Experience truly personalized learning that evolves with
                 your progress and maximizes study efficiency.
               </p>
@@ -391,13 +391,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
-                Zero-Waste Study Sessions
+                Optimized Study Sessions
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Stop wasting time on topics you&apos;ve already mastered. Our adaptive algorithm
-                allocates 50% of questions to your weak areas, 25% for mastery validation of strong
-                topics, and explores new areas strategically. Every minute counts toward
-                certification success.
+                Focus your time precisely where it matters most. Our adaptive algorithm allocates
+                50% of questions to your growth areas, 25% for mastery validation of strong topics,
+                and explores new areas strategically. Every minute drives you toward certification
+                success.
               </p>
               <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Explore feature</span>
@@ -538,9 +538,9 @@ export default function LandingPageContent() {
               </h2>
 
               <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Experience adaptive AI that learns from your performance, eliminates study waste,
-                and creates truly personalized exams. Join professionals who are already mastering
-                certifications faster with our intelligent learning platform.
+                Experience adaptive AI that learns from your performance, optimizes study
+                efficiency, and creates truly personalized exams. Join professionals who are already
+                mastering certifications faster with our intelligent learning platform.
               </p>
 
               {/* Enhanced stats for CTA */}
@@ -556,7 +556,7 @@ export default function LandingPageContent() {
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Zero Waste
+                    Smart Focus
                   </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
                     Targeted Study Time

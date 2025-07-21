@@ -35,7 +35,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
         {
           icon: 'chart',
           title: 'Smart Analytics',
-          description: 'Track progress and identify weak areas',
+          description: 'Track progress and identify growth opportunities',
           bgColor: 'from-violet-500 to-purple-600',
         },
       ],
@@ -118,7 +118,6 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
         return null;
     }
   };
-
 
   return (
     <div className="hidden lg:flex lg:flex-col lg:justify-center relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full">

@@ -111,11 +111,11 @@ export default function AboutPage() {
       icon: Brain,
       title: 'Adaptive AI Learning',
       description:
-        'Revolutionary AI that learns from your exam performance to create truly personalized study experiences. Each test gets smarter, focusing on your weak areas while challenging your strengths.',
+        'Revolutionary AI that learns from your exam performance to create truly personalized study experiences. Each test gets smarter, focusing on your growth areas while challenging your strengths.',
       benefits: [
         'Performance-based adaptation',
         'Intelligent topic allocation',
-        'Zero study waste',
+        'Optimized study efficiency',
       ],
       keywords: 'adaptive AI, personalized learning, performance analysis',
     },
@@ -123,8 +123,8 @@ export default function AboutPage() {
       icon: Target,
       title: 'Precision Learning',
       description:
-        'Stop wasting time on topics you already know. Our algorithm allocates 50% of questions to weak areas, 25% for mastery validation, ensuring every study minute counts toward certification success.',
-      benefits: ['Targeted weak area focus', 'Mastery validation', 'Efficient study time'],
+        'Maximize your time by focusing precisely where you need growth. Our algorithm allocates 50% of questions to development areas, 25% for mastery validation, ensuring every study minute accelerates your certification success.',
+      benefits: ['Targeted growth focus', 'Mastery validation', 'Efficient study time'],
       keywords: 'precision learning, targeted study, efficiency',
     },
     {
@@ -224,7 +224,7 @@ export default function AboutPage() {
               <div className="max-w-4xl mx-auto mb-12">
                 <p className="text-xl sm:text-2xl text-slate-700 dark:text-slate-200 mb-6 leading-relaxed">
                   Adaptive AI-powered certification training that learns from your performance and
-                  eliminates study waste.
+                  optimizes study efficiency.
                 </p>
                 <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
                   Built by a developer who believes learning should be intelligent, adaptive, and
@@ -309,13 +309,13 @@ export default function AboutPage() {
                 <CardContent className="px-8 pb-8">
                   <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed mb-6">
                     Create adaptive, AI-powered certification training that learns from your
-                    performance and eliminates study waste.
+                    performance and maximizes study efficiency.
                   </p>
                   <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-                    Traditional certification training wastes time on topics you already know. Our
-                    adaptive AI analyzes your performance history to create personalized exams -
-                    more questions for weak areas, advanced challenges for strengths, zero time
-                    wasted.
+                    Traditional certification training lacks personalization and focus. Our adaptive
+                    AI analyzes your performance history to create personalized exams - more
+                    questions for growth areas, advanced challenges for strengths, optimized time
+                    allocation.
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
@@ -344,7 +344,7 @@ export default function AboutPage() {
                         aria-hidden="true"
                       />
                       <span className="text-base text-slate-700 dark:text-slate-200">
-                        <strong>Zero Study Waste:</strong> Focus time only on what you need to
+                        <strong>Smart Focus:</strong> Concentrate time precisely on what you need to
                         master
                       </span>
                     </div>
@@ -367,9 +367,8 @@ export default function AboutPage() {
                   </p>
                   <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
                     Every IT professional should have access to adaptive learning that gets smarter
-                    with every test. No more wasted study time, no more generic questions - just
-                    personalized exams that evolve with your progress and accelerate your
-                    certification success.
+                    with every test. Optimized study time, personalized questions - just customized
+                    exams that evolve with your progress and accelerate your certification success.
                   </p>
                   <div className="space-y-4">
                     <div className="flex items-start space-x-3">
@@ -609,7 +608,7 @@ export default function AboutPage() {
                   </div>
                   <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
                     <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                      Zero Waste
+                      Smart Focus
                     </div>
                     <div className="text-base text-slate-600 dark:text-slate-400">
                       Efficient study time

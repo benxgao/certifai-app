@@ -60,14 +60,26 @@ export const handleAuthenticationFailure = async (
 
   // Redirect if needed and in browser
   if (shouldRedirect && typeof window !== 'undefined') {
-    // Only redirect if we're in a protected route and not already on auth pages
-    if (
-      window.location.pathname.startsWith('/main') &&
-      !window.location.pathname.includes('/signin') &&
-      !window.location.pathname.includes('/signup')
-    ) {
+    const currentPath = window.location.pathname;
+
+    // Define protected routes that require authentication
+    const protectedRoutes = ['/main'];
+    const authRoutes = ['/signin', '/signup', '/forgot-password'];
+
+    // Check if we're on a protected route
+    const isProtectedRoute = protectedRoutes.some((route) => currentPath.startsWith(route));
+
+    // Check if we're already on an auth route
+    const isAuthRoute = authRoutes.some((route) => currentPath.includes(route));
+
+    // Only redirect if we're on a protected route and not already on an auth route
+    if (isProtectedRoute && !isAuthRoute) {
       const errorParam = encodeURIComponent(errorMessage);
-      window.location.href = `/signin?error=${errorParam}`;
+      console.log('Redirecting to signin due to auth failure from protected route:', currentPath);
+      // Use replace to prevent back navigation to protected pages
+      window.location.replace(`/signin?error=${errorParam}`);
+    } else if (isAuthRoute) {
+      console.log('Auth failure detected on auth page, clearing state without redirect');
     }
   }
 };
@@ -97,6 +109,20 @@ export const fetchWithAuthRetry = async (
 
   // If we get a 401, try to refresh token and retry once
   if (response.status === 401 && refreshTokenFn) {
+    // Don't attempt refresh if user is on auth pages to prevent race conditions
+    if (typeof window !== 'undefined') {
+      const currentPath = window.location.pathname;
+      const isAuthPage =
+        currentPath.includes('/signin') ||
+        currentPath.includes('/signup') ||
+        currentPath.includes('/forgot-password');
+
+      if (isAuthPage) {
+        console.log('Skipping token refresh - user is on auth page:', currentPath);
+        throw new AuthenticationError('Authentication required. Please sign in.');
+      }
+    }
+
     console.log('Token expired, attempting refresh...');
 
     try {
@@ -118,16 +144,16 @@ export const fetchWithAuthRetry = async (
           console.log('Cookie refresh successful, retrying request...');
           response = await fetch(url, options);
         } else {
-          // All refresh attempts failed
-          console.error('All token refresh attempts failed');
+          // All refresh attempts failed - force signin
+          console.error('All token refresh attempts failed - forcing signin');
           await handleAuthenticationFailure();
-          throw new AuthenticationError('Authentication failed. Please sign in again.');
+          throw new AuthenticationError('Session expired. Please sign in again.');
         }
       }
     } catch (refreshError) {
       console.error('Token refresh error:', refreshError);
       await handleAuthenticationFailure();
-      throw new AuthenticationError('Authentication failed. Please sign in again.');
+      throw new AuthenticationError('Session expired. Please sign in again.');
     }
   }
 

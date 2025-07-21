@@ -216,16 +216,25 @@ export const shouldSkipCookieSet = (): boolean => {
 };
 
 /**
- * Check if we should redirect for protected routes
+ * Check if we should redirect for protected routes when token refresh fails
  */
 export const shouldRedirectToSignIn = (): boolean => {
   if (typeof window === 'undefined') return false;
 
-  return (
-    window.location.pathname.startsWith('/main') &&
-    !window.location.pathname.includes('/signin') &&
-    !window.location.pathname.includes('/signup')
-  );
+  const currentPath = window.location.pathname;
+
+  // Define protected routes that require authentication
+  const protectedRoutes = ['/main'];
+  const authRoutes = ['/signin', '/signup', '/forgot-password'];
+
+  // Check if we're on a protected route
+  const isProtectedRoute = protectedRoutes.some((route) => currentPath.startsWith(route));
+
+  // Check if we're already on an auth route
+  const isAuthRoute = authRoutes.some((route) => currentPath.includes(route));
+
+  // Only redirect if we're on a protected route and not already on an auth route
+  return isProtectedRoute && !isAuthRoute;
 };
 
 /**

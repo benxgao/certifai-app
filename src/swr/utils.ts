@@ -92,6 +92,22 @@ export const fetcherWithAuth = async (
 
   // If we get a 401 and have a refresh function, try to refresh token and retry
   if (res.status === 401 && refreshTokenFn) {
+    // Don't attempt refresh if user is on auth pages to prevent race conditions
+    if (typeof window !== 'undefined') {
+      const currentPath = window.location.pathname;
+      const isAuthPage =
+        currentPath.includes('/signin') ||
+        currentPath.includes('/signup') ||
+        currentPath.includes('/forgot-password');
+
+      if (isAuthPage) {
+        console.log('Skipping token refresh - user is on auth page:', currentPath);
+        const error = new Error('Authentication required. Please sign in.');
+        (error as any).status = 401;
+        throw error;
+      }
+    }
+
     console.log('Token expired, attempting refresh...');
     const newToken = await refreshTokenFn();
 
@@ -104,10 +120,10 @@ export const fetcherWithAuth = async (
       if (cookieRefreshSuccess) {
         res = await optimizedFetch(url);
       } else {
-        // If all refresh attempts fail, clear auth state and throw error
-        console.log('All token refresh attempts failed');
+        // If all refresh attempts fail, clear auth state and force signin
+        console.log('All token refresh attempts failed - forcing signin');
         await handleAuthFailure();
-        const error = new Error('Authentication failed. Please sign in again.');
+        const error = new Error('Session expired. Please sign in again.');
         (error as any).status = 401;
         throw error;
       }
