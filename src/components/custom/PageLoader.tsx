@@ -1,7 +1,4 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import { performEmergencyRecovery } from '@/src/lib/auth-recovery';
+import React from 'react';
 
 interface PageLoaderProps {
   isLoading: boolean;
@@ -10,8 +7,6 @@ interface PageLoaderProps {
   fullScreen?: boolean;
   variant?: 'default' | 'redirect' | 'auth';
   showBrand?: boolean;
-  enableEmergencyRecovery?: boolean;
-  emergencyTimeout?: number; // in seconds
 }
 
 const PageLoader: React.FC<PageLoaderProps> = ({
@@ -21,46 +16,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
   fullScreen = true,
   variant = 'default',
   showBrand = false,
-  enableEmergencyRecovery = false,
-  emergencyTimeout = 20, // 20 seconds default
 }) => {
-  const [showEmergencyOptions, setShowEmergencyOptions] = useState(false);
-  const [timeElapsed, setTimeElapsed] = useState(0);
-  const [isRecovering, setIsRecovering] = useState(false);
-
-  // Timer for emergency recovery
-  useEffect(() => {
-    if (!isLoading || !enableEmergencyRecovery) {
-      setShowEmergencyOptions(false);
-      setTimeElapsed(0);
-      return;
-    }
-
-    const startTime = Date.now();
-
-    const timer = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      setTimeElapsed(elapsed);
-
-      if (elapsed >= emergencyTimeout) {
-        setShowEmergencyOptions(true);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isLoading, enableEmergencyRecovery, emergencyTimeout]);
-
-  const handleEmergencyRecovery = async () => {
-    setIsRecovering(true);
-    try {
-      await performEmergencyRecovery('User initiated recovery from loading timeout');
-    } catch (error) {
-      console.error('Emergency recovery failed:', error);
-      // Fall back to page reload
-      window.location.reload();
-    }
-  };
-
   if (!isLoading) {
     return null;
   }
@@ -100,7 +56,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
   return (
     <div className={containerClasses}>
-      {/* Background decorative elements - only for fullScreen */}
+      {/* Background decoration */}
       {fullScreen && (
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-4 -left-4 w-72 h-72 bg-violet-200/20 dark:bg-violet-800/10 rounded-full blur-3xl"></div>
@@ -143,59 +99,8 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
           <div className="space-y-3">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{text}</h2>
-
-            {enableEmergencyRecovery && timeElapsed > 0 && (
-              <p className="text-sm text-slate-500 dark:text-slate-400">{timeElapsed}s elapsed</p>
-            )}
           </div>
         </div>
-
-        {/* Emergency recovery options */}
-        {showEmergencyOptions && !isRecovering && (
-          <div className="w-full max-w-xs bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-200/60 dark:border-slate-700/60 p-6 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center space-y-4">
-              <div className="text-amber-500 text-2xl">⚠️</div>
-              <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
-                  Taking Too Long?
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                  This might be due to a cached session issue. Try refreshing your authentication.
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <button
-                  onClick={handleEmergencyRecovery}
-                  className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm"
-                >
-                  Refresh Authentication
-                </button>
-
-                <button
-                  onClick={() => window.location.reload()}
-                  className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium py-2 px-4 rounded-lg transition-all duration-200 text-sm"
-                >
-                  Reload Page
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {isRecovering && (
-          <div className="w-full max-w-xs bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-200/60 dark:border-slate-700/60 p-6 shadow-xl">
-            <div className="text-center space-y-4">
-              <div className="animate-spin text-2xl">🔄</div>
-              <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Recovering...</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Clearing cached data and refreshing your session.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

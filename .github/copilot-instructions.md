@@ -23,6 +23,7 @@
 - **Glass-morphism**: Apply `backdrop-blur-sm` with semi-transparent backgrounds for modern UI
 - **Dark mode**: Always include dark mode variants - `text-slate-600 dark:text-slate-300`
 - **Responsive**: Use Tailwind breakpoints starting with mobile-first design
+- Marketing pages should have consistent styles of the home page
 
 **API Integration:**
 
@@ -153,3 +154,11 @@ cd certifai-app && npm run build && firebase deploy  # Static hosting
 - Never reset the databse
 - When migrating, always update columns with default values or constraints to avoid breaking changes
 - Avoid using Firebase's default JWT verification for public endpoints; implement custom verification logic
+
+## Coding Style
+
+- Cconservative solutions with a focus on clean and simple and follows best practices
+- Use existing libraries and tools rather than reinventing the wheel
+- Value type safety and want to ensure that the code is easy to understand and maintain
+- Ensure no fancy features are used that could complicate the codebase
+- Ensure that the code is easy to test and debug

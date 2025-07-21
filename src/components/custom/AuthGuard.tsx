@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { resetAuthenticationState } from '@/lib/auth-utils';
 import { toastHelpers } from '@/src/lib/toast';
-import PageLoader from './EnhancedPageLoader';
+import PageLoader from './PageLoader';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -286,8 +286,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         variant="auth"
         fullScreen={true}
         showBrand={true}
-        enableEmergencyRecovery={true}
-        emergencyTimeout={15}
       />
     );
   }

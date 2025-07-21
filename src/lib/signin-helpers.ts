@@ -43,7 +43,7 @@ export const parseAuthURLParams = (): URLParams => {
 
   const urlParams = new URLSearchParams(window.location.search);
   return {
-    isRecovery: urlParams.get('recovery') === 'true',
+    isRecovery: false, // Remove recovery mode
     hasSessionExpired: urlParams.get('error') === 'session_expired',
     errorParam: urlParams.get('error'),
     signupParam: urlParams.get('signup'),
@@ -73,15 +73,12 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
   try {
     let errorMessage: string | null = null;
 
-    if (urlParams.isRecovery) {
-      console.log('Recovery mode detected - performing thorough cache cleanup');
-      errorMessage = 'Session recovered. Please sign in again.';
-    } else if (urlParams.hasSessionExpired) {
-      console.log('Session expiration detected - clearing auth state immediately');
+    if (urlParams.hasSessionExpired) {
+      console.log('Session expiration detected - clearing auth state');
       errorMessage = 'Your session has expired. Please sign in again.';
     }
 
-    // Clear client-side tokens immediately
+    // Clear client-side tokens
     clearClientAuthTokens();
 
     // Sign out any existing Firebase auth session
@@ -95,23 +92,10 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
     // Clear server-side cookies and cache
     await resetAuthenticationState();
 
-    // Clear server-side token cache for recovery/session expiry
-    if (urlParams.isRecovery || urlParams.hasSessionExpired) {
-      try {
-        await fetch('/api/auth/clear-cache', {
-          method: 'POST',
-          credentials: 'include',
-        });
-        console.log('Server-side token cache cleared for recovery/session expiry');
-      } catch (error) {
-        console.warn('Failed to clear server cache during recovery/session expiry:', error);
-      }
-    }
-
-    console.log('Legacy auth state cleared on signin page load');
+    console.log('Auth state cleared on signin page load');
     return errorMessage;
   } catch (error) {
-    console.error('Failed to clear legacy auth state on signin page load:', error);
+    console.error('Failed to clear auth state on signin page load:', error);
     return null;
   }
 };
@@ -307,13 +291,13 @@ export const resendVerificationEmail = async (): Promise<string> => {
 };
 
 /**
- * Perform the main signin operation
+ * Simplified signin operation
  */
 export const performSignin = async (
   form: SigninFormData,
 ): Promise<{ success: boolean; error?: AuthError }> => {
   try {
-    // Clear any existing auth state/cookies before signing in
+    // Clear any existing auth state before signing in
     await resetAuthenticationState();
 
     // Start the authentication process
@@ -325,7 +309,7 @@ export const performSignin = async (
       return { success: false, error };
     }
 
-    // Force refresh to get a brand new Firebase token
+    // Get Firebase token
     const firebaseToken = await signedIn.user.getIdToken(true);
 
     // Set the authentication cookie
@@ -333,9 +317,6 @@ export const performSignin = async (
     if (cookieError) {
       return { success: false, error: cookieError };
     }
-
-    // Small delay to ensure cookie is properly set
-    await new Promise((resolve) => setTimeout(resolve, 150));
 
     return { success: true };
   } catch (error: any) {
@@ -354,8 +335,7 @@ export const isAuthenticationError = (error: string): boolean => {
     !error.includes('created successfully') &&
     !error.includes('sent!') &&
     !error.includes('verified successfully') &&
-    !error.includes('reset successful') &&
-    !error.includes('Session recovered')
+    !error.includes('reset successful')
   );
 };
 
@@ -365,21 +345,18 @@ export const isAuthenticationError = (error: string): boolean => {
 export const clearURLErrorParams = (): void => {
   if (typeof window !== 'undefined') {
     const url = new URL(window.location.href);
-    if (url.searchParams.has('error') || url.searchParams.has('recovery')) {
+    if (url.searchParams.has('error')) {
       url.searchParams.delete('error');
-      url.searchParams.delete('recovery');
       window.history.replaceState({}, '', url.pathname);
     }
   }
 };
 
 /**
- * Check if user should be redirected to main page
+ * Simplified check if user should be redirected to main page
  */
 export const shouldRedirectToMain = (
   loading: boolean,
-  authProcessing: boolean,
-  isLoading: boolean,
   firebaseUser: any,
   apiUserId: string | null,
   isRedirecting: boolean,
@@ -387,33 +364,24 @@ export const shouldRedirectToMain = (
 ): boolean => {
   const isAuthError = isAuthenticationError(error);
 
-  // Check if we should allow redirect without apiUserId in certain scenarios
-  const allowRedirectWithoutApiUserId =
-    error.includes('Authentication timed out') ||
-    error.includes('Session expired') ||
-    error.includes('session_expired') ||
-    (firebaseUser?.emailVerified && !error); // Allow if user is verified and no errors
-
   return (
     !loading &&
-    !authProcessing &&
-    !isLoading &&
     firebaseUser &&
     firebaseUser.emailVerified &&
-    (apiUserId || allowRedirectWithoutApiUserId) &&
+    apiUserId &&
     !isRedirecting &&
     !isAuthError
   );
 };
 
 /**
- * Initialize signin page - handles both auth state clearing and URL params
+ * Initialize signin page - handles auth state clearing and URL params
  */
 export const initializeSigninPage = async (): Promise<string | null> => {
   const urlParams = parseAuthURLParams();
 
-  // Handle legacy auth state clearing
-  const legacyErrorMessage = await clearLegacyAuthState(urlParams);
+  // Handle auth state clearing
+  const authErrorMessage = await clearLegacyAuthState(urlParams);
 
   // Handle URL params error messages
   const urlErrorMessage = processURLParamsError(urlParams);
@@ -422,5 +390,5 @@ export const initializeSigninPage = async (): Promise<string | null> => {
   cleanupURLParams(urlParams);
 
   // Return the first available error message
-  return legacyErrorMessage || urlErrorMessage;
+  return authErrorMessage || urlErrorMessage;
 };

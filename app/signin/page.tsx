@@ -25,12 +25,7 @@ import {
   isAuthenticationError,
   type SigninFormData,
 } from '@/src/lib/signin-helpers';
-import {
-  useAuthTimeout,
-  useAuthRedirect,
-  useFormValidation,
-  useSigninInitialization,
-} from '@/src/hooks/useSigninHooks';
+import { useAuthRedirect, useSigninInitialization } from '@/src/hooks/useSigninHooks';
 
 const LoginPage = () => {
   const [form, setForm] = useState<SigninFormData>({
@@ -40,43 +35,15 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [authProcessing, setAuthProcessing] = useState(false);
-  const [lastLoginAttempt, setLastLoginAttempt] = useState(0); // Add request deduplication
   const [showVerificationPrompt, setShowVerificationPrompt] = useState(false);
   const [verificationLoading, setVerificationLoading] = useState(false);
   const { firebaseUser, loading, apiUserId } = useFirebaseAuth();
 
-  // Initialize signin page - handle auth state clearing and URL params
+  // Initialize signin page - handle URL params and display messages
   useSigninInitialization(setError);
 
-  // Form validation and loading state management
-  useFormValidation(error, authProcessing, isLoading, setIsRedirecting);
-
-  // Authentication redirect monitoring
-  useAuthRedirect(
-    loading,
-    authProcessing,
-    isLoading,
-    firebaseUser,
-    apiUserId,
-    isRedirecting,
-    error,
-    setError,
-    setShowVerificationPrompt,
-    setIsRedirecting,
-  );
-
-  // Authentication timeout safety mechanism
-  useAuthTimeout(
-    loading,
-    authProcessing,
-    isLoading,
-    error,
-    setError,
-    setIsLoading,
-    setAuthProcessing,
-    setIsRedirecting,
-  );
+  // Simple redirect logic - redirect when user is fully authenticated
+  useAuthRedirect(loading, firebaseUser, apiUserId, isRedirecting, error, setIsRedirecting);
 
   // Function to resend verification email
   const handleResendVerificationEmail = async () => {
@@ -108,61 +75,38 @@ const LoginPage = () => {
   const handleSignin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Prevent form submission if already redirecting
-    if (isRedirecting) {
-      console.log('Signin blocked - already redirecting');
+    // Prevent form submission if already processing or redirecting
+    if (isLoading || isRedirecting) {
       return;
     }
-
-    // Prevent multiple simultaneous login attempts
-    const currentTime = Date.now();
-    if (currentTime - lastLoginAttempt < 1000) {
-      console.log('Login attempt blocked - too soon after previous attempt');
-      return;
-    }
-    setLastLoginAttempt(currentTime);
 
     try {
       setError('');
       setIsLoading(true);
-      setAuthProcessing(true);
 
       const result = await performSignin(form);
 
       if (result.success) {
-        // Clear any previous error messages on successful authentication
+        // Clear any previous error messages and verification prompts
         setError('');
         setShowVerificationPrompt(false);
-        // Don't redirect here - let the useEffect with auth state monitoring handle it
+        // Don't redirect here - let the useAuthRedirect hook handle it
       } else if (result.error) {
         setError(result.error.message);
         if (result.error.showVerificationPrompt) {
           setShowVerificationPrompt(true);
         }
-
-        // Small delay to ensure auth state has settled before clearing loading states
-        setTimeout(() => {
-          setIsLoading(false);
-          setAuthProcessing(false);
-        }, 100);
+        setIsLoading(false);
         return;
       }
     } catch (error: any) {
       console.error('Unexpected signin error:', error);
       setError('An unexpected error occurred. Please try again.');
-    } finally {
       setIsLoading(false);
-      setAuthProcessing(false);
     }
   };
 
-  // Function to handle refresh when user is stuck
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
   // Don't show signin form if user is already authenticated and will be redirected
-  // Only show loading if there's no authentication error
   const isAuthError = isAuthenticationError(error);
 
   if (!loading && firebaseUser && apiUserId && !isAuthError) {
@@ -306,21 +250,6 @@ const LoginPage = () => {
                       </svg>
                       <div className="flex-1">
                         {error}
-                        {(error.includes('taking longer than expected') ||
-                          error.includes('session_expired') ||
-                          error.includes('Session expired') ||
-                          error.includes('Authentication timed out')) && (
-                          <div className="mt-4">
-                            <Button
-                              onClick={handleRefresh}
-                              variant="outline"
-                              size="sm"
-                              className="text-xs"
-                            >
-                              Refresh Page
-                            </Button>
-                          </div>
-                        )}
                         {showVerificationPrompt && (
                           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50 rounded-lg">
                             <p className="text-sm text-blue-700 dark:text-blue-200 mb-3">
