@@ -14,16 +14,6 @@ export function useUserTotalExamCount() {
     firebaseUser?.uid || null,
   );
 
-  // Debug logging
-  console.log('🔍 Debug - useUserTotalExamCount:', {
-    firebaseUserId: firebaseUser?.uid,
-    totalExamCount,
-    allExamsLength: allExams?.length,
-    isLoadingAllExams,
-    isAllExamsError: isAllExamsError?.message,
-    userCertifications: userCertifications?.length,
-  });
-
   // Get list of certification IDs the user is registered for
   const certificationIds = useMemo(() => {
     return userCertifications?.map((cert) => cert.cert_id) || [];

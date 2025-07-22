@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/next-script-for-ga */
 import type { Metadata } from 'next';
 // import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
@@ -167,6 +168,19 @@ export default function RootLayout({
         {/* Preconnect for Performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* Google Analytics (gtag) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EM97RQX2ZJ" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-EM97RQX2ZJ');
+            `,
+          }}
+        />
 
         {/* Schema.org structured data for Organization */}
         <script

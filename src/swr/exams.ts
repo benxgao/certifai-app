@@ -68,18 +68,6 @@ export function useAllUserExams(apiUserId: string | null) {
       ? data.meta.totalItems
       : data?.data?.length || 0;
 
-  // Debug logging to understand what's being returned
-  if (data && apiUserId) {
-    console.log('🔍 Debug - useAllUserExams API Response:', {
-      dataLength: data?.data?.length,
-      metaTotalItems: data?.meta?.totalItems,
-      calculatedTotalExamCount: totalExamCount,
-      fullMeta: data?.meta,
-      hasData: !!data?.data,
-      apiUserId: apiUserId,
-    });
-  }
-
   // Function to fetch all exams across all pages
   const fetchAllExams = async (): Promise<ExamListItem[]> => {
     if (!apiUserId) return [];
