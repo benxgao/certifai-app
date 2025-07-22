@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -20,6 +19,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Brain, AlertCircle, CheckCircle, Sparkles, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { getSubscriberIdFromClaims } from '@/src/lib/auth-claims';
+import { saveSubscriberIdToClaims } from '@/src/lib/marketing-claims';
 
 interface AdaptiveLearningInterestModalProps {
   trigger?: React.ReactNode;
@@ -44,9 +45,6 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
   trigger,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
   const [selectedCertifications, setSelectedCertifications] = useState<string[]>([]);
   const [customInterests, setCustomInterests] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,8 +60,8 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
   };
 
   const handleSubmit = async () => {
-    if (!email.trim()) {
-      setError('Email is required');
+    if (!firebaseUser) {
+      setError('Please sign in to continue');
       return;
     }
 
@@ -76,47 +74,91 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
     setError(null);
 
     try {
-      const selectedCertificationLabels = selectedCertifications.map(
-        (value) => CERTIFICATION_CATEGORIES.find((cat) => cat.value === value)?.label || value,
-      );
+      // Get Firebase ID token for authentication
+      const idToken = await firebaseUser.getIdToken();
 
-      const interestsText = [
-        `Certification areas: ${selectedCertificationLabels.join(', ')}`,
-        customInterests ? `Additional interests: ${customInterests}` : '',
-      ]
-        .filter(Boolean)
-        .join('\n');
+      // Step 1: Check if subscriber_id exists in Firebase claims
+      let subscriberId = await getSubscriberIdFromClaims();
+      console.log('Current subscriber_id from claims:', subscriberId);
 
-      const response = await fetch('/api/marketing/subscribe', {
+      // Step 2: If no subscriber_id, create a subscriber first
+      if (!subscriberId) {
+        console.log('No subscriber_id found, creating subscriber...');
+
+        // Get user's display name for first/last name
+        const displayName = firebaseUser.displayName || '';
+        const [firstName, ...lastNameParts] = displayName.split(' ');
+        const lastName = lastNameParts.join(' ');
+
+        // Call marketing subscribe API to create subscriber
+        const subscribeResponse = await fetch('/api/marketing/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: firebaseUser.email,
+            firstName: firstName || undefined,
+            lastName: lastName || undefined,
+            userAgent: navigator.userAgent,
+          }),
+          signal: AbortSignal.timeout(15000),
+        });
+
+        if (!subscribeResponse.ok) {
+          throw new Error(
+            `Failed to create subscriber: ${subscribeResponse.status} ${subscribeResponse.statusText}`,
+          );
+        }
+
+        const subscribeResult = await subscribeResponse.json();
+
+        if (subscribeResult.success && subscribeResult.subscriberId) {
+          subscriberId = subscribeResult.subscriberId;
+          console.log('Successfully created subscriber:', subscriberId);
+
+          // Save the new subscriber_id to Firebase claims
+          if (subscriberId) {
+            await saveSubscriberIdToClaims(subscriberId, firebaseUser);
+          }
+        } else {
+          throw new Error(
+            subscribeResult.error || 'Failed to create subscriber - no subscriber ID returned',
+          );
+        }
+      }
+
+      // Ensure we have a subscriberId before proceeding
+      if (!subscriberId) {
+        throw new Error('Failed to obtain subscriber ID');
+      }
+
+      // Step 3: Now proceed with join-group request
+      const response = await fetch('/api/join-group', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${idToken}`,
         },
         body: JSON.stringify({
-          email: email.trim(),
-          firstName: firstName.trim() || undefined,
-          lastName: lastName.trim() || undefined,
-          userAgent: navigator.userAgent,
-          fields: {
-            source: 'adaptive-learning-interest',
-            certification_interests: selectedCertificationLabels.join(', '),
-            additional_interests: customInterests.trim(),
-            interests: interestsText,
-            signup_date: new Date().toISOString().split('T')[0],
-            user_id: firebaseUser?.uid || 'anonymous',
-          },
-          groups: ['stay-tuned', 'adaptive-learning-beta'],
-          status: 'active',
+          subscriberId: subscriberId,
+          groupName: 'stay-tuned',
+          selectedCertifications,
+          customInterests: customInterests.trim() || undefined,
         }),
         signal: AbortSignal.timeout(15000), // 15 second timeout
       });
+
+      if (!response.ok) {
+        throw new Error(`Failed to join group: ${response.status} ${response.statusText}`);
+      }
 
       const result = await response.json();
 
       if (result.success) {
         setSuccess(true);
         toast.success(
-          'Thank you for your interest! We&apos;ll keep you updated on our adaptive learning features.',
+          'Thank you for your interest! You have been added to our adaptive learning group.',
         );
 
         // Close dialog after short delay
@@ -125,21 +167,18 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
           resetForm();
         }, 2000);
       } else {
-        throw new Error(result.error || 'Failed to submit interest');
+        throw new Error(result.error || 'Failed to join group');
       }
     } catch (err: any) {
-      console.error('Failed to submit adaptive learning interest:', err);
-      setError(err.message || 'Failed to submit your interest. Please try again.');
-      toast.error('Failed to submit your interest. Please try again.');
+      console.error('Failed to join adaptive learning group:', err);
+      setError(err.message || 'Failed to join group. Please try again.');
+      toast.error('Failed to join group. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const resetForm = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
     setSelectedCertifications([]);
     setCustomInterests('');
     setError(null);
@@ -154,13 +193,6 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
       }
     }
   };
-
-  // Pre-fill email if user is authenticated
-  useEffect(() => {
-    if (firebaseUser?.email && !email) {
-      setEmail(firebaseUser.email);
-    }
-  }, [firebaseUser, email]);
 
   const defaultTrigger = (
     <Button
@@ -207,44 +239,6 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
           </Card>
         ) : (
           <div className="grid gap-4 py-4">
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  placeholder="John"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  disabled={isSubmitting}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  placeholder="Doe"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  disabled={isSubmitting}
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email *</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isSubmitting}
-                className={error && !email.trim() ? 'border-destructive' : ''}
-              />
-            </div>
-
             {/* Certification Interests */}
             <div className="grid gap-3">
               <Label className="flex items-center gap-2">
@@ -318,7 +312,7 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
             <Button
               type="button"
               onClick={handleSubmit}
-              disabled={isSubmitting || !email.trim() || selectedCertifications.length === 0}
+              disabled={isSubmitting || selectedCertifications.length === 0}
               className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
             >
               {isSubmitting ? (

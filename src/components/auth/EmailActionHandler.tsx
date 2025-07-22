@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import LandingHeader from '@/src/components/custom/LandingHeader';
+import { saveSubscriberIdToClaims } from '@/src/lib/marketing-claims';
 
 export default function EmailActionHandler() {
   const router = useRouter();
@@ -223,6 +224,11 @@ export default function EmailActionHandler() {
                         'User successfully subscribed to marketing list after email verification:',
                         marketingResult.subscriberId,
                       );
+
+                      // Save subscriberId to Firebase Auth claims
+                      if (marketingResult.subscriberId && currentUser) {
+                        await saveSubscriberIdToClaims(marketingResult.subscriberId, currentUser);
+                      }
                     } else {
                       console.warn(
                         'Marketing subscription failed (non-blocking):',

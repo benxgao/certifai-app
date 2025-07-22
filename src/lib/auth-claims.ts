@@ -53,6 +53,28 @@ export async function getInitCertIdFromClaims(): Promise<number | null> {
 }
 
 /**
+ * Client-side utility to get subscriber_id from Firebase Auth custom claims
+ * This requires the user to refresh their token to get updated custom claims
+ */
+export async function getSubscriberIdFromClaims(): Promise<string | null> {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      return null;
+    }
+
+    // Force refresh to get latest custom claims
+    const idTokenResult = await user.getIdTokenResult(true);
+    const customClaims = idTokenResult.claims;
+
+    return (customClaims.subscriber_id as string) || null;
+  } catch (error) {
+    console.error('Error getting subscriber_id from custom claims:', error);
+    return null;
+  }
+}
+
+/**
  * Server-side utility to get api_user_id from Firebase Auth custom claims
  * Use this in API routes and server components
  */
@@ -80,6 +102,22 @@ export async function getInitCertIdFromToken(firebaseToken: string): Promise<num
     return (decodedToken.init_cert_id as number) || null;
   } catch (error) {
     console.error('Error verifying token and getting init_cert_id:', error);
+    return null;
+  }
+}
+
+/**
+ * Server-side utility to get subscriber_id from Firebase Auth custom claims
+ * Use this in API routes and server components
+ */
+export async function getSubscriberIdFromToken(firebaseToken: string): Promise<string | null> {
+  try {
+    const { auth } = getAdminSDK();
+    const decodedToken = await auth.verifyIdToken(firebaseToken);
+
+    return (decodedToken.subscriber_id as string) || null;
+  } catch (error) {
+    console.error('Error verifying token and getting subscriber_id:', error);
     return null;
   }
 }

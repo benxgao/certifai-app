@@ -19,6 +19,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Brain, AlertCircle, CheckCircle, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { saveSubscriberIdToClaims } from '@/src/lib/marketing-claims';
 
 interface AdaptiveLearningInterestModalProps {
   trigger?: React.ReactNode;
@@ -77,6 +78,11 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
         toast.success(
           'Thank you for your interest! We&apos;ll keep you updated on our adaptive learning features.',
         );
+
+        // Save subscriberId to Firebase Auth claims if user is authenticated
+        if (result.subscriberId && firebaseUser) {
+          await saveSubscriberIdToClaims(result.subscriberId, firebaseUser);
+        }
 
         // Close dialog after short delay
         setTimeout(() => {
