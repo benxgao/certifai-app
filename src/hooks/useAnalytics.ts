@@ -53,7 +53,7 @@ export const useAnalytics = () => {
   // Convenience methods for common events
   const trackPageView = useCallback((page_title: string, page_location: string) => {
     if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '', {
+      window.gtag('config', process.env.NEXT_PUBLIC_GA_TRACKING_ID || '', {
         page_title,
         page_location,
       });

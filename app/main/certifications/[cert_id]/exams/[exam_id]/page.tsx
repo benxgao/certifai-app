@@ -177,6 +177,8 @@ export default function ExamAttemptPage() {
       setIsNavigatingPage(true);
       // Immediate UI update for optimistic loading
       setCurrentPage(pagination.currentPage - 1);
+      // Scroll to top of the page smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       // Reset loading state after a brief moment
       setTimeout(() => setIsNavigatingPage(false), 300);
     }
@@ -187,6 +189,8 @@ export default function ExamAttemptPage() {
       setIsNavigatingPage(true);
       // Immediate UI update for optimistic loading
       setCurrentPage(pagination.currentPage + 1);
+      // Scroll to top of the page smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       // Reset loading state after a brief moment
       setTimeout(() => setIsNavigatingPage(false), 300);
     } else {
@@ -939,6 +943,8 @@ export default function ExamAttemptPage() {
                                 if (pagination) {
                                   setIsNavigatingPage(true);
                                   setCurrentPage(pagination.currentPage + 1);
+                                  // Scroll to top of the page smoothly
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
                                   setTimeout(() => setIsNavigatingPage(false), 300);
                                 }
                               }}

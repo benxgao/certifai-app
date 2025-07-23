@@ -10,7 +10,7 @@ export const toastHelpers = {
     examSubmitted: () =>
       toast.success('🎉 Exam submitted successfully!', {
         description: 'Your answers have been recorded and your score will be calculated.',
-        duration: 5000,
+        duration: 10000,
       }),
 
     answerSaved: () =>
@@ -19,42 +19,34 @@ export const toastHelpers = {
         duration: 2000,
       }),
 
-    examCreated: (examId: string) =>
+    examCreated: (examId?: string) =>
       toast.success('✅ Exam created successfully!', {
-        description: `Your practice exam is ready. Click to start the exam.`,
-        duration: 6000,
-        action: {
-          label: 'Start Exam',
-          onClick: () => {
-            const currentPath = window.location.pathname;
-            const certId = currentPath.split('/')[3]; // Extract cert_id from path
-            window.location.href = `/main/certifications/${certId}/exams/${examId}`;
-          },
-        },
+        description: `Your practice exam is ready. Exam id: ${examId}`,
+        duration: 10000,
       }),
 
     profileUpdated: () =>
       toast.success('✅ Profile updated successfully!', {
         description: 'Your changes have been saved.',
-        duration: 3000,
+        duration: 10000,
       }),
 
     emailVerificationSent: () =>
       toast.success('📧 Email verification sent!', {
         description: 'Please check your inbox and follow the instructions.',
-        duration: 5000,
+        duration: 10000,
       }),
 
     examDeleted: () =>
       toast.success('🗑️ Exam deleted successfully', {
         description: 'The exam has been removed from your account.',
-        duration: 3000,
+        duration: 10000,
       }),
 
     certificationRegistered: (certificationName: string) =>
       toast.success('🎓 Registration successful!', {
         description: `Successfully registered for "${certificationName}".`,
-        duration: 4000,
+        duration: 10000,
       }),
   },
 
@@ -63,37 +55,37 @@ export const toastHelpers = {
     examSubmissionFailed: (error?: string) =>
       toast.error('Failed to submit exam', {
         description: error || 'An unexpected error occurred. Please try again.',
-        duration: 6000,
+        duration: 10000,
       }),
 
     answerSaveFailed: (error?: string) =>
       toast.error('Failed to save answer', {
         description: error || 'Please try selecting your answer again.',
-        duration: 4000,
+        duration: 10000,
       }),
 
     examCreationFailed: (error?: string) =>
       toast.error('Failed to create exam', {
         description: error || 'Unable to create exam. Please try again.',
-        duration: 5000,
+        duration: 10000,
       }),
 
     missingInformation: () =>
       toast.error('Cannot submit exam', {
         description: 'Missing necessary information. Please try refreshing the page.',
-        duration: 5000,
+        duration: 10000,
       }),
 
     authenticationFailed: () =>
       toast.error('Authentication failed', {
         description: 'Please sign in again to continue.',
-        duration: 5000,
+        duration: 10000,
       }),
 
     networkError: () =>
       toast.error('Network error', {
         description: 'Please check your internet connection and try again.',
-        duration: 5000,
+        duration: 10000,
       }),
 
     rateLimitExceeded: (resetTime?: string) =>
@@ -101,7 +93,7 @@ export const toastHelpers = {
         description: resetTime
           ? `You've reached the exam creation limit. Try again after ${resetTime}.`
           : "You've reached the exam creation limit. Please try again later.",
-        duration: 8000,
+        duration: 10000,
       }),
 
     examRateLimitExceeded: (maxExamsAllowed: number, resetTime?: string) =>
@@ -122,19 +114,19 @@ export const toastHelpers = {
     generic: (error?: string) =>
       toast.error('Something went wrong', {
         description: error || 'An unexpected error occurred. Please try again.',
-        duration: 4000,
+        duration: 10000,
       }),
 
     examDeletionFailed: (error?: string) =>
       toast.error('Failed to delete exam', {
         description: error || 'Unable to delete the exam. Please try again.',
-        duration: 4000,
+        duration: 10000,
       }),
 
     certificationRegistrationFailed: (error?: string) =>
       toast.error('Registration failed', {
         description: error || 'Failed to register for certification. Please try again.',
-        duration: 5000,
+        duration: 10000,
       }),
   },
 
@@ -143,13 +135,13 @@ export const toastHelpers = {
     examAutoSave: () =>
       toast.info('Auto-saving progress...', {
         description: 'Your answers are being saved automatically.',
-        duration: 2000,
+        duration: 10000,
       }),
 
     passwordRequired: () =>
       toast.info('Password required', {
         description: 'Please enter your current password to continue.',
-        duration: 4000,
+        duration: 10000,
       }),
 
     loadingData: () =>

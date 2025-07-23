@@ -22,7 +22,7 @@ We've implemented a complete SEO and analytics solution including:
 Add your Google Analytics Measurement ID to `.env.local`:
 
 ```bash
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GA_TRACKING_ID=G-XXXXXXXXXX
 ```
 
 ### 2. Analytics Components

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/next-script-for-ga */
 import type { Metadata } from 'next';
 // import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
@@ -170,17 +169,24 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
         {/* Google Analytics (gtag) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EM97RQX2ZJ" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-EM97RQX2ZJ');
-            `,
-          }}
-        />
+        {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}');
+                `,
+              }}
+            />
+          </>
+        )}
 
         {/* Schema.org structured data for Organization */}
         <script
@@ -293,8 +299,8 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {/* Google Analytics */}
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
+          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_TRACKING_ID} />
         )}
 
         <ConditionalFirebaseAuthProvider>

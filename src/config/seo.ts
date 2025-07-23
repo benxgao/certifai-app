@@ -25,7 +25,7 @@ export const SEO_CONFIG = {
   },
 
   // Analytics
-  GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+  GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
 
   // Verification codes
   VERIFICATION: {
