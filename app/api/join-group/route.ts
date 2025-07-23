@@ -23,7 +23,7 @@ interface JoinGroupRequest {
 
 interface JoinGroupRequestToCertifaiAws {
   groupName: string;
-  subscriberId?: string;
+  subscriber_id: string;
   metadata?: {
     certificationInterests?: string;
     additionalInterests?: string;
@@ -43,6 +43,14 @@ export async function POST(request: NextRequest) {
     const body: JoinGroupRequest = await request.json();
     const { groupName, selectedCertifications, customInterests, subscriberId } = body;
 
+    console.log('join-group: Received request from frontend:', {
+      groupName,
+      hasSubscriberId: !!subscriberId,
+      subscriberId: subscriberId ? subscriberId.substring(0, 10) + '***' : 'undefined',
+      selectedCertifications: selectedCertifications?.length || 0,
+      hasCustomInterests: !!customInterests,
+    });
+
     // Validate required fields
     if (!groupName) {
       return NextResponse.json(
@@ -54,6 +62,13 @@ export async function POST(request: NextRequest) {
     if (!selectedCertifications || selectedCertifications.length === 0) {
       return NextResponse.json(
         { success: false, error: 'At least one certification area must be selected' },
+        { status: 400 },
+      );
+    }
+
+    if (!subscriberId) {
+      return NextResponse.json(
+        { success: false, error: 'Subscriber ID is required' },
         { status: 400 },
       );
     }
@@ -120,12 +135,8 @@ export async function POST(request: NextRequest) {
     // Call certifai-aws join-group endpoint
     const requestPayload: JoinGroupRequestToCertifaiAws = {
       groupName: groupName,
+      subscriber_id: subscriberId, // Always required now
     };
-
-    // Add subscriberId if provided
-    if (subscriberId) {
-      requestPayload.subscriberId = subscriberId;
-    }
 
     // Add metadata if certifications or interests are provided
     if (selectedCertifications.length > 0 || customInterests) {
@@ -144,6 +155,11 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify(requestPayload),
     });
+
+    console.log(
+      'join-group: Sent payload to certifai-aws:',
+      JSON.stringify(requestPayload, null, 2),
+    );
 
     if (!response.ok) {
       const errorText = await response.text();

@@ -19,7 +19,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Brain, AlertCircle, CheckCircle, Sparkles, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { getSubscriberIdFromClaims } from '@/src/lib/auth-claims';
+import { getSubscriberIdFromClaims } from '@/src/lib/auth-claims-client';
 import { saveSubscriberIdToClaims } from '@/src/lib/marketing-claims';
 
 interface AdaptiveLearningInterestModalProps {
