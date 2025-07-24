@@ -11,7 +11,7 @@ export const SEO_CONFIG = {
   FACEBOOK_APP_ID: '', // Add when available
 
   // Default Open Graph image
-  DEFAULT_OG_IMAGE: '/images/og-default.png',
+  DEFAULT_OG_IMAGE: '/favicon.ico',
 
   // Contact information
   CONTACT_EMAIL: 'hello@certestic.com',

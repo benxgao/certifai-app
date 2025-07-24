@@ -18,34 +18,6 @@
       "sizes": "48x48 32x32 16x16",
       "type": "image/x-icon",
       "purpose": "any"
-    },
-    {
-      "src": "/images/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/images/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/images/screenshot-desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Certestic Dashboard on Desktop"
-    },
-    {
-      "src": "/images/screenshot-mobile.png",
-      "sizes": "375x667",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Certestic Mobile Experience"
     }
   ],
   "shortcuts": [
@@ -53,27 +25,13 @@
       "name": "Start Practice Exam",
       "short_name": "Practice",
       "description": "Begin an AI-generated practice exam",
-      "url": "/main/certifications",
-      "icons": [
-        {
-          "src": "/images/practice-icon.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
+      "url": "/main/certifications"
     },
     {
       "name": "View Progress",
       "short_name": "Progress",
       "description": "Check your learning progress",
-      "url": "/main/profile",
-      "icons": [
-        {
-          "src": "/images/progress-icon.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
+      "url": "/main/profile"
     }
   ]
 }
