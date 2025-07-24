@@ -2,10 +2,27 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { COOKIE_AUTH_NAME } from '../../../../src/config/constants';
 import { verifyToken } from '../../../../src/firebase/verifyTokenByAdmin';
+import { checkRateLimit, createRateLimitHeaders } from '@/src/lib/rate-limiting';
 
 const secretKey = process.env.JOSE_JWT_SECRET;
 
 export async function POST() {
+  // Apply rate limiting
+  const rateLimitResult = checkRateLimit(new Request('http://localhost'), 'TOKEN_REFRESH');
+  if (!rateLimitResult.allowed) {
+    const headers = createRateLimitHeaders(rateLimitResult);
+    return Response.json(
+      {
+        error: 'Rate limit exceeded',
+        message: 'Too many token refresh attempts. Please try again later.',
+        retryAfter: rateLimitResult.retryAfter,
+      },
+      {
+        status: 429,
+        headers,
+      },
+    );
+  }
   if (!secretKey) {
     console.error('auth-cookie/refresh: JWT secret not configured');
     return Response.json(

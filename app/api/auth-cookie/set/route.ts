@@ -44,13 +44,17 @@ export async function POST(request: Request) {
 
     console.log('auth-cookie/set:1 | Generated new joseToken');
 
-    // Set the new cookie with fresh token
+    // Set secure cookie with enhanced security options
     cookieStore.set(COOKIE_AUTH_NAME, joseToken, {
-      httpOnly: true, // Crucial for security
-      secure: process.env.NODE_ENV === 'production', // Fixed: should be production, not development
-      sameSite: 'strict', // Prevent CSRF attacks
-      path: '/', // Cookie path
-      maxAge: 60 * 60, // 1 hour in seconds
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60, // 1 hour
+      // Add domain restriction in production
+      ...(process.env.NODE_ENV === 'production' && {
+        domain: '.certestic.com',
+      }),
     });
 
     console.log('auth-cookie/set: Successfully set new auth cookie');

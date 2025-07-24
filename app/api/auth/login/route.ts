@@ -1,7 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminSDK } from '@/src/firebase/firebaseAdminConfig';
+import { checkRateLimit, createRateLimitHeaders } from '@/src/lib/rate-limiting';
 
 export async function POST(request: NextRequest) {
+  // Apply rate limiting
+  const rateLimitResult = checkRateLimit(request, 'LOGIN');
+  if (!rateLimitResult.allowed) {
+    const headers = createRateLimitHeaders(rateLimitResult);
+    return NextResponse.json(
+      {
+        error: 'Rate limit exceeded',
+        message: 'Too many login attempts. Please try again later.',
+        retryAfter: rateLimitResult.retryAfter,
+      },
+      {
+        status: 429,
+        headers,
+      },
+    );
+  }
   try {
     // Get the Firebase token from Authorization header
     const authHeader = request.headers.get('authorization');
