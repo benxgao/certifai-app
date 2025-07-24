@@ -28,7 +28,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { certification: cert, error: fetchError } = await fetchCertificationData(certId);
 
     if (fetchError) {
-      console.error('Error fetching certification for metadata:', fetchError);
     }
 
     if (cert) {
@@ -50,7 +49,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
   } catch (error) {
-    console.error('Error fetching certification for metadata:', error);
   }
 
   return {
@@ -84,14 +82,12 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
     error = result.error;
 
     if (error) {
-      console.error('Error fetching certification:', error);
     }
 
     if (!certification && !error) {
       notFound();
     }
   } catch (err) {
-    console.error('Error fetching certification:', err);
     error = 'Failed to load certification';
   }
 

@@ -33,7 +33,6 @@ const AppHeader: React.FC = () => {
 
       router.push('/signin');
     } catch (error) {
-      console.error('Logout failed:', error);
     }
   };
 

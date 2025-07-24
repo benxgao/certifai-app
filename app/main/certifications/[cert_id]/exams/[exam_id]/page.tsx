@@ -122,7 +122,6 @@ export default function ExamAttemptPage() {
           questionId,
           optionId,
         });
-        console.log('Answer saved successfully for question:', questionId);
 
         // Show subtle success toast notification for answer submission
         toastHelpers.success.answerSaved();
@@ -132,10 +131,6 @@ export default function ExamAttemptPage() {
         // mutateQuestions(undefined, true);
       } catch (error) {
         // Error is already handled by useSubmitAnswer hook, but you can log or act on submitError
-        console.error(
-          'Failed to save answer (from handleOptionChange catch):',
-          (error as Error).message,
-        );
 
         // Show error toast notification for answer submission failure
         toastHelpers.error.answerSaveFailed((error as Error).message);
@@ -149,8 +144,6 @@ export default function ExamAttemptPage() {
   // Effect to observe submission errors from the hook
   useEffect(() => {
     if (submitError) {
-      console.error('Failed to save answer (from submitError effect):', submitError.message);
-
       // Show error toast notification for persistent submission errors
       toastHelpers.error.answerSaveFailed(submitError.message);
 
@@ -162,10 +155,6 @@ export default function ExamAttemptPage() {
   // Effect to observe exam submission errors from the hook
   useEffect(() => {
     if (submitExamError) {
-      console.error(
-        'Failed to submit exam (from submitExamError effect):',
-        submitExamError.message,
-      );
       // The alert is now handled by the ErrorMessage component, but you can keep this for logging
       // alert(`Failed to submit exam: ${submitExamError.message}`);
       setSubmissionResult({ error: submitExamError.message });
@@ -201,8 +190,6 @@ export default function ExamAttemptPage() {
   const handleConfirmSubmit = async () => {
     setShowConfirmModal(false);
     if (!apiUserId || certId === null || !examId) {
-      console.error('Missing user, certification, or exam ID for submission.');
-
       // Show error toast notification
       toastHelpers.error.missingInformation();
 
@@ -210,12 +197,10 @@ export default function ExamAttemptPage() {
       return;
     }
     setIsSubmittingExamFlag(true);
-    console.log('Submitting exam...');
     try {
       // The body for the submit request might be empty or could contain specific data
       // based on backend requirements. For now, sending an empty object.
       const result = await submitExam({ apiUserId, certId, examId, body: {} });
-      console.log('Exam submitted successfully:', result);
       setSubmissionResult(result);
 
       // Show success toast notification
@@ -226,8 +211,6 @@ export default function ExamAttemptPage() {
       // Optionally, redirect the user or show a summary page
       // router.push(`/main/certifications/${certId}/exams/${examId}/results`);
     } catch (error: any) {
-      console.error('Failed to submit exam:', error.message);
-
       // Show error toast notification
       toastHelpers.error.examSubmissionFailed(error.message);
 
@@ -268,15 +251,6 @@ export default function ExamAttemptPage() {
 
     return false;
   };
-
-  useEffect(() => {
-    if (questions) {
-      console.log(`Questions for exam ${examId}:`, JSON.stringify(questions, null, 2));
-    }
-    if (isQuestionsError) {
-      console.error('Error loading questions:', isQuestionsError);
-    }
-  }, [questions, examId, isQuestionsError]);
 
   if (isLoadingQuestions || isLoadingExamState) {
     return (

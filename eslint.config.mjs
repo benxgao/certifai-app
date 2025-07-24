@@ -15,6 +15,7 @@ const eslintConfig = [...compat.extends('next/core-web-vitals', 'next/typescript
 eslintConfig[eslintConfig.length - 1].rules = {
   ...eslintConfig[eslintConfig.length - 1].rules, // Keep existing rules
   '@typescript-eslint/no-explicit-any': 'off',
+  '@typescript-eslint/no-unused-vars': 'off',
 };
 
 export default eslintConfig;

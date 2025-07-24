@@ -49,10 +49,8 @@ export default function EmailVerification() {
         ]);
 
         clearTimeout(timeoutId);
-        console.log('Email verified successfully');
         setStatus('success');
       } catch (error: any) {
-        console.error('Email verification failed:', error);
 
         if (error.message?.includes('timeout')) {
           setStatus('error');

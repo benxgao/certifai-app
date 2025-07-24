@@ -100,7 +100,6 @@ const LoginPage = () => {
         return;
       }
     } catch (error: any) {
-      console.error('Unexpected signin error:', error);
       setError('An unexpected error occurred. Please try again.');
       setIsLoading(false);
     }

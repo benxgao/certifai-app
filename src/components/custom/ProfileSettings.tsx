@@ -53,7 +53,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
       setSuccess('Verification email sent! Please check your inbox.');
       setErrorMsg(null);
     } catch (error) {
-      console.error('Failed to send verification email:', error);
 
       // Show error toast notification
       toastHelpers.error.generic(
@@ -85,7 +84,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
       toastHelpers.error.generic(error?.message || 'Failed to update profile. Please try again.');
 
       setErrorMsg(error?.message || 'Error updating profile');
-      console.error('Error updating profile:', error);
     }
   };
 

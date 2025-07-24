@@ -111,11 +111,9 @@ export default function CertificationDetail({ certId, initialData }: Props) {
           throw new Error('Invalid response format from server');
         }
       } catch (err) {
-        console.error('Error fetching certification:', err);
 
         // If we have initial data and API call fails, use it as fallback
         if (initialData) {
-          console.log('Using initial data as fallback due to API error');
           const convertedData: CertificationDetailData = {
             cert_id: initialData.cert_id,
             name: initialData.name,

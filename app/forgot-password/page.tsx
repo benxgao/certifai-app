@@ -69,7 +69,6 @@ function ForgotPasswordContent() {
       );
       setEmail(''); // Clear the form
     } catch (error: any) {
-      console.error('Password reset email failed:', error);
 
       switch (error.code) {
         case 'auth/user-not-found':

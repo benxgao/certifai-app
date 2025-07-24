@@ -93,7 +93,6 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
         throw new Error(result.error || 'Failed to submit interest');
       }
     } catch (err: any) {
-      console.error('Failed to submit adaptive learning interest:', err);
       setError(err.message || 'Failed to submit your interest. Please try again.');
       toast.error('Failed to submit your interest. Please try again.');
     } finally {

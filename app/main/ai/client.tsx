@@ -14,13 +14,11 @@ const AIClientPage: React.FC = () => {
         });
 
         if (!res.ok) {
-          console.error(`fetch error: ${JSON.stringify(res.status)}`);
           throw new Error(`Failed to fetch data: ${JSON.stringify(res.body)}`);
         }
 
         setApiData(await res.json());
       } catch (error) {
-        console.error('JWT verification or fetch error:', error);
       }
     }
 

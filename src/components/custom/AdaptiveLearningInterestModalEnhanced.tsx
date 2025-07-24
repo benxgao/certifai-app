@@ -79,11 +79,9 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
 
       // Step 1: Check if subscriber_id exists in Firebase claims
       let subscriberId = await getSubscriberIdFromClaims();
-      console.log('Current subscriber_id from claims:', subscriberId);
 
       // Step 2: If no subscriber_id, create a subscriber first
       if (!subscriberId) {
-        console.log('No subscriber_id found, creating subscriber...');
 
         // Get user's display name for first/last name
         const displayName = firebaseUser.displayName || '';
@@ -115,7 +113,6 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
 
         if (subscribeResult.success && subscribeResult.subscriberId) {
           subscriberId = subscribeResult.subscriberId;
-          console.log('Successfully created subscriber:', subscriberId);
 
           // Save the new subscriber_id to Firebase claims
           if (subscriberId) {
@@ -170,7 +167,6 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
         throw new Error(result.error || 'Failed to join group');
       }
     } catch (err: any) {
-      console.error('Failed to join adaptive learning group:', err);
       setError(err.message || 'Failed to join group. Please try again.');
       toast.error('Failed to join group. Please try again.');
     } finally {

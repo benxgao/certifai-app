@@ -33,7 +33,6 @@ const MainPage = () => {
 
   useEffect(() => {
     if (firebaseUser) {
-      console.log(`Firebase user ID: ${JSON.stringify(firebaseUser.uid, null, 2)}`);
     }
   }, [firebaseUser]);
 

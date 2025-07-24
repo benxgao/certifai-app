@@ -69,7 +69,6 @@ export default function SignUpPage() {
     if (loading) {
       const timeout = setTimeout(() => {
         if (loading && isMountedRef.current) {
-          console.warn('Loading state stuck, force resetting after 60 seconds');
           setLoading(false);
           setError('Request timed out. Please try again.');
         }
@@ -118,7 +117,6 @@ export default function SignUpPage() {
     // Safety timeout to prevent hanging forever
     const safetyTimeout = setTimeout(() => {
       if (isMountedRef.current) {
-        console.warn('Signup process timed out, resetting loading state');
         setLoading(false);
         setError('Signup process timed out. Please try again.');
       }
@@ -146,7 +144,6 @@ export default function SignUpPage() {
       signupDebugger.success('profile-update', 'User profile updated successfully');
 
       // Sequential execution to avoid race conditions and provide better error handling
-      console.log('User account created, proceeding with registration...');
 
       // Step 1: Register user in backend API first
       let registrationSuccess = false;
@@ -154,16 +151,13 @@ export default function SignUpPage() {
 
       try {
         const apiUserId = await handleUserRegistration(user, firstName, lastName, selectedCertId!);
-        console.log('User registered successfully with API ID:', apiUserId);
         signupDebugger.success('api-registration', `Registered with API ID: ${apiUserId}`);
         registrationSuccess = true;
       } catch (registrationError: any) {
-        console.warn('Backend registration failed (non-blocking):', registrationError.message);
         signupDebugger.error('api-registration', registrationError.message, registrationError);
         // Continue with email verification even if registration fails
         // Set a timeout to prevent hanging forever on registration
         if (registrationError.message?.includes('timeout')) {
-          console.warn('Registration API timed out, continuing with email verification');
         }
       }
 
@@ -181,7 +175,6 @@ export default function SignUpPage() {
         );
 
         await Promise.race([emailVerificationPromise, timeoutPromise]);
-        console.log('Email verification sent successfully');
         signupDebugger.success('email-verification', 'Email verification sent successfully');
 
         // Reset loading state before showing verification step
@@ -195,7 +188,6 @@ export default function SignUpPage() {
 
         // Show additional message if registration failed but verification succeeded
         if (!registrationSuccess) {
-          console.log('Showing additional message about registration status');
           setTimeout(() => {
             if (isMountedRef.current) {
               toast.info('Account Setup', {
@@ -206,7 +198,6 @@ export default function SignUpPage() {
           }, 2000);
         }
       } catch (verificationError: any) {
-        console.error('Email verification failed:', verificationError);
         signupDebugger.error('email-verification', verificationError.message, verificationError);
 
         // Reset loading state before showing verification step
@@ -221,7 +212,6 @@ export default function SignUpPage() {
         });
       }
     } catch (error: any) {
-      console.error('Signup error:', error);
       signupDebugger.error('signup-process', 'Signup process failed', error);
 
       // Always reset loading state first to re-enable the button
@@ -229,26 +219,20 @@ export default function SignUpPage() {
 
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) {
-        console.warn('Component unmounted during error handling, skipping state updates');
         return;
       }
 
       // Parse error and set appropriate message using the utility
       const errorMessage = getFirebaseErrorMessage(error);
 
-      console.log('Setting error message:', errorMessage);
-      console.log('Error code:', error.code);
-      console.log('Original error:', error);
 
       // Force state update to ensure error is visible
       setError(errorMessage);
 
       // Force re-render by updating timestamp (if error doesn't show)
-      console.log('Error state set, current timestamp:', Date.now());
 
       // Enhanced toast messages for specific errors
       if (error.code === 'auth/email-already-in-use') {
-        console.log('Showing email-already-in-use toast');
         toast.error(errorMessage, {
           description: 'If you forgot your password, you can reset it from the sign-in page.',
           action: {
@@ -258,13 +242,11 @@ export default function SignUpPage() {
           duration: 10000, // Show for 10 seconds
         });
       } else if (error.code === 'auth/weak-password') {
-        console.log('Showing weak-password toast');
         toast.error(errorMessage, {
           description: 'Try using at least 6 characters with a mix of letters and numbers.',
           duration: 8000,
         });
       } else {
-        console.log('Showing generic error toast');
         toast.error('Signup failed', {
           description: errorMessage,
           duration: 8000,
@@ -304,7 +286,6 @@ export default function SignUpPage() {
         description: 'Please check your inbox (and spam folder) for the verification email.',
       });
     } catch (error: any) {
-      console.error('Error resending verification:', error);
 
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
@@ -397,10 +378,8 @@ export default function SignUpPage() {
         await user.reload();
         await sendEmailVerification(user, actionCodeSettings);
 
-        console.log(`Email verification sent successfully on attempt ${attempt + 1}`);
         return; // Success, exit the retry loop
       } catch (error: any) {
-        console.error(`Email verification attempt ${attempt + 1} failed:`, error);
 
         // Check if this is a retryable error
         const isRetriableError =
@@ -418,7 +397,6 @@ export default function SignUpPage() {
 
         // Wait before retrying with exponential backoff
         const delay = Math.min(Math.pow(2, attempt) * 1000, 5000); // Cap at 5 seconds
-        console.log(`Retrying email verification in ${delay}ms...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }

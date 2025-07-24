@@ -131,7 +131,6 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
           throw new Error('Invalid response format');
         }
       } catch (err) {
-        console.error('Error fetching certification:', err);
         setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       } finally {
         setLoading(false);

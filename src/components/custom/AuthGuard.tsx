@@ -31,7 +31,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       const urlParams = new URLSearchParams(window.location.search);
       const error = urlParams.get('error');
       if (error && (error.includes('session_expired') || error.includes('Session expired'))) {
-        console.log('Session expiration detected in AuthGuard');
         setSessionExpired(true);
         // Clear URL parameter immediately
         urlParams.delete('error');
@@ -53,9 +52,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   // Set a 5-second timeout if API user ID doesn't load (increased from 3s for better stability)
   useEffect(() => {
     if (firebaseUser && !apiUserId && !apiTimeout && !sessionExpired) {
-      console.log('Starting API user ID timeout timer (5 seconds)');
       const timer = setTimeout(() => {
-        console.warn('API user ID not available after 5 seconds - proceeding without it');
         setApiTimeout(true);
       }, 5000);
       return () => clearTimeout(timer);
@@ -65,27 +62,13 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   // Reset API timeout when apiUserId becomes available
   useEffect(() => {
     if (apiUserId && apiTimeout) {
-      console.log('API user ID received, resetting timeout state');
       setApiTimeout(false);
     }
   }, [apiUserId, apiTimeout]);
 
-  // Add debugging for auth state changes
-  useEffect(() => {
-    console.log('AuthGuard state update:', {
-      loading,
-      firebaseUser: !!firebaseUser,
-      emailVerified: firebaseUser?.emailVerified,
-      apiUserId: !!apiUserId,
-      apiTimeout,
-      sessionExpired,
-    });
-  }, [loading, firebaseUser, apiUserId, apiTimeout, sessionExpired]);
-
   // Check if user needs email verification
   useEffect(() => {
     if (firebaseUser && !firebaseUser.emailVerified && !sessionExpired) {
-      console.log('User email not verified, redirecting to signin');
       router.push(
         '/signin?error=' +
           encodeURIComponent('Please verify your email address before accessing your account.'),
@@ -97,7 +80,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   useEffect(() => {
     if ((loading || (firebaseUser && !apiUserId && !apiTimeout)) && !sessionExpired) {
       const emergencyTimer = setTimeout(() => {
-        console.error('AuthGuard: User stuck in loading state for 20 seconds, forcing redirect');
         router.push(
           '/signin?error=' +
             encodeURIComponent('Authentication timed out. Please try signing in again.'),
@@ -121,7 +103,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       // Set emergency timeout - if loading takes more than 15 seconds, trigger recovery
       timeoutRef.current = setTimeout(() => {
         if (loading && !sessionExpired) {
-          console.warn('AuthGuard emergency timeout triggered after 15 seconds');
           setEmergencyTimeout(true);
         }
       }, 15000);
@@ -148,8 +129,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     setIsRecovering(true);
 
     try {
-      console.log('Starting emergency auth recovery...');
-
       // Clear all auth state and cache
       await resetAuthenticationState();
 
@@ -159,8 +138,8 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
           method: 'POST',
           credentials: 'include',
         });
-      } catch (error) {
-        console.warn('Failed to clear server cache:', error);
+      } catch {
+        // Server cache clear failed, continue with recovery
       }
 
       // Force page reload to reset all state
@@ -170,8 +149,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       setTimeout(() => {
         window.location.href = '/signin?recovery=true';
       }, 1000);
-    } catch (error) {
-      console.error('Emergency recovery failed:', error);
+    } catch {
       toastHelpers.error.generic('Recovery failed. Please try refreshing the page manually.');
       setIsRecovering(false);
     }
@@ -294,7 +272,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   // Allow access if we have a verified Firebase user, regardless of API timeout
   if (firebaseUser && firebaseUser.emailVerified && (apiUserId || apiTimeout)) {
     if (apiTimeout && !apiUserId) {
-      console.warn('AuthGuard: Proceeding without API user ID due to timeout');
     }
     return <>{children}</>;
   }

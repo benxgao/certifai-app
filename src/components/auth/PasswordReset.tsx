@@ -42,9 +42,7 @@ export default function PasswordReset() {
         setEmail(userEmail);
         setOobCode(code);
         setStatus('ready');
-        console.log('Password reset code verified for:', userEmail);
       } catch (error: any) {
-        console.error('Password reset code verification failed:', error);
 
         if (error.code === 'auth/expired-action-code') {
           setStatus('expired');
@@ -91,10 +89,8 @@ export default function PasswordReset() {
       // Confirm the password reset with the new password
       await confirmPasswordReset(auth, oobCode, password);
 
-      console.log('Password reset successful');
       setStatus('success');
     } catch (error: any) {
-      console.error('Password reset failed:', error);
 
       switch (error.code) {
         case 'auth/expired-action-code':
