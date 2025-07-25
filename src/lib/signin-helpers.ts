@@ -5,7 +5,6 @@
 import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
 import { resetAuthenticationState } from '@/src/lib/auth-utils';
-import { setAuthCookie } from '@/src/lib/auth-setup';
 
 export interface SigninFormData {
   email: string;
@@ -167,56 +166,8 @@ export const handleUnverifiedUser = async (): Promise<AuthError> => {
 };
 
 /**
- * Handle cookie setting during signin
+ * Parse Firebase auth error into user-friendly message
  */
-export const handleCookieSetup = async (firebaseToken: string): Promise<AuthError | null> => {
-  try {
-    console.log('handleCookieSetup: Setting auth cookie during signin flow');
-    const cookieResult = await setAuthCookie(firebaseToken);
-
-    if (!cookieResult.success) {
-      const errorMessage = cookieResult.error || 'Failed to set authentication cookie.';
-      console.error('handleCookieSetup: Cookie setting failed:', errorMessage);
-
-      // Clear auth state on cookie failure
-      try {
-        await resetAuthenticationState();
-        await signOut(auth);
-      } catch (clearError) {
-        console.error('Failed to clear auth state after cookie error:', clearError);
-      }
-
-      return { message: errorMessage };
-    }
-
-    console.log('handleCookieSetup: Cookie set successfully during signin');
-    return null; // Success
-  } catch (cookieError: any) {
-    console.error('handleCookieSetup: Exception during cookie setup:', cookieError);
-    let errorMessage = 'Failed to set authentication cookie.';
-
-    if (
-      cookieError.message?.includes('timeout') ||
-      cookieError.message?.includes('signal is aborted') ||
-      cookieError.name === 'TimeoutError'
-    ) {
-      errorMessage = 'Authentication timed out. Please try again.';
-    } else if (cookieError.name === 'NetworkError') {
-      errorMessage =
-        'Network error during authentication. Please check your connection and try again.';
-    }
-
-    // Clear auth state on cookie failure
-    try {
-      await resetAuthenticationState();
-      await signOut(auth);
-    } catch (clearError) {
-      console.error('Failed to clear auth state after cookie error:', clearError);
-    }
-
-    return { message: errorMessage };
-  }
-};
 
 /**
  * Parse Firebase auth errors into user-friendly messages
@@ -296,6 +247,7 @@ export const resendVerificationEmail = async (): Promise<string> => {
 
 /**
  * Simplified signin operation
+ * Cookie setting is now handled by the FirebaseAuthContext automatically
  */
 export const performSignin = async (
   form: SigninFormData,
@@ -313,14 +265,8 @@ export const performSignin = async (
       return { success: false, error };
     }
 
-    // Get Firebase token
-    const firebaseToken = await signedIn.user.getIdToken(true);
-
-    // Set the authentication cookie
-    const cookieError = await handleCookieSetup(firebaseToken);
-    if (cookieError) {
-      return { success: false, error: cookieError };
-    }
+    // Cookie setting and API login will be handled automatically by FirebaseAuthContext
+    console.log('Signin successful, auth context will handle cookie setup');
 
     return { success: true };
   } catch (error: any) {

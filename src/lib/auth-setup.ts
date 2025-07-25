@@ -231,25 +231,66 @@ export const patchCustomClaims = async (token: string, apiUserId: string): Promi
 };
 
 /**
+ * Centralized authentication state manager
+ * Handles cookie setting, API login, and claims management in a coordinated way
+ */
+class AuthManager {
+  private cookieSetPromise: Promise<AuthCookieResult> | null = null;
+  private apiLoginPromise: Promise<string | null> | null = null;
+
+  /**
+   * Set auth cookie with deduplication
+   */
+  async setAuthCookie(token: string, forceNew = false): Promise<AuthCookieResult> {
+    if (!forceNew && this.cookieSetPromise) {
+      console.log('Reusing existing cookie set promise');
+      return this.cookieSetPromise;
+    }
+
+    this.cookieSetPromise = setAuthCookie(token);
+    const result = await this.cookieSetPromise;
+
+    // Clear promise after completion
+    this.cookieSetPromise = null;
+    return result;
+  }
+
+  /**
+   * Perform API login with deduplication
+   */
+  async performApiLogin(token: string): Promise<string | null> {
+    if (this.apiLoginPromise) {
+      console.log('Reusing existing API login promise');
+      return this.apiLoginPromise;
+    }
+
+    this.apiLoginPromise = performApiLogin(token);
+    const result = await this.apiLoginPromise;
+
+    // Clear promise after completion
+    this.apiLoginPromise = null;
+    return result;
+  }
+
+  /**
+   * Clear all pending operations
+   */
+  reset(): void {
+    this.cookieSetPromise = null;
+    this.apiLoginPromise = null;
+  }
+}
+
+// Global auth manager instance
+const authManager = new AuthManager();
+
+/**
  * Check if we should skip cookie setting based on current path
- * Skip during signup and if we're in the signin flow (to avoid double-setting)
+ * Simplified to only skip during signup
  */
 export const shouldSkipCookieSet = (): boolean => {
   if (typeof window === 'undefined') return true;
-
-  const currentPath = window.location.pathname;
-
-  // Skip during signup to avoid race conditions
-  if (currentPath.includes('/signup')) {
-    return true;
-  }
-
-  // Skip during signin if we're still on the signin page (cookie should be set by performSignin)
-  if (currentPath.includes('/signin')) {
-    return true;
-  }
-
-  return false;
+  return window.location.pathname.includes('/signup');
 };
 
 /**
@@ -282,64 +323,36 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
   try {
     console.log('Starting authentication setup process...');
 
-    // Prepare parallel requests for better performance
-    const promises = [];
-
-    // 1. Set auth cookie (skip if on signin/signup pages)
-    let cookiePromise = null;
-    if (!shouldSkipCookieSet()) {
-      cookiePromise = setAuthCookie(token);
-      promises.push(cookiePromise);
-    }
-
-    // 2. API login to get user ID
-    const loginPromise = performApiLogin(token);
-    promises.push(loginPromise);
-
-    // 3. Check for api_user_id in custom claims
+    // Use the centralized auth manager for cookie setting
+    const cookiePromise = authManager.setAuthCookie(token);
+    const loginPromise = authManager.performApiLogin(token);
     const claimsPromise = getApiUserIdFromClaims(authUser);
-    promises.push(claimsPromise);
 
-    // Execute initial requests in parallel
-    const results = await Promise.allSettled(promises);
-
-    // Handle results
-    let cookieResult: AuthCookieResult | null = null;
-    if (cookiePromise) {
-      const cookieSettledResult = results[promises.indexOf(cookiePromise)];
-      if (cookieSettledResult.status === 'fulfilled') {
-        cookieResult = cookieSettledResult.value as AuthCookieResult;
-      }
-    }
-
-    const loginResult = results[promises.indexOf(loginPromise)];
-    const claimsResult = results[promises.indexOf(claimsPromise)];
-
-    let userIdFromApi = null;
-    let userIdFromClaims = null;
+    // Execute all requests in parallel
+    const [cookieResult, loginResult, claimsResult] = await Promise.allSettled([
+      cookiePromise,
+      loginPromise,
+      claimsPromise,
+    ]);
 
     // Extract results
-    if (loginResult.status === 'fulfilled' && loginResult.value) {
-      userIdFromApi = loginResult.value as string;
-    }
-
-    if (claimsResult.status === 'fulfilled' && claimsResult.value) {
-      userIdFromClaims = claimsResult.value as string;
-    }
+    const finalCookieResult = cookieResult.status === 'fulfilled' ? cookieResult.value : null;
+    const finalApiUserId = loginResult.status === 'fulfilled' ? loginResult.value : null;
+    let finalClaimsUserId = claimsResult.status === 'fulfilled' ? claimsResult.value : null;
 
     // If no claims found, retry after delay (for newly created accounts)
-    if (!userIdFromClaims) {
+    if (!finalClaimsUserId) {
       console.log('No api_user_id found in claims, retrying after delay...');
-      userIdFromClaims = await retryGetApiUserIdFromClaims(authUser);
+      finalClaimsUserId = await retryGetApiUserIdFromClaims(authUser);
     }
 
     // Use API result if available, otherwise use custom claims
-    const finalUserId = userIdFromApi || userIdFromClaims;
+    const finalUserId = finalApiUserId || finalClaimsUserId;
 
     // If we have api_user_id from API but not in claims, patch the claims
-    if (userIdFromApi && (!userIdFromClaims || userIdFromApi !== userIdFromClaims)) {
+    if (finalApiUserId && (!finalClaimsUserId || finalApiUserId !== finalClaimsUserId)) {
       console.log('Syncing custom claims with API user ID...');
-      const patchSuccess = await patchCustomClaims(token, userIdFromApi);
+      const patchSuccess = await patchCustomClaims(token, finalApiUserId);
 
       if (patchSuccess) {
         // Force refresh token to get new claims
@@ -349,8 +362,8 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
 
     if (finalUserId) {
       console.log(`Authentication setup successful:
-        | cookie_set: ${cookieResult?.success ?? 'skipped'}
-        | current_path: ${typeof window !== 'undefined' ? window.location.pathname : 'server'}`);
+        | cookie_set: ${finalCookieResult?.success ?? false}
+        | user_id: ${finalUserId}`);
 
       return {
         success: true,
