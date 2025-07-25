@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { FaCheck, FaEdit, FaLightbulb, FaTimes, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaCheck, FaEdit, FaLightbulb, FaTimes, FaArrowLeft, FaArrowRight, FaInfoCircle } from 'react-icons/fa';
 import { toastHelpers } from '@/src/lib/toast';
 import {
   Dialog,
@@ -37,6 +37,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'; // Added
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/src/components/ui/tooltip'; // Added for tooltip functionality
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
 
 export default function ExamAttemptPage() {
@@ -391,21 +392,32 @@ export default function ExamAttemptPage() {
         />
 
         {/* Exam Status Card */}
-        <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
+        <div className="mb-8 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg rounded-xl overflow-hidden">
           {/* Status Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+          <div className="px-6 py-4 border-b border-slate-200/50 dark:border-slate-700/50 bg-gradient-to-r from-violet-50/50 via-blue-50/30 to-purple-50/50 dark:from-violet-900/20 dark:via-blue-900/15 dark:to-purple-900/20">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h2 className="text-lg font-medium text-slate-900 dark:text-slate-100">
-                  Exam Progress
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+                  <span>Exam Progress</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <FaInfoCircle className="w-4 h-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="text-sm">
+                        Your answers are automatically saved as you select them. Take your time to
+                        review each question carefully.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                 </h2>
               </div>
 
               {/* Status Badge */}
               <div className="flex-shrink-0">
                 {submittedAt !== null ? (
-                  <span className="inline-flex items-center rounded-lg bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50 shadow-sm">
-                    <FaCheck className="w-4 h-4 mr-2" />
+                  <span className="inline-flex items-center rounded-md bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 border border-emerald-200/50 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-700/30">
+                    <FaCheck className="w-3 h-3 mr-1.5" />
                     {examState?.status === 'PASSED'
                       ? 'Completed'
                       : examState?.status === 'FAILED'
@@ -413,25 +425,25 @@ export default function ExamAttemptPage() {
                       : 'Completed'}
                   </span>
                 ) : examState?.exam_status === 'QUESTIONS_GENERATING' ? (
-                  <span className="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50 shadow-sm">
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-700 border-t-transparent mr-2"></div>
+                  <span className="inline-flex items-center rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 border border-blue-200/50 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-700/30">
+                    <div className="animate-spin rounded-full h-3 w-3 border-2 border-blue-700 border-t-transparent mr-1.5"></div>
                     Generating Questions
                   </span>
                 ) : examState?.exam_status === 'QUESTION_GENERATION_FAILED' ? (
-                  <span className="inline-flex items-center rounded-lg bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50 shadow-sm">
-                    <FaTimes className="w-4 h-4 mr-2" /> Generation Failed
+                  <span className="inline-flex items-center rounded-md bg-red-50 px-3 py-1.5 text-sm font-medium text-red-700 border border-red-200/50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-700/30">
+                    <FaTimes className="w-3 h-3 mr-1.5" /> Generation Failed
                   </span>
                 ) : examState?.exam_status === 'READY' ? (
-                  <span className="inline-flex items-center rounded-lg bg-green-50 px-4 py-2.5 text-sm font-medium text-green-700 border border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800/50 shadow-sm">
-                    <FaCheck className="w-4 h-4 mr-2" /> Ready
+                  <span className="inline-flex items-center rounded-md bg-green-50 px-3 py-1.5 text-sm font-medium text-green-700 border border-green-200/50 dark:bg-green-900/20 dark:text-green-400 dark:border-green-700/30">
+                    <FaCheck className="w-3 h-3 mr-1.5" /> Ready
                   </span>
                 ) : examState?.exam_status === 'PENDING_QUESTIONS' ? (
-                  <span className="inline-flex items-center rounded-lg bg-yellow-50 px-4 py-2.5 text-sm font-medium text-yellow-700 border border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800/50 shadow-sm">
-                    <FaEdit className="w-4 h-4 mr-2" /> Pending
+                  <span className="inline-flex items-center rounded-md bg-yellow-50 px-3 py-1.5 text-sm font-medium text-yellow-700 border border-yellow-200/50 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-700/30">
+                    <FaEdit className="w-3 h-3 mr-1.5" /> Pending
                   </span>
                 ) : (
-                  <span className="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800/50 shadow-sm">
-                    <FaEdit className="w-4 h-4 mr-2" /> In Progress
+                  <span className="inline-flex items-center rounded-md bg-violet-50 px-3 py-1.5 text-sm font-medium text-violet-700 border border-violet-200/50 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-700/30">
+                    <FaEdit className="w-3 h-3 mr-1.5" /> In Progress
                   </span>
                 )}
               </div>
@@ -440,15 +452,15 @@ export default function ExamAttemptPage() {
 
           {/* Content */}
           <div className="px-3 py-4 sm:px-6 sm:py-6">
-            <div className="space-y-4 sm:space-y-6">
+            <div className="space-y-6">
               {/* Score Section - only show if exam is completed */}
               {score !== null && submittedAt !== null && (
-                <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm">
+                <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-6 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
                   <div className="text-center">
                     <p className="text-sm sm:text-base font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">
                       Final Score
                     </p>
-                    <p className="text-3xl sm:text-5xl font-semibold text-slate-700 dark:text-slate-200 mb-2">
+                    <p className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                       {score}%
                     </p>
                   </div>
@@ -456,56 +468,60 @@ export default function ExamAttemptPage() {
               )}
 
               {/* Exam Information Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Total Questions */}
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
                   <div className="space-y-3">
                     <div className="flex items-center justify-center space-x-2">
-                      <svg
-                        className="w-4 h-4 text-blue-600 dark:text-blue-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                        />
-                      </svg>
-                      <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800/50 dark:to-indigo-800/50 rounded-lg flex items-center justify-center shadow-sm">
+                        <svg
+                          className="w-4 h-4 text-blue-600 dark:text-blue-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                         Questions
                       </p>
                     </div>
-                    <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
+                    <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
                       {pagination?.totalItems || examState?.total_questions || '...'}
                     </p>
                   </div>
                 </div>
 
                 {/* Started Date */}
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
                   <div className="space-y-3">
                     <div className="flex items-center justify-center space-x-2">
-                      <svg
-                        className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                      <div className="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-800/50 dark:to-green-800/50 rounded-lg flex items-center justify-center shadow-sm">
+                        <svg
+                          className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                         Started
                       </p>
                     </div>
-                    <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
+                    <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
                       {examState?.started_at
                         ? new Date(examState.started_at).toLocaleDateString('en-US', {
                             month: 'short',
@@ -520,15 +536,17 @@ export default function ExamAttemptPage() {
 
                 {/* Progress or Submission Date */}
                 {submittedAt !== null ? (
-                  <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
                     <div className="space-y-3">
                       <div className="flex items-center justify-center space-x-2">
-                        <FaCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-800/50 dark:to-green-800/50 rounded-lg flex items-center justify-center shadow-sm">
+                          <FaCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        </div>
+                        <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                           Submitted
                         </p>
                       </div>
-                      <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
+                      <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
                         {new Date(submittedAt).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
@@ -539,27 +557,29 @@ export default function ExamAttemptPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                  <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
                     <div className="space-y-3">
                       <div className="flex items-center justify-center space-x-2">
-                        <svg
-                          className="w-4 h-4 text-blue-600 dark:text-blue-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                          />
-                        </svg>
-                        <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                        <div className="w-8 h-8 bg-gradient-to-br from-violet-100 to-purple-100 dark:from-violet-800/50 dark:to-purple-800/50 rounded-lg flex items-center justify-center shadow-sm">
+                          <svg
+                            className="w-4 h-4 text-violet-600 dark:text-violet-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                            />
+                          </svg>
+                        </div>
+                        <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
                           Progress
                         </p>
                       </div>
-                      <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
+                      <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
                         {pagination?.currentPage && pagination?.totalPages
                           ? `${pagination.currentPage}/${pagination.totalPages}`
                           : 'Active'}
@@ -585,26 +605,6 @@ export default function ExamAttemptPage() {
                       <blockquote className="text-base sm:text-lg font-medium text-blue-900 dark:text-blue-100 leading-relaxed italic">
                         &ldquo;{examState.custom_prompt_text}&rdquo;
                       </blockquote>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Helpful Tips (only during active exam) */}
-              {submittedAt === null && (
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-5 rounded-xl border border-blue-200 dark:border-blue-700/50 shadow-sm">
-                  <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-yellow-50 dark:bg-yellow-900/20 rounded-full flex items-center justify-center">
-                      <FaLightbulb className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
-                    </div>
-                    <div>
-                      <p className="text-base font-medium text-blue-700 dark:text-blue-200 mb-1">
-                        Pro Tip
-                      </p>
-                      <p className="text-base text-blue-600 dark:text-blue-300 leading-relaxed">
-                        Your answers are automatically saved as you select them. Take your time to
-                        review each question carefully.
-                      </p>
                     </div>
                   </div>
                 </div>

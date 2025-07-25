@@ -69,6 +69,14 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
+    // Debug: Log all cookies to see what's available
+    const allCookies = request.cookies.getAll();
+    console.log(
+      `middleware: all cookies:`,
+      allCookies.map((c) => ({ name: c.name, hasValue: !!c.value })),
+    );
+    console.log(`middleware: looking for cookie name: ${COOKIE_AUTH_NAME}`);
+
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
     const legacyToken = request.cookies.get('joseToken')?.value; // Check for legacy cookie
 

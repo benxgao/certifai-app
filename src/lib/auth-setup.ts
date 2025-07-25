@@ -18,6 +18,13 @@ export interface AuthCookieResult {
   error?: string;
 }
 
+// Add global deduplication for API login requests
+let pendingLoginRequest: Promise<string | null> | null = null;
+let lastLoginToken: string | null = null;
+let lastLoginResult: string | null = null;
+let lastLoginTime = 0;
+const LOGIN_CACHE_DURATION = 30000; // 30 seconds cache for login results
+
 /**
  * Set authentication cookie for the user session
  */
@@ -61,9 +68,47 @@ export const clearAuthCookie = async (): Promise<void> => {
 };
 
 /**
- * Perform API login to get user ID
+ * Perform API login to get user ID with request deduplication
  */
 export const performApiLogin = async (token: string): Promise<string | null> => {
+  const now = Date.now();
+
+  // Return cached result if it's recent and for the same token
+  if (lastLoginToken === token && lastLoginResult && now - lastLoginTime < LOGIN_CACHE_DURATION) {
+    console.log('Using cached API login result');
+    return lastLoginResult;
+  }
+
+  // If there's already a pending request for the same token, wait for it
+  if (pendingLoginRequest && lastLoginToken === token) {
+    console.log('Waiting for existing API login request to complete');
+    return pendingLoginRequest;
+  }
+
+  // Clear cache if token has changed
+  if (lastLoginToken !== token) {
+    lastLoginResult = null;
+    lastLoginTime = 0;
+  }
+
+  // Create new request
+  lastLoginToken = token;
+  pendingLoginRequest = performApiLoginInternal(token);
+
+  try {
+    const result = await pendingLoginRequest;
+    lastLoginResult = result;
+    lastLoginTime = now;
+    return result;
+  } finally {
+    pendingLoginRequest = null;
+  }
+};
+
+/**
+ * Internal API login function (actual implementation)
+ */
+const performApiLoginInternal = async (token: string): Promise<string | null> => {
   try {
     const response = await optimizedFetch(
       '/api/auth/login',
@@ -187,13 +232,24 @@ export const patchCustomClaims = async (token: string, apiUserId: string): Promi
 
 /**
  * Check if we should skip cookie setting based on current path
+ * Skip during signup and if we're in the signin flow (to avoid double-setting)
  */
 export const shouldSkipCookieSet = (): boolean => {
   if (typeof window === 'undefined') return true;
 
-  return (
-    window.location.pathname.includes('/signin') || window.location.pathname.includes('/signup')
-  );
+  const currentPath = window.location.pathname;
+
+  // Skip during signup to avoid race conditions
+  if (currentPath.includes('/signup')) {
+    return true;
+  }
+
+  // Skip during signin if we're still on the signin page (cookie should be set by performSignin)
+  if (currentPath.includes('/signin')) {
+    return true;
+  }
+
+  return false;
 };
 
 /**

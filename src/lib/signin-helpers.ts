@@ -171,10 +171,12 @@ export const handleUnverifiedUser = async (): Promise<AuthError> => {
  */
 export const handleCookieSetup = async (firebaseToken: string): Promise<AuthError | null> => {
   try {
+    console.log('handleCookieSetup: Setting auth cookie during signin flow');
     const cookieResult = await setAuthCookie(firebaseToken);
 
     if (!cookieResult.success) {
       const errorMessage = cookieResult.error || 'Failed to set authentication cookie.';
+      console.error('handleCookieSetup: Cookie setting failed:', errorMessage);
 
       // Clear auth state on cookie failure
       try {
@@ -187,8 +189,10 @@ export const handleCookieSetup = async (firebaseToken: string): Promise<AuthErro
       return { message: errorMessage };
     }
 
+    console.log('handleCookieSetup: Cookie set successfully during signin');
     return null; // Success
   } catch (cookieError: any) {
+    console.error('handleCookieSetup: Exception during cookie setup:', cookieError);
     let errorMessage = 'Failed to set authentication cookie.';
 
     if (
