@@ -92,12 +92,15 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
       <Card
         key={cert.cert_id}
         className={cn(
-          'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full',
+          'group bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-lg hover:shadow-violet-500/10 dark:hover:shadow-violet-500/5 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 rounded-2xl overflow-hidden flex flex-col h-full',
           isCompact && 'p-3',
         )}
       >
         <CardHeader
-          className={cn('bg-white dark:bg-slate-800 flex-shrink-0', isCompact ? 'p-3' : 'p-6')}
+          className={cn(
+            'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm flex-shrink-0',
+            isCompact ? 'p-3' : 'p-6',
+          )}
         >
           <div className="mb-4">
             <div className="flex-1 min-w-0">
@@ -139,7 +142,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 size={isCompact ? 'sm' : 'lg'}
                 onClick={() => handleViewExams(cert.cert_id)}
                 disabled={isCurrentlyNavigating}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
               >
                 {isCurrentlyNavigating ? (
                   <div className="flex items-center space-x-2">
@@ -157,12 +160,11 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 size={isCompact ? 'sm' : 'lg'}
                 onClick={() => onRegister(cert)}
                 disabled={isCurrentlyRegistering}
-                variant="outline"
-                className="w-full border-violet-200 dark:border-violet-600 hover:bg-violet-50 dark:hover:bg-violet-900/20 text-violet-600 dark:text-violet-400"
+                className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
               >
                 {isCurrentlyRegistering ? (
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-violet-600 border-t-transparent rounded-full animate-spin"></div>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     <span>Registering...</span>
                   </div>
                 ) : (
@@ -184,14 +186,17 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Panel - Compact Firm Navigation */}
         <div className="lg:col-span-1">
-          <Card className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm h-fit max-h-[600px] flex flex-col">
-            <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-700 flex-shrink-0">
+          <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg h-fit max-h-[600px] flex flex-col">
+            <CardHeader className="pb-3 border-b border-slate-100/60 dark:border-slate-700/60 flex-shrink-0">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   Providers
                 </h3>
                 <div className="flex items-center space-x-1">
-                  <Badge variant="outline" className="text-xs px-2 py-1">
+                  <Badge
+                    variant="outline"
+                    className="text-xs px-3 py-1 bg-violet-100/80 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 border-violet-200/60 dark:border-violet-700/60 rounded-xl"
+                  >
                     {filteredFirms.length}
                   </Badge>
                 </div>
@@ -208,10 +213,10 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                     <div key={firm.code}>
                       <div
                         className={cn(
-                          'group p-2 rounded-lg cursor-pointer transition-all duration-200 border',
+                          'group p-3 rounded-xl cursor-pointer transition-all duration-300 border backdrop-blur-sm',
                           isSelected
-                            ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-300'
-                            : 'hover:bg-slate-50 dark:hover:bg-slate-800/50 border-transparent hover:border-slate-200 dark:hover:border-slate-700',
+                            ? 'bg-gradient-to-r from-violet-100/80 to-blue-100/80 dark:from-violet-900/30 dark:to-blue-900/30 border-violet-200/60 dark:border-violet-700/60 text-violet-700 dark:text-violet-300 shadow-md'
+                            : 'hover:bg-slate-50/80 dark:hover:bg-slate-800/50 border-transparent hover:border-slate-200/60 dark:hover:border-slate-700/60 hover:shadow-sm',
                         )}
                         onClick={() => setSelectedFirm(firm.code)}
                       >
@@ -225,10 +230,10 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                             <Badge
                               variant="secondary"
                               className={cn(
-                                'text-xs',
+                                'text-xs px-2 py-1 rounded-lg',
                                 isSelected
-                                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                                  : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
+                                  ? 'bg-violet-200/80 text-violet-800 dark:bg-violet-800/30 dark:text-violet-200'
+                                  : 'bg-slate-100/80 text-slate-600 dark:bg-slate-700/50 dark:text-slate-300',
                               )}
                             >
                               {certCount}
@@ -304,8 +309,8 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
               </div>
             </div>
           ) : (
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
+            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/60 dark:border-slate-700/60 p-12 text-center">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3 tracking-tight">
                 Select a Provider
               </h3>
               <p className="text-slate-600 dark:text-slate-400">
@@ -413,10 +418,10 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
   return (
     <div className="space-y-8">
       {/* Enhanced Header with Search and View Controls */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+      <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-3xl shadow-lg border border-slate-200/60 dark:border-slate-700/60 p-8">
         <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
           <div className="flex-1 max-w-lg">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight">
               Certification Catalog
             </h1>
             <div className="relative">
@@ -425,21 +430,21 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 placeholder="Search certifications or providers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-4 h-12 text-base bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:border-violet-500 dark:focus:border-violet-400 transition-colors"
+                className="pl-12 pr-4 h-12 text-base bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 focus:border-violet-500 dark:focus:border-violet-400 transition-all duration-300 rounded-xl shadow-sm"
               />
             </div>
           </div>
 
-          <div className="flex items-center space-x-1 bg-slate-100 dark:bg-slate-700 p-1 rounded-xl">
+          <div className="flex items-center space-x-1 bg-slate-100/80 dark:bg-slate-700/50 backdrop-blur-sm p-1 rounded-2xl border border-slate-200/60 dark:border-slate-600/60">
             <Button
               variant={viewMode === 'tree' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setViewMode('tree')}
               className={cn(
-                'flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200',
+                'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
                 viewMode === 'tree'
-                  ? 'bg-white dark:bg-slate-800 shadow-sm text-violet-600 dark:text-violet-400'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200',
+                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-md text-white border-0'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
               )}
             >
               <FaList className="w-4 h-4" />
@@ -450,10 +455,10 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
               size="sm"
               onClick={() => setViewMode('grid')}
               className={cn(
-                'flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200',
+                'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
                 viewMode === 'grid'
-                  ? 'bg-white dark:bg-slate-800 shadow-sm text-violet-600 dark:text-violet-400'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200',
+                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-md text-white border-0'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
               )}
             >
               <FaTh className="w-4 h-4" />
@@ -464,10 +469,10 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
               size="sm"
               onClick={() => setViewMode('list')}
               className={cn(
-                'flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200',
+                'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
                 viewMode === 'list'
-                  ? 'bg-white dark:bg-slate-800 shadow-sm text-violet-600 dark:text-violet-400'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200',
+                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-md text-white border-0'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
               )}
             >
               <FaList className="w-4 h-4" />
@@ -479,8 +484,8 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
 
       {/* Results Summary */}
       {searchQuery && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-          <p className="text-blue-800 dark:text-blue-200">
+        <div className="bg-gradient-to-r from-blue-100/80 to-violet-100/80 dark:from-blue-900/20 dark:to-violet-900/20 backdrop-blur-sm border border-blue-200/60 dark:border-blue-700/60 rounded-2xl p-6 shadow-sm">
+          <p className="text-blue-800 dark:text-blue-200 font-medium">
             Found {totalCertifications} certification{totalCertifications !== 1 ? 's' : ''}
             {searchQuery && ` matching "${searchQuery}"`}
           </p>
@@ -489,20 +494,23 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
 
       {/* Content based on view mode */}
       {totalCertifications === 0 ? (
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-12 text-center">
-          <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-4">
-            <span className="text-2xl font-bold text-slate-400 dark:text-slate-500">?</span>
+        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-3xl shadow-lg border border-slate-200/60 dark:border-slate-700/60 p-12 text-center">
+          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-slate-100 to-violet-100 dark:from-slate-700/50 dark:to-violet-900/30 rounded-full flex items-center justify-center mb-6 shadow-md">
+            <span className="text-3xl font-bold text-slate-400 dark:text-slate-500">?</span>
           </div>
-          <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 tracking-tight">
             {searchQuery ? 'No matching certifications found' : 'No certifications available'}
           </h3>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
             {searchQuery
               ? 'Try adjusting your search terms or browse all certifications.'
               : 'Check back later for new certification opportunities.'}
           </p>
           {searchQuery && (
-            <Button variant="outline" className="mt-4" onClick={() => setSearchQuery('')}>
+            <Button
+              onClick={() => setSearchQuery('')}
+              className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
+            >
               Clear Search
             </Button>
           )}

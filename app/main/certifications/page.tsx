@@ -108,8 +108,8 @@ export default function CertificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-      <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+      <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
         {/* Breadcrumb Navigation */}
         <Breadcrumb
           items={[
@@ -118,76 +118,91 @@ export default function CertificationsPage() {
           ]}
         />
 
-        {/* Page Header */}
-        <div className="mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-                  Available Certifications
-                </h1>
-              </div>
-              <div className="flex-shrink-0">
-                <span className="inline-flex items-center rounded-lg bg-violet-50 px-4 py-2.5 text-sm font-medium text-violet-700 border border-violet-200 dark:bg-violet-900/20 dark:text-violet-400 dark:border-violet-800/50 shadow-sm">
-                  <FaAward className="w-4 h-4 mr-2" />
-                  Explore & Register
-                </span>
+        {/* Page Header - Enhanced glass-morphism */}
+        <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-3xl overflow-hidden">
+          {/* Decorative gradient orbs */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+          <div className="relative z-10">
+            <div className="px-8 py-8 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+                    Available Certifications
+                  </h1>
+                  <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl">
+                    Explore industry-recognized certifications and advance your professional journey
+                    with expert-crafted content.
+                  </p>
+                </div>
+                <div className="flex-shrink-0">
+                  <span className="inline-flex items-center rounded-xl bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 px-4 py-2.5 text-sm font-medium text-violet-700 dark:text-violet-400 border border-violet-200/60 dark:border-violet-700/60 shadow-sm backdrop-blur-sm">
+                    <FaAward className="w-4 h-4 mr-2" />
+                    Explore & Register
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Stats Section */}
-          <div className="px-6 py-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Total Available */}
-              <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center space-x-2">
-                    <FaAward className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-                    <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                      Available
+            {/* Stats Section - Enhanced layout */}
+            <div className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Total Available */}
+                <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-100/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/90">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center space-x-3">
+                      <div className="p-2 rounded-xl bg-violet-100 dark:bg-violet-900/30">
+                        <FaAward className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+                      </div>
+                      <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                        Available
+                      </p>
+                    </div>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 text-center">
+                      {availableCertifications?.length || 0}
                     </p>
                   </div>
-                  <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                    {availableCertifications?.length || 0}
-                  </p>
                 </div>
-              </div>
 
-              {/* Your Registrations */}
-              <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center space-x-2">
-                    <FaGraduationCap className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                      Registered
+                {/* Your Registrations */}
+                <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-100/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/90">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center space-x-3">
+                      <div className="p-2 rounded-xl bg-emerald-100 dark:bg-emerald-900/30">
+                        <FaGraduationCap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                        Registered
+                      </p>
+                    </div>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 text-center">
+                      {userCertifications?.length || 0}
                     </p>
                   </div>
-                  <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                    {userCertifications?.length || 0}
-                  </p>
                 </div>
-              </div>
 
-              {/* Success Rate */}
-              <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center space-x-2">
-                    <FaCheck className="w-4 h-4 text-violet-600 dark:text-violet-400" />
-                    <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                      Progress
+                {/* Progress Rate */}
+                <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-100/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-white/90 dark:hover:bg-slate-800/90">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center space-x-3">
+                      <div className="p-2 rounded-xl bg-blue-100 dark:bg-blue-900/30">
+                        <FaCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+                        Progress
+                      </p>
+                    </div>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 text-center">
+                      {userCertifications?.length
+                        ? `${Math.round(
+                            (userCertifications.filter((cert: any) => cert.status === 'completed')
+                              .length /
+                              userCertifications.length) *
+                              100,
+                          )}%`
+                        : '0%'}
                     </p>
                   </div>
-                  <p className="text-lg font-medium text-slate-800 dark:text-slate-100 text-center">
-                    {userCertifications?.length
-                      ? `${Math.round(
-                          (userCertifications.filter((cert: any) => cert.status === 'completed')
-                            .length /
-                            userCertifications.length) *
-                            100,
-                        )}%`
-                      : '0%'}
-                  </p>
                 </div>
               </div>
             </div>
@@ -197,33 +212,35 @@ export default function CertificationsPage() {
         <Toaster richColors />
 
         {/* Available Certifications Section */}
-        <section className="space-y-6">
+        <section className="space-y-8">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               Certification Catalog by Provider
             </h2>
           </div>
 
-          <Suspense fallback={<CertificationCardSkeleton count={4} />}>
-            <EnhancedFirmNavigation
-              onRegister={handleOpenModal}
-              registeringCertId={registeringCertId}
-            />
-          </Suspense>
+          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-3xl p-8">
+            <Suspense fallback={<CertificationCardSkeleton count={4} />}>
+              <EnhancedFirmNavigation
+                onRegister={handleOpenModal}
+                registeringCertId={registeringCertId}
+              />
+            </Suspense>
+          </div>
         </section>
 
         {/* Modal for Certification Details and Registration */}
         {isModalOpen && selectedCertForModal && (
           <div className="fixed inset-0 bg-slate-900/20 dark:bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-md bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
-                <CardTitle className="text-xl font-semibold text-slate-900 dark:text-slate-50">
+            <Card className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-3xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20 border-b border-slate-100/60 dark:border-slate-700/60 p-8">
+                <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
                   {selectedCertForModal.name}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 text-sm font-normal border border-violet-100 dark:border-violet-800/50">
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center px-4 py-2 rounded-xl bg-violet-100/80 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 text-sm font-semibold border border-violet-200/60 dark:border-violet-700/60 backdrop-blur-sm">
                     ID: {selectedCertForModal.cert_id}
                   </div>
                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -232,18 +249,18 @@ export default function CertificationsPage() {
                     exam format, etc.
                   </p>
                 </div>
-                <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-700/50">
+                <div className="flex justify-end space-x-3 mt-8 pt-6 border-t border-slate-100/60 dark:border-slate-700/60">
                   <Button
                     variant="outline"
                     onClick={handleCloseModal}
-                    className="border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
+                    className="border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl"
                   >
                     Close
                   </Button>
                   <Button
                     onClick={handleRegisterFromModal}
                     disabled={isRegistering && registeringCertId === selectedCertForModal.cert_id}
-                    className="bg-transparent hover:bg-violet-50 dark:hover:bg-primary-900/20 text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 border border-violet-200 dark:border-violet-600 hover:border-violet-300 dark:hover:border-violet-500"
+                    className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
                   >
                     {isRegistering && registeringCertId === selectedCertForModal.cert_id
                       ? 'Registering...'

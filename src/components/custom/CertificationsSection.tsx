@@ -15,7 +15,7 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
   return (
     <Card
       key={`user-${cert.cert_id}`}
-      className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-lg transition-all duration-200 rounded-xl overflow-hidden group"
+      className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-lg transition-all duration-200 rounded-lg overflow-hidden group"
     >
       <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
         <CardTitle className="text-xl font-semibold text-slate-900 dark:text-slate-50 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
@@ -27,7 +27,7 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
           {/* Certification Details - Grid layout for better visual hierarchy */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Total Exams */}
-            <div className="flex items-center space-x-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl px-5 py-4 border border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+            <div className="flex items-center space-x-4 bg-slate-50 dark:bg-slate-800/80 rounded-lg px-5 py-4 border border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
               <div className="w-10 h-10 bg-violet-50 dark:bg-violet-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                 <FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               </div>
@@ -42,7 +42,7 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
             </div>
 
             {/* Start Date */}
-            <div className="flex items-center space-x-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl px-5 py-4 border border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+            <div className="flex items-center space-x-4 bg-slate-50 dark:bg-slate-800/80 rounded-lg px-5 py-4 border border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
               <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg
                   className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
@@ -73,7 +73,7 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
             </div>
 
             {/* Status */}
-            <div className="flex items-center space-x-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl px-5 py-4 border border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
+            <div className="flex items-center space-x-4 bg-slate-50 dark:bg-slate-800/80 rounded-lg px-5 py-4 border border-slate-100 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors">
               <div className="w-10 h-10 bg-pink-50 dark:bg-pink-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg
                   className="w-4 h-4 text-pink-600 dark:text-pink-400"
@@ -140,7 +140,7 @@ const CertificationsSection = () => {
 
   if (isUserCertificationsError) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl p-6">
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-lg p-6">
         <div className="flex items-center space-x-3">
           <svg
             className="w-5 h-5 text-red-600 dark:text-red-400"
@@ -165,7 +165,7 @@ const CertificationsSection = () => {
 
   if (!userCertifications || userCertifications.length === 0) {
     return (
-      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700/50 p-12">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700/50 p-12">
         <div className="text-center space-y-4">
           <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center">
             <FaCertificate className="w-8 h-8 text-slate-400 dark:text-slate-500" />

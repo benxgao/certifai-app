@@ -23,8 +23,8 @@ export function CertificationCardSkeleton({
     <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${className || ''}`}>
       {Array.from({ length: count }).map((_, index) => (
         <div
-          key={`certification-skeleton-${index}`}
-          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 rounded-2xl overflow-hidden"
+          key={index}
+          className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 rounded-lg overflow-hidden"
         >
           {/* Header skeleton */}
           <div className="bg-white dark:bg-slate-800 p-6 h-40 relative">
@@ -55,7 +55,7 @@ export function CertificationCardSkeleton({
               <Skeleton className="h-4 w-20" />
             </div>
             {/* Button skeleton */}
-            <Skeleton className="h-12 w-full rounded-xl" />
+            <Skeleton className="h-12 w-full rounded-lg" />
           </div>
         </div>
       ))}
@@ -91,7 +91,7 @@ export function DashboardStatSkeleton({
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={`stat-skeleton-${index}`}
-          className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm"
+          className="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-100 dark:border-slate-700/50 shadow-sm"
         >
           <div className="space-y-3">
             <div className="flex items-center justify-center space-x-2">
@@ -129,7 +129,7 @@ export function UserCertificationCardSkeleton({
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={`user-cert-skeleton-${index}`}
-          className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
+          className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-lg overflow-hidden"
         >
           {/* Header skeleton */}
           <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
@@ -147,7 +147,7 @@ export function UserCertificationCardSkeleton({
                 {Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={`inner-skeleton-${i}`}
-                    className="bg-slate-50 dark:bg-slate-800/80 rounded-xl px-5 py-4 border border-slate-100 dark:border-slate-700/50"
+                    className="bg-slate-50 dark:bg-slate-800/80 rounded-lg px-5 py-4 border border-slate-100 dark:border-slate-700/50"
                   >
                     <div className="flex items-center space-x-4">
                       <Skeleton className="w-10 h-10 rounded-lg flex-shrink-0" />
@@ -160,7 +160,7 @@ export function UserCertificationCardSkeleton({
                 ))}
               </div>
               <div className="flex justify-end pt-2">
-                <Skeleton className="h-12 w-48 rounded-xl" />
+                <Skeleton className="h-12 w-48 rounded-lg" />
               </div>
             </div>
           </div>
@@ -203,7 +203,7 @@ export function GenericCardSkeleton({
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={`generic-skeleton-${index}`}
-          className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden ${height}`}
+          className={`bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden ${height}`}
         >
           <div className="p-6 h-full flex flex-col space-y-4">
             <Skeleton className="h-6 w-3/4" />
@@ -280,7 +280,7 @@ export function ExamCardSkeleton({ count = 3, className }: ExamCardSkeletonProps
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={`exam-skeleton-${index}`}
-          className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-xl overflow-hidden"
+          className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-lg overflow-hidden"
         >
           <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
             <div className="flex items-center justify-between">

@@ -63,9 +63,7 @@ const DashboardStats = () => {
             icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
             title="Total Exams"
             value={
-              isLoading ? <Skeleton className="h-6 w-8 mx-auto" /> :
-              isError ? '—' :
-              totalExamCount
+              isLoading ? <Skeleton className="h-6 w-8 mx-auto" /> : isError ? '—' : totalExamCount
             }
             subtitle={isError ? 'Error' : undefined}
           />
@@ -95,9 +93,7 @@ const DashboardStats = () => {
         icon={<FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
         title="Total Exams"
         value={
-          isLoading ? <Skeleton className="h-6 w-8 mx-auto" /> :
-          isError ? '—' :
-          totalExamCount
+          isLoading ? <Skeleton className="h-6 w-8 mx-auto" /> : isError ? '—' : totalExamCount
         }
         subtitle={isError ? 'Error' : undefined}
       />
@@ -112,19 +108,23 @@ const StatsCard: React.FC<{
   value: number | string | React.ReactNode;
   subtitle?: string;
 }> = ({ icon, title, value, subtitle }) => (
-  <div className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-    <div className="space-y-3">
-      <div className="flex items-center justify-center space-x-2">
-        {icon}
-        <p className="text-sm font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wide">
+  <div className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm p-6 rounded-lg border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group">
+    <div className="space-y-4">
+      <div className="flex items-center justify-center space-x-3">
+        <div className="w-10 h-10 bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/40 dark:to-blue-900/40 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+          {icon}
+        </div>
+        <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
           {title}
         </p>
       </div>
       <div className="text-center">
-        <div className="text-lg font-medium text-slate-800 dark:text-slate-100">
+        <div className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-violet-700 dark:from-slate-100 dark:to-violet-300 bg-clip-text text-transparent">
           {typeof value === 'number' ? value.toLocaleString() : value}
         </div>
-        {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{subtitle}</p>}
+        {subtitle && (
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium">{subtitle}</p>
+        )}
       </div>
     </div>
   </div>
