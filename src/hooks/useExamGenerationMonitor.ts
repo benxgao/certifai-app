@@ -82,7 +82,37 @@ export function useExamGenerationMonitor(
   // Calculate generation progress for UI display
   const generationProgress =
     examState?.exam_status === 'QUESTIONS_GENERATING' && examState?.started_at
-      ? estimateExamGenerationProgress(examState.started_at)
+      ? examState?.generation_progress
+        ? // Use real progress data from backend if available
+          {
+            isLikelyComplete: examState.generation_progress.completion_percentage >= 100,
+            estimatedTimeRemaining:
+              examState.generation_progress.completion_percentage >= 100 ? 0 : 10000, // 10 seconds if not complete
+            completionPercentage: examState.generation_progress.completion_percentage,
+            nextCheckTime: 3000, // Check every 3 seconds when we have real data
+            stage:
+              examState.generation_progress.completion_percentage >= 100
+                ? 'complete'
+                : 'generating',
+            questionsProgress: examState.generation_progress.target_questions
+              ? (examState.generation_progress.questions_generated /
+                  examState.generation_progress.target_questions) *
+                100
+              : undefined,
+            // Include real batch progress
+            realProgress: {
+              currentBatch: examState.generation_progress.current_batch,
+              totalBatches: examState.generation_progress.total_batches,
+              questionsGenerated: examState.generation_progress.questions_generated,
+              targetQuestions: examState.generation_progress.target_questions,
+            },
+          }
+        : // Fall back to time-based estimation if no real data
+          estimateExamGenerationProgress(examState.started_at, {
+            totalBatches: 5, // Default estimate
+            estimatedCompletionTime: 180000, // 3 minutes
+            averageBatchTime: 35000, // 35 seconds per batch
+          })
       : null;
 
   return {

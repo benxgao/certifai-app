@@ -28,6 +28,7 @@ import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotificatio
 import ErrorMessage from '@/components/custom/ErrorMessage'; // Import ErrorMessage
 import PageLoader from '@/components/custom/PageLoader'; // Import PageLoader
 import ExamTopicsDisplay from '@/components/custom/ExamTopicsDisplay'; // Import ExamTopicsDisplay
+import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar'; // Import ExamGenerationProgressBar
 import { Checkbox } from '@/components/ui/checkbox'; // Import Checkbox
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import {
@@ -969,25 +970,16 @@ export default function ExamAttemptPage() {
 
                 {/* Enhanced progress display */}
                 {generationProgress && (
-                  <div className="mt-4 mb-4">
-                    <div className="max-w-xs mx-auto">
-                      <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
-                        <span>Progress</span>
-                        <span>{Math.round(generationProgress.completionPercentage)}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
-                          style={{ width: `${generationProgress.completionPercentage}%` }}
-                        ></div>
-                      </div>
-                      {generationProgress.estimatedTimeRemaining > 0 && (
-                        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 text-center">
-                          Est. {Math.ceil(generationProgress.estimatedTimeRemaining / 1000)}s
-                          remaining
-                        </p>
-                      )}
-                    </div>
+                  <div className="mt-6 mb-6 max-w-md mx-auto">
+                    <ExamGenerationProgressBar
+                      progress={generationProgress.completionPercentage}
+                      estimatedTimeRemaining={generationProgress.estimatedTimeRemaining}
+                      className="w-full"
+                      showPercentage={true}
+                      showTimeRemaining={true}
+                      isAnimated={true}
+                      realProgress={generationProgress.realProgress}
+                    />
                   </div>
                 )}
 

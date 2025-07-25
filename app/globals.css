@@ -396,3 +396,17 @@ body {
     -webkit-text-fill-color: rgb(241 245 249) !important;
   }
 }
+
+/* Custom animations for exam generation progress */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}

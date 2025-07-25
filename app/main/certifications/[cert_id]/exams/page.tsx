@@ -37,6 +37,9 @@ import {
   FaRedo, // Changed from FaArrowRight to FaRedo for Resume action
   FaTrash, // Added delete icon
 } from 'react-icons/fa';
+import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
+import { estimateExamGenerationProgress } from '@/src/lib/examGenerationUtils';
+import { useExamListGenerationMonitor } from '@/src/hooks/useExamListGenerationMonitor';
 
 // Renamed original component to CertificationExamsContent
 function CertificationExamsContent() {
@@ -66,6 +69,9 @@ function CertificationExamsContent() {
     apiUserId,
     certId,
   );
+
+  // Monitor exam generation progress and enable smart polling
+  const { generatingCount } = useExamListGenerationMonitor(exams, mutateExams, isLoadingExams);
 
   // Fetch certification details separately to ensure we always have certification info
   const fetchCertification = async () => {
@@ -734,6 +740,17 @@ function CertificationExamsContent() {
               const hasStarted = exam.started_at !== null;
               const hasScore = exam.score !== null && exam.score !== undefined;
 
+              // Calculate generation progress for generating exams
+              const generationEstimate = examStatus === 'generating' && exam.started_at
+                ? estimateExamGenerationProgress(exam.started_at, {
+                    totalBatches: Math.ceil((exam.total_questions || 25) / 5), // Estimate 5 questions per batch
+                    estimatedCompletionTime: Math.max(120000, (exam.total_questions || 25) * 5000), // 5 seconds per question minimum, 2 minutes minimum
+                    averageBatchTime: 45000, // 45 seconds per batch
+                    questionsGenerated: 0, // We don't have this data in the list view
+                    totalQuestions: exam.total_questions || 25,
+                  })
+                : null;
+
               return (
                 <Card
                   key={exam.exam_id}
@@ -862,6 +879,20 @@ function CertificationExamsContent() {
                         </p>
                       </div>
                     </div>
+
+                    {/* Generation Progress Bar - only show for generating exams */}
+                    {examStatus === 'generating' && generationEstimate && (
+                      <div className="mt-4 p-4 bg-gradient-to-r from-violet-50/80 to-blue-50/80 dark:from-violet-950/30 dark:to-blue-950/30 rounded-lg border border-violet-200/60 dark:border-violet-700/60">
+                        <ExamGenerationProgressBar
+                          progress={generationEstimate.completionPercentage}
+                          estimatedTimeRemaining={generationEstimate.estimatedTimeRemaining}
+                          className="w-full"
+                          showPercentage={true}
+                          showTimeRemaining={true}
+                          isAnimated={true}
+                        />
+                      </div>
+                    )}
 
                     {/* Action Buttons Section */}
                     <div className="space-y-2">

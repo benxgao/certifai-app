@@ -5,8 +5,12 @@
 
 export interface BatchProgressInfo {
   totalBatches: number;
+  currentBatch?: number;
+  completedBatches?: number;
   estimatedCompletionTime: number; // in milliseconds
   averageBatchTime: number; // estimated time per batch in ms
+  questionsGenerated?: number;
+  totalQuestions?: number;
 }
 
 export interface ExamGenerationEstimate {
@@ -14,6 +18,14 @@ export interface ExamGenerationEstimate {
   estimatedTimeRemaining: number; // in milliseconds
   completionPercentage: number; // 0-100
   nextCheckTime: number; // suggested next check time in ms
+  stage: 'initializing' | 'generating' | 'finalizing' | 'complete';
+  questionsProgress?: number; // 0-100 based on actual questions generated
+  realProgress?: {
+    currentBatch: number;
+    totalBatches: number;
+    questionsGenerated: number;
+    targetQuestions?: number;
+  };
 }
 
 /**
@@ -44,6 +56,27 @@ export function estimateExamGenerationProgress(
   // Calculate completion percentage
   const completionPercentage = Math.min(100, (elapsedTime / expectedTotalTime) * 100);
 
+  // Determine generation stage
+  let stage: 'initializing' | 'generating' | 'finalizing' | 'complete';
+  if (completionPercentage < 15) {
+    stage = 'initializing';
+  } else if (completionPercentage < 85) {
+    stage = 'generating';
+  } else if (completionPercentage < 100) {
+    stage = 'finalizing';
+  } else {
+    stage = 'complete';
+  }
+
+  // Calculate questions progress if batch info is available
+  let questionsProgress: number | undefined;
+  if (batchInfo?.questionsGenerated !== undefined && batchInfo?.totalQuestions !== undefined) {
+    questionsProgress = Math.min(
+      100,
+      (batchInfo.questionsGenerated / batchInfo.totalQuestions) * 100,
+    );
+  }
+
   // Estimate if generation is likely complete
   const isLikelyComplete = elapsedTime >= expectedTotalTime * 0.9; // 90% of expected time
 
@@ -65,6 +98,8 @@ export function estimateExamGenerationProgress(
     estimatedTimeRemaining,
     completionPercentage,
     nextCheckTime,
+    stage,
+    questionsProgress,
   };
 }
 

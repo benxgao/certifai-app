@@ -288,6 +288,14 @@ export interface ExamState {
     max_quiz_counts: number;
     pass_score: number;
   };
+  generation_progress?: {
+    current_batch: number;
+    total_batches: number;
+    questions_generated: number;
+    target_questions?: number;
+    completion_percentage: number;
+    updated_at: number;
+  };
 }
 
 // Hook to get exam state/details with optimized polling for generation status
