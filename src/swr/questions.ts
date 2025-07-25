@@ -39,6 +39,13 @@ export function useExamQuestions(
     {
       shouldRetryOnError: false, // Optional: configure SWR behavior
       revalidateOnFocus: false, // Optional: prevent revalidation on window focus
+      revalidateOnReconnect: false, // Prevent revalidation on reconnect
+      dedupingInterval: 3000, // Increase to 3 seconds to prevent rapid successive calls (overrides useAuthSWR's 5 second default)
+      refreshInterval: 0, // Disable auto refresh
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+      keepPreviousData: true, // Keep previous data while loading new data
+      focusThrottleInterval: 15000, // Throttle focus revalidation to 15 seconds
     },
   );
 

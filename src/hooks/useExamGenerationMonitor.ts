@@ -22,37 +22,82 @@ export function useExamGenerationMonitor(
   );
   const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastStatusRef = useRef<string | null>(null);
+  const isInitialMount = useRef(true);
+  const hasStableState = useRef(false);
+  const lastRequestTime = useRef<number>(0);
+  const REQUEST_COOLDOWN = 5000; // 5 seconds minimum between requests
 
-  // Force immediate status check when component mounts or exam ID changes
+  // Force immediate status check only on initial mount and only if needed
   useEffect(() => {
-    if (apiUserId && certId && examId) {
-      // Immediate check on mount
-      mutateExamState();
+    if (
+      apiUserId &&
+      certId &&
+      examId &&
+      isInitialMount.current &&
+      !examState &&
+      !hasStableState.current
+    ) {
+      // Only do immediate check if we haven't made a request recently
+      const now = Date.now();
+      if (now - lastRequestTime.current > REQUEST_COOLDOWN) {
+        mutateExamState();
+        lastRequestTime.current = now;
+      }
+      isInitialMount.current = false;
+    }
+  }, [apiUserId, certId, examId, examState, mutateExamState]);
 
-      // Set up smart polling for generating exams
-      if (examState?.exam_status === 'QUESTIONS_GENERATING') {
-        // Clear any existing interval
+  // Set up smart polling only for generating exams and stop all polling for stable states
+  useEffect(() => {
+    const currentStatus = examState?.exam_status;
+
+    // Mark as stable state to prevent future unnecessary requests
+    if (
+      currentStatus &&
+      currentStatus !== 'QUESTIONS_GENERATING' &&
+      currentStatus !== 'PENDING_QUESTIONS'
+    ) {
+      hasStableState.current = true;
+    }
+
+    if (currentStatus === 'QUESTIONS_GENERATING' && !hasStableState.current) {
+      // Clear any existing interval
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+      }
+
+      // Use smart polling interval based on estimated progress
+      const pollingInterval = getSmartPollingInterval(examState);
+
+      // Only start polling if interval is greater than 0
+      if (pollingInterval > 0) {
+        checkIntervalRef.current = setInterval(() => {
+          const now = Date.now();
+          // Only make request if not already validating, not in stable state, and cooldown has passed
+          if (
+            !isValidatingExamState &&
+            !hasStableState.current &&
+            now - lastRequestTime.current > REQUEST_COOLDOWN
+          ) {
+            mutateExamState();
+            lastRequestTime.current = now;
+          }
+        }, Math.max(pollingInterval, REQUEST_COOLDOWN)); // Ensure minimum interval respects cooldown
+      }
+
+      return () => {
         if (checkIntervalRef.current) {
           clearInterval(checkIntervalRef.current);
         }
-
-        // Use smart polling interval based on estimated progress
-        const pollingInterval = getSmartPollingInterval(examState);
-
-        checkIntervalRef.current = setInterval(() => {
-          if (!isValidatingExamState) {
-            mutateExamState();
-          }
-        }, pollingInterval);
-
-        return () => {
-          if (checkIntervalRef.current) {
-            clearInterval(checkIntervalRef.current);
-          }
-        };
+      };
+    } else {
+      // Clear polling for non-generating states or stable states
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+        checkIntervalRef.current = null;
       }
     }
-  }, [apiUserId, certId, examId, examState, mutateExamState, isValidatingExamState]);
+  }, [examState, mutateExamState, isValidatingExamState]);
 
   // Clean up interval when status changes from generating
   useEffect(() => {

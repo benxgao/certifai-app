@@ -23,6 +23,7 @@ import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams'; // Import SWR hook
 import { useCreateExam } from '@/src/swr/createExam'; // Import create exam hook
+import { useAuthenticatedCertificationDetail } from '@/src/swr/certifications'; // Import certification SWR hook
 import { useRateLimitFromExams } from '@/src/hooks/useRateLimitFromExams'; // Import optimized rate limit hook
 import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay'; // Import rate limit display
 import Breadcrumb from '@/components/custom/Breadcrumb'; // Import Breadcrumb component
@@ -48,21 +49,9 @@ function CertificationExamsContent() {
   const certId = params.cert_id ? parseInt(params.cert_id as string, 10) : null;
   const { apiUserId } = useFirebaseAuth();
 
-  // Separate state for certification data to ensure we always have certification info
-  const [certification, setCertification] = useState<{
-    cert_id: number;
-    name: string;
-    description?: string;
-    min_quiz_counts: number;
-    max_quiz_counts: number;
-    pass_score: number;
-    firm?: {
-      firm_id: number;
-      name: string;
-      code: string;
-    };
-  } | null>(null);
-  const [isLoadingCertification, setIsLoadingCertification] = useState(true);
+  // Use SWR hook for certification data instead of manual fetch
+  const { certification, isLoadingCertification, isCertificationError } =
+    useAuthenticatedCertificationDetail(certId?.toString() || null);
 
   // Use SWR hook for exams data
   const { exams, rateLimit, isLoadingExams, mutateExams } = useExamsForCertification(
@@ -73,37 +62,7 @@ function CertificationExamsContent() {
   // Monitor exam generation progress and enable smart polling
   const { generatingCount } = useExamListGenerationMonitor(exams, mutateExams, isLoadingExams);
 
-  // Fetch certification details separately to ensure we always have certification info
-  const fetchCertification = async () => {
-    if (!certId) return;
-    setIsLoadingCertification(true);
-    try {
-      const response = await fetch(`/api/public/certifications/${certId}`);
-      if (!response.ok) throw new Error('Failed to fetch certification');
-      const result = await response.json();
-      setCertification(result.data || null);
-    } catch (error) {
-      console.error('Error fetching certification:', error);
-      setCertification(null);
-    } finally {
-      setIsLoadingCertification(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCertification();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [certId]); // Removed apiUserId dependency as SWR handles it
-
-  // Update certification fallback when exams data loads
-  useEffect(() => {
-    // Fallback: If we don't have certification data yet and exams have certification info, use it
-    if (!certification && exams && exams.length > 0 && exams[0].certification) {
-      setCertification(exams[0].certification);
-    }
-  }, [exams, certification]);
-
-  // Derived certification data with fallback
+  // Derived certification data with fallback from exams
   const displayCertification =
     certification ||
     (exams && exams.length > 0 && exams[0].certification ? exams[0].certification : null);
@@ -741,15 +700,19 @@ function CertificationExamsContent() {
               const hasScore = exam.score !== null && exam.score !== undefined;
 
               // Calculate generation progress for generating exams
-              const generationEstimate = examStatus === 'generating' && exam.started_at
-                ? estimateExamGenerationProgress(exam.started_at, {
-                    totalBatches: Math.ceil((exam.total_questions || 25) / 5), // Estimate 5 questions per batch
-                    estimatedCompletionTime: Math.max(120000, (exam.total_questions || 25) * 5000), // 5 seconds per question minimum, 2 minutes minimum
-                    averageBatchTime: 45000, // 45 seconds per batch
-                    questionsGenerated: 0, // We don't have this data in the list view
-                    totalQuestions: exam.total_questions || 25,
-                  })
-                : null;
+              const generationEstimate =
+                examStatus === 'generating' && exam.started_at
+                  ? estimateExamGenerationProgress(exam.started_at, {
+                      totalBatches: Math.ceil((exam.total_questions || 25) / 5), // Estimate 5 questions per batch
+                      estimatedCompletionTime: Math.max(
+                        120000,
+                        (exam.total_questions || 25) * 5000,
+                      ), // 5 seconds per question minimum, 2 minutes minimum
+                      averageBatchTime: 45000, // 45 seconds per batch
+                      questionsGenerated: 0, // We don't have this data in the list view
+                      totalQuestions: exam.total_questions || 25,
+                    })
+                  : null;
 
               return (
                 <Card

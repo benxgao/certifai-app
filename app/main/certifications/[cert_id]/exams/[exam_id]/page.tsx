@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -53,15 +53,23 @@ export default function ExamAttemptPage() {
   const [isSubmittingExamFlag, setIsSubmittingExamFlag] = useState(false); // To manage loading state for submission
   const [isNavigatingPage, setIsNavigatingPage] = useState(false);
 
+  // Use ref to track previous URL to prevent unnecessary API calls
+  const previousUrlRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (apiUserId && certId !== null && examId) {
-      setQuestionsApiUrl(
-        `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions?page=${currentPage}&pageSize=${pageSize}`,
-      );
+      const newUrl = `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions?page=${currentPage}&pageSize=${pageSize}`;
+
+      // Only update if URL has actually changed
+      if (previousUrlRef.current !== newUrl) {
+        setQuestionsApiUrl(newUrl);
+        previousUrlRef.current = newUrl;
+      }
     }
   }, [apiUserId, certId, examId, currentPage, pageSize]);
 
   // Use the enhanced monitoring hook for better generation status tracking
+  // Only use the monitor when we actually need it (for generating exams)
   const {
     examState,
     isValidatingExamState,
@@ -71,7 +79,7 @@ export default function ExamAttemptPage() {
   } = useExamGenerationMonitor(apiUserId, certId, examId);
   const isLoadingExamState = !examState && !isValidatingExamState;
 
-  // Add status change notifications
+  // Add status change notifications only when exam state exists
   useExamStatusNotifications(examState);
 
   // Get exam questions first
@@ -171,27 +179,27 @@ export default function ExamAttemptPage() {
   }, [submitExamError]);
 
   const handlePreviousPage = async () => {
-    if (pagination && pagination.currentPage > 1) {
+    if (pagination && pagination.currentPage > 1 && !isNavigatingPage) {
       setIsNavigatingPage(true);
       // Immediate UI update for optimistic loading
       setCurrentPage(pagination.currentPage - 1);
       // Scroll to top of the page smoothly
       window.scrollTo({ top: 0, behavior: 'smooth' });
       // Reset loading state after a brief moment
-      setTimeout(() => setIsNavigatingPage(false), 300);
+      setTimeout(() => setIsNavigatingPage(false), 400);
     }
   };
 
   const handleNextPageOrSubmit = async () => {
-    if (pagination && pagination.currentPage < pagination.totalPages) {
+    if (pagination && pagination.currentPage < pagination.totalPages && !isNavigatingPage) {
       setIsNavigatingPage(true);
       // Immediate UI update for optimistic loading
       setCurrentPage(pagination.currentPage + 1);
       // Scroll to top of the page smoothly
       window.scrollTo({ top: 0, behavior: 'smooth' });
       // Reset loading state after a brief moment
-      setTimeout(() => setIsNavigatingPage(false), 300);
-    } else {
+      setTimeout(() => setIsNavigatingPage(false), 400);
+    } else if (pagination && pagination.currentPage === pagination.totalPages) {
       setShowConfirmModal(true);
     }
   };
@@ -919,15 +927,7 @@ export default function ExamAttemptPage() {
                           return (
                             <Button
                               size="lg"
-                              onClick={() => {
-                                if (pagination) {
-                                  setIsNavigatingPage(true);
-                                  setCurrentPage(pagination.currentPage + 1);
-                                  // Scroll to top of the page smoothly
-                                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                                  setTimeout(() => setIsNavigatingPage(false), 300);
-                                }
-                              }}
+                              onClick={handleNextPageOrSubmit}
                               disabled={
                                 isLoadingQuestions || isAnswering || isNavigatingPage || !pagination
                               }

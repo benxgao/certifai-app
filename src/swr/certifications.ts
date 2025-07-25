@@ -330,6 +330,18 @@ export function useAuthenticatedCertificationDetail(certificationId: string | nu
     Error
   >(
     certificationId ? `/api/public/certifications/${certificationId}` : null, // Always use public endpoint for all app requests
+    {
+      // Aggressive deduplication to prevent duplicate requests
+      dedupingInterval: 60000, // 60 seconds for maximum deduplication
+      focusThrottleInterval: 300000, // 5 minutes
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      revalidateOnMount: false,
+      keepPreviousData: true,
+      errorRetryCount: 0, // No retries to prevent duplicate requests
+      errorRetryInterval: 10000,
+    },
   );
 
   return {

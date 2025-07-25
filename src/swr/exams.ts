@@ -6,6 +6,7 @@ import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
 import { getSmartPollingInterval } from '@/src/lib/examGenerationUtils';
+import { useRef, useCallback } from 'react';
 
 // Enhanced response that includes rate limit information
 export interface EnhancedExamListResponse extends PaginatedApiResponse<ExamListItem[]> {
@@ -60,6 +61,15 @@ export function useAllUserExams(apiUserId: string | null) {
       },
       refreshWhenHidden: false,
       refreshWhenOffline: false,
+      // Add deduplication settings to prevent duplicate requests
+      dedupingInterval: 10000, // 10 seconds
+      focusThrottleInterval: 30000, // 30 seconds
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      keepPreviousData: true,
+      errorRetryCount: 1, // Allow 1 retry for exams
+      errorRetryInterval: 5000,
     },
   );
 
@@ -111,6 +121,15 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
       },
       refreshWhenHidden: false,
       refreshWhenOffline: false,
+      // Add deduplication settings to prevent duplicate requests
+      dedupingInterval: 10000, // 10 seconds for exams (shorter than certifications since exams can change state)
+      focusThrottleInterval: 30000, // 30 seconds
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      keepPreviousData: true,
+      errorRetryCount: 1, // Allow 1 retry for exams since they're more dynamic
+      errorRetryInterval: 5000,
     },
   );
 
@@ -304,32 +323,68 @@ export function useExamState(
   certId: number | null,
   examId: string | null,
 ) {
+  // Create a stable key for caching and conditional fetching
+  const cacheKey =
+    apiUserId && certId && examId
+      ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
+      : null;
+
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
     ApiResponse<ExamState>,
     Error
-  >(
-    apiUserId && certId && examId
-      ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
-      : null,
-    {
-      // Enable smart polling based on generation progress
-      refreshInterval: (data) => {
-        const examStatus = data?.data?.exam_status || data?.data?.status;
-        if (examStatus === 'QUESTIONS_GENERATING') {
-          return getSmartPollingInterval(data?.data);
-        }
-        return 0;
-      },
-      refreshWhenHidden: false,
-      refreshWhenOffline: false,
-      revalidateOnFocus: true,
-      // Add aggressive revalidation for generating exams
-      revalidateOnReconnect: true,
-      // Reduce deduplication interval for faster updates
-      dedupingInterval: 1000,
-      // Add focus throttle for better responsiveness
-      focusThrottleInterval: 1000,
+  >(cacheKey, {
+    // Enable smart polling based on generation progress
+    refreshInterval: (data) => {
+      const examStatus = data?.data?.exam_status || data?.data?.status;
+      if (examStatus === 'QUESTIONS_GENERATING') {
+        return getSmartPollingInterval(data?.data);
+      }
+      return 0;
     },
+    refreshWhenHidden: false,
+    refreshWhenOffline: false,
+    // Disable revalidation on focus and reconnect for ready exams to prevent unnecessary requests
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    // Maximum deduplication to prevent any duplicate requests
+    dedupingInterval: 60000, // Increased to 60 seconds for complete deduplication
+    // Disable focus throttle entirely
+    focusThrottleInterval: 300000, // 5 minutes
+    // Prevent retries for stable states
+    shouldRetryOnError: (error) => {
+      // Don't retry if we have a successful response with stable status
+      const examStatus = data?.data?.exam_status || data?.data?.status;
+      if (examStatus && examStatus !== 'QUESTIONS_GENERATING') {
+        return false;
+      }
+      return true;
+    },
+    // Minimal retries
+    errorRetryCount: 0, // Changed to 0 to prevent any retry-based duplicates
+    errorRetryInterval: 10000,
+    // Disable automatic revalidation to prevent duplicate requests
+    revalidateIfStale: false,
+    // Keep previous data to prevent unnecessary loading states
+    keepPreviousData: true,
+    // Disable revalidation when data is already cached
+    revalidateOnMount: false,
+  });
+
+  // Add deduplication wrapper for mutateExamState
+  const lastMutateTime = useRef<number>(0);
+  const MUTATE_COOLDOWN = 2000; // 2 seconds minimum between mutations
+
+  const debouncedMutate = useCallback(
+    (...args: Parameters<typeof mutate>) => {
+      const now = Date.now();
+      if (now - lastMutateTime.current > MUTATE_COOLDOWN) {
+        lastMutateTime.current = now;
+        return mutate(...args);
+      }
+      // Return a resolved promise to maintain the same API
+      return Promise.resolve(data);
+    },
+    [mutate, data],
   );
 
   return {
@@ -337,6 +392,6 @@ export function useExamState(
     isLoadingExamState: isLoading,
     isExamStateError: error,
     isValidatingExamState: isValidating,
-    mutateExamState: mutate,
+    mutateExamState: debouncedMutate,
   };
 }
