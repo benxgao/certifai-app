@@ -23,6 +23,8 @@ import {
   extractTopicsFromQuestions,
 } from '@/swr/questions'; // Import useSubmitAnswer and extractTopicsFromQuestions
 import { useSubmitExam, useExamState } from '@/swr/exams'; // Import useSubmitExam and useExamState
+import { useExamGenerationMonitor } from '@/src/hooks/useExamGenerationMonitor'; // Import generation monitor
+import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications'; // Import status notifications
 import ErrorMessage from '@/components/custom/ErrorMessage'; // Import ErrorMessage
 import PageLoader from '@/components/custom/PageLoader'; // Import PageLoader
 import ExamTopicsDisplay from '@/components/custom/ExamTopicsDisplay'; // Import ExamTopicsDisplay
@@ -58,12 +60,18 @@ export default function ExamAttemptPage() {
     }
   }, [apiUserId, certId, examId, currentPage, pageSize]);
 
-  // Use the new SWR hook to get exam state
-  const { examState, isLoadingExamState, isExamStateError, mutateExamState } = useExamState(
-    apiUserId,
-    certId,
-    examId,
-  );
+  // Use the enhanced monitoring hook for better generation status tracking
+  const {
+    examState,
+    isValidatingExamState,
+    forceStatusCheck,
+    generationProgress,
+    shouldShowCheckButton,
+  } = useExamGenerationMonitor(apiUserId, certId, examId);
+  const isLoadingExamState = !examState && !isValidatingExamState;
+
+  // Add status change notifications
+  useExamStatusNotifications(examState);
 
   // Get exam questions first
   const {
@@ -207,7 +215,7 @@ export default function ExamAttemptPage() {
       toastHelpers.success.examSubmitted();
 
       // Revalidate exam state to get updated score and submission status
-      mutateExamState();
+      forceStatusCheck();
       // Optionally, redirect the user or show a summary page
       // router.push(`/main/certifications/${certId}/exams/${examId}/results`);
     } catch (error: any) {
@@ -277,15 +285,14 @@ export default function ExamAttemptPage() {
   }
 
   // Check if this is a 404 error (exam not found) and redirect to not-found page
-  const is404Error =
-    (isQuestionsError as any)?.status === 404 || (isExamStateError as any)?.status === 404;
+  const is404Error = (isQuestionsError as any)?.status === 404;
 
   if (is404Error) {
     notFound(); // Redirect to the global not-found page
   }
 
   // Handle other types of errors (network errors, server errors, etc.)
-  if (isQuestionsError || isExamStateError) {
+  if (isQuestionsError) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
         <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
@@ -331,9 +338,7 @@ export default function ExamAttemptPage() {
                       Error Loading Exam {examId?.substring(0, 8)}
                     </h1>
                     <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
-                      {isQuestionsError?.message ||
-                        isExamStateError?.message ||
-                        'Error loading exam data.'}
+                      {isQuestionsError?.message || 'Error loading exam data.'}
                     </p>
                   </div>
 
@@ -961,6 +966,55 @@ export default function ExamAttemptPage() {
                 <p className="text-base text-slate-500 dark:text-slate-400 mt-2">
                   Please wait while we prepare your exam questions. This may take a few minutes.
                 </p>
+
+                {/* Enhanced progress display */}
+                {generationProgress && (
+                  <div className="mt-4 mb-4">
+                    <div className="max-w-xs mx-auto">
+                      <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+                        <span>Progress</span>
+                        <span>{Math.round(generationProgress.completionPercentage)}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                          style={{ width: `${generationProgress.completionPercentage}%` }}
+                        ></div>
+                      </div>
+                      {generationProgress.estimatedTimeRemaining > 0 && (
+                        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 text-center">
+                          Est. {Math.ceil(generationProgress.estimatedTimeRemaining / 1000)}s
+                          remaining
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Smart check status button - only show when likely complete */}
+                {shouldShowCheckButton && (
+                  <div className="mt-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={forceStatusCheck}
+                      disabled={isValidatingExamState}
+                      className="text-blue-600 border-blue-200 hover:bg-blue-50 dark:text-blue-400 dark:border-blue-700 dark:hover:bg-blue-900/20"
+                    >
+                      {isValidatingExamState ? (
+                        <>
+                          <div className="animate-spin rounded-full h-3 w-3 border-2 border-blue-600 border-t-transparent mr-2"></div>
+                          Checking...
+                        </>
+                      ) : (
+                        'Check Status'
+                      )}
+                    </Button>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-2">
+                      Generation should be complete - click to check
+                    </p>
+                  </div>
+                )}
               </>
             ) : examState?.exam_status === 'QUESTION_GENERATION_FAILED' ? (
               <>

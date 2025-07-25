@@ -5,6 +5,7 @@ import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
+import { getSmartPollingInterval } from '@/src/lib/examGenerationUtils';
 
 // Enhanced response that includes rate limit information
 export interface EnhancedExamListResponse extends PaginatedApiResponse<ExamListItem[]> {
@@ -49,13 +50,13 @@ export function useAllUserExams(apiUserId: string | null) {
   >(
     apiUserId ? `/api/users/${apiUserId}/exams?pageSize=50` : null, // Fetch larger page size to get more exams
     {
-      // Enable polling if there are exams in generating status
+      // Enable more conservative polling if there are exams in generating status
       refreshInterval: (data) => {
         const hasGeneratingExams = data?.data?.some(
           (exam) =>
             exam.exam_status === 'QUESTIONS_GENERATING' || exam.status === 'QUESTIONS_GENERATING',
         );
-        return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating
+        return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating (more conservative)
       },
       refreshWhenHidden: false,
       refreshWhenOffline: false,
@@ -100,13 +101,13 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
   >(
     apiUserId && certId ? `/api/users/${apiUserId}/certifications/${certId}/exams` : null, // Conditional fetching
     {
-      // Enable polling if there are exams in generating status
+      // Enable more conservative polling if there are exams in generating status
       refreshInterval: (data) => {
         const hasGeneratingExams = data?.data?.some(
           (exam) =>
             exam.exam_status === 'QUESTIONS_GENERATING' || exam.status === 'QUESTIONS_GENERATING',
         );
-        return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating
+        return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating (more conservative)
       },
       refreshWhenHidden: false,
       refreshWhenOffline: false,
@@ -289,7 +290,7 @@ export interface ExamState {
   };
 }
 
-// Hook to get exam state/details
+// Hook to get exam state/details with optimized polling for generation status
 export function useExamState(
   apiUserId: string | null,
   certId: number | null,
@@ -303,14 +304,23 @@ export function useExamState(
       ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
       : null,
     {
-      // Enable polling if exam is in generating status
+      // Enable smart polling based on generation progress
       refreshInterval: (data) => {
         const examStatus = data?.data?.exam_status || data?.data?.status;
-        return examStatus === 'QUESTIONS_GENERATING' ? 5000 : 0; // Poll every 5 seconds if generating
+        if (examStatus === 'QUESTIONS_GENERATING') {
+          return getSmartPollingInterval(data?.data);
+        }
+        return 0;
       },
       refreshWhenHidden: false,
       refreshWhenOffline: false,
       revalidateOnFocus: true,
+      // Add aggressive revalidation for generating exams
+      revalidateOnReconnect: true,
+      // Reduce deduplication interval for faster updates
+      dedupingInterval: 1000,
+      // Add focus throttle for better responsiveness
+      focusThrottleInterval: 1000,
     },
   );
 

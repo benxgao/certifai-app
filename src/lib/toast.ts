@@ -43,6 +43,19 @@ export const toastHelpers = {
         duration: 10000,
       }),
 
+    examReady: () =>
+      toast.success('🎉 Exam is ready!', {
+        description: 'Your exam questions have been generated and are ready to start.',
+        duration: 8000,
+        action: {
+          label: 'Start Exam',
+          onClick: () => {
+            // The page should already show the exam content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          },
+        },
+      }),
+
     certificationRegistered: (certificationName: string) =>
       toast.success('🎓 Registration successful!', {
         description: `Successfully registered for "${certificationName}".`,
