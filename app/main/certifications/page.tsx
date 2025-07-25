@@ -214,8 +214,8 @@ export default function CertificationsPage() {
 
         {/* Modal for Certification Details and Registration */}
         {isModalOpen && selectedCertForModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-md bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-lg rounded-xl overflow-hidden">
+          <div className="fixed inset-0 bg-slate-900/20 dark:bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <Card className="w-full max-w-md bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-xl overflow-hidden">
               <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
                 <CardTitle className="text-xl font-semibold text-slate-900 dark:text-slate-50">
                   {selectedCertForModal.name}
