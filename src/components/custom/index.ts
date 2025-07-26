@@ -16,3 +16,12 @@ export { default as ProfileErrorState } from './ProfileErrorState';
 export { default as ProfileQuickView } from './ProfileQuickView';
 export { default as ProfileSettings } from './ProfileSettings';
 export { default as SkeletonCard } from './SkeletonCard';
+
+// Exam-related components
+export { ExamLoadingState } from './ExamLoadingState';
+export { ExamErrorState } from './ExamErrorState';
+export { ExamProgressInfo } from './ExamProgressInfo';
+export { ExamCustomPromptDisplay } from './ExamCustomPromptDisplay';
+export { ExamQuestionsContainer } from './ExamQuestionsContainer';
+export { ExamBottomNavigation } from './ExamBottomNavigation';
+export { ExamConfirmSubmissionModal } from './ExamConfirmSubmissionModal';

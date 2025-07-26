@@ -34,8 +34,8 @@ export const ExamSubmissionModal: React.FC<ExamSubmissionModalProps> = ({
             Confirm Submission
           </DialogTitle>
           <DialogDescription className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
-            Are you sure you want to submit your exam? You will not be able to change your
-            answers after submission.
+            Are you sure you want to submit your exam? You will not be able to change your answers
+            after submission.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-3">

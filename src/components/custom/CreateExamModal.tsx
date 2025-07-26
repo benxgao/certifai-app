@@ -40,7 +40,7 @@ interface CreateExamModalProps {
   onCreateExam: () => Promise<void>;
   isCreatingExam: boolean;
   createExamError: any;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export function CreateExamModal({
@@ -58,7 +58,7 @@ export function CreateExamModal({
 }: CreateExamModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[425px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
         <DialogHeader>
           <div className="flex items-center gap-2">

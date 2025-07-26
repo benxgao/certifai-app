@@ -18,7 +18,7 @@ interface QuestionCardProps {
   index: number;
   pagination: any;
   pageSize: number;
-  submittedAt: string | null;
+  submittedAt: number | null;
   isAnswering: boolean;
   isSubmittingExamFlag: boolean;
   submitError: any;
@@ -39,13 +39,16 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   isCorrectOption,
 }) => {
   return (
-    <Card className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30 border-b border-slate-100 dark:border-slate-700/50 p-3 sm:p-6">
+    <Card className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden">
+      {/* Decorative gradient orb */}
+      <div className="absolute -top-4 -right-4 w-24 h-24 bg-violet-100/30 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
+
+      <CardHeader className="relative z-10 bg-gradient-to-r from-slate-50/80 to-violet-50/40 dark:from-slate-800/60 dark:to-violet-950/30 border-b border-slate-100/60 dark:border-slate-700/50 p-4 sm:p-6 backdrop-blur-sm">
         <div className="flex items-start justify-between">
-          <CardTitle className="text-base sm:text-lg leading-relaxed flex-1 mr-2 sm:mr-4">
+          <CardTitle className="text-base sm:text-lg leading-relaxed flex-1 mr-2 sm:mr-4 text-slate-900 dark:text-slate-100">
             <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs sm:text-sm font-normal border border-blue-100 dark:border-blue-800/50">
+                <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs sm:text-sm font-medium border border-blue-200/60 dark:border-blue-700/50 shadow-sm backdrop-blur-sm">
                   Q{((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
                 </div>
                 {question.exam_topic && (
@@ -77,43 +80,37 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           </CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="p-3 sm:p-6 pt-0">
-        <div className="space-y-3 mb-6">
+      <CardContent className="relative z-10 p-4 sm:p-6 pt-4">
+        <div className="space-y-4 mb-6">
           {question.answerOptions.map(({ option_id, option_text }, optionIndex) => {
             const isSelected = question.selected_option_id === option_id;
             const isCorrect = isCorrectOption(question, option_id);
             const showCorrectAnswer = submittedAt !== null && isCorrect;
             const showIncorrectSelection =
-              submittedAt !== null &&
-              isSelected &&
-              question.user_answer_is_correct === false;
+              submittedAt !== null && isSelected && question.user_answer_is_correct === false;
 
             return (
               <div
                 key={option_id}
-                className={`flex items-center space-x-3 p-3 sm:p-4 rounded-xl transition-all duration-200 cursor-pointer group relative border ${
+                className={`flex items-center space-x-3 p-4 sm:p-5 rounded-xl transition-all duration-300 cursor-pointer group relative border backdrop-blur-sm ${
                   // Show correct answer with green background after submission
                   showCorrectAnswer
-                    ? 'bg-green-25 border-green-200 dark:bg-green-900/20 dark:border-green-600/50 shadow-sm'
+                    ? 'bg-green-50/80 border-green-200/60 dark:bg-green-900/30 dark:border-green-600/50 shadow-lg'
                     : // Show selected wrong answer with red background
                     showIncorrectSelection
-                    ? 'bg-gradient-to-r from-red-25 to-red-50/50 border-red-200/60 dark:bg-gradient-to-r dark:from-red-900/20 dark:to-red-800/15 dark:border-red-600/40 shadow-sm'
+                    ? 'bg-gradient-to-r from-red-50/90 to-red-100/60 border-red-200/70 dark:bg-gradient-to-r dark:from-red-900/30 dark:to-red-800/20 dark:border-red-600/50 shadow-lg'
                     : // Show selected correct answer (already handled above, but for clarity)
-                    isSelected &&
-                      submittedAt !== null &&
-                      question.user_answer_is_correct === true
-                    ? 'bg-green-25 border-green-200 dark:bg-green-900/20 dark:border-green-600/50 shadow-sm'
+                    isSelected && submittedAt !== null && question.user_answer_is_correct === true
+                    ? 'bg-green-50/80 border-green-200/60 dark:bg-green-900/30 dark:border-green-600/50 shadow-lg'
                     : // Show regular selected state during exam
-                    isSelected &&
-                      submittedAt === null &&
-                      question.user_answer_is_correct !== true
-                    ? 'bg-blue-25 border-blue-200 dark:bg-blue-900/20 dark:border-blue-600/50 shadow-sm'
+                    isSelected && submittedAt === null && question.user_answer_is_correct !== true
+                    ? 'bg-blue-50/80 border-blue-200/60 dark:bg-blue-900/30 dark:border-blue-600/50 shadow-lg'
                     : // Default state with hover
-                      'bg-white border-gray-100 hover:bg-gray-25 hover:border-gray-200 dark:bg-slate-800 dark:border-slate-600/50 dark:hover:bg-slate-700 dark:hover:border-slate-500/50'
+                      'bg-white/80 border-slate-200/60 hover:bg-slate-50/80 hover:border-slate-300/60 dark:bg-slate-800/80 dark:border-slate-600/50 dark:hover:bg-slate-700/80 dark:hover:border-slate-500/60'
                 } ${
                   submittedAt !== null || isAnswering || isSubmittingExamFlag
                     ? 'cursor-not-allowed opacity-60'
-                    : 'hover:shadow-sm'
+                    : 'hover:shadow-lg hover:scale-[1.01]'
                 }`}
                 onClick={() => {
                   if (submittedAt === null && !isAnswering && !isSubmittingExamFlag) {
@@ -124,9 +121,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 <Checkbox
                   id={`${question.quiz_question_id}-${option_id}`}
                   checked={isSelected}
-                  onCheckedChange={() =>
-                    onOptionChange(question.quiz_question_id, option_id)
-                  }
+                  onCheckedChange={() => onOptionChange(question.quiz_question_id, option_id)}
                   disabled={submittedAt !== null || isAnswering || isSubmittingExamFlag}
                   className="flex-shrink-0"
                 />
@@ -179,9 +174,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         {/* Display error for individual answer submission */}
         <ErrorMessage
           error={
-            submitError && submitError.questionId === question.quiz_question_id
-              ? submitError
-              : null
+            submitError && submitError.questionId === question.quiz_question_id ? submitError : null
           }
         />
 

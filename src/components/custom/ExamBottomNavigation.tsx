@@ -4,9 +4,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
 
-interface ExamNavigationProps {
+interface ExamBottomNavigationProps {
   pagination: any;
-  submittedAt: string | null;
+  submittedAt: number | null;
   isLoadingQuestions: boolean;
   isAnswering: boolean;
   isNavigatingPage: boolean;
@@ -14,7 +14,7 @@ interface ExamNavigationProps {
   onNextPageOrSubmit: () => void;
 }
 
-export const ExamNavigation: React.FC<ExamNavigationProps> = ({
+export const ExamBottomNavigation: React.FC<ExamBottomNavigationProps> = ({
   pagination,
   submittedAt,
   isLoadingQuestions,
@@ -28,23 +28,26 @@ export const ExamNavigation: React.FC<ExamNavigationProps> = ({
   const isLastPage = pagination.currentPage === pagination.totalPages;
 
   return (
-    <div className="pt-8 border-t border-slate-100 dark:border-slate-700/50">
-      <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-xl p-4 lg:p-6 shadow-lg">
-        <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row lg:justify-between lg:items-center">
+    <div className="pt-8 border-t border-slate-100/60 dark:border-slate-700/50">
+      <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/50 rounded-2xl p-6 lg:p-8 shadow-xl">
+        {/* Decorative gradient orb */}
+        <div className="absolute -top-3 -right-3 w-20 h-20 bg-blue-100/30 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+
+        <div className="relative z-10 flex flex-col space-y-4 lg:space-y-0 lg:flex-row lg:justify-between lg:items-center">
           {/* Pagination info - centered on mobile, left on desktop */}
           <div className="flex flex-col items-center space-y-2 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-6">
-            <div className="flex items-center space-x-2 text-sm lg:text-base text-slate-500 dark:text-slate-400">
+            <div className="flex items-center space-x-2 text-sm lg:text-base text-slate-600 dark:text-slate-400">
               <span>Page</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">
+              <span className="font-bold text-slate-800 dark:text-slate-200 px-2 py-1 bg-slate-100/80 dark:bg-slate-700/80 rounded-lg">
                 {pagination.currentPage}
               </span>
               <span>of</span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">
+              <span className="font-bold text-slate-800 dark:text-slate-200 px-2 py-1 bg-slate-100/80 dark:bg-slate-700/80 rounded-lg">
                 {pagination.totalPages}
               </span>
             </div>
-            <div className="text-sm lg:text-base text-slate-500 dark:text-slate-400">
-              <span className="font-medium text-slate-600 dark:text-slate-300">
+            <div className="text-sm lg:text-base text-slate-600 dark:text-slate-400">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">
                 {pagination.totalItems}
               </span>{' '}
               total questions
@@ -60,7 +63,7 @@ export const ExamNavigation: React.FC<ExamNavigationProps> = ({
               disabled={
                 isLoadingQuestions || isAnswering || isNavigatingPage || pagination.currentPage <= 1
               }
-              className="flex-1 lg:flex-none lg:min-w-[140px] border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm shadow-sm"
+              className="flex-1 lg:flex-none lg:min-w-[140px] bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/90 dark:hover:bg-slate-700/90 shadow-lg hover:shadow-xl transition-all duration-300"
             >
               {isNavigatingPage ? (
                 <>
@@ -81,11 +84,11 @@ export const ExamNavigation: React.FC<ExamNavigationProps> = ({
                 size="lg"
                 onClick={onNextPageOrSubmit}
                 disabled={isLoadingQuestions || isAnswering || isNavigatingPage}
-                className={`flex-1 lg:flex-none lg:min-w-[140px] shadow-lg ${
+                className={`flex-1 lg:flex-none lg:min-w-[140px] backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 ${
                   isLastPage
-                    ? 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-emerald-500/25'
-                    : 'bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-violet-500/25'
-                } backdrop-blur-sm transition-all duration-200`}
+                    ? 'bg-emerald-500/90 hover:bg-emerald-600/90 text-white border border-emerald-400/50'
+                    : 'bg-violet-500/90 hover:bg-violet-600/90 text-white border border-violet-400/50'
+                }`}
               >
                 {isNavigatingPage ? (
                   <>
@@ -114,7 +117,7 @@ export const ExamNavigation: React.FC<ExamNavigationProps> = ({
                   size="lg"
                   onClick={onNextPageOrSubmit}
                   disabled={isLoadingQuestions || isAnswering || isNavigatingPage}
-                  className="flex-1 lg:flex-none lg:min-w-[140px] bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-lg shadow-violet-500/25 backdrop-blur-sm transition-all duration-200"
+                  className="flex-1 lg:flex-none lg:min-w-[140px] bg-violet-600 hover:bg-violet-700 text-white"
                 >
                   {isNavigatingPage ? (
                     <>

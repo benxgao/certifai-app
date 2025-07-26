@@ -230,9 +230,7 @@ function CertificationExamsContent() {
           onCreateExam={handleCreateExam}
           isCreatingExam={isCreatingExam}
           createExamError={createExamError}
-        >
-          <div></div> {/* Empty trigger since we handle opening programmatically */}
-        </CreateExamModal>
+        />
 
         {/* Enhanced Exams List Section */}
         {exams && exams.length > 0 ? (
