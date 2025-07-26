@@ -192,8 +192,8 @@ function CertificationExamsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-      <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+      <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
         {/* Breadcrumb Navigation */}
         <Breadcrumb
           items={[
@@ -206,7 +206,7 @@ function CertificationExamsContent() {
           ]}
         />
 
-        {/* Certification Status Card */}
+        {/* Enhanced Certification Status Card */}
         <CertificationStatusCard
           displayCertification={displayCertification}
           exams={exams || null}
@@ -234,24 +234,45 @@ function CertificationExamsContent() {
           <div></div> {/* Empty trigger since we handle opening programmatically */}
         </CreateExamModal>
 
-        {/* Exams List */}
+        {/* Enhanced Exams List Section */}
         {exams && exams.length > 0 ? (
-          <div className="space-y-4">
-            {exams.map((exam: ExamListItem) => (
-              <ExamCard
-                key={exam.exam_id}
-                exam={exam}
-                displayCertification={displayCertification}
-                onStartExam={handleStartExam}
-                onDeleteExam={handleDeleteExam}
-                navigatingExamId={navigatingExamId}
-                isDeletingExam={isDeletingExam}
-                deleteExamError={deleteExamError}
-              />
-            ))}
-          </div>
+          <section className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                Your Practice Exams
+              </h2>
+              <span className="text-sm text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+                {exams.length} exam{exams.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+
+            <div className="space-y-6">
+              {exams.map((exam: ExamListItem) => (
+                <ExamCard
+                  key={exam.exam_id}
+                  exam={exam}
+                  displayCertification={displayCertification}
+                  onStartExam={handleStartExam}
+                  onDeleteExam={handleDeleteExam}
+                  navigatingExamId={navigatingExamId}
+                  isDeletingExam={isDeletingExam}
+                  deleteExamError={deleteExamError}
+                />
+              ))}
+            </div>
+          </section>
         ) : (
-          <EmptyExamsState />
+          <section className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                Your Practice Exams
+              </h2>
+            </div>
+
+            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-xl p-8">
+              <EmptyExamsState />
+            </div>
+          </section>
         )}
       </div>
     </div>

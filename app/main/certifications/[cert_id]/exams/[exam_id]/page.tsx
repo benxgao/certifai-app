@@ -6,7 +6,15 @@ import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { FaCheck, FaEdit, FaLightbulb, FaTimes, FaArrowLeft, FaArrowRight, FaInfoCircle } from 'react-icons/fa';
+import {
+  FaCheck,
+  FaEdit,
+  FaLightbulb,
+  FaTimes,
+  FaArrowLeft,
+  FaArrowRight,
+  FaInfoCircle,
+} from 'react-icons/fa';
 import { toastHelpers } from '@/src/lib/toast';
 import {
   Dialog,
