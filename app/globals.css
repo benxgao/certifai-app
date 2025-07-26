@@ -410,3 +410,138 @@ body {
 .animate-shimmer {
   animation: shimmer 2s infinite;
 }
+
+/* Toast notification enhancements for consistent dashboard styling */
+.toaster {
+  --toast-bg: hsl(var(--popover));
+  --toast-border: hsl(var(--border));
+  --toast-text: hsl(var(--popover-foreground));
+}
+
+/* Toast animation improvements */
+[data-sonner-toaster] [data-sonner-toast] {
+  /* Enhanced glass-morphism effect */
+  background: var(--toast-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+
+  /* Enhanced shadow for depth */
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1),
+    0 0 0 1px rgb(255 255 255 / 0.05) !important;
+
+  /* Smooth transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Toast success state with gradient */
+[data-sonner-toaster] [data-sonner-toast][data-type='success'] {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.1) 0%,
+    rgba(5, 150, 105, 0.05) 100%
+  ) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Toast error state with gradient */
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1) 0%,
+    rgba(220, 38, 38, 0.05) 100%
+  ) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Toast warning state with gradient */
+[data-sonner-toaster] [data-sonner-toast][data-type='warning'] {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    rgba(217, 119, 6, 0.05) 100%
+  ) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Toast info state with gradient */
+[data-sonner-toaster] [data-sonner-toast][data-type='info'] {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(37, 99, 235, 0.05) 100%
+  ) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Enhanced button styling for toasts */
+[data-sonner-toaster] [data-sonner-toast] button[data-button] {
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%) !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast] button[data-button]:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.15) !important;
+}
+
+/* Close button styling */
+[data-sonner-toaster] [data-sonner-toast] button[data-close-button] {
+  background: rgba(148, 163, 184, 0.1) !important;
+  color: hsl(var(--muted-foreground)) !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast] button[data-close-button]:hover {
+  background: rgba(148, 163, 184, 0.2) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Dark mode adaptations */
+.dark [data-sonner-toaster] [data-sonner-toast] {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.3),
+    0 0 0 1px rgb(255 255 255 / 0.1) !important;
+}
+
+.dark [data-sonner-toaster] [data-sonner-toast][data-type='success'] {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.15) 0%,
+    rgba(21, 128, 61, 0.08) 100%
+  ) !important;
+  border-color: rgba(34, 197, 94, 0.4) !important;
+}
+
+.dark [data-sonner-toaster] [data-sonner-toast][data-type='error'] {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.15) 0%,
+    rgba(185, 28, 28, 0.08) 100%
+  ) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+.dark [data-sonner-toaster] [data-sonner-toast][data-type='warning'] {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.15) 0%,
+    rgba(180, 83, 9, 0.08) 100%
+  ) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+.dark [data-sonner-toaster] [data-sonner-toast][data-type='info'] {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.15) 0%,
+    rgba(67, 56, 202, 0.08) 100%
+  ) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}

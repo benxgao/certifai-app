@@ -225,7 +225,6 @@ export default function SignUpPage() {
       // Parse error and set appropriate message using the utility
       const errorMessage = getFirebaseErrorMessage(error);
 
-
       // Force state update to ensure error is visible
       setError(errorMessage);
 
@@ -286,7 +285,6 @@ export default function SignUpPage() {
         description: 'Please check your inbox (and spam folder) for the verification email.',
       });
     } catch (error: any) {
-
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
 
@@ -380,7 +378,6 @@ export default function SignUpPage() {
 
         return; // Success, exit the retry loop
       } catch (error: any) {
-
         // Check if this is a retryable error
         const isRetriableError =
           error.message?.includes('network') ||
@@ -566,7 +563,37 @@ export default function SignUpPage() {
             </Card>
           </div>
         </div>
-        <Toaster richColors />
+        <Toaster
+          richColors
+          position="top-right"
+          toastOptions={{
+            duration: 5000,
+            classNames: {
+              toast:
+                'group-[.toaster]:bg-white/95 group-[.toaster]:dark:bg-slate-800/95 group-[.toaster]:backdrop-blur-md group-[.toaster]:border group-[.toaster]:border-slate-200/60 group-[.toaster]:dark:border-slate-700/60 group-[.toaster]:shadow-2xl group-[.toaster]:shadow-slate-900/10 group-[.toaster]:dark:shadow-black/20 group-[.toaster]:rounded-xl',
+              title:
+                'group-[.toast]:text-slate-900 group-[.toast]:dark:text-slate-50 group-[.toast]:font-semibold',
+              description: 'group-[.toast]:text-slate-600 group-[.toast]:dark:text-slate-300',
+              actionButton:
+                'group-[.toast]:bg-gradient-to-r group-[.toast]:from-violet-600 group-[.toast]:to-blue-600 group-[.toast]:hover:from-violet-700 group-[.toast]:hover:to-blue-700 group-[.toast]:text-white group-[.toast]:font-medium group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:rounded-lg group-[.toast]:shadow-md group-[.toast]:transition-all group-[.toast]:duration-200',
+              cancelButton:
+                'group-[.toast]:bg-slate-100 group-[.toast]:dark:bg-slate-700 group-[.toast]:text-slate-700 group-[.toast]:dark:text-slate-300 group-[.toast]:hover:bg-slate-200 group-[.toast]:dark:hover:bg-slate-600 group-[.toast]:font-medium group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:rounded-lg group-[.toast]:shadow-sm group-[.toast]:transition-all group-[.toast]:duration-200',
+              closeButton:
+                'group-[.toast]:bg-slate-100/80 group-[.toast]:dark:bg-slate-700/80 group-[.toast]:text-slate-500 group-[.toast]:dark:text-slate-400 group-[.toast]:hover:bg-slate-200 group-[.toast]:dark:hover:bg-slate-600 group-[.toast]:backdrop-blur-sm group-[.toast]:rounded-lg group-[.toast]:transition-all group-[.toast]:duration-200',
+              success:
+                'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-emerald-50/95 group-[.toaster]:to-green-50/95 group-[.toaster]:dark:from-emerald-950/30 group-[.toaster]:dark:to-green-950/30 group-[.toaster]:border-emerald-200/60 group-[.toaster]:dark:border-emerald-700/60',
+              error:
+                'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-red-50/95 group-[.toaster]:to-rose-50/95 group-[.toaster]:dark:from-red-950/30 group-[.toaster]:dark:to-rose-950/30 group-[.toaster]:border-red-200/60 group-[.toaster]:dark:border-red-700/60',
+              warning:
+                'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-amber-50/95 group-[.toaster]:to-yellow-50/95 group-[.toaster]:dark:from-amber-950/30 group-[.toaster]:dark:to-yellow-950/30 group-[.toaster]:border-amber-200/60 group-[.toaster]:dark:border-amber-700/60',
+              info: 'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-blue-50/95 group-[.toaster]:to-cyan-50/95 group-[.toaster]:dark:from-blue-950/30 group-[.toaster]:dark:to-cyan-950/30 group-[.toaster]:border-blue-200/60 group-[.toaster]:dark:border-blue-700/60',
+              loading:
+                'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-violet-50/95 group-[.toaster]:to-purple-50/95 group-[.toaster]:dark:from-violet-950/30 group-[.toaster]:dark:to-purple-950/30 group-[.toaster]:border-violet-200/60 group-[.toaster]:dark:border-violet-700/60',
+            },
+          }}
+          expand={false}
+          visibleToasts={4}
+        />
       </div>
     );
   }
@@ -843,7 +870,37 @@ export default function SignUpPage() {
           </Card>
         </div>
       </div>
-      <Toaster richColors />
+      <Toaster
+        richColors
+        position="top-right"
+        toastOptions={{
+          duration: 5000,
+          classNames: {
+            toast:
+              'group-[.toaster]:bg-white/95 group-[.toaster]:dark:bg-slate-800/95 group-[.toaster]:backdrop-blur-md group-[.toaster]:border group-[.toaster]:border-slate-200/60 group-[.toaster]:dark:border-slate-700/60 group-[.toaster]:shadow-2xl group-[.toaster]:shadow-slate-900/10 group-[.toaster]:dark:shadow-black/20 group-[.toaster]:rounded-xl',
+            title:
+              'group-[.toast]:text-slate-900 group-[.toast]:dark:text-slate-50 group-[.toast]:font-semibold',
+            description: 'group-[.toast]:text-slate-600 group-[.toast]:dark:text-slate-300',
+            actionButton:
+              'group-[.toast]:bg-gradient-to-r group-[.toast]:from-violet-600 group-[.toast]:to-blue-600 group-[.toast]:hover:from-violet-700 group-[.toast]:hover:to-blue-700 group-[.toast]:text-white group-[.toast]:font-medium group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:rounded-lg group-[.toast]:shadow-md group-[.toast]:transition-all group-[.toast]:duration-200',
+            cancelButton:
+              'group-[.toast]:bg-slate-100 group-[.toast]:dark:bg-slate-700 group-[.toast]:text-slate-700 group-[.toast]:dark:text-slate-300 group-[.toast]:hover:bg-slate-200 group-[.toast]:dark:hover:bg-slate-600 group-[.toast]:font-medium group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:rounded-lg group-[.toast]:shadow-sm group-[.toast]:transition-all group-[.toast]:duration-200',
+            closeButton:
+              'group-[.toast]:bg-slate-100/80 group-[.toast]:dark:bg-slate-700/80 group-[.toast]:text-slate-500 group-[.toast]:dark:text-slate-400 group-[.toast]:hover:bg-slate-200 group-[.toast]:dark:hover:bg-slate-600 group-[.toast]:backdrop-blur-sm group-[.toast]:rounded-lg group-[.toast]:transition-all group-[.toast]:duration-200',
+            success:
+              'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-emerald-50/95 group-[.toaster]:to-green-50/95 group-[.toaster]:dark:from-emerald-950/30 group-[.toaster]:dark:to-green-950/30 group-[.toaster]:border-emerald-200/60 group-[.toaster]:dark:border-emerald-700/60',
+            error:
+              'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-red-50/95 group-[.toaster]:to-rose-50/95 group-[.toaster]:dark:from-red-950/30 group-[.toaster]:dark:to-rose-950/30 group-[.toaster]:border-red-200/60 group-[.toaster]:dark:border-red-700/60',
+            warning:
+              'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-amber-50/95 group-[.toaster]:to-yellow-50/95 group-[.toaster]:dark:from-amber-950/30 group-[.toaster]:dark:to-yellow-950/30 group-[.toaster]:border-amber-200/60 group-[.toaster]:dark:border-amber-700/60',
+            info: 'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-blue-50/95 group-[.toaster]:to-cyan-50/95 group-[.toaster]:dark:from-blue-950/30 group-[.toaster]:dark:to-cyan-950/30 group-[.toaster]:border-blue-200/60 group-[.toaster]:dark:border-blue-700/60',
+            loading:
+              'group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-violet-50/95 group-[.toaster]:to-purple-50/95 group-[.toaster]:dark:from-violet-950/30 group-[.toaster]:dark:to-purple-950/30 group-[.toaster]:border-violet-200/60 group-[.toaster]:dark:border-violet-700/60',
+          },
+        }}
+        expand={false}
+        visibleToasts={4}
+      />
     </div>
   );
 }
