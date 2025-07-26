@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, Suspense, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useProfileData } from '@/src/hooks/useProfileData';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import CertificationsSection from '@/components/custom/CertificationsSection';
 import DashboardStats from '@/components/custom/DashboardStats';
+import { ActionButton } from '@/components/custom';
 import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
@@ -60,10 +60,15 @@ const MainPage = () => {
                   <div className="flex items-center gap-3 pt-2">
                     <AdaptiveLearningInterestModal
                       trigger={
-                        <Button className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-lg">
-                          <Bell className="mr-2 h-4 w-4" />
+                        <ActionButton
+                          onClick={() => {}}
+                          variant="primary"
+                          size="lg"
+                          icon={<Bell className="h-4 w-4" />}
+                          className="shadow-md hover:shadow-lg transition-all duration-200"
+                        >
                           Get Notified When Ready
-                        </Button>
+                        </ActionButton>
                       }
                     />
                   </div>
@@ -71,9 +76,15 @@ const MainPage = () => {
                 <div className="hidden sm:flex items-center space-x-3">
                   <Suspense
                     fallback={
-                      <Button variant="secondary" disabled className="rounded-lg">
+                      <ActionButton
+                        onClick={() => {}}
+                        variant="secondary"
+                        disabled
+                        size="lg"
+                        className="rounded-lg"
+                      >
                         Loading...
-                      </Button>
+                      </ActionButton>
                     }
                   >
                     <LazyAvailableCertificationsButton />
@@ -93,9 +104,16 @@ const MainPage = () => {
             <div className="sm:hidden px-8 pb-8">
               <Suspense
                 fallback={
-                  <Button variant="secondary" disabled className="w-full rounded-lg">
+                  <ActionButton
+                    onClick={() => {}}
+                    variant="secondary"
+                    disabled
+                    size="lg"
+                    fullWidth
+                    className="rounded-lg"
+                  >
                     Loading...
-                  </Button>
+                  </ActionButton>
                 }
               >
                 <LazyAvailableCertificationsButton />

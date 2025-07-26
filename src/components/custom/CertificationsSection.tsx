@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { ActionButton } from './ActionButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { UserRegisteredCertification } from '@/swr/certifications';
@@ -112,14 +112,15 @@ const CertificationCard = ({ cert }: { cert: UserRegisteredCertification }) => {
 
           {/* Action Button - Mobile responsive layout */}
           <div className="flex justify-center sm:justify-end pt-2">
-            <Button
-              size="lg"
+            <ActionButton
               onClick={() => router.push(`/main/certifications/${cert.cert_id}/exams`)}
-              className="exam-action-button w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+              variant="success"
+              size="lg"
+              icon={<FaBookOpen className="w-4 h-4" />}
+              className="w-full sm:w-auto font-medium px-6 sm:px-8 py-3 sm:py-3 text-sm sm:text-base"
             >
-              <FaBookOpen className="w-4 h-4 mr-2" />
               <span className="block sm:inline">Continue Learning</span>
-            </Button>
+            </ActionButton>
           </div>
         </div>
       </CardContent>
@@ -179,9 +180,13 @@ const CertificationsSection = () => {
               your learning journey.
             </p>
           </div>
-          <Button onClick={() => router.push('/main/certifications')}>
+          <ActionButton
+            onClick={() => router.push('/main/certifications')}
+            variant="primary"
+            size="lg"
+          >
             Explore Certifications
-          </Button>
+          </ActionButton>
         </div>
       </div>
     );

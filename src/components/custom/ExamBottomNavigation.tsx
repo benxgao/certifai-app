@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
+import { ActionButton } from './ActionButton';
 
 interface ExamBottomNavigationProps {
   pagination: any;
@@ -56,82 +56,61 @@ export const ExamBottomNavigation: React.FC<ExamBottomNavigationProps> = ({
 
           {/* Navigation buttons - full width on mobile, auto width on desktop */}
           <div className="flex items-center space-x-3 w-full lg:w-auto justify-center lg:justify-end">
-            <Button
-              size="lg"
-              variant="outline"
+            <ActionButton
               onClick={onPreviousPage}
               disabled={
                 isLoadingQuestions || isAnswering || isNavigatingPage || pagination.currentPage <= 1
               }
-              className="flex-1 lg:flex-none lg:min-w-[140px] bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/90 dark:hover:bg-slate-700/90 shadow-lg hover:shadow-xl transition-all duration-300"
+              isLoading={isNavigatingPage}
+              loadingText="Loading..."
+              variant="outline"
+              size="lg"
+              icon={!isNavigatingPage ? <FaArrowLeft className="w-4 h-4" /> : undefined}
+              className="flex-1 lg:flex-none lg:min-w-[140px]"
             >
-              {isNavigatingPage ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2"></div>
-                  <span className="hidden sm:inline">Loading...</span>
-                  <span className="sm:hidden">...</span>
-                </>
-              ) : (
-                <>
-                  <FaArrowLeft className="w-4 h-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Previous</span>
-                </>
-              )}
-            </Button>
+              <span className="hidden sm:inline">Previous</span>
+            </ActionButton>
 
             {submittedAt === null ? (
-              <Button
-                size="lg"
+              <ActionButton
                 onClick={onNextPageOrSubmit}
                 disabled={isLoadingQuestions || isAnswering || isNavigatingPage}
-                className={`flex-1 lg:flex-none lg:min-w-[140px] backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 ${
-                  isLastPage
-                    ? 'bg-emerald-500/90 hover:bg-emerald-600/90 text-white border border-emerald-400/50'
-                    : 'bg-violet-500/90 hover:bg-violet-600/90 text-white border border-violet-400/50'
-                }`}
+                isLoading={isNavigatingPage}
+                loadingText={isLastPage ? 'Preparing...' : 'Loading...'}
+                variant={isLastPage ? 'success' : 'primary'}
+                size="lg"
+                icon={
+                  !isNavigatingPage && isLastPage ? (
+                    <FaCheck className="w-4 h-4" />
+                  ) : !isNavigatingPage && !isLastPage ? (
+                    <FaArrowRight className="w-4 h-4" />
+                  ) : undefined
+                }
+                className="flex-1 lg:flex-none lg:min-w-[140px]"
               >
-                {isNavigatingPage ? (
+                {isLastPage ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                    <span className="hidden sm:inline">
-                      {isLastPage ? 'Preparing...' : 'Loading...'}
-                    </span>
-                    <span className="sm:hidden">...</span>
-                  </>
-                ) : isLastPage ? (
-                  <>
-                    <FaCheck className="w-4 h-4 sm:mr-2" />
                     <span className="hidden sm:inline">Submit Exam</span>
                     <span className="sm:hidden">Submit</span>
                   </>
                 ) : (
-                  <>
-                    <span className="hidden sm:inline">Next</span>
-                    <FaArrowRight className="w-4 h-4 sm:ml-2" />
-                  </>
+                  <span className="hidden sm:inline">Next</span>
                 )}
-              </Button>
+              </ActionButton>
             ) : (
               !isLastPage && (
-                <Button
-                  size="lg"
+                <ActionButton
                   onClick={onNextPageOrSubmit}
                   disabled={isLoadingQuestions || isAnswering || isNavigatingPage}
-                  className="flex-1 lg:flex-none lg:min-w-[140px] bg-violet-600 hover:bg-violet-700 text-white"
+                  isLoading={isNavigatingPage}
+                  loadingText="Loading..."
+                  variant="primary"
+                  size="lg"
+                  icon={!isNavigatingPage ? <FaArrowRight className="w-4 h-4" /> : undefined}
+                  className="flex-1 lg:flex-none lg:min-w-[140px]"
                 >
-                  {isNavigatingPage ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                      <span className="hidden sm:inline">Loading...</span>
-                      <span className="sm:hidden">...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="hidden sm:inline">Next</span>
-                      <FaArrowRight className="w-4 h-4 sm:ml-2" />
-                    </>
-                  )}
-                </Button>
+                  <span className="hidden sm:inline">Next</span>
+                </ActionButton>
               )
             )}
           </div>

@@ -17,6 +17,9 @@ export { default as ProfileQuickView } from './ProfileQuickView';
 export { default as ProfileSettings } from './ProfileSettings';
 export { default as SkeletonCard } from './SkeletonCard';
 
+// UI Components
+export { ActionButton } from './ActionButton';
+
 // Exam-related components
 export { ExamLoadingState } from './ExamLoadingState';
 export { ExamErrorState } from './ExamErrorState';

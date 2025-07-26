@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { ActionButton } from './ActionButton';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
 import { ExamListItem } from '@/swr/exams';
@@ -48,16 +48,67 @@ export function ExamCard({
   const hasScore = exam.score !== null && exam.score !== undefined;
 
   // Calculate generation progress for generating exams
-  const generationEstimate =
-    examStatus === 'generating' && exam.started_at
-      ? estimateExamGenerationProgress(exam.started_at, {
-          totalBatches: Math.ceil((exam.total_questions || 25) / 5), // Estimate 5 questions per batch
-          estimatedCompletionTime: Math.max(120000, (exam.total_questions || 25) * 5000), // 5 seconds per question minimum, 2 minutes minimum
-          averageBatchTime: 45000, // 45 seconds per batch
-          questionsGenerated: 0, // We don't have this data in the list view
-          totalQuestions: exam.total_questions || 25,
-        })
-      : null;
+  const progress = exam.started_at ? estimateExamGenerationProgress(exam.started_at) : null;
+  const generationEstimate = progress; // Use the progress directly
+
+  // Determine button variant based on exam status
+  const getButtonVariant = () => {
+    switch (examStatus) {
+      case 'completed_successful':
+      case 'completed_review':
+      case 'completed':
+        return 'success' as const;
+      case 'in_progress':
+        return 'primary' as const;
+      case 'ready':
+        return 'primary' as const;
+      case 'generating':
+      case 'generation_failed':
+        return 'secondary' as const;
+      default:
+        return 'primary' as const;
+    }
+  };
+
+  // Get button text and icon
+  const getButtonContent = () => {
+    if (navigatingExamId === exam.exam_id) {
+      return { text: 'Loading Exam...', icon: null };
+    }
+
+    switch (examStatus) {
+      case 'generating':
+        return { text: 'Generating Questions...', icon: null };
+      case 'generation_failed':
+        return {
+          text: 'Generation Failed',
+          icon: (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ),
+        };
+      case 'completed_successful':
+        return { text: 'View Certificate', icon: <FaTrophy className="w-4 h-4" /> };
+      case 'completed_review':
+        return { text: 'View Results & Explanations', icon: <FaChartLine className="w-4 h-4" /> };
+      case 'completed':
+        return { text: 'View Results', icon: <FaChartLine className="w-4 h-4" /> };
+      case 'in_progress':
+        return { text: 'Resume Exam', icon: <FaRedo className="w-4 h-4" /> };
+      case 'ready':
+        return { text: 'Begin Exam', icon: <FaPlay className="w-4 h-4" /> };
+      default:
+        return { text: 'Begin Exam', icon: <FaPlay className="w-4 h-4" /> };
+    }
+  };
+
+  const buttonContent = getButtonContent();
 
   return (
     <div className="relative bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden group">
@@ -223,30 +274,18 @@ export function ExamCard({
             {/* Delete button for failed exams - Enhanced styling */}
             {examStatus === 'generation_failed' && (
               <div className="flex gap-2">
-                <Button
+                <ActionButton
                   onClick={() => onDeleteExam(exam.exam_id)}
                   disabled={isDeletingExam}
                   variant="outline"
                   size="sm"
-                  className="flex-1 h-10 text-sm font-medium rounded-lg border-red-300 text-red-700 hover:bg-red-50 hover:border-red-400 hover:text-red-800 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20 dark:hover:border-red-600 dark:hover:text-red-300 shadow-sm hover:shadow-md transition-all duration-200"
+                  className="flex-1 h-10 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200 text-red-700 border-red-300 dark:text-red-400 dark:border-red-700"
+                  isLoading={isDeletingExam}
+                  loadingText="Deleting..."
+                  icon={!isDeletingExam ? <FaTrash className="w-3 h-3" /> : undefined}
                 >
-                  <span className="flex items-center justify-center space-x-2">
-                    {isDeletingExam ? (
-                      <ButtonLoadingText
-                        isLoading={true}
-                        loadingText="Deleting..."
-                        defaultText="Deleting..."
-                        showSpinner={true}
-                        spinnerSize="xs"
-                      />
-                    ) : (
-                      <>
-                        <FaTrash className="w-3 h-3" />
-                        <span>Delete Exam</span>
-                      </>
-                    )}
-                  </span>
-                </Button>
+                  Delete Exam
+                </ActionButton>
               </div>
             )}
 
@@ -261,90 +300,24 @@ export function ExamCard({
 
             {/* Enhanced Main Action Button */}
             <div className="flex justify-end pt-1">
-              <Button
+              <ActionButton
                 onClick={() => onStartExam(exam.exam_id)}
                 disabled={
                   navigatingExamId === exam.exam_id ||
                   examStatus === 'generating' ||
                   examStatus === 'generation_failed'
                 }
+                variant={getButtonVariant()}
                 size="lg"
-                className={`w-full sm:w-auto font-semibold px-6 py-3 text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${
-                  examStatus === 'completed_successful'
-                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0'
-                    : examStatus === 'completed_review'
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0'
-                    : examStatus === 'in_progress'
-                    ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white border-0'
-                    : examStatus === 'generating'
-                    ? 'bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 text-amber-700 dark:text-amber-300 cursor-not-allowed opacity-70 border border-amber-300 dark:border-amber-700'
-                    : examStatus === 'generation_failed'
-                    ? 'bg-gradient-to-r from-red-100 to-red-200 dark:from-red-900/30 dark:to-red-800/30 text-red-700 dark:text-red-300 cursor-not-allowed opacity-70 border border-red-300 dark:border-red-700'
-                    : examStatus === 'ready'
-                    ? 'bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0'
-                    : 'bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white border-0'
-                }`}
+                className="w-full sm:w-auto font-semibold px-6 py-3 text-sm shadow-md hover:shadow-lg transition-all duration-300"
+                isLoading={navigatingExamId === exam.exam_id || examStatus === 'generating'}
+                loadingText={
+                  navigatingExamId === exam.exam_id ? 'Loading Exam...' : 'Generating Questions...'
+                }
+                icon={buttonContent.icon}
               >
-                {navigatingExamId === exam.exam_id ? (
-                  <ButtonLoadingText
-                    isLoading={true}
-                    loadingText="Loading Exam..."
-                    defaultText="Loading Exam..."
-                    showSpinner={true}
-                    spinnerSize="sm"
-                  />
-                ) : examStatus === 'generating' ? (
-                  <ButtonLoadingText
-                    isLoading={true}
-                    loadingText="Generating Questions..."
-                    defaultText="Generating Questions..."
-                    showSpinner={true}
-                    spinnerSize="sm"
-                  />
-                ) : examStatus === 'generation_failed' ? (
-                  <>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                    <span className="ml-2">Generation Failed</span>
-                  </>
-                ) : examStatus === 'completed_successful' ? (
-                  <>
-                    <FaTrophy className="w-4 h-4" />
-                    <span className="ml-2">View Certificate</span>
-                  </>
-                ) : examStatus === 'completed_review' ? (
-                  <>
-                    <FaChartLine className="w-4 h-4" />
-                    <span className="ml-2">View Results & Explanations</span>
-                  </>
-                ) : examStatus === 'completed' ? (
-                  <>
-                    <FaChartLine className="w-4 h-4" />
-                    <span className="ml-2">View Results</span>
-                  </>
-                ) : examStatus === 'in_progress' ? (
-                  <>
-                    <FaRedo className="w-4 h-4" />
-                    <span className="ml-2">Resume Exam</span>
-                  </>
-                ) : examStatus === 'ready' ? (
-                  <>
-                    <FaPlay className="w-4 h-4" />
-                    <span className="ml-2">Begin Exam</span>
-                  </>
-                ) : (
-                  <>
-                    <FaPlay className="w-4 h-4" />
-                    <span className="ml-2">Begin Exam</span>
-                  </>
-                )}
-              </Button>
+                {buttonContent.text}
+              </ActionButton>
             </div>
           </div>
         </div>

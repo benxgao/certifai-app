@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { ActionButton } from './ActionButton';
 import ResponsiveTooltip from '@/src/components/custom/ResponsiveTooltip';
 import { StatsCard } from '@/src/components/custom/StatsCard';
 import { ExamListItem } from '@/swr/exams';
@@ -77,15 +77,16 @@ export function CertificationStatusCard({
 
             {/* Desktop Action Button */}
             <div className="hidden sm:flex">
-              <Button
+              <ActionButton
                 size="lg"
-                className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-lg"
+                variant="primary"
+                className="shadow-md hover:shadow-lg transition-all duration-200"
                 disabled={!canCreateExam}
                 onClick={onCreateExamClick}
+                icon={<FaRegFileAlt className="w-4 h-4" />}
               >
-                <FaRegFileAlt className="w-4 h-4 mr-2" />
                 New Exam
-              </Button>
+              </ActionButton>
             </div>
           </div>
         </div>
@@ -172,15 +173,17 @@ export function CertificationStatusCard({
 
           {/* Mobile Action Button */}
           <div className="sm:hidden">
-            <Button
+            <ActionButton
               size="lg"
-              className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-lg"
+              variant="primary"
+              className="shadow-md hover:shadow-lg transition-all duration-200"
               disabled={!canCreateExam}
               onClick={onCreateExamClick}
+              icon={<FaRegFileAlt className="w-4 h-4" />}
+              fullWidth
             >
-              <FaRegFileAlt className="w-4 h-4 mr-2" />
               New Exam
-            </Button>
+            </ActionButton>
           </div>
         </div>
       </div>

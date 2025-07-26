@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { ActionButton } from './ActionButton';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/src/components/ui/slider';
@@ -162,16 +162,15 @@ export function CreateExamModal({
           </div>
         </div>
         <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
+          <ActionButton
             onClick={() => onOpenChange(false)}
             disabled={isCreatingExam}
+            variant="secondary"
+            size="lg"
           >
             Cancel
-          </Button>
-          <Button
-            type="button"
+          </ActionButton>
+          <ActionButton
             onClick={onCreateExam}
             disabled={
               isCreatingExam ||
@@ -179,19 +178,13 @@ export function CreateExamModal({
               numberOfQuestions < 1 ||
               createExamError?.status === 429 // Disable if rate limited
             }
+            variant="primary"
+            size="lg"
+            isLoading={isCreatingExam}
+            loadingText="Creating..."
           >
-            {isCreatingExam ? (
-              <ButtonLoadingText
-                isLoading={true}
-                loadingText="Creating..."
-                defaultText="Creating..."
-                showSpinner={true}
-                spinnerSize="sm"
-              />
-            ) : (
-              'Create Exam'
-            )}
-          </Button>
+            Create Exam
+          </ActionButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>
