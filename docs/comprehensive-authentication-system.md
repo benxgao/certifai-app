@@ -12,17 +12,18 @@ The certifai authentication system is a Firebase Auth implementation with JWT to
 2. **JWT Token Management**: JOSE JWT wrapper containing Firebase tokens for server-side validation
 3. **Custom Claims Integration**: Stores `api_user_id` from backend API in Firebase custom claims
 4. **Route Protection**: AuthGuard with simplified timeout handling for authentication states
-5. **Middleware Protection**: Server-side route protection for `/main/*` paths
+5. **Middleware Protection**: Server-side route protection for `/main/*` paths and signin redirection
 
 ### Authentication Flow
 
 #### Primary Flow
 
 1. **User Authentication**: Firebase email/password authentication with email verification
-2. **Token Generation**: Create JOSE JWT wrapper containing Firebase ID token with unique `jti`
+2. **Token Generation**: Create JOSE JWT wrapper containing Firebase ID token
 3. **Cookie Setting**: Store JWT in secure HTTP-only cookie (`authToken`)
 4. **API Integration**: Get `api_user_id` from backend API and store in custom claims
 5. **Route Protection**: Middleware validates JWT and Firebase token for protected routes
+6. **Smart Signin Handling**: Middleware redirects authenticated users from signin page to main app
 
 #### Token Structure
 
@@ -30,10 +31,23 @@ The certifai authentication system is a Firebase Auth implementation with JWT to
 {
   "token": "firebase_id_token",
   "iat": 1234567890,
-  "jti": "1234567890-abc123def",
   "exp": 1234571490
 }
 ```
+
+#### Simplified Middleware Flow
+
+**For `/signin` path**:
+
+- **Valid token**: Redirect to `/main` (prevents duplicate signin)
+- **Invalid/No token**: Allow access to signin page
+- **Expired token**: Clear cookie and allow signin page access
+
+**For `/main/*` paths**:
+
+- **Valid token**: Allow access to protected content
+- **Invalid/No token**: Redirect to signin with session_expired error
+- **Expired token**: Redirect to signin with session_expired error
 
 ## Key Features
 
@@ -55,14 +69,14 @@ The certifai authentication system is a Firebase Auth implementation with JWT to
 
 **Features**:
 
-- Unique JWT identifier (`jti`) for each token
-- Legacy token detection and rejection
+- Simplified JWT structure for better performance
 - Secure HTTP-only cookies with proper cleanup
-- Token verification via middleware
+- Token validation via simplified middleware
+- Smart signin page handling for authenticated users
 
 **Files**:
 
-- `middleware.ts` - Route protection and token validation
+- `middleware.ts` - Route protection and smart signin redirection
 - `app/api/auth-cookie/set/route.ts` - JWT creation and cookie setting
 - `app/api/auth-cookie/verify/route.ts` - Token verification
 
@@ -156,7 +170,7 @@ app/api/
 ### Layout and Middleware
 
 ```
-middleware.ts                             # Route protection for /main/* paths
+middleware.ts                             # Route protection for /main/* paths and signin redirection
 app/
 ├── layout.tsx                           # Root layout
 ├── main/layout.tsx                      # Protected routes with AuthGuard
@@ -233,15 +247,16 @@ export default function ProtectedLayout({ children }) {
 ### Token Management
 
 - JOSE JWT wrapper containing Firebase ID token
-- Unique JWT identifier (`jti`) for each token
+- Simplified JWT structure for better performance
 - Secure HTTP-only cookies with proper expiration
-- Legacy token detection and automatic cleanup
+- Smart signin redirection for authenticated users
 
 ### Authentication Security
 
 - Email verification requirement
 - Server-side token validation using Firebase Admin SDK
 - Middleware protection for all `/main/*` routes
+- Smart signin page handling to prevent duplicate authentication
 - Automatic cleanup of invalid authentication state
 
 ### Error Prevention
@@ -263,10 +278,11 @@ export default function ProtectedLayout({ children }) {
 ### Key Test Cases
 
 - Email verification requirement
-- Legacy token rejection
+- Smart signin redirection for authenticated users
 - Emergency timeout handling
 - Conditional Firebase provider behavior
 - Server-side authentication validation
+- Middleware handling of both signin and protected routes
 
 ## Troubleshooting
 
@@ -284,11 +300,17 @@ export default function ProtectedLayout({ children }) {
 - **Solution**: Automatic timeout handling with clear error messages after 20 seconds
 - **Technical**: API timeout set to 5 seconds for user ID, emergency timeout at 20 seconds with clean error UI
 
+**Duplicate Signin Prevention**:
+
+- **Symptom**: User with valid session tries to access signin page
+- **Solution**: Middleware automatically redirects to `/main` page
+- **Prevention**: Smart middleware handling prevents confusion and duplicate authentication
+
 **Legacy Token Issues**:
 
 - **Symptom**: Users redirected to signin unexpectedly
-- **Solution**: System automatically clears legacy tokens
-- **Prevention**: All new tokens include `jti` field for validation
+- **Solution**: System automatically clears invalid tokens
+- **Prevention**: Simplified token structure with proper validation
 
 **Middleware Errors**:
 
@@ -325,10 +347,10 @@ FIREBASE_CLIENT_EMAIL=your-client-email
 
 ### From Previous Versions
 
-- Legacy `joseToken` cookies automatically detected and cleared
-- New `authToken` cookie format with `jti` field
-- Enhanced middleware validation
-- Backward compatible authentication flow
+- Simplified middleware with smart signin handling
+- Enhanced token validation without complex legacy support
+- Streamlined authentication flow with better user experience
+- Automatic redirection for authenticated users accessing signin page
 
 ### Future Considerations
 
@@ -341,17 +363,18 @@ FIREBASE_CLIENT_EMAIL=your-client-email
 
 ### Code Quality
 
-- **Simplified Codebase**: Removed ~300 lines of complex workaround code
-- **Better Performance**: Eliminated unnecessary timeouts and retries
-- **Cleaner Flow**: Straightforward signin process without complex error handling
+- **Simplified Codebase**: Streamlined middleware logic with clear separation of concerns
+- **Better Performance**: Eliminated unnecessary complex token validation
+- **Cleaner Flow**: Straightforward signin process with smart redirection handling
 - **Maintainable**: Easier to understand and debug authentication flow
-- **Reliable**: Token refresh mechanism works properly without workarounds
+- **Reliable**: Simplified token structure and validation
 
 ### User Experience
 
-- **Faster Loading**: Reduced authentication setup time
+- **Faster Loading**: Reduced authentication complexity
+- **Smart Redirection**: Authenticated users automatically redirected from signin page
 - **Clear Messaging**: Simple, informative error messages
-- **Smooth Flow**: Direct signin to main app without recovery screens
-- **Responsive**: Quick timeouts with appropriate fallbacks
+- **Smooth Flow**: Direct signin to main app without duplicate authentication attempts
+- **Responsive**: Quick validation with appropriate fallbacks
 
-This documentation reflects the current clean implementation of the certifai authentication system as of January 2025.
+This documentation reflects the current simplified implementation of the certifai authentication system as of July 2025.
