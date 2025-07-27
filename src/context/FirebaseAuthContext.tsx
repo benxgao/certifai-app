@@ -11,7 +11,7 @@
  * 5. Intelligent auth state clearing based on current page context
  */
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from 'firebase/auth';
 import { auth } from '@/firebase/firebaseWebConfig';
@@ -50,6 +50,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
   const [firebaseToken, setFirebaseToken] = useState<string | null>(null);
   const [apiUserId, setApiUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const previousUserRef = useRef<User | null>(null);
 
   // Function to refresh token and update cookie
   const refreshToken = useCallback(async (): Promise<string | null> => {
@@ -174,6 +175,21 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           | email_verified: ${authUser?.emailVerified}`);
 
         if (authUser) {
+          // Check if this is a different user than the previous one
+          const previousUser = previousUserRef.current;
+          const isDifferentUser = previousUser && previousUser.uid !== authUser.uid;
+
+          if (isDifferentUser) {
+            console.log('Different user detected, clearing previous auth state...');
+            // Clear previous user's auth data immediately
+            await clearAuthCookie();
+            setApiUserId(null);
+            setFirebaseToken(null);
+          }
+
+          // Update the previous user reference
+          previousUserRef.current = authUser;
+
           console.log('Setting new Firebase auth user...');
           setFirebaseUser(authUser);
 
@@ -268,6 +284,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           }
         } else {
           console.log('Firebase user signed out, clearing all auth state');
+          previousUserRef.current = null;
           setFirebaseUser(null);
           setFirebaseToken(null);
           setApiUserId(null);

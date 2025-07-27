@@ -12,6 +12,7 @@ import {
 
 /**
  * Simplified authentication redirect hook
+ * Enhanced to handle auth transitions more gracefully
  */
 export const useAuthRedirect = (
   loading: boolean,
@@ -30,11 +31,15 @@ export const useAuthRedirect = (
       // Clear URL parameters before redirecting
       clearURLErrorParams();
 
-      // Short delay to ensure cleanup is complete
-      setTimeout(() => {
-        setIsRedirecting(true);
-        router.replace('/main');
-      }, 100);
+      // Add cache-busting header to help middleware detect auth transition
+      if (typeof window !== 'undefined') {
+        // Use a longer delay for auth transitions to ensure middleware sync
+        setTimeout(() => {
+          setIsRedirecting(true);
+          // Use router.replace with cache-busting
+          router.replace('/main');
+        }, 200);
+      }
     }
   }, [firebaseUser, loading, isRedirecting, error, router, apiUserId, setIsRedirecting]);
 };

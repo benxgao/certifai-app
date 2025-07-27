@@ -6,6 +6,7 @@ import { COOKIE_AUTH_NAME } from './src/config/constants';
 /**
  * Simplified middleware for protecting /main/* paths.
  * Validates JWT token and handles token refresh when needed.
+ * Enhanced to handle auth transitions gracefully.
  */
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -68,10 +69,31 @@ export async function middleware(request: NextRequest) {
       }
 
       // Validate token for protected routes
-      if (await isValidToken(joseToken)) {
+      const tokenValidation = await isValidToken(joseToken);
+      if (tokenValidation) {
         return NextResponse.next();
       } else {
-        return redirectToSignin(request, 'session_expired');
+        // Check if this might be during an auth transition
+        // by checking for recent authentication activity indicators
+        const referer = request.headers.get('referer');
+        const hasAuthTransition =
+          referer &&
+          (referer.includes('/signin') ||
+            referer.includes('/signup') ||
+            request.headers.get('cache-control') === 'no-cache');
+
+        if (hasAuthTransition) {
+          console.log(
+            'middleware: possible auth transition detected, allowing request with token clearing',
+          );
+          // Allow the request but clear the invalid token
+          const response = NextResponse.next();
+          response.cookies.delete(COOKIE_AUTH_NAME);
+          response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
+          return response;
+        } else {
+          return redirectToSignin(request, 'session_expired');
+        }
       }
     }
 

@@ -253,8 +253,12 @@ export const performSignin = async (
   form: SigninFormData,
 ): Promise<{ success: boolean; error?: AuthError }> => {
   try {
-    // Clear any existing auth state before signing in
+    // Clear any existing auth state before signing in to handle user transitions
+    console.log('Clearing existing auth state before signin...');
     await resetAuthenticationState();
+
+    // Small delay to ensure auth state clearing is complete
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Start the authentication process
     const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
