@@ -233,7 +233,7 @@ const AppHeader: React.FC = () => {
                       >
                         <Coffee className="h-4 w-4 mr-3 text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors" />
                         <span className="text-orange-800 dark:text-orange-200 group-hover:text-orange-900 dark:group-hover:text-orange-100">
-                          Love the app? Buy Me a Coffee
+                          Buy Me a Coffee
                         </span>
                       </DropdownMenuItem>
                     )}

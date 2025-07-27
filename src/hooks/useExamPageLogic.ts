@@ -10,7 +10,8 @@ import {
   extractTopicsFromQuestions,
 } from '@/swr/questions';
 import { useSubmitExam } from '@/swr/exams';
-import { useExamGenerationMonitor } from '@/src/hooks/useExamGenerationMonitor';
+import { useExamState } from '@/src/swr/exams';
+import { useExamGeneratingProgress } from '@/src/swr/useExamGeneratingProgress';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
 import { toastHelpers } from '@/src/lib/toast';
 
@@ -43,15 +44,43 @@ export const useExamPageLogic = () => {
     }
   }, [apiUserId, certId, examId, currentPage, pageSize]);
 
-  // Use the enhanced monitoring hook for better generation status tracking
-  const {
-    examState,
-    isValidatingExamState,
-    forceStatusCheck,
-    generationProgress,
-    shouldShowCheckButton,
-  } = useExamGenerationMonitor(apiUserId, certId, examId);
+  // Get exam state and generating progress separately
+  const { examState, mutateExamState, isValidatingExamState } = useExamState(
+    apiUserId,
+    certId,
+    examId,
+  );
+  const { progress: rawProgress, isLoading: isLoadingProgress } = useExamGeneratingProgress(
+    apiUserId || '',
+    examId || '',
+  );
+
   const isLoadingExamState = !examState && !isValidatingExamState;
+
+  // Simple force status check function
+  const forceStatusCheck = () => mutateExamState();
+
+  // Show check button for generating exams
+  const shouldShowCheckButton = examState?.exam_status === 'QUESTIONS_GENERATING';
+
+  // Transform the simplified progress to match the expected UI structure
+  const generationProgress =
+    rawProgress && examState?.exam_status === 'QUESTIONS_GENERATING'
+      ? {
+          completionPercentage: rawProgress.progress_percentage,
+          estimatedTimeRemaining: rawProgress.estimated_time_remaining_seconds * 1000, // Convert to milliseconds
+          isLikelyComplete: rawProgress.status === 'complete',
+          stage: rawProgress.status,
+          realProgress: {
+            currentBatch: Math.ceil(
+              (rawProgress.topics_with_questions / rawProgress.total_topics) * 5,
+            ), // Estimate batch number
+            totalBatches: 5, // Default estimate
+            questionsGenerated: rawProgress.topics_with_questions,
+            targetQuestions: rawProgress.total_topics,
+          },
+        }
+      : null;
 
   // Add status change notifications only when exam state exists
   useExamStatusNotifications(examState);

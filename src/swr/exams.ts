@@ -5,7 +5,6 @@ import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
-import { getSmartPollingInterval } from '@/src/lib/examGenerationUtils';
 import { useRef, useCallback } from 'react';
 
 // Enhanced response that includes rate limit information
@@ -333,11 +332,11 @@ export function useExamState(
     ApiResponse<ExamState>,
     Error
   >(cacheKey, {
-    // Enable smart polling based on generation progress
+    // Enable simple polling for generating exams
     refreshInterval: (data) => {
       const examStatus = data?.data?.exam_status || data?.data?.status;
       if (examStatus === 'QUESTIONS_GENERATING') {
-        return getSmartPollingInterval(data?.data);
+        return 3000; // Poll every 3 seconds for generating exams
       }
       return 0;
     },

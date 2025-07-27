@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { ActionButton } from './ActionButton';
-import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
 import { ExamListItem } from '@/swr/exams';
 import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
-import { estimateExamGenerationProgress } from '@/src/lib/examGenerationUtils';
+import { useExamGeneratingProgress } from '@/src/swr/useExamGeneratingProgress';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 // Flexible certification type to handle different certification objects
 type CertificationData = {
@@ -40,6 +40,8 @@ export function ExamCard({
   isDeletingExam,
   deleteExamError,
 }: ExamCardProps) {
+  const { apiUserId } = useFirebaseAuth();
+
   // Get typed exam status and info
   const examStatus = getDerivedExamStatus(exam);
   const statusInfo = getExamStatusInfo(examStatus);
@@ -47,9 +49,27 @@ export function ExamCard({
   const hasStarted = exam.started_at !== null;
   const hasScore = exam.score !== null && exam.score !== undefined;
 
-  // Calculate generation progress for generating exams
-  const progress = exam.started_at ? estimateExamGenerationProgress(exam.started_at) : null;
-  const generationEstimate = progress; // Use the progress directly
+  // Use simplified progress tracking for generating exams
+  const { progress: rawProgress } = useExamGeneratingProgress(apiUserId || '', exam.exam_id || '');
+
+  // Transform progress to match expected UI format
+  const generationEstimate =
+    rawProgress && examStatus === 'generating'
+      ? {
+          completionPercentage: rawProgress.progress_percentage,
+          estimatedTimeRemaining: rawProgress.estimated_time_remaining_seconds * 1000,
+          isLikelyComplete: rawProgress.status === 'complete',
+          stage: rawProgress.status,
+          realProgress: {
+            currentBatch: Math.ceil(
+              (rawProgress.topics_with_questions / rawProgress.total_topics) * 5,
+            ),
+            totalBatches: 5,
+            questionsGenerated: rawProgress.topics_with_questions,
+            targetQuestions: rawProgress.total_topics,
+          },
+        }
+      : null;
 
   // Determine button variant based on exam status
   const getButtonVariant = () => {

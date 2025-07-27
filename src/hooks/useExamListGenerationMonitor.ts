@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { getSmartPollingInterval } from '@/src/lib/examGenerationUtils';
 
 /**
- * Hook to monitor exams list for generation status and enable smart polling
+ * Hook to monitor exams list for generation status and enable simple polling
  * This helps keep the exam list updated when exams are generating
  */
 export function useExamListGenerationMonitor(
@@ -27,23 +26,16 @@ export function useExamListGenerationMonitor(
     }
 
     if (generatingCount > 0) {
-      // Find the fastest polling interval needed among all generating exams
-      let fastestInterval = 60000; // Default to 1 minute
+      // Use a simple static interval for polling
+      const pollingInterval = 5000; // Poll every 5 seconds when exams are generating
 
-      generatingExams.forEach((exam) => {
-        const interval = getSmartPollingInterval(exam);
-        if (interval > 0 && interval < fastestInterval) {
-          fastestInterval = interval;
-        }
-      });
-
-      // Set up polling with the fastest needed interval
+      // Set up polling with the static interval
       intervalRef.current = setInterval(() => {
         mutateExams();
-      }, fastestInterval);
+      }, pollingInterval);
 
       console.log(
-        `🔄 Started exam list polling: ${generatingCount} exams generating, interval: ${fastestInterval}ms`,
+        `🔄 Started exam list polling: ${generatingCount} exams generating, interval: ${pollingInterval}ms`,
       );
     } else if (lastGeneratingCountRef.current > 0) {
       // Just stopped generating - do one final update
