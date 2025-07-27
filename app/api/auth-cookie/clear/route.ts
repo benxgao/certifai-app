@@ -7,15 +7,11 @@ export async function POST() {
   // Clear the auth cookie with the correct name
   response.cookies.delete(COOKIE_AUTH_NAME);
 
-  // Also clear legacy cookie name if it exists
-  response.cookies.delete('joseToken');
-  response.cookies.delete('authToken');
-
   // Add additional cookie clearing options to handle browser caching
   // Set all possible cookie variations to empty with immediate expiration
-  const cookiesToClear = [COOKIE_AUTH_NAME, 'joseToken', 'authToken'];
-  
-  cookiesToClear.forEach(cookieName => {
+  const cookiesToClear = [COOKIE_AUTH_NAME];
+
+  cookiesToClear.forEach((cookieName) => {
     response.cookies.set(cookieName, '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

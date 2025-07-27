@@ -26,7 +26,6 @@ export async function POST(request: Request) {
 
     // Clear any existing auth cookies to ensure fresh state
     cookieStore.delete(COOKIE_AUTH_NAME);
-    cookieStore.delete('joseToken'); // Clear legacy cookie name
 
     console.log('auth-cookie/set: Cleared existing auth cookies');
 
@@ -41,8 +40,6 @@ export async function POST(request: Request) {
       .setIssuedAt(now)
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(secretKey));
-
-    console.log('auth-cookie/set:1 | Generated new joseToken');
 
     // Set secure cookie with enhanced security options
     cookieStore.set(COOKIE_AUTH_NAME, joseToken, {

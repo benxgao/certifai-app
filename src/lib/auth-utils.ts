@@ -240,7 +240,7 @@ export const resetAuthenticationState = async (): Promise<void> => {
 
       // Force clear cookies via document.cookie as additional measure
       try {
-        const cookiesToClear = ['authToken', 'joseToken'];
+        const cookiesToClear = ['authToken'];
         cookiesToClear.forEach((cookieName) => {
           // Clear for current path
           document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;

@@ -26,18 +26,9 @@ export async function POST() {
 
     // Clear all auth-related cookies
     response.cookies.delete(COOKIE_AUTH_NAME);
-    response.cookies.delete('joseToken'); // Legacy cookie
 
     // Explicitly set cookies to expire immediately
     response.cookies.set(COOKIE_AUTH_NAME, '', {
-      maxAge: 0,
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
-
-    response.cookies.set('joseToken', '', {
       maxAge: 0,
       path: '/',
       httpOnly: true,

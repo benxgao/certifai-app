@@ -78,31 +78,27 @@ export async function middleware(request: NextRequest) {
     console.log(`middleware: looking for cookie name: ${COOKIE_AUTH_NAME}`);
 
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
-    const legacyToken = request.cookies.get('joseToken')?.value; // Check for legacy cookie
 
     console.log(`middleware:
       | origin: ${request.nextUrl.origin}
       | path: ${request.nextUrl.pathname}
       | has_auth_token: ${!!joseToken}
-      | has_legacy_token: ${!!legacyToken}
       | url: ${request.url}`);
 
     // If we find a legacy token but no current token, clear the legacy token
-    if (legacyToken && !joseToken) {
+    if (!joseToken) {
       console.log('middleware: Found legacy token, clearing it and redirecting to signin');
       const response = NextResponse.redirect(
         new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
       );
-      response.cookies.delete('joseToken');
       response.cookies.delete(COOKIE_AUTH_NAME);
-      // Add explicit cookie expiration
-      response.cookies.set('joseToken', '', { maxAge: 0, path: '/' });
       response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
       return response;
     }
 
     if (!joseToken) {
-      throw new Error('No auth token cookie found');
+      console.log('middleware: No auth token found, redirecting to signin');
+      return NextResponse.redirect(new URL('/signin', request.url));
     }
 
     // Decode and validate the JWT structure
@@ -115,7 +111,6 @@ export async function middleware(request: NextRequest) {
         new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
       );
       response.cookies.delete(COOKIE_AUTH_NAME);
-      response.cookies.delete('joseToken');
       return response;
     }
 
@@ -129,7 +124,6 @@ export async function middleware(request: NextRequest) {
         new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
       );
       response.cookies.delete(COOKIE_AUTH_NAME);
-      response.cookies.delete('joseToken');
       return response;
     }
 
@@ -149,15 +143,15 @@ export async function middleware(request: NextRequest) {
           new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
         );
         response.cookies.delete(COOKIE_AUTH_NAME);
-        response.cookies.delete('joseToken');
         return response;
       } else {
         console.log('middleware: Recent token without jti accepted, will refresh on next request');
       }
     }
 
+    // Check if the outer JWT has expired
     if (exp && exp < Date.now() / 1000) {
-      console.error('middleware: token expired:', {
+      console.error('middleware: JWT token expired:', {
         expiredAt: exp,
         currentTime: Date.now() / 1000,
       });
@@ -219,94 +213,82 @@ export async function middleware(request: NextRequest) {
           new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
         );
         response.cookies.delete(COOKIE_AUTH_NAME);
-        response.cookies.delete('joseToken');
         // Add explicit cookie expiration
         response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
-        response.cookies.set('joseToken', '', { maxAge: 0, path: '/' });
 
         return response;
       }
     }
 
+    // Validate the Firebase token inside the JWT
+    let firebaseDecodedToken;
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_FIREBASE_BACKEND_URL || request.nextUrl.origin;
-      const url = `${BASE_URL}/api/auth-cookie/verify`;
+      firebaseDecodedToken = jose.decodeJwt(firebaseToken as string);
+    } catch (decodeError) {
+      console.error('middleware: Invalid Firebase token format:', decodeError);
+      const response = NextResponse.redirect(
+        new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
+      );
+      response.cookies.delete(COOKIE_AUTH_NAME);
+      return response;
+    }
 
-      console.log(`middleware: api/auth-cookie/verify
-        | BASE_URL: ${BASE_URL}
-        | url: ${url}`);
-
-      // Set a timeout for the verification request to prevent hanging
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => {
-        controller.abort();
-        console.warn('middleware: token verification timed out after 15 seconds');
-      }, 15000); // 15 second timeout
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${joseToken}`,
-        },
-        signal: controller.signal,
+    // Check if Firebase token has expired
+    const firebaseExp = firebaseDecodedToken.exp;
+    if (firebaseExp && firebaseExp < Date.now() / 1000) {
+      console.error('middleware: Firebase token expired:', {
+        expiredAt: firebaseExp,
+        currentTime: Date.now() / 1000,
       });
 
-      clearTimeout(timeoutId);
+      // Try token refresh for expired Firebase tokens
+      try {
+        const BASE_URL = process.env.NEXT_PUBLIC_FIREBASE_BACKEND_URL || request.nextUrl.origin;
+        const refreshUrl = `${BASE_URL}/api/auth-cookie/server-refresh`;
 
-      if (!res.ok) {
-        console.error(`fetch error: ${JSON.stringify(res.status)}`);
-        throw new Error(`Failed to fetch data: ${JSON.stringify(res.body)}`);
-      }
+        const refreshResponse = await fetch(refreshUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Cookie: request.headers.get('cookie') || '',
+          },
+        });
 
-      const data: any = await res.json(); // {"valid":true}
-
-      console.log(`middleware: api/auth-cookie/verify data: ${JSON.stringify(data)}`);
-
-      if (!data.valid) {
-        console.error('middleware: token invalid:', { data });
-
+        if (refreshResponse.ok) {
+          console.log('middleware: Firebase token refreshed successfully');
+          const response = NextResponse.next();
+          const setCookieHeader = refreshResponse.headers.get('set-cookie');
+          if (setCookieHeader) {
+            response.headers.set('Set-Cookie', setCookieHeader);
+          }
+          return response;
+        } else {
+          throw new Error(`Token refresh failed: ${refreshResponse.status}`);
+        }
+      } catch (refreshError) {
+        console.error('middleware: Firebase token refresh failed:', refreshError);
         const response = NextResponse.redirect(
           new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
         );
         response.cookies.delete(COOKIE_AUTH_NAME);
-        response.cookies.delete('joseToken');
-        // Add explicit cookie expiration
-        response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
-        response.cookies.set('joseToken', '', { maxAge: 0, path: '/' });
-
         return response;
       }
-
-      return NextResponse.next();
-    } catch (error: any) {
-      console.log(`middleware: failed to verify: ${JSON.stringify(error.toString())}`);
-
-      const response = NextResponse.redirect(
-        new URL(
-          '/signin?error=' + encodeURIComponent('Session expired. Please sign in again.'),
-          request.url,
-        ),
-      );
-      response.cookies.delete(COOKIE_AUTH_NAME);
-
-      return response;
     }
+
+    // Basic validation passed, allow request to proceed
+    console.log('middleware: basic token validation passed, allowing request');
+    return NextResponse.next();
   } catch (error: any) {
     console.error('middleware error:', {
       message: error.message,
       code: error.code,
-      // stack: error.stack,
     });
 
     const response = NextResponse.redirect(
       new URL('/signin?error=' + encodeURIComponent('session_expired'), request.url),
     );
     response.cookies.delete(COOKIE_AUTH_NAME);
-    response.cookies.delete('joseToken');
-    // Add explicit cookie expiration
     response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
-    response.cookies.set('joseToken', '', { maxAge: 0, path: '/' });
 
     return response;
   }
