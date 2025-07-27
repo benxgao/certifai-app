@@ -18,11 +18,7 @@ import {
 } from '@/src/components/ui/dashboard-card';
 import AdaptiveLearningInterestModal from '@/src/components/custom/AdaptiveLearningInterestModalEnhanced';
 import { Bell } from 'lucide-react';
-
-// Lazy load the all certifications hook to avoid blocking initial render
-const LazyAvailableCertificationsButton = React.lazy(
-  () => import('@/components/custom/LazyAvailableCertificationsButton'),
-);
+import SimpleCertificationsButton from '@/components/custom/SimpleCertificationsButton';
 
 const MainPage = () => {
   const { firebaseUser } = useFirebaseAuth();
@@ -75,21 +71,7 @@ const MainPage = () => {
                 </div>
               </div>
               <div className="hidden sm:flex items-center space-x-3">
-                <Suspense
-                  fallback={
-                    <ActionButton
-                      onClick={() => {}}
-                      variant="secondary"
-                      disabled
-                      size="lg"
-                      className="rounded-lg"
-                    >
-                      Loading...
-                    </ActionButton>
-                  }
-                >
-                  <LazyAvailableCertificationsButton />
-                </Suspense>
+                <SimpleCertificationsButton />
               </div>
             </div>
           </DashboardCardHeader>
@@ -102,22 +84,7 @@ const MainPage = () => {
 
             {/* Mobile Register Button - Consistent styling */}
             <div className="sm:hidden mt-6">
-              <Suspense
-                fallback={
-                  <ActionButton
-                    onClick={() => {}}
-                    variant="secondary"
-                    disabled
-                    size="lg"
-                    fullWidth
-                    className="rounded-lg"
-                  >
-                    Loading...
-                  </ActionButton>
-                }
-              >
-                <LazyAvailableCertificationsButton />
-              </Suspense>
+              <SimpleCertificationsButton fullWidth />
             </div>
           </DashboardCardContent>
         </DashboardCard>

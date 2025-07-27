@@ -45,7 +45,7 @@ export const useExamPageLogic = () => {
   }, [apiUserId, certId, examId, currentPage, pageSize]);
 
   // Get exam state and generating progress separately
-  const { examState, mutateExamState, isValidatingExamState } = useExamState(
+  const { examState, mutateExamState, isLoadingExamState, isValidatingExamState } = useExamState(
     apiUserId,
     certId,
     examId,
@@ -55,8 +55,6 @@ export const useExamPageLogic = () => {
     examId || '',
     examState?.exam_status,
   );
-
-  const isLoadingExamState = !examState && !isValidatingExamState;
 
   // Simple force status check function
   const forceStatusCheck = () => mutateExamState();
@@ -89,6 +87,10 @@ export const useExamPageLogic = () => {
   // Get exam questions
   const { questions, pagination, isLoadingQuestions, isQuestionsError, mutateQuestions } =
     useExamQuestions(questionsApiUrl);
+
+  // Determine if we're still loading questions - this includes cases where questionsApiUrl is null
+  // or when we have a URL but questions haven't loaded yet
+  const isActuallyLoadingQuestions = questionsApiUrl === null || isLoadingQuestions;
 
   // Use the SWR hook to get exam topics from questions
   const topicData = React.useMemo(() => {
@@ -271,7 +273,7 @@ export const useExamPageLogic = () => {
     // Questions
     questions,
     pagination,
-    isLoadingQuestions,
+    isLoadingQuestions: isActuallyLoadingQuestions,
     isQuestionsError,
 
     // Topics

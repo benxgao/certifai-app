@@ -14,7 +14,7 @@ const rateLimitStore = new Map<string, RateLimitEntry>();
 // Configuration
 const RATE_LIMITS = {
   LOGIN: {
-    maxAttempts: 5,
+    maxAttempts: 50,
     windowMs: 15 * 60 * 1000, // 15 minutes
   },
   REGISTER: {

@@ -31,19 +31,6 @@
 - API responses follow standardized format: `{success: boolean, data: T, meta?: PaginationMeta}`
 - Auth uses Firebase with JWT tokens, verified on server-side
 
-**Component Examples:**
-
-```tsx
-// Typical button with gradient
-<Button className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700">
-  <Icon className="mr-2 h-4 w-4" />
-  Action
-</Button>
-
-// Card with glass-morphism
-<Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-```
-
 ### Backend (certifai-api)
 
 **Function Structure:**
@@ -65,18 +52,6 @@
 - Use Firebase Admin SDK for server-side token verification
 - api_user_id is used to identify the user in API requests
 - public endpoints require authentication by customized JWT token verification rather than Firebase's default
-
-**Service Layer Pattern:**
-
-```typescript
-// Services follow dependency injection pattern
-export async function getCertifications(
-  filters: CertificationFilters,
-  pagination: PaginationParams,
-): Promise<PaginatedResult<Certification>> {
-  // Implementation with caching, error handling
-}
-```
 
 ## Critical Development Workflows
 
@@ -152,11 +127,9 @@ cd certifai-app && npm run build && firebase deploy  # Static hosting
 - Never commit Firebase config or credentials
 - Don't use `any` types - leverage Prisma's generated types
 - Never reset the databse
+- Avoid introducing unnecessary complexity
 - When migrating, always update columns with default values or constraints to avoid breaking changes
 - Avoid using Firebase's default JWT verification for public endpoints; implement custom verification logic
-
-## Coding Style
-
 - Cconservative solutions with a focus on clean and simple and follows best practices
 - Use existing libraries and tools rather than reinventing the wheel
 - Value type safety and want to ensure that the code is easy to understand and maintain
