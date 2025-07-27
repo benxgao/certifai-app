@@ -26,16 +26,16 @@ export default function LandingHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-slate-900/60 shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-200">
-                <span className="text-white font-bold text-sm">C</span>
+              <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-blue-600 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-200">
+                <span className="text-white font-normal text-sm">C</span>
               </div>
-              <span className="font-bold text-xl bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent md:hidden lg:inline">
+              <span className="font-bold text-xl text-violet-700 dark:text-violet-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors md:hidden lg:inline">
                 Certestic
               </span>
             </Link>
@@ -49,10 +49,10 @@ export default function LandingHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition-all duration-200 relative group px-3 py-2 rounded-lg ${
+                  className={`text-sm font-normal transition-all duration-200 relative group px-3 py-2 rounded-lg ${
                     isActive
                       ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                   }`}
                 >
                   {item.label}
@@ -64,10 +64,10 @@ export default function LandingHeader() {
             })}
             <Link
               href="/signin"
-              className={`text-sm font-medium transition-all duration-200 relative group px-3 py-2 rounded-lg ${
+              className={`text-sm font-normal transition-all duration-200 relative group px-3 py-2 rounded-lg ${
                 pathname === '/signin'
                   ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
               }`}
             >
               Sign In
@@ -79,7 +79,7 @@ export default function LandingHeader() {
               <Button
                 variant="default"
                 size="sm"
-                className="rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 px-6"
+                className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-normal shadow-md hover:shadow-lg transition-all duration-200 px-6"
               >
                 Get Started
               </Button>
@@ -111,7 +111,7 @@ export default function LandingHeader() {
 
           {/* Mobile Dropdown */}
           {navOpen && (
-            <div className="absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-slate-200/60 dark:border-slate-700/60 md:hidden shadow-lg">
+            <div className="absolute top-full left-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-700/60 md:hidden shadow-lg">
               <div className="px-4 py-4 space-y-2">
                 {navigationItems.map((item) => {
                   const isActive = isActiveRoute(item.href);
@@ -119,10 +119,10 @@ export default function LandingHeader() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`block px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                      className={`block px-4 py-3 text-sm font-normal rounded-xl transition-all duration-200 ${
                         isActive
                           ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                       }`}
                       onClick={() => setNavOpen(false)}
                     >
@@ -132,10 +132,10 @@ export default function LandingHeader() {
                 })}
                 <Link
                   href="/signin"
-                  className={`block px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                  className={`block px-4 py-3 text-sm font-normal rounded-xl transition-all duration-200 ${
                     pathname === '/signin'
                       ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                   }`}
                   onClick={() => setNavOpen(false)}
                 >
@@ -144,7 +144,7 @@ export default function LandingHeader() {
                 <div className="pt-2">
                   <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
                     <Button
-                      className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                      className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-normal shadow-md hover:shadow-lg transition-all duration-200"
                       size="sm"
                     >
                       Get Started

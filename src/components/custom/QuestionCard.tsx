@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FaCheck, FaTimes, FaLightbulb } from 'react-icons/fa';
 import {
@@ -12,6 +11,11 @@ import {
 } from '@/components/ui/accordion';
 import ErrorMessage from '@/components/custom/ErrorMessage';
 import { Question } from '@/swr/questions';
+import {
+  DashboardCard,
+  DashboardCardHeader,
+  DashboardCardContent,
+} from '@/src/components/ui/dashboard-card';
 
 interface QuestionCardProps {
   question: Question;
@@ -39,22 +43,19 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   isCorrectOption,
 }) => {
   return (
-    <Card className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden">
-      {/* Decorative gradient orb */}
-      <div className="absolute -top-4 -right-4 w-24 h-24 bg-violet-100/30 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
-
-      <CardHeader className="relative z-10 bg-gradient-to-r from-slate-50/80 to-violet-50/40 dark:from-slate-800/60 dark:to-violet-950/30 border-b border-slate-100/60 dark:border-slate-700/50 p-4 sm:p-6 backdrop-blur-sm">
+    <DashboardCard className="hover:shadow-2xl transition-all duration-300">
+      <DashboardCardHeader>
         <div className="flex items-start justify-between">
-          <CardTitle className="text-base sm:text-lg leading-relaxed flex-1 mr-2 sm:mr-4 text-slate-900 dark:text-slate-100">
+          <div className="text-base sm:text-lg leading-relaxed flex-1 mr-2 sm:mr-4 text-slate-900 dark:text-slate-100">
             <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs sm:text-sm font-medium border border-blue-200/60 dark:border-blue-700/50 shadow-sm backdrop-blur-sm">
+                <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-600 dark:text-violet-400 text-xs sm:text-sm font-normal border border-violet-200/60 dark:border-violet-700/50 shadow-sm backdrop-blur-sm">
                   Q{((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
                 </div>
                 {question.exam_topic && (
-                  <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/25 dark:to-purple-900/25 text-violet-700 dark:text-violet-300 text-xs sm:text-sm font-medium border border-violet-200 dark:border-violet-700/50 shadow-sm">
+                  <div className="inline-flex items-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800/60 dark:to-slate-700/60 text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-normal border border-slate-200 dark:border-slate-600/50 shadow-sm">
                     <svg
-                      className="w-3 h-3 mr-1 sm:mr-1.5 text-violet-600 dark:text-violet-400"
+                      className="w-3 h-3 mr-1 sm:mr-1.5 text-slate-600 dark:text-slate-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -77,10 +78,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 {question.question_text}
               </div>
             </div>
-          </CardTitle>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent className="relative z-10 p-4 sm:p-6 pt-4">
+      </DashboardCardHeader>
+      <DashboardCardContent className="pt-4">
         <div className="space-y-4 mb-6">
           {question.answerOptions.map(({ option_id, option_text }, optionIndex) => {
             const isSelected = question.selected_option_id === option_id;
@@ -220,7 +221,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             </Accordion>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </DashboardCardContent>
+    </DashboardCard>
   );
 };

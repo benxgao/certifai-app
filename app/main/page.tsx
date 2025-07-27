@@ -11,6 +11,11 @@ import {
   DashboardStatSkeleton,
   UserCertificationCardSkeleton,
 } from '@/src/components/ui/card-skeletons';
+import {
+  DashboardCard,
+  DashboardCardHeader,
+  DashboardCardContent,
+} from '@/src/components/ui/dashboard-card';
 import AdaptiveLearningInterestModal from '@/src/components/custom/AdaptiveLearningInterestModalEnhanced';
 import { Bell } from 'lucide-react';
 
@@ -43,65 +48,60 @@ const MainPage = () => {
         <Breadcrumb items={breadcrumbItems} />
 
         {/* Welcome Section - Enhanced glass-morphism */}
-        <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-xl overflow-hidden">
-          {/* Decorative gradient orb */}
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-          <div className="relative z-10">
-            <div className="px-8 py-8 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
-                    Welcome, {displayName || 'Learner'}!
-                  </h1>
-                  <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl">
-                    {welcomeMessage}
-                  </p>
-                  <div className="flex items-center gap-3 pt-2">
-                    <AdaptiveLearningInterestModal
-                      trigger={
-                        <ActionButton
-                          onClick={() => {}}
-                          variant="primary"
-                          size="lg"
-                          icon={<Bell className="h-4 w-4" />}
-                          className="shadow-md hover:shadow-lg transition-all duration-200"
-                        >
-                          Get Notified When Ready
-                        </ActionButton>
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="hidden sm:flex items-center space-x-3">
-                  <Suspense
-                    fallback={
+        <DashboardCard>
+          <DashboardCardHeader>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
+                  Welcome, {displayName || 'Learner'}!
+                </h1>
+                <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl">
+                  {welcomeMessage}
+                </p>
+                <div className="flex items-center gap-3 pt-2">
+                  <AdaptiveLearningInterestModal
+                    trigger={
                       <ActionButton
                         onClick={() => {}}
-                        variant="secondary"
-                        disabled
+                        variant="primary"
                         size="lg"
-                        className="rounded-lg"
+                        icon={<Bell className="h-4 w-4" />}
+                        className="shadow-md hover:shadow-lg transition-all duration-200"
                       >
-                        Loading...
+                        Get Notified When Ready
                       </ActionButton>
                     }
-                  >
-                    <LazyAvailableCertificationsButton />
-                  </Suspense>
+                  />
                 </div>
               </div>
+              <div className="hidden sm:flex items-center space-x-3">
+                <Suspense
+                  fallback={
+                    <ActionButton
+                      onClick={() => {}}
+                      variant="secondary"
+                      disabled
+                      size="lg"
+                      className="rounded-lg"
+                    >
+                      Loading...
+                    </ActionButton>
+                  }
+                >
+                  <LazyAvailableCertificationsButton />
+                </Suspense>
+              </div>
             </div>
+          </DashboardCardHeader>
 
+          <DashboardCardContent>
             {/* Dashboard Stats - Enhanced layout */}
-            <div className="p-8">
-              <Suspense fallback={<DashboardStatSkeleton count={3} />}>
-                <DashboardStats />
-              </Suspense>
-            </div>
+            <Suspense fallback={<DashboardStatSkeleton count={3} />}>
+              <DashboardStats />
+            </Suspense>
 
             {/* Mobile Register Button - Consistent styling */}
-            <div className="sm:hidden px-8 pb-8">
+            <div className="sm:hidden mt-6">
               <Suspense
                 fallback={
                   <ActionButton
@@ -119,8 +119,8 @@ const MainPage = () => {
                 <LazyAvailableCertificationsButton />
               </Suspense>
             </div>
-          </div>
-        </div>
+          </DashboardCardContent>
+        </DashboardCard>
 
         {/* Your Registered Certifications Section - Unified header */}
         <section className="space-y-8">
@@ -130,11 +130,11 @@ const MainPage = () => {
             </h2>
           </div>
 
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-xl p-8">
+          <DashboardCard>
             <Suspense fallback={<UserCertificationCardSkeleton count={2} />}>
               <CertificationsSection />
             </Suspense>
-          </div>
+          </DashboardCard>
         </section>
       </div>
     </div>

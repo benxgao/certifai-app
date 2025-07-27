@@ -32,8 +32,7 @@ const AppHeader: React.FC = () => {
       await auth.signOut();
 
       router.push('/signin');
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleBuyMeACoffee = () => {
@@ -72,13 +71,15 @@ const AppHeader: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/main" className="flex items-center space-x-2">
-              <span className="font-bold text-xl text-foreground">Certestic</span>
+              <span className="font-bold text-xl text-violet-700 dark:text-violet-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
+                Certestic
+              </span>
             </Link>
           </div>
 
@@ -90,13 +91,15 @@ const AppHeader: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition-colors duration-200 relative group ${
-                    isActive ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+                  className={`text-sm font-normal transition-colors duration-200 relative group ${
+                    isActive
+                      ? 'text-violet-600 dark:text-violet-400'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400'
                   }`}
                 >
                   {item.label}
                   <span
-                    className={`absolute left-0 bottom-0 h-0.5 bg-primary transition-all duration-200 ${
+                    className={`absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-violet-600 to-blue-600 transition-all duration-200 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   ></span>
@@ -119,48 +122,52 @@ const AppHeader: React.FC = () => {
                         src={profile?.avatar_url || undefined}
                         alt={displayName || 'User'}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-sm shadow-sm">
+                      <AvatarFallback className="bg-gradient-to-br from-violet-600 to-blue-600 text-white font-normal text-sm shadow-sm">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="hidden md:flex items-center space-x-2">
                       <div className="text-left">
-                        <p className="text-sm font-medium leading-none">{displayName}</p>
+                        <p className="text-sm font-normal leading-none text-slate-700 dark:text-slate-300">
+                          {displayName}
+                        </p>
                       </div>
-                      <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                      <ChevronDown className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                     </div>
                   </div>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-72 p-0 shadow-xl border-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md"
+                className="w-72 p-0 shadow-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 rounded-xl"
                 align="end"
                 forceMount
               >
                 {/* User Info Header */}
-                <DropdownMenuLabel className="font-normal p-4 bg-gradient-to-br from-primary/8 via-primary/5 to-transparent border-b border-border/50 mb-0">
+                <DropdownMenuLabel className="font-normal p-4 bg-gradient-to-br from-violet-50/80 via-violet-50/40 to-transparent dark:from-violet-950/20 dark:via-violet-950/10 dark:to-transparent border-b border-slate-200/60 dark:border-slate-700/60 mb-0">
                   <div className="flex items-center space-x-3">
-                    <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm">
+                    <Avatar className="h-12 w-12 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-sm">
                       <AvatarImage
                         src={profile?.avatar_url || undefined}
                         alt={displayName || 'User'}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-sm">
+                      <AvatarFallback className="bg-gradient-to-br from-violet-600 to-blue-600 text-white font-normal text-sm">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold leading-none truncate text-foreground">
+                      <p className="text-sm font-normal leading-none truncate text-slate-900 dark:text-slate-50">
                         {displayName}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1 truncate">{email}</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 truncate">
+                        {email}
+                      </p>
                     </div>
                   </div>
                 </DropdownMenuLabel>
 
                 {/* Mobile Navigation */}
-                <div className="md:hidden p-2 border-b border-border/50">
-                  <div className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <div className="md:hidden p-2 border-b border-slate-200/60 dark:border-slate-700/60">
+                  <div className="px-2 py-1 text-xs font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
                     Navigation
                   </div>
                   <div className="space-y-1">
@@ -173,18 +180,20 @@ const AppHeader: React.FC = () => {
                           onSelect={() => router.push(item.href)}
                           className={`cursor-pointer rounded-lg p-3 transition-all duration-200 ${
                             isActive
-                              ? 'bg-primary/15 text-primary font-medium border border-primary/30 shadow-sm'
-                              : 'hover:bg-accent/80 hover:shadow-sm'
+                              ? 'bg-violet-50/80 dark:bg-violet-950/20 text-violet-700 dark:text-violet-300 font-normal border border-violet-200/60 dark:border-violet-700/60 shadow-sm'
+                              : 'hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:shadow-sm'
                           }`}
                         >
                           <IconComponent
                             className={`h-4 w-4 mr-3 ${
-                              isActive ? 'text-primary' : 'text-muted-foreground'
+                              isActive
+                                ? 'text-violet-600 dark:text-violet-400'
+                                : 'text-slate-500 dark:text-slate-400'
                             }`}
                           />
                           <span>{item.label}</span>
                           {isActive && (
-                            <div className="ml-auto w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+                            <div className="ml-auto w-2 h-2 bg-violet-600 dark:bg-violet-400 rounded-full shadow-sm"></div>
                           )}
                         </DropdownMenuItem>
                       );
@@ -199,20 +208,20 @@ const AppHeader: React.FC = () => {
                       onSelect={() => router.push('/main/profile')}
                       className={`cursor-pointer rounded-lg p-3 transition-all duration-200 group ${
                         pathname === '/main/profile'
-                          ? 'bg-primary/15 text-primary font-medium border border-primary/30 shadow-sm'
-                          : 'hover:bg-accent/80 hover:shadow-sm'
+                          ? 'bg-violet-50/80 dark:bg-violet-950/20 text-violet-700 dark:text-violet-300 font-normal border border-violet-200/60 dark:border-violet-700/60 shadow-sm'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:shadow-sm'
                       }`}
                     >
                       <UserCircle
                         className={`h-4 w-4 mr-3 transition-colors ${
                           pathname === '/main/profile'
-                            ? 'text-primary'
-                            : 'text-muted-foreground group-hover:text-foreground'
+                            ? 'text-violet-600 dark:text-violet-400'
+                            : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300'
                         }`}
                       />
                       <span>View Profile</span>
                       {pathname === '/main/profile' && (
-                        <div className="ml-auto w-2 h-2 bg-primary rounded-full shadow-sm"></div>
+                        <div className="ml-auto w-2 h-2 bg-violet-600 dark:bg-violet-400 rounded-full shadow-sm"></div>
                       )}
                     </DropdownMenuItem>
 
@@ -230,11 +239,11 @@ const AppHeader: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="border-t border-border/50 mt-2 pt-2">
+                  <div className="border-t border-slate-200/60 dark:border-slate-700/60 mt-2 pt-2">
                     {/* Logout */}
                     <DropdownMenuItem
                       onSelect={handleLogout}
-                      className="cursor-pointer rounded-lg p-3 text-destructive hover:bg-destructive/10 hover:text-destructive hover:shadow-sm transition-all duration-200 font-medium group"
+                      className="cursor-pointer rounded-lg p-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-700 dark:hover:text-red-300 hover:shadow-sm transition-all duration-200 font-normal group"
                     >
                       <LogOut className="h-4 w-4 mr-3 group-hover:translate-x-0.5 transition-transform" />
                       <span>Sign Out</span>

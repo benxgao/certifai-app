@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { LoadingComponents } from '@/components/custom';
 import { toastHelpers } from '@/src/lib/toast';
+import { DashboardCard, DashboardCardContent } from '@/src/components/ui/dashboard-card';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams';
@@ -267,9 +268,11 @@ function CertificationExamsContent() {
               </h2>
             </div>
 
-            <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-xl p-8">
-              <EmptyExamsState />
-            </div>
+            <DashboardCard>
+              <DashboardCardContent>
+                <EmptyExamsState />
+              </DashboardCardContent>
+            </DashboardCard>
           </section>
         )}
       </div>

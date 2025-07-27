@@ -25,6 +25,11 @@ import { CalendarIcon, UserIcon, Settings, Award, Shield, Bell, Edit3, Check } f
 import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 import EmailUpdateDialog from '@/src/components/custom/EmailUpdateDialog';
 import Breadcrumb from '@/components/custom/Breadcrumb';
+import {
+  DashboardCard,
+  DashboardCardHeader,
+  DashboardCardContent,
+} from '@/src/components/ui/dashboard-card';
 
 const ProfileSkeleton: React.FC = () => (
   <div className="space-y-6">
@@ -193,7 +198,7 @@ const ProfileClientPage: React.FC = () => {
                 <div className="absolute -inset-4 bg-violet-500/10 rounded-full blur-xl animate-pulse"></div>
               </div>
               <div className="space-y-3">
-                <h3 className="text-xl font-semibold text-foreground">Loading Profile</h3>
+                <h3 className="text-xl font-normal text-foreground">Loading Profile</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Please wait while we fetch your profile data and personalized information...
                 </p>
@@ -262,8 +267,8 @@ const ProfileClientPage: React.FC = () => {
     : 'N/A';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
-      <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+      <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
         {/* Breadcrumb Navigation */}
         <Breadcrumb
           items={[
@@ -273,48 +278,48 @@ const ProfileClientPage: React.FC = () => {
         />
 
         {/* Welcome Section */}
-        <div className="mb-8 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-4 md:p-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
-            <div className="flex items-center space-x-3 md:space-x-4">
-              <Avatar className="w-12 h-12 md:w-16 md:h-16 border-2 border-primary/20 shadow-sm">
-                <AvatarImage src={profile.avatar_url || undefined} alt={displayName || 'User'} />
-                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold text-base md:text-lg">
-                  {displayName?.charAt(0).toUpperCase() || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-1 md:mb-2">
-                  Welcome back, {displayName}!
-                </h1>
-                <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                  <span className="block sm:inline">{email}</span>
-                  <span className="hidden sm:inline"> • </span>
-                  <span className="block sm:inline">
-                    {profile.subscription_plan || 'Free Tier'}
-                  </span>
-                  <span className="hidden sm:inline"> • </span>
-                  <span className="block sm:inline">Member since {registrationDate}</span>
-                </p>
+        <DashboardCard>
+          <DashboardCardHeader>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
+              <div className="flex items-center space-x-3 md:space-x-4">
+                <Avatar className="w-12 h-12 md:w-16 md:h-16 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-sm">
+                  <AvatarImage src={profile.avatar_url || undefined} alt={displayName || 'User'} />
+                  <AvatarFallback className="bg-gradient-to-br from-violet-600 to-blue-600 text-white font-normal text-base md:text-lg">
+                    {displayName?.charAt(0).toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h1 className="text-xl md:text-2xl font-medium text-slate-900 dark:text-slate-100 mb-1 md:mb-2">
+                    Welcome back, {displayName}!
+                  </h1>
+                  <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <span className="block sm:inline">{email}</span>
+                    <span className="hidden sm:inline"> • </span>
+                    <span className="block sm:inline">
+                      {profile.subscription_plan || 'Free Tier'}
+                    </span>
+                    <span className="hidden sm:inline"> • </span>
+                    <span className="block sm:inline">Member since {registrationDate}</span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </DashboardCardHeader>
+        </DashboardCard>
 
         {/* Profile Content */}
-        <div className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden">
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-800 dark:to-slate-700/30">
+        <DashboardCard>
+          <DashboardCardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-50">
+                <h2 className="text-xl font-normal text-slate-900 dark:text-slate-50">
                   Account Settings
                 </h2>
               </div>
             </div>
-          </div>
+          </DashboardCardHeader>
 
-          {/* Tabs Content */}
-          <div className="p-6">
+          <DashboardCardContent>
             <Tabs defaultValue="personal" className="w-full">
               {/* Improved TabsList */}
               <div className="relative mb-6">
@@ -322,21 +327,21 @@ const ProfileClientPage: React.FC = () => {
                   <div className="flex md:contents min-w-max md:min-w-0">
                     <TabsTrigger
                       value="personal"
-                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
                       <UserIcon className="w-4 h-4 shrink-0" />
                       <span>Personal</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="account"
-                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
                       <Award className="w-4 h-4 shrink-0" />
                       <span>Account</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="settings"
-                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
                       <Settings className="w-4 h-4 shrink-0" />
                       <span>Settings</span>
@@ -349,19 +354,19 @@ const ProfileClientPage: React.FC = () => {
               <TabsContent value="personal">
                 <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-lg text-slate-900 dark:text-slate-100">
+                    <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
                       Personal Information
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0 space-y-6">
                     {/* Basic Information */}
                     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
                         Basic Information
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
                             Full Name
                           </label>
                           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
@@ -369,7 +374,7 @@ const ProfileClientPage: React.FC = () => {
                           </p>
                         </div>
                         <div>
-                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
                             Email
                           </label>
                           <div className="flex items-center justify-between mt-1">
@@ -386,7 +391,7 @@ const ProfileClientPage: React.FC = () => {
                           </div>
                         </div>
                         <div>
-                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
                             User Role
                           </label>
                           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
@@ -394,7 +399,7 @@ const ProfileClientPage: React.FC = () => {
                           </p>
                         </div>
                         <div>
-                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
                             Registration Date
                           </label>
                           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
@@ -415,7 +420,7 @@ const ProfileClientPage: React.FC = () => {
 
                     {/* Profile Picture */}
                     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
                         Profile Picture
                       </h3>
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -445,12 +450,12 @@ const ProfileClientPage: React.FC = () => {
 
                     {/* Subscription */}
                     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
                         Subscription Details
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div>
-                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
                             Current Plan
                           </label>
                           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
@@ -482,31 +487,31 @@ const ProfileClientPage: React.FC = () => {
               <TabsContent value="account">
                 <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-lg text-slate-900 dark:text-slate-100">
+                    <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
                       Account Information
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0 space-y-6">
                     {/* Account Details */}
                     <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
+                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
                         Account Details
                       </h3>
                       <div className="space-y-3">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-medium">User ID:</span>
+                          <span className="text-sm font-normal">User ID:</span>
                           <Badge variant="outline" className="font-mono text-xs w-fit">
                             {profile.user_id}
                           </Badge>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-medium">Account Type:</span>
+                          <span className="text-sm font-normal">Account Type:</span>
                           <Badge variant="secondary" className="w-fit">
                             {profile.role || 'User'}
                           </Badge>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-medium">Registration Date:</span>
+                          <span className="text-sm font-normal">Registration Date:</span>
                           <span className="text-sm text-muted-foreground">{registrationDate}</span>
                         </div>
                       </div>
@@ -621,24 +626,27 @@ const ProfileClientPage: React.FC = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="p-6 space-y-6">
                         {[
                           {
                             name: 'Email Notifications',
-                            description: 'Receive exam updates, certification progress, and course announcements',
+                            description:
+                              'Receive exam updates, certification progress, and course announcements',
                             enabled: true,
                             category: 'primary',
                           },
                           {
                             name: 'Browser Notifications',
-                            description: 'Get real-time alerts in your browser for time-sensitive updates',
+                            description:
+                              'Get real-time alerts in your browser for time-sensitive updates',
                             enabled: false,
                             category: 'secondary',
                           },
                           {
                             name: 'Security Alerts',
-                            description: 'Important notifications about account security and login activity',
+                            description:
+                              'Important notifications about account security and login activity',
                             enabled: true,
                             category: 'security',
                           },
@@ -661,12 +669,18 @@ const ProfileClientPage: React.FC = () => {
                                     {setting.name}
                                   </label>
                                   {setting.category === 'security' && (
-                                    <Badge variant="secondary" className="text-xs bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                                    <Badge
+                                      variant="secondary"
+                                      className="text-xs bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                                    >
                                       Required
                                     </Badge>
                                   )}
                                   {setting.category === 'primary' && (
-                                    <Badge variant="secondary" className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                                    <Badge
+                                      variant="secondary"
+                                      className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                                    >
                                       Recommended
                                     </Badge>
                                   )}
@@ -678,12 +692,16 @@ const ProfileClientPage: React.FC = () => {
                             </div>
                           </div>
                         ))}
-                        
+
                         <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
                           <div className="text-sm text-slate-500 dark:text-slate-400">
                             Changes are saved automatically
                           </div>
-                          <Button variant="outline" size="sm" className="text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-900/20">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-900/20"
+                          >
                             Manage Email Preferences
                           </Button>
                         </div>
@@ -743,8 +761,8 @@ const ProfileClientPage: React.FC = () => {
                 </Card>
               </TabsContent>
             </Tabs>
-          </div>
-        </div>
+          </DashboardCardContent>
+        </DashboardCard>
       </div>
     </div>
   );

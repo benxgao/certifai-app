@@ -10,3 +10,9 @@ export {
   ListItemSkeleton,
   ExamCardSkeleton,
 } from './card-skeletons';
+
+// Export dashboard card components
+export { DashboardCard, DashboardCardHeader, DashboardCardContent } from './dashboard-card';
+
+// Export status badge component
+export { StatusBadge } from './status-badge';

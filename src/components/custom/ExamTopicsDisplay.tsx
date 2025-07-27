@@ -1,5 +1,9 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  DashboardCard,
+  DashboardCardHeader,
+  DashboardCardContent,
+} from '@/src/components/ui/dashboard-card';
 
 // Simple badge component since we might not have the shadcn Badge component
 const Badge: React.FC<{
@@ -33,15 +37,16 @@ export const ExamTopicsDisplay: React.FC<ExamTopicsDisplayProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <Card
-        className={`bg-gradient-to-r from-violet-50 via-purple-50 to-blue-50 dark:from-violet-950/30 dark:via-purple-950/30 dark:to-blue-950/30 ${className}`}
+      <DashboardCard
+        variant="compact"
+        className={`bg-gradient-to-r from-violet-50 via-purple-50 to-blue-50 dark:from-violet-950/30 dark:via-purple-950/30 dark:to-blue-950/30 border-violet-200 dark:border-violet-800/50 ${className}`}
       >
-        <CardHeader>
-          <CardTitle className="text-violet-800 dark:text-violet-200">
+        <DashboardCardHeader>
+          <h3 className="text-violet-800 dark:text-violet-200 text-lg font-semibold">
             Topics in this page
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </h3>
+        </DashboardCardHeader>
+        <DashboardCardContent>
           <div className="animate-pulse space-y-3">
             <div className="h-4 bg-violet-200 dark:bg-violet-800 rounded w-3/4"></div>
             <div className="grid grid-cols-2 gap-2">
@@ -50,8 +55,8 @@ export const ExamTopicsDisplay: React.FC<ExamTopicsDisplayProps> = ({
               ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </DashboardCardContent>
+      </DashboardCard>
     );
   }
 
@@ -60,15 +65,18 @@ export const ExamTopicsDisplay: React.FC<ExamTopicsDisplayProps> = ({
   }
 
   return (
-    <Card
+    <DashboardCard
+      variant="compact"
       className={`bg-gradient-to-r from-violet-50 via-purple-50 to-blue-50 dark:from-violet-950/30 dark:via-purple-950/30 dark:to-blue-950/30 border-violet-200 dark:border-violet-800/50 ${className}`}
     >
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span className="text-violet-800 dark:text-violet-200">Topics For This Page</span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+      <DashboardCardHeader>
+        <div className="flex items-center justify-between">
+          <h3 className="text-violet-800 dark:text-violet-200 text-lg font-semibold">
+            Topics For This Page
+          </h3>
+        </div>
+      </DashboardCardHeader>
+      <DashboardCardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {topics.map((topic) => (
             <div
@@ -91,8 +99,8 @@ export const ExamTopicsDisplay: React.FC<ExamTopicsDisplayProps> = ({
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </DashboardCardContent>
+    </DashboardCard>
   );
 };
 
