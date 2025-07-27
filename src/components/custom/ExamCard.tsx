@@ -50,7 +50,11 @@ export function ExamCard({
   const hasScore = exam.score !== null && exam.score !== undefined;
 
   // Use simplified progress tracking for generating exams
-  const { progress: rawProgress } = useExamGeneratingProgress(apiUserId || '', exam.exam_id || '');
+  const { progress: rawProgress } = useExamGeneratingProgress(
+    apiUserId || '',
+    exam.exam_id || '',
+    exam.exam_status,
+  );
 
   // Transform progress to match expected UI format
   const generationEstimate =

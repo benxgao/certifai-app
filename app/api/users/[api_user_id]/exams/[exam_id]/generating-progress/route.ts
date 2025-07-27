@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
 export async function GET(
   request: NextRequest,
@@ -7,11 +8,11 @@ export async function GET(
   try {
     const { api_user_id, exam_id } = await params;
 
-    // Get auth token from request headers
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader) {
+    // Get Firebase token from cookie instead of authorization header
+    const firebaseToken = await getFirebaseTokenFromCookie();
+    if (!firebaseToken) {
       return NextResponse.json(
-        { success: false, error: 'Authorization token required' },
+        { success: false, error: 'Authentication failed: Invalid or missing token' },
         { status: 401 },
       );
     }
@@ -31,7 +32,7 @@ export async function GET(
       {
         method: 'GET',
         headers: {
-          Authorization: authHeader,
+          Authorization: `Bearer ${firebaseToken}`,
           'Content-Type': 'application/json',
         },
       },

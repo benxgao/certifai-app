@@ -53,6 +53,7 @@ export const useExamPageLogic = () => {
   const { progress: rawProgress, isLoading: isLoadingProgress } = useExamGeneratingProgress(
     apiUserId || '',
     examId || '',
+    examState?.exam_status,
   );
 
   const isLoadingExamState = !examState && !isValidatingExamState;
