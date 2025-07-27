@@ -30,6 +30,7 @@ import {
   DashboardCardHeader,
   DashboardCardContent,
 } from '@/src/components/ui/dashboard-card';
+import DeleteAccountDialog from '@/src/components/custom/DeleteAccountDialog';
 
 const ProfileSkeleton: React.FC = () => (
   <div className="space-y-6">
@@ -750,9 +751,23 @@ const ProfileClientPage: React.FC = () => {
                               </h4>
                               <p className="text-sm text-muted-foreground">{item.description}</p>
                             </div>
-                            <Button variant={item.variant} size="sm" className="w-full sm:w-auto">
-                              {item.button}
-                            </Button>
+                            {item.title === 'Delete Account' ? (
+                              <DeleteAccountDialog
+                                trigger={
+                                  <Button
+                                    variant={item.variant}
+                                    size="sm"
+                                    className="w-full sm:w-auto"
+                                  >
+                                    {item.button}
+                                  </Button>
+                                }
+                              />
+                            ) : (
+                              <Button variant={item.variant} size="sm" className="w-full sm:w-auto">
+                                {item.button}
+                              </Button>
+                            )}
                           </div>
                         ))}
                       </div>

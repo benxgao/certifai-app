@@ -61,6 +61,12 @@ export const toastHelpers = {
         description: `Successfully registered for "${certificationName}".`,
         duration: 10000,
       }),
+
+    accountDeleted: () =>
+      toast.success('🗑️ Account deleted successfully', {
+        description: 'Your account and all associated data have been permanently removed.',
+        duration: 10000,
+      }),
   },
 
   // Error notifications

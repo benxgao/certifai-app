@@ -14,6 +14,7 @@ import { useUpdateUserProfile } from '@/src/swr/profile';
 import { Settings } from 'lucide-react';
 import { toastHelpers } from '@/src/lib/toast';
 import EmailUpdateDialog from './EmailUpdateDialog';
+import DeleteAccountDialog from './DeleteAccountDialog';
 
 interface ProfileSettingsProps {
   className?: string;
@@ -53,7 +54,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
       setSuccess('Verification email sent! Please check your inbox.');
       setErrorMsg(null);
     } catch (error) {
-
       // Show error toast notification
       toastHelpers.error.generic(
         'Failed to send verification email. Please try again in a few moments.',
@@ -305,6 +305,31 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
                     })
                   : 'Unknown'}
               </p>
+            </div>
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* Danger Zone */}
+        <div className="space-y-4">
+          <h4 className="text-sm font-medium text-destructive">Danger Zone</h4>
+          <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+              <div className="flex-1">
+                <h4 className="font-medium text-sm text-destructive">Delete Account</h4>
+                <p className="text-sm text-muted-foreground">
+                  Permanently delete your account and all associated data. This action cannot be
+                  undone.
+                </p>
+              </div>
+              <DeleteAccountDialog
+                trigger={
+                  <Button variant="destructive" size="sm" className="w-full sm:w-auto">
+                    Delete Account
+                  </Button>
+                }
+              />
             </div>
           </div>
         </div>
