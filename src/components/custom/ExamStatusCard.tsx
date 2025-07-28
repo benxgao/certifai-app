@@ -3,7 +3,7 @@
 import React from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/src/components/ui/tooltip';
-import { ExamProgressInfo } from './ExamProgressInfo';
+import { ExamOverview } from './ExamOverview';
 import { ExamCustomPromptDisplay } from './ExamCustomPromptDisplay';
 import {
   DashboardCard,
@@ -17,6 +17,7 @@ interface ExamStatusCardProps {
   submittedAt: number | null;
   score: number | null;
   pagination: any;
+  examId: string | null;
 }
 
 export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
@@ -24,6 +25,7 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
   submittedAt,
   score,
   pagination,
+  examId,
 }) => {
   return (
     <DashboardCard className="rounded-3xl">
@@ -90,11 +92,7 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
           )}
 
           {/* Exam Information Grid */}
-          <ExamProgressInfo
-            pagination={pagination}
-            examState={examState}
-            submittedAt={submittedAt}
-          />
+          <ExamOverview examId={examId} pagination={pagination} fallbackSubmittedAt={submittedAt} />
 
           {/* Custom Prompt Display */}
           {examState?.custom_prompt_text && (

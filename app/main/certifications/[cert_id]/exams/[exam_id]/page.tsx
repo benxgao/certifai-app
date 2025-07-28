@@ -108,6 +108,7 @@ export default function ExamAttemptPage() {
           submittedAt={submittedAt}
           score={score}
           pagination={pagination}
+          examId={examId}
         />
 
         {/* Display general submission error messages */}

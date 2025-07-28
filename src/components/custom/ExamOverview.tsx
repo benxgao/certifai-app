@@ -2,18 +2,107 @@
 
 import React from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { format, isToday, isThisYear, isValid, parseISO } from 'date-fns';
+import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
+import { useExamInfo } from '@/src/swr/examInfo';
 
-interface ExamProgressInfoProps {
-  pagination: any;
-  examState: any;
-  submittedAt: number | null;
+interface ExamOverviewProps {
+  examId: string | null;
+  pagination?: any; // Fallback for pagination data
+  fallbackSubmittedAt?: number | null; // Fallback for submitted at
 }
 
-export const ExamProgressInfo: React.FC<ExamProgressInfoProps> = ({
+export const ExamOverview: React.FC<ExamOverviewProps> = ({
+  examId,
   pagination,
-  examState,
-  submittedAt,
+  fallbackSubmittedAt,
 }) => {
+  const { apiUserId } = useFirebaseAuth();
+
+  // Fetch exam info data independently
+  const { examInfoData, isLoadingExamInfo, examInfoError } = useExamInfo(apiUserId, examId);
+
+  // Temporary debugging
+  React.useEffect(() => {
+    console.log('ExamOverview - useExamInfo Debug:', {
+      apiUserId,
+      examId,
+      examInfoData,
+      isLoadingExamInfo,
+      examInfoError,
+      started_at: examInfoData?.started_at,
+    });
+  }, [apiUserId, examId, examInfoData, isLoadingExamInfo, examInfoError]);
+
+  // Use exam info data if available, otherwise fall back to props
+  const totalQuestions = examInfoData?.total_questions || pagination?.totalItems;
+  const submittedAt = examInfoData?.submitted_at || fallbackSubmittedAt;
+
+  // Helper function to format the started date using date-fns
+  const formatStartedDate = (startedAt: string | null | undefined) => {
+    if (!startedAt) {
+      return 'Not Started';
+    }
+
+    try {
+      let startDate: Date;
+
+      // Handle different date formats that might come from the backend
+      if (typeof startedAt === 'string') {
+        // Try to parse as ISO string first (most common from APIs)
+        startDate = parseISO(startedAt);
+
+        // If that fails, try regular Date constructor
+        if (!isValid(startDate)) {
+          startDate = new Date(startedAt);
+        }
+      } else {
+        startDate = new Date(startedAt);
+      }
+
+      // Check if the date is valid after parsing attempts
+      if (!isValid(startDate)) {
+        return 'Invalid Date';
+      }
+
+      // Format based on recency
+      if (isToday(startDate)) {
+        // If today, show time only (e.g., "2:30 PM")
+        return format(startDate, 'h:mm a');
+      } else if (isThisYear(startDate)) {
+        // If this year, show month/day and time (e.g., "Jan 15, 2:30 PM")
+        return format(startDate, 'MMM d, h:mm a');
+      } else {
+        // If different year, include year (e.g., "Jan 15, 2023 2:30 PM")
+        return format(startDate, 'MMM d, yyyy h:mm a');
+      }
+    } catch (error) {
+      console.error('Error formatting started_at date:', error, startedAt);
+      return 'Date Error';
+    }
+  };
+
+  // Show loading state if data is being fetched
+  if (isLoadingExamInfo) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm animate-pulse"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                <div className="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+              </div>
+              <div className="h-6 w-12 bg-slate-200 dark:bg-slate-700 rounded mx-auto"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {/* Total Questions */}
@@ -40,7 +129,7 @@ export const ExamProgressInfo: React.FC<ExamProgressInfoProps> = ({
             </p>
           </div>
           <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
-            {pagination?.totalItems || examState?.total_questions || '...'}
+            {totalQuestions || '...'}
           </p>
         </div>
       </div>
@@ -69,14 +158,7 @@ export const ExamProgressInfo: React.FC<ExamProgressInfoProps> = ({
             </p>
           </div>
           <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
-            {examState?.started_at
-              ? new Date(examState.started_at).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })
-              : '...'}
+            {formatStartedDate(examInfoData?.started_at)}
           </p>
         </div>
       </div>
@@ -94,12 +176,7 @@ export const ExamProgressInfo: React.FC<ExamProgressInfoProps> = ({
               </p>
             </div>
             <p className="text-xl font-semibold text-slate-800 dark:text-slate-100 text-center">
-              {new Date(submittedAt).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
+              {submittedAt ? format(new Date(submittedAt), 'MMM d, h:mm a') : 'Not Submitted'}
             </p>
           </div>
         </div>

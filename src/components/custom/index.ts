@@ -23,7 +23,7 @@ export { ActionButton } from './ActionButton';
 // Exam-related components
 export { ExamLoadingState } from './ExamLoadingState';
 export { ExamErrorState } from './ExamErrorState';
-export { ExamProgressInfo } from './ExamProgressInfo';
+export { ExamOverview } from './ExamOverview';
 export { ExamCustomPromptDisplay } from './ExamCustomPromptDisplay';
 export { ExamQuestionsContainer } from './ExamQuestionsContainer';
 export { ExamBottomNavigation } from './ExamBottomNavigation';
