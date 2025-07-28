@@ -274,7 +274,7 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
                 }
               } else {
                 // For session expiry or auth pages, keep Firebase user but clear API user ID
-                // This allows the redirect logic to work based on the updated shouldRedirectToMain function
+                // This allows the signin page redirect logic to work properly
                 console.log(
                   'Auth setup error on auth page or session expiry - keeping Firebase user, clearing API user ID',
                 );

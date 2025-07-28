@@ -2,17 +2,13 @@
  * Custom hooks for signin page functionality
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  shouldRedirectToMain,
-  clearURLErrorParams,
-  initializeSigninPage,
-} from '@/src/lib/signin-helpers';
+import { initializeSigninPage } from '@/src/lib/signin-helpers';
 
 /**
- * Simplified authentication redirect hook
- * Enhanced to handle auth transitions more gracefully
+ * Simplified and reliable authentication redirect hook
+ * Ensures /main route redirection always works correctly
  */
 export const useAuthRedirect = (
   loading: boolean,
@@ -23,36 +19,82 @@ export const useAuthRedirect = (
   setIsRedirecting: (redirecting: boolean) => void,
 ) => {
   const router = useRouter();
+  const redirectAttempted = useRef(false);
 
   useEffect(() => {
-    if (shouldRedirectToMain(loading, firebaseUser, apiUserId, isRedirecting, error)) {
-      console.log('Authentication successful, initiating redirect to /main');
-
-      // Clear URL parameters before redirecting
-      clearURLErrorParams();
-
-      // Add cache-busting header to help middleware detect auth transition
-      if (typeof window !== 'undefined') {
-        // Use a longer delay for auth transitions to ensure middleware sync
-        setTimeout(() => {
-          setIsRedirecting(true);
-          // Use router.replace with cache-busting
-          router.replace('/main');
-        }, 200);
-      }
+    // Reset redirect attempt flag when auth state changes significantly
+    if (loading || !firebaseUser || !apiUserId) {
+      redirectAttempted.current = false;
     }
-  }, [firebaseUser, loading, isRedirecting, error, router, apiUserId, setIsRedirecting]);
+  }, [loading, firebaseUser, apiUserId]);
+
+  useEffect(() => {
+    // Simple and reliable redirect conditions
+    const shouldRedirect = 
+      !loading && 
+      firebaseUser && 
+      firebaseUser.emailVerified && 
+      apiUserId && 
+      !isRedirecting && 
+      !redirectAttempted.current &&
+      !error.includes('verification') && // Ignore verification errors
+      !error.includes('expired') &&     // Ignore session expired errors
+      window.location.pathname === '/signin'; // Only redirect from signin page
+
+    if (shouldRedirect) {
+      console.log('Auth successful - redirecting to /main');
+      
+      // Prevent multiple redirect attempts
+      redirectAttempted.current = true;
+      setIsRedirecting(true);
+
+      // Multiple redirect strategies for maximum reliability
+      const performRedirect = () => {
+        try {
+          // Strategy 1: Next.js router (preferred)
+          router.replace('/main');
+          
+          // Strategy 2: Fallback with native redirect after short delay
+          setTimeout(() => {
+            if (window.location.pathname === '/signin') {
+              console.log('Router redirect may have failed, using window.location');
+              window.location.replace('/main');
+            }
+          }, 1000);
+        } catch (error) {
+          console.error('Router redirect failed, using fallback:', error);
+          // Strategy 3: Immediate fallback
+          window.location.replace('/main');
+        }
+      };
+
+      // Immediate redirect attempt
+      performRedirect();
+    }
+  }, [
+    loading, 
+    firebaseUser, 
+    apiUserId, 
+    isRedirecting, 
+    error, 
+    router, 
+    setIsRedirecting
+  ]);
 };
 
 /**
- * Custom hook for signin page initialization
+ * Simplified signin page initialization
  */
 export const useSigninInitialization = (setError: (error: string) => void) => {
   useEffect(() => {
     const initialize = async () => {
-      const errorMessage = await initializeSigninPage();
-      if (errorMessage) {
-        setError(errorMessage);
+      try {
+        const errorMessage = await initializeSigninPage();
+        if (errorMessage) {
+          setError(errorMessage);
+        }
+      } catch (error) {
+        console.error('Signin initialization error:', error);
       }
     };
 

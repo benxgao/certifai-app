@@ -294,41 +294,6 @@ export const isAuthenticationError = (error: string): boolean => {
 };
 
 /**
- * Clear URL error parameters
- */
-export const clearURLErrorParams = (): void => {
-  if (typeof window !== 'undefined') {
-    const url = new URL(window.location.href);
-    if (url.searchParams.has('error')) {
-      url.searchParams.delete('error');
-      window.history.replaceState({}, '', url.pathname);
-    }
-  }
-};
-
-/**
- * Simplified check if user should be redirected to main page
- */
-export const shouldRedirectToMain = (
-  loading: boolean,
-  firebaseUser: any,
-  apiUserId: string | null,
-  isRedirecting: boolean,
-  error: string,
-): boolean => {
-  const isAuthError = isAuthenticationError(error);
-
-  return (
-    !loading &&
-    firebaseUser &&
-    firebaseUser.emailVerified &&
-    apiUserId &&
-    !isRedirecting &&
-    !isAuthError
-  );
-};
-
-/**
  * Initialize signin page - handles auth state clearing and URL params
  */
 export const initializeSigninPage = async (): Promise<string | null> => {

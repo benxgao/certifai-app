@@ -76,17 +76,20 @@ export async function middleware(request: NextRequest) {
         // Check if this might be during an auth transition
         // by checking for recent authentication activity indicators
         const referer = request.headers.get('referer');
+        const userAgent = request.headers.get('user-agent');
         const hasAuthTransition =
           referer &&
           (referer.includes('/signin') ||
             referer.includes('/signup') ||
-            request.headers.get('cache-control') === 'no-cache');
+            request.headers.get('cache-control') === 'no-cache' ||
+            // Also check if this is a direct navigation from signin
+            (userAgent && !userAgent.includes('bot')));
 
         if (hasAuthTransition) {
           console.log(
-            'middleware: possible auth transition detected, allowing request with token clearing',
+            'middleware: possible auth transition detected, allowing request and clearing invalid token',
           );
-          // Allow the request but clear the invalid token
+          // Allow the request but clear the invalid token - let the auth context handle the redirect
           const response = NextResponse.next();
           response.cookies.delete(COOKIE_AUTH_NAME);
           response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
