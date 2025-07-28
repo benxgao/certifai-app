@@ -23,6 +23,7 @@ export interface URLParams {
   signupParam: string | null;
   verificationParam: string | null;
   passwordResetParam: string | null;
+  messageParam: string | null; // Add support for success messages
 }
 
 /**
@@ -37,6 +38,7 @@ export const parseAuthURLParams = (): URLParams => {
       signupParam: null,
       verificationParam: null,
       passwordResetParam: null,
+      messageParam: null,
     };
   }
 
@@ -48,6 +50,7 @@ export const parseAuthURLParams = (): URLParams => {
     signupParam: urlParams.get('signup'),
     verificationParam: urlParams.get('verification'),
     passwordResetParam: urlParams.get('passwordReset'),
+    messageParam: urlParams.get('message'),
   };
 };
 
@@ -103,6 +106,11 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
  * Process URL parameters and set appropriate error messages
  */
 export const processURLParamsError = (urlParams: URLParams): string | null => {
+  // Handle success message first (for logout success, etc.)
+  if (urlParams.messageParam) {
+    return decodeURIComponent(urlParams.messageParam);
+  }
+
   if (urlParams.errorParam) {
     if (urlParams.errorParam === 'session_expired') {
       return 'Your session has expired. Please sign in again.';
@@ -138,7 +146,8 @@ export const cleanupURLParams = (urlParams: URLParams): void => {
     urlParams.errorParam ||
     urlParams.signupParam ||
     urlParams.verificationParam ||
-    urlParams.passwordResetParam;
+    urlParams.passwordResetParam ||
+    urlParams.messageParam;
 
   if (hasParams) {
     const newUrl = window.location.pathname;

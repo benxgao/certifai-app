@@ -50,6 +50,8 @@ export const useExamPageLogic = () => {
     certId,
     examId,
   );
+
+  // Get generating progress from RTDB via dedicated API
   const { progress: rawProgress, isLoading: isLoadingProgress } = useExamGeneratingProgress(
     apiUserId || '',
     examId || '',
@@ -62,7 +64,7 @@ export const useExamPageLogic = () => {
   // Show check button for generating exams
   const shouldShowCheckButton = examState?.exam_status === 'QUESTIONS_GENERATING';
 
-  // Transform the simplified progress to match the expected UI structure
+  // Transform the progress to match the expected UI structure
   const generationProgress =
     rawProgress && examState?.exam_status === 'QUESTIONS_GENERATING'
       ? {

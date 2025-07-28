@@ -1,5 +1,4 @@
 import { useAuthSWR } from './useAuthSWR';
-import ExamProgressAPIMonitor from '@/src/lib/examProgressAPIMonitor';
 
 interface ExamGeneratingProgress {
   exam_id: string;
@@ -25,11 +24,6 @@ export function useExamGeneratingProgress(apiUserId: string, examId: string, exa
   const shouldFetch = Boolean(apiUserId && examId && isGenerating);
   const key = shouldFetch ? `/api/users/${apiUserId}/exams/${examId}/generating-progress` : null;
 
-  // Debug logging to help track when the API is being called
-  if (process.env.NODE_ENV === 'development' && examStatus && examId) {
-    ExamProgressAPIMonitor.trackCall(examId, examStatus, shouldFetch);
-  }
-
   const { data, error, isLoading, mutate } = useAuthSWR<ExamGeneratingProgressResponse>(key, {
     refreshInterval: 2000, // Poll every 2 seconds
     revalidateOnFocus: true,
@@ -52,10 +46,5 @@ export function useExamGeneratingProgress(apiUserId: string, examId: string, exa
       ? error || (data?.success === false ? new Error(data.error) : undefined)
       : undefined,
     mutate,
-    // Development helper to check metrics
-    ...(process.env.NODE_ENV === 'development' && {
-      getMetrics: () => ExamProgressAPIMonitor.getMetrics(),
-      logSummary: () => ExamProgressAPIMonitor.logSummary(),
-    }),
   };
 }

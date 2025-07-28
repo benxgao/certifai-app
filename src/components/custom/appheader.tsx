@@ -11,9 +11,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRouter, usePathname } from 'next/navigation';
-import { auth } from '@/firebase/firebaseWebConfig';
 import { useProfileData } from '@/src/hooks/useProfileData';
 import { useShouldShowBuyMeACoffee } from '@/src/hooks/useUserExamStats';
+import { performLogout } from '@/src/lib/logout-utils';
 import Link from 'next/link';
 import { LogOut, UserCircle, Home, Award, ChevronDown, Coffee } from 'lucide-react';
 
@@ -24,15 +24,7 @@ const AppHeader: React.FC = () => {
   const { shouldShow: showBuyMeACoffee } = useShouldShowBuyMeACoffee();
 
   const handleLogout = async () => {
-    try {
-      await fetch('/api/auth-cookie/clear', {
-        method: 'POST',
-      });
-
-      await auth.signOut();
-
-      router.push('/signin');
-    } catch (error) {}
+    await performLogout('/signin');
   };
 
   const handleBuyMeACoffee = () => {

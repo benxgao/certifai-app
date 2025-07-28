@@ -290,7 +290,23 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           setApiUserId(null);
           clearAuthCookie();
 
-          // Only redirect to signin if we're on a protected route
+          // Always redirect to signin when user signs out, regardless of current route
+          // This ensures users don't get stuck on loading pages after logout
+          if (typeof window !== 'undefined') {
+            const currentPath = window.location.pathname;
+            const authRoutes = ['/signin', '/signup', '/forgot-password'];
+            const isAuthRoute = authRoutes.some((route) => currentPath.includes(route));
+
+            if (!isAuthRoute) {
+              console.log('Redirecting to signin after signout from:', currentPath);
+              // Use window.location for more reliable redirect after logout
+              window.location.href =
+                '/signin?message=' + encodeURIComponent('You have been signed out successfully.');
+              return;
+            }
+          }
+
+          // Fallback to router if window is not available or already on auth route
           if (shouldRedirectToSignIn()) {
             console.log('Redirecting to signin from protected route after signout');
             router.push('/signin');
