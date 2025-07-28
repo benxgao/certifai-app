@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# certifai-app
+
+**certifai-app** is the Next.js 15 frontend for the certifai AI-powered certification training platform.
+
+## Architecture & Tech Stack
+
+- **Framework:** Next.js 15 (App Router, TypeScript)
+- **Styling:** Tailwind CSS, shadcn/ui, glass-morphism, dark mode
+- **Auth:** Firebase Auth (JWT, server-side verification)
+- **API:** SWR hooks (`src/swr/`), standardized API responses
+- **UI:** shadcn/ui, custom components in `src/components/custom/`, Radix UI primitives
+- **State & Data:** SWR for fetching/caching, Upstash Redis for distributed caching
+- **Type Safety:** TypeScript, shared types in `src/types/`
 
 ## Getting Started
 
-First, run the development server:
+## Getting Started
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Build for production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+### 4. Lint & Format
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+npm run format
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copy `.env.example` to `.env.local` and fill in required values (Firebase, API endpoints, etc).
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development Patterns
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Component Architecture:**
+  - Use shadcn/ui from `src/components/ui/`
+  - Custom business logic in `src/components/custom/`
+  - Use `cn()` from `src/lib/utils.ts` for className merging
+- **Styling:**
+  - Gradient system: `bg-gradient-to-r from-violet-600 to-blue-600`
+  - Glass-morphism: `backdrop-blur-sm` with semi-transparent backgrounds
+  - Always include dark mode variants
+  - Responsive: Tailwind breakpoints, mobile-first
+- **API Integration:**
+  - Use SWR hooks from `src/swr/` for data fetching
+  - API responses: `{success: boolean, data: T, meta?: PaginationMeta}`
+  - Auth: Firebase with JWT, server-side verification
+- **Error Handling:**
+  - SWR error states, user-friendly messages via `sonner` toast
+- **Performance:**
+  - SWR for client-side caching, Upstash Redis for distributed caching
+  - Loading states: skeletons from `src/components/custom/LoadingComponents.tsx`
+- **Type Safety:**
+  - Shared types in `src/types/`
+  - TypeScript interfaces for API contracts
+
+## Project Conventions
+
+- **Import Paths:** Use absolute imports (e.g., `@/src/components/ui/button`)
+- **No direct Prisma usage** (handled in backend)
+- **No hardcoded endpoints:** Use environment variables
+- **No `any` types:** Use generated or defined types
+- **No Firebase config/credentials in repo**
+- **Simple, maintainable, and testable code**
+
+## Related Repos
+
+- [certifai-api](../certifai-api): Firebase Functions backend (Express.js, Prisma, PostgreSQL, Redis)
+
+---
+
+## Deployment
+
+- **Vercel:** Recommended for static hosting
+- **Firebase Hosting:**
+  - Build: `npm run build`
+  - Deploy: `firebase deploy`
+
+---
+
+## License
+
+MIT
