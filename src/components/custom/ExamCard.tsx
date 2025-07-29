@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { ActionButton } from './ActionButton';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
+import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
 import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
 import { useExamGeneratingProgress } from '@/src/swr/useExamGeneratingProgress';
@@ -41,6 +42,7 @@ export function ExamCard({
   deleteExamError,
 }: ExamCardProps) {
   const { apiUserId } = useFirebaseAuth();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Get typed exam status and info
   const examStatus = getDerivedExamStatus(exam);
@@ -295,35 +297,20 @@ export function ExamCard({
 
           {/* Enhanced Action Buttons Section */}
           <div className="space-y-3 pt-2">
-            {/* Delete button for failed exams - Enhanced styling */}
-            {examStatus === 'generation_failed' && (
-              <div className="flex gap-2">
-                <ActionButton
-                  onClick={() => onDeleteExam(exam.exam_id)}
-                  disabled={isDeletingExam}
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 h-10 text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200 text-red-700 border-red-300 dark:text-red-400 dark:border-red-700"
-                  isLoading={isDeletingExam}
-                  loadingText="Deleting..."
-                  icon={!isDeletingExam ? <FaTrash className="w-3 h-3" /> : undefined}
-                >
-                  Delete Exam
-                </ActionButton>
-              </div>
-            )}
+            {/* Delete button for all exam statuses */}
+            <div className="flex justify-between items-center gap-2">
+              {/* Delete button - now available for all statuses */}
+              <button
+                onClick={() => setIsDeleteModalOpen(true)}
+                disabled={isDeletingExam}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/60 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Delete this exam"
+              >
+                <FaTrash className="w-3 h-3" />
+                <span className="hidden sm:inline">Delete</span>
+              </button>
 
-            {/* Error display for delete operation - Enhanced styling */}
-            {deleteExamError && (
-              <div className="p-3 bg-red-50/80 dark:bg-red-900/20 border border-red-200/60 dark:border-red-800/60 rounded-lg backdrop-blur-sm">
-                <p className="text-sm text-red-800 dark:text-red-200">
-                  {deleteExamError.message || 'Failed to delete exam. Please try again.'}
-                </p>
-              </div>
-            )}
-
-            {/* Enhanced Main Action Button */}
-            <div className="flex justify-end pt-1">
+              {/* Main action button */}
               <ActionButton
                 onClick={() => onStartExam(exam.exam_id)}
                 disabled={
@@ -333,7 +320,7 @@ export function ExamCard({
                 }
                 variant={getButtonVariant()}
                 size="lg"
-                className="w-full sm:w-auto font-semibold px-6 py-3 text-sm shadow-md hover:shadow-lg transition-all duration-300"
+                className="flex-1 font-semibold px-6 py-3 text-sm shadow-md hover:shadow-lg transition-all duration-300"
                 isLoading={navigatingExamId === exam.exam_id || examStatus === 'generating'}
                 loadingText={
                   navigatingExamId === exam.exam_id ? 'Loading Exam...' : 'Generating Questions...'
@@ -343,9 +330,27 @@ export function ExamCard({
                 {buttonContent.text}
               </ActionButton>
             </div>
+
+            {/* Error display for delete operation - Enhanced styling */}
+            {deleteExamError && (
+              <div className="p-3 bg-red-50/80 dark:bg-red-900/20 border border-red-200/60 dark:border-red-800/60 rounded-lg backdrop-blur-sm">
+                <p className="text-sm text-red-800 dark:text-red-200">
+                  {deleteExamError.message || 'Failed to delete exam. Please try again.'}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Delete confirmation modal */}
+      <DeleteExamModal
+        exam={exam}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={onDeleteExam}
+        isDeleting={isDeletingExam}
+      />
     </div>
   );
 }

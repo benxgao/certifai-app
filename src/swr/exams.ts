@@ -219,7 +219,7 @@ export function useSubmitExam() {
   };
 }
 
-// Fetcher function for deleting failed exams with auth refresh support
+// Fetcher function for deleting exams with auth refresh support
 async function deleteExamFetcher(
   _key: string,
   {

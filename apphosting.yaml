@@ -8,8 +8,8 @@ runConfig:
   memoryMiB: 512
 
 env:
-  # - variable: NODE_ENV
-  #   value: production
+  - variable: NODE_ENV
+    value: production
 
   - variable: MARKETING_API_URL
     value: https://o2frrzn9x7.execute-api.us-east-1.amazonaws.com/dev
