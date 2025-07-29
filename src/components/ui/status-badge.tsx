@@ -13,7 +13,9 @@ type StatusType =
   | 'pending'
   | 'in_progress'
   | 'active'
-  | 'inactive';
+  | 'inactive'
+  | 'deleting'
+  | 'not_started';
 
 interface StatusBadgeProps {
   status: StatusType;
@@ -99,6 +101,22 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, customText, cl
           textColor: 'text-slate-500 dark:text-slate-500',
           icon: null,
           text: customText || 'Inactive',
+        };
+
+      case 'deleting':
+        return {
+          bgColor: 'bg-orange-100 dark:bg-orange-900/30',
+          textColor: 'text-orange-600 dark:text-orange-400',
+          icon: null,
+          text: customText || 'Deleting',
+        };
+
+      case 'not_started':
+        return {
+          bgColor: 'bg-slate-100 dark:bg-slate-800/60',
+          textColor: 'text-slate-600 dark:text-slate-400',
+          icon: null,
+          text: customText || 'Not Started',
         };
 
       default:
