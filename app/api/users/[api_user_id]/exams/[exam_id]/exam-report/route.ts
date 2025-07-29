@@ -3,19 +3,22 @@ import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-/**
- * @deprecated This endpoint is deprecated. Use the RESTful endpoint instead:
- * GET /api/users/[api_user_id]/exams/[exam_id]/exam-report
- * POST /api/users/[api_user_id]/exams/[exam_id]/exam-report
- */
+interface RouteParams {
+  params: {
+    api_user_id: string;
+    exam_id: string;
+  };
+}
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const examId = searchParams.get('exam_id');
+    const { api_user_id, exam_id } = params;
 
-    if (!examId) {
-      return NextResponse.json({ success: false, error: 'Exam ID is required' }, { status: 400 });
+    if (!api_user_id || !exam_id) {
+      return NextResponse.json(
+        { success: false, error: 'User ID and Exam ID are required' },
+        { status: 400 },
+      );
     }
 
     // Get the auth token from the cookie or authorization header
@@ -31,14 +34,17 @@ export async function GET(request: NextRequest) {
 
     const token = authCookie?.value || authHeader?.replace('Bearer ', '');
 
-    // Forward the request to the backend API
-    const response = await fetch(`${API_BASE_URL}/api/ai/exam-report?exam_id=${examId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    // Forward the request to the backend API with RESTful structure
+    const response = await fetch(
+      `${API_BASE_URL}/api/users/${api_user_id}/exams/${exam_id}/exam-report`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+    );
 
     const data = await response.json();
 
@@ -56,13 +62,16 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
+    const { api_user_id, exam_id } = params;
     const body = await request.json();
-    const { exam_id } = body;
 
-    if (!exam_id) {
-      return NextResponse.json({ success: false, error: 'Exam ID is required' }, { status: 400 });
+    if (!api_user_id || !exam_id) {
+      return NextResponse.json(
+        { success: false, error: 'User ID and Exam ID are required' },
+        { status: 400 },
+      );
     }
 
     // Get the auth token from the cookie or authorization header
@@ -78,15 +87,18 @@ export async function POST(request: NextRequest) {
 
     const token = authCookie?.value || authHeader?.replace('Bearer ', '');
 
-    // Forward the request to the backend API
-    const response = await fetch(`${API_BASE_URL}/api/ai/exam-report`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    // Forward the request to the backend API with RESTful structure
+    const response = await fetch(
+      `${API_BASE_URL}/api/users/${api_user_id}/exams/${exam_id}/exam-report`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
       },
-      body: JSON.stringify({ exam_id }),
-    });
+    );
 
     const data = await response.json();
 

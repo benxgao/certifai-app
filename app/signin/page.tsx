@@ -177,7 +177,7 @@ const LoginPage = () => {
                       onChange={onChange}
                       disabled={isLoading || isRedirecting}
                       autoComplete="on"
-                      className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-800/80 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
+                      className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:bg-white dark:focus:bg-slate-900/80 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                     />
                   </div>
                   <div className="space-y-1 sm:space-y-2">
@@ -205,7 +205,7 @@ const LoginPage = () => {
                       onChange={onChange}
                       disabled={isLoading || isRedirecting}
                       autoComplete="on"
-                      className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-800/80 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
+                      className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:bg-white dark:focus:bg-slate-900/80 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                     />
                   </div>
                   {error && (
