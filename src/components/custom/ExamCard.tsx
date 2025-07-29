@@ -21,6 +21,7 @@ type CertificationData = {
 } | null;
 
 import { FaPlay, FaClipboardList, FaChartLine, FaTrophy, FaRedo, FaTrash } from 'react-icons/fa';
+import { ExamReport } from './ExamReport';
 
 interface ExamCardProps {
   exam: ExamListItem;
@@ -340,6 +341,9 @@ export function ExamCard({
               </div>
             )}
           </div>
+
+          {/* Exam Report Section */}
+          <ExamReport examId={exam.exam_id} isCompleted={isCompleted} className="mt-4" />
         </div>
       </div>
 
