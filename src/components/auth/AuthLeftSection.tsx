@@ -118,20 +118,12 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
   };
 
   return (
-    <div className="hidden lg:flex lg:flex-col lg:justify-center relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-full">
-      {/* Enhanced background decoration matching signin/signup right side */}
+    <div className="hidden lg:flex lg:flex-col lg:justify-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 min-h-full">
+      {/* Enhanced background decoration matching dashboard */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Large gradient orbs for depth */}
-        <div className="absolute top-10 left-10 w-48 h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl lg:block"></div>
-        <div className="absolute bottom-10 right-10 w-64 h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl lg:block"></div>
-
-        {/* Desktop patterns */}
-        <div className="absolute top-20 left-16 w-32 h-32 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl lg:block"></div>
-        <div className="absolute bottom-32 right-16 w-40 h-40 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl lg:block"></div>
-
-        {/* Subtle geometric accent shapes */}
-        <div className="absolute top-32 left-20 w-16 h-16 bg-gradient-to-br from-violet-200/30 to-purple-200/30 dark:from-violet-800/20 dark:to-purple-700/20 rounded-2xl rotate-12 animate-pulse delay-3000 lg:block"></div>
-        <div className="absolute bottom-40 right-20 w-12 h-12 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 dark:from-blue-800/20 dark:to-cyan-700/20 rounded-xl rotate-45 animate-pulse delay-4000 lg:block"></div>
+        {/* Large gradient orbs for depth - matching dashboard style */}
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-10 -right-10 w-56 h-56 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
       </div>
 
       {/* Content container with precise form alignment */}
@@ -155,20 +147,26 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                 {currentContent.features.map((feature, index) => (
                   <div
                     key={index}
-                    className="flex items-center space-x-4 p-4 sm:p-5 lg:p-6 rounded-xl sm:rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-violet-300/60 dark:hover:border-violet-700/60"
+                    className="flex items-center space-x-4 p-4 sm:p-5 lg:p-6 rounded-xl sm:rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-violet-300/60 dark:hover:border-violet-700/60 relative overflow-hidden"
                   >
-                    <div
-                      className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br ${feature.bgColor} rounded-xl flex items-center justify-center shadow-md`}
-                    >
-                      {renderIcon(feature.icon, 'w-5 h-5 sm:w-6 sm:h-6 text-white')}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-slate-900 dark:text-slate-50 text-sm sm:text-base lg:text-lg leading-tight mb-1 sm:mb-2">
-                        {feature.title}
-                      </h3>
-                      <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed">
-                        {feature.description}
-                      </p>
+                    {/* Card decorative orbs */}
+                    <div className="absolute -top-6 -right-6 w-16 h-16 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
+                    <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+
+                    <div className="relative z-10 flex items-center space-x-4 w-full">
+                      <div
+                        className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br ${feature.bgColor} rounded-xl flex items-center justify-center shadow-md`}
+                      >
+                        {renderIcon(feature.icon, 'w-5 h-5 sm:w-6 sm:h-6 text-white')}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-slate-900 dark:text-slate-50 text-sm sm:text-base lg:text-lg leading-tight mb-1 sm:mb-2">
+                          {feature.title}
+                        </h3>
+                        <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed">
+                          {feature.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
