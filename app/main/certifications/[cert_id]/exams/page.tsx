@@ -7,7 +7,12 @@ import { toastHelpers } from '@/src/lib/toast';
 import { DashboardCard, DashboardCardContent } from '@/src/components/ui/dashboard-card';
 
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
-import { ExamListItem, useExamsForCertification, useDeleteExam } from '@/swr/exams';
+import {
+  ExamListItem,
+  useExamsForCertification,
+  useDeleteExam,
+  useAllUserExams,
+} from '@/swr/exams';
 import { useCreateExam } from '@/src/swr/createExam';
 import { useAuthenticatedCertificationDetail } from '@/src/swr/certifications';
 import { useRateLimitFromExams } from '@/src/hooks/useRateLimitFromExams';
@@ -36,6 +41,9 @@ function CertificationExamsContent() {
     apiUserId,
     certId,
   );
+
+  // Hook for invalidating dashboard stats when exams are created/deleted
+  const { mutateAllExams } = useAllUserExams(apiUserId);
 
   // Monitor exam generation progress and enable smart polling
   const { generatingCount } = useExamListGenerationMonitor(exams, mutateExams, isLoadingExams);
@@ -95,6 +103,7 @@ function CertificationExamsContent() {
 
       await mutateExams(); // Refresh the exams list
       await mutateRateLimit(); // Refresh rate limit info
+      await mutateAllExams(); // Refresh dashboard stats
       setNumberOfQuestions(displayCertification?.min_quiz_counts || 1);
       setCustomPromptText('');
       setIsCreateModalOpen(false);
@@ -166,6 +175,7 @@ function CertificationExamsContent() {
       });
 
       await mutateExams(); // Refresh the exams list
+      await mutateAllExams(); // Refresh dashboard stats
       console.log('Exam deleted successfully');
 
       // Show success toast notification for exam deletion

@@ -67,7 +67,7 @@ export function useAllUserExams(apiUserId: string | null) {
       focusThrottleInterval: 30000, // 30 seconds
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      revalidateIfStale: false,
+      revalidateIfStale: true, // Enable revalidation for fresh dashboard stats
       keepPreviousData: true,
       errorRetryCount: 1, // Allow 1 retry for exams
       errorRetryInterval: 5000,
@@ -127,7 +127,7 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
       focusThrottleInterval: 30000, // 30 seconds
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      revalidateIfStale: false,
+      revalidateIfStale: true, // Enable revalidation for updated exam lists
       keepPreviousData: true,
       errorRetryCount: 1, // Allow 1 retry for exams since they're more dynamic
       errorRetryInterval: 5000,
@@ -363,8 +363,8 @@ export function useExamState(
     // Minimal retries
     errorRetryCount: 0, // Changed to 0 to prevent any retry-based duplicates
     errorRetryInterval: 10000,
-    // Disable automatic revalidation to prevent duplicate requests
-    revalidateIfStale: false,
+    // Enable automatic revalidation to get fresh data after exam submission
+    revalidateIfStale: true,
     // Keep previous data to prevent unnecessary loading states
     keepPreviousData: true,
     // Enable revalidation when component mounts to fetch initial data

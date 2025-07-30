@@ -42,7 +42,7 @@ export function useExamInfo(apiUserId: string | null, examId: string | null) {
     focusThrottleInterval: 60000, // 1 minute
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    revalidateIfStale: false,
+    revalidateIfStale: true, // Enable revalidation for updated exam status
     keepPreviousData: true,
     errorRetryCount: 2,
     errorRetryInterval: 3000,

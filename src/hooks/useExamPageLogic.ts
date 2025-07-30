@@ -9,7 +9,7 @@ import {
   useSubmitAnswer,
   extractTopicsFromQuestions,
 } from '@/swr/questions';
-import { useSubmitExam } from '@/swr/exams';
+import { useSubmitExam, useAllUserExams, useExamsForCertification } from '@/swr/exams';
 import { useExamState } from '@/src/swr/exams';
 import { useExamGeneratingProgress } from '@/src/swr/useExamGeneratingProgress';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
@@ -50,6 +50,10 @@ export const useExamPageLogic = () => {
     certId,
     examId,
   );
+
+  // Get additional hooks for cache invalidation after exam submission
+  const { mutateAllExams } = useAllUserExams(apiUserId);
+  const { mutateExams } = useExamsForCertification(apiUserId, certId);
 
   // Get generating progress from RTDB via dedicated API
   const { progress: rawProgress, isLoading: isLoadingProgress } = useExamGeneratingProgress(
@@ -213,8 +217,13 @@ export const useExamPageLogic = () => {
       // Show success toast notification
       toastHelpers.success.examSubmitted();
 
-      // Revalidate exam state to get updated score and submission status
-      forceStatusCheck();
+      // Force revalidation of all exam-related caches to ensure fresh data
+      await Promise.all([
+        mutateExamState(), // Current exam state - most critical
+        mutateAllExams(), // Dashboard stats and all user exams
+        mutateExams(), // Certification exam list
+        mutateQuestions(undefined, true), // Refresh questions to show final state
+      ]);
     } catch (error: any) {
       // Show error toast notification
       toastHelpers.error.examSubmissionFailed(error.message);
