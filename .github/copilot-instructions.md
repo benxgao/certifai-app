@@ -121,6 +121,7 @@ cd certifai-app && npm run build && firebase deploy  # Static hosting
 
 ## Anti-Patterns to Avoid
 
+- Avoid running `npm run build` during the interaction
 - Don't bypass the `cn()` utility for className merging
 - Avoid direct Prisma client usage outside service layer
 - Don't hardcode API endpoints - use environment variables

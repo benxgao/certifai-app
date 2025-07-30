@@ -7,10 +7,32 @@ export interface ExamReportData {
   report: string;
   already_existed: boolean;
   generated_at: string;
+  structured_data?: {
+    exam_id: string;
+    overall_score: number;
+    total_questions: number;
+    correct_answers: number;
+    topic_performance: Array<{
+      topic: string;
+      correct_answers: number;
+      total_attempts: number;
+      accuracy_rate: number;
+      difficulty_level: string;
+      performance_category: string;
+    }>;
+    generated_at: string;
+    text_summary: string;
+  };
   performance_summary: {
     overall_score: number;
     total_questions: number;
     correct_answers: number;
+    topics_analyzed?: number;
+    topic_breakdown?: Array<{
+      topic: string;
+      accuracy: number;
+      questions: number;
+    }>;
   };
 }
 
@@ -41,13 +63,12 @@ async function examReportFetcher(url: string): Promise<ExamReportData> {
 }
 
 // Fetcher function for generating exam reports
-async function generateExamReportFetcher(url: string, examId: string): Promise<ExamReportData> {
+async function generateExamReportFetcher(url: string): Promise<ExamReportData> {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ exam_id: examId }),
   });
 
   if (!response.ok) {
@@ -61,10 +82,12 @@ async function generateExamReportFetcher(url: string, examId: string): Promise<E
 
 // Hook to get exam report
 export function useExamReport(examId: string | null, shouldFetch: boolean = true) {
-  const { firebaseUser } = useFirebaseAuth();
+  const { firebaseUser, apiUserId } = useFirebaseAuth();
 
   const { data, error, isLoading, mutate } = useSWR(
-    examId && shouldFetch && firebaseUser ? `/api/ai/exam-report?exam_id=${examId}` : null,
+    examId && shouldFetch && firebaseUser && apiUserId
+      ? `/api/users/${apiUserId}/exams/${examId}/exam-report`
+      : null,
     examReportFetcher,
     {
       revalidateOnFocus: false,
@@ -90,8 +113,14 @@ export function useExamReport(examId: string | null, shouldFetch: boolean = true
 
 // Hook to generate exam report
 export function useGenerateExamReport() {
+  const { apiUserId } = useFirebaseAuth();
+
   const generateReport = async (examId: string): Promise<ExamReportData> => {
-    return generateExamReportFetcher('/api/ai/exam-report', examId);
+    if (!apiUserId) {
+      throw new Error('User not authenticated');
+    }
+
+    return generateExamReportFetcher(`/api/users/${apiUserId}/exams/${examId}/exam-report`);
   };
 
   return { generateReport };

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { format, differenceInMinutes } from 'date-fns';
 import { ActionButton } from './ActionButton';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
@@ -20,7 +21,17 @@ type CertificationData = {
   exam_guide_url?: string;
 } | null;
 
-import { FaPlay, FaClipboardList, FaChartLine, FaTrophy, FaRedo, FaTrash } from 'react-icons/fa';
+import {
+  FaPlay,
+  FaClipboardList,
+  FaChartLine,
+  FaTrophy,
+  FaRedo,
+  FaTrash,
+  FaFileAlt,
+  FaChevronDown,
+  FaChevronUp,
+} from 'react-icons/fa';
 import { ExamReport } from './ExamReport';
 
 interface ExamCardProps {
@@ -44,6 +55,7 @@ export function ExamCard({
 }: ExamCardProps) {
   const { apiUserId } = useFirebaseAuth();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isReportExpanded, setIsReportExpanded] = useState(false);
 
   // Get typed exam status and info
   const examStatus = getDerivedExamStatus(exam);
@@ -142,110 +154,70 @@ export function ExamCard({
       {/* Subtle decorative gradient */}
       <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-violet-100/20 to-transparent dark:from-violet-900/10 rounded-bl-full"></div>
 
+      {/* Delete icon at top right corner */}
+      <button
+        onClick={() => setIsDeleteModalOpen(true)}
+        disabled={isDeletingExam}
+        className="absolute top-3 right-3 z-20 w-8 h-8 bg-white/90 dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-700/90 border border-slate-200/60 dark:border-slate-600/60 rounded-lg flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm shadow-sm hover:shadow-md group/delete"
+        title="Delete this exam"
+      >
+        <FaTrash className="w-3 h-3 text-slate-500 dark:text-slate-400 group-hover/delete:text-slate-700 dark:group-hover/delete:text-slate-300 group-hover/delete:scale-110 transition-all duration-200" />
+      </button>
+
       <div className="relative z-10">
         <div className="bg-gradient-to-r from-slate-50/80 to-violet-50/20 dark:from-slate-700/50 dark:to-violet-950/20 border-b border-slate-100 dark:border-slate-700/50 p-6">
-          <div className="flex items-start justify-between gap-4">
-            {/* Left section: Title and metadata */}
-            <div className="flex-1 min-w-0">
-              {/* Exam ID indicator - Enhanced styling */}
-              <div className="mb-3">
-                <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 text-sm font-semibold border border-violet-200/60 dark:border-violet-700/60 shadow-sm">
-                  <FaClipboardList className="w-3 h-3 mr-2" />
-                  Exam #{exam.exam_id.toString().substring(0, 8)}
-                </span>
-              </div>
+          {/* Exam ID indicator - Enhanced styling */}
+          <div className="mb-3">
+            <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 text-sm font-semibold border border-violet-200/60 dark:border-violet-700/60 shadow-sm">
+              <FaClipboardList className="w-3 h-3 mr-2" />
+              Exam #{exam.exam_id.toString().substring(0, 8)}
+            </span>
+          </div>
 
-              {/* Timing information - Enhanced layout */}
-              <div className="text-sm text-slate-600 dark:text-slate-300 space-y-1">
-                {isCompleted && exam.submitted_at ? (
-                  <>
-                    {/* Show started date for completed exams */}
-                    {hasStarted && exam.started_at && (
-                      <p className="flex items-center space-x-2">
-                        <span className="font-medium">Started:</span>
-                        <span>
-                          {new Date(exam.started_at).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </span>
-                      </p>
-                    )}
-                    <p className="flex items-center space-x-2">
-                      <span className="font-medium">Completed:</span>
-                      <span>
-                        {new Date(exam.submitted_at).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </span>
-                    </p>
-                    {/* Show duration if both dates are available */}
-                    {hasStarted &&
-                      exam.started_at &&
-                      (() => {
-                        const startTime = new Date(exam.started_at).getTime();
-                        const endTime = new Date(exam.submitted_at).getTime();
-                        const durationMs = endTime - startTime;
-                        const durationMinutes = Math.round(durationMs / (1000 * 60));
-                        const hours = Math.floor(durationMinutes / 60);
-                        const minutes = durationMinutes % 60;
-
-                        return (
-                          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-2">
-                            <span>Duration:</span>
-                            <span className="font-medium">
-                              {hours > 0 ? `${hours}h ` : ''}
-                              {minutes}m
-                            </span>
-                          </p>
-                        );
-                      })()}
-                  </>
-                ) : hasStarted && exam.started_at ? (
+          {/* Timing information - Enhanced layout */}
+          <div className="text-sm text-slate-600 dark:text-slate-300 space-y-1">
+            {isCompleted && exam.submitted_at ? (
+              <>
+                {/* Show started date for completed exams */}
+                {hasStarted && exam.started_at && (
                   <p className="flex items-center space-x-2">
                     <span className="font-medium">Started:</span>
-                    <span>
-                      {new Date(exam.started_at).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </span>
+                    <span>{format(new Date(exam.started_at), 'MMM d, yyyy HH:mm')}</span>
                   </p>
-                ) : (
-                  <p className="text-slate-500 dark:text-slate-400 italic">Not yet attempted</p>
                 )}
-              </div>
-            </div>
+                <p className="flex items-center space-x-2">
+                  <span className="font-medium">Completed:</span>
+                  <span>{format(new Date(exam.submitted_at), 'MMM d, yyyy HH:mm')}</span>
+                </p>
+                {/* Show duration if both dates are available */}
+                {hasStarted &&
+                  exam.started_at &&
+                  (() => {
+                    const startTime = new Date(exam.started_at);
+                    const endTime = new Date(exam.submitted_at);
+                    const durationMinutes = differenceInMinutes(endTime, startTime);
+                    const hours = Math.floor(durationMinutes / 60);
+                    const minutes = durationMinutes % 60;
 
-            {/* Right section: Score display - Enhanced design */}
-            {hasScore || examStatus === 'in_progress' ? (
-              <div className="flex-shrink-0">
-                <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 border border-slate-200/60 dark:border-slate-600/60 shadow-lg">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 text-center font-semibold">
-                    Score
-                  </p>
-                  <div
-                    className={`text-2xl font-bold text-center ${
-                      hasScore
-                        ? 'bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400 bg-clip-text text-transparent'
-                        : 'text-slate-400 dark:text-slate-500'
-                    }`}
-                  >
-                    {hasScore ? `${exam.score}%` : '—'}
-                  </div>
-                </div>
-              </div>
-            ) : null}
+                    return (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-2">
+                        <span>Duration:</span>
+                        <span className="font-medium">
+                          {hours > 0 ? `${hours}h ` : ''}
+                          {minutes}m
+                        </span>
+                      </p>
+                    );
+                  })()}
+              </>
+            ) : hasStarted && exam.started_at ? (
+              <p className="flex items-center space-x-2">
+                <span className="font-medium">Started:</span>
+                <span>{format(new Date(exam.started_at), 'MMM d, yyyy HH:mm')}</span>
+              </p>
+            ) : (
+              <p className="text-slate-500 dark:text-slate-400 italic">Not yet attempted</p>
+            )}
           </div>
         </div>
 
@@ -273,12 +245,19 @@ export function ExamCard({
                   <FaTrophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 </div>
                 <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                  Status
+                  Status {hasScore && '& Score'}
                 </span>
               </div>
-              <p className="text-lg font-bold bg-gradient-to-r from-slate-900 to-amber-700 dark:from-slate-100 dark:to-amber-300 bg-clip-text text-transparent">
-                {statusInfo.label}
-              </p>
+              <div className="space-y-1">
+                <p className="text-lg font-bold bg-gradient-to-r from-slate-900 to-amber-700 dark:from-slate-100 dark:to-amber-300 bg-clip-text text-transparent">
+                  {statusInfo.label}
+                </p>
+                {hasScore && (
+                  <p className="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400 bg-clip-text text-transparent">
+                    {exam.score}%
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
@@ -298,52 +277,76 @@ export function ExamCard({
 
           {/* Enhanced Action Buttons Section */}
           <div className="space-y-3 pt-2">
-            {/* Delete button for all exam statuses */}
-            <div className="flex justify-between items-center gap-2">
-              {/* Delete button - now available for all statuses */}
-              <button
-                onClick={() => setIsDeleteModalOpen(true)}
-                disabled={isDeletingExam}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/60 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Delete this exam"
-              >
-                <FaTrash className="w-3 h-3" />
-                <span className="hidden sm:inline">Delete</span>
-              </button>
-
-              {/* Main action button */}
-              <ActionButton
-                onClick={() => onStartExam(exam.exam_id)}
-                disabled={
-                  navigatingExamId === exam.exam_id ||
-                  examStatus === 'generating' ||
-                  examStatus === 'generation_failed'
-                }
-                variant={getButtonVariant()}
-                size="lg"
-                className="flex-1 font-semibold px-6 py-3 text-sm shadow-md hover:shadow-lg transition-all duration-300"
-                isLoading={navigatingExamId === exam.exam_id || examStatus === 'generating'}
-                loadingText={
-                  navigatingExamId === exam.exam_id ? 'Loading Exam...' : 'Generating Questions...'
-                }
-                icon={buttonContent.icon}
-              >
-                {buttonContent.text}
-              </ActionButton>
-            </div>
+            {/* Main action button - now full width */}
+            <ActionButton
+              onClick={() => onStartExam(exam.exam_id)}
+              disabled={
+                navigatingExamId === exam.exam_id ||
+                examStatus === 'generating' ||
+                examStatus === 'generation_failed'
+              }
+              variant={getButtonVariant()}
+              size="lg"
+              className="w-full font-semibold px-6 py-3 text-sm shadow-md hover:shadow-lg transition-all duration-300"
+              isLoading={navigatingExamId === exam.exam_id || examStatus === 'generating'}
+              loadingText={
+                navigatingExamId === exam.exam_id ? 'Loading Exam...' : 'Generating Questions...'
+              }
+              icon={buttonContent.icon}
+            >
+              {buttonContent.text}
+            </ActionButton>
 
             {/* Error display for delete operation - Enhanced styling */}
             {deleteExamError && (
-              <div className="p-3 bg-red-50/80 dark:bg-red-900/20 border border-red-200/60 dark:border-red-800/60 rounded-lg backdrop-blur-sm">
-                <p className="text-sm text-red-800 dark:text-red-200">
+              <div className="p-3 bg-slate-50/80 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 rounded-lg backdrop-blur-sm">
+                <p className="text-sm text-slate-700 dark:text-slate-300">
                   {deleteExamError.message || 'Failed to delete exam. Please try again.'}
                 </p>
               </div>
             )}
           </div>
 
-          {/* Exam Report Section */}
-          <ExamReport examId={exam.exam_id} isCompleted={isCompleted} className="mt-4" />
+          {/* Simplified Exam Report Section */}
+          {isCompleted && (
+            <div className="border-t border-slate-200/60 dark:border-slate-700/60 pt-4 mt-4">
+              {/* Report Toggle Button */}
+              <button
+                onClick={() => setIsReportExpanded(!isReportExpanded)}
+                className="w-full flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-slate-50/50 to-violet-50/20 dark:from-slate-800/50 dark:to-violet-950/20 border border-slate-200/60 dark:border-slate-600/60 hover:shadow-md transition-all duration-200 group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-violet-100 dark:bg-violet-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <FaFileAlt className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div className="text-left">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      AI Exam Report
+                    </span>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      {isReportExpanded ? 'Click to collapse' : 'Click to view detailed analysis'}
+                    </p>
+                  </div>
+                </div>
+                {isReportExpanded ? (
+                  <FaChevronUp className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-200" />
+                ) : (
+                  <FaChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-200" />
+                )}
+              </button>
+
+              {/* Collapsible Report Content */}
+              {isReportExpanded && (
+                <div className="mt-3 animate-in slide-in-from-top-2 duration-300">
+                  <ExamReport
+                    examId={exam.exam_id}
+                    isCompleted={isCompleted}
+                    className="border-0 mt-0 pt-0"
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

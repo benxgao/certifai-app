@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 
 interface RouteParams {
   params: {
@@ -13,6 +13,13 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { api_user_id, exam_id } = params;
+
+    if (!API_BASE_URL) {
+      return NextResponse.json(
+        { success: false, error: 'API base URL is not configured' },
+        { status: 500 },
+      );
+    }
 
     if (!api_user_id || !exam_id) {
       return NextResponse.json(
@@ -66,6 +73,13 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     const { api_user_id, exam_id } = params;
     const body = await request.json();
+
+    if (!API_BASE_URL) {
+      return NextResponse.json(
+        { success: false, error: 'API base URL is not configured' },
+        { status: 500 },
+      );
+    }
 
     if (!api_user_id || !exam_id) {
       return NextResponse.json(

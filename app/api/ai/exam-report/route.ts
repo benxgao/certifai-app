@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 
 /**
  * @deprecated This endpoint is deprecated. Use the RESTful endpoint instead:
@@ -13,6 +13,13 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const examId = searchParams.get('exam_id');
+
+    if (!API_BASE_URL) {
+      return NextResponse.json(
+        { success: false, error: 'API base URL is not configured' },
+        { status: 500 },
+      );
+    }
 
     if (!examId) {
       return NextResponse.json({ success: false, error: 'Exam ID is required' }, { status: 400 });
@@ -60,6 +67,13 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { exam_id } = body;
+
+    if (!API_BASE_URL) {
+      return NextResponse.json(
+        { success: false, error: 'API base URL is not configured' },
+        { status: 500 },
+      );
+    }
 
     if (!exam_id) {
       return NextResponse.json({ success: false, error: 'Exam ID is required' }, { status: 400 });
