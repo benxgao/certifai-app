@@ -67,20 +67,15 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         currentPath.includes('/forgot-password');
 
       if (isAuthPage) {
-        console.log('Skipping token refresh - user is on auth page:', currentPath);
         return firebaseToken;
       }
     }
 
     try {
-      console.log('Attempting token refresh for authenticated user session');
       const newToken = await refreshTokenAndUpdateCookie(firebaseUser);
       setFirebaseToken(newToken);
-      console.log('Token refresh successful');
       return newToken;
     } catch (error) {
-      console.error('Token refresh failed:', error);
-
       // Clear all auth state when refresh fails
       setFirebaseUser(null);
       setFirebaseToken(null);
@@ -90,7 +85,6 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
       clearAuthCookie();
 
       // Force user to sign in when refresh token is invalid
-      console.log('Forcing user to sign in due to invalid refresh token');
       if (typeof window !== 'undefined') {
         // Use replace to prevent back navigation to protected pages
         window.location.replace(
@@ -120,12 +114,10 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
         currentPath.includes('/forgot-password');
 
       if (isAuthPage) {
-        console.log('Skipping auto-refresh setup - user is on auth page:', currentPath);
         return;
       }
     }
 
-    console.log('Setting up auto-refresh token interval for authenticated session');
     const refreshInterval = setInterval(() => {
       // Double-check we're not on auth pages before refreshing
       if (typeof window !== 'undefined') {
@@ -136,16 +128,12 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           currentPath.includes('/forgot-password');
 
         if (!isAuthPage) {
-          console.log('Auto-refresh triggered for active user session');
           refreshToken();
-        } else {
-          console.log('Auto-refresh skipped - user moved to auth page');
         }
       }
     }, 45 * 60 * 1000); // 45 minutes
 
     return () => {
-      console.log('Clearing auto-refresh token interval');
       clearInterval(refreshInterval);
     };
   }, [firebaseUser, firebaseToken, refreshToken]);
@@ -170,17 +158,12 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
     } else {
       // Set up auth state change listener only if no session expiration
       unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-        console.log(`FirebaseAuthProvider auth state changed
-          | firebase.uid: ${JSON.stringify(authUser?.uid)}
-          | email_verified: ${authUser?.emailVerified}`);
-
         if (authUser) {
           // Check if this is a different user than the previous one
           const previousUser = previousUserRef.current;
           const isDifferentUser = previousUser && previousUser.uid !== authUser.uid;
 
           if (isDifferentUser) {
-            console.log('Different user detected, clearing previous auth state...');
             // Clear previous user's auth data immediately
             await clearAuthCookie();
             setApiUserId(null);
@@ -190,7 +173,6 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
           // Update the previous user reference
           previousUserRef.current = authUser;
 
-          console.log('Setting new Firebase auth user...');
           setFirebaseUser(authUser);
 
           try {
@@ -198,21 +180,15 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             const token = await authUser.getIdToken(true);
             setFirebaseToken(token);
 
-            console.log('Retrieved fresh Firebase token for auth state change');
-
             // Use the extracted authentication setup utility
             const setupResult = await performAuthSetup(authUser, token);
 
             if (setupResult.success && setupResult.apiUserId) {
               setApiUserId(setupResult.apiUserId);
-              console.log('Authentication setup completed successfully');
             } else {
-              console.warn('Authentication setup failed:', setupResult.error);
               setApiUserId(null);
             }
           } catch (error) {
-            console.error('Critical authentication setup failed:', error);
-
             // Check if this is a timeout/abort error
             const isTimeoutError =
               error instanceof Error &&
@@ -222,33 +198,23 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
                 error.name === 'TimeoutError');
 
             if (isTimeoutError) {
-              console.warn(
-                'Auth setup timed out, but keeping Firebase user authenticated. Will retry in 2 seconds.',
-              );
               setApiUserId(null);
 
               // Retry auth setup after a short delay
               setTimeout(async () => {
                 try {
-                  console.log('Retrying auth setup after timeout...');
                   const retryToken = await authUser.getIdToken(true);
                   const retrySetupResult = await performAuthSetup(authUser, retryToken);
                   if (retrySetupResult.success && retrySetupResult.apiUserId) {
                     setApiUserId(retrySetupResult.apiUserId);
-                    console.log('Auth setup retry successful');
                   } else {
-                    console.warn('Auth setup retry failed:', retrySetupResult.error);
                     setApiUserId(null);
                   }
                 } catch (retryError) {
-                  console.error('Auth setup retry failed:', retryError);
                   setApiUserId(null);
                 }
               }, 2000);
             } else {
-              // For other critical errors, handle based on current location and error type
-              console.error('Non-timeout auth setup error, evaluating next steps');
-
               // Don't clear auth state if user is currently on auth pages
               const currentPath = window.location.pathname;
               const isAuthPage =
@@ -261,7 +227,6 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
               const isSessionExpired = urlParams.get('error') === 'session_expired';
 
               if (!isSessionExpired && !isAuthPage) {
-                console.log('Clearing auth state due to setup error on non-auth page');
                 setFirebaseUser(null);
                 setFirebaseToken(null);
                 setApiUserId(null);
@@ -275,15 +240,12 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
               } else {
                 // For session expiry or auth pages, keep Firebase user but clear API user ID
                 // This allows the signin page redirect logic to work properly
-                console.log(
-                  'Auth setup error on auth page or session expiry - keeping Firebase user, clearing API user ID',
-                );
+
                 setApiUserId(null);
               }
             }
           }
         } else {
-          console.log('Firebase user signed out, clearing all auth state');
           previousUserRef.current = null;
           setFirebaseUser(null);
           setFirebaseToken(null);
@@ -298,7 +260,6 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             const isAuthRoute = authRoutes.some((route) => currentPath.includes(route));
 
             if (!isAuthRoute) {
-              console.log('Redirecting to signin after signout from:', currentPath);
               // Use window.location for more reliable redirect after logout
               window.location.href =
                 '/signin?message=' + encodeURIComponent('You have been signed out successfully.');
@@ -308,7 +269,6 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
 
           // Fallback to router if window is not available or already on auth route
           if (shouldRedirectToSignIn()) {
-            console.log('Redirecting to signin from protected route after signout');
             router.push('/signin');
           }
         }

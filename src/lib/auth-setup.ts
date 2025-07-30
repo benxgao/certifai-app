@@ -41,14 +41,11 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
     );
 
     if (response && response.ok) {
-      console.log('Successfully set auth cookie');
       return { success: true };
     } else {
-      console.warn('Failed to set auth cookie');
       return { success: false, error: 'Cookie request failed' };
     }
   } catch (error) {
-    console.error('Failed to set auth cookie:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
   }
 };
@@ -61,7 +58,6 @@ export const clearAuthCookie = async (): Promise<void> => {
     await fetch('/api/auth-cookie/clear', {
       method: 'POST',
     });
-    console.log('Auth cookie cleared successfully');
   } catch (error) {
     console.error('Failed to clear auth cookie:', error);
   }
@@ -75,13 +71,11 @@ export const performApiLogin = async (token: string): Promise<string | null> => 
 
   // Return cached result if it's recent and for the same token
   if (lastLoginToken === token && lastLoginResult && now - lastLoginTime < LOGIN_CACHE_DURATION) {
-    console.log('Using cached API login result');
     return lastLoginResult;
   }
 
   // If there's already a pending request for the same token, wait for it
   if (pendingLoginRequest && lastLoginToken === token) {
-    console.log('Waiting for existing API login request to complete');
     return pendingLoginRequest;
   }
 
@@ -156,8 +150,6 @@ export const getApiUserIdFromClaims = async (authUser: User): Promise<string | n
         console.warn('Detected fallback api_user_id in claims, needs to be fixed:', apiUserId);
         return null; // Return null so the system will try to get the correct ID
       }
-
-      console.log('Got api_user_id from custom claims:', apiUserId);
     }
 
     return apiUserId;
@@ -192,8 +184,6 @@ export const retryGetApiUserIdFromClaims = async (
         );
         return null; // Return null so the system will try to get the correct ID
       }
-
-      console.log('Got api_user_id on retry:', retryApiUserId);
     }
 
     return retryApiUserId;
@@ -218,7 +208,6 @@ export const patchCustomClaims = async (token: string, apiUserId: string): Promi
     });
 
     if (response.ok) {
-      console.log('Patched Firebase custom claims with api_user_id:', apiUserId);
       return true;
     } else {
       console.warn('Failed to patch Firebase custom claims:', await response.text());
@@ -243,7 +232,6 @@ class AuthManager {
    */
   async setAuthCookie(token: string, forceNew = false): Promise<AuthCookieResult> {
     if (!forceNew && this.cookieSetPromise) {
-      console.log('Reusing existing cookie set promise');
       return this.cookieSetPromise;
     }
 
@@ -260,7 +248,6 @@ class AuthManager {
    */
   async performApiLogin(token: string): Promise<string | null> {
     if (this.apiLoginPromise) {
-      console.log('Reusing existing API login promise');
       return this.apiLoginPromise;
     }
 
@@ -321,7 +308,6 @@ export const shouldRedirectToSignIn = (): boolean => {
  */
 export const performAuthSetup = async (authUser: User, token: string): Promise<AuthSetupResult> => {
   try {
-    console.log('Starting authentication setup process...');
 
     // Use the centralized auth manager for cookie setting
     const cookiePromise = authManager.setAuthCookie(token);
@@ -342,7 +328,6 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
 
     // If no claims found, retry after delay (for newly created accounts)
     if (!finalClaimsUserId) {
-      console.log('No api_user_id found in claims, retrying after delay...');
       finalClaimsUserId = await retryGetApiUserIdFromClaims(authUser);
     }
 
@@ -351,7 +336,6 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
 
     // If we have api_user_id from API but not in claims, patch the claims
     if (finalApiUserId && (!finalClaimsUserId || finalApiUserId !== finalClaimsUserId)) {
-      console.log('Syncing custom claims with API user ID...');
       const patchSuccess = await patchCustomClaims(token, finalApiUserId);
 
       if (patchSuccess) {
@@ -361,10 +345,6 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
     }
 
     if (finalUserId) {
-      console.log(`Authentication setup successful:
-        | cookie_set: ${finalCookieResult?.success ?? false}
-        | user_id: ${finalUserId}`);
-
       return {
         success: true,
         apiUserId: finalUserId,
@@ -393,16 +373,9 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
 export const refreshTokenAndUpdateCookie = async (firebaseUser: User): Promise<string | null> => {
   try {
     const newToken = await firebaseUser.getIdToken(true); // Force refresh
-    console.log('Token refreshed successfully');
 
     // Update the auth cookie with the new token (non-blocking)
-    setAuthCookie(newToken).then((result) => {
-      if (result.success) {
-        console.log('Token refreshed and cookie updated successfully');
-      } else {
-        console.warn('Auth cookie update failed during refresh, but continuing');
-      }
-    });
+    setAuthCookie(newToken);
 
     return newToken;
   } catch (error) {
