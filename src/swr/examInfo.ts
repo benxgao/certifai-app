@@ -5,7 +5,7 @@ import { ApiResponse } from '@/src/types/api';
 
 export interface ExamInfoData {
   exam_id: string;
-  user_id: string;
+  api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
   exam_status: string;
   total_questions: number;
@@ -15,6 +15,8 @@ export interface ExamInfoData {
   started_at: string | null;
   submitted_at: string | null;
   status: string;
+  // Deprecated: keeping for backward compatibility only
+  user_id?: string; // @deprecated Use api_user_id instead
   progress?: {
     total_questions: number;
     answered_questions: number;

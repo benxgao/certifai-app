@@ -46,11 +46,13 @@ export interface CertificationListItem {
 }
 
 export interface UserRegisteredCertification {
-  user_id: string;
+  api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
   status: string;
   assigned_at: string;
   updated_at: string;
+  // Deprecated: keeping for backward compatibility only
+  user_id?: string; // @deprecated Use api_user_id instead
   certification: {
     cert_id: number;
     // cert_category_id: number;

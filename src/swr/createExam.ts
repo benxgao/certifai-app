@@ -9,7 +9,7 @@ export interface CreateExamRequest {
 
 export interface CreateExamResponse {
   exam_id: string;
-  user_id: string;
+  api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
   status: string;
   total_questions: number;
@@ -17,6 +17,8 @@ export interface CreateExamResponse {
   total_batches: number;
   topics_generated: number; // NEW: Number of AI-generated topics
   custom_prompt: string;
+  // Deprecated: keeping for backward compatibility only
+  user_id?: string; // @deprecated Use api_user_id instead
 }
 
 export interface RateLimitError {

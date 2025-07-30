@@ -21,13 +21,15 @@ export interface EnhancedExamListResponse extends PaginatedApiResponse<ExamListI
 
 export interface ExamListItem {
   exam_id: string;
-  user_id: string;
+  api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
   exam_status?: BackendExamStatus; // Database exam status
   score: number | null;
   token_cost: number;
   total_questions: number; // Actual number of questions in this exam
   custom_prompt_text?: string | null; // Custom prompt used for question generation
+  // Deprecated: keeping for backward compatibility only
+  user_id?: string; // @deprecated Use api_user_id instead
   started_at: string | null; // Fixed: should be string | null to match backend
   submitted_at: number | null; // Fixed: should be number | null to match backend timestamp
   certification: {
