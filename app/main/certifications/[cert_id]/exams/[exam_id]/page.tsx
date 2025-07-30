@@ -122,6 +122,8 @@ export default function ExamAttemptPage() {
             totalTopics={totalTopics}
             totalQuestions={totalQuestions}
             isLoading={isLoadingQuestions}
+            useAccordion={true}
+            defaultExpanded={false}
             className="mb-6"
           />
         )}

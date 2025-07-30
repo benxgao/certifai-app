@@ -2,14 +2,9 @@
 
 import React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { FaCheck, FaTimes, FaLightbulb } from 'react-icons/fa';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 import ErrorMessage from '@/components/custom/ErrorMessage';
+import { ExplanationAccordion } from '@/components/custom/ExplanationAccordion';
 import { Question } from '@/swr/questions';
 import {
   DashboardCard,
@@ -182,43 +177,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         {/* Add logic for displaying explanations only after submission */}
         {submittedAt && question.explanations && question.explanations.trim().length > 0 && (
           <div className="mt-6">
-            <Accordion
-              type="single"
-              collapsible
-              className="w-full bg-gradient-to-r from-blue-25 to-indigo-25 dark:from-blue-900/10 dark:to-indigo-900/10 border border-blue-100 dark:border-blue-800/50 rounded-xl overflow-hidden shadow-sm"
-            >
-              <AccordionItem value="item-1" className="border-none">
-                <AccordionTrigger className="px-6 py-4 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors group hover:no-underline cursor-pointer">
-                  <div className="flex items-center space-x-3 w-full">
-                    <div className="flex items-center justify-center w-8 h-8 bg-blue-25 dark:bg-blue-900/20 rounded-lg group-hover:bg-blue-50 dark:group-hover:bg-blue-800/30 transition-colors">
-                      <FaLightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <span className="text-base font-medium text-blue-700 dark:text-blue-200">
-                        View Detailed Explanation
-                      </span>
-                      <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
-                        Click to see the reasoning behind the correct answer
-                      </p>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-6 pt-0">
-                  <div className="bg-white dark:bg-slate-800 rounded-lg p-5 border border-blue-100 dark:border-blue-700/50">
-                    <div className="space-y-4 text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {question.explanations
-                        .split('\n')
-                        .filter((paragraph) => paragraph.trim() !== '')
-                        .map((paragraph, index) => (
-                          <p key={index} className="text-base leading-relaxed">
-                            {paragraph.trim()}
-                          </p>
-                        ))}
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <ExplanationAccordion explanations={question.explanations} />
           </div>
         )}
       </DashboardCardContent>
