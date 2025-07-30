@@ -5,9 +5,9 @@ export default function ExamsLoading() {
   return (
     <PageLoader
       isLoading={true}
-      text="Loading exams..."
+      text="Preparing your exam..."
       showSpinner={true}
-      variant="auth"
+      variant="default"
       fullScreen={true}
       showBrand={false}
     />

@@ -3,14 +3,17 @@ import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 
-interface RouteParams {
-  params: {
-    api_user_id: string;
-    exam_id: string;
-  };
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{
+      api_user_id: string;
+      exam_id: string;
+    }>;
+  },
+) {
   try {
     const { api_user_id, exam_id } = await params;
 
@@ -77,9 +80,19 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function POST(request: NextRequest, { params }: RouteParams) {
+export async function POST(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{
+      api_user_id: string;
+      exam_id: string;
+    }>;
+  },
+) {
   try {
-    const { api_user_id, exam_id } = params;
+    const { api_user_id, exam_id } = await params;
     const body = await request.json();
 
     if (!API_BASE_URL) {

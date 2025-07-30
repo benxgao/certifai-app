@@ -30,21 +30,49 @@ const PageLoader: React.FC<PageLoaderProps> = ({
     switch (variant) {
       case 'redirect':
         return {
-          icon: '↗',
+          icon: (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          ),
           iconBg: 'from-green-500 to-emerald-600 dark:from-green-400 dark:to-emerald-500',
           ringColor: 'border-t-green-600 dark:border-t-green-400',
           staticRingColor: 'border-green-200 dark:border-green-800/40',
         };
       case 'auth':
         return {
-          icon: '🔐',
+          icon: (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          ),
           iconBg: 'from-blue-500 to-indigo-600 dark:from-blue-400 dark:to-indigo-500',
           ringColor: 'border-t-blue-600 dark:border-t-blue-400',
           staticRingColor: 'border-blue-200 dark:border-blue-800/40',
         };
       default:
         return {
-          icon: '✨',
+          icon: (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+              <circle cx="12" cy="12" r="3" fill="currentColor" className="animate-pulse" />
+            </svg>
+          ),
           iconBg: 'from-violet-500 to-purple-600 dark:from-violet-400 dark:to-purple-500',
           ringColor: 'border-t-violet-600 dark:border-t-violet-400',
           staticRingColor: 'border-violet-200 dark:border-violet-800/40',
@@ -77,22 +105,63 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
           {/* Spinner/Icon area */}
           {showSpinner && (
-            <div className="relative mx-auto w-20 h-20 flex items-center justify-center">
-              {/* Outer Ring */}
+            <div className="relative mx-auto w-24 h-24 flex items-center justify-center">
+              {/* Outer Ring with gradient */}
               <div
-                className={`absolute inset-0 border-4 ${config.staticRingColor} rounded-full animate-pulse`}
+                className={`absolute inset-0 border-4 ${config.staticRingColor} rounded-full animate-pulse opacity-30`}
               />
 
-              {/* Spinning Ring */}
+              {/* Secondary spinning ring */}
+              <div
+                className={`absolute inset-1 border-2 border-transparent ${config.ringColor} rounded-full animate-spin`}
+                style={{ animationDuration: '2s' }}
+              />
+
+              {/* Primary spinning ring */}
               <div
                 className={`absolute inset-0 border-4 border-transparent ${config.ringColor} rounded-full animate-spin`}
+                style={{ animationDuration: '1.5s', animationDirection: 'reverse' }}
               />
 
-              {/* Center Icon */}
+              {/* Center Icon Container with enhanced styling */}
               <div
-                className={`w-10 h-10 rounded-full bg-gradient-to-r ${config.iconBg} flex items-center justify-center text-white text-lg font-bold shadow-lg transform-gpu will-change-transform animate-pulse`}
+                className={`relative w-12 h-12 rounded-full bg-gradient-to-r ${config.iconBg} flex items-center justify-center text-white shadow-xl transform-gpu will-change-transform animate-pulse backdrop-blur-sm`}
+                style={{
+                  boxShadow:
+                    '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                  animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                }}
               >
-                {config.icon}
+                {/* Inner glow effect */}
+                <div
+                  className="absolute inset-0 rounded-full bg-white/20 animate-ping"
+                  style={{ animationDuration: '2s' }}
+                />
+
+                {/* Icon */}
+                <div className="relative z-10 transform transition-transform duration-300 hover:scale-110">
+                  {config.icon}
+                </div>
+              </div>
+
+              {/* Floating particles effect */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div
+                  className="absolute top-2 left-4 w-1 h-1 bg-violet-400/60 rounded-full animate-bounce"
+                  style={{ animationDelay: '0s', animationDuration: '2s' }}
+                />
+                <div
+                  className="absolute top-6 right-3 w-1 h-1 bg-purple-400/60 rounded-full animate-bounce"
+                  style={{ animationDelay: '0.5s', animationDuration: '2.2s' }}
+                />
+                <div
+                  className="absolute bottom-4 left-2 w-1 h-1 bg-blue-400/60 rounded-full animate-bounce"
+                  style={{ animationDelay: '1s', animationDuration: '1.8s' }}
+                />
+                <div
+                  className="absolute bottom-2 right-5 w-1 h-1 bg-indigo-400/60 rounded-full animate-bounce"
+                  style={{ animationDelay: '1.5s', animationDuration: '2.5s' }}
+                />
               </div>
             </div>
           )}
