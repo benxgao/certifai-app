@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
+import { getApiUserIdFromToken } from '@/src/lib/auth-claims-server';
 
 export async function GET(
   request: NextRequest,
@@ -18,9 +19,9 @@ export async function GET(
       );
     }
 
-    // Get cert_id from query string if present
-    const { searchParams } = new URL(request.url);
-    const cert_id = searchParams.get('cert_id');
+    // Get query parameters from the original request
+    const searchParams = request.nextUrl.searchParams;
+    const queryString = searchParams.toString();
 
     const firebaseToken = await getFirebaseTokenFromCookie();
     if (!firebaseToken) {
@@ -30,10 +31,28 @@ export async function GET(
       );
     }
 
-    let USER_CERTIFICATIONS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/certifications`;
-    if (cert_id) {
-      USER_CERTIFICATIONS_API_URL += `?cert_id=${encodeURIComponent(cert_id)}`;
+    // Check if api_user_id is actually a Firebase UID and convert if needed
+    let actualApiUserId = api_user_id;
+
+    if (api_user_id.length === 28 && /^[a-zA-Z0-9]+$/.test(api_user_id)) {
+      console.log('Detected Firebase UID in URL, attempting to get API User ID from token');
+
+      try {
+        const apiUserIdFromToken = await getApiUserIdFromToken(firebaseToken);
+        if (apiUserIdFromToken) {
+          actualApiUserId = apiUserIdFromToken;
+          console.log('Successfully converted Firebase UID to API User ID:', actualApiUserId);
+        } else {
+          console.warn('Could not get API User ID from token, proceeding with original ID');
+        }
+      } catch (error) {
+        console.warn('Error getting API User ID from token:', error);
+      }
     }
+
+    const USER_CERTIFICATIONS_API_URL = `${
+      process.env.NEXT_PUBLIC_SERVER_API_URL
+    }/api/users/${actualApiUserId}/certifications${queryString ? `?${queryString}` : ''}`;
 
     const response = await fetch(USER_CERTIFICATIONS_API_URL, {
       method: 'GET',

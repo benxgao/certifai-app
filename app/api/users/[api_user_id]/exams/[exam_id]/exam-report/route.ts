@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { COOKIE_AUTH_NAME } from '@/src/config/constants';
+import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 
@@ -28,18 +28,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Get the auth token from the cookie or authorization header
-    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
-    const authHeader = request.headers.get('authorization');
+    // Get the Firebase token from the JWT wrapper cookie
+    const firebaseToken = await getFirebaseTokenFromCookie();
 
-    if (!authCookie?.value && !authHeader) {
+    if (!firebaseToken) {
       return NextResponse.json(
         { success: false, error: 'Authentication required' },
         { status: 401 },
       );
     }
-
-    const token = authCookie?.value || authHeader?.replace('Bearer ', '');
 
     // Forward the request to the backend API with RESTful structure
     const response = await fetch(
@@ -48,7 +45,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${firebaseToken}`,
         },
       },
     );
@@ -99,18 +96,15 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // Get the auth token from the cookie or authorization header
-    const authCookie = request.cookies.get(COOKIE_AUTH_NAME);
-    const authHeader = request.headers.get('authorization');
+    // Get the Firebase token from the JWT wrapper cookie
+    const firebaseToken = await getFirebaseTokenFromCookie();
 
-    if (!authCookie?.value && !authHeader) {
+    if (!firebaseToken) {
       return NextResponse.json(
         { success: false, error: 'Authentication required' },
         { status: 401 },
       );
     }
-
-    const token = authCookie?.value || authHeader?.replace('Bearer ', '');
 
     // Forward the request to the backend API with RESTful structure
     const response = await fetch(
@@ -119,7 +113,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${firebaseToken}`,
         },
         body: JSON.stringify(body),
       },

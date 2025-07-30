@@ -114,8 +114,12 @@ export async function GET(
       );
     }
 
-    // Add cert_id as a query parameter to filter exams by certification
-    const USER_EXAMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/exams?cert_id=${cert_id}`;
+    // Get query parameters from the original request and add cert_id
+    const searchParams = request.nextUrl.searchParams;
+    searchParams.set('cert_id', cert_id); // Ensure cert_id is included
+    const queryString = searchParams.toString();
+
+    const USER_EXAMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/exams?${queryString}`;
 
     const response = await fetch(USER_EXAMS_API_URL, {
       method: 'GET',

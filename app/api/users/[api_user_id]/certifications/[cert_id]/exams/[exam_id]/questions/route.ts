@@ -29,10 +29,9 @@ export async function GET(
       );
     }
 
-    // Get page and pageSize from query parameters
+    // Get all query parameters from the original request
     const searchParams = request.nextUrl.searchParams;
-    const page = searchParams.get('page') || '1'; // Default to page 1
-    const pageSize = searchParams.get('pageSize') || '10'; // Default to pageSize 10
+    const queryString = searchParams.toString();
 
     /**
      * sample response:{
@@ -76,7 +75,9 @@ export async function GET(
           }
       }
      */
-    const USER_EXAMS_API_URL = `${process.env.NEXT_PUBLIC_SERVER_API_URL}/api/users/${api_user_id}/exams/${exam_id}/questions?page=${page}&pageSize=${pageSize}`;
+    const USER_EXAMS_API_URL = `${
+      process.env.NEXT_PUBLIC_SERVER_API_URL
+    }/api/users/${api_user_id}/exams/${exam_id}/questions${queryString ? `?${queryString}` : ''}`;
 
     const response = await fetch(USER_EXAMS_API_URL, {
       method: 'GET',
