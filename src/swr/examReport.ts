@@ -46,6 +46,21 @@ async function examReportFetcher(url: string): Promise<ExamReportData> {
   });
 
   if (!response.ok) {
+    // Try to parse error response as JSON, fallback to text
+    let errorMessage = response.statusText;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorData.message || errorMessage;
+    } catch {
+      // If JSON parsing fails, try to read as text
+      try {
+        const errorText = await response.text();
+        errorMessage = errorText || errorMessage;
+      } catch {
+        // If both fail, use default error message
+      }
+    }
+
     if (response.status === 404) {
       throw new Error('Exam report not found');
     }
@@ -55,7 +70,7 @@ async function examReportFetcher(url: string): Promise<ExamReportData> {
     if (response.status === 400) {
       throw new Error('Report can only be generated for completed exams');
     }
-    throw new Error(`Failed to fetch exam report: ${response.statusText}`);
+    throw new Error(`Failed to fetch exam report: ${errorMessage}`);
   }
 
   const data = await response.json();
@@ -72,8 +87,21 @@ async function generateExamReportFetcher(url: string): Promise<ExamReportData> {
   });
 
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ error: response.statusText }));
-    throw new Error(errorData.error || 'Failed to generate exam report');
+    // Try to parse error response as JSON, fallback to text
+    let errorMessage = response.statusText;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorData.message || errorMessage;
+    } catch {
+      // If JSON parsing fails, try to read as text
+      try {
+        const errorText = await response.text();
+        errorMessage = errorText || errorMessage;
+      } catch {
+        // If both fail, use default error message
+      }
+    }
+    throw new Error(errorMessage);
   }
 
   const data = await response.json();
@@ -93,10 +121,18 @@ export function useExamReport(examId: string | null, shouldFetch: boolean = true
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       shouldRetryOnError: false,
-      // Retry only for specific errors (not 404 which means no report exists)
+      // Enhanced error handling for better user experience
       onError: (error) => {
+        console.error('Exam report fetch error:', error);
         // Don't retry if it's a 404 (report doesn't exist) or 403 (access denied)
         if (error.message.includes('not found') || error.message.includes('Access denied')) {
+          return false;
+        }
+        // Don't retry authentication errors
+        if (
+          error.message.includes('Authentication') ||
+          error.message.includes('Invalid authentication')
+        ) {
           return false;
         }
       },

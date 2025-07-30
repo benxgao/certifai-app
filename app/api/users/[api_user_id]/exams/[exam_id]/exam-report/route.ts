@@ -12,7 +12,7 @@ interface RouteParams {
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const { api_user_id, exam_id } = params;
+    const { api_user_id, exam_id } = await params;
 
     if (!API_BASE_URL) {
       return NextResponse.json(
@@ -53,7 +53,18 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       },
     );
 
-    const data = await response.json();
+    // Read response as text first, then try to parse as JSON
+    const responseText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (jsonError) {
+      // Handle non-JSON responses (like plain text error messages)
+      return NextResponse.json(
+        { success: false, error: responseText || 'Invalid response format from server' },
+        { status: response.status },
+      );
+    }
 
     if (!response.ok) {
       return NextResponse.json(
@@ -114,7 +125,18 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       },
     );
 
-    const data = await response.json();
+    // Read response as text first, then try to parse as JSON
+    const responseText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (jsonError) {
+      // Handle non-JSON responses (like plain text error messages)
+      return NextResponse.json(
+        { success: false, error: responseText || 'Invalid response format from server' },
+        { status: response.status },
+      );
+    }
 
     if (!response.ok) {
       return NextResponse.json(
