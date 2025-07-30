@@ -180,7 +180,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         />
 
         {/* Add logic for displaying explanations only after submission */}
-        {submittedAt !== null && question.explanations && (
+        {submittedAt && question.explanations && question.explanations.trim().length > 0 && (
           <div className="mt-6">
             <Accordion
               type="single"

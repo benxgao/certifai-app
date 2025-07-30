@@ -110,15 +110,15 @@ export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => 
     },
     completed_successful: {
       status: 'completed_successful',
-      label: 'Passed',
+      label: 'Score Above Threshold',
       bgColor: 'bg-emerald-25 dark:bg-emerald-950/20',
       borderColor: 'border-emerald-100 dark:border-emerald-900/30',
     },
     completed_review: {
       status: 'completed_review',
-      label: 'Failed',
-      bgColor: 'bg-red-25 dark:bg-red-950/20',
-      borderColor: 'border-red-100 dark:border-red-900/30',
+      label: 'Score Below Threshold',
+      bgColor: 'bg-amber-25 dark:bg-amber-950/20',
+      borderColor: 'border-amber-100 dark:border-amber-900/30',
     },
   };
 

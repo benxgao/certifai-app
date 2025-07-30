@@ -5,7 +5,7 @@ import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 // Enhanced response that includes rate limit information
 export interface EnhancedExamListResponse extends PaginatedApiResponse<ExamListItem[]> {
@@ -367,8 +367,8 @@ export function useExamState(
     revalidateIfStale: false,
     // Keep previous data to prevent unnecessary loading states
     keepPreviousData: true,
-    // Disable revalidation when data is already cached
-    revalidateOnMount: false,
+    // Enable revalidation when component mounts to fetch initial data
+    revalidateOnMount: true,
   });
 
   // Add deduplication wrapper for mutateExamState

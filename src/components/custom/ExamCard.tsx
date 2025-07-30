@@ -133,7 +133,7 @@ export function ExamCard({
           ),
         };
       case 'completed_successful':
-        return { text: 'View Certificate', icon: <FaTrophy className="w-4 h-4" /> };
+        return { text: 'View Results & Certificate', icon: <FaTrophy className="w-4 h-4" /> };
       case 'completed_review':
         return { text: 'View Results & Explanations', icon: <FaChartLine className="w-4 h-4" /> };
       case 'completed':
@@ -224,8 +224,9 @@ export function ExamCard({
         {/* Enhanced Content Section */}
         <div className="p-6">
           {/* Exam Statistics - Enhanced with StatsCard styling */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-slate-50 to-violet-50/30 dark:from-slate-700/50 dark:to-violet-900/30 p-4 rounded-lg border border-slate-200/60 dark:border-slate-600/60 shadow-sm hover:shadow-md transition-all duration-200 group">
+          <div className="flex gap-4 mb-6">
+            {/* Questions Badge - takes up available space */}
+            <div className="flex-1 bg-gradient-to-br from-slate-50 to-violet-50/30 dark:from-slate-700/50 dark:to-violet-900/30 p-4 rounded-lg border border-slate-200/60 dark:border-slate-600/60 shadow-sm hover:shadow-md transition-all duration-200 group">
               <div className="flex items-center space-x-3 mb-2">
                 <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                   <FaClipboardList className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -239,26 +240,32 @@ export function ExamCard({
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-slate-700/50 dark:to-amber-900/30 p-4 rounded-lg border border-slate-200/60 dark:border-slate-600/60 shadow-sm hover:shadow-md transition-all duration-200 group">
+            {/* Status Badge - takes up available space */}
+            <div className="flex-1 bg-gradient-to-br from-slate-50 to-amber-50/30 dark:from-slate-700/50 dark:to-amber-900/30 p-4 rounded-lg border border-slate-200/60 dark:border-slate-600/60 shadow-sm hover:shadow-md transition-all duration-200 group">
               <div className="flex items-center space-x-3 mb-2">
                 <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                   <FaTrophy className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 </div>
                 <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                  Status {hasScore && '& Score'}
+                  Status
                 </span>
               </div>
-              <div className="space-y-1">
-                <p className="text-lg font-bold bg-gradient-to-r from-slate-900 to-amber-700 dark:from-slate-100 dark:to-amber-300 bg-clip-text text-transparent">
-                  {statusInfo.label}
-                </p>
-                {hasScore && (
-                  <p className="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 dark:from-blue-400 dark:to-violet-400 bg-clip-text text-transparent">
-                    {exam.score}%
-                  </p>
-                )}
-              </div>
+              <p className="text-lg font-bold bg-gradient-to-r from-slate-900 to-amber-700 dark:from-slate-100 dark:to-amber-300 bg-clip-text text-transparent">
+                {statusInfo.label}
+              </p>
             </div>
+
+            {/* Score Badge - Square shape, only shown when there's a score */}
+            {hasScore && (
+              <div className="w-24 h-24 bg-gradient-to-br from-emerald-50 to-blue-50/30 dark:from-emerald-900/30 dark:to-blue-900/30 p-3 rounded-lg border border-emerald-200/60 dark:border-emerald-700/60 shadow-sm hover:shadow-md transition-all duration-200 group flex flex-col items-center justify-center">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">
+                  Score
+                </span>
+                <p className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 dark:from-emerald-400 dark:to-blue-400 bg-clip-text text-transparent text-center">
+                  {exam.score}%
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Generation Progress Bar - only show for generating exams */}
