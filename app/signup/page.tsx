@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
-import NotificationBar from '@/src/components/custom/NotificationBar';
+import EnhancedNotificationBar from '@/src/components/custom/NotificationBar';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { toast } from 'sonner';
@@ -600,11 +600,12 @@ export default function SignUpPage() {
       <LandingHeader />
 
       {/* Notification Bar */}
-      <NotificationBar
+      <EnhancedNotificationBar
         message="🚀 Try our platform instantly with demo account - username/password: demo@certestic.com"
         ctaText=""
         ctaLink="/signin"
         variant="promo"
+        showIcon={true}
       />
 
       <div className="flex-1 w-full lg:relative lg:bg-none auth-container">

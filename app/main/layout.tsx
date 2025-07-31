@@ -7,6 +7,7 @@ import PageLoader from '@/components/custom/PageLoader';
 import ErrorBoundary from '@/components/custom/ErrorBoundary';
 import AuthGuard from '@/src/components/custom/AuthGuard';
 import SimpleAppFooter from '@/src/components/custom/SimpleAppFooter';
+import SystemErrorNotificationBar from '@/src/components/system/SystemErrorNotificationBar';
 import { Toaster } from '@/src/components/ui/sonner';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <ExamStatsProvider>
               <div className="min-h-screen flex flex-col">
                 <AppHeader />
+                <SystemErrorNotificationBar />
                 <div className="flex-1">
                   <Suspense
                     fallback={

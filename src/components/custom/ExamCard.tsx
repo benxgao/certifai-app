@@ -178,13 +178,6 @@ export function ExamCard({
           {/* Enhanced exam ID badge */}
           <div className="mb-4">
             <span className="inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-violet-100/80 to-blue-100/60 dark:from-violet-900/40 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 text-sm font-bold border border-violet-200/60 dark:border-violet-700/60 shadow-md backdrop-blur-sm tracking-wide">
-              <svg className="w-4 h-4 mr-2 opacity-70" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 114 0 2 2 0 01-4 0zm8-1a1 1 0 100 2h2a1 1 0 100-2h-2z"
-                  clipRule="evenodd"
-                />
-              </svg>
               Exam #{exam.exam_id.toString().substring(0, 8)}
             </span>
           </div>

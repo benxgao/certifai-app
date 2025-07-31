@@ -195,6 +195,40 @@ import { ActionButton } from '@/components/custom';
 />
 ```
 
+### NotificationBar (Enhanced)
+
+```tsx
+import EnhancedNotificationBar from '@/src/components/custom/EnhancedNotificationBar';
+
+// Basic usage (enhanced styling by default)
+<EnhancedNotificationBar
+  message="Your action was successful!"
+  variant="success" // info | success | warning | promo | announcement | beta
+  ctaText="View Details"
+  ctaLink="/details"
+  dismissible
+  onDismiss={() => setShowNotification(false)}
+  showIcon
+/>
+
+// Disable enhanced styling for simpler appearance
+<EnhancedNotificationBar
+  message="Simple notification message"
+  variant="info"
+  enhanced={false}
+  showIcon
+/>
+```
+
+**Key Features:**
+
+- Glass-morphism effects with backdrop blur (enabled by default)
+- Variant-specific icons and color schemes
+- Enhanced hover and focus states
+- Decorative gradient orbs for depth
+- Responsive design with proper mobile experience
+- Full dark mode support with proper contrast
+
 ### Breadcrumb Navigation
 
 ```tsx
