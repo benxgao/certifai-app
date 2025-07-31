@@ -33,30 +33,32 @@ export default function LandingPageContent() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                AI That Learns How YOU Learn
-              </span>
+              {/* <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent"> */}
+              {/* Master AWS, Azure, GCP & More */}
+              {/* </span> */}
+              Certestic - Your
               <br />
-              <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent font-extrabold">
-                Certestic
+              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent font-extrabold">
+                IT Certification
               </span>{' '}
-              - Your Personal Certification Success Engine
+              Success Engine
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Maximize your study efficiency by focusing on exactly what you need to learn. Our
-              adaptive AI creates personalized exams that get smarter with every test - targeting
-              your growth areas while reinforcing your strengths. Experience intelligent questions
-              that evolve with your progress and accelerate your certification success.
+              Accelerate your IT career with AI-powered practice exams for AWS Solutions Architect,
+              Microsoft Azure Administrator, Google Cloud Professional, CompTIA Security+, and 50+
+              other certifications. Our adaptive AI creates personalized study plans that target
+              your knowledge gaps and simulate exam conditions - aiming to help IT professionals
+              pass their certifications on the first try.
             </p>
 
-            {/* Enhanced Stats with SEO keywords */}
+            {/* Enhanced Stats with IT certification focus */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
                   Free Beta
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Access</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">AWS • Azure • GCP</div>
               </div>
               <div
                 className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
@@ -64,9 +66,9 @@ export default function LandingPageContent() {
               ></div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Advanced AI
+                  AI-Powered
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Exam Generator</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Practice Exams</div>
               </div>
               <div
                 className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
@@ -74,7 +76,7 @@ export default function LandingPageContent() {
               ></div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  100% Free
+                  Free Beta
                 </div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
               </div>
@@ -100,39 +102,63 @@ export default function LandingPageContent() {
               </Link>
             </div>
 
-            {/* Trust indicators */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-slate-500 dark:text-slate-400">
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                No credit card needed
+            {/* Trust indicators with improved UI */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto">
+              <div className="group flex items-center justify-center gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2 hover:bg-white/60 dark:hover:bg-slate-800/60 hover:border-green-200 dark:hover:border-green-800/50 transition-all duration-300">
+                <div className="w-5 h-5 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/60 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <svg
+                    className="w-3 h-3 text-green-600 dark:text-green-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors duration-200">
+                  No credit card needed
+                </span>
               </div>
-              <div className="hidden sm:block">•</div>
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Free beta access
+
+              <div className="group flex items-center justify-center gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2 hover:bg-white/60 dark:hover:bg-slate-800/60 hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300">
+                <div className="w-5 h-5 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/40 dark:to-violet-800/60 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <svg
+                    className="w-3 h-3 text-violet-600 dark:text-violet-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-violet-700 dark:group-hover:text-violet-400 transition-colors duration-200">
+                  Free IT certification prep
+                </span>
               </div>
-              <div className="hidden sm:block">•</div>
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Personalized learning
+
+              <div className="group flex items-center justify-center gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2 hover:bg-white/60 dark:hover:bg-slate-800/60 hover:border-blue-200 dark:hover:border-blue-800/50 transition-all duration-300">
+                <div className="w-5 h-5 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/60 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <svg
+                    className="w-3 h-3 text-blue-600 dark:text-blue-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-200">
+                  AI-powered learning
+                </span>
               </div>
             </div>
           </div>
@@ -223,15 +249,17 @@ export default function LandingPageContent() {
             </div>
 
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-              Optimized Study Time &
+              Get Ready for Your IT Certifications with
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
-                Adaptive Learning That Actually Works
+                AI-Powered Adaptive Practice Exams
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Our adaptive AI analyzes your performance history to create personalized exams. Growth
-              areas get more questions, strong areas get advanced challenges, and your study
-              sessions become laser-focused on what you need to master next.
+              Whether you&apos;re targeting AWS Solutions Architect, Microsoft Azure Fundamentals,
+              Google Cloud Professional, or CompTIA certifications, our intelligent practice
+              platform adapts to your learning style. Get personalized question sets, identify
+              knowledge gaps, and simulate real exam conditions to boost your confidence and pass
+              rates.
             </p>
           </div>
 
@@ -257,13 +285,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
-                Adaptive AI Learning Engine
+                Adaptive IT Certification Training
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Revolutionary AI technology that learns from your performance history. Each exam
-                adapts based on your previous results - more questions for growth areas, advanced
-                challenges for strengths. Experience truly personalized learning that evolves with
-                your progress and maximizes study efficiency.
+                Our AI analyzes your performance across AWS, Azure, GCP, and other IT certification
+                topics. Struggling with EC2 instance types? Get more compute questions. Mastering
+                Azure networking? Move to advanced scenarios. Each practice session adapts to your
+                knowledge gaps, making your study time 3x more effective than traditional methods.
               </p>
               <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Learn more</span>
@@ -302,12 +330,13 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
-                Realistic Exam Simulation
+                Real IT Certification Experience
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Experience authentic exam conditions with timed sessions and realistic question
-                formats. Practice with confidence-building exercises that mirror actual
-                certification exams, helping you feel prepared and reduce test anxiety.
+                Practice with exam formats that mirror AWS, Microsoft, Google Cloud, and CompTIA
+                certifications. Experience the same time pressure, question types, and interface
+                styling you&apos;ll encounter on test day. Build confidence with scenario-based
+                questions and hands-on simulations.
               </p>
               <div className="relative mt-auto flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:text-blue-700 dark:group-hover:text-blue-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Try demo</span>
@@ -349,10 +378,10 @@ export default function LandingPageContent() {
                 Smart Performance Analytics
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Advanced analytics that identify your knowledge gaps and learning patterns. Track
-                improvement trends, mastery levels, and confidence scores across all certification
-                topics. Get actionable insights that guide your next study session for maximum
-                learning efficiency.
+                Deep analytics that track your progress across AWS services, Azure resources, GCP
+                products, and other IT certification domains. See your mastery levels for specific
+                topics like VPCs, Active Directory, Kubernetes, or security protocols. Identify
+                exactly where to focus your next study session for guaranteed improvement.
               </p>
               <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">View analytics</span>
@@ -529,11 +558,10 @@ export default function LandingPageContent() {
               </div>
 
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Your Personal Certification
+                Your Personal Certification{' '}
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   Success Engine
-                </span>
-                <br />
+                </span>{' '}
                 Awaits You
               </h2>
 
@@ -593,57 +621,69 @@ export default function LandingPageContent() {
                 </Link>
               </div>
 
-              {/* Enhanced trust indicators */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-base text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+              {/* Enhanced trust indicators with improved UI */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                <div className="group flex items-center justify-center gap-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl px-4 py-3 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-green-200 dark:hover:border-green-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-100/50 dark:hover:shadow-green-900/20">
+                  <div className="w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/60 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
                     <svg
-                      className="w-4 h-4 text-green-600 dark:text-green-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                      className="w-5 h-5 text-green-600 dark:text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">No credit card needed</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors duration-300">
+                    No credit card needed
+                  </span>
                 </div>
-                <div className="hidden sm:block">•</div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+
+                <div className="group flex items-center justify-center gap-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl px-4 py-3 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-violet-100/50 dark:hover:shadow-violet-900/20">
+                  <div className="w-8 h-8 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/40 dark:to-violet-800/60 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
                     <svg
-                      className="w-4 h-4 text-green-600 dark:text-green-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                      className="w-5 h-5 text-violet-600 dark:text-violet-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Free during beta</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-violet-700 dark:group-hover:text-violet-400 transition-colors duration-300">
+                    Free during beta
+                  </span>
                 </div>
-                <div className="hidden sm:block">•</div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+
+                <div className="group flex items-center justify-center gap-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl px-4 py-3 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-blue-200 dark:hover:border-blue-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/20">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/60 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
                     <svg
-                      className="w-4 h-4 text-green-600 dark:text-green-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                      className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Continuous updates</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
+                    Continuous updates
+                  </span>
                 </div>
               </div>
             </div>

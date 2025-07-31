@@ -1220,6 +1220,252 @@ export default function TermsOfService() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  System-Initiated Data Deletion Rights
+                </h3>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
+                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
+                    🗑️ Data Deletion Authority
+                  </p>
+                  <p className="text-red-700 dark:text-red-300 text-sm">
+                    The platform reserves the right to delete user historical data at any time for
+                    operational, legal, technical, or business reasons without prior notice.
+                  </p>
+                </div>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Platform&apos;s Right to Delete User Data
+                </h4>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT:</strong>
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>Unrestricted Deletion Rights:</strong> Certestic may delete, remove, or
+                    permanently erase any or all of your historical data, including but not limited
+                    to:
+                    <ul className="list-disc pl-6 mt-2 space-y-1">
+                      <li>Exam scores and performance history</li>
+                      <li>Study progress and learning analytics</li>
+                      <li>Account activity logs and usage patterns</li>
+                      <li>User-generated content and feedback</li>
+                      <li>Personal preferences and customization settings</li>
+                      <li>Certification progress and achievements</li>
+                      <li>Communication history and support interactions</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>No Prior Notice Required:</strong> Data deletion may occur without
+                    advance warning, notification, or opportunity for you to backup or retrieve your
+                    information
+                  </li>
+                  <li>
+                    <strong>Immediate and Permanent:</strong> Once data is deleted by our systems,
+                    it may be permanently unrecoverable and cannot be restored
+                  </li>
+                  <li>
+                    <strong>No Compensation:</strong> You are not entitled to any compensation,
+                    refund, or damages for data deletion, regardless of the reason or timing
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Circumstances for Data Deletion
+                </h4>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  The platform may delete your historical data in the following circumstances,
+                  without limitation:
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>Operational Requirements:</strong> Database maintenance, storage
+                    optimization, system upgrades, or technical infrastructure changes
+                  </li>
+                  <li>
+                    <strong>Storage Limitations:</strong> Reaching storage capacity limits or
+                    cost-management requirements
+                  </li>
+                  <li>
+                    <strong>Legal Compliance:</strong> Requirements under applicable laws,
+                    regulations, court orders, or government requests
+                  </li>
+                  <li>
+                    <strong>Security Measures:</strong> Response to security breaches, data
+                    corruption, or potential threats to system integrity
+                  </li>
+                  <li>
+                    <strong>Account Inactivity:</strong> Extended periods of non-use as determined
+                    by platform usage algorithms and business policies
+                  </li>
+                  <li>
+                    <strong>Terms Violations:</strong> Breach of these Terms of Service or platform
+                    policies
+                  </li>
+                  <li>
+                    <strong>Platform Evolution:</strong> Feature updates, service changes, or
+                    business model transitions
+                  </li>
+                  <li>
+                    <strong>Resource Management:</strong> Server capacity management, cost
+                    optimization, or technical performance improvements
+                  </li>
+                  <li>
+                    <strong>Data Quality Control:</strong> Removal of corrupted, incomplete, or
+                    inconsistent data
+                  </li>
+                  <li>
+                    <strong>Business Decisions:</strong> Strategic platform changes, service
+                    discontinuation, or operational restructuring
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Data Deletion Process and Scope
+                </h4>
+                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-4">
+                  <p className="text-orange-800 dark:text-orange-200 font-semibold mb-2">
+                    ⚠️ Comprehensive Deletion Authority
+                  </p>
+                  <p className="text-orange-700 dark:text-orange-300 text-sm">
+                    Data deletion may be partial or complete, selective or comprehensive, and may
+                    affect individual users or groups of users based on system-determined criteria.
+                  </p>
+                </div>
+
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>Data deletion may include:</strong>
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>Selective Deletion:</strong> Removal of specific data types, date
+                    ranges, or categories while preserving other information
+                  </li>
+                  <li>
+                    <strong>Complete Deletion:</strong> Total erasure of all user historical data
+                    and account information
+                  </li>
+                  <li>
+                    <strong>Automated Deletion:</strong> System-triggered deletion based on
+                    predefined algorithms, rules, or criteria
+                  </li>
+                  <li>
+                    <strong>Manual Deletion:</strong> Human-initiated deletion for specific
+                    operational, legal, or business reasons
+                  </li>
+                  <li>
+                    <strong>Batch Deletion:</strong> Mass deletion affecting multiple users based on
+                    shared characteristics or criteria
+                  </li>
+                  <li>
+                    <strong>Rolling Deletion:</strong> Ongoing deletion of data older than specified
+                    time periods or meeting certain conditions
+                  </li>
+                </ul>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  User Responsibilities and Acknowledgments
+                </h4>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  By using the platform, you acknowledge and agree to the following
+                  responsibilities:
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>No Backup Obligation:</strong> The platform has no obligation to backup,
+                    preserve, or maintain copies of your historical data
+                  </li>
+                  <li>
+                    <strong>User Backup Responsibility:</strong> You are solely responsible for
+                    maintaining your own backups of any data you consider important
+                  </li>
+                  <li>
+                    <strong>Acceptance of Data Loss:</strong> You accept the risk of complete and
+                    permanent data loss at any time
+                  </li>
+                  <li>
+                    <strong>No Recovery Guarantee:</strong> Deleted data may not be recoverable
+                    through technical support, customer service, or any other means
+                  </li>
+                  <li>
+                    <strong>Continued Service Access:</strong> Data deletion does not necessarily
+                    affect your ongoing ability to use the platform with new data generation
+                  </li>
+                </ul>
+
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 mb-6">
+                  <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
+                    ⚠️ Important Data Protection Notice
+                  </h4>
+                  <p className="text-yellow-800 dark:text-yellow-200 text-sm mb-3">
+                    <strong>Beta Platform Consideration:</strong> As a beta platform with limited
+                    resources, data retention capabilities may be especially limited, and data
+                    deletion may occur more frequently than in established production systems.
+                  </p>
+                  <ul className="list-disc pl-6 text-yellow-800 dark:text-yellow-200 text-sm space-y-1">
+                    <li>System instability may result in unintended data loss</li>
+                    <li>Storage limitations may require frequent data cleanup</li>
+                    <li>Development and testing activities may affect production data</li>
+                    <li>Migration processes may not preserve all historical information</li>
+                    <li>Resource constraints may limit data backup and recovery options</li>
+                  </ul>
+                </div>
+
+                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Legal and Liability Limitations
+                </h4>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  <strong>IMPORTANT LIABILITY LIMITATIONS:</strong>
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>
+                    <strong>No Liability for Data Loss:</strong> Certestic shall not be liable for
+                    any damages, losses, or consequences resulting from data deletion, regardless of
+                    cause
+                  </li>
+                  <li>
+                    <strong>No Business Interruption Claims:</strong> You waive any claims for
+                    business interruption, lost profits, or consequential damages related to data
+                    deletion
+                  </li>
+                  <li>
+                    <strong>No Professional Loss Claims:</strong> The platform is not liable for any
+                    professional or educational setbacks resulting from loss of historical progress
+                    data
+                  </li>
+                  <li>
+                    <strong>Force Majeure Application:</strong> Data deletion due to circumstances
+                    beyond our control (natural disasters, cyber attacks, technical failures) is
+                    specifically excluded from liability
+                  </li>
+                  <li>
+                    <strong>Maximum Liability Cap:</strong> Any liability related to data deletion
+                    is subject to the overall liability limitations set forth elsewhere in these
+                    Terms
+                  </li>
+                </ul>
+
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                  <h4 className="text-blue-900 dark:text-blue-100 font-semibold mb-2">
+                    📋 Data Management Best Practices
+                  </h4>
+                  <p className="text-blue-800 dark:text-blue-200 text-sm mb-3">
+                    To minimize the impact of potential data deletion, we recommend:
+                  </p>
+                  <ul className="list-disc pl-6 text-blue-800 dark:text-blue-200 text-sm space-y-1">
+                    <li>Regularly documenting your study progress externally</li>
+                    <li>Maintaining personal records of important achievements</li>
+                    <li>
+                      Not relying solely on platform data for professional or academic purposes
+                    </li>
+                    <li>
+                      Understanding that platform data is supplementary to your learning process
+                    </li>
+                    <li>
+                      Preparing for the possibility of starting fresh with new data at any time
+                    </li>
+                  </ul>
+                </div>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Third-Party AI Services
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">

@@ -12,7 +12,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Certestic',
   description:
-    'AI-powered IT certification training platform to create exams on particular exam topics and test knowledge mastery. Tell AI to generate exams on your particular needs focusing on specific concepts and technologies',
+    'AI-powered IT certification training platform for AWS, Azure, GCP, CompTIA, and 50+ other certifications. Create personalized practice exams with adaptive AI technology to accelerate your IT career.',
   url: 'https://certestic.com',
   logo: 'https://certestic.com/favicon.ico',
   foundingDate: '2025',
@@ -40,14 +40,14 @@ const softwareApplicationSchema = {
   '@type': 'SoftwareApplication',
   name: 'Certestic',
   description:
-    'Create exams on particular exam topics to test knowledge mastery and tell AI to generate exams on your particular needs. AI-powered training platform featuring topic-focused practice exams, personalized learning, and adaptive study recommendations',
+    'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 50+ IT certifications. Adaptive learning technology creates personalized study plans with realistic exam simulation to help IT professionals pass certifications faster.',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web Browser',
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    description: 'Free beta access with 300 credit coins for practice exams',
+    description: 'Free beta access with comprehensive IT certification practice exams',
   },
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -56,29 +56,30 @@ const softwareApplicationSchema = {
     bestRating: '5',
   },
   featureList: [
-    'Create exams on particular exam topics to test knowledge mastery',
-    'Tell AI to generate exams focused on your specific learning needs',
-    'Topic-focused practice questions for targeted preparation',
-    'Personalized study recommendations based on topic performance',
-    'Multiple IT certification tracks with concept-specific testing',
-    'Progress tracking across different topics and domains',
-    'Adaptive difficulty adjustment for optimized learning',
-    'Real-time insights on topic-specific knowledge gaps',
-    'Custom exam creation for particular concepts and technologies',
+    'AI-powered practice exams for AWS, Azure, GCP certifications',
+    'Adaptive learning technology that personalizes study plans',
+    'Realistic exam simulation with timed sessions',
+    'Comprehensive analytics for AWS, Azure, GCP progress tracking',
+    'Practice questions for CompTIA, Cisco, VMware certifications',
+    'Personalized study recommendations based on performance',
+    'Real-time insights on IT certification knowledge gaps',
+    'Custom exam creation for specific technology domains',
+    'Professional exam interface designed for IT certifications',
   ],
 };
 
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Certestic - Create Exams on Particular Topics & Test Knowledge Mastery with AI',
+  name: 'Certestic - AI-Powered IT Certification Training for AWS, Azure, GCP & More',
   description:
-    'Create exams on particular exam topics to test if you have mastered knowledge. Tell AI to generate exams on your particular needs like focusing on specific concepts, technologies, or certification domains',
+    'Master AWS, Azure, GCP, and 50+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass IT certifications faster.',
   url: 'https://certestic.com',
   mainEntity: {
     '@type': 'EducationalOrganization',
     name: 'Certestic',
-    description: 'AI-powered IT certification training platform',
+    description:
+      'AI-powered IT certification training platform for cloud and technology professionals',
   },
 };
 
