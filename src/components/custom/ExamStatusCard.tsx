@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { FaInfoCircle } from 'react-icons/fa';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/src/components/ui/tooltip';
+import { InfoTooltip } from '@/src/components/custom/InfoTooltip';
 import { ExamOverview } from './ExamOverview';
 import { ExamCustomPromptDisplay } from './ExamCustomPromptDisplay';
 import {
@@ -34,17 +33,7 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
           <div className="flex items-center space-x-3">
             <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2 tracking-tight">
               <span>Exam Progress</span>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <FaInfoCircle className="w-4 h-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs">
-                  <p className="text-sm">
-                    Your answers are automatically saved as you select them. Take your time to
-                    review each question carefully.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
+              <InfoTooltip content="Your answers are automatically saved as you select them. Take your time to review each question carefully." />
             </h2>
           </div>
 

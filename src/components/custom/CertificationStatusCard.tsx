@@ -3,6 +3,7 @@
 import React from 'react';
 import { ActionButton } from './ActionButton';
 import ResponsiveTooltip from '@/src/components/custom/ResponsiveTooltip';
+import { InfoTooltip } from '@/src/components/custom/InfoTooltip';
 import { StatsCard } from '@/src/components/custom/StatsCard';
 import { ExamListItem } from '@/swr/exams';
 import { RateLimitInfo } from '@/src/lib/rateLimitUtils';
@@ -116,23 +117,7 @@ export function CertificationStatusCard({
                   <span className="text-sm font-bold text-blue-800 dark:text-blue-200 uppercase tracking-wider">
                     Daily Exam Limit
                   </span>
-                  <ResponsiveTooltip content="You can create at most 3 exams every 24 hours to ensure fair usage and optimal system performance.">
-                    <div className="w-6 h-6 bg-blue-100 dark:bg-blue-800/60 hover:bg-blue-200 dark:hover:bg-blue-700/80 rounded-full flex items-center justify-center transition-all duration-200 cursor-help group/tooltip shadow-sm hover:shadow-md">
-                      <svg
-                        className="w-3.5 h-3.5 text-blue-700 dark:text-blue-300 group-hover/tooltip:text-blue-800 dark:group-hover/tooltip:text-blue-200 transition-colors duration-200"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2.5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                  </ResponsiveTooltip>
+                  <InfoTooltip content="You can create at most 3 exams every 24 hours to ensure fair usage and optimal system performance." />
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
