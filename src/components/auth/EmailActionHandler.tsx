@@ -9,12 +9,16 @@ import {
   confirmPasswordReset,
 } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import { saveSubscriberIdToClaims } from '@/src/lib/marketing-claims';
+import {
+  StatusCardHeader,
+  PasswordResetForm,
+  LoadingInfoBox,
+  ActionButtons,
+} from '@/src/components/custom';
 
 export default function EmailActionHandler() {
   const router = useRouter();
@@ -25,8 +29,6 @@ export default function EmailActionHandler() {
   const [errorMessage, setErrorMessage] = useState('');
   const [email, setEmail] = useState('');
   const [actionType, setActionType] = useState<string>('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [isResetting, setIsResetting] = useState(false);
 
   useEffect(() => {
@@ -279,8 +281,7 @@ export default function EmailActionHandler() {
     handleEmailAction();
   }, [searchParams]);
 
-  const handlePasswordReset = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePasswordReset = async (newPassword: string, confirmPassword: string) => {
     if (newPassword !== confirmPassword) {
       setErrorMessage('Passwords do not match');
       return;
@@ -342,232 +343,74 @@ export default function EmailActionHandler() {
     <div className="flex flex-col min-h-screen">
       <LandingHeader />
 
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <Card className="w-full max-w-md bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm">
-          <CardHeader className="text-center space-y-4 pb-6">
+      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
+        <Card className="w-full max-w-md bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-xl overflow-hidden">
+          {/* Decorative gradient orbs */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+
+          <div className="relative z-10">
             {status === 'loading' && (
-              <>
-                <div className="w-12 h-12 bg-blue-100 rounded-full mx-auto flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-blue-600 animate-spin"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
-                    Processing
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-slate-300">
-                    Please wait while we process your request.
-                  </CardDescription>
-                </div>
-              </>
+              <StatusCardHeader
+                status="loading"
+                title="Processing"
+                description="Please wait while we process your request."
+              />
             )}
 
             {status === 'success' && (
-              <>
-                <div className="w-12 h-12 bg-green-100 rounded-full mx-auto flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
-                    {getSuccessMessage().title}
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-slate-300">
-                    {getSuccessMessage().description}
-                  </CardDescription>
-                </div>
-              </>
+              <StatusCardHeader
+                status="success"
+                title={getSuccessMessage().title}
+                description={getSuccessMessage().description}
+              />
             )}
 
             {status === 'password-reset' && (
-              <>
-                <div className="w-12 h-12 bg-blue-100 rounded-full mx-auto flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                </div>
-                <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
-                    Reset Password
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-slate-300">
-                    Enter your new password for {email}
-                  </CardDescription>
-                </div>
-              </>
+              <StatusCardHeader
+                status="info"
+                title="Reset Password"
+                description={`Enter your new password for ${email}`}
+              />
             )}
 
             {(status === 'error' || status === 'expired') && (
-              <>
-                <div className="w-12 h-12 bg-red-100 rounded-full mx-auto flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-red-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </div>
-                <div className="space-y-2">
-                  <CardTitle className="text-xl font-semibold text-gray-900 dark:text-slate-100">
-                    {status === 'expired' ? 'Link Expired' : 'Action Failed'}
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-slate-300">
-                    {errorMessage}
-                  </CardDescription>
-                </div>
-              </>
-            )}
-          </CardHeader>
-
-          <CardContent className="space-y-4 px-6 pb-6">
-            {status === 'success' && (
-              <Button
-                onClick={handleContinueToSignIn}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
-                size="lg"
-              >
-                Continue to Sign In
-              </Button>
+              <StatusCardHeader
+                status="error"
+                title={status === 'expired' ? 'Link Expired' : 'Action Failed'}
+                description={errorMessage}
+              />
             )}
 
-            {status === 'password-reset' && (
-              <form onSubmit={handlePasswordReset} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword" className="text-slate-700 dark:text-slate-200">
-                    New Password
-                  </Label>
-                  <Input
-                    id="newPassword"
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter new password"
-                    required
-                    minLength={6}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-slate-200">
-                    Confirm Password
-                  </Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm new password"
-                    required
-                    minLength={6}
-                  />
-                </div>
-                {errorMessage && (
-                  <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
-                )}
-                <Button
-                  type="submit"
-                  disabled={isResetting || !newPassword || !confirmPassword}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
-                  size="lg"
-                >
-                  {isResetting ? 'Resetting...' : 'Reset Password'}
-                </Button>
-              </form>
-            )}
+            <CardContent className="space-y-4 px-6 pb-6">
+              {status === 'success' && (
+                <ActionButtons variant="success" onContinueToSignIn={handleContinueToSignIn} />
+              )}
 
-            {status === 'expired' && (
-              <Button
-                onClick={handleRequestNewLink}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
-                size="lg"
-              >
-                Request New Link
-              </Button>
-            )}
+              {status === 'password-reset' && (
+                <PasswordResetForm
+                  email={email}
+                  onSubmit={handlePasswordReset}
+                  isResetting={isResetting}
+                  errorMessage={errorMessage}
+                />
+              )}
 
-            {status === 'error' && (
-              <div className="space-y-3">
-                <Button
-                  onClick={handleRequestNewLink}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
-                  size="lg"
-                >
-                  Get New Link
-                </Button>
-                <Button
-                  onClick={() => router.push('/support')}
-                  variant="outline"
-                  className="w-full border-gray-300 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200"
-                  size="lg"
-                >
-                  Contact Support
-                </Button>
-              </div>
-            )}
+              {status === 'expired' && (
+                <ActionButtons variant="expired" onRequestNewLink={handleRequestNewLink} />
+              )}
 
-            {status === 'loading' && (
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 text-blue-800 dark:text-blue-200 text-sm p-4 rounded-lg">
-                <div className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>Processing your request...</span>
-                </div>
-              </div>
-            )}
-          </CardContent>
+              {status === 'error' && (
+                <ActionButtons
+                  variant="error"
+                  onRequestNewLink={handleRequestNewLink}
+                  onContactSupport={() => router.push('/support')}
+                />
+              )}
+
+              {status === 'loading' && <LoadingInfoBox />}
+            </CardContent>
+          </div>
         </Card>
       </div>
     </div>

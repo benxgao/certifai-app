@@ -19,6 +19,14 @@ export { default as SkeletonCard } from './SkeletonCard';
 
 // UI Components
 export { ActionButton } from './ActionButton';
+export { StatusIcon } from './StatusIcon';
+export { StatusCardHeader } from './StatusCardHeader';
+export { PasswordResetForm } from './PasswordResetForm';
+export { LoadingInfoBox } from './LoadingInfoBox';
+export { ActionButtons } from './ActionButtons';
+
+// Form Components
+export * from './forms';
 
 // Exam-related components
 export { ExamLoadingState } from './ExamLoadingState';
