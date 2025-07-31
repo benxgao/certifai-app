@@ -12,6 +12,7 @@ import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/src/lib/utils';
+import { AlertMessage } from './AlertMessage';
 
 interface EnhancedFirmNavigationProps {
   onRegister: (cert: CertificationListItem) => void;
@@ -391,28 +392,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
   }
 
   if (isFirmsError) {
-    return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl p-6">
-        <div className="flex items-center space-x-3">
-          <svg
-            className="w-5 h-5 text-red-600 dark:text-red-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <p className="text-red-800 dark:text-red-100 font-medium">
-            Error loading certification providers
-          </p>
-        </div>
-      </div>
-    );
+    return <AlertMessage message="Error loading certification providers" variant="error" />;
   }
 
   return (

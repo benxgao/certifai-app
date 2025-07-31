@@ -4,6 +4,7 @@ import { useUserProfileContext } from '@/src/context/UserProfileContext';
 import { useExamStats } from '@/src/context/ExamStatsContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StatsCard } from './StatsCard';
+import { AlertMessage } from './AlertMessage';
 
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
@@ -42,11 +43,10 @@ const DashboardStats = () => {
   if (profileError && !isLoadingUserCertifications) {
     return (
       <div className="space-y-4">
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-          <p className="text-sm text-yellow-800 dark:text-yellow-200">
-            Some dashboard data may be incomplete due to profile loading issues.
-          </p>
-        </div>
+        <AlertMessage
+          message="Some dashboard data may be incomplete due to profile loading issues."
+          variant="warning"
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Show only certification stats */}
           <StatsCard

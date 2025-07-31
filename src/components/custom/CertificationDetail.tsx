@@ -16,6 +16,7 @@ import {
 import Link from 'next/link';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
+import { AlertMessage } from './AlertMessage';
 
 // Simple date formatting function
 const formatDate = (dateString: string) => {
@@ -154,13 +155,17 @@ export default function CertificationDetail({ certId, initialData }: Props) {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 text-lg mb-4">Error loading certification</div>
-        <p className="text-gray-600 mb-4">{error}</p>
-        <div className="space-x-4">
-          <Button onClick={() => window.location.reload()}>Try Again</Button>
-          <Link href="/certifications">
-            <Button variant="outline">Back to Certifications</Button>
-          </Link>
+        <div className="space-y-4">
+          <AlertMessage
+            message={`Error loading certification${error ? `: ${error}` : ''}`}
+            variant="error"
+          />
+          <div className="space-x-4">
+            <Button onClick={() => window.location.reload()}>Try Again</Button>
+            <Link href="/certifications">
+              <Button variant="outline">Back to Certifications</Button>
+            </Link>
+          </div>
         </div>
       </div>
     );

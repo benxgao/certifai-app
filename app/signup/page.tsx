@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
 import EnhancedNotificationBar from '@/src/components/custom/NotificationBar';
+import { AlertMessage } from '@/src/components/custom/AlertMessage';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import { toast } from 'sonner';
@@ -454,22 +455,10 @@ export default function SignUpPage() {
                 {/* Verification Content with dashboard card content styling */}
                 <div className="p-6 sm:p-8 space-y-6 sm:space-y-8 auth-content-mobile">
                   {success && (
-                    <div className="text-sm p-3 rounded-xl border animate-in slide-in-from-top-2 duration-300 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-100 border-green-200 dark:border-green-800/50">
-                      <div className="flex items-start">
-                        <CheckCircle className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
-                        <div className="flex-1">{success}</div>
-                      </div>
-                    </div>
+                    <AlertMessage message={success} variant="success" className="text-sm p-3" />
                   )}
 
-                  {error && (
-                    <div className="text-sm p-3 rounded-xl border animate-in slide-in-from-top-2 duration-300 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-100 border-red-200 dark:border-red-800/50">
-                      <div className="flex items-start">
-                        <AlertCircle className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5" />
-                        <div className="flex-1">{error}</div>
-                      </div>
-                    </div>
-                  )}
+                  {error && <AlertMessage message={error} className="text-sm p-3" />}
 
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800/50 shadow-sm">
                     <div className="flex items-start space-x-3">
@@ -807,24 +796,7 @@ export default function SignUpPage() {
                     </Label>
                   </div>
 
-                  {error && (
-                    <div className="text-sm p-4 sm:p-5 lg:p-6 rounded-xl border animate-in slide-in-from-top-2 duration-300 bg-red-50 dark:bg-red-950/50 text-red-800 dark:text-red-200 border-red-200 dark:border-red-800/50">
-                      <div className="flex items-start">
-                        <svg
-                          className="w-4 h-4 mr-3 flex-shrink-0 mt-0.5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zm-4 4a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <div className="flex-1">{error}</div>
-                      </div>
-                    </div>
-                  )}
+                  {error && <AlertMessage message={error} className="text-sm p-4 sm:p-5 lg:p-6" />}
 
                   {/* Debug info in development - only show when there's an actual error or loading state */}
                   {process.env.NODE_ENV === 'development' && (loading || error) && (

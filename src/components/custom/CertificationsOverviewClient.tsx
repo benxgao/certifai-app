@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
+import { AlertMessage } from './AlertMessage';
 import { FirmWithCertifications } from '@/src/lib/server-actions/certifications';
 import { linkifyText } from '@/src/lib/text-utils';
 
@@ -70,10 +71,12 @@ export default function CertificationsOverviewClient({
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/50 rounded-xl p-6 max-w-md mx-auto">
-          <div className="text-red-600 dark:text-red-400 text-lg mb-4">Error loading certifications</div>
-          <p className="text-red-600/80 dark:text-red-400/80 mb-4">{error}</p>
-          <Button 
+        <div className="max-w-md mx-auto space-y-4">
+          <AlertMessage
+            message={`Error loading certifications${error ? `: ${error}` : ''}`}
+            variant="error"
+          />
+          <Button
             onClick={() => window.location.reload()}
             className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white"
           >
@@ -96,11 +99,15 @@ export default function CertificationsOverviewClient({
       <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="text-center">
-            <div className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-1">{firms.length}</div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-1">
+              {firms.length}
+            </div>
             <div className="text-slate-600 dark:text-slate-400">Technology Firms</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-1">{totalCertifications}</div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-1">
+              {totalCertifications}
+            </div>
             <div className="text-slate-600 dark:text-slate-400">Total Certifications</div>
           </div>
           <div className="text-center">
@@ -170,23 +177,35 @@ export default function CertificationsOverviewClient({
       <div className="space-y-6">
         {filteredFirms.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-slate-500 dark:text-slate-400 text-lg mb-2">No certifications found</div>
+            <div className="text-slate-500 dark:text-slate-400 text-lg mb-2">
+              No certifications found
+            </div>
             <p className="text-slate-400 dark:text-slate-500">Try adjusting your search criteria</p>
           </div>
         ) : (
           filteredFirms.map((firm) => (
-            <Card key={firm.id} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg dark:shadow-slate-900/20 hover:shadow-xl dark:hover:shadow-slate-900/30 transition-all duration-300 border border-slate-200/60 dark:border-slate-700/60 hover:border-violet-300/60 dark:hover:border-violet-600/60 rounded-2xl">
+            <Card
+              key={firm.id}
+              className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg dark:shadow-slate-900/20 hover:shadow-xl dark:hover:shadow-slate-900/30 transition-all duration-300 border border-slate-200/60 dark:border-slate-700/60 hover:border-violet-300/60 dark:hover:border-violet-600/60 rounded-2xl"
+            >
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <CardTitle className="text-2xl text-slate-900 dark:text-slate-100">{firm.name}</CardTitle>
-                      <Badge variant="secondary" className="text-sm bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800/50">
+                      <CardTitle className="text-2xl text-slate-900 dark:text-slate-100">
+                        {firm.name}
+                      </CardTitle>
+                      <Badge
+                        variant="secondary"
+                        className="text-sm bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800/50"
+                      >
                         {firm.certification_count} certification
                         {firm.certification_count !== 1 ? 's' : ''}
                       </Badge>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-400 mb-2">{linkifyText(firm.description)}</p>
+                    <p className="text-slate-600 dark:text-slate-400 mb-2">
+                      {linkifyText(firm.description)}
+                    </p>
                     {firm.website_url && (
                       <a
                         href={firm.website_url}
@@ -203,7 +222,9 @@ export default function CertificationsOverviewClient({
               <CardContent>
                 {!Array.isArray(firm.certifications) || firm.certifications.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-slate-500 dark:text-slate-400 italic mb-2">No certifications available yet</p>
+                    <p className="text-slate-500 dark:text-slate-400 italic mb-2">
+                      No certifications available yet
+                    </p>
                     <p className="text-sm text-slate-400 dark:text-slate-500">
                       Expected: {firm.certification_count} certification
                       {firm.certification_count !== 1 ? 's' : ''}

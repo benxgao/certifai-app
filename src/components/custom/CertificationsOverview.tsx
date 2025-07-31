@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
 import { useAllFirmsWithCertifications } from '@/src/swr/useAllData';
+import { AlertMessage } from './AlertMessage';
 
 interface Certification {
   cert_id: number;
@@ -87,9 +88,15 @@ export default function CertificationsOverview() {
   if (fetchError) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-600 text-lg mb-4">Error loading certifications</div>
-        <p className="text-gray-600 mb-4">{fetchError.message || 'An error occurred'}</p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <div className="space-y-4">
+          <AlertMessage
+            message={`Error loading certifications${
+              fetchError.message ? `: ${fetchError.message}` : ''
+            }`}
+            variant="error"
+          />
+          <Button onClick={() => window.location.reload()}>Try Again</Button>
+        </div>
       </div>
     );
   }

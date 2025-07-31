@@ -1,3 +1,4 @@
+export { AlertMessage } from './AlertMessage';
 export { default as LandingHeader } from './LandingHeader';
 export { default as AppHeader } from './appheader';
 export { default as AuthGuard } from './AuthGuard';
