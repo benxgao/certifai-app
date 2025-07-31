@@ -76,7 +76,6 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
     let errorMessage: string | null = null;
 
     if (urlParams.hasSessionExpired) {
-      console.log('Session expiration detected - clearing auth state');
       errorMessage = 'Your session has expired. Please sign in again.';
     }
 
@@ -86,18 +85,14 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
     // Sign out any existing Firebase auth session
     try {
       await signOut(auth);
-      console.log('Existing Firebase auth session signed out');
     } catch {
-      console.log('No existing Firebase session to sign out');
     }
 
     // Clear server-side cookies and cache
     await resetAuthenticationState();
 
-    console.log('Auth state cleared on signin page load');
     return errorMessage;
   } catch (error) {
-    console.error('Failed to clear auth state on signin page load:', error);
     return null;
   }
 };
@@ -162,9 +157,7 @@ export const handleUnverifiedUser = async (): Promise<AuthError> => {
   try {
     await signOut(auth);
     await resetAuthenticationState();
-    console.log('Signed out unverified user and cleared auth state');
   } catch (signOutError) {
-    console.error('Failed to sign out unverified user:', signOutError);
   }
 
   return {
@@ -227,9 +220,7 @@ export const clearAuthStateOnError = async (): Promise<void> => {
   try {
     await resetAuthenticationState();
     await signOut(auth);
-    console.log('Auth state cleared after signin error');
   } catch (clearError) {
-    console.error('Failed to clear auth state after signin error:', clearError);
   }
 };
 
@@ -249,7 +240,6 @@ export const resendVerificationEmail = async (): Promise<string> => {
     await sendEmailVerification(auth.currentUser, actionCodeSettings);
     return 'Verification email sent! Please check your inbox.';
   } catch (error) {
-    console.error('Failed to resend verification email:', error);
     return 'Failed to send verification email. Please try again.';
   }
 };
@@ -263,7 +253,6 @@ export const performSignin = async (
 ): Promise<{ success: boolean; error?: AuthError }> => {
   try {
     // Clear any existing auth state before signing in to handle user transitions
-    console.log('Clearing existing auth state before signin...');
     await resetAuthenticationState();
 
     // Small delay to ensure auth state clearing is complete
@@ -279,7 +268,6 @@ export const performSignin = async (
     }
 
     // Cookie setting and API login will be handled automatically by FirebaseAuthContext
-    console.log('Signin successful, auth context will handle cookie setup');
 
     return { success: true };
   } catch (error: any) {

@@ -69,7 +69,6 @@ export async function getServerAuthState(): Promise<ServerAuthResult> {
       return { isAuthenticated: false, needsRefresh: false, error: 'Firebase token invalid' };
     }
   } catch (error) {
-    console.error('Server auth state check failed:', error);
     return { isAuthenticated: false, needsRefresh: false, error: 'Server error' };
   }
 }
@@ -89,16 +88,13 @@ export async function refreshServerSideToken(uid: string): Promise<string | null
     const userRecord = await admin.auth.getUser(uid);
 
     if (userRecord.disabled) {
-      console.warn('User account is disabled:', uid);
       return null;
     }
 
     // User is valid but we cannot create an ID token server-side
     // Firebase ID tokens can only be created client-side or via custom token exchange
-    console.log('User is valid, but server-side ID token creation not possible');
     return null;
   } catch (error) {
-    console.error('Server-side user validation failed:', error);
     return null;
   }
 }
@@ -134,7 +130,6 @@ export async function getServerAuthStateWithRefresh(): Promise<
       );
       payload = jwtPayload;
     } catch (jwtError: any) {
-      console.log('JWT verification failed:', jwtError.code);
 
       // If JWT is expired, try to decode payload without verification
       if (jwtError.code === 'ERR_JWT_EXPIRED') {
@@ -184,7 +179,6 @@ export async function getServerAuthStateWithRefresh(): Promise<
         needsRefresh: false,
       };
     } catch (firebaseError: any) {
-      console.log('Firebase token verification failed:', firebaseError.code);
 
       // Firebase token is invalid or expired
       if (firebaseError.code === 'auth/id-token-expired') {
@@ -198,7 +192,6 @@ export async function getServerAuthStateWithRefresh(): Promise<
       return { isAuthenticated: false, needsRefresh: false, error: 'Firebase token invalid' };
     }
   } catch (error) {
-    console.error('Server auth state check failed:', error);
     return { isAuthenticated: false, needsRefresh: false, error: 'Server error' };
   }
 }
@@ -225,7 +218,6 @@ export async function createJWTWrapper(firebaseToken: string): Promise<string | 
 
     return joseToken;
   } catch (error) {
-    console.error('JWT wrapper creation failed:', error);
     return null;
   }
 }

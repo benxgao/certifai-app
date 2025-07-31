@@ -22,7 +22,6 @@ export function useAuthMutationFetcher() {
 
       // If we get a 401, try to refresh token and retry
       if (response.status === 401) {
-        console.log('Token expired during mutation, attempting refresh...');
         const newToken = await refreshToken();
 
         if (newToken) {
@@ -36,7 +35,6 @@ export function useAuthMutationFetcher() {
           });
         } else {
           // If refresh failed, clear auth state and throw auth error
-          console.log('Token refresh failed during mutation');
           await handleAuthFailure();
           throw new Error('Authentication failed. Please sign in again.');
         }
@@ -81,7 +79,6 @@ export function useAuthMutation<Data = any, Arg = any>(
 
       // If we get a 401, try to refresh token and retry
       if (response.status === 401) {
-        console.log('Token expired during mutation, attempting refresh...');
         const newToken = await refreshToken();
 
         if (newToken) {
@@ -95,7 +92,6 @@ export function useAuthMutation<Data = any, Arg = any>(
           });
         } else {
           // If refresh failed, clear auth state and throw auth error
-          console.log('Token refresh failed during mutation');
           await handleAuthFailure();
           throw new Error('Authentication failed. Please sign in again.');
         }

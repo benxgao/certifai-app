@@ -38,7 +38,6 @@ export function ExamReport({ examId, isCompleted, className }: ExamReportProps) 
       const newReport = await generateReport(examId);
       mutateReport(newReport, false);
     } catch (error) {
-      console.error('Failed to generate exam report:', error);
     } finally {
       setIsGenerating(false);
     }

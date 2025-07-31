@@ -48,7 +48,6 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ trigger }) =>
       // Close dialog
       setIsOpen(false);
     } catch (error: any) {
-      console.error('Failed to delete account:', error);
       toastHelpers.error.generic(error?.message || 'Failed to delete account. Please try again.');
     }
   };

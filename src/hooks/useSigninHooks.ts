@@ -42,7 +42,6 @@ export const useAuthRedirect = (
       window.location.pathname === '/signin'; // Only redirect from signin page
 
     if (shouldRedirect) {
-      console.log('Auth successful - redirecting to /main');
       
       // Prevent multiple redirect attempts
       redirectAttempted.current = true;
@@ -57,12 +56,10 @@ export const useAuthRedirect = (
           // Strategy 2: Fallback with native redirect after short delay
           setTimeout(() => {
             if (window.location.pathname === '/signin') {
-              console.log('Router redirect may have failed, using window.location');
               window.location.replace('/main');
             }
           }, 1000);
         } catch (error) {
-          console.error('Router redirect failed, using fallback:', error);
           // Strategy 3: Immediate fallback
           window.location.replace('/main');
         }
@@ -94,7 +91,6 @@ export const useSigninInitialization = (setError: (error: string) => void) => {
           setError(errorMessage);
         }
       } catch (error) {
-        console.error('Signin initialization error:', error);
       }
     };
 

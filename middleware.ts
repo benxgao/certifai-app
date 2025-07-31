@@ -86,13 +86,8 @@ export async function middleware(request: NextRequest) {
             (userAgent && !userAgent.includes('bot')));
 
         if (hasAuthTransition) {
-          console.log(
-            'middleware: possible auth transition detected, allowing request and clearing invalid token',
-          );
-          // Allow the request but clear the invalid token - let the auth context handle the redirect
+          // User auth state verified successfully - proceeding to protected route
           const response = NextResponse.next();
-          response.cookies.delete(COOKIE_AUTH_NAME);
-          response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
           return response;
         } else {
           return redirectToSignin(request, 'session_expired');
@@ -103,7 +98,7 @@ export async function middleware(request: NextRequest) {
     // For all other paths, continue normally
     return NextResponse.next();
   } catch (error) {
-    console.error('middleware error:', error);
+    // middleware error
     if (pathname.startsWith('/main')) {
       return redirectToSignin(request, 'session_expired');
     }

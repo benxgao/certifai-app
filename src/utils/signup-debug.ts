@@ -41,7 +41,6 @@ class SignupDebugger {
 
     // Also log to console with color coding
     const emoji = status === 'success' ? '✅' : status === 'error' ? '❌' : '⏳';
-    console.log(`${emoji} SIGNUP DEBUG [${step}]:`, message || status, error ? error : '');
   }
 
   success(step: string, message?: string) {
@@ -72,7 +71,6 @@ class SignupDebugger {
   checkEnvironment() {
     if (!this.isEnabled) return;
 
-    console.log('🔍 SIGNUP ENVIRONMENT CHECK:');
 
     // Check Firebase config
     const firebaseConfig = {
@@ -81,7 +79,6 @@ class SignupDebugger {
       projectId: !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     };
 
-    console.log('Firebase Config:', firebaseConfig);
 
     // Check API URLs
     const apiConfig = {
@@ -89,7 +86,6 @@ class SignupDebugger {
       backendUrl: !!process.env.NEXT_PUBLIC_FIREBASE_BACKEND_URL,
     };
 
-    console.log('API Config:', apiConfig);
 
     // Check for missing environment variables
     const missing = [];
@@ -100,9 +96,7 @@ class SignupDebugger {
       missing.push('NEXT_PUBLIC_FIREBASE_PROJECT_ID');
 
     if (missing.length > 0) {
-      console.warn('⚠️ Missing environment variables:', missing);
     } else {
-      console.log('✅ All required environment variables are present');
     }
   }
 }

@@ -42,7 +42,6 @@ export async function updateFirebaseDisplayName(displayName: string): Promise<Up
       const firstName = nameParts[0] || '';
       const lastName = nameParts.slice(1).join(' ') || '';
 
-      console.log('Updating marketing list with new user name:', currentUser.email);
 
       const marketingResponse = await fetch('/api/marketing/update-profile', {
         method: 'POST',
@@ -62,12 +61,9 @@ export async function updateFirebaseDisplayName(displayName: string): Promise<Up
       const marketingResult = await marketingResponse.json();
 
       if (marketingResult.success) {
-        console.log('Marketing list updated with new user name');
       } else {
-        console.warn('Marketing list update failed (non-blocking):', marketingResult.error);
       }
     } catch (marketingError) {
-      console.error('Error updating marketing list with new name (non-blocking):', marketingError);
       // Marketing update errors are non-blocking and won't affect profile update
     }
 
@@ -75,7 +71,6 @@ export async function updateFirebaseDisplayName(displayName: string): Promise<Up
       success: true,
     };
   } catch (error) {
-    console.error('Error updating Firebase display name:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update display name',

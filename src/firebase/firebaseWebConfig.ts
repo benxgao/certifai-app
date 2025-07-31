@@ -18,7 +18,7 @@ export const auth = getAuth(app);
 // Enable auth persistence for better performance and offline capability
 if (typeof window !== 'undefined') {
   setPersistence(auth, browserLocalPersistence).catch((error) => {
-    console.warn('Failed to set auth persistence:', error);
+    // Failed to set auth persistence
   });
 }
 

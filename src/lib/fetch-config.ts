@@ -57,7 +57,6 @@ export const optimizedFetch = async (
         // Check if it was a timeout or an external abort
         if (existingSignal?.aborted) {
           // External abort (component unmounted, navigation, etc.)
-          console.log('Request cancelled due to component cleanup or navigation');
           const cancelError = new Error('Request was cancelled');
           cancelError.name = 'CancelledError';
           throw cancelError;

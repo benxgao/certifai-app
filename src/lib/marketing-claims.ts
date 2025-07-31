@@ -14,7 +14,6 @@ export async function saveSubscriberIdToClaims(
   firebaseUser: User,
 ): Promise<boolean> {
   try {
-    console.log('Saving subscriberId to Firebase Auth claims:', subscriberId);
 
     // Get the user's current ID token
     const idToken = await firebaseUser.getIdToken();
@@ -39,14 +38,11 @@ export async function saveSubscriberIdToClaims(
     });
 
     if (claimsResponse.ok) {
-      console.log('Successfully saved subscriberId to Firebase Auth claims');
       return true;
     } else {
-      console.warn('Failed to save subscriberId to Firebase Auth claims:', claimsResponse.status);
       return false;
     }
   } catch (error) {
-    console.error('Error saving subscriberId to Firebase Auth claims (non-blocking):', error);
     return false;
   }
 }

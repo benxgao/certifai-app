@@ -123,7 +123,6 @@ export function useExamReport(examId: string | null, shouldFetch: boolean = true
       shouldRetryOnError: false,
       // Enhanced error handling for better user experience
       onError: (error) => {
-        console.error('Exam report fetch error:', error);
         // Don't retry if it's a 404 (report doesn't exist) or 403 (access denied)
         if (error.message.includes('not found') || error.message.includes('Access denied')) {
           return false;
@@ -179,7 +178,6 @@ export function useAutoGenerateExamReport(
       // Trigger generation after a short delay to avoid overwhelming the API
       const timer = setTimeout(() => {
         generateReport(examId).catch((error) => {
-          console.error('Auto-generation of exam report failed:', error);
           // Reset the flag so user can manually trigger generation
           setHasTriggeredGeneration(false);
         });

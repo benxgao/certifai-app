@@ -41,14 +41,12 @@ export async function fetchAllPages<T>(
       const response = await fetch(url, options);
 
       if (!response.ok) {
-        console.warn(`Failed to fetch page ${page} from ${baseUrl}:`, response.status);
         break;
       }
 
       const result: PaginatedResponse<T> = await response.json();
 
       if (!result.data || !Array.isArray(result.data)) {
-        console.warn(`Invalid response format for page ${page} from ${baseUrl}`);
         break;
       }
 
@@ -81,13 +79,11 @@ export async function fetchAllPages<T>(
         await new Promise((resolve) => setTimeout(resolve, 50));
       }
     } catch (error) {
-      console.error(`Error fetching page ${page} from ${baseUrl}:`, error);
       break;
     }
   }
 
   if (page > maxPages) {
-    console.warn(`Reached maximum page limit (${maxPages}) for ${baseUrl}`);
   }
 
   return allData;

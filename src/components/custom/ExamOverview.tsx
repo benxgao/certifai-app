@@ -22,18 +22,6 @@ export const ExamOverview: React.FC<ExamOverviewProps> = ({
   // Fetch exam info data independently
   const { examInfoData, isLoadingExamInfo, examInfoError } = useExamInfo(apiUserId, examId);
 
-  // Temporary debugging
-  React.useEffect(() => {
-    console.log('ExamOverview - useExamInfo Debug:', {
-      apiUserId,
-      examId,
-      examInfoData,
-      isLoadingExamInfo,
-      examInfoError,
-      started_at: examInfoData?.started_at,
-    });
-  }, [apiUserId, examId, examInfoData, isLoadingExamInfo, examInfoError]);
-
   // Use exam info data if available, otherwise fall back to props
   const totalQuestions = examInfoData?.total_questions || pagination?.totalItems;
   const submittedAt = examInfoData?.submitted_at || fallbackSubmittedAt;

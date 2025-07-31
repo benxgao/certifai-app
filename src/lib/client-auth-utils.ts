@@ -42,7 +42,6 @@ export async function attemptServerRefresh(): Promise<RefreshResult> {
       message: result.message,
     };
   } catch (error) {
-    console.error('Server refresh attempt failed:', error);
     return {
       success: false,
       requiresReauth: true,

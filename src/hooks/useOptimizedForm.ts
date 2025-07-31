@@ -82,7 +82,6 @@ export function useOptimizedForm<T extends Record<string, any>>({
         setIsSubmitting(true);
         await onSubmit(values);
       } catch (error) {
-        console.error('Form submission error:', error);
       } finally {
         setIsSubmitting(false);
       }

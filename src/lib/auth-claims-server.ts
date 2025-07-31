@@ -13,7 +13,6 @@ export async function getApiUserIdFromToken(firebaseToken: string): Promise<stri
 
     return (decodedToken.api_user_id as string) || null;
   } catch (error) {
-    console.error('Error verifying token and getting api_user_id:', error);
     return null;
   }
 }
@@ -29,7 +28,6 @@ export async function getInitCertIdFromToken(firebaseToken: string): Promise<num
 
     return (decodedToken.init_cert_id as number) || null;
   } catch (error) {
-    console.error('Error verifying token and getting init_cert_id:', error);
     return null;
   }
 }
@@ -45,7 +43,6 @@ export async function getSubscriberIdFromToken(firebaseToken: string): Promise<s
 
     return (decodedToken.subscriber_id as string) || null;
   } catch (error) {
-    console.error('Error verifying token and getting subscriber_id:', error);
     return null;
   }
 }
@@ -61,7 +58,6 @@ export async function getApiUserIdByUid(uid: string): Promise<string | null> {
 
     return userRecord.customClaims?.api_user_id || null;
   } catch (error) {
-    console.error('Error getting api_user_id by UID:', error);
     return null;
   }
 }

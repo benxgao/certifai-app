@@ -59,7 +59,6 @@ export function useDisplayNameUpdate(): UseDisplayNameUpdateResult {
 
       return true;
     } catch (error) {
-      console.error('Error in updateDisplayName:', error);
       setError(error instanceof Error ? error.message : 'An unexpected error occurred');
       return false;
     } finally {

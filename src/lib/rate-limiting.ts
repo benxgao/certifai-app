@@ -182,7 +182,6 @@ export function withRateLimit(
 
       return response;
     } catch (error) {
-      console.error('Rate limiting error:', error);
       // If rate limiting fails, allow the request to proceed
       return handler(request);
     }

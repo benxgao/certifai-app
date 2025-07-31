@@ -173,7 +173,6 @@ async function submitExamFetcher(
 
   // If we get a 401, try to refresh token and retry
   if (response.status === 401) {
-    console.log('Token expired during exam submission, attempting refresh...');
     const newToken = await refreshToken();
 
     if (newToken) {
@@ -246,7 +245,6 @@ async function deleteExamFetcher(
 
   // If we get a 401, try to refresh token and retry
   if (response.status === 401) {
-    console.log('Token expired during exam deletion, attempting refresh...');
     const newToken = await refreshToken();
 
     if (newToken) {

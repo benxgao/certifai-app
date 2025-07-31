@@ -26,7 +26,6 @@ export function useInitCertId() {
 
         setInitCertId(certId || null);
       } catch (error) {
-        console.error('Error getting init_cert_id from custom claims:', error);
         setInitCertId(null);
       } finally {
         setIsLoading(false);

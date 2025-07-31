@@ -121,7 +121,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return firmPages;
     });
   } catch (error) {
-    console.error('Error generating dynamic sitemap entries:', error);
+    // Error generating dynamic sitemap entries
     // Gracefully handle errors - sitemap will still work with static pages
   }
 

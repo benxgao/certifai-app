@@ -70,7 +70,6 @@ export function useEmailUpdate(): UseEmailUpdateResult {
 
       return true;
     } catch (error: any) {
-      console.error('Error updating email:', error);
 
       // Handle specific error codes
       switch (error.code) {

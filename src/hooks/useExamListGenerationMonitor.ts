@@ -33,13 +33,8 @@ export function useExamListGenerationMonitor(
       intervalRef.current = setInterval(() => {
         mutateExams();
       }, pollingInterval);
-
-      console.log(
-        `🔄 Started exam list polling: ${generatingCount} exams generating, interval: ${pollingInterval}ms`,
-      );
     } else if (lastGeneratingCountRef.current > 0) {
       // Just stopped generating - do one final update
-      console.log('✅ Stopped exam list polling - no more generating exams');
       mutateExams();
     }
 

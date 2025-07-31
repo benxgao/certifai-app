@@ -21,7 +21,6 @@ const CertificationsSection = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       // In real implementation, call the API to delete the certification
-      console.log(`Deleting certification ${certId}`);
 
       // Remove from deleting set after completion
       setDeletingCerts((prev) => {
@@ -36,7 +35,6 @@ const CertificationsSection = () => {
         newSet.delete(certId);
         return newSet;
       });
-      console.error('Failed to delete certification:', error);
     }
   };
 

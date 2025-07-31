@@ -10,7 +10,6 @@ import { auth } from '@/src/firebase/firebaseWebConfig';
  */
 export const performLogout = async (redirectPath: string = '/signin'): Promise<void> => {
   try {
-    console.log('Starting comprehensive logout process...');
 
     // 1. Clear server-side auth cookie
     try {
@@ -18,9 +17,7 @@ export const performLogout = async (redirectPath: string = '/signin'): Promise<v
         method: 'POST',
         credentials: 'include',
       });
-      console.log('Auth cookie cleared successfully');
     } catch (error) {
-      console.warn('Failed to clear auth cookie:', error);
       // Continue with logout even if cookie clearing fails
     }
 
@@ -30,9 +27,7 @@ export const performLogout = async (redirectPath: string = '/signin'): Promise<v
         method: 'POST',
         credentials: 'include',
       });
-      console.log('Server token cache cleared successfully');
     } catch (error) {
-      console.warn('Failed to clear server token cache:', error);
       // Continue with logout even if cache clearing fails
     }
 
@@ -51,29 +46,23 @@ export const performLogout = async (redirectPath: string = '/signin'): Promise<v
           sessionStorage.removeItem(key);
         });
 
-        console.log('Client-side storage cleared successfully');
       } catch (error) {
-        console.warn('Failed to clear client storage:', error);
       }
     }
 
     // 4. Sign out from Firebase Auth
     try {
       await auth.signOut();
-      console.log('Firebase signout successful');
     } catch (error) {
-      console.warn('Firebase signout failed:', error);
       // Continue with redirect even if Firebase signout fails
     }
 
     // 5. Force redirect using window.location for maximum reliability
-    console.log('Logout process completed, redirecting to:', redirectPath);
     const successMessage = 'You have been signed out successfully.';
     const redirectUrl = `${redirectPath}?message=${encodeURIComponent(successMessage)}`;
 
     window.location.href = redirectUrl;
   } catch (error) {
-    console.error('Logout process encountered errors:', error);
 
     // Even if logout fails, force redirect to signin page
     const errorMessage = 'Logout completed. Please sign in again.';
@@ -88,7 +77,6 @@ export const performLogout = async (redirectPath: string = '/signin'): Promise<v
  * Forces complete state reset and redirect
  */
 export const emergencyLogout = (): void => {
-  console.warn('Performing emergency logout...');
 
   // Clear all possible auth state immediately
   if (typeof window !== 'undefined') {
@@ -96,14 +84,12 @@ export const emergencyLogout = (): void => {
     try {
       localStorage.clear();
     } catch (error) {
-      console.warn('Failed to clear localStorage:', error);
     }
 
     // Clear all sessionStorage
     try {
       sessionStorage.clear();
     } catch (error) {
-      console.warn('Failed to clear sessionStorage:', error);
     }
 
     // Clear all cookies by setting them to expire
@@ -114,7 +100,6 @@ export const emergencyLogout = (): void => {
         document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
       });
     } catch (error) {
-      console.warn('Failed to clear cookies:', error);
     }
   }
 

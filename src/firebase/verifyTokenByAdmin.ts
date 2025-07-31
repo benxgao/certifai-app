@@ -4,7 +4,7 @@ export async function verifyToken(token: string) {
   try {
     const admin = getAdminSDK();
 
-    console.log(`verifyToken1: process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+    // Debug info about NODE_ENV
 
     /**
      * UserRecord {
@@ -48,11 +48,10 @@ export async function verifyToken(token: string) {
       valid: true,
     };
   } catch (error: any) {
-    console.error('Token verification error details:', {
-      message: error.message,
-      code: error.code,
-      // stack: error.stack,
-    });
+    // Token verification error details
+    // message: error.message,
+    // code: error.code,
+    // stack: error.stack,
 
     return { uid: null, valid: false };
   }

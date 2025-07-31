@@ -28,7 +28,7 @@ async function testFrontendExamReport() {
     );
 
     const getData = await getResponse.json();
-    console.log('Frontend GET Response:', getData);
+    // Debug: Exam info
 
     // Test POST request
     const postResponse = await fetch(
@@ -43,7 +43,7 @@ async function testFrontendExamReport() {
     );
 
     const postData = await postResponse.json();
-    console.log('Frontend POST Response:', postData);
+    // Debug: Questions
 
     return { success: true, getData, postData };
   } catch (error) {
@@ -70,7 +70,7 @@ async function testBackendExamReport() {
     );
 
     const getData = await getResponse.json();
-    console.log('Backend GET Response:', getData);
+    // Debug: Exam report result
 
     // Test POST request
     const postResponse = await fetch(

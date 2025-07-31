@@ -100,15 +100,10 @@ export function logEnvironmentValidation(): void {
   const validation = validateEnvironmentVariables();
 
   if (!validation.isValid) {
-    console.error('❌ Environment Variable Validation Failed:');
-    validation.errors.forEach((error) => console.error(`  - ${error}`));
   } else {
-    console.log('✅ Environment variables validation passed');
   }
 
   if (validation.warnings.length > 0) {
-    console.warn('⚠️ Environment Variable Warnings:');
-    validation.warnings.forEach((warning) => console.warn(`  - ${warning}`));
   }
 }
 

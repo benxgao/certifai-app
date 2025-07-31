@@ -91,7 +91,6 @@ async function submitAnswerFetcher(
 
   // If we get a 401, try to refresh token and retry
   if (response.status === 401) {
-    console.log('Token expired during answer submission, attempting refresh...');
     const newToken = await refreshToken();
 
     if (newToken) {

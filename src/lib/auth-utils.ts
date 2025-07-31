@@ -40,9 +40,7 @@ export const clearClientAuthState = async (): Promise<void> => {
       localStorage.removeItem('apiUserId');
     }
 
-    console.log('Client auth state cleared successfully');
   } catch (error) {
-    console.error('Error clearing client auth state:', error);
   }
 };
 
@@ -53,7 +51,6 @@ export const handleAuthenticationFailure = async (
   errorMessage: string = 'Session expired. Please sign in again.',
   shouldRedirect: boolean = true,
 ): Promise<void> => {
-  console.log('Handling authentication failure:', errorMessage);
 
   // Clear all auth state
   await clearClientAuthState();
@@ -75,11 +72,9 @@ export const handleAuthenticationFailure = async (
     // Only redirect if we're on a protected route and not already on an auth route
     if (isProtectedRoute && !isAuthRoute) {
       const errorParam = encodeURIComponent(errorMessage);
-      console.log('Redirecting to signin due to auth failure from protected route:', currentPath);
       // Use replace to prevent back navigation to protected pages
       window.location.replace(`/signin?error=${errorParam}`);
     } else if (isAuthRoute) {
-      console.log('Auth failure detected on auth page, clearing state without redirect');
     }
   }
 };
@@ -118,40 +113,33 @@ export const fetchWithAuthRetry = async (
         currentPath.includes('/forgot-password');
 
       if (isAuthPage) {
-        console.log('Skipping token refresh - user is on auth page:', currentPath);
         throw new AuthenticationError('Authentication required. Please sign in.');
       }
     }
 
-    console.log('Token expired, attempting refresh...');
 
     try {
       const newToken = await refreshTokenFn();
 
       if (newToken) {
         // Retry the request with refreshed token
-        console.log('Token refreshed, retrying request...');
         response = await fetch(url, options);
       } else {
         // If Firebase token refresh failed, try cookie-based refresh
-        console.log('Firebase token refresh failed, trying cookie refresh...');
         const cookieRefreshResponse = await fetch('/api/auth-cookie/refresh', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
         });
 
         if (cookieRefreshResponse.ok) {
-          console.log('Cookie refresh successful, retrying request...');
           response = await fetch(url, options);
         } else {
           // All refresh attempts failed - force signin
-          console.error('All token refresh attempts failed - forcing signin');
           await handleAuthenticationFailure();
           throw new AuthenticationError('Session expired. Please sign in again.');
         }
       }
     } catch (refreshError) {
-      console.error('Token refresh error:', refreshError);
       await handleAuthenticationFailure();
       throw new AuthenticationError('Session expired. Please sign in again.');
     }
@@ -196,7 +184,6 @@ export const fetchAuthJSON = async <T = any>(
  */
 export const resetAuthenticationState = async (): Promise<void> => {
   try {
-    console.log('Performing complete authentication state reset...');
 
     // Clear server-side cookies AND token cache with retry logic
     try {
@@ -210,9 +197,7 @@ export const resetAuthenticationState = async (): Promise<void> => {
         method: 'POST',
       });
 
-      console.log('Server-side cookies and cache cleared successfully');
     } catch (serverError) {
-      console.warn('Failed to clear server-side state:', serverError);
       // Continue with client-side clearing even if server-side fails
     }
 
@@ -224,7 +209,6 @@ export const resetAuthenticationState = async (): Promise<void> => {
         try {
           localStorage.removeItem(key);
         } catch (e) {
-          console.warn(`Failed to clear localStorage key: ${key}`, e);
         }
       });
 
@@ -234,7 +218,6 @@ export const resetAuthenticationState = async (): Promise<void> => {
         try {
           sessionStorage.removeItem(key);
         } catch (e) {
-          console.warn(`Failed to clear sessionStorage key: ${key}`, e);
         }
       });
 
@@ -254,7 +237,6 @@ export const resetAuthenticationState = async (): Promise<void> => {
           }
         });
       } catch (e) {
-        console.warn('Failed to clear cookies via document.cookie:', e);
       }
 
       // Clear any browser cache for auth endpoints
@@ -269,13 +251,10 @@ export const resetAuthenticationState = async (): Promise<void> => {
           });
         }
       } catch (e) {
-        console.warn('Failed to clear browser caches:', e);
       }
     }
 
-    console.log('Authentication state reset completed');
   } catch (error) {
-    console.error('Error during auth state reset:', error);
   }
 };
 
@@ -288,7 +267,6 @@ export const isCurrentJWTToken = (token: string): boolean => {
 
     // Check for our unique identifier (jti) that indicates new tokens
     if (!decoded.jti) {
-      console.log('Token missing unique identifier, treating as legacy');
       return false;
     }
 
@@ -298,13 +276,11 @@ export const isCurrentJWTToken = (token: string): boolean => {
 
     if (tokenAge > 24 * 60 * 60) {
       // 24 hours
-      console.log('Token is older than 24 hours, requiring refresh');
       return false;
     }
 
     return true;
   } catch (error) {
-    console.error('Error validating JWT token:', error);
     return false;
   }
 };

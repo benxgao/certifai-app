@@ -52,13 +52,11 @@ export async function getAuthenticatedToken(): Promise<string> {
     const firebaseToken = await getFirebaseTokenFromCookie();
 
     if (!firebaseToken) {
-      console.error('Authentication failed: No Firebase token found in cookie');
       throw new ApiError('Authentication failed: Invalid token', 401);
     }
 
     return firebaseToken;
   } catch (error) {
-    console.error('getAuthenticatedToken error:', error);
     if (error instanceof ApiError) {
       throw error;
     }
@@ -136,7 +134,6 @@ export async function handleApiResponse(
       errorData = await response.text();
     }
 
-    console.error(`Failed to ${operation}:`, response.status, errorData);
 
     return NextResponse.json(
       {
@@ -160,7 +157,6 @@ export async function handleApiResponse(
  * Create error response
  */
 export function createErrorResponse(error: Error | ApiError, operation: string): NextResponse {
-  console.error(`Error ${operation}:`, error);
 
   if (error instanceof ApiError) {
     return NextResponse.json(

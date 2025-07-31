@@ -18,13 +18,11 @@ export async function getApiUserIdFromClaims(): Promise<string | null> {
 
     // Check if this is a fallback ID that needs to be fixed
     if (apiUserId && apiUserId.startsWith('fb_')) {
-      console.warn('Detected fallback api_user_id in claims, needs to be fixed:', apiUserId);
       return null; // Return null so the system will try to get the correct ID
     }
 
     return apiUserId;
   } catch (error) {
-    console.error('Error getting api_user_id from custom claims:', error);
     return null;
   }
 }
@@ -46,7 +44,6 @@ export async function getInitCertIdFromClaims(): Promise<number | null> {
 
     return (customClaims.init_cert_id as number) || null;
   } catch (error) {
-    console.error('Error getting init_cert_id from custom claims:', error);
     return null;
   }
 }
@@ -68,7 +65,6 @@ export async function getSubscriberIdFromClaims(): Promise<string | null> {
 
     return (customClaims.subscriber_id as string) || null;
   } catch (error) {
-    console.error('Error getting subscriber_id from custom claims:', error);
     return null;
   }
 }

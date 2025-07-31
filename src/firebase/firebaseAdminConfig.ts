@@ -32,7 +32,7 @@ const getFirebaseAdminApp = (): App => {
 
     return app;
   } catch (error) {
-    console.error('Error initializing Firebase Admin:', error);
+    // Error initializing Firebase Admin
     throw error;
   }
 };

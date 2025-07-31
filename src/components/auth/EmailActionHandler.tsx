@@ -53,10 +53,6 @@ export default function EmailActionHandler() {
             actionCodeInfo = await checkActionCode(auth, oobCode);
             operation = actionCodeInfo.operation;
           } catch (checkError: any) {
-            console.warn(
-              'checkActionCode failed, proceeding with verification attempt:',
-              checkError,
-            );
             // If checkActionCode fails but it's not a critical error,
             // we can still try to apply the code for email verification
             if (
@@ -64,8 +60,6 @@ export default function EmailActionHandler() {
               (checkError.code === 'auth/user-not-found' ||
                 checkError.code === 'auth/invalid-action-code')
             ) {
-              console.log('Attempting direct email verification despite checkActionCode failure');
-              // Continue with the verification attempt
             } else {
               throw checkError; // Re-throw if it's a different type of error
             }
@@ -78,18 +72,9 @@ export default function EmailActionHandler() {
               // Handle email verification (signup or email change) with improved retry logic
               try {
                 await applyActionCode(auth, oobCode);
-                console.log('Email verified successfully');
               } catch (verifyError: any) {
-                console.error('Initial email verification failed:', verifyError);
-
                 // Enhanced retry logic for newly created accounts
                 if (verifyError.code === 'auth/user-not-found' && retryCount < maxRetries) {
-                  console.log(
-                    `User not found (attempt ${
-                      retryCount + 1
-                    }/${maxRetries}), waiting for account propagation...`,
-                  );
-
                   // Progressive delay: 2s, 4s, 6s
                   const delay = Math.min(2000 + retryCount * 2000, 6000);
                   await new Promise((resolve) => setTimeout(resolve, delay));
@@ -98,9 +83,7 @@ export default function EmailActionHandler() {
                     // Try to refresh auth state and retry verification
                     await auth.signOut(); // Clear any stale auth state
                     await applyActionCode(auth, oobCode);
-                    console.log('Email verified successfully on retry');
                   } catch (retryError: any) {
-                    console.error(`Email verification retry ${retryCount + 1} failed:`, retryError);
                     throw retryError;
                   }
                 } else if (verifyError.code === 'auth/invalid-action-code') {
@@ -153,7 +136,6 @@ export default function EmailActionHandler() {
 
                     // If displayName is still empty, try to reload the user
                     if (!displayName && currentUser) {
-                      console.log('DisplayName not available, reloading user...');
                       try {
                         await currentUser.reload();
                         displayName = currentUser.displayName || '';
@@ -178,25 +160,9 @@ export default function EmailActionHandler() {
                       // The marketing API will handle this gracefully
                     }
 
-                    console.log('Subscribing verified user to marketing list:', userEmail);
-                    console.log('User data available:', {
-                      hasCurrentUser: !!currentUser,
-                      email: userEmail,
-                      displayName: displayName,
-                      firstName: firstName.trim(),
-                      lastName: lastName.trim(),
-                      displayNameLength: displayName.length,
-                      isDisplayNameEmpty: !displayName,
-                    });
-
                     // Prepare the final names (trim and ensure they're not just whitespace)
                     const finalFirstName = firstName.trim() || undefined;
                     const finalLastName = lastName.trim() || undefined;
-
-                    console.log('Final names being sent to marketing:', {
-                      firstName: finalFirstName || 'undefined',
-                      lastName: finalLastName || 'undefined',
-                    });
 
                     const marketingResponse = await fetch('/api/marketing/subscribe', {
                       method: 'POST',
@@ -220,11 +186,6 @@ export default function EmailActionHandler() {
                     const marketingResult = await marketingResponse.json();
 
                     if (marketingResult.success) {
-                      console.log(
-                        'User successfully subscribed to marketing list after email verification:',
-                        marketingResult.subscriberId,
-                      );
-
                       // Save subscriberId to Firebase Auth claims
                       if (marketingResult.subscriberId && currentUser) {
                         await saveSubscriberIdToClaims(marketingResult.subscriberId, currentUser);
@@ -272,9 +233,6 @@ export default function EmailActionHandler() {
           // Handle user-not-found with retries for recently created accounts
           if (error.code === 'auth/user-not-found' && retryCount < maxRetries) {
             retryCount++;
-            console.log(
-              `User not found, retry attempt ${retryCount}/${maxRetries} in 3 seconds...`,
-            );
 
             // Wait longer for user account propagation
             await new Promise((resolve) => setTimeout(resolve, 3000));

@@ -42,20 +42,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   onOptionChange,
   isCorrectOption,
 }) => {
-  // Debug log for explanations
-  React.useEffect(() => {
-    if (submittedAt !== null) {
-      console.log('QuestionCard Debug:', {
-        questionId: question.quiz_question_id,
-        submittedAt,
-        explanations: question.explanations,
-        explanationsType: typeof question.explanations,
-        explanationsLength: question.explanations?.length,
-        hasExplanations: !!question.explanations,
-      });
-    }
-  }, [question, submittedAt]);
-
   return (
     <DashboardCard className="hover:shadow-2xl hover:shadow-violet-500/20 dark:hover:shadow-violet-400/10 transition-all duration-500 hover:scale-[1.01] hover:-translate-y-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60">
       <DashboardCardHeader className="bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 backdrop-blur-sm">

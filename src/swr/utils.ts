@@ -64,21 +64,17 @@ export const refreshAuthCookie = async (): Promise<boolean> => {
     });
 
     if (res.ok) {
-      console.log('Auth cookie refreshed successfully');
       return true;
     } else {
-      console.error('Failed to refresh auth cookie:', res.status);
 
       // If refresh fails due to expired/invalid tokens, clear auth state
       if (res.status === 401) {
-        console.log('Refresh token expired or invalid, clearing auth state');
         await handleAuthFailure();
       }
 
       return false;
     }
   } catch (error) {
-    console.error('Error refreshing auth cookie:', error);
     return false;
   }
 };
@@ -101,14 +97,12 @@ export const fetcherWithAuth = async (
         currentPath.includes('/forgot-password');
 
       if (isAuthPage) {
-        console.log('Skipping token refresh - user is on auth page:', currentPath);
         const error = new Error('Authentication required. Please sign in.');
         (error as any).status = 401;
         throw error;
       }
     }
 
-    console.log('Token expired, attempting refresh...');
     const newToken = await refreshTokenFn();
 
     if (newToken) {
@@ -121,7 +115,6 @@ export const fetcherWithAuth = async (
         res = await optimizedFetch(url);
       } else {
         // If all refresh attempts fail, clear auth state and force signin
-        console.log('All token refresh attempts failed - forcing signin');
         await handleAuthFailure();
         const error = new Error('Session expired. Please sign in again.');
         (error as any).status = 401;
