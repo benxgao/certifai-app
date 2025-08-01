@@ -232,6 +232,12 @@ import EnhancedNotificationBar from '@/src/components/custom/EnhancedNotificatio
 ### Breadcrumb Navigation
 
 ```tsx
+
+```
+
+### Breadcrumb Navigation
+
+```tsx
 <Breadcrumb
   items={[
     { label: 'Dashboard', href: '/main' },
@@ -240,6 +246,127 @@ import EnhancedNotificationBar from '@/src/components/custom/EnhancedNotificatio
   ]}
 />
 ```
+
+### Reusable Modal Components
+
+#### EnhancedModal (Modal Container)
+
+```tsx
+import { EnhancedModal } from '@/src/components/custom/EnhancedModal';
+
+<EnhancedModal
+  isOpen={isModalOpen}
+  onOpenChange={setIsModalOpen}
+  icon={<SomeIcon className="w-5 h-5" />}
+  title="Modal Title"
+  subtitle="Optional subtitle or description"
+  variant="default" // default | destructive
+  content={modalContent}
+  footer={modalFooter}
+  decorativeElements={decorativeElements} // Optional background elements
+  maxWidth="sm:max-w-[500px]" // Optional custom width
+>
+  {children} {/* Optional trigger element */}
+</EnhancedModal>;
+```
+
+**Features:**
+
+- **Two variants**: `default` (violet/blue gradients) and `destructive` (red/amber styling)
+- **Glass-morphism design** with backdrop blur and semi-transparent backgrounds
+- **Configurable content slots**: icon, title, subtitle, content, footer, decorative elements
+- **Consistent styling** following the design system guidelines
+- **Responsive design** with mobile-friendly layouts
+- **Built on shadcn/ui Dialog** for accessibility and keyboard navigation
+
+#### AlertMessage (Status Messages)
+
+```tsx
+import { AlertMessage } from '@/src/components/custom/AlertMessage';
+
+<AlertMessage
+  variant="warning" // success | error | warning | info
+  message="Your warning message here"
+  className="backdrop-blur-sm" // Optional additional styling
+>
+  {/* Optional child content */}
+</AlertMessage>;
+```
+
+**Features:**
+
+- **Auto-detection**: Automatically determines variant based on message content if not specified
+- **Consistent icons**: Appropriate icons for each variant (CheckCircle, AlertTriangle, etc.)
+- **Glass-morphism compatibility**: Works well with backdrop-blur effects
+- **Animation**: Smooth slide-in animation for better UX
+- **Built on shadcn/ui Alert** component for accessibility
+
+#### DeleteIconButton (Delete Actions)
+
+```tsx
+import { DeleteIconButton } from '@/src/components/custom/DeleteIconButton';
+
+<DeleteIconButton
+  onClick={handleDelete}
+  disabled={isDeleting}
+  title="Delete item" // Optional hover text
+  size="md" // sm | md | lg
+  className="absolute top-4 right-4" // Optional positioning
+/>;
+```
+
+**Features:**
+
+- **Consistent styling**: Unified delete button appearance across all cards
+- **Size variants**: Three sizes (sm: 8x8, md: 9x9, lg: 10x10) for different contexts
+- **Interactive states**: Hover effects with red theming and scale animation
+- **Accessibility**: Proper focus states, disabled states, and tooltips
+- **Cursor pointer**: Explicit cursor-pointer class for better UX
+- **Glass-morphism**: Backdrop blur effects and semi-transparent backgrounds
+
+#### Modal Implementation Examples
+
+```tsx
+// DeleteExamModal - Uses EnhancedModal with destructive variant
+import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
+
+<DeleteExamModal
+  exam={selectedExam}
+  isOpen={isDeleteModalOpen}
+  onClose={() => setIsDeleteModalOpen(false)}
+  onConfirm={handleDeleteExam}
+  isDeleting={isDeletingExam}
+/>;
+
+// CreateExamModal - Uses EnhancedModal with default variant
+import { CreateExamModal } from '@/src/components/custom/CreateExamModal';
+
+<CreateExamModal
+  isOpen={isCreateModalOpen}
+  onOpenChange={setIsCreateModalOpen}
+  displayCertification={certification}
+  numberOfQuestions={questionCount}
+  setNumberOfQuestions={setQuestionCount}
+  customPromptText={promptText}
+  setCustomPromptText={setPromptText}
+  onCreateExam={handleCreateExam}
+  isCreatingExam={isCreating}
+  createExamError={error}
+/>;
+```
+
+**Implementation Benefits:**
+
+- **Code reusability**: Common modal patterns extracted into reusable components
+- **Consistent UX**: All modals follow the same design language and interaction patterns
+- **Maintainability**: Changes to modal styling can be made in one place
+- **Type safety**: Full TypeScript support with proper interfaces
+
+---
+
+## Typography
+
+````
 
 ---
 
@@ -262,7 +389,7 @@ text-lg font-semibold text-slate-900 dark:text-slate-50
 
 /* Small Headings */
 text-sm font-medium text-slate-700 dark:text-slate-200
-```
+````
 
 ### Body Text
 

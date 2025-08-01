@@ -1,18 +1,14 @@
 'use client';
 
 import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/src/components/ui/dialog';
 import { Button } from '@/src/components/ui/button';
-import { FaTrash, FaExclamationTriangle } from 'react-icons/fa';
+import { ActionButton } from './ActionButton';
+import { FaTrash } from 'react-icons/fa';
+import { AlertTriangle } from 'lucide-react';
 import { ExamListItem } from '@/swr/exams';
 import { getDerivedExamStatus } from '@/src/types/exam-status';
+import { EnhancedModal } from './EnhancedModal';
+import { AlertMessage } from './AlertMessage';
 
 interface DeleteExamModalProps {
   exam: ExamListItem | null;
@@ -57,98 +53,104 @@ export function DeleteExamModal({
     onClose();
   };
 
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-              <FaExclamationTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-            </div>
-            <DialogTitle className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              Delete Exam
-            </DialogTitle>
+  // Decorative elements for enhanced visual appeal
+  const decorativeElements = (
+    <>
+      <div className="absolute -top-10 -right-10 w-40 h-40 bg-red-200/20 dark:bg-red-600/10 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-orange-200/20 dark:bg-orange-600/10 rounded-full blur-3xl"></div>
+    </>
+  );
+
+  // Modal content
+  const content = (
+    <div className="text-left space-y-3">
+      <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+        Are you sure you want to delete this exam? All associated data will be permanently removed.
+      </p>
+
+      {/* Enhanced exam details card */}
+      <div className="bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 border border-slate-200/80 dark:border-slate-700/60 rounded-xl p-4 space-y-2 backdrop-blur-sm shadow-sm">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-violet-400 dark:bg-violet-500"></div>
+          <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            Exam Details
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <div className="space-y-1">
+            <span className="font-medium text-slate-600 dark:text-slate-400 block">Status</span>
+            <span className="text-slate-900 dark:text-slate-100 capitalize font-medium">
+              {examStatus.replace('_', ' ')}
+            </span>
           </div>
-          <DialogDescription className="text-left space-y-3">
-            <p className="text-slate-700 dark:text-slate-300">
-              Are you sure you want to delete this exam?
-            </p>
-            
-            {/* Exam details */}
-            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="font-medium text-slate-600 dark:text-slate-400">Exam ID:</span>
-                <span className="text-slate-900 dark:text-slate-100 font-mono">
-                  #{exam.exam_id.substring(0, 8)}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="font-medium text-slate-600 dark:text-slate-400">Status:</span>
-                <span className="text-slate-900 dark:text-slate-100 capitalize">
-                  {examStatus.replace('_', ' ')}
-                </span>
-              </div>
-              {hasScore && (
-                <div className="flex justify-between text-sm">
-                  <span className="font-medium text-slate-600 dark:text-slate-400">Score:</span>
-                  <span className="text-slate-900 dark:text-slate-100 font-semibold">
-                    {exam.score}%
-                  </span>
-                </div>
-              )}
-              <div className="flex justify-between text-sm">
-                <span className="font-medium text-slate-600 dark:text-slate-400">Questions:</span>
-                <span className="text-slate-900 dark:text-slate-100">
-                  {exam.total_questions || 'N/A'}
-                </span>
-              </div>
+          <div className="space-y-1">
+            <span className="font-medium text-slate-600 dark:text-slate-400 block">Questions</span>
+            <span className="text-slate-900 dark:text-slate-100 font-medium">
+              {exam.total_questions || 'N/A'}
+            </span>
+          </div>
+          {hasScore && (
+            <div className="space-y-1 col-span-2">
+              <span className="font-medium text-slate-600 dark:text-slate-400 block">Score</span>
+              <span className="text-slate-900 dark:text-slate-100 font-bold">{exam.score}%</span>
             </div>
+          )}
+        </div>
+      </div>
 
-            {/* Warning message */}
-            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60 rounded-lg p-3">
-              <p className="text-amber-800 dark:text-amber-200 text-sm font-medium">
-                ⚠️ Warning
-              </p>
-              <p className="text-amber-700 dark:text-amber-300 text-sm mt-1">
-                {getWarningMessage()}
-              </p>
-            </div>
+      {/* Warning message using AlertMessage component */}
+      <AlertMessage
+        variant="warning"
+        message={`${getWarningMessage()} This action cannot be undone.`}
+        className="backdrop-blur-sm"
+      />
+    </div>
+  );
 
-            <p className="text-red-600 dark:text-red-400 text-sm font-medium">
-              This action cannot be undone.
-            </p>
-          </DialogDescription>
-        </DialogHeader>
+  // Modal footer
+  const footer = (
+    <>
+      <ActionButton
+        variant="outline"
+        onClick={onClose}
+        disabled={isDeleting}
+        className="flex-1 sm:flex-none"
+      >
+        Cancel
+      </ActionButton>
+      <Button
+        variant="destructive"
+        onClick={handleConfirm}
+        disabled={isDeleting}
+        className="flex-1 sm:flex-none bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 backdrop-blur-sm border-0"
+      >
+        {isDeleting ? (
+          <>
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+            Deleting...
+          </>
+        ) : (
+          <>
+            <FaTrash className="w-4 h-4 mr-2" />
+            Delete Exam
+          </>
+        )}
+      </Button>
+    </>
+  );
 
-        <DialogFooter className="gap-2">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={isDeleting}
-            className="flex-1 sm:flex-none"
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={handleConfirm}
-            disabled={isDeleting}
-            className="flex-1 sm:flex-none"
-          >
-            {isDeleting ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                Deleting...
-              </>
-            ) : (
-              <>
-                <FaTrash className="w-4 h-4 mr-2" />
-                Delete Exam
-              </>
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+  return (
+    <EnhancedModal
+      isOpen={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+      icon={<AlertTriangle className="h-5 w-5" />}
+      title="Delete Exam"
+      subtitle={`ID: ${exam.exam_id.substring(0, 8)} • This action cannot be undone`}
+      variant="destructive"
+      content={content}
+      footer={footer}
+      decorativeElements={decorativeElements}
+    />
   );
 }

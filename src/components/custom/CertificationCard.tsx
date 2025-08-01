@@ -4,9 +4,10 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ActionButton } from './ActionButton';
 import { UserRegisteredCertification } from '@/swr/certifications';
-import { FaBookOpen, FaTrophy, FaTrash, FaPlay } from 'react-icons/fa';
+import { FaBookOpen, FaTrophy, FaPlay, FaTrash } from 'react-icons/fa';
 import { useExamCountForCertification } from '@/src/hooks/useExamCounts';
 import { cn } from '@/src/lib/utils';
+import { DeleteIconButton } from './DeleteIconButton';
 
 interface CertificationCardProps {
   cert: UserRegisteredCertification;
@@ -243,13 +244,10 @@ const CertificationCard = ({
             </h3>
             <div className="flex items-center gap-2">
               {onDelete && !isDeleting && getCertificationStatus(cert.status) !== 'deleting' && (
-                <button
+                <DeleteIconButton
                   onClick={() => onDelete(cert.cert_id)}
-                  className="w-9 h-9 bg-white/95 dark:bg-slate-800/95 hover:bg-red-50 dark:hover:bg-red-900/20 border border-slate-200/60 dark:border-slate-600/60 hover:border-red-200/60 dark:hover:border-red-600/40 rounded-xl flex items-center justify-center transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-md shadow-lg hover:shadow-xl group/delete focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
                   title="Delete certification"
-                >
-                  <FaTrash className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover/delete:text-red-600 dark:group-hover/delete:text-red-400 group-hover/delete:scale-110 transition-all duration-300" />
-                </button>
+                />
               )}
             </div>
           </div>

@@ -2,10 +2,11 @@
 
 import React, { useState } from 'react';
 import { format, differenceInMinutes } from 'date-fns';
-import { FaPlay, FaClipboardList, FaChartLine, FaTrophy, FaRedo, FaTrash } from 'react-icons/fa';
+import { FaPlay, FaClipboardList, FaChartLine, FaTrophy, FaRedo } from 'react-icons/fa';
 import { ExamReport } from './ExamReport';
 import { CustomAccordion } from './CustomAccordion';
 import { ActionButton } from './ActionButton';
+import { DeleteIconButton } from './DeleteIconButton';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
@@ -163,14 +164,12 @@ export function ExamCard({
       <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-gradient-to-tr from-emerald-100/20 to-cyan-100/15 dark:from-emerald-600/10 dark:to-cyan-600/5 rounded-tr-full blur-lg"></div>
 
       {/* Enhanced delete button with better styling */}
-      <button
+      <DeleteIconButton
         onClick={() => setIsDeleteModalOpen(true)}
         disabled={isDeletingExam}
-        className="absolute top-4 right-4 z-20 w-9 h-9 bg-white/95 dark:bg-slate-800/95 hover:bg-red-50 dark:hover:bg-red-900/20 border border-slate-200/60 dark:border-slate-600/60 hover:border-red-200/60 dark:hover:border-red-600/40 rounded-xl flex items-center justify-center transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-md shadow-lg hover:shadow-xl group/delete focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
         title="Delete this exam"
-      >
-        <FaTrash className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 group-hover/delete:text-red-600 dark:group-hover/delete:text-red-400 group-hover/delete:scale-110 transition-all duration-300" />
-      </button>
+        className="absolute top-4 right-4 z-20"
+      />
 
       <div className="relative z-10">
         {/* Enhanced header with premium gradient */}
