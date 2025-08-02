@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/src/components/ui/tooltip';
 
 interface ResponsiveTooltipProps {
@@ -8,6 +8,7 @@ interface ResponsiveTooltipProps {
   children: React.ReactNode;
   sideOffset?: number;
   className?: string;
+  preventInitialFocus?: boolean;
 }
 
 const ResponsiveTooltip: React.FC<ResponsiveTooltipProps> = ({
@@ -15,8 +16,20 @@ const ResponsiveTooltip: React.FC<ResponsiveTooltipProps> = ({
   children,
   sideOffset = 4,
   className = 'max-w-[300px]',
+  preventInitialFocus = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [canReceiveFocus, setCanReceiveFocus] = useState(!preventInitialFocus);
+
+  // Allow focus after a short delay if preventInitialFocus is true
+  React.useEffect(() => {
+    if (preventInitialFocus) {
+      const timer = setTimeout(() => {
+        setCanReceiveFocus(true);
+      }, 500); // Wait 500ms before allowing focus
+      return () => clearTimeout(timer);
+    }
+  }, [preventInitialFocus]);
 
   const handleToggle = () => {
     // Only toggle on mobile (when touch is supported)
@@ -58,7 +71,7 @@ const ResponsiveTooltip: React.FC<ResponsiveTooltipProps> = ({
           onMouseLeave={handleMouseLeave}
           onKeyDown={handleKeyDown}
           role="button"
-          tabIndex={0}
+          tabIndex={canReceiveFocus ? 0 : -1}
           aria-label="Show tooltip"
           aria-expanded={isOpen}
         >

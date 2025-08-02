@@ -91,6 +91,11 @@ function CertificationExamsContent() {
   const handleCreateExam = async () => {
     if (!numberOfQuestions || numberOfQuestions < 1 || !apiUserId || !certId) return;
 
+    // Close modal immediately after starting the action
+    setIsCreateModalOpen(false);
+    setNumberOfQuestions(displayCertification?.min_quiz_counts || 1);
+    setCustomPromptText('');
+
     try {
       const result = await createExam({
         apiUserId,
@@ -104,9 +109,6 @@ function CertificationExamsContent() {
       await mutateExams(); // Refresh the exams list
       await mutateRateLimit(); // Refresh rate limit info
       await mutateAllExams(); // Refresh dashboard stats
-      setNumberOfQuestions(displayCertification?.min_quiz_counts || 1);
-      setCustomPromptText('');
-      setIsCreateModalOpen(false);
 
       if (result.data?.status === 'QUESTIONS_GENERATING') {
         const topicsCount = result.data.topics_generated || result.data.total_questions;

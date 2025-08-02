@@ -49,8 +49,10 @@ export function DeleteExamModal({
   };
 
   const handleConfirm = async () => {
-    await onConfirm(exam.exam_id);
+    // Close modal immediately after starting the action
     onClose();
+    // Then execute the delete action
+    await onConfirm(exam.exam_id);
   };
 
   // Decorative elements for enhanced visual appeal

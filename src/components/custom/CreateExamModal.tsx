@@ -5,7 +5,6 @@ import { ActionButton } from './ActionButton';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/src/components/ui/slider';
-import ResponsiveTooltip from '@/src/components/custom/ResponsiveTooltip';
 import { InfoTooltip } from '@/src/components/custom/InfoTooltip';
 import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay';
 import { Lightbulb, BookOpen, Target } from 'lucide-react';
@@ -75,9 +74,12 @@ export function CreateExamModal({
           <Label className="text-sm font-semibold text-slate-900 dark:text-slate-50">
             Number of Questions
           </Label>
-          <InfoTooltip content="Choose how many questions you want in your exam. Each question costs 2 tokens. Recommended: 20-50 questions." />
+          <InfoTooltip
+            content={`Choose how many questions you want in your exam. Our AI will create ${numberOfQuestions} tailored questions for your exam. Questions are
+              generated in the background—track progress in your exams list.`}
+            preventInitialFocus={true}
+          />
         </div>
-
         <div className="bg-white/80 dark:bg-slate-800/80 rounded-xl p-4 border border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm">
           <div className="text-center mb-4">
             <span className="text-2xl font-bold text-violet-600 dark:text-violet-400">
@@ -107,10 +109,16 @@ export function CreateExamModal({
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Lightbulb className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-          <Label htmlFor="custom-prompt" className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+          <Label
+            htmlFor="custom-prompt"
+            className="text-sm font-semibold text-slate-900 dark:text-slate-50"
+          >
             Custom Instructions
           </Label>
-          <InfoTooltip content="Add specific instructions to customize your exam. For example: 'Focus on practical scenarios' or 'Include more advanced topics'." />
+          <InfoTooltip
+            content="Add specific instructions to customize your exam. For example: 'Focus on practical scenarios' or 'Include more advanced topics'."
+            preventInitialFocus={true}
+          />
         </div>
 
         <Textarea
@@ -119,12 +127,12 @@ export function CreateExamModal({
           value={customPromptText}
           onChange={(e) => setCustomPromptText(e.target.value)}
           className="min-h-[80px] bg-white/80 dark:bg-slate-800/80 border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm resize-none focus:ring-violet-500 focus:border-violet-500"
-          maxLength={500}
+          maxLength={100}
         />
 
         <div className="text-right">
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            {customPromptText.length}/500 characters
+            {customPromptText.length}/100 characters
           </span>
         </div>
       </div>
@@ -133,19 +141,7 @@ export function CreateExamModal({
 
   // Modal footer
   const footer = (
-    <ResponsiveTooltip
-      content={
-        <div className="text-center space-y-2">
-          <div className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-            AI-Powered Generation
-          </div>
-          <div className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-            Our AI will create {numberOfQuestions} tailored questions for your exam. Questions
-            are generated in the background—track progress in your exams list.
-          </div>
-        </div>
-      }
-    >
+    <div className="flex items-center gap-3">
       <div className="flex-1 sm:flex-none">
         <ActionButton
           onClick={onCreateExam}
@@ -164,7 +160,7 @@ export function CreateExamModal({
           Create Exam
         </ActionButton>
       </div>
-    </ResponsiveTooltip>
+    </div>
   );
 
   return (

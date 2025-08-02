@@ -9,6 +9,7 @@ interface InfoTooltipProps {
   className?: string;
   sideOffset?: number;
   iconSize?: 'sm' | 'md';
+  preventInitialFocus?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
   className,
   sideOffset = 4,
   iconSize = 'md',
+  preventInitialFocus = false,
 }) => {
   const iconSizeClasses = {
     sm: 'h-3.5 w-3.5',
@@ -33,7 +35,12 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
   };
 
   return (
-    <ResponsiveTooltip content={content} sideOffset={sideOffset} className={className}>
+    <ResponsiveTooltip
+      content={content}
+      sideOffset={sideOffset}
+      className={className}
+      preventInitialFocus={preventInitialFocus}
+    >
       <HelpCircle
         className={`${iconSizeClasses[iconSize]} text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-help`}
       />

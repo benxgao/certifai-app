@@ -1,123 +1,43 @@
 # certifai AI Coding Instructions
 
-## Architecture Overview
+## Architecture
+- `certifai-app`: Next.js 15 frontend with shadcn/ui, Tailwind CSS, Firebase Auth
+- `certifai-api`: Firebase Functions backend with Express.js, Prisma, PostgreSQL, Redis
 
-**certifai** is a dual-repo AI-powered certification training platform:
+## Frontend Patterns
+- Use shadcn/ui components from `src/components/ui/`, custom components in `src/components/custom/`
+- Use `STYLE_GUIDE.md` for styling conventions
+- Use existing reusable components from `src/components/` if possible
+- Always include dark mode variants
+- Use SWR hooks from `src/swr/` for API calls
+- API format: `{success: boolean, data: T, meta?: PaginationMeta}`
 
-- `certifai-app`: Next.js 15 frontend with App Router, TypeScript, Tailwind CSS, Firebase Auth
-- `certifai-api`: Firebase Functions backend with Express.js, Prisma, PostgreSQL, Redis caching
+## Backend Patterns
+- Entry: `functions/src/index.ts`, routes in `src/endpoints/api/`
+- Prisma client in `src/services/prisma/index.ts`
+- Auth middleware: `src/middlewares/authCheck.ts`
+- Use `req.user` for authenticated user data
 
-## Key Development Patterns
-
-### Frontend (certifai-app)
-
-**Component Architecture:**
-
-- Use **shadcn/ui** components from `src/components/ui/` - these follow class-variance-authority patterns
-- Custom components in `src/components/custom/` - use these for business logic
-- Combine with `cn()` utility from `src/lib/utils.ts` for className merging: `cn(baseClasses, conditionalClasses)`
-
-**Styling Conventions:**
-
-- **Gradient system**: Use violet/purple/blue gradients consistently - `bg-gradient-to-r from-violet-600 to-blue-600`
-- **Glass-morphism**: Apply `backdrop-blur-sm` with semi-transparent backgrounds for modern UI
-- **Dark mode**: Always include dark mode variants - `text-slate-600 dark:text-slate-300`
-- **Responsive**: Use Tailwind breakpoints starting with mobile-first design
-- Marketing pages should have consistent styles of the home page
-
-**API Integration:**
-
-- Use SWR hooks from `src/swr/` for data fetching
-- API responses follow standardized format: `{success: boolean, data: T, meta?: PaginationMeta}`
-- Auth uses Firebase with JWT tokens, verified on server-side
-
-### Backend (certifai-api)
-
-**Function Structure:**
-
-- Entry point: `functions/src/index.ts` exports `endpoints` and `delegators`
-- Express app in `src/endpoints/index.ts` with middleware pipeline
-- Route handlers in `src/endpoints/api/` following REST conventions
-
-**Database Patterns:**
-
-- **Prisma ORM**: Client in `src/services/prisma/index.ts` with singleton pattern
-- **Performance**: Use Prisma's `select` for optimized queries, leverage Redis caching
-- **Transactions**: Wrap multi-table operations in `prisma.$transaction()`
-
-**Authentication Flow:**
-
-- Middleware: `src/middlewares/authCheck.ts` verifies Firebase JWT tokens
-- Attach decoded user to `req.user` for downstream handlers
-- Use Firebase Admin SDK for server-side token verification
-- api_user_id is used to identify the user in API requests
-- public endpoints require authentication by customized JWT token verification rather than Firebase's default
-
-## Critical Development Workflows
-
-### Running the Stack
-
+## Development Workflows
 ```bash
-# Frontend development
-cd certifai-app && npm run dev  # Next.js with Turbopack
+# Frontend
+cd certifai-app && npm run dev
 
-# Backend development
-cd certifai-api/functions && npm run serve  # Firebase emulator
-```
+# Backend
+cd certifai-api/functions && npm run serve
 
-### Database Migrations
-
-```bash
+# Database migrations
 cd certifai-api/functions
-npx prisma migrate dev --name "description"  # Creates and applies migration
-npx prisma generate  # Regenerates client after schema changes
+npx prisma migrate dev --name "description"
+npx prisma generate
 ```
 
-### Firebase Deployment
-
-```bash
-cd certifai-api && firebase deploy --only functions  # Uses gcp_credentials.json
-cd certifai-app && npm run build && firebase deploy  # Static hosting
-```
-
-## Project-Specific Conventions
-
-### Import Paths
-
-- Use absolute imports: `@/src/components/ui/button` (frontend), `../services/prisma` (backend)
-- Group imports: external libraries, internal services, types
-
-### Error Handling
-
-- **Frontend**: Use SWR's error states, show user-friendly messages via `sonner` toast
-- **Backend**: Return standardized error responses with HTTP status codes
-- **Logging**: Use Firebase Functions logger for structured logging
-
-### Performance Patterns
-
-- **Caching**: Redis for expensive queries, SWR for client-side caching
-- **Database**: Use performance indexes in `prisma/performance_indexes.sql`
-- **UI**: Implement loading states with skeleton components from `src/components/custom/LoadingComponents.tsx`
-
-### Type Safety
-
-- **Shared types**: Define in respective `src/types/` directories
-- **API contracts**: Use TypeScript interfaces for request/response schemas
-- **Database**: Leverage Prisma's generated types for type-safe queries
-
-## Integration Points
-
-### Firebase Services
-
-- **Auth**: Client-side authentication with server-side verification
-- **AI**: Vertex AI integration for question generation via `firebase/ai`
-- **Functions**: Express.js backend deployed as Firebase Functions
-
-### External Dependencies
-
-- **Caching**: Upstash Redis for distributed caching
-- **Monitoring**: Firebase Functions logger with structured logging
-- **UI**: Radix UI primitives with Tailwind styling layer
+## Key Rules
+- Use absolute imports: `@/src/components/ui/button`
+- Never reset database or run `npm run build` during interaction
+- Use Prisma generated types, avoid `any`
+- Conservative, clean solutions following best practices
+- Leverage existing libraries over custom implementations
 
 ## Anti-Patterns to Avoid
 
@@ -136,3 +56,25 @@ cd certifai-app && npm run build && firebase deploy  # Static hosting
 - Value type safety and want to ensure that the code is easy to understand and maintain
 - Ensure no fancy features are used that could complicate the codebase
 - Ensure that the code is easy to test and debug
+
+## Emergency Memory Recovery:
+
+If VS Code becomes unresponsive:
+```bash
+# Kill VS Code processes
+pkill -f "Visual Studio Code"
+
+# Clear VS Code cache
+rm -rf ~/Library/Caches/com.microsoft.VSCode*
+
+# Restart with minimal extensions
+code --disable-extensions
+```
+
+## Monitoring Memory Usage:
+
+You can check VS Code's memory usage with:
+```bash
+# Check VS Code memory usage
+ps aux | grep -i "visual studio code" | head -5
+```
