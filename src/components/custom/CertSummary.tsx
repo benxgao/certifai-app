@@ -25,6 +25,9 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
 
     setIsGenerating(true);
     try {
+      // Clear any stale cached data first to ensure fresh generation
+      mutate(undefined, false);
+
       await generateCertSummary(userId, certId);
       // Refresh the data after successful generation
       await mutate();
@@ -49,13 +52,28 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
       <div
         className={`p-4 border border-red-200 dark:border-red-800 rounded-lg bg-red-50 dark:bg-red-900/20 ${className}`}
       >
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 mb-3">
           <div className="w-2 h-2 rounded-full bg-red-500"></div>
           <p className="text-sm text-red-700 dark:text-red-300 font-medium">
             Failed to load certification summary
           </p>
         </div>
-        <p className="text-xs text-red-600 dark:text-red-400 mt-1">{(error as Error).message}</p>
+        <p className="text-xs text-red-600 dark:text-red-400 mb-4">{(error as Error).message}</p>
+
+        {/* Show regenerate button only if user has enough exams */}
+        {examCount >= 2 && (
+          <ActionButton
+            onClick={handleGenerateSummary}
+            disabled={isGenerating}
+            isLoading={isGenerating}
+            variant="secondary"
+            size="sm"
+            icon={<FaPlay className="w-4 h-4" />}
+            className="mx-auto"
+          >
+            {isGenerating ? 'Generating...' : 'Generate New Summary'}
+          </ActionButton>
+        )}
       </div>
     );
   }
@@ -135,17 +153,20 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
             summary to see detailed insights, topic mastery analysis, and improvement
             recommendations.
           </p>
-          <ActionButton
-            onClick={handleGenerateSummary}
-            disabled={isGenerating}
-            isLoading={isGenerating}
-            variant="primary"
-            size="sm"
-            icon={<FaPlay className="w-4 h-4" />}
-            className="mx-auto"
-          >
-            Generate AI Summary
-          </ActionButton>
+          {/* Only show generate button if user has enough exams */}
+          {examCount >= 2 && (
+            <ActionButton
+              onClick={handleGenerateSummary}
+              disabled={isGenerating}
+              isLoading={isGenerating}
+              variant="primary"
+              size="sm"
+              icon={<FaPlay className="w-4 h-4" />}
+              className="mx-auto"
+            >
+              Generate AI Summary
+            </ActionButton>
+          )}
         </div>
       </div>
     );
@@ -371,17 +392,20 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
         <p className="text-xs text-slate-500 dark:text-slate-400">
           Summary generated on {new Date(summary.generated_at).toLocaleString()}
         </p>
-        <ActionButton
-          onClick={handleGenerateSummary}
-          disabled={isGenerating}
-          isLoading={isGenerating}
-          variant="secondary"
-          size="sm"
-          icon={<FaRedo className="w-3 h-3" />}
-          className="text-xs"
-        >
-          Refresh
-        </ActionButton>
+        {/* Only show refresh button if user has enough exams */}
+        {examCount >= 2 && (
+          <ActionButton
+            onClick={handleGenerateSummary}
+            disabled={isGenerating}
+            isLoading={isGenerating}
+            variant="secondary"
+            size="sm"
+            icon={<FaRedo className="w-3 h-3" />}
+            className="text-xs"
+          >
+            Refresh
+          </ActionButton>
+        )}
       </div>
     </div>
   );
