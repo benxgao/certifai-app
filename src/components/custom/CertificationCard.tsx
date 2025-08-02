@@ -4,10 +4,13 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ActionButton } from './ActionButton';
 import { UserRegisteredCertification } from '@/swr/certifications';
-import { FaBookOpen, FaTrophy, FaPlay, FaTrash } from 'react-icons/fa';
+import { FaBookOpen, FaTrophy, FaPlay, FaTrash, FaChartLine } from 'react-icons/fa';
 import { useExamCountForCertification } from '@/src/hooks/useExamCounts';
 import { cn } from '@/src/lib/utils';
 import { DeleteIconButton } from './DeleteIconButton';
+import { CustomAccordion } from './CustomAccordion';
+import { CertSummary } from './CertSummary';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 interface CertificationCardProps {
   cert: UserRegisteredCertification;
@@ -23,6 +26,7 @@ const CertificationCard = ({
   isDeleting = false,
 }: CertificationCardProps) => {
   const router = useRouter();
+  const { apiUserId } = useFirebaseAuth();
   const examCount = useExamCountForCertification(cert.cert_id);
 
   // Helper function to map certification status to StatusBadge status type
@@ -307,6 +311,51 @@ const CertificationCard = ({
                 </div>
               </div>
             </div>
+
+            {/* Certification Summary Accordion - Always visible */}
+            {apiUserId && (
+              <div className="border-t border-slate-200/60 dark:border-slate-700/60 pt-6">
+                <CustomAccordion
+                  items={[
+                    {
+                      id: 'cert-summary',
+                      icon: (
+                        <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-slate-100/80 to-violet-100/60 dark:from-slate-800/60 dark:to-violet-900/40 rounded-xl group-hover:from-violet-100/80 dark:group-hover:from-violet-800/60 group-hover:to-blue-100/60 dark:group-hover:to-blue-900/40 transition-all duration-300 shadow-sm">
+                          <FaChartLine className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300" />
+                        </div>
+                      ),
+                      trigger: (
+                        <div>
+                          <span className="text-base font-bold text-slate-700 dark:text-slate-300">
+                            AI Learning Journey
+                          </span>
+                          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                            {examCount >= 2
+                              ? 'Comprehensive analysis of your certification progress'
+                              : `Complete ${Math.max(
+                                  0,
+                                  2 - examCount,
+                                )} more exams to unlock AI analysis`}
+                          </p>
+                        </div>
+                      ),
+                      content: (
+                        <CertSummary
+                          userId={apiUserId}
+                          certId={cert.cert_id.toString()}
+                          examCount={examCount}
+                          className="border-0 mt-0 pt-0"
+                        />
+                      ),
+                    },
+                  ]}
+                  type="single"
+                  collapsible={true}
+                  variant="default"
+                  className=""
+                />
+              </div>
+            )}
 
             {/* Enhanced Action Button */}
             <div className="flex justify-center sm:justify-end pt-4">

@@ -30,6 +30,9 @@ export { ActionButtons } from './ActionButtons';
 // Form Components
 export * from './forms';
 
+// Certification Summary
+export { CertSummary } from './CertSummary';
+
 // Exam-related components
 export { ExamLoadingState } from './ExamLoadingState';
 export { ExamErrorState } from './ExamErrorState';
