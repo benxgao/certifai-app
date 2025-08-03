@@ -1,5 +1,6 @@
 import 'server-only';
 import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
+import { createSlug } from '@/src/utils/slug';
 
 interface Certification {
   cert_id: number;
@@ -638,4 +639,165 @@ function validateAndCleanFirmsData(firms: any[]): FirmWithCertifications[] {
 
   console.log(`validateAndCleanFirmsData returning ${result.length} firms`);
   return result;
+}
+
+/**
+ * Fetch certification data by slug
+ *
+ * Used by:
+ * - Slug-based routes: /app/certifications/[firmCode]/[slug]/page.tsx
+ * - Slug-based training: /app/certifications/[firmCode]/[slug]/training/page.tsx
+ * - API endpoint: /app/api/public/certifications/slug/[slug]/route.ts
+ */
+export async function fetchCertificationDataBySlug(slug: string): Promise<{
+  certification: Certification | null;
+  error?: string;
+}> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
+
+    if (!baseUrl) {
+      console.info('SERVER_API_URL not configured, using mock data');
+      return {
+        certification: getMockCertificationDataBySlug(slug),
+        error: undefined,
+      };
+    }
+
+    // Try to fetch from public API using JWT authentication for server-to-server communication
+    try {
+      const token = await generatePublicJWTToken();
+
+      if (token) {
+        const response = await makePublicAPIRequest(`/certifications/slug/${slug}`, token, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+
+          if (result.success && result.data) {
+            // Transform API response to match expected format
+            const apiData = result.data;
+            const transformedCertification: Certification = {
+              cert_id: apiData.cert_id,
+              name: apiData.name,
+              description: apiData.description,
+              min_quiz_counts: apiData.min_quiz_counts,
+              max_quiz_counts: apiData.max_quiz_counts,
+              pass_score: apiData.pass_score,
+              created_at: apiData.created_at,
+              firm_id: apiData.firm?.id || 0,
+              firm: apiData.firm
+                ? {
+                    firm_id: apiData.firm.id,
+                    name: apiData.firm.name,
+                    code: apiData.firm.code,
+                    logo_url: apiData.firm.logo_url,
+                  }
+                : undefined,
+            };
+            return { certification: transformedCertification };
+          } else if (result.data) {
+            // Handle old API format for backward compatibility
+            return { certification: result.data };
+          }
+        } else {
+          console.warn(
+            `Public API fetch failed for slug ${slug}: ${response.status} ${response.statusText}`,
+          );
+        }
+      } else {
+        console.warn('No JWT token available for public API request');
+      }
+    } catch (apiError) {
+      console.warn(`Public API error for slug ${slug}:`, apiError);
+    }
+
+    // If API fails, try to match slug against mock data
+    const mockCert = getMockCertificationDataBySlug(slug);
+    if (mockCert) {
+      console.info(`Using mock data for slug: ${slug}`);
+      return { certification: mockCert };
+    }
+
+    return {
+      certification: null,
+      error: 'Certification not found',
+    };
+  } catch (error) {
+    console.error(`Error fetching certification by slug ${slug}:`, error);
+    return {
+      certification: null,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    };
+  }
+}
+
+/**
+ * Get mock certification data by slug for fallback when API is not accessible
+ */
+function getMockCertificationDataBySlug(slug: string): Certification | null {
+  // Try to find a mock certification that matches the slug
+  const mockCertifications = [
+    {
+      cert_id: 1,
+      name: 'AWS Certified Solutions Architect - Associate',
+      description: 'Design distributed systems on Amazon Web Services',
+      min_quiz_counts: 15,
+      max_quiz_counts: 50,
+      pass_score: 72,
+      created_at: new Date().toISOString(),
+      firm_id: 1,
+      firm: {
+        firm_id: 1,
+        name: 'Amazon Web Services',
+        code: 'AWS',
+        logo_url: null,
+      },
+    },
+    {
+      cert_id: 2,
+      name: 'Microsoft Azure Fundamentals',
+      description: 'Azure cloud services fundamentals',
+      min_quiz_counts: 10,
+      max_quiz_counts: 30,
+      pass_score: 70,
+      created_at: new Date().toISOString(),
+      firm_id: 2,
+      firm: {
+        firm_id: 2,
+        name: 'Microsoft',
+        code: 'MICROSOFT',
+        logo_url: null,
+      },
+    },
+    {
+      cert_id: 3,
+      name: 'Google Cloud Professional Cloud Architect',
+      description: 'Design and plan a cloud solution architecture',
+      min_quiz_counts: 20,
+      max_quiz_counts: 60,
+      pass_score: 75,
+      created_at: new Date().toISOString(),
+      firm_id: 3,
+      firm: {
+        firm_id: 3,
+        name: 'Google Cloud',
+        code: 'GCP',
+        logo_url: null,
+      },
+    },
+  ];
+
+  // Try to match by generated slug
+  for (const cert of mockCertifications) {
+    const certSlug = createSlug(cert.name);
+    if (certSlug === slug) {
+      return cert;
+    }
+  }
+
+  return null;
 }

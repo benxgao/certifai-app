@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
+import { createSlug } from '@/src/utils/slug';
 import { AlertMessage } from './AlertMessage';
 import { FirmWithCertifications } from '@/src/lib/server-actions/certifications';
 import { linkifyText } from '@/src/lib/text-utils';
@@ -235,7 +236,7 @@ export default function CertificationsOverviewClient({
                     {firm.certifications.map((cert) => (
                       <Link
                         key={cert.cert_id}
-                        href={`/certifications/${firm.code}/${cert.cert_id}`}
+                        href={`/certifications/${firm.code}/${createSlug(cert.name)}`}
                         className="group"
                       >
                         <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-violet-300 dark:hover:border-violet-600 hover:bg-gradient-to-br hover:from-violet-50/50 hover:to-blue-50/50 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 transition-all duration-300 cursor-pointer hover:shadow-md dark:hover:shadow-slate-900/20">
