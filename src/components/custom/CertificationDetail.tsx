@@ -40,6 +40,7 @@ interface Firm {
 interface RelatedCertification {
   cert_id: number;
   name: string;
+  slug?: string;
   description: string;
   min_quiz_counts: number;
   max_quiz_counts: number;
@@ -49,6 +50,7 @@ interface RelatedCertification {
 interface CertificationDetailData {
   cert_id: number;
   name: string;
+  slug?: string;
   description: string;
   min_quiz_counts: number;
   max_quiz_counts: number;
@@ -339,7 +341,11 @@ export default function CertificationDetail({ certId, initialData }: Props) {
                 {certification.related_certifications.map((relatedCert) => (
                   <Link
                     key={relatedCert.cert_id}
-                    href={`/certifications/cert/${relatedCert.cert_id}`}
+                    href={
+                      relatedCert.slug && certification.firm?.code
+                        ? `/certifications/${certification.firm.code}/${relatedCert.slug}`
+                        : `/certifications/cert/${relatedCert.cert_id}`
+                    }
                     className="block group"
                   >
                     <Card className="h-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 rounded-2xl">

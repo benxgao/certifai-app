@@ -4,20 +4,20 @@ import { Suspense } from 'react';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import LandingHeader from '@/src/components/custom/LandingHeader';
-import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
+import { fetchCertificationDataBySlug } from '@/src/lib/server-actions/certifications';
 
 interface Props {
-  params: Promise<{ firmCode: string; certId: string }>;
+  params: Promise<{ firmCode: string; slug: string }>;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  const { firmCode, certId } = resolvedParams;
+  const { firmCode, slug } = resolvedParams;
 
   // Fetch certification data for better SEO metadata
   try {
-    const { certification } = await fetchCertificationData(certId);
+    const { certification } = await fetchCertificationDataBySlug(slug);
 
     if (certification) {
       return {
@@ -43,41 +43,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             } certification from ${firmCode.toUpperCase()}. Simulate exams by AI and prepare for IT certification by self exams. Learn about exam requirements, practice questions, and training materials.`,
           type: 'article',
         },
+        alternates: {
+          canonical: `/certifications/${firmCode}/${slug}`,
+        },
       };
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+  }
 
   return {
-    title: `Certification ${certId} - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | Certestic`,
+    title: `Certification - Simulate Exams by AI & Prepare by Self Exams | ${firmCode.toUpperCase()} | Certestic`,
     description: `${firmCode.toUpperCase()} certification information and training materials. Simulate exams by AI and prepare for IT certification by self exams with AI-powered practice questions and study materials.`,
-    keywords: `${firmCode}, certification ${certId}, IT certification, exam preparation, practice questions, training`,
+    keywords: `${firmCode}, certification, IT certification, exam preparation, practice questions, training`,
   };
 }
 
-export default async function CertificationPage({ params }: Props) {
+export default async function CertificationSlugPage({ params }: Props) {
   const resolvedParams = await params;
-  const { firmCode, certId } = resolvedParams;
-
-  // Validate certId is a number
-  if (!/^\d+$/.test(certId)) {
-    notFound();
-  }
+  const { firmCode, slug } = resolvedParams;
 
   // Validate firmCode (should be alphanumeric, typically 2-6 characters)
   if (!/^[a-zA-Z0-9]{1,10}$/i.test(firmCode)) {
     notFound();
   }
 
-  // Fetch certification data to get the certification name for breadcrumb
-  const { certification } = await fetchCertificationData(certId);
+  // Validate slug format (should be lowercase letters, numbers, and hyphens)
+  if (!/^[a-z0-9-]+$/.test(slug)) {
+    notFound();
+  }
+
+  // Fetch certification data to get the certification details
+  const { certification } = await fetchCertificationDataBySlug(slug);
 
   if (!certification) {
     notFound();
   }
 
-  // If certification has a slug, redirect to the SEO-friendly URL
-  if (certification.slug) {
-    redirect(`/certifications/${firmCode}/${certification.slug}`);
+  // Verify that the certification belongs to the correct firm
+  if (certification.firm?.code.toLowerCase() !== firmCode.toLowerCase()) {
+    // If the firm code doesn't match, redirect to the correct URL
+    if (certification.firm?.code) {
+      redirect(`/certifications/${certification.firm.code}/${slug}`);
+    } else {
+      notFound();
+    }
   }
 
   const breadcrumbItems = [
@@ -89,7 +99,7 @@ export default async function CertificationPage({ params }: Props) {
     },
     {
       label: certification.name,
-      href: `/certifications/${firmCode}/${certId}`,
+      href: `/certifications/${firmCode}/${slug}`,
     },
   ];
 
@@ -111,7 +121,7 @@ export default async function CertificationPage({ params }: Props) {
         </div>
 
         <Suspense fallback={<CertificationDetailSkeleton />}>
-          <CertificationDetail certId={certId} />
+          <CertificationDetail certId={certification.cert_id.toString()} />
         </Suspense>
       </div>
     </div>

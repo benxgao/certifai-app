@@ -5,6 +5,7 @@ import { createSlug } from '@/src/utils/slug';
 interface Certification {
   cert_id: number;
   name: string;
+  slug?: string;
   description?: string;
   exam_guide_url?: string;
   min_quiz_counts: number;
@@ -236,6 +237,7 @@ export async function fetchCertificationData(certificationId: string): Promise<{
             const transformedCertification: Certification = {
               cert_id: apiData.cert_id,
               name: apiData.name,
+              slug: apiData.slug,
               description: apiData.description,
               min_quiz_counts: apiData.min_quiz_counts,
               max_quiz_counts: apiData.max_quiz_counts,
@@ -283,6 +285,88 @@ export async function fetchCertificationData(certificationId: string): Promise<{
     return {
       certification: getMockCertificationData(certificationId),
       error: undefined, // Use fallback data instead of showing error
+    };
+  }
+}
+
+/**
+ * Fetch certification data by slug for SEO-friendly URLs
+ *
+ * Used by:
+ * - SEO-friendly marketing pages: /app/certifications/[firmCode]/[slug]/page.tsx
+ */
+export async function fetchCertificationDataBySlug(slug: string): Promise<{
+  certification: Certification | null;
+  error?: string;
+}> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_API_URL;
+
+    if (!baseUrl) {
+      console.info('SERVER_API_URL not configured, using mock data');
+      return {
+        certification: getMockCertificationDataBySlug(slug),
+        error: undefined,
+      };
+    }
+
+    // Try to fetch from public API using JWT authentication for server-to-server communication
+    try {
+      const token = await generatePublicJWTToken();
+
+      if (token) {
+        const response = await makePublicAPIRequest(`/certifications/slug/${slug}`, token, {
+          cache: 'force-cache',
+          next: { revalidate: 3600 },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+
+          if (result.success && result.data) {
+            // Transform API response to match expected format
+            const apiData = result.data;
+            const transformedCertification: Certification = {
+              cert_id: apiData.cert_id,
+              name: apiData.name,
+              slug: apiData.slug,
+              description: apiData.description,
+              min_quiz_counts: apiData.min_quiz_counts,
+              max_quiz_counts: apiData.max_quiz_counts,
+              pass_score: apiData.pass_score,
+              created_at: apiData.created_at,
+              firm_id: apiData.firm?.id || 0,
+              firm: apiData.firm
+                ? {
+                    firm_id: apiData.firm.id,
+                    name: apiData.firm.name,
+                    code: apiData.firm.code,
+                    logo_url: apiData.firm.logo_url,
+                  }
+                : undefined,
+            };
+
+            return {
+              certification: transformedCertification,
+              error: undefined,
+            };
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch from API:', error);
+    }
+
+    // Fallback to mock data if API fails
+    return {
+      certification: getMockCertificationDataBySlug(slug),
+      error: undefined,
+    };
+  } catch (error) {
+    console.error('Error in fetchCertificationDataBySlug:', error);
+    return {
+      certification: null,
+      error: `Failed to fetch certification: ${error}`,
     };
   }
 }
@@ -446,6 +530,38 @@ function getMockCertificationData(certificationId: string): Certification | null
   };
 
   return mockCertifications[certificationId] || null;
+}
+
+/**
+ * Get mock certification data by slug for fallback when API is not accessible
+ */
+function getMockCertificationDataBySlug(slug: string): Certification | null {
+  // For now, use a simple mapping from common slugs to IDs
+  // In a real implementation, this would include slug fields in the mock data
+  const slugToIdMap: Record<string, string> = {
+    'aws-certified-solutions-architect': '1',
+    'aws-certified-developer-associate': '2',
+    'aws-certified-sysops-administrator': '3',
+    'microsoft-certified-azure-fundamentals': '4',
+    'microsoft-certified-azure-administrator-associate': '5',
+    'google-cloud-digital-leader': '6',
+    'associate-cloud-engineer': '7',
+    'ccna-cisco-certified-network-associate': '8',
+  };
+
+  const certId = slugToIdMap[slug];
+  if (certId) {
+    const cert = getMockCertificationData(certId);
+    if (cert) {
+      // Add the slug to the mock data
+      return {
+        ...cert,
+        slug: slug,
+      };
+    }
+  }
+
+  return null;
 }
 
 // Mock data for fallback when API is not accessible
