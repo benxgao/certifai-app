@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import ScreenshotSlideshow from '@/src/components/landing/ScreenshotSlideshow';
+import PopularCertifications from '@/src/components/landing/PopularCertifications';
 import SEOContentBlock from '@/src/components/seo/SEOContentBlock';
 
 export default function LandingPageContent() {
@@ -45,11 +46,44 @@ export default function LandingPageContent() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Accelerate your IT career with AI-powered practice exams for AWS Solutions Architect,
-              Microsoft Azure Administrator, Google Cloud Professional, CompTIA Security+, and 50+
-              other certifications. Our adaptive AI creates personalized study plans that target
-              your knowledge gaps and simulate exam conditions - aiming to help IT professionals
-              pass their certifications on the first try.
+              Accelerate your IT career with AI-powered practice exams for{' '}
+              <Link
+                href="/certifications/AWS/aws-certified-solutions-architect"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                AWS Solutions Architect
+              </Link>
+              ,{' '}
+              <Link
+                href="/certifications/AZURE/microsoft-certified-azure-administrator-associate"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                Microsoft Azure Administrator
+              </Link>
+              ,{' '}
+              <Link
+                href="/certifications/GCP/google-cloud-professional-cloud-architect"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                Google Cloud Professional
+              </Link>
+              ,{' '}
+              <Link
+                href="/certifications/COMPTIA/comptia-security"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                CompTIA Security+
+              </Link>
+              , and{' '}
+              <Link
+                href="/certifications"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                50+ other certifications
+              </Link>
+              . Our adaptive AI creates personalized study plans that target your knowledge gaps and
+              simulate exam conditions - aiming to help IT professionals pass their certifications
+              on the first try.
             </p>
 
             {/* Enhanced Stats with IT certification focus */}
@@ -255,11 +289,37 @@ export default function LandingPageContent() {
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Whether you&apos;re targeting AWS Solutions Architect, Microsoft Azure Fundamentals,
-              Google Cloud Professional, or CompTIA certifications, our intelligent practice
-              platform adapts to your learning style. Get personalized question sets, identify
-              knowledge gaps, and simulate real exam conditions to boost your confidence and pass
-              rates.
+              Whether you&apos;re targeting{' '}
+              <Link
+                href="/certifications/AWS/aws-certified-solutions-architect"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                AWS Solutions Architect
+              </Link>
+              ,{' '}
+              <Link
+                href="/certifications/AZURE/microsoft-certified-azure-fundamentals"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                Microsoft Azure Fundamentals
+              </Link>
+              ,{' '}
+              <Link
+                href="/certifications/GCP/google-cloud-professional-cloud-architect"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                Google Cloud Professional
+              </Link>
+              , or{' '}
+              <Link
+                href="/certifications/COMPTIA"
+                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
+              >
+                CompTIA certifications
+              </Link>
+              , our intelligent practice platform adapts to your learning style. Get personalized
+              question sets, identify knowledge gaps, and simulate real exam conditions to boost
+              your confidence and pass rates.
             </p>
           </div>
 
@@ -690,6 +750,9 @@ export default function LandingPageContent() {
           </div>
         </div>
       </section>
+
+      {/* Popular Certifications Section */}
+      <PopularCertifications />
 
       {/* SEO Content Block */}
       <SEOContentBlock />

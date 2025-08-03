@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface SEOContentProps {
   className?: string;
@@ -7,6 +8,210 @@ interface SEOContentProps {
 export default function SEOContentBlock({ className = '' }: SEOContentProps) {
   return (
     <div className={`seo-content-block ${className}`}>
+      {/* Visible SEO content section for better user experience and SEO */}
+      <section
+        className="py-16 bg-slate-50 dark:bg-slate-900/50"
+        aria-labelledby="seo-content-heading"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <h2
+              id="seo-content-heading"
+              className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-8 text-center"
+            >
+              Master IT Certifications with AI-Powered Training
+            </h2>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {/* Cloud Computing Certifications */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-md">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Cloud Computing Certifications
+                </h3>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  <li>
+                    <Link
+                      href="/certifications/AWS/aws-certified-solutions-architect"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      AWS Solutions Architect Associate
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/AZURE/microsoft-certified-azure-administrator-associate"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      Azure Administrator Associate
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/GCP/google-cloud-professional-cloud-architect"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      Google Cloud Professional Architect
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/AWS/aws-certified-developer-associate"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      AWS Developer Associate
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Cybersecurity Certifications */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-md">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Cybersecurity Certifications
+                </h3>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  <li>
+                    <Link
+                      href="/certifications/COMPTIA/comptia-security"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      CompTIA Security+ Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/ISC2/certified-information-systems-security-professional-cissp"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      CISSP Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/COMPTIA/comptia-cysa-cybersecurity-analyst"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      CompTIA CySA+ Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/COMPTIA/certified-ethical-hacker-ceh"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      Certified Ethical Hacker (CEH)
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Networking & Infrastructure */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-md">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Networking & Infrastructure
+                </h3>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  <li>
+                    <Link
+                      href="/certifications/CISCO/cisco-certified-network-associate-ccna"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      Cisco CCNA Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/COMPTIA/comptia-network"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      CompTIA Network+ Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/VMWARE/vmware-certified-professional-data-center-virtualization-vcp-dcv"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      VMware VCP-DCV Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/REDHAT/red-hat-certified-system-administrator-rhcsa"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                    >
+                      Red Hat RHCSA Certification
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Additional SEO content */}
+            <div className="prose prose-slate dark:prose-invert max-w-none">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                    Why Choose AI-Powered IT Certification Training?
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4">
+                    Traditional IT certification study methods often lack personalization and fail
+                    to identify specific knowledge gaps. Our AI-powered platform revolutionizes
+                    certification preparation by creating adaptive learning experiences tailored to
+                    your unique learning style and career goals.
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Whether you&apos;re pursuing{' '}
+                    <Link
+                      href="/certifications/AWS"
+                      className="text-violet-600 hover:text-violet-700"
+                    >
+                      AWS certifications
+                    </Link>
+                    ,
+                    <Link
+                      href="/certifications/AZURE"
+                      className="text-violet-600 hover:text-violet-700 ml-1"
+                    >
+                      Microsoft Azure credentials
+                    </Link>
+                    , or
+                    <Link
+                      href="/certifications/COMPTIA"
+                      className="text-violet-600 hover:text-violet-700 ml-1"
+                    >
+                      CompTIA certifications
+                    </Link>
+                    , our platform provides the most effective preparation available.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                    Comprehensive Certification Coverage
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4">
+                    From cloud computing fundamentals to advanced cybersecurity practices, our
+                    platform covers the full spectrum of in-demand IT certifications. Master
+                    technologies like AWS EC2, Azure Active Directory, Google Cloud Kubernetes
+                    Engine, and enterprise security frameworks.
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Join thousands of IT professionals who have accelerated their careers with our
+                    <Link
+                      href="/certifications"
+                      className="text-violet-600 hover:text-violet-700 ml-1"
+                    >
+                      comprehensive certification training platform
+                    </Link>
+                    . Start your journey today with our free beta access.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Hidden SEO content for search engines */}
       <div className="sr-only">
         <h2>AI-Powered IT Certification Training for AWS, Azure, GCP & More</h2>
