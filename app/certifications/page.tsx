@@ -1,8 +1,11 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import Link from 'next/link';
 import CertificationsOverviewClient from '@/src/components/custom/CertificationsOverviewClient';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import LandingHeader from '@/src/components/custom/LandingHeader';
+import { Card, CardContent } from '@/src/components/ui/card';
+import { FaCloud, FaShieldAlt, FaNetworkWired, FaArrowRight } from 'react-icons/fa';
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export const metadata: Metadata = {
@@ -84,6 +87,85 @@ export default async function CertificationsPage({
               certification by self exams. Each certification is designed to validate your skills
               and advance your career with AI-powered exam simulation technology.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Category Navigation Section */}
+      <section className="relative py-12 bg-white/60 dark:bg-slate-800/60">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+              Browse by Category
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Explore certifications organized by technology focus areas and career paths
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {/* Cloud Computing */}
+            <Link href="/certifications/categories/cloud">
+              <Card className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <FaCloud className="text-2xl text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    Cloud Computing
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                    AWS, Azure, GCP certifications for cloud architects and engineers
+                  </p>
+                  <div className="flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm group-hover:translate-x-1 transition-transform duration-200">
+                    <span>Explore Cloud Certs</span>
+                    <FaArrowRight className="ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Cybersecurity */}
+            <Link href="/certifications/categories/security">
+              <Card className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-red-300 dark:hover:border-red-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <FaShieldAlt className="text-2xl text-red-600 dark:text-red-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                    Cybersecurity
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                    Security+, CISSP, CEH certifications for security professionals
+                  </p>
+                  <div className="flex items-center justify-center text-red-600 dark:text-red-400 font-medium text-sm group-hover:translate-x-1 transition-transform duration-200">
+                    <span>Explore Security Certs</span>
+                    <FaArrowRight className="ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Networking */}
+            <Link href="/certifications/categories/networking">
+              <Card className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <FaNetworkWired className="text-2xl text-green-600 dark:text-green-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                    Networking
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                    CCNA, Network+, CCNP certifications for network engineers
+                  </p>
+                  <div className="flex items-center justify-center text-green-600 dark:text-green-400 font-medium text-sm group-hover:translate-x-1 transition-transform duration-200">
+                    <span>Explore Network Certs</span>
+                    <FaArrowRight className="ml-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>

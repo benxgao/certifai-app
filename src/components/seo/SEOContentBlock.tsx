@@ -61,6 +61,14 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                       AWS Developer Associate
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      href="/certifications/categories/cloud"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors font-medium"
+                    >
+                      View All Cloud Certifications →
+                    </Link>
+                  </li>
                 </ul>
               </div>
 
@@ -102,6 +110,14 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                       Certified Ethical Hacker (CEH)
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      href="/certifications/categories/security"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors font-medium"
+                    >
+                      View All Security Certifications →
+                    </Link>
+                  </li>
                 </ul>
               </div>
 
@@ -141,6 +157,14 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                       className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
                     >
                       Red Hat RHCSA Certification
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/certifications/categories/networking"
+                      className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors font-medium"
+                    >
+                      View All Networking Certifications →
                     </Link>
                   </li>
                 </ul>
