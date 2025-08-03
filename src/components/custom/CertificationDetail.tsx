@@ -17,6 +17,7 @@ import Link from 'next/link';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
 import { AlertMessage } from './AlertMessage';
+import { createSlug } from '@/src/utils/slug';
 
 // Simple date formatting function
 const formatDate = (dateString: string) => {
@@ -342,8 +343,10 @@ export default function CertificationDetail({ certId, initialData }: Props) {
                   <Link
                     key={relatedCert.cert_id}
                     href={
-                      relatedCert.slug && certification.firm?.code
-                        ? `/certifications/${certification.firm.code}/${relatedCert.slug}`
+                      certification.firm?.code
+                        ? `/certifications/${certification.firm.code.toLowerCase()}/${createSlug(
+                            relatedCert.name,
+                          )}`
                         : `/certifications/cert/${relatedCert.cert_id}`
                     }
                     className="block group"

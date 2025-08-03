@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
+import { createSlug } from '@/src/utils/slug';
 
 interface Props {
   params: Promise<{
@@ -46,8 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       };
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 
   return {
     title: `Certification Details | Certestic`,
@@ -75,7 +75,13 @@ export default async function CertificationPage({ params }: Props) {
       error = fetchError;
     } else if (certData) {
       certification = certData;
-      // Note: firm data might need to be fetched separately if needed for breadcrumbs
+
+      // Redirect to slug-based URL if we have firm data
+      if (certification.firm?.code) {
+        const slug = createSlug(certification.name);
+        const newUrl = `/certifications/${certification.firm.code.toLowerCase()}/${slug}`;
+        redirect(newUrl);
+      }
     } else {
       notFound();
     }

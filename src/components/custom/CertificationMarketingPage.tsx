@@ -18,6 +18,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
+import { createSlug } from '@/src/utils/slug';
 
 interface Firm {
   id: number;
@@ -842,7 +843,9 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                             {related.description}
                           </p>
                           <Link
-                            href={`/certifications/${firmCode}/${related.cert_id}`}
+                            href={`/certifications/${firmCode.toLowerCase()}/${createSlug(
+                              related.name,
+                            )}`}
                             className="block"
                           >
                             <Button

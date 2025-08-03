@@ -11,6 +11,7 @@ import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
 import { useAllFirmsWithCertifications } from '@/src/swr/useAllData';
 import { AlertMessage } from './AlertMessage';
+import { createSlug } from '@/src/utils/slug';
 
 interface Certification {
   cert_id: number;
@@ -202,7 +203,7 @@ export default function CertificationsOverview() {
                 {firm.certifications.map((cert) => (
                   <Link
                     key={cert.cert_id}
-                    href={`/certifications/cert/${cert.cert_id}`}
+                    href={`/certifications/${firm.code.toLowerCase()}/${createSlug(cert.name)}`}
                     className="block"
                   >
                     <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer">
