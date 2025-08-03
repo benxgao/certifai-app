@@ -1,0 +1,54 @@
+# Settings for Backend (on Cloud Run) - UAT Environment
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+runConfig:
+  minInstances: 0
+  maxInstances: 5
+  concurrency: 30
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: NODE_ENV
+    value: uat
+
+  - variable: MARKETING_API_URL
+    value: https://o2frrzn9x7.execute-api.us-east-1.amazonaws.com/dev
+
+  - variable: MARKETING_API_JWT_SECRET
+    secret: MARKETING_API_JWT_SECRET # secret
+
+  - variable: GOOGLE_APPLICATION_CREDENTIALS
+    secret: GCP_CREDENTIALS_JSON # secret
+
+  - variable: JOSE_JWT_SECRET
+    secret: JOSE_JWT_SECRET # secret
+
+  - variable: SERVICE_SECRET
+    secret: SERVICE_SECRET # secret
+
+  - variable: NEXT_PUBLIC_GA_TRACKING_ID
+    value: G-EM97RQX2ZJ # Can use same GA ID for UAT
+
+  - variable: NEXT_PUBLIC_FIREBASE_BACKEND_URL # for sending requests to the backend api
+    secret: NEXT_PUBLIC_FIREBASE_BACKEND_URL # secret
+
+  - variable: NEXT_PUBLIC_SERVER_API_URL
+    value: https://us-central1-certifai-uat.cloudfunctions.net/endpoints
+
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyBy5xB5Xl1lLupQdUx_kaO_ydV4xqQfP6A
+
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: certifai-uat.firebaseapp.com
+
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: certifai-uat
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: certifai-uat.firebasestorage.app
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: 398930523623
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:398930523623:web:aed91e058fd6beb1583942

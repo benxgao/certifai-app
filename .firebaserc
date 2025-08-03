@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "certifai-prod"
+    "default": "certifai-prod",
+    "prod": "certifai-prod",
+    "uat": "certifai-uat"
   }
 }
