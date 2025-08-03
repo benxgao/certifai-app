@@ -63,6 +63,7 @@ interface ApiResponse {
 interface Props {
   certId: string;
   firmCode: string;
+  slug?: string;
   initialData?: {
     cert_id: number;
     name: string;
@@ -75,7 +76,7 @@ interface Props {
   } | null;
 }
 
-export default function CertificationMarketingPage({ certId, firmCode, initialData }: Props) {
+export default function CertificationMarketingPage({ certId, firmCode, slug, initialData }: Props) {
   const [certification, setCertification] = useState<CertificationDetailData | null>(null);
   const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState<string | null>(null);
@@ -243,7 +244,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
-              <Link href={`/certifications/${firmCode}/${certId}`}>
+              <Link href={`/certifications/${firmCode}/${slug || certId}`}>
                 <Button
                   size="lg"
                   className="w-full sm:w-auto px-6 sm:px-8 py-3 text-base sm:text-lg"
@@ -966,7 +967,7 @@ export default function CertificationMarketingPage({ certId, firmCode, initialDa
                   Start your journey to {certification.name} certification today
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-                  <Link href={`/certifications/${firmCode}/${certId}`}>
+                  <Link href={`/certifications/${firmCode}/${slug || certId}`}>
                     <Button
                       size="lg"
                       variant="secondary"

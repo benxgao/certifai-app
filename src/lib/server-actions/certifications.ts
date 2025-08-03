@@ -198,8 +198,8 @@ export async function fetchCertificationsData(): Promise<{
  * This allows public pages to display certification details without client-side auth
  *
  * Used by:
- * - Marketing pages: /app/certifications/[firmCode]/[certId]/marketing/page.tsx (certification marketing/landing page)
- * - Main catalog: /app/certifications/[firmCode]/[certId]/page.tsx (certification detail page)
+ * - Marketing pages: /app/certifications/[firmCode]/[slug]/training/page.tsx (certification training/landing page)
+ * - Main catalog: /app/certifications/[firmCode]/[slug]/page.tsx (certification detail page)
  * - Main catalog: /app/certifications/cert/[certId]/page.tsx (alternative certification detail route)
  * - Testing: /app/test-certification/page.tsx (certification testing functionality)
  */

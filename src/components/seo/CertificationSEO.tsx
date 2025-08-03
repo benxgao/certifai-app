@@ -23,11 +23,13 @@ interface CertificationData {
 interface CertificationSEOProps {
   certification: CertificationData;
   firmCode: string;
+  slug?: string;
 }
 
 export function generateCertificationSEOMetadata({
   certification,
   firmCode,
+  slug,
 }: CertificationSEOProps): Metadata {
   const title = `${certification.name} Certification Training - AI-Powered Practice Questions & Study Guide | ${certification.firm.name} | Certestic`;
 
@@ -89,8 +91,8 @@ export function generateCertificationSEOMetadata({
   ].join(', ');
 
   const canonicalUrl = `https://certestic.com/certifications/${firmCode.toLowerCase()}/${
-    certification.cert_id
-  }/marketing`;
+    slug || certification.cert_id
+  }/training`;
   const imageUrl = `https://certestic.com/api/og?title=${encodeURIComponent(
     certification.name,
   )}&firm=${encodeURIComponent(certification.firm.name)}&type=certification`;

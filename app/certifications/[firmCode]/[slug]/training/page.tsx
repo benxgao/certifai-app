@@ -3,29 +3,21 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import LandingHeader from '@/src/components/custom/LandingHeader';
-import { fetchCertificationData } from '@/src/lib/server-actions/certifications';
+import { fetchCertificationDataBySlug } from '@/src/lib/server-actions/certifications';
 import CertificationMarketingPage from '@/src/components/custom/CertificationMarketingPage';
 
 interface Props {
-  params: Promise<{ firmCode: string; certId: string }>;
+  params: Promise<{ firmCode: string; slug: string }>;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  const { firmCode, certId } = resolvedParams;
-
-  // Validate certId is a number
-  if (!/^\d+$/.test(certId)) {
-    return {
-      title: 'Certification Not Found | Certestic',
-      description: 'The requested certification could not be found.',
-    };
-  }
+  const { firmCode, slug } = resolvedParams;
 
   // Fetch certification data for better SEO metadata
   try {
-    const { certification: cert, error: fetchError } = await fetchCertificationData(certId);
+    const { certification: cert, error: fetchError } = await fetchCertificationDataBySlug(slug);
 
     if (fetchError) {
     }
@@ -48,8 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       };
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 
   return {
     title: `${firmCode.toUpperCase()} Certification Training - Create Exams on Particular Topics & Test Knowledge Mastery | Certestic`,
@@ -60,12 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CertificationMarketingPageRoute({ params }: Props) {
   const resolvedParams = await params;
-  const { firmCode, certId } = resolvedParams;
-
-  // Validate certId is a number
-  if (!/^\d+$/.test(certId)) {
-    notFound();
-  }
+  const { firmCode, slug } = resolvedParams;
 
   // Validate firmCode (should be alphanumeric, typically 2-6 characters)
   if (!/^[a-zA-Z0-9]{1,10}$/i.test(firmCode)) {
@@ -77,7 +63,7 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
   let error = null;
 
   try {
-    const result = await fetchCertificationData(certId);
+    const result = await fetchCertificationDataBySlug(slug);
     certification = result.certification;
     error = result.error;
 
@@ -99,22 +85,14 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
       href: `/certifications?firm=${firmCode}`,
     },
     {
-      label: `Certification ${certId}`,
-      href: `/certifications/${firmCode}/${certId}`,
+      label: certification?.name || `Certification`,
+      href: `/certifications/${firmCode}/${slug}`,
     },
     {
       label: 'Training',
-      href: `/certifications/${firmCode}/${certId}/marketing`,
+      href: `/certifications/${firmCode}/${slug}/training`,
     },
   ];
-
-  if (certification) {
-    // Update breadcrumb with certification name
-    breadcrumbItems[3] = {
-      label: certification.name,
-      href: `/certifications/${firmCode}/${certId}`,
-    };
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -132,8 +110,9 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
         ) : (
           <Suspense fallback={<CertificationMarketingPageSkeleton />}>
             <CertificationMarketingPage
-              certId={certId}
+              certId={certification?.cert_id?.toString() || ''}
               firmCode={firmCode}
+              slug={slug}
               initialData={
                 certification
                   ? {
