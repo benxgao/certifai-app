@@ -22,14 +22,10 @@ export default function LandingPageContent() {
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
           {/* Hero Content - Centered */}
           <div className="text-center max-w-5xl mx-auto">
-            {/* Beta badge */}
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-4 sm:mb-6">
-              <div
-                className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"
-                aria-hidden="true"
-              ></div>
-              <span className="text-xs sm:text-sm font-medium text-violet-700 dark:text-violet-300">
-                Free Beta Access Available!
+            {/* Simple beta badge */}
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 rounded-full px-4 py-2 mb-6">
+              <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
+                Free Beta Access
               </span>
             </div>
 
@@ -135,66 +131,6 @@ export default function LandingPageContent() {
                 </Button>
               </Link>
             </div>
-
-            {/* Trust indicators with improved UI */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl mx-auto">
-              <div className="group flex items-center justify-center gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2 hover:bg-white/60 dark:hover:bg-slate-800/60 hover:border-green-200 dark:hover:border-green-800/50 transition-all duration-300">
-                <div className="w-5 h-5 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/60 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                  <svg
-                    className="w-3 h-3 text-green-600 dark:text-green-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors duration-200">
-                  No credit card needed
-                </span>
-              </div>
-
-              <div className="group flex items-center justify-center gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2 hover:bg-white/60 dark:hover:bg-slate-800/60 hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300">
-                <div className="w-5 h-5 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/40 dark:to-violet-800/60 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                  <svg
-                    className="w-3 h-3 text-violet-600 dark:text-violet-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-violet-700 dark:group-hover:text-violet-400 transition-colors duration-200">
-                  Free IT certification prep
-                </span>
-              </div>
-
-              <div className="group flex items-center justify-center gap-2 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-xl px-3 py-2 hover:bg-white/60 dark:hover:bg-slate-800/60 hover:border-blue-200 dark:hover:border-blue-800/50 transition-all duration-300">
-                <div className="w-5 h-5 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/60 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                  <svg
-                    className="w-3 h-3 text-blue-600 dark:text-blue-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-200">
-                  AI-powered learning
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -262,26 +198,6 @@ export default function LandingPageContent() {
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            {/* Section badge */}
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-4 py-2 mb-6">
-              <svg
-                className="w-4 h-4 text-violet-600 dark:text-violet-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                Platform Features
-              </span>
-            </div>
-
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
               Get Ready for Your IT Certifications with
               <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
@@ -594,6 +510,12 @@ export default function LandingPageContent() {
         </div>
       </section>
 
+      {/* Popular Certifications Section */}
+      <PopularCertifications />
+
+      {/* SEO Content Block */}
+      <SEOContentBlock />
+
       {/* Call-to-Action Section */}
       <section className="relative py-16 sm:py-24 overflow-hidden">
         {/* Background decorative elements - mobile responsive */}
@@ -609,14 +531,6 @@ export default function LandingPageContent() {
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
 
             <div className="relative z-10">
-              {/* CTA badge */}
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-6 py-3 mb-8">
-                <div className="w-3 h-3 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-semibold text-violet-700 dark:text-violet-300">
-                  Start Your Success Journey!
-                </span>
-              </div>
-
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
                 Your Personal Certification{' '}
                 <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
@@ -681,81 +595,14 @@ export default function LandingPageContent() {
                 </Link>
               </div>
 
-              {/* Enhanced trust indicators with improved UI */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                <div className="group flex items-center justify-center gap-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl px-4 py-3 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-green-200 dark:hover:border-green-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-100/50 dark:hover:shadow-green-900/20">
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/40 dark:to-green-800/60 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                    <svg
-                      className="w-5 h-5 text-green-600 dark:text-green-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                      />
-                    </svg>
-                  </div>
-                  <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors duration-300">
-                    No credit card needed
-                  </span>
-                </div>
-
-                <div className="group flex items-center justify-center gap-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl px-4 py-3 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-violet-200 dark:hover:border-violet-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-violet-100/50 dark:hover:shadow-violet-900/20">
-                  <div className="w-8 h-8 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/40 dark:to-violet-800/60 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                    <svg
-                      className="w-5 h-5 text-violet-600 dark:text-violet-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                      />
-                    </svg>
-                  </div>
-                  <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-violet-700 dark:group-hover:text-violet-400 transition-colors duration-300">
-                    Free during beta
-                  </span>
-                </div>
-
-                <div className="group flex items-center justify-center gap-3 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl px-4 py-3 hover:bg-white/80 dark:hover:bg-slate-800/80 hover:border-blue-200 dark:hover:border-blue-800/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-100/50 dark:hover:shadow-blue-900/20">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/60 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-                    <svg
-                      className="w-5 h-5 text-blue-600 dark:text-blue-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                      />
-                    </svg>
-                  </div>
-                  <span className="font-semibold text-slate-700 dark:text-slate-300 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
-                    Continuous updates
-                  </span>
-                </div>
-              </div>
+              {/* Simple trust message */}
+              <p className="text-center text-slate-600 dark:text-slate-400 text-sm">
+                Free access during beta • No credit card required
+              </p>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Popular Certifications Section */}
-      <PopularCertifications />
-
-      {/* SEO Content Block */}
-      <SEOContentBlock />
     </div>
   );
 }

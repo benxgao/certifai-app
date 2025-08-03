@@ -144,13 +144,13 @@ export default function PopularCertifications() {
         </div>
 
         {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {popularCertifications.map((cert, index) => (
             <Card
               key={cert.slug}
-              className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:border-violet-300/60 dark:hover:border-violet-600/60 shadow-lg hover:shadow-xl dark:hover:shadow-slate-900/30 transition-all duration-300 transform hover:-translate-y-2 rounded-2xl overflow-hidden"
+              className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden flex flex-col h-full"
             >
-              <CardContent className="p-6">
+              <CardContent className="p-6 flex flex-col h-full">
                 {/* Header with badges */}
                 <div className="flex items-start justify-between mb-4">
                   <Badge
@@ -165,46 +165,34 @@ export default function PopularCertifications() {
                 </div>
 
                 {/* Certification Title */}
-                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 line-clamp-2 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 line-clamp-2 leading-tight">
                   {cert.name}
                 </h3>
 
                 {/* Description */}
-                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
                   {cert.description}
                 </p>
 
-                {/* Keywords */}
-                <div className="flex flex-wrap gap-1 mb-4">
-                  {cert.keywords.slice(0, 4).map((keyword, idx) => (
-                    <span
-                      key={idx}
-                      className="inline-block px-2 py-1 text-xs font-medium bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 rounded-md"
-                    >
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
-
                 {/* Stats */}
-                <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
+                <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                   <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                    <FaClock className="text-blue-500" />
+                    <FaClock className="text-slate-500 text-xs" />
                     <span>{cert.avgStudyTime}</span>
                   </div>
                   <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                    <FaUsers className="text-green-500" />
+                    <FaUsers className="text-slate-500 text-xs" />
                     <span>{cert.popularityScore}% popular</span>
                   </div>
                 </div>
 
-                {/* CTA Button */}
+                {/* CTA Button - Always at bottom */}
                 <Link
                   href={`/certifications/${cert.firmCode}/${cert.slug}`}
-                  className="w-full inline-flex items-center justify-between px-4 py-3 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 transform group-hover:scale-105 hover:shadow-lg"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg transition-colors duration-200 mt-auto"
                 >
-                  <span>Start Practice Exam</span>
-                  <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />
+                  <span>View Certification</span>
+                  <FaArrowRight className="text-xs" />
                 </Link>
               </CardContent>
             </Card>
@@ -215,7 +203,7 @@ export default function PopularCertifications() {
         <div className="text-center">
           <Link
             href="/certifications"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 text-slate-900 dark:text-slate-100 font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+            className="inline-flex items-center gap-3 px-6 py-3 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-medium rounded-lg transition-colors duration-200"
           >
             <span>View All 50+ IT Certifications</span>
             <FaArrowRight />
