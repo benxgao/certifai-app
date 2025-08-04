@@ -21,7 +21,17 @@ import {
   DialogTrigger,
 } from '@/src/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
-import { CalendarIcon, UserIcon, Settings, Award, Shield, Bell, Edit3, Check } from 'lucide-react';
+import {
+  CalendarIcon,
+  UserIcon,
+  Settings,
+  Award,
+  Shield,
+  Bell,
+  Edit3,
+  Check,
+  CreditCard,
+} from 'lucide-react';
 import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 import EmailUpdateDialog from '@/src/components/custom/EmailUpdateDialog';
 import Breadcrumb from '@/components/custom/Breadcrumb';
@@ -31,6 +41,12 @@ import {
   DashboardCardContent,
 } from '@/src/components/ui/dashboard-card';
 import DeleteAccountDialog from '@/src/components/custom/DeleteAccountDialog';
+import {
+  SubscriptionStatusCard,
+  SubscriptionManagementCard,
+  PricingPlansGrid,
+} from '@/src/stripe/client/components';
+import { useSubscriptionState } from '@/src/stripe/client/swr';
 
 const ProfileSkeleton: React.FC = () => (
   <div className="space-y-6">
@@ -153,6 +169,7 @@ const EditableDisplayName: React.FC<{
 
 const ProfileClientPage: React.FC = () => {
   const [showSkeleton, setShowSkeleton] = useState(false);
+  const [activeTab, setActiveTab] = useState('personal');
 
   // Use useProfileData hook
   const {
@@ -164,6 +181,9 @@ const ProfileClientPage: React.FC = () => {
     email,
     mutate, // Add mutate function for refreshing profile data
   } = useProfileData();
+
+  // Use subscription state for billing integration
+  const { subscription, hasActiveSubscription, isTrialing, isCanceled } = useSubscriptionState();
 
   // Handle name update with profile refresh
   const handleNameUpdate = () => {
@@ -297,8 +317,16 @@ const ProfileClientPage: React.FC = () => {
                     <span className="block sm:inline">{email}</span>
                     <span className="hidden sm:inline"> • </span>
                     <span className="block sm:inline">
-                      {profile.subscription_plan || 'Free Tier'}
+                      {hasActiveSubscription ? subscription?.plan_name : 'Free Tier'}
                     </span>
+                    {hasActiveSubscription && (
+                      <>
+                        <span className="hidden sm:inline"> • </span>
+                        <span className="block sm:inline">
+                          {isCanceled ? 'Canceling' : isTrialing ? 'Trial' : 'Active'}
+                        </span>
+                      </>
+                    )}
                     <span className="hidden sm:inline"> • </span>
                     <span className="block sm:inline">Member since {registrationDate}</span>
                   </p>
@@ -321,10 +349,10 @@ const ProfileClientPage: React.FC = () => {
           </DashboardCardHeader>
 
           <DashboardCardContent>
-            <Tabs defaultValue="personal" className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               {/* Improved TabsList */}
               <div className="relative mb-6">
-                <TabsList className="w-full h-auto p-1 bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm rounded-lg md:grid md:grid-cols-3 overflow-x-auto scrollbar-none">
+                <TabsList className="w-full h-auto p-1 bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm rounded-lg md:grid md:grid-cols-4 overflow-x-auto scrollbar-none">
                   <div className="flex md:contents min-w-max md:min-w-0">
                     <TabsTrigger
                       value="personal"
@@ -341,6 +369,13 @@ const ProfileClientPage: React.FC = () => {
                       <span>Account</span>
                     </TabsTrigger>
                     <TabsTrigger
+                      value="billing"
+                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
+                    >
+                      <CreditCard className="w-4 h-4 shrink-0" />
+                      <span>Billing</span>
+                    </TabsTrigger>
+                    <TabsTrigger
                       value="settings"
                       className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
                     >
@@ -349,8 +384,7 @@ const ProfileClientPage: React.FC = () => {
                     </TabsTrigger>
                   </div>
                 </TabsList>
-              </div>
-
+              </div>{' '}
               {/* Personal Information Tab */}
               <TabsContent value="personal">
                 <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -483,7 +517,6 @@ const ProfileClientPage: React.FC = () => {
                   </CardContent>
                 </Card>
               </TabsContent>
-
               {/* Account Tab */}
               <TabsContent value="account">
                 <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -527,18 +560,55 @@ const ProfileClientPage: React.FC = () => {
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                           <span className="text-sm font-medium">Current Plan:</span>
                           <Badge variant="default" className="w-fit">
-                            {profile.subscription_plan || 'Free Tier'}
+                            {hasActiveSubscription ? subscription?.plan_name : 'Free Tier'}
                           </Badge>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                           <span className="text-sm font-medium">Plan Status:</span>
-                          <Badge variant="secondary" className="w-fit">
-                            Active
+                          <Badge
+                            variant={
+                              hasActiveSubscription
+                                ? isCanceled
+                                  ? 'destructive'
+                                  : isTrialing
+                                  ? 'secondary'
+                                  : 'default'
+                                : 'outline'
+                            }
+                            className="w-fit"
+                          >
+                            {hasActiveSubscription
+                              ? isCanceled
+                                ? 'Canceling'
+                                : isTrialing
+                                ? 'Trial'
+                                : 'Active'
+                              : 'Inactive'}
                           </Badge>
                         </div>
+                        {hasActiveSubscription && subscription && (
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                            <span className="text-sm font-medium">Next Billing:</span>
+                            <span className="text-sm text-muted-foreground">
+                              {new Date(subscription.current_period_end * 1000).toLocaleDateString(
+                                'en-US',
+                                {
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                },
+                              )}
+                            </span>
+                          </div>
+                        )}
                       </div>
-                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                        Upgrade Plan
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full sm:w-auto"
+                        onClick={() => setActiveTab('billing')}
+                      >
+                        {hasActiveSubscription ? 'Manage Billing' : 'Upgrade Plan'}
                       </Button>
                     </div>
 
@@ -558,7 +628,64 @@ const ProfileClientPage: React.FC = () => {
                   </CardContent>
                 </Card>
               </TabsContent>
+              {/* Billing Tab */}
+              <TabsContent value="billing">
+                <div className="space-y-6">
+                  {/* Subscription Status */}
+                  <SubscriptionStatusCard />
 
+                  {hasActiveSubscription && (
+                    <>
+                      {/* Subscription Management */}
+                      <SubscriptionManagementCard />
+                    </>
+                  )}
+
+                  {/* Pricing Plans */}
+                  <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
+                        {hasActiveSubscription ? 'Change Plan' : 'Choose Your Plan'}
+                      </CardTitle>
+                      {hasActiveSubscription && (
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          Upgrade or downgrade your subscription plan
+                        </p>
+                      )}
+                    </CardHeader>
+                    <CardContent>
+                      <PricingPlansGrid />
+                    </CardContent>
+                  </Card>
+
+                  {/* Billing Help */}
+                  <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
+                        Need Help?
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          Contact our support team if you have any billing questions:
+                        </p>
+                        <div className="space-y-2">
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            • Email: billing@certifai.com
+                          </p>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            • Live chat: Available 24/7 in the app
+                          </p>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                            • Response time: Usually within 2 hours
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
               {/* Settings Tab */}
               <TabsContent value="settings">
                 <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
