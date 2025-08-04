@@ -26,6 +26,9 @@ env:
   - variable: SERVICE_SECRET
     secret: SERVICE_SECRET # secret
 
+  - variable: NEXT_PUBLIC_HOST_URL
+    value: https://certestic.com
+
   - variable: NEXT_PUBLIC_GA_TRACKING_ID
     value: G-EM97RQX2ZJ
 
@@ -52,3 +55,6 @@ env:
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     value: 1:271176308790:web:7133ea575fdb9be2c32097
+
+  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY # secret

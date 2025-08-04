@@ -26,6 +26,9 @@ env:
   - variable: SERVICE_SECRET
     secret: SERVICE_SECRET # secret
 
+  - variable: NEXT_PUBLIC_HOST_URL
+    value: https://uat--certifai-uat.us-central1.hosted.app
+
   - variable: NEXT_PUBLIC_GA_TRACKING_ID
     value: G-EM97RQX2ZJ # Can use same GA ID for UAT
 
@@ -52,3 +55,7 @@ env:
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
     value: 1:398930523623:web:aed91e058fd6beb1583942
+
+  - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY # secret
+
