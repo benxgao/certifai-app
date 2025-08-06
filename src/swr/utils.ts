@@ -20,7 +20,6 @@ export {
   handleAuthenticationFailure,
   isAuthenticationError,
   fetchWithAuthRetry,
-  fetchAuthJSON,
   AuthenticationError,
 } from '../lib/auth-utils';
 
@@ -66,7 +65,6 @@ export const refreshAuthCookie = async (): Promise<boolean> => {
     if (res.ok) {
       return true;
     } else {
-
       // If refresh fails due to expired/invalid tokens, clear auth state
       if (res.status === 401) {
         await handleAuthFailure();

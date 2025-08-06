@@ -1,6 +1,6 @@
 /**
  * Server-side utilities for Stripe integration
- * Backend API helpers and server components
+ * Essential server functions for API routes
  */
 
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
@@ -8,7 +8,7 @@ import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 /**
  * Get the API base URL for server-side requests
  */
-export function getApiBaseUrl(): string {
+function getApiBaseUrl(): string {
   return (
     process.env.NEXT_PUBLIC_SERVER_API_URL ||
     'http://127.0.0.1:5001/certifai-uat/us-central1/endpoints'
@@ -29,14 +29,35 @@ export async function serverFetchWithAuth(
     throw new Error('No authentication token available');
   }
 
-  return fetch(`${baseUrl}${endpoint}`, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  });
+  // Validate endpoint format
+  if (!endpoint.startsWith('/')) {
+    throw new Error('Endpoint must start with /');
+  }
+
+  const fullUrl = `${baseUrl}${endpoint}`;
+
+  try {
+    const response = await fetch(fullUrl, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      // Add timeout to prevent hanging requests
+      signal: AbortSignal.timeout(30000), // 30 second timeout
+    });
+
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw new Error('Request timed out after 30 seconds');
+      }
+      throw new Error(`Network error: ${error.message}`);
+    }
+    throw error;
+  }
 }
 
 /**
@@ -125,56 +146,42 @@ export async function getServerSubscriptionStatus() {
 
 /**
  * Server-side pricing plans fetch
+ * Used by API routes to get pricing plans from backend
  */
 export async function getServerPricingPlans() {
   try {
     const baseUrl = getApiBaseUrl();
+    const url = `${baseUrl}/stripe/pricing-plans`;
+
     // Pricing plans are public, no auth needed
-    const response = await fetch(`${baseUrl}/stripe/pricing-plans`, {
+    const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
       },
+      // Add timeout for pricing plans too
+      signal: AbortSignal.timeout(15000), // 15 second timeout
     });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    // Validate response structure
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid response format from pricing plans API');
+    }
+
+    return data;
   } catch (error) {
     console.error('Failed to get pricing plans on server:', error);
-    return null;
+
+    // Return a structured error response instead of null
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to fetch pricing plans',
+      data: [],
+    };
   }
-}
-
-/**
- * Validate Stripe webhook signature (if needed for custom webhooks)
- */
-export function validateStripeWebhookSignature(
-  payload: string,
-  signature: string,
-  secret: string,
-): boolean {
-  // Implementation would depend on Stripe webhook validation
-  // This is a placeholder for webhook signature validation
-  return true;
-}
-
-/**
- * Server-side environment check
- */
-export function isStripeConfigured(): boolean {
-  return !!(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY && process.env.STRIPE_SECRET_KEY);
-}
-
-/**
- * Get Stripe configuration for server-side usage
- */
-export function getStripeServerConfig() {
-  return {
-    publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    secretKey: process.env.STRIPE_SECRET_KEY,
-    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-    isConfigured: isStripeConfigured(),
-  };
 }
