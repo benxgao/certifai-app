@@ -16,9 +16,9 @@ export const STRIPE_CONFIG = {
 const BASE_URL = process.env.NEXT_PUBLIC_HOST_URL;
 
 export const STRIPE_URLS = {
-  success: `${BASE_URL}/main/stripe/callback`,
-  cancel: `${BASE_URL}/main/billing`,
-  return: `${BASE_URL}/main/billing`,
+  success: `https://uat--certifai-uat.us-central1.hosted.app/main/stripe/callback`,
+  cancel: `https://uat--certifai-uat.us-central1.hosted.app/main/billing`,
+  return: `https://uat--certifai-uat.us-central1.hosted.app/main/billing`,
 } as const;
 
 // Common Stripe options

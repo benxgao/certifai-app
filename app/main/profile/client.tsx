@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { useProfileData } from '@/src/hooks/useProfileData'; // Updated import
 import { useDisplayNameUpdate } from '@/src/hooks/useDisplayNameUpdate';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar';
+import { Skeleton } from '@/src/components/ui/skeleton';
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
@@ -42,11 +42,11 @@ import {
 } from '@/src/components/ui/dashboard-card';
 import DeleteAccountDialog from '@/src/components/custom/DeleteAccountDialog';
 import {
-  SubscriptionStatusCard,
-  SubscriptionManagementCard,
   PricingPlansGrid,
+  SubscriptionManagementCard,
+  SubscriptionStatusCard,
 } from '@/src/stripe/client/components';
-import { useSubscriptionState } from '@/src/stripe/client/swr';
+import { useUnifiedAccountData } from '@/src/stripe/client/swr';
 
 const ProfileSkeleton: React.FC = () => (
   <div className="space-y-6">
@@ -183,7 +183,15 @@ const ProfileClientPage: React.FC = () => {
   } = useProfileData();
 
   // Use subscription state for billing integration
-  const { subscription, hasActiveSubscription, isTrialing, isCanceled } = useSubscriptionState();
+  const {
+    accountData,
+    hasActiveSubscription,
+    isTrialing,
+    isCanceled,
+    subscriptionStatus,
+    isLoading: stripeLoading,
+    error: stripeError,
+  } = useUnifiedAccountData();
 
   // Handle name update with profile refresh
   const handleNameUpdate = () => {
@@ -287,6 +295,42 @@ const ProfileClientPage: React.FC = () => {
       })
     : 'N/A';
 
+  // Helper to derive subscription display properties
+  const getSubscriptionDisplay = () => {
+    if (!hasActiveSubscription) {
+      return {
+        planName: 'Free Tier',
+        statusText: 'Inactive',
+        variant: 'outline' as const,
+      };
+    }
+
+    const planName = accountData?.stripe_plan_name || 'Premium';
+
+    // These booleans should reflect cancel_at_period_end, etc.
+    if (isCanceled) {
+      return { planName, statusText: 'Canceling', variant: 'destructive' as const };
+    }
+    if (isTrialing) {
+      return { planName, statusText: 'Trial', variant: 'secondary' as const };
+    }
+
+    // Use the more specific status from Stripe's subscription object
+    switch (subscriptionStatus) {
+      case 'active':
+        return { planName, statusText: 'Active', variant: 'default' as const };
+      case 'past_due':
+        return { planName, statusText: 'Past Due', variant: 'destructive' as const };
+      case 'unpaid':
+        return { planName, statusText: 'Unpaid', variant: 'destructive' as const };
+      default:
+        // Fallback for any other status, ensures UI is stable
+        return { planName, statusText: 'Active', variant: 'default' as const };
+    }
+  };
+
+  const subscriptionDisplay = getSubscriptionDisplay();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
       <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
@@ -316,15 +360,11 @@ const ProfileClientPage: React.FC = () => {
                   <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                     <span className="block sm:inline">{email}</span>
                     <span className="hidden sm:inline"> • </span>
-                    <span className="block sm:inline">
-                      {hasActiveSubscription ? subscription?.plan_name : 'Free Tier'}
-                    </span>
+                    <span className="block sm:inline">{subscriptionDisplay.planName}</span>
                     {hasActiveSubscription && (
                       <>
                         <span className="hidden sm:inline"> • </span>
-                        <span className="block sm:inline">
-                          {isCanceled ? 'Canceling' : isTrialing ? 'Trial' : 'Active'}
-                        </span>
+                        <span className="block sm:inline">{subscriptionDisplay.statusText}</span>
                       </>
                     )}
                     <span className="hidden sm:inline"> • </span>
@@ -560,47 +600,31 @@ const ProfileClientPage: React.FC = () => {
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                           <span className="text-sm font-medium">Current Plan:</span>
                           <Badge variant="default" className="w-fit">
-                            {hasActiveSubscription ? subscription?.plan_name : 'Free Tier'}
+                            {subscriptionDisplay.planName}
                           </Badge>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                           <span className="text-sm font-medium">Plan Status:</span>
-                          <Badge
-                            variant={
-                              hasActiveSubscription
-                                ? isCanceled
-                                  ? 'destructive'
-                                  : isTrialing
-                                  ? 'secondary'
-                                  : 'default'
-                                : 'outline'
-                            }
-                            className="w-fit"
-                          >
-                            {hasActiveSubscription
-                              ? isCanceled
-                                ? 'Canceling'
-                                : isTrialing
-                                ? 'Trial'
-                                : 'Active'
-                              : 'Inactive'}
+                          <Badge variant={subscriptionDisplay.variant} className="w-fit">
+                            {subscriptionDisplay.statusText}
                           </Badge>
                         </div>
-                        {hasActiveSubscription && subscription && (
-                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                            <span className="text-sm font-medium">Next Billing:</span>
-                            <span className="text-sm text-muted-foreground">
-                              {new Date(subscription.current_period_end * 1000).toLocaleDateString(
-                                'en-US',
-                                {
+                        {hasActiveSubscription &&
+                          accountData &&
+                          accountData.stripe_current_period_end && (
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                              <span className="text-sm font-medium">Next Billing:</span>
+                              <span className="text-sm text-muted-foreground">
+                                {new Date(
+                                  accountData.stripe_current_period_end * 1000,
+                                ).toLocaleDateString('en-US', {
                                   year: 'numeric',
                                   month: 'long',
                                   day: 'numeric',
-                                },
-                              )}
-                            </span>
-                          </div>
-                        )}
+                                })}
+                              </span>
+                            </div>
+                          )}
                       </div>
                       <Button
                         variant="outline"

@@ -14,21 +14,16 @@ import { CreditCard, Crown, History, Settings } from 'lucide-react';
 import {
   PricingPlansGrid,
   SubscriptionStatusCard,
-  SubscriptionManagementCard,
-  SubscriptionHistoryCard,
+  UnifiedAccountDashboard,
 } from '@/src/stripe/client/components';
-import { useSubscriptionState } from '@/src/stripe/client/swr';
-import { useCachedCheckoutHandler } from '@/src/stripe/client/hooks/useCachedCheckoutHandler';
+import { useUnifiedAccountData } from '@/src/stripe/client/swr';
 
 /**
  * Main billing page component
  * Following Certifai's dashboard layout patterns
  */
 export default function BillingClient() {
-  const { hasActiveSubscription } = useSubscriptionState();
-
-  // Handle cached checkout sessions after authentication
-  useCachedCheckoutHandler();
+  const { hasActiveSubscription } = useUnifiedAccountData();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
@@ -122,7 +117,7 @@ export default function BillingClient() {
 
           {/* Manage Subscription Tab */}
           <TabsContent value="manage" className="space-y-6">
-            <SubscriptionManagementCard />
+            <UnifiedAccountDashboard />
 
             <Card>
               <CardHeader>
@@ -149,7 +144,7 @@ export default function BillingClient() {
 
           {/* Billing History Tab */}
           <TabsContent value="history" className="space-y-6">
-            <SubscriptionHistoryCard />
+            <UnifiedAccountDashboard />
 
             <Card>
               <CardHeader>

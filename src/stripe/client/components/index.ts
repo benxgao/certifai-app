@@ -1,11 +1,15 @@
 /**
  * Index file for Stripe client components
- * Exports all Stripe-related UI components and hooks
+ * Exports enhanced Stripe-related UI components and hooks
  */
 
-export { PricingCard, PricingPlansGrid, SubscriptionStatusCard } from './PricingComponents';
+// Enhanced components with unified account integration
+export { PricingCard, PricingPlansGrid, SubscriptionStatusCard } from './EnhancedPricingComponents';
+export { SubscriptionManagementCard } from './SubscriptionManagementCard';
 
-export { SubscriptionManagementCard, SubscriptionHistoryCard } from './SubscriptionComponents';
+export { UnifiedAccountDashboard } from './UnifiedAccountComponents';
 
 // Export hooks
 export { useCheckoutFlow } from '../hooks/useCheckoutFlow';
+export { useEnhancedCheckoutFlow } from '../hooks/useEnhancedCheckoutFlow';
+export { useUnifiedAccountData } from '../hooks/useUnifiedAccountData';
