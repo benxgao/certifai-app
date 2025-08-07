@@ -1,6 +1,11 @@
 /**
  * SWR hooks for Stripe API integration
  * Following Certifai's established SWR patterns
+ *
+ * Note: The backend automatically ensures Firestore account records exist
+ * for all authenticated users during login/registration. This means that
+ * useUnifiedAccountData() will always return valid account data for
+ * authenticated users, even if they don't have Stripe customers/subscriptions yet.
  */
 
 import useSWR from 'swr';
