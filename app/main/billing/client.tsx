@@ -19,6 +19,7 @@ import {
   SubscriptionHistoryCard,
   SubscriptionActionsCard,
 } from '@/src/components/billing/BillingComponents';
+import { isFeatureEnabled } from '@/src/config/featureFlags';
 
 /**
  * Main billing page component
@@ -54,116 +55,114 @@ export default function BillingClient() {
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue={hasActiveSubscription ? 'subscription' : 'plans'} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="subscription" className="flex items-center gap-2">
-              <Crown className="w-4 h-4" />
-              <span className="hidden sm:inline">Subscription</span>
-            </TabsTrigger>
-            <TabsTrigger value="plans" className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4" />
-              <span className="hidden sm:inline">Plans</span>
-            </TabsTrigger>
-            <TabsTrigger value="manage" className="flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">Manage</span>
-            </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
-              <History className="w-4 h-4" />
-              <span className="hidden sm:inline">History</span>
-            </TabsTrigger>
-          </TabsList>
+        {isFeatureEnabled('is_stripe_enabled') ? (
+          <Tabs
+            defaultValue={hasActiveSubscription ? 'subscription' : 'plans'}
+            className="space-y-6"
+          >
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="subscription" className="flex items-center gap-2">
+                <Crown className="w-4 h-4" />
+                <span className="hidden sm:inline">Subscription</span>
+              </TabsTrigger>
+              <TabsTrigger value="plans" className="flex items-center gap-2">
+                <CreditCard className="w-4 h-4" />
+                <span className="hidden sm:inline">Plans</span>
+              </TabsTrigger>
+              <TabsTrigger value="manage" className="flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                <span className="hidden sm:inline">Manage</span>
+              </TabsTrigger>
+              <TabsTrigger value="history" className="flex items-center gap-2">
+                <History className="w-4 h-4" />
+                <span className="hidden sm:inline">History</span>
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Subscription Status Tab */}
-          <TabsContent value="subscription" className="space-y-6">
-            <ModernSubscriptionCard />
+            {/* Subscription Status Tab */}
+            <TabsContent value="subscription" className="space-y-6">
+              <ModernSubscriptionCard />
 
-            {hasActiveSubscription && (
-              <>
-                <Separator />
-                <SubscriptionActionsCard />
-              </>
-            )}
-          </TabsContent>
+              {hasActiveSubscription && (
+                <>
+                  <Separator />
+                  <SubscriptionActionsCard />
+                </>
+              )}
+            </TabsContent>
 
-          {/* Pricing Plans Tab */}
-          <TabsContent value="plans" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Choose Your Plan</CardTitle>
-                <CardDescription>
-                  {hasActiveSubscription
-                    ? 'Upgrade or change your current subscription plan'
-                    : 'Select a plan that fits your certification journey'}
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            {/* Pricing Plans Tab */}
+            <TabsContent value="plans" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Choose Your Plan</CardTitle>
+                  <CardDescription>
+                    {hasActiveSubscription
+                      ? 'Upgrade or change your current subscription plan'
+                      : 'Select a plan that fits your certification journey'}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
 
-            <PricingPlansGrid />
+              <PricingPlansGrid />
 
-            {!hasActiveSubscription && (
-              <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                      🎯 Free Trial Available
-                    </h3>
-                    <p className="text-blue-700 dark:text-blue-200">
-                      Start with a 14-day free trial on any paid plan. No commitment required.
-                    </p>
-                  </div>
+              {!hasActiveSubscription && (
+                <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+                  <CardContent className="pt-6">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                        🎯 Free Trial Available
+                      </h3>
+                      <p className="text-blue-700 dark:text-blue-200">
+                        Start with a 14-day free trial on any paid plan. No commitment required.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            {/* Manage Subscription Tab */}
+            <TabsContent value="manage" className="space-y-6">
+              <BillingManagementCard />
+            </TabsContent>
+
+            {/* Billing History Tab */}
+            <TabsContent value="history" className="space-y-6">
+              <SubscriptionHistoryCard />
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Download Invoices</CardTitle>
+                  <CardDescription>
+                    Access detailed billing statements and tax documents
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    To download invoices and receipts, please use the billing portal in the
+                    &ldquo;Manage&rdquo; tab. All your billing documents are available there.
+                  </p>
                 </CardContent>
               </Card>
-            )}
-          </TabsContent>
-
-          {/* Manage Subscription Tab */}
-          <TabsContent value="manage" className="space-y-6">
-            <BillingManagementCard />
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Need Help?</CardTitle>
-                <CardDescription>
-                  Contact our support team if you have any billing questions
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    • Email: billing@certifai.com
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    • Live chat: Available 24/7 in the app
-                  </p>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
-                    • Response time: Usually within 2 hours
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Billing History Tab */}
-          <TabsContent value="history" className="space-y-6">
-            <SubscriptionHistoryCard />
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Download Invoices</CardTitle>
-                <CardDescription>
-                  Access detailed billing statements and tax documents
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  To download invoices and receipts, please use the billing portal in the
-                  &ldquo;Manage&rdquo; tab. All your billing documents are available there.
+            </TabsContent>
+          </Tabs>
+        ) : (
+          // Feature Disabled Fallback for dedicated billing page
+          <Card className="max-w-2xl mx-auto">
+            <CardContent className="pt-6">
+              <div className="text-center py-12">
+                <AlertTriangle className="w-16 h-16 text-amber-500 mx-auto mb-6" />
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+                  Billing System Temporarily Unavailable
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  We apologize for any inconvenience and appreciate your patience.
                 </p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

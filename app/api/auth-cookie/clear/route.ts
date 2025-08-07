@@ -26,7 +26,7 @@ export async function POST() {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      domain: process.env.NODE_ENV === 'production' ? '.certifai.com' : undefined,
+      domain: process.env.NODE_ENV === 'production' ? '.certestic.com' : undefined,
       maxAge: 0, // Expire immediately
     });
   });

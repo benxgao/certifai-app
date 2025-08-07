@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
           // We need to get the user info from the Firebase token to create the account
           // The serverFetchWithAuth will handle the token, but we need to extract user info
           // Let's call a backend endpoint that can extract this info from the token
-          const ensureResponse = await serverFetchWithAuth('/api/firestore/ensure-account', {
+          const ensureResponse = await serverFetchWithAuth('/api/users/ensure-account', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -37,7 +37,10 @@ export async function GET(req: NextRequest) {
           });
 
           if (ensureResponse.ok) {
-            console.log('Default Firestore account created, retrying account fetch...');
+            console.log('Default Firestore account created successfully');
+            
+            // Wait a brief moment for the account to be fully created
+            await new Promise(resolve => setTimeout(resolve, 100));
 
             // Retry the original request after creating the account
             const retryResponse = await serverFetchWithAuth('/stripe/account');
@@ -46,7 +49,23 @@ export async function GET(req: NextRequest) {
               const retryData = await retryResponse.json();
               return NextResponse.json(retryData);
             } else {
-              // Still failing after account creation
+              // If still failing, try the alternative endpoint with explicit API user ID
+              console.log('Primary endpoint still failing, trying to get user info from ensure-account response...');
+              
+              const ensureData = await ensureResponse.json();
+              const apiUserId = ensureData.api_user_id;
+              
+              if (apiUserId) {
+                console.log(`Trying alternative endpoint with API user ID: ${apiUserId}`);
+                const alternativeResponse = await serverFetchWithAuth(`/stripe/account/${apiUserId}`);
+                
+                if (alternativeResponse.ok) {
+                  const alternativeData = await alternativeResponse.json();
+                  return NextResponse.json(alternativeData);
+                }
+              }
+
+              // Still failing after all attempts
               const retryErrorText = await retryResponse.text();
               console.error('Account fetch still failing after account creation:', retryErrorText);
 
