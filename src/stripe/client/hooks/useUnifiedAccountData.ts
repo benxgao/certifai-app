@@ -54,9 +54,11 @@ export interface UnifiedAccountData {
  * Replaces the need for separate useSubscriptionStatus, useCustomerData, etc.
  */
 export function useUnifiedAccountData() {
-  return useSWR<ApiResponse<UnifiedAccountData>>('/api/stripe/account', fetchAuthJSON, {
-    refreshInterval: 30000, // Refresh every 30 seconds
-    revalidateOnFocus: true,
+  const response = useSWR<ApiResponse<UnifiedAccountData>>('/api/stripe/account', fetchAuthJSON, {
+    refreshInterval: 0, // Disable automatic polling - account data changes infrequently
+    revalidateOnFocus: false, // Disable focus revalidation to prevent unnecessary API calls
+    revalidateOnReconnect: true, // Only revalidate when network reconnects
+    dedupingInterval: 60000, // Cache for 1 minute to prevent duplicate requests
     errorRetryCount: 2,
     onError: (error) => {
       // Only log non-auth related errors
@@ -64,7 +66,20 @@ export function useUnifiedAccountData() {
         console.warn('Unified account data fetch error:', error);
       }
     },
+    onSuccess: (data, key, config) => {
+      // Log data source for debugging
+      const response = data as any;
+      if (response.headers) {
+        console.debug('Account data source:', {
+          source: response.headers['x-data-source'],
+          fetchedAt: response.headers['x-data-fetched-at'],
+          hasLatestData: response.headers['x-data-source'] === 'stripe-live',
+        });
+      }
+    },
   });
+
+  return response;
 }
 
 /**

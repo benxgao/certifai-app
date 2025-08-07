@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 // import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense } from 'react';
 import ConditionalFirebaseAuthProvider from '@/src/components/auth/ConditionalFirebaseAuthProvider';
-import ConditionalAccountProvider from '@/src/components/auth/ConditionalAccountProvider';
 import ConditionalFooter from '@/src/components/custom/ConditionalFooter';
 import GoogleAnalytics from '@/src/components/analytics/GoogleAnalytics';
 import PageViewTracker from '@/src/components/analytics/PageViewTracker';
@@ -305,26 +304,24 @@ export default function RootLayout({
         )}
 
         <ConditionalFirebaseAuthProvider>
-          <ConditionalAccountProvider>
-            <Suspense fallback={null}>
-              <PageViewTracker />
-            </Suspense>
-            <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-slate-100">
-              <Suspense
-                fallback={
-                  <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
-                    <div className="text-center space-y-4">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
-                      <p className="text-lg text-gray-600 dark:text-slate-400">Loading...</p>
-                    </div>
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
+          <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-slate-100">
+            <Suspense
+              fallback={
+                <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900">
+                  <div className="text-center space-y-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-violet-600 mx-auto"></div>
+                    <p className="text-lg text-gray-600 dark:text-slate-400">Loading...</p>
                   </div>
-                }
-              >
-                {children}
-              </Suspense>
-            </div>
-            <ConditionalFooter />
-          </ConditionalAccountProvider>
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
+          </div>
+          <ConditionalFooter />
         </ConditionalFirebaseAuthProvider>
       </body>
     </html>

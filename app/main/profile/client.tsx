@@ -47,6 +47,7 @@ import {
   SubscriptionStatusCard,
 } from '@/src/stripe/client/components';
 import { useUnifiedAccountData } from '@/src/stripe/client/swr';
+import { isFeatureEnabled } from '@/src/config/featureFlags';
 
 const ProfileSkeleton: React.FC = () => (
   <div className="space-y-6">
@@ -655,59 +656,46 @@ const ProfileClientPage: React.FC = () => {
               {/* Billing Tab */}
               <TabsContent value="billing">
                 <div className="space-y-6">
-                  {/* Subscription Status */}
-                  <SubscriptionStatusCard />
-
-                  {hasActiveSubscription && (
+                  {isFeatureEnabled('is_stripe_enabled') ? (
                     <>
-                      {/* Subscription Management */}
-                      <SubscriptionManagementCard />
-                    </>
-                  )}
+                      {/* Subscription Status */}
+                      <SubscriptionStatusCard />
 
-                  {/* Pricing Plans */}
-                  <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
-                        {hasActiveSubscription ? 'Change Plan' : 'Choose Your Plan'}
-                      </CardTitle>
                       {hasActiveSubscription && (
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                          Upgrade or downgrade your subscription plan
-                        </p>
+                        <>
+                          <SubscriptionManagementCard />
+                        </>
                       )}
-                    </CardHeader>
-                    <CardContent>
-                      <PricingPlansGrid />
-                    </CardContent>
-                  </Card>
 
-                  {/* Billing Help */}
-                  <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm">
-                    <CardHeader className="pb-4">
-                      <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
-                        Need Help?
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
-                          Contact our support team if you have any billing questions:
-                        </p>
-                        <div className="space-y-2">
-                          <p className="text-sm text-slate-600 dark:text-slate-400">
-                            • Email: billing@certifai.com
-                          </p>
-                          <p className="text-sm text-slate-600 dark:text-slate-400">
-                            • Live chat: Available 24/7 in the app
-                          </p>
-                          <p className="text-sm text-slate-600 dark:text-slate-400">
-                            • Response time: Usually within 2 hours
-                          </p>
+                      <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <CardHeader className="pb-4">
+                          <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
+                            {hasActiveSubscription ? 'Change Plan' : 'Choose Your Plan'}
+                          </CardTitle>
+                          {hasActiveSubscription && (
+                            <p className="text-sm text-slate-600 dark:text-slate-400">
+                              Upgrade or downgrade your subscription plan
+                            </p>
+                          )}
+                        </CardHeader>
+                        <CardContent>
+                          <PricingPlansGrid />
+                        </CardContent>
+                      </Card>
+                    </>
+                  ) : (
+                    // Feature Disabled Fallback
+                    <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm">
+                      <CardContent className="pt-6">
+                        <div className="text-center py-8">
+                          <CreditCard className="w-12 h-12 text-slate-400 dark:text-slate-500 mx-auto mb-4" />
+                          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                            Billing Management Unavailable
+                          </h3>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               </TabsContent>
               {/* Settings Tab */}

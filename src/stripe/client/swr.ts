@@ -201,8 +201,10 @@ export function useUnifiedAccountData() {
     STRIPE_KEYS.unifiedAccount,
     stripeFetcher,
     {
-      refreshInterval: 30000, // Refresh every 30 seconds
-      revalidateOnFocus: true,
+      refreshInterval: 0, // Disable automatic polling - account data changes infrequently
+      revalidateOnFocus: false, // Disable focus revalidation to prevent unnecessary API calls
+      revalidateOnReconnect: true, // Only revalidate when network reconnects
+      dedupingInterval: 60000, // Cache for 1 minute to prevent duplicate requests
       errorRetryCount: 2,
       onError: (error) => {
         // Only log non-auth related errors
