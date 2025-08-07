@@ -10,20 +10,35 @@ import {
   CardTitle,
 } from '@/src/components/ui/card';
 import { Separator } from '@/src/components/ui/separator';
-import { CreditCard, Crown, History, Settings } from 'lucide-react';
+import { CreditCard, Crown, History, Settings, Shield, Clock, AlertTriangle } from 'lucide-react';
+import { PricingPlansGrid } from '@/src/stripe/client/components';
+import { useAccount, useSubscriptionStatus, usePlanInfo } from '@/src/context/AccountContext';
 import {
-  PricingPlansGrid,
-  SubscriptionStatusCard,
-  UnifiedAccountDashboard,
-} from '@/src/stripe/client/components';
-import { useUnifiedAccountData } from '@/src/stripe/client/swr';
+  ModernSubscriptionCard,
+  BillingManagementCard,
+  SubscriptionHistoryCard,
+  SubscriptionActionsCard,
+} from '@/src/components/billing/BillingComponents';
 
 /**
  * Main billing page component
- * Following Certifai's dashboard layout patterns
+ * Following Certifai's dashboard layout patterns with AccountContext integration
  */
 export default function BillingClient() {
-  const { hasActiveSubscription } = useUnifiedAccountData();
+  const { hasActiveSubscription } = useSubscriptionStatus();
+  const { isLoading } = useAccount();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
@@ -61,25 +76,12 @@ export default function BillingClient() {
 
           {/* Subscription Status Tab */}
           <TabsContent value="subscription" className="space-y-6">
-            <SubscriptionStatusCard />
+            <ModernSubscriptionCard />
 
             {hasActiveSubscription && (
               <>
                 <Separator />
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Billing Information</CardTitle>
-                    <CardDescription>
-                      Manage your payment methods and billing details in the customer portal
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      Use the &quot;Manage&quot; tab or the billing portal to update your payment
-                      methods, download invoices, and update your billing address.
-                    </p>
-                  </CardContent>
-                </Card>
+                <SubscriptionActionsCard />
               </>
             )}
           </TabsContent>
@@ -117,7 +119,7 @@ export default function BillingClient() {
 
           {/* Manage Subscription Tab */}
           <TabsContent value="manage" className="space-y-6">
-            <UnifiedAccountDashboard />
+            <BillingManagementCard />
 
             <Card>
               <CardHeader>
@@ -144,7 +146,7 @@ export default function BillingClient() {
 
           {/* Billing History Tab */}
           <TabsContent value="history" className="space-y-6">
-            <UnifiedAccountDashboard />
+            <SubscriptionHistoryCard />
 
             <Card>
               <CardHeader>
@@ -156,7 +158,7 @@ export default function BillingClient() {
               <CardContent>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   To download invoices and receipts, please use the billing portal in the
-                  &quot;Manage&quot; tab. All your billing documents are available there.
+                  &ldquo;Manage&rdquo; tab. All your billing documents are available there.
                 </p>
               </CardContent>
             </Card>
