@@ -65,6 +65,17 @@ export const clearClientAuthTokens = (): void => {
     sessionStorage.removeItem('firebaseToken');
     sessionStorage.removeItem('apiUserId');
     sessionStorage.removeItem('authToken');
+
+    // Clear verification-related states that might cause stuck flows
+    const verificationKeys = [
+      'showVerificationStep',
+      'verificationLoading',
+      'emailVerificationSent',
+    ];
+    verificationKeys.forEach((key) => {
+      localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
+    });
   }
 };
 
@@ -85,8 +96,7 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
     // Sign out any existing Firebase auth session
     try {
       await signOut(auth);
-    } catch {
-    }
+    } catch {}
 
     // Clear server-side cookies and cache
     await resetAuthenticationState();
@@ -157,8 +167,7 @@ export const handleUnverifiedUser = async (): Promise<AuthError> => {
   try {
     await signOut(auth);
     await resetAuthenticationState();
-  } catch (signOutError) {
-  }
+  } catch (signOutError) {}
 
   return {
     message:
@@ -220,8 +229,7 @@ export const clearAuthStateOnError = async (): Promise<void> => {
   try {
     await resetAuthenticationState();
     await signOut(auth);
-  } catch (clearError) {
-  }
+  } catch (clearError) {}
 };
 
 /**

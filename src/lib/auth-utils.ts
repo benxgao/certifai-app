@@ -39,9 +39,7 @@ export const clearClientAuthState = async (): Promise<void> => {
       localStorage.removeItem('firebaseToken');
       localStorage.removeItem('apiUserId');
     }
-
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 /**
@@ -51,7 +49,6 @@ export const handleAuthenticationFailure = async (
   errorMessage: string = 'Session expired. Please sign in again.',
   shouldRedirect: boolean = true,
 ): Promise<void> => {
-
   // Clear all auth state
   await clearClientAuthState();
 
@@ -116,7 +113,6 @@ export const fetchWithAuthRetry = async (
         throw new AuthenticationError('Authentication required. Please sign in.');
       }
     }
-
 
     try {
       const newToken = await refreshTokenFn();
@@ -184,7 +180,6 @@ export const fetchAuthJSON = async <T = any>(
  */
 export const resetAuthenticationState = async (): Promise<void> => {
   try {
-
     // Clear server-side cookies AND token cache with retry logic
     try {
       // Clear cookies
@@ -196,7 +191,6 @@ export const resetAuthenticationState = async (): Promise<void> => {
       await fetch('/api/auth-cookie/clear-cache', {
         method: 'POST',
       });
-
     } catch (serverError) {
       // Continue with client-side clearing even if server-side fails
     }
@@ -208,8 +202,7 @@ export const resetAuthenticationState = async (): Promise<void> => {
       localStorageKeys.forEach((key) => {
         try {
           localStorage.removeItem(key);
-        } catch (e) {
-        }
+        } catch (e) {}
       });
 
       // Clear sessionStorage
@@ -217,8 +210,20 @@ export const resetAuthenticationState = async (): Promise<void> => {
       sessionStorageKeys.forEach((key) => {
         try {
           sessionStorage.removeItem(key);
-        } catch (e) {
-        }
+        } catch (e) {}
+      });
+
+      // Clear verification-related states that might cause stuck flows
+      const verificationKeys = [
+        'showVerificationStep',
+        'verificationLoading',
+        'emailVerificationSent',
+      ];
+      verificationKeys.forEach((key) => {
+        try {
+          localStorage.removeItem(key);
+          sessionStorage.removeItem(key);
+        } catch (e) {}
       });
 
       // Force clear cookies via document.cookie as additional measure
@@ -236,8 +241,7 @@ export const resetAuthenticationState = async (): Promise<void> => {
             document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${parentDomain}`;
           }
         });
-      } catch (e) {
-      }
+      } catch (e) {}
 
       // Clear any browser cache for auth endpoints
       try {
@@ -250,12 +254,9 @@ export const resetAuthenticationState = async (): Promise<void> => {
             });
           });
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
-
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 /**

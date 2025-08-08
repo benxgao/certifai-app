@@ -259,8 +259,22 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             const authRoutes = ['/signin', '/signup', '/forgot-password'];
             const isAuthRoute = authRoutes.some((route) => currentPath.includes(route));
 
+            // Clear any verification-related state that might cause stuck states
+            try {
+              const verificationKeys = [
+                'showVerificationStep',
+                'verificationLoading',
+                'emailVerificationSent',
+              ];
+              verificationKeys.forEach((key) => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+              });
+            } catch (error) {}
+
             if (!isAuthRoute) {
               // Use window.location for more reliable redirect after logout
+              // Ensure clean redirect without verification parameters
               window.location.href =
                 '/signin?message=' + encodeURIComponent('You have been signed out successfully.');
               return;

@@ -24,7 +24,16 @@ const AppHeader: React.FC = () => {
   const { shouldShow: showBuyMeACoffee } = useShouldShowBuyMeACoffee();
 
   const handleLogout = async () => {
-    await performLogout('/signin');
+    try {
+      // Use a more comprehensive logout that ensures complete state cleanup
+      await performLogout('/signin');
+    } catch (error) {
+      // Fallback emergency logout if normal logout fails
+      if (typeof window !== 'undefined') {
+        const { emergencyLogout } = await import('@/src/lib/logout-utils');
+        emergencyLogout();
+      }
+    }
   };
 
   const handleBuyMeACoffee = () => {
