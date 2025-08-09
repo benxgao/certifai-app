@@ -16,8 +16,10 @@ import {
 import { useCreateExam } from '@/src/swr/createExam';
 import { useAuthenticatedCertificationDetail } from '@/src/swr/certifications';
 import { useRateLimitFromExams } from '@/src/hooks/useRateLimitFromExams';
+import { useAccountStatus } from '@/src/stripe/client/hooks/useUnifiedAccountData';
 import Breadcrumb from '@/components/custom/Breadcrumb';
 import { useExamListGenerationMonitor } from '@/src/hooks/useExamListGenerationMonitor';
+import { isFeatureEnabled } from '@/src/config/featureFlags';
 
 // Extracted components
 import { CertificationStatusCard } from '@/src/components/custom/CertificationStatusCard';
@@ -47,6 +49,9 @@ function CertificationExamsContent() {
 
   // Monitor exam generation progress and enable smart polling
   const { generatingCount } = useExamListGenerationMonitor(exams, mutateExams, isLoadingExams);
+
+  // Use subscription status hook
+  const { hasActiveSubscription, isLoading: isLoadingSubscription } = useAccountStatus();
 
   // Derived certification data with fallback from exams
   const displayCertification =
@@ -227,7 +232,11 @@ function CertificationExamsContent() {
           isLoadingRateLimit={isLoadingRateLimit}
           onCreateExamClick={() => setIsCreateModalOpen(true)}
           canCreateExam={
-            createExamError?.status !== 429 && (rateLimitInfo ? rateLimitInfo.canCreateExam : true)
+            createExamError?.status !== 429 &&
+            (rateLimitInfo ? rateLimitInfo.canCreateExam : true) &&
+            // Only require subscription if STRIPE_INTEGRATION is enabled
+            (!isFeatureEnabled('STRIPE_INTEGRATION') ||
+              (!isLoadingSubscription && hasActiveSubscription))
           }
         />
 
@@ -243,6 +252,8 @@ function CertificationExamsContent() {
           onCreateExam={handleCreateExam}
           isCreatingExam={isCreatingExam}
           createExamError={createExamError}
+          hasActiveSubscription={hasActiveSubscription}
+          isLoadingSubscription={isLoadingSubscription}
         />
 
         {/* Enhanced Exams List Section */}

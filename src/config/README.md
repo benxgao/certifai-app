@@ -15,7 +15,7 @@ The feature flag system allows for granular control over which features are disp
 
 The feature flags are defined in `/src/config/featureFlags.ts`:
 
-```typescript
+````typescript
 export const FeatureFlags = {
   // Token display related flags
   SHOW_TOKENS: false, // Hide token displays when false
@@ -28,14 +28,9 @@ export const FeatureFlags = {
   SHOW_DASHBOARD_TOKENS: false, // Hide token displays in dashboard when false
   SHOW_PROFILE_TOKENS_TAB: false, // Hide tokens tab in profile when false
 
-  // Subscription related flags
-  SHOW_SUBSCRIPTION_FEATURES: true, // Show subscription features
-  SHOW_PAYMENT_OPTIONS: true, // Show payment options
-
   // Stripe integration flags
-  is_stripe_enabled: true, // Enable Stripe checkout in billing tab
+  STRIPE_INTEGRATION: true, // Enable Stripe checkout in billing tab
 } as const;
-```
 
 ## Usage
 
@@ -56,13 +51,13 @@ const message = isFeatureEnabled('SHOW_DASHBOARD_TOKENS')
 
 // Stripe billing example
 {
-  isFeatureEnabled('is_stripe_enabled') ? (
+  isFeatureEnabled('STRIPE_INTEGRATION') ? (
     <PricingPlansGrid />
   ) : (
     <div>Billing features are currently unavailable. Please contact support.</div>
   );
 }
-```
+````
 
 ### In Components
 
@@ -96,7 +91,7 @@ The feature flags are integrated into the following components:
 
 #### 7. Profile Billing Tab (`/app/main/profile/client.tsx`)
 
-- `is_stripe_enabled`: Controls visibility of Stripe checkout components in the billing tab
+- `STRIPE_INTEGRATION`: Controls visibility of Stripe checkout components in the billing tab
   - When enabled: Shows full billing functionality including subscription status, management, and pricing plans
   - When disabled: Shows a fallback message with support contact information
 

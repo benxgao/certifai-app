@@ -2,17 +2,15 @@
  * SWR hooks for Stripe API integration
  * Following Certifai's established SWR patterns
  *
- * Note: The backend automatically ensures Firestore account records exist
- * for all authenticated users during login/registration. This means that
- * useUnifiedAccountData() will always return valid account data for
- * authenticated users, even if they don't have Stripe customers/subscriptions yet.
+ * Note: For account data access, use the useAccountStatus hook from
+ * './hooks/useUnifiedAccountData' which provides a cleaner interface
+ * with proper destructuring patterns.
  */
 
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { fetchAuthJSON } from '@/src/lib/auth-utils';
 import type { ApiResponse, PaginatedApiResponse } from '@/src/types/api';
-import type { UnifiedAccountData } from './hooks/useUnifiedAccountData';
 
 // Types based on backend API responses
 export interface PricingPlan {
@@ -39,8 +37,6 @@ export interface PortalSessionResponse {
 // SWR Keys
 const STRIPE_KEYS = {
   pricingPlans: '/api/stripe/pricing-plans',
-  unifiedAccount: '/api/stripe/account',
-  unifiedAccountById: (apiUserId: string) => `/api/stripe/account/${apiUserId}`,
 } as const;
 
 // Fetcher functions following Certifai patterns
@@ -190,110 +186,4 @@ export function useUpdateSubscriptionPlan() {
       new_price_id: string;
     }
   >('/api/stripe/subscription/update-plan', stripePostFetcher);
-}
-
-/**
- * Get unified account data (NEW - replaces multiple hooks)
- * This hook provides all Stripe-related account information in one place
- */
-export function useUnifiedAccountData() {
-  const { data, error, isLoading, mutate } = useSWR<ApiResponse<UnifiedAccountData>>(
-    STRIPE_KEYS.unifiedAccount,
-    stripeFetcher,
-    {
-      refreshInterval: 0, // Disable automatic polling - account data changes infrequently
-      revalidateOnFocus: false, // Disable focus revalidation to prevent unnecessary API calls
-      revalidateOnReconnect: true, // Only revalidate when network reconnects
-      dedupingInterval: 60000, // Cache for 1 minute to prevent duplicate requests
-      errorRetryCount: 2,
-      onError: (error) => {
-        // Only log non-auth related errors
-        if (!error.message?.includes('authentication') && !error.message?.includes('401')) {
-          console.warn('Unified account data fetch error:', error);
-        }
-      },
-    },
-  );
-
-  // Extract account data with safe defaults
-  const accountData = data?.data || null;
-
-  // Validate account data structure if it exists
-  if (accountData) {
-    // Check for required fields
-    const requiredFields = ['api_user_id', 'firebase_user_id', 'email'];
-    const missingFields = requiredFields.filter(
-      (field) => !accountData[field as keyof UnifiedAccountData],
-    );
-
-    if (missingFields.length > 0) {
-      console.warn('Account data missing required fields:', missingFields);
-    }
-  }
-
-  const hasStripeCustomer = Boolean(accountData?.has_stripe_customer);
-  const hasActiveSubscription = Boolean(accountData?.is_active_subscription);
-  const isTrialing = Boolean(accountData?.is_trial);
-  const isCanceled = Boolean(accountData?.is_canceled);
-  const subscriptionStatus = accountData?.subscription_status || null;
-
-  // Validate critical subscription data integrity
-  const hasValidSubscriptionData =
-    accountData && accountData.has_subscription
-      ? Boolean(accountData.subscription_id && accountData.stripe_plan_id)
-      : true;
-
-  if (accountData && !hasValidSubscriptionData) {
-    console.warn('Subscription data integrity issue detected:', {
-      has_subscription: accountData.has_subscription,
-      subscription_id: accountData.subscription_id,
-      stripe_plan_id: accountData.stripe_plan_id,
-    });
-  }
-
-  // Enhanced error handling for specific scenarios
-  const hasError =
-    error && !error.message?.includes('authentication') && !error.message?.includes('401');
-  const requiresReauth =
-    error?.message?.includes('Authentication required') || (data as any)?.requiresReauth;
-
-  return {
-    accountData,
-    hasStripeCustomer,
-    hasActiveSubscription,
-    isTrialing,
-    isCanceled,
-    subscriptionStatus,
-    isLoading,
-    error: hasError ? error : null,
-    requiresReauth,
-    refreshAccountData: mutate,
-  };
-}
-
-/**
- * Get unified account data by API user ID
- * Useful for admin interfaces or when you have the API user ID
- */
-export function useUnifiedAccountDataById(apiUserId: string) {
-  const { data, error, isLoading, mutate } = useSWR<ApiResponse<UnifiedAccountData>>(
-    apiUserId ? STRIPE_KEYS.unifiedAccountById(apiUserId) : null,
-    stripeFetcher,
-    {
-      revalidateOnFocus: false,
-      errorRetryCount: 2,
-      onError: (error) => {
-        console.warn('Unified account data by ID fetch error:', error);
-      },
-    },
-  );
-
-  const accountData = data?.data || null;
-
-  return {
-    accountData,
-    isLoading,
-    error,
-    refreshAccountData: mutate,
-  };
 }

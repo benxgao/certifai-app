@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useUnifiedAccountData } from '../swr';
+import { useAccountStatus } from './useUnifiedAccountData';
 
 /**
  * Hook to handle checkout success/cancel callbacks
@@ -14,7 +14,7 @@ import { useUnifiedAccountData } from '../swr';
 export function useStripeCallback() {
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  const { refreshAccountData } = useUnifiedAccountData();
+  const { refreshAccount: refreshAccountData } = useAccountStatus();
 
   const handleCheckoutSuccess = async (sessionId?: string) => {
     setIsProcessing(true);
@@ -82,7 +82,7 @@ export function useStripeCallback() {
  * Hook to check subscription requirements for protected features
  */
 export function useSubscriptionGate(requiredPlan?: string) {
-  const { hasActiveSubscription, accountData, isLoading } = useUnifiedAccountData();
+  const { hasActiveSubscription, account: accountData, isLoading } = useAccountStatus();
 
   const hasAccess =
     hasActiveSubscription && (!requiredPlan || accountData?.stripe_plan_id === requiredPlan);
@@ -148,7 +148,7 @@ export function usePlanComparison() {
  * Hook for subscription analytics and insights
  */
 export function useSubscriptionInsights() {
-  const { accountData } = useUnifiedAccountData();
+  const { account: accountData } = useAccountStatus();
 
   const insights = {
     daysUntilRenewal: accountData?.stripe_current_period_end

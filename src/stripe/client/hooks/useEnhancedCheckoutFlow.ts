@@ -5,7 +5,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { useCheckoutFlow } from './useCheckoutFlow';
-import { useUnifiedAccountData } from '../swr';
+import { useAccountStatus } from './useUnifiedAccountData';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -22,15 +22,15 @@ export function useEnhancedCheckoutFlow({
 
   // Get unified account data
   const {
-    accountData,
+    account: accountData,
     hasActiveSubscription,
     hasStripeCustomer,
     isTrialing,
     isCanceled,
     subscriptionStatus,
     isLoading: accountLoading,
-    refreshAccountData,
-  } = useUnifiedAccountData();
+    refreshAccount: refreshAccountData,
+  } = useAccountStatus();
 
   // Get checkout flow functionality
   const {

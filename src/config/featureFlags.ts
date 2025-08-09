@@ -4,12 +4,7 @@
  */
 
 export const FeatureFlags = {
-  // Subscription related flags
-  SHOW_SUBSCRIPTION_FEATURES: true, // Show subscription features
-  SHOW_PAYMENT_OPTIONS: true, // Show payment options
-
-  // Stripe integration flags
-  is_stripe_enabled: true, // Enable Stripe checkout in billing tab
+  STRIPE_INTEGRATION: false,
 } as const;
 
 // Type for feature flags

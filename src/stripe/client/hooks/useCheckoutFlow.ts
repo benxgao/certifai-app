@@ -6,7 +6,8 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { useCreateCheckoutSession, useUnifiedAccountData } from '../swr';
+import { useCreateCheckoutSession } from '../swr';
+import { useAccountStatus } from './useUnifiedAccountData';
 import { STRIPE_URLS } from '../../config';
 import { toast } from 'sonner';
 
@@ -20,7 +21,11 @@ export function useCheckoutFlow({ onAuthRequired }: UseCheckoutFlowProps = {}) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Get unified account data to check subscription status
-  const { accountData, hasActiveSubscription, refreshAccountData } = useUnifiedAccountData();
+  const {
+    account: accountData,
+    hasActiveSubscription,
+    refreshAccount: refreshAccountData,
+  } = useAccountStatus();
 
   const { trigger: createSession } = useCreateCheckoutSession();
 

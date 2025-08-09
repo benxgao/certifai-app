@@ -12,6 +12,7 @@ import {
   usePlanInfo,
   useAccountInfo,
 } from '@/src/context/AccountContext';
+import { isFeatureEnabled } from '@/src/config/featureFlags';
 
 // Main account status component
 export function AccountStatusCard() {
@@ -191,7 +192,7 @@ export function AccountNavigation() {
         Dashboard
       </a>
 
-      {hasActiveSubscription ? (
+      {hasActiveSubscription && isFeatureEnabled('STRIPE_INTEGRATION') ? (
         <a href="/main/billing" className="text-blue-600 hover:text-blue-800">
           Billing
         </a>

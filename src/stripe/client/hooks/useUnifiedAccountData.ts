@@ -4,6 +4,7 @@
  */
 
 import useSWR from 'swr';
+import { useCallback } from 'react';
 import { fetchAuthJSON } from '@/src/lib/auth-utils';
 import type { ApiResponse } from '@/src/types/api';
 
@@ -51,6 +52,22 @@ export interface UnifiedAccountData {
 
 /**
  * Hook to get unified account data including all Stripe information
+ *
+ * USE CASES FOR useUnifiedAccountData():
+ * - When you need raw SWR response properties (data, error, isLoading, mutate)
+ * - When building reusable components that need SWR cache control
+ * - When implementing custom error handling or loading states
+ * - When you need direct access to the API response structure
+ *
+ * RECOMMENDED ALTERNATIVE: useAccountStatus()
+ * - Provides pre-destructured account properties
+ * - Includes computed boolean flags (hasActiveSubscription, isTrialing, etc.)
+ * - Simpler API for most component use cases
+ *
+ * EXAMPLE:
+ * const { data, error, isLoading, mutate } = useUnifiedAccountData();
+ * const account = data?.data; // Access the actual account data
+ *
  * Replaces the need for separate useSubscriptionStatus, useCustomerData, etc.
  */
 export function useUnifiedAccountData() {
@@ -58,8 +75,14 @@ export function useUnifiedAccountData() {
     refreshInterval: 0, // Disable automatic polling - account data changes infrequently
     revalidateOnFocus: false, // Disable focus revalidation to prevent unnecessary API calls
     revalidateOnReconnect: true, // Only revalidate when network reconnects
-    dedupingInterval: 60000, // Cache for 1 minute to prevent duplicate requests
+    revalidateOnMount: true, // Always revalidate on mount
+    dedupingInterval: 2000, // Dedupe requests within 2 seconds (very aggressive)
     errorRetryCount: 2,
+    errorRetryInterval: 3000, // 3 second retry interval
+    shouldRetryOnError: (error) => {
+      // Don't retry on auth errors
+      return !error?.message?.includes('authentication') && !error?.message?.includes('401');
+    },
     onError: (error) => {
       // Only log non-auth related errors
       if (!error.message?.includes('authentication') && !error.message?.includes('401')) {
@@ -83,33 +106,33 @@ export function useUnifiedAccountData() {
 }
 
 /**
- * Hook to get account data by API user ID
- * Useful for admin views or when you have the API user ID
- */
-export function useUnifiedAccountDataById(apiUserId: string) {
-  return useSWR<ApiResponse<UnifiedAccountData>>(
-    apiUserId ? `/api/stripe/account/${apiUserId}` : null,
-    fetchAuthJSON,
-    {
-      revalidateOnFocus: false,
-      errorRetryCount: 1,
-    },
-  );
-}
-
-/**
  * Derived hook that provides convenient boolean flags and computed values
  * Based on the unified account data
+ *
+ * RECOMMENDED FOR MOST COMPONENTS - provides:
+ * - Pre-destructured account properties (account, hasActiveSubscription, etc.)
+ * - Computed boolean flags for common subscription states
+ * - Simplified error handling (filters out auth errors)
+ * - Easy refresh function
+ *
+ * EXAMPLE:
+ * const { account, hasActiveSubscription, isTrialing, refreshAccount } = useAccountStatus();
+ * if (hasActiveSubscription) { ... }
  */
 export function useAccountStatus() {
   const { data, error, isLoading, mutate } = useUnifiedAccountData();
 
   const account = data?.data || null;
 
+  // Memoize the refresh function to prevent unnecessary re-renders
+  const refreshAccount = useCallback(() => {
+    mutate();
+  }, [mutate]);
+
   return {
     account,
 
-    // Subscription status
+    // Subscription status - now derived from account data only, not claims
     hasActiveSubscription: account?.is_active_subscription || false,
     hasSubscription: account?.has_subscription || false,
     isTrialing: account?.is_trial || false,
@@ -125,6 +148,7 @@ export function useAccountStatus() {
     planCurrency: account?.stripe_currency,
 
     // Billing dates
+    currentPeriodStart: account?.stripe_current_period_start,
     currentPeriodEnd: account?.stripe_current_period_end,
     trialEnd: account?.stripe_trial_end,
 
@@ -133,7 +157,7 @@ export function useAccountStatus() {
     error: error && !error.message?.includes('authentication') ? error : null,
 
     // Refresh function
-    refreshAccount: mutate,
+    refreshAccount,
   };
 }
 

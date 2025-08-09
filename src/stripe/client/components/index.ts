@@ -12,4 +12,7 @@ export { UnifiedAccountDashboard } from './UnifiedAccountComponents';
 // Export hooks
 export { useCheckoutFlow } from '../hooks/useCheckoutFlow';
 export { useEnhancedCheckoutFlow } from '../hooks/useEnhancedCheckoutFlow';
-export { useUnifiedAccountData } from '../hooks/useUnifiedAccountData';
+export {
+  useUnifiedAccountData, // Use when you need raw SWR response (data, error, isLoading, mutate)
+  useAccountStatus, // Recommended for most component use cases - provides destructured account properties
+} from '../hooks/useUnifiedAccountData';

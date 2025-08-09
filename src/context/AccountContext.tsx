@@ -6,7 +6,7 @@
  * makes account state easily accessible on any page.
  */
 
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useMemo } from 'react';
 import { useAccountStatus } from '@/src/stripe/client/hooks/useUnifiedAccountData';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import type { UnifiedAccountData } from '@/src/stripe/client/hooks/useUnifiedAccountData';
@@ -42,6 +42,7 @@ export interface AccountContextType {
   planCurrency: string | null;
 
   // Billing information
+  currentPeriodStart: number | null;
   currentPeriodEnd: number | null;
   trialEnd: number | null;
   cancelAtPeriodEnd: boolean;
@@ -79,6 +80,7 @@ export function AccountProvider({ children }: AccountProviderProps) {
     planName,
     planAmount,
     planCurrency,
+    currentPeriodStart,
     currentPeriodEnd,
     isLoading: accountLoading,
     error,
@@ -92,6 +94,7 @@ export function AccountProvider({ children }: AccountProviderProps) {
   // Account status helpers
   const hasAccount = !!account;
   const hasStripeCustomer = !!account?.has_stripe_customer;
+  // Subscription status now derived from account data only, not Firebase claims
   const hasSubscription = !!account?.has_subscription;
 
   // Subscription details
@@ -104,43 +107,71 @@ export function AccountProvider({ children }: AccountProviderProps) {
   const firebaseUserId = firebaseUser?.uid || null;
   const userEmail = firebaseUser?.email || account?.email || null;
 
-  const contextValue: AccountContextType = {
-    // Account data
-    account,
-    isLoading,
-    error,
+  const contextValue: AccountContextType = useMemo(
+    () => ({
+      // Account data
+      account,
+      isLoading,
+      error,
 
-    // Authentication state
-    isAuthenticated,
-    firebaseUserId,
-    apiUserId,
-    userEmail,
+      // Authentication state
+      isAuthenticated,
+      firebaseUserId,
+      apiUserId,
+      userEmail,
 
-    // Account status helpers
-    hasAccount,
-    hasStripeCustomer,
+      // Account status helpers
+      hasAccount,
+      hasStripeCustomer,
 
-    // Subscription status helpers
-    hasSubscription,
-    hasActiveSubscription,
-    isTrialing,
-    isCanceled,
-    subscriptionStatus,
+      // Subscription status helpers
+      hasSubscription,
+      hasActiveSubscription,
+      isTrialing,
+      isCanceled,
+      subscriptionStatus,
 
-    // Plan information
-    planId,
-    planName: planName || null,
-    planAmount: planAmount || null,
-    planCurrency: planCurrency || null,
+      // Plan information
+      planId,
+      planName: planName || null,
+      planAmount: planAmount || null,
+      planCurrency: planCurrency || null,
 
-    // Billing information
-    currentPeriodEnd: currentPeriodEnd || null,
-    trialEnd,
-    cancelAtPeriodEnd,
+      // Billing information
+      currentPeriodStart: currentPeriodStart || null,
+      currentPeriodEnd: currentPeriodEnd || null,
+      trialEnd,
+      cancelAtPeriodEnd,
 
-    // Actions
-    refreshAccount,
-  };
+      // Actions
+      refreshAccount,
+    }),
+    [
+      account,
+      isLoading,
+      error,
+      isAuthenticated,
+      firebaseUserId,
+      apiUserId,
+      userEmail,
+      hasAccount,
+      hasStripeCustomer,
+      hasSubscription,
+      hasActiveSubscription,
+      isTrialing,
+      isCanceled,
+      subscriptionStatus,
+      planId,
+      planName,
+      planAmount,
+      planCurrency,
+      currentPeriodStart,
+      currentPeriodEnd,
+      trialEnd,
+      cancelAtPeriodEnd,
+      refreshAccount,
+    ],
+  );
 
   return <AccountContext.Provider value={contextValue}>{children}</AccountContext.Provider>;
 }
@@ -165,6 +196,7 @@ export function usePlanInfo() {
     planName,
     planAmount,
     planCurrency,
+    currentPeriodStart,
     currentPeriodEnd,
     trialEnd,
     cancelAtPeriodEnd,
@@ -175,6 +207,7 @@ export function usePlanInfo() {
     planName,
     planAmount,
     planCurrency,
+    currentPeriodStart,
     currentPeriodEnd,
     trialEnd,
     cancelAtPeriodEnd,
