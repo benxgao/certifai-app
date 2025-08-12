@@ -158,7 +158,7 @@ export function ExamCard({
   const buttonContent = getButtonContent();
 
   return (
-    <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl hover:shadow-3xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-xl overflow-hidden group hover:scale-[1.02] hover:-translate-y-1">
+    <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl hover:shadow-3xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-xl overflow-hidden group">
       {/* Enhanced decorative gradient orbs */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-violet-200/30 to-blue-200/20 dark:from-violet-600/20 dark:to-blue-600/10 rounded-bl-full blur-xl"></div>
       <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-gradient-to-tr from-emerald-100/20 to-cyan-100/15 dark:from-emerald-600/10 dark:to-cyan-600/5 rounded-tr-full blur-lg"></div>
@@ -342,7 +342,7 @@ export function ExamCard({
               }
               variant={getButtonVariant()}
               size="lg"
-              className="w-full font-bold px-6 sm:px-8 py-3.5 sm:py-4 text-base shadow-xl hover:shadow-2xl hover:shadow-violet-500/25 dark:hover:shadow-violet-400/20 transition-all duration-500 rounded-xl backdrop-blur-sm border-0 hover:scale-[1.02] hover:-translate-y-0.5 focus:ring-2 focus:ring-violet-500/30 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900"
+              className="w-full font-bold px-6 sm:px-8 py-3.5 sm:py-4 text-base shadow-xl hover:shadow-2xl hover:shadow-violet-500/25 dark:hover:shadow-violet-400/20 transition-all duration-500 rounded-xl backdrop-blur-sm border-0 focus:ring-2 focus:ring-violet-500/30 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900"
               isLoading={navigatingExamId === exam.exam_id || examStatus === 'generating'}
               loadingText={
                 navigatingExamId === exam.exam_id ? 'Loading Exam...' : 'Generating Questions...'

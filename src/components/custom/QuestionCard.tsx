@@ -43,7 +43,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   isCorrectOption,
 }) => {
   return (
-    <DashboardCard className="hover:shadow-2xl hover:shadow-violet-500/20 dark:hover:shadow-violet-400/10 transition-all duration-500 hover:scale-[1.01] hover:-translate-y-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60">
+    <DashboardCard className="hover:shadow-2xl hover:shadow-violet-500/20 dark:hover:shadow-violet-400/10 transition-all duration-500 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60">
       <DashboardCardHeader className="bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 backdrop-blur-sm">
         <div className="flex items-start justify-between">
           <div className="text-base sm:text-lg leading-relaxed flex-1 mr-3 sm:mr-5 text-slate-900 dark:text-slate-100">
@@ -111,7 +111,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 } ${
                   submittedAt !== null || isAnswering || isSubmittingExamFlag
                     ? 'cursor-not-allowed opacity-70'
-                    : 'hover:shadow-xl hover:shadow-violet-200/40 dark:hover:shadow-violet-500/20 hover:scale-[1.02] hover:-translate-y-1'
+                    : 'hover:shadow-xl hover:shadow-violet-200/40 dark:hover:shadow-violet-500/20'
                 }`}
                 onClick={() => {
                   if (submittedAt === null && !isAnswering && !isSubmittingExamFlag) {

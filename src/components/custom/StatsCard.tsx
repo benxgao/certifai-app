@@ -24,8 +24,8 @@ export const StatsCard: React.FC<StatsCardProps> = ({
     className={cn(
       'relative backdrop-blur-md border rounded-2xl overflow-hidden group transition-all duration-500',
       variant === 'overview'
-        ? 'bg-white/95 dark:bg-slate-900/95 border-slate-200/60 dark:border-slate-700/60 shadow-xl hover:shadow-2xl hover:shadow-slate-500/10 dark:hover:shadow-slate-400/5 hover:scale-[1.03] hover:-translate-y-1'
-        : 'bg-white/95 dark:bg-slate-800/95 border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300',
+        ? 'bg-white/95 dark:bg-slate-900/95 border-slate-200/60 dark:border-slate-700/60 shadow-xl hover:shadow-2xl hover:shadow-slate-500/10 dark:hover:shadow-slate-400/5'
+        : 'bg-white/95 dark:bg-slate-800/95 border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl transition-all duration-300',
       className,
     )}
   >

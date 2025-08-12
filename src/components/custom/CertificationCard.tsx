@@ -198,7 +198,7 @@ const CertificationCard = ({
   return (
     <div
       className={cn(
-        'relative backdrop-blur-md border rounded-xl overflow-hidden group transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1',
+        'relative backdrop-blur-md border rounded-xl overflow-hidden group transition-all duration-500',
         cardVariant.container,
         isDeleting && 'pointer-events-none',
         variant === 'compact'
@@ -370,7 +370,7 @@ const CertificationCard = ({
                 disabled={actionConfig.disabled}
                 isLoading={isDeleting}
                 className={cn(
-                  'w-full sm:w-auto font-bold px-6 sm:px-8 py-3.5 sm:py-4 text-base shadow-xl hover:shadow-2xl hover:shadow-violet-500/25 dark:hover:shadow-violet-400/20 transition-all duration-500 rounded-xl backdrop-blur-sm border-0 hover:scale-[1.02] hover:-translate-y-0.5 focus:ring-2 focus:ring-violet-500/30 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900',
+                  'w-full sm:w-auto font-bold px-6 sm:px-8 py-3.5 sm:py-4 text-base shadow-xl hover:shadow-2xl hover:shadow-violet-500/25 dark:hover:shadow-violet-400/20 transition-all duration-500 rounded-xl backdrop-blur-sm border-0 focus:ring-2 focus:ring-violet-500/30 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900',
                   actionConfig.disabled && 'opacity-60 cursor-not-allowed',
                 )}
               >
