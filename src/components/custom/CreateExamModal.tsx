@@ -1,14 +1,17 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { ActionButton } from './ActionButton';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/src/components/ui/button';
 import { Slider } from '@/src/components/ui/slider';
 import { InfoTooltip } from '@/src/components/custom/InfoTooltip';
 import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay';
-import { Lightbulb, BookOpen, Target } from 'lucide-react';
+import { Lightbulb, BookOpen, Target, CreditCard, AlertTriangle } from 'lucide-react';
 import { EnhancedModal } from './EnhancedModal';
+import { isFeatureEnabled } from '@/src/config/featureFlags';
 
 // Flexible certification type to handle different certification objects
 type CertificationData = {
@@ -32,6 +35,8 @@ interface CreateExamModalProps {
   onCreateExam: () => Promise<void>;
   isCreatingExam: boolean;
   createExamError: any;
+  hasActiveSubscription: boolean;
+  isLoadingSubscription: boolean;
   children?: React.ReactNode;
 }
 
@@ -46,11 +51,33 @@ export function CreateExamModal({
   onCreateExam,
   isCreatingExam,
   createExamError,
+  hasActiveSubscription,
+  isLoadingSubscription,
   children,
 }: CreateExamModalProps) {
   // Modal content
   const content = (
     <div className="space-y-6">
+      {/* Subscription Warning Display - Only show if stripe integration is enabled */}
+      {isFeatureEnabled('STRIPE_INTEGRATION') &&
+        !isLoadingSubscription &&
+        !hasActiveSubscription && (
+          <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-1">
+                  Active Subscription Required
+                </p>
+                <p className="text-sm text-amber-700 dark:text-amber-300">
+                  You need an active subscription to create new exams. Visit the billing page to
+                  upgrade your plan.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
       {/* Rate Limiting Error Display */}
       {createExamError?.status === 429 && createExamError.rateLimitInfo && (
         <div className="mb-6">
@@ -142,6 +169,24 @@ export function CreateExamModal({
   // Modal footer
   const footer = (
     <div className="flex items-center gap-3">
+      {/* Billing Link - Only show when subscription is required and stripe integration is enabled */}
+      {!isLoadingSubscription &&
+        !hasActiveSubscription &&
+        isFeatureEnabled('STRIPE_INTEGRATION') && (
+          <div className="flex-1">
+            <Link href="/main/billing" passHref>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+              >
+                <CreditCard className="h-4 w-4 mr-2" />
+                Upgrade Plan
+              </Button>
+            </Link>
+          </div>
+        )}
+
       <div className="flex-1 sm:flex-none">
         <ActionButton
           onClick={onCreateExam}
@@ -149,7 +194,11 @@ export function CreateExamModal({
             isCreatingExam ||
             !numberOfQuestions ||
             numberOfQuestions < 1 ||
-            createExamError?.status === 429
+            createExamError?.status === 429 ||
+            // Only require subscription if STRIPE_INTEGRATION is enabled
+            (isFeatureEnabled('STRIPE_INTEGRATION') &&
+              !isLoadingSubscription &&
+              !hasActiveSubscription)
           }
           variant="primary"
           size="lg"
@@ -157,7 +206,7 @@ export function CreateExamModal({
           loadingText="Creating Exam..."
           className="w-full"
         >
-          Create Exam
+          {isLoadingSubscription ? 'Loading...' : 'Create Exam'}
         </ActionButton>
       </div>
     </div>

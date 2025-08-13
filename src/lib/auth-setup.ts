@@ -308,7 +308,6 @@ export const shouldRedirectToSignIn = (): boolean => {
  */
 export const performAuthSetup = async (authUser: User, token: string): Promise<AuthSetupResult> => {
   try {
-
     // Use the centralized auth manager for cookie setting
     const cookiePromise = authManager.setAuthCookie(token);
     const loginPromise = authManager.performApiLogin(token);
@@ -343,6 +342,9 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
         await authUser.getIdToken(true);
       }
     }
+
+    // Note: Firestore account creation is now handled automatically by /api/stripe/account
+    // when the user first accesses their account data
 
     if (finalUserId) {
       return {

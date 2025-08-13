@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useProfileData } from '@/src/hooks/useProfileData'; // Updated import
 import { useDisplayNameUpdate } from '@/src/hooks/useDisplayNameUpdate';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar';
+import { Skeleton } from '@/src/components/ui/skeleton';
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { Input } from '@/src/components/ui/input';
@@ -20,8 +21,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/src/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
-import { CalendarIcon, UserIcon, Settings, Award, Shield, Bell, Edit3, Check } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/src/components/ui/accordion';
+import {
+  CalendarIcon,
+  UserIcon,
+  Settings,
+  Award,
+  Shield,
+  Bell,
+  Edit3,
+  Check,
+  CreditCard,
+} from 'lucide-react';
 import { LoadingSpinner } from '@/src/components/ui/loading-spinner';
 import EmailUpdateDialog from '@/src/components/custom/EmailUpdateDialog';
 import Breadcrumb from '@/components/custom/Breadcrumb';
@@ -31,40 +47,6 @@ import {
   DashboardCardContent,
 } from '@/src/components/ui/dashboard-card';
 import DeleteAccountDialog from '@/src/components/custom/DeleteAccountDialog';
-
-const ProfileSkeleton: React.FC = () => (
-  <div className="space-y-6">
-    {/* Profile Header Skeleton */}
-    <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
-      <div className="flex items-center space-x-4">
-        <Skeleton className="h-16 w-16 rounded-full" />
-        <div className="space-y-2 flex-1">
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-4 w-64" />
-        </div>
-        <div className="hidden md:flex items-center space-x-4">
-          <Skeleton className="h-12 w-20" />
-          <Skeleton className="h-12 w-20" />
-        </div>
-      </div>
-    </div>
-
-    {/* Profile Content Skeleton */}
-    <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
-        <Skeleton className="h-8 w-32" />
-      </div>
-      <div className="p-6 space-y-6">
-        <Skeleton className="h-10 w-full" />
-        <div className="space-y-4">
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 const EditableDisplayName: React.FC<{
   currentDisplayName: string;
@@ -227,7 +209,38 @@ const ProfileClientPage: React.FC = () => {
             ]}
           />
 
-          <ProfileSkeleton />
+          {/* Profile Loading Skeleton */}
+          <div className="space-y-6">
+            {/* Profile Header Skeleton */}
+            <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-16 w-16 rounded-full" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-4 w-64" />
+                </div>
+                <div className="hidden md:flex items-center space-x-4">
+                  <Skeleton className="h-12 w-20" />
+                  <Skeleton className="h-12 w-20" />
+                </div>
+              </div>
+            </div>
+
+            {/* Profile Content Skeleton */}
+            <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
+                <Skeleton className="h-8 w-32" />
+              </div>
+              <div className="p-6 space-y-6">
+                <Skeleton className="h-10 w-full" />
+                <div className="space-y-4">
+                  <Skeleton className="h-24 w-full" />
+                  <Skeleton className="h-24 w-full" />
+                  <Skeleton className="h-24 w-full" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -296,10 +309,6 @@ const ProfileClientPage: React.FC = () => {
                   <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
                     <span className="block sm:inline">{email}</span>
                     <span className="hidden sm:inline"> • </span>
-                    <span className="block sm:inline">
-                      {profile.subscription_plan || 'Free Tier'}
-                    </span>
-                    <span className="hidden sm:inline"> • </span>
                     <span className="block sm:inline">Member since {registrationDate}</span>
                   </p>
                 </div>
@@ -321,461 +330,171 @@ const ProfileClientPage: React.FC = () => {
           </DashboardCardHeader>
 
           <DashboardCardContent>
-            <Tabs defaultValue="personal" className="w-full">
-              {/* Improved TabsList */}
-              <div className="relative mb-6">
-                <TabsList className="w-full h-auto p-1 bg-slate-50 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm rounded-lg md:grid md:grid-cols-3 overflow-x-auto scrollbar-none">
-                  <div className="flex md:contents min-w-max md:min-w-0">
-                    <TabsTrigger
-                      value="personal"
-                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
-                    >
-                      <UserIcon className="w-4 h-4 shrink-0" />
-                      <span>Personal</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="account"
-                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
-                    >
-                      <Award className="w-4 h-4 shrink-0" />
-                      <span>Account</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="settings"
-                      className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-normal whitespace-nowrap transition-all duration-200 hover:bg-white/80 dark:hover:bg-slate-700/80 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700 data-[state=active]:shadow-md data-[state=active]:border data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-600 rounded-md"
-                    >
-                      <Settings className="w-4 h-4 shrink-0" />
-                      <span>Settings</span>
-                    </TabsTrigger>
+            <Accordion type="multiple" defaultValue={['personal']} className="w-full space-y-4">
+              {/* Personal Information Section */}
+              <AccordionItem
+                value="personal"
+                className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <UserIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100">
+                        Personal Information
+                      </h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Manage your basic profile details and information
+                      </p>
+                    </div>
                   </div>
-                </TabsList>
-              </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-6 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Full Name
+                      </label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                        {displayName || 'Not provided'}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Email
+                      </label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                        {email || 'Not provided'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="pt-2">
+                    <EditableDisplayName
+                      currentDisplayName={displayName || 'User'}
+                      onNameUpdate={handleNameUpdate}
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-              {/* Personal Information Tab */}
-              <TabsContent value="personal">
-                <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
-                      Personal Information
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 space-y-6">
-                    {/* Basic Information */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
-                        Basic Information
+              {/* Account Information Section */}
+              <AccordionItem
+                value="account"
+                className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <Award className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100">
+                        Account Information
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
-                            Full Name
-                          </label>
-                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                            {displayName || 'Not provided'}
-                          </p>
-                        </div>
-                        <div>
-                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
-                            Email
-                          </label>
-                          <div className="flex items-center justify-between mt-1">
-                            <p className="text-sm text-slate-600 dark:text-slate-400">
-                              {email || 'Not provided'}
-                            </p>
-                            <EmailUpdateDialog
-                              trigger={
-                                <Button variant="outline" size="sm" className="h-7 text-xs">
-                                  Update
-                                </Button>
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
-                            User Role
-                          </label>
-                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                            {profile.role || 'User'}
-                          </p>
-                        </div>
-                        <div>
-                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
-                            Registration Date
-                          </label>
-                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                            {registrationDate}
-                          </p>
-                        </div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        View account details, billing, and activity
+                      </p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-6 space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        User ID:
+                      </span>
+                      <Badge variant="outline" className="font-mono text-xs w-fit">
+                        {profile.user_id}
+                      </Badge>
+                    </div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Registration Date:
+                      </span>
+                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                        {registrationDate}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-slate-200/60 dark:border-slate-700/60 pt-6">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                      <div>
+                        <h4 className="text-base font-medium text-slate-900 dark:text-slate-100">
+                          Billing & Subscription
+                        </h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                          Manage your subscription and view payment history
+                        </p>
                       </div>
-                      <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                        <EditableDisplayName
-                          currentDisplayName={displayName || 'User'}
-                          onNameUpdate={handleNameUpdate}
-                        />
-                        <Button variant="outline" className="text-sm">
-                          Edit Information
+                      <Link href="/main/billing">
+                        <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                          <CreditCard className="w-4 h-4 mr-2" />
+                          Manage Billing
                         </Button>
-                      </div>
+                      </Link>
                     </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-                    {/* Profile Picture */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
-                        Profile Picture
+              {/* Settings Section */}
+              <AccordionItem
+                value="settings"
+                className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <Settings className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100">
+                        Account Settings
                       </h3>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <Avatar className="h-16 w-16 md:h-20 md:w-20 mx-auto sm:mx-0 border-2 border-primary/20 shadow-sm">
-                          <AvatarImage
-                            src={profile.avatar_url || undefined}
-                            alt={displayName || 'User'}
-                          />
-                          <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground text-base md:text-lg">
-                            {displayName?.charAt(0).toUpperCase() || 'U'}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="space-y-2 text-center sm:text-left flex-1">
-                          <p className="text-sm text-slate-600 dark:text-slate-400">
-                            Upload a new profile picture
-                          </p>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
-                          >
-                            Change Picture
-                          </Button>
-                        </div>
-                      </div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Security, notifications, and privacy preferences
+                      </p>
                     </div>
-
-                    {/* Subscription */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
-                        Subscription Details
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <label className="text-sm font-normal text-slate-700 dark:text-slate-300">
-                            Current Plan
-                          </label>
-                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                            {profile.subscription_plan || 'Free Tier'}
-                          </p>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                            Status
-                          </label>
-                          <div className="mt-1">
-                            <Badge variant="secondary">Active</Badge>
-                          </div>
-                        </div>
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 w-full sm:w-auto"
-                      >
-                        Manage Subscription
-                      </Button>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-6 space-y-6">
+                  {/* Account Security */}
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 py-3 border-b border-slate-200/60 dark:border-slate-700/60">
+                    <div>
+                      <h5 className="font-medium text-sm text-slate-900 dark:text-slate-100">
+                        Password
+                      </h5>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Update your password
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                      Change Password
+                    </Button>
+                  </div>
 
-              {/* Account Tab */}
-              <TabsContent value="account">
-                <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-normal text-slate-900 dark:text-slate-100">
-                      Account Information
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 space-y-6">
-                    {/* Account Details */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-normal text-slate-900 dark:text-slate-100 mb-4">
-                        Account Details
-                      </h3>
-                      <div className="space-y-3">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-normal">User ID:</span>
-                          <Badge variant="outline" className="font-mono text-xs w-fit">
-                            {profile.user_id}
-                          </Badge>
-                        </div>
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-normal">Account Type:</span>
-                          <Badge variant="secondary" className="w-fit">
-                            {profile.role || 'User'}
-                          </Badge>
-                        </div>
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-normal">Registration Date:</span>
-                          <span className="text-sm text-muted-foreground">{registrationDate}</span>
-                        </div>
-                      </div>
+                  {/* Privacy Settings */}
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 py-3">
+                    <div>
+                      <h5 className="font-medium text-sm text-destructive">Delete Account</h5>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Permanently delete your account
+                      </p>
                     </div>
-
-                    {/* Subscription Information */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
-                        Subscription Information
-                      </h3>
-                      <div className="space-y-3 mb-4">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-medium">Current Plan:</span>
-                          <Badge variant="default" className="w-fit">
-                            {profile.subscription_plan || 'Free Tier'}
-                          </Badge>
-                        </div>
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-sm font-medium">Plan Status:</span>
-                          <Badge variant="secondary" className="w-fit">
-                            Active
-                          </Badge>
-                        </div>
-                      </div>
-                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                        Upgrade Plan
-                      </Button>
-                    </div>
-
-                    {/* Account Activity */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
-                        Account Activity
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-3">Recent account activity</p>
-                      <div className="border rounded-lg p-3 bg-white dark:bg-slate-800 shadow-sm">
-                        <div className="flex items-center gap-2">
-                          <CalendarIcon className="w-4 h-4 text-muted-foreground shrink-0" />
-                          <span className="text-sm">Last login: Today</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Settings Tab */}
-              <TabsContent value="settings">
-                <Card className="border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-shadow duration-200">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg text-slate-900 dark:text-slate-100">
-                      Account Settings
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 space-y-6">
-                    {/* Account Security */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Shield className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-                        <h3 className="text-base font-medium text-slate-900 dark:text-slate-100">
-                          Account Security
-                        </h3>
-                      </div>
-                      <div className="space-y-4">
-                        {[
-                          {
-                            title: 'Password',
-                            description: 'Update your password',
-                            button: 'Change Password',
-                          },
-                          {
-                            title: 'Two-Factor Authentication',
-                            description: 'Add an extra layer of security',
-                            button: 'Enable 2FA',
-                          },
-                          {
-                            title: 'Login Sessions',
-                            description: 'Manage your active sessions',
-                            button: 'View Sessions',
-                          },
-                        ].map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0"
-                          >
-                            <div className="flex-1">
-                              <h4 className="font-medium text-sm">{item.title}</h4>
-                              <p className="text-sm text-muted-foreground">{item.description}</p>
-                            </div>
-                            <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                              {item.button}
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Notifications */}
-                    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm overflow-hidden">
-                      <div className="bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 px-6 py-4 border-b border-slate-100 dark:border-slate-700/50">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
-                            <Bell className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-                              Notification Preferences
-                            </h3>
-                            <p className="text-sm text-slate-600 dark:text-slate-400">
-                              Choose how you want to receive updates
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="p-6 space-y-6">
-                        {[
-                          {
-                            name: 'Email Notifications',
-                            description:
-                              'Receive exam updates, certification progress, and course announcements',
-                            enabled: true,
-                            category: 'primary',
-                          },
-                          {
-                            name: 'Browser Notifications',
-                            description:
-                              'Get real-time alerts in your browser for time-sensitive updates',
-                            enabled: false,
-                            category: 'secondary',
-                          },
-                          {
-                            name: 'Security Alerts',
-                            description:
-                              'Important notifications about account security and login activity',
-                            enabled: true,
-                            category: 'security',
-                          },
-                        ].map((setting, index) => (
-                          <div key={index} className="group">
-                            <div className="flex items-start gap-4 p-4 rounded-lg bg-slate-50/50 dark:bg-slate-800/30 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-200">
-                              <div className="flex items-center pt-0.5">
-                                <Checkbox
-                                  id={`notification-${index}`}
-                                  defaultChecked={setting.enabled}
-                                  className="scale-110"
-                                />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <label
-                                    htmlFor={`notification-${index}`}
-                                    className="text-sm font-medium text-slate-900 dark:text-slate-100 cursor-pointer"
-                                  >
-                                    {setting.name}
-                                  </label>
-                                  {setting.category === 'security' && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="text-xs bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
-                                    >
-                                      Required
-                                    </Badge>
-                                  )}
-                                  {setting.category === 'primary' && (
-                                    <Badge
-                                      variant="secondary"
-                                      className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                                    >
-                                      Recommended
-                                    </Badge>
-                                  )}
-                                </div>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                                  {setting.description}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
-                          <div className="text-sm text-slate-500 dark:text-slate-400">
-                            Changes are saved automatically
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-700 hover:bg-violet-50 dark:hover:bg-violet-900/20"
-                          >
-                            Manage Email Preferences
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Privacy Settings */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-4">
-                      <h3 className="text-base font-medium text-slate-900 dark:text-slate-100 mb-4">
-                        Privacy Settings
-                      </h3>
-                      <div className="space-y-4">
-                        {[
-                          {
-                            title: 'Profile Visibility',
-                            description: 'Control who can see your profile',
-                            button: 'Manage',
-                            variant: 'outline' as const,
-                          },
-                          {
-                            title: 'Data Export',
-                            description: 'Download your account data',
-                            button: 'Export',
-                            variant: 'outline' as const,
-                          },
-                          {
-                            title: 'Delete Account',
-                            description: 'Permanently delete your account',
-                            button: 'Delete',
-                            variant: 'destructive' as const,
-                          },
-                        ].map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 py-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0"
-                          >
-                            <div className="flex-1">
-                              <h4
-                                className={`font-medium text-sm ${
-                                  item.variant === 'destructive'
-                                    ? 'text-destructive'
-                                    : 'text-foreground'
-                                }`}
-                              >
-                                {item.title}
-                              </h4>
-                              <p className="text-sm text-muted-foreground">{item.description}</p>
-                            </div>
-                            {item.title === 'Delete Account' ? (
-                              <DeleteAccountDialog
-                                trigger={
-                                  <Button
-                                    variant={item.variant}
-                                    size="sm"
-                                    className="w-full sm:w-auto"
-                                  >
-                                    {item.button}
-                                  </Button>
-                                }
-                              />
-                            ) : (
-                              <Button variant={item.variant} size="sm" className="w-full sm:w-auto">
-                                {item.button}
-                              </Button>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
+                    <DeleteAccountDialog
+                      trigger={
+                        <Button variant="destructive" size="sm" className="w-full sm:w-auto">
+                          Delete
+                        </Button>
+                      }
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </DashboardCardContent>
         </DashboardCard>
       </div>

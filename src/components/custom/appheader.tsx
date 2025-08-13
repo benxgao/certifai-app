@@ -15,7 +15,8 @@ import { useProfileData } from '@/src/hooks/useProfileData';
 import { useShouldShowBuyMeACoffee } from '@/src/hooks/useUserExamStats';
 import { performLogout } from '@/src/lib/logout-utils';
 import Link from 'next/link';
-import { LogOut, UserCircle, Home, Award, ChevronDown, Coffee } from 'lucide-react';
+import { LogOut, UserCircle, Home, Award, ChevronDown, Coffee, CreditCard } from 'lucide-react';
+import { isFeatureEnabled } from '@/src/config/featureFlags';
 
 const AppHeader: React.FC = () => {
   const router = useRouter();
@@ -225,6 +226,30 @@ const AppHeader: React.FC = () => {
                         <div className="ml-auto w-2 h-2 bg-violet-600 dark:bg-violet-400 rounded-full shadow-sm"></div>
                       )}
                     </DropdownMenuItem>
+
+                    {/* Billing & Subscriptions - Only show if stripe integration is enabled */}
+                    {isFeatureEnabled('STRIPE_INTEGRATION') && (
+                      <DropdownMenuItem
+                        onSelect={() => router.push('/main/billing')}
+                        className={`cursor-pointer rounded-lg p-3 transition-all duration-200 group ${
+                          pathname === '/main/billing'
+                            ? 'bg-violet-50/80 dark:bg-violet-950/20 text-violet-700 dark:text-violet-300 font-normal border border-violet-200/60 dark:border-violet-700/60 shadow-sm'
+                            : 'hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:shadow-sm'
+                        }`}
+                      >
+                        <CreditCard
+                          className={`h-4 w-4 mr-3 transition-colors ${
+                            pathname === '/main/billing'
+                              ? 'text-violet-600 dark:text-violet-400'
+                              : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300'
+                          }`}
+                        />
+                        <span>Billing & Subscriptions</span>
+                        {pathname === '/main/billing' && (
+                          <div className="ml-auto w-2 h-2 bg-violet-600 dark:bg-violet-400 rounded-full shadow-sm"></div>
+                        )}
+                      </DropdownMenuItem>
+                    )}
 
                     {/* Buy Me a Coffee - Only show if user has created more than 2 exams */}
                     {showBuyMeACoffee && (

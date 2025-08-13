@@ -4,9 +4,7 @@
  */
 
 export const FeatureFlags = {
-  // Subscription related flags
-  SHOW_SUBSCRIPTION_FEATURES: true, // Show subscription features
-  SHOW_PAYMENT_OPTIONS: true, // Show payment options
+  STRIPE_INTEGRATION: false,
 } as const;
 
 // Type for feature flags
