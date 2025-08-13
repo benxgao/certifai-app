@@ -404,7 +404,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
                     className="w-full sm:w-auto px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 bg-white text-violet-600 hover:bg-violet-50 hover:text-violet-700 hover:scale-105 transform"
                   >
                     <FaGraduationCap className="mr-2" />
-                    Get Started Free
+                    Get Started
                   </Button>
                 </Link>
                 <Link href="/certifications">

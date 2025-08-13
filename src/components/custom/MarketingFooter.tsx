@@ -240,8 +240,8 @@ export default function MarketingFooter() {
             <div className="text-slate-400 text-sm">© 2025 Certestic. All rights reserved.</div>
             <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2 text-slate-400 text-sm">
-                <span>🌟</span>
-                <span>Beta Version</span>
+                <span>🚀</span>
+                <span>Live Platform</span>
               </div>
               <div className="flex items-center space-x-2 text-slate-400 text-sm">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>

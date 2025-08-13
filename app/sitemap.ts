@@ -111,7 +111,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         // Individual certification pages for this firm
         ...firm.certifications.map((cert) => ({
-          url: `${baseUrl}/certifications/${firm.code.toLowerCase()}/${cert.cert_id}`,
+          url: `${baseUrl}/certifications/${firm.code.toLowerCase()}/${cert.slug}`,
           lastModified: currentDate,
           changeFrequency: 'weekly' as const,
           priority: 0.7,

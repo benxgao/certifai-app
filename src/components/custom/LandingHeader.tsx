@@ -15,6 +15,7 @@ export default function LandingHeader() {
     { href: '/certifications', label: 'Certifications' },
     { href: '/pricing', label: 'Pricing' },
     { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   // Helper function to determine if a nav item is active
@@ -42,14 +43,14 @@ export default function LandingHeader() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <nav className="hidden md:flex items-center space-x-2 md:space-x-4 lg:space-x-6 xl:space-x-8">
             {navigationItems.map((item) => {
               const isActive = isActiveRoute(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-normal transition-all duration-200 relative group px-3 py-2 rounded-lg ${
+                  className={`text-sm font-normal transition-all duration-200 relative group px-2 md:px-3 py-2 rounded-lg ${
                     isActive
                       ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
                       : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
@@ -64,7 +65,7 @@ export default function LandingHeader() {
             })}
             <Link
               href="/signin"
-              className={`text-sm font-normal transition-all duration-200 relative group px-3 py-2 rounded-lg ${
+              className={`text-sm font-normal transition-all duration-200 relative group px-2 md:px-3 py-2 rounded-lg ${
                 pathname === '/signin'
                   ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
                   : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
@@ -79,7 +80,7 @@ export default function LandingHeader() {
               <Button
                 variant="default"
                 size="sm"
-                className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-normal shadow-md hover:shadow-lg transition-all duration-200 px-6"
+                className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-normal shadow-md hover:shadow-lg transition-all duration-200 px-3 md:px-4 lg:px-6"
               >
                 Get Started
               </Button>
