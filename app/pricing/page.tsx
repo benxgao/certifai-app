@@ -10,9 +10,9 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 const pricingSchema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: 'Certestic IT Certification Training Platform - Free Beta Access',
+  name: 'Certestic AI-Powered Certification Training Platform - Premium Access',
   description:
-    'Free beta access to AI-powered IT certification training platform! Practice with unlimited questions while we build the future of certification training',
+    'Advanced AI-powered IT certification training platform with adaptive learning. Access 1000+ certifications with personalized exam generation, performance analytics',
   brand: {
     '@type': 'Brand',
     name: 'Certestic',
@@ -20,17 +20,19 @@ const pricingSchema = {
   offers: [
     {
       '@type': 'Offer',
-      name: 'Free Beta Access',
-      description: 'Free access to all features while we develop the platform!',
-      price: '0',
+      name: 'Premium Access',
+      description:
+        'Complete access to AI-powered adaptive learning with 1000+ IT certifications, performance analytics, and personalized study recommendations',
+      price: '10',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       validFrom: '2025-01-01',
       priceSpecification: {
         '@type': 'PriceSpecification',
-        price: '0',
+        price: '10',
         priceCurrency: 'USD',
         valueAddedTaxIncluded: true,
+        billingIncrement: 'P1M',
       },
     },
   ],
@@ -39,13 +41,13 @@ const pricingSchema = {
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Certestic - Free Beta Access! | AI-Powered IT Certification Training',
+  name: 'Certestic - Premium Access | AI-Powered Adaptive Certification Training',
   description:
-    'Get free access to AI-powered IT certification training! Practice with unlimited questions and advance your career with our beta platform.',
+    'Get professional access to AI-powered adaptive certification training with 1000+ IT certifications. Personalized learning with performance analytics.',
   url: 'https://certestic.com/pricing',
   mainEntity: {
     '@type': 'Product',
-    name: 'Certestic IT Certification Training Platform - Free Beta Access',
+    name: 'Certestic AI-Powered Certification Training Platform - Premium Access',
   },
 };
 
@@ -70,37 +72,36 @@ export default function PricingPage() {
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20" role="main">
           {/* Header Section */}
           <header className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-              <Star className="w-3 sm:w-4 h-3 sm:h-4" />
-              <span>100% Free Beta</span>
-            </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4 lg:mb-6 px-2">
-              Join the Beta
+              Start Your Journey
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
-              Help build the future of IT certification training. Everything&apos;s free while in
-              beta.
+              Access professional AI-powered certification training with adaptive learning
+              technology that personalizes your study experience.
             </p>
           </header>
 
-          {/* Beta Access Card */}
+          {/* Premium Access Card */}
           <div className="max-w-2xl mx-auto px-2 sm:px-4">
             <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-xl">
               <div className="absolute -top-2 sm:-top-3 lg:-top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-violet-600 dark:bg-violet-700 text-white px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 lg:py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg">
-                  FREE BETA ACCESS
+                  PREMIUM ACCESS
                 </span>
               </div>
 
               <div className="text-center mb-6 sm:mb-8 mt-4 sm:mt-6 lg:mt-0">
                 <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  Beta Access
+                  Premium Access
                 </h3>
                 <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary mb-2">
-                  FREE
+                  $10
+                  <span className="text-lg sm:text-xl lg:text-2xl text-slate-500 dark:text-slate-400">
+                    /month
+                  </span>
                 </div>
                 <p className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 px-2">
-                  Start your certification journey
+                  AI-powered adaptive certification training
                 </p>
               </div>
 
@@ -108,45 +109,46 @@ export default function PricingPage() {
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Unlimited AI-generated practice exams
+                    100+ IT certifications (AWS, Azure, GCP, Microsoft, Cisco & more)
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-                    All IT certification tracks
+                    AI-powered adaptive exam generation based on your performance
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Performance analytics & insights
+                    Detailed performance analytics & exam reports
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Personalized study recommendations
+                    Personalized study recommendations & progress tracking
+                  </span>
+                </div>
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Custom exam generation with specific topic focus
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
                   <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                    Email support & feedback
-                  </span>
-                </div>
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                    Direct developer feedback
+                    Advanced dashboard with learning insights & analytics
                   </span>
                 </div>
               </div>
 
               <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-primary/20">
                 <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 text-center leading-relaxed">
-                  <strong>Beta Promise:</strong> Your feedback shapes what gets built next. Help
-                  create the platform you actually want to use.
+                  <strong>Advanced AI Technology:</strong> Our adaptive learning system analyzes
+                  your performance to create personalized exams that focus on your knowledge gaps
+                  and accelerate your learning.
                 </p>
               </div>
 
@@ -167,31 +169,60 @@ export default function PricingPage() {
             <div className="max-w-3xl mx-auto space-y-3 sm:space-y-4 lg:space-y-6">
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
-                  How long is the beta free?
+                  How does pricing work?
                 </h4>
                 <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                  The platform stays free throughout 2025. Early users will get special benefits
-                  when pricing is introduced.
+                  Premium access is $10 per month, giving you unlimited access to all
+                  certifications, AI-powered practice questions, and personalized study plans.
+                  Cancel anytime with no long-term commitment.
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
-                  What happens to my data?
+                  What makes this platform unique?
                 </h4>
                 <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                  Your progress and achievements are secure. Everything stays with you as the
-                  platform grows.
+                  Our AI-powered adaptive learning system analyzes your exam performance to create
+                  personalized future exams. Unlike static practice tests, our system focuses on
+                  your knowledge gaps and adjusts difficulty based on your progress, making your
+                  study time more effective and targeted.
                 </p>
               </div>
 
               <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
                 <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
-                  How can I provide feedback?
+                  How many certifications are available?
                 </h4>
                 <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                  Use the built-in feedback tools or contact directly. Your input drives development
-                  priorities.
+                  Access 100+ IT certifications from leading technology companies including AWS,
+                  Microsoft Azure, Google Cloud Platform, Cisco, CompTIA, Oracle, Salesforce, IBM,
+                  and many more. Our comprehensive catalog covers cloud computing, cybersecurity,
+                  networking, data science, and emerging technologies.
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
+                  What analytics and insights do I get?
+                </h4>
+                <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                  Comprehensive performance analytics including detailed exam reports, topic mastery
+                  levels, improvement trends, knowledge gap identification, and personalized study
+                  recommendations. Track your progress over time and get insights into your learning
+                  patterns to optimize your certification preparation.
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-border p-4 sm:p-6">
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm sm:text-base">
+                  How does the adaptive learning work?
+                </h4>
+                <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                  Our AI system analyzes your previous exam performance to identify weak areas and
+                  strengths. When you create new exams, the system automatically adjusts topic
+                  distribution and difficulty levels to focus on areas needing improvement while
+                  reinforcing your strong areas with more challenging questions.
                 </p>
               </div>
             </div>
@@ -203,8 +234,8 @@ export default function PricingPage() {
               Ready to Get Started?
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-              Join IT professionals who are already using and improving the platform. Completely
-              free.
+              Join IT professionals advancing their careers with our AI-powered adaptive learning
+              platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <Link href="/signup" className="w-full sm:w-auto">
@@ -212,7 +243,7 @@ export default function PricingPage() {
                   size="lg"
                   className="w-full sm:w-auto px-6 sm:px-8 bg-primary hover:bg-primary/90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  Start Free
+                  Start Your Subscription
                 </Button>
               </Link>
               <Link href="/contact" className="w-full sm:w-auto">
