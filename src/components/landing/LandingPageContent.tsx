@@ -22,13 +22,6 @@ export default function LandingPageContent() {
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
           {/* Hero Content - Centered */}
           <div className="text-center max-w-5xl mx-auto">
-            {/* Simple beta badge */}
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 rounded-full px-4 py-2 mb-6">
-              <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                Free Beta Access
-              </span>
-            </div>
-
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
               {/* <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent"> */}
               {/* Master AWS, Azure, GCP & More */}
@@ -42,7 +35,8 @@ export default function LandingPageContent() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Accelerate your IT career with AI-powered practice exams for{' '}
+              Transform your IT career with our premium AI-powered certification training platform.
+              Get unlimited access to adaptive practice exams for{' '}
               <Link
                 href="/certifications/AWS/aws-certified-solutions-architect"
                 className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
@@ -75,18 +69,17 @@ export default function LandingPageContent() {
                 href="/certifications"
                 className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
               >
-                50+ other certifications
+                100+ other certifications
               </Link>
-              . Our adaptive AI creates personalized study plans that target your knowledge gaps and
-              simulate exam conditions - aiming to help IT professionals pass their certifications
-              on the first try.
+              . Our professional-grade adaptive AI creates personalized study plans, identifies
+              knowledge gaps, and provides realistic exam simulations.
             </p>
 
             {/* Enhanced Stats with IT certification focus */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Free Beta
+                  100+ Certifications
                 </div>
                 <div className="text-sm text-slate-500 dark:text-slate-400">AWS • Azure • GCP</div>
               </div>
@@ -106,9 +99,9 @@ export default function LandingPageContent() {
               ></div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Free Beta
+                  Adaptive Learning
                 </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Beta Access</div>
+                <div className="text-sm text-slate-500 dark:text-slate-400">Analysis Reports</div>
               </div>
             </div>
 
@@ -118,7 +111,7 @@ export default function LandingPageContent() {
                   size="lg"
                   className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                 >
-                  Start Learning Now!
+                  Start Learning
                 </Button>
               </Link>
               <Link href="/signin">
@@ -205,7 +198,8 @@ export default function LandingPageContent() {
               </span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Whether you&apos;re targeting{' '}
+              Our premium platform delivers professional-grade certification training. Whether
+              you&apos;re targeting{' '}
               <Link
                 href="/certifications/AWS/aws-certified-solutions-architect"
                 className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
@@ -233,9 +227,8 @@ export default function LandingPageContent() {
               >
                 CompTIA certifications
               </Link>
-              , our intelligent practice platform adapts to your learning style. Get personalized
-              question sets, identify knowledge gaps, and simulate real exam conditions to boost
-              your confidence and pass rates.
+              , our intelligent training system provides access to adaptive practice exams,
+              personalized study plans, and comprehensive analytics.
             </p>
           </div>
 
@@ -261,13 +254,14 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
-                Adaptive IT Certification Training
+                Premium Adaptive Training
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Our AI analyzes your performance across AWS, Azure, GCP, and other IT certification
-                topics. Struggling with EC2 instance types? Get more compute questions. Mastering
-                Azure networking? Move to advanced scenarios. Each practice session adapts to your
-                knowledge gaps, making your study time 3x more effective than traditional methods.
+                Our premium AI engine analyzes your performance across AWS, Azure, GCP, and 100+
+                other IT certifications. Struggling with EC2 instance types? Get more compute
+                questions. Mastering Azure networking? Move to advanced scenarios. Each practice
+                session adapts to your knowledge gaps, delivering personalized training that&apos;s
+                3x more effective than traditional methods.
               </p>
               <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Learn more</span>
@@ -351,13 +345,14 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300">
-                Smart Performance Analytics
+                Professional Analytics Dashboard
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Deep analytics that track your progress across AWS services, Azure resources, GCP
-                products, and other IT certification domains. See your mastery levels for specific
-                topics like VPCs, Active Directory, Kubernetes, or security protocols. Identify
-                exactly where to focus your next study session for guaranteed improvement.
+                Comprehensive analytics included with your premium subscription. Track your progress
+                across AWS services, Azure resources, GCP products, and all 100+ certification
+                domains. Monitor mastery levels for specific topics like VPCs, Active Directory,
+                Kubernetes, or security protocols. Get detailed insights to optimize your study
+                strategy and maximize your investment.
               </p>
               <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">View analytics</span>
@@ -396,13 +391,14 @@ export default function LandingPageContent() {
                 </svg>
               </div>
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
-                Optimized Study Sessions
+                Premium Study Optimization
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Focus your time precisely where it matters most. Our adaptive algorithm allocates
-                50% of questions to your growth areas, 25% for mastery validation of strong topics,
-                and explores new areas strategically. Every minute drives you toward certification
-                success.
+                Maximize your premium subscription value with intelligent study allocation. Our
+                advanced algorithm dedicates 50% of questions to your growth areas, 25% for mastery
+                validation of strong topics, and strategically explores new domains. Every study
+                minute is optimized for certification success, making your investment highly
+                efficient.
               </p>
               <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 group-hover:translate-x-3 transition-all duration-300">
                 <span className="mr-3">Explore feature</span>
@@ -581,7 +577,7 @@ export default function LandingPageContent() {
                     size="lg"
                     className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 transform hover:scale-105"
                   >
-                    Get Free Access
+                    Start Learning
                   </Button>
                 </Link>
                 <Link href="/signin">
@@ -595,9 +591,9 @@ export default function LandingPageContent() {
                 </Link>
               </div>
 
-              {/* Simple trust message */}
+              {/* Premium value message */}
               <p className="text-center text-slate-600 dark:text-slate-400 text-sm">
-                Free access during beta • No credit card required
+                Access to 100+ certifications • Cancel anytime
               </p>
             </div>
           </div>

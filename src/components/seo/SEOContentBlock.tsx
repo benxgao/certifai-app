@@ -100,7 +100,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                         href="/certifications/categories/cloud"
                         className="block py-2 px-3 rounded-lg bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/10 dark:to-blue-900/10 border border-violet-200/50 dark:border-violet-700/50 hover:from-violet-100 hover:to-blue-100 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 text-violet-700 dark:text-violet-300 font-semibold transition-all duration-200"
                       >
-                        View All Cloud Certifications →
+                        View All Cloud Certifications
                       </Link>
                     </li>
                   </ul>
@@ -169,7 +169,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                         href="/certifications/categories/security"
                         className="block py-2 px-3 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 border border-green-200/50 dark:border-green-700/50 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 text-green-700 dark:text-green-300 font-semibold transition-all duration-200"
                       >
-                        View All Security Certifications →
+                        View All Security Certifications
                       </Link>
                     </li>
                   </ul>
@@ -238,7 +238,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                         href="/certifications/categories/networking"
                         className="block py-2 px-3 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 border border-blue-200/50 dark:border-blue-700/50 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/20 dark:hover:to-cyan-900/20 text-blue-700 dark:text-blue-300 font-semibold transition-all duration-200"
                       >
-                        View All Networking Certifications →
+                        View All Networking Certifications
                       </Link>
                     </li>
                   </ul>
@@ -254,9 +254,9 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
         <h2>AI-Powered IT Certification Training for AWS, Azure, GCP & More</h2>
         <p>
           Certestic revolutionizes IT certification preparation with AI-powered practice exams for
-          AWS, Microsoft Azure, Google Cloud Platform, CompTIA, Cisco, and 50+ other certifications.
-          Our adaptive learning technology creates personalized study plans that help IT
-          professionals pass their certifications faster.
+          AWS, Microsoft Azure, Google Cloud Platform, CompTIA, Cisco, and 100+ other
+          certifications. Our adaptive learning technology creates personalized study plans that
+          help IT professionals pass their certifications faster.
         </p>
 
         <h3>Comprehensive IT Certification Coverage</h3>
@@ -322,7 +322,7 @@ export const seoKeywords = [
 // SEO meta descriptions for different contexts
 export const seoDescriptions = {
   homepage:
-    'Master AWS, Azure, GCP, and 50+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass certifications faster.',
+    'Master AWS, Azure, GCP, and 100+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass certifications faster.',
   certifications:
     'Browse comprehensive IT certifications including AWS Solutions Architect, Microsoft Azure Administrator, Google Cloud Professional, CompTIA Security+, and more with AI-powered practice exams.',
   individual: (certName: string, firmCode: string) =>

@@ -12,7 +12,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Certestic',
   description:
-    'AI-powered IT certification training platform for AWS, Azure, GCP, CompTIA, and 50+ other certifications. Create personalized practice exams with adaptive AI technology to accelerate your IT career.',
+    'AI-powered IT certification training platform for AWS, Azure, GCP, CompTIA, and 100+ other certifications. Create personalized practice exams with adaptive AI technology to accelerate your IT career.',
   url: 'https://certestic.com',
   logo: 'https://certestic.com/favicon.ico',
   foundingDate: '2025',
@@ -40,14 +40,14 @@ const softwareApplicationSchema = {
   '@type': 'SoftwareApplication',
   name: 'Certestic',
   description:
-    'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 50+ IT certifications. Adaptive learning technology creates personalized study plans with realistic exam simulation to help IT professionals pass certifications faster.',
+    'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 100+ IT certifications. Adaptive learning technology creates personalized study plans with realistic exam simulation to help IT professionals pass certifications faster.',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web Browser',
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    description: 'Free beta access with comprehensive IT certification practice exams',
+    description: 'Comprehensive IT certification practice exams and training',
   },
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -73,7 +73,7 @@ const webPageSchema = {
   '@type': 'WebPage',
   name: 'Certestic - AI-Powered IT Certification Training for AWS, Azure, GCP & More',
   description:
-    'Master AWS, Azure, GCP, and 50+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass IT certifications faster.',
+    'Master AWS, Azure, GCP, and 100+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass IT certifications faster.',
   url: 'https://certestic.com',
   mainEntity: {
     '@type': 'EducationalOrganization',

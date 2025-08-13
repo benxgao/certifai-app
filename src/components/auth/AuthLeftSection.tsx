@@ -15,7 +15,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
       description:
         'AI-powered practice exams with personalized study plans to accelerate your certification success.',
       badge: {
-        text: 'Free Beta',
+        text: 'Premium Platform',
         highlight: true,
       },
       features: [

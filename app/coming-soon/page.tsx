@@ -204,7 +204,7 @@ export default function ComingSoonPage() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Free beta access continues
+                  Premium access continues
                 </div>
                 <div className="hidden sm:block">•</div>
                 <div className="flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function ComingSoonPage() {
                     size="lg"
                     className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                   >
-                    Start Free Beta Now!
+                    Start Learning Now!
                   </Button>
                 </Link>
                 <Link href="/contact">
@@ -370,10 +370,10 @@ export default function ComingSoonPage() {
                     <BookOpen className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                    Free Access
+                    Platform Access
                   </h3>
                   <p className="text-slate-600 dark:text-slate-400 text-sm">
-                    Complete beta access with 300 credit coins to start your journey
+                    Complete platform access with study tools to start your journey
                   </p>
                 </div>
 

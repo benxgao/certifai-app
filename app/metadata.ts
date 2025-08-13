@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Certestic | AI-Powered IT Certification Training for AWS, Azure, GCP & More | Free Beta',
   description:
-    'Master AWS, Azure, GCP, and 50+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans that help you pass certifications faster.',
+    'Master AWS, Azure, GCP, and 100+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans that help you pass certifications faster.',
   keywords: [
     'Certestic',
     'AWS certification practice exams',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Certestic | AI-Powered IT Certification Training for AWS, Azure, GCP & More',
     description:
-      'Master AWS, Azure, GCP, and 50+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass certifications faster.',
+      'Master AWS, Azure, GCP, and 100+ IT certifications with AI-powered practice exams. Adaptive learning technology creates personalized study plans to help you pass certifications faster.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certestic.com',
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Certestic | Master AWS, Azure, GCP & IT Certifications with AI-Powered Practice Exams',
     description:
-      'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 50+ IT certifications. Adaptive learning technology with personalized study plans and realistic exam simulation.',
+      'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 100+ IT certifications. Adaptive learning technology with personalized study plans and realistic exam simulation.',
     creator: '@Certestic',
     site: '@Certestic',
     images: [

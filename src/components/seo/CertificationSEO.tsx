@@ -33,7 +33,7 @@ export function generateCertificationSEOMetadata({
 }: CertificationSEOProps): Metadata {
   const title = `${certification.name} Certification Training - AI-Powered Practice Questions & Study Guide | ${certification.firm.name} | Certestic`;
 
-  const description = `Master ${certification.name} certification with AI-powered practice questions, personalized study recommendations, and adaptive learning technology. Join thousands of professionals who have successfully passed their ${certification.firm.name} certifications using our intelligent training system. Free beta access available.`;
+  const description = `Master ${certification.name} certification with AI-powered practice questions, personalized study recommendations, and adaptive learning technology. Join thousands of professionals who have successfully passed their ${certification.firm.name} certifications using our intelligent training system. Professional platform access available.`;
 
   const keywords = [
     // Primary keywords
@@ -85,8 +85,8 @@ export function generateCertificationSEOMetadata({
 
     // Platform-specific keywords
     'Certestic AI training',
-    'beta certification platform',
-    'free certification training',
+    'professional certification platform',
+    'certification training',
     'smart study technology',
   ].join(', ');
 
@@ -149,7 +149,7 @@ export function generateCertificationSEOMetadata({
       site: '@Certestic',
       creator: '@Certestic',
       title: `${certification.name} - AI-Powered Training | ${certification.firm.name}`,
-      description: `Master ${certification.name} with AI-powered practice questions and personalized learning. Free beta access available.`,
+      description: `Master ${certification.name} with AI-powered practice questions and personalized learning. Professional platform access available.`,
       images: [
         {
           url: imageUrl,
@@ -179,7 +179,7 @@ export function generateCertificationSEOMetadata({
       'geo.region': 'Global',
       'geo.placename': 'Online',
       rating: '4.6',
-      price: 'Free',
+      price: 'Premium',
       availability: 'Available',
 
       // Mobile optimization

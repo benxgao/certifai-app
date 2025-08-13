@@ -2,7 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { FaAward, FaUsers, FaClock, FaArrowRight } from 'react-icons/fa';
+import { ActionButton } from '@/src/components/custom/ActionButton';
+import { FaAward, FaArrowRight } from 'react-icons/fa';
 
 interface PopularCertification {
   name: string;
@@ -91,154 +92,154 @@ const popularCertifications: PopularCertification[] = [
   },
 ];
 
-const getDifficultyColor = (difficulty: string) => {
-  switch (difficulty) {
-    case 'Beginner':
-      return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
-    case 'Intermediate':
-      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
-    case 'Advanced':
-      return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+// Function to get provider-specific colors
+const getProviderTheme = (firmCode: string) => {
+  switch (firmCode) {
+    case 'AWS':
+      return {
+        badgeColor:
+          'bg-orange-100/90 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 border-orange-200/50 dark:border-orange-800/50',
+        accentColor:
+          'bg-gradient-to-r from-orange-500/10 to-amber-500/10 dark:from-orange-600/20 dark:to-amber-600/20',
+        borderColor: 'border-orange-200/30 dark:border-orange-800/30',
+      };
+    case 'AZURE':
+      return {
+        badgeColor:
+          'bg-blue-100/90 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border-blue-200/50 dark:border-blue-800/50',
+        accentColor:
+          'bg-gradient-to-r from-blue-500/10 to-cyan-500/10 dark:from-blue-600/20 dark:to-cyan-600/20',
+        borderColor: 'border-blue-200/30 dark:border-blue-800/30',
+      };
+    case 'GCP':
+      return {
+        badgeColor:
+          'bg-emerald-100/90 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border-emerald-200/50 dark:border-emerald-800/50',
+        accentColor:
+          'bg-gradient-to-r from-emerald-500/10 to-green-500/10 dark:from-emerald-600/20 dark:to-green-600/20',
+        borderColor: 'border-emerald-200/30 dark:border-emerald-800/30',
+      };
+    case 'COMPTIA':
+      return {
+        badgeColor:
+          'bg-purple-100/90 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border-purple-200/50 dark:border-purple-800/50',
+        accentColor:
+          'bg-gradient-to-r from-purple-500/10 to-violet-500/10 dark:from-purple-600/20 dark:to-violet-600/20',
+        borderColor: 'border-purple-200/30 dark:border-purple-800/30',
+      };
+    case 'CISCO':
+      return {
+        badgeColor:
+          'bg-sky-100/90 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 border-sky-200/50 dark:border-sky-800/50',
+        accentColor:
+          'bg-gradient-to-r from-sky-500/10 to-blue-500/10 dark:from-sky-600/20 dark:to-blue-600/20',
+        borderColor: 'border-sky-200/30 dark:border-sky-800/30',
+      };
     default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300';
+      return {
+        badgeColor:
+          'bg-slate-100/90 dark:bg-slate-700/90 text-slate-700 dark:text-slate-300 border-slate-200/50 dark:border-slate-800/50',
+        accentColor:
+          'bg-gradient-to-r from-slate-500/10 to-gray-500/10 dark:from-slate-600/20 dark:to-gray-600/20',
+        borderColor: 'border-slate-200/30 dark:border-slate-800/30',
+      };
   }
 };
 
 export default function PopularCertifications() {
   return (
-    <section
-      className="py-16 sm:py-20 lg:py-24 relative overflow-hidden"
-      aria-labelledby="popular-certs-heading"
-    >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
-      <div className="absolute top-10 left-10 w-72 h-72 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
-
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-20 lg:py-24" aria-labelledby="popular-certs-heading">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-4 py-2 mb-6">
-            <FaAward className="text-violet-600 dark:text-violet-400" />
-            <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
+        <div className="text-center max-w-4xl mx-auto mb-16 space-y-6">
+          <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-full px-4 py-2">
+            <FaAward className="text-violet-600 dark:text-violet-400 h-4 w-4" />
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
               Most Popular IT Certifications
             </span>
           </div>
 
           <h2
             id="popular-certs-heading"
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-50 tracking-tight"
           >
-            Start Your IT Career with
+            Start Your IT Career with{' '}
             <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-              {' '}
               High-Demand Certifications
             </span>
           </h2>
 
-          <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
             Master the most sought-after IT certifications with AI-powered practice exams. These
-            certifications are proven to boost salaries and open new career opportunities in cloud
-            computing, cybersecurity, and enterprise IT.
+            certifications are proven to boost salaries and open new career opportunities.
           </p>
         </div>
 
         {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {popularCertifications.map((cert, index) => (
-            <Card
-              key={cert.slug}
-              className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden flex flex-col h-full"
-            >
-              <CardContent className="p-6 flex flex-col h-full">
-                {/* Header with badges */}
-                <div className="flex items-start justify-between mb-4">
-                  <Badge
-                    variant="secondary"
-                    className="text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
-                  >
-                    {cert.firmName}
-                  </Badge>
-                  <Badge className={`text-xs ${getDifficultyColor(cert.difficulty)}`}>
-                    {cert.difficulty}
-                  </Badge>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {popularCertifications.map((cert, index) => {
+            const theme = getProviderTheme(cert.firmCode);
+            return (
+              <Card
+                key={cert.slug}
+                className={`group bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-2 ${theme.borderColor} hover:shadow-2xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-2xl overflow-hidden flex flex-col h-full hover:scale-[1.03] hover:-translate-y-2`}
+              >
+                {/* Colored accent bar */}
+                <div className={`h-1.5 ${theme.accentColor}`}></div>
 
-                {/* Certification Title */}
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 line-clamp-2 leading-tight">
-                  {cert.name}
-                </h3>
-
-                {/* Description */}
-                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3 flex-grow">
-                  {cert.description}
-                </p>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                    <FaClock className="text-slate-500 text-xs" />
-                    <span>{cert.avgStudyTime}</span>
+                <CardContent className="p-8 flex flex-col h-full space-y-6">
+                  {/* Header with enhanced badge */}
+                  <div className="flex items-start">
+                    <Badge
+                      variant="secondary"
+                      className={`text-sm font-semibold px-4 py-2 rounded-full backdrop-blur-sm border ${theme.badgeColor}`}
+                    >
+                      {cert.firmName}
+                    </Badge>
                   </div>
-                  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-                    <FaUsers className="text-slate-500 text-xs" />
-                    <span>{cert.popularityScore}% popular</span>
-                  </div>
-                </div>
 
-                {/* CTA Button - Always at bottom */}
-                <Link
-                  href={`/certifications/${cert.firmCode}/${cert.slug}`}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg transition-colors duration-200 mt-auto"
-                >
-                  <span>View Certification</span>
-                  <FaArrowRight className="text-xs" />
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
+                  {/* Certification Title */}
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-2 leading-tight">
+                    {cert.name}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300 line-clamp-4 flex-grow">
+                    {cert.description}
+                  </p>
+
+                  {/* CTA Button */}
+                  <div className="pt-4">
+                    <Link href={`/certifications/${cert.firmCode}/${cert.slug}`}>
+                      <ActionButton
+                        onClick={() => {}}
+                        variant="secondary"
+                        size="lg"
+                        fullWidth
+                        icon={<FaArrowRight className="h-4 w-4" />}
+                      >
+                        Start Practicing
+                      </ActionButton>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* View All CTA */}
         <div className="text-center">
-          <Link
-            href="/certifications"
-            className="inline-flex items-center gap-3 px-6 py-3 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-medium rounded-lg transition-colors duration-200"
-          >
-            <span>View All 50+ IT Certifications</span>
-            <FaArrowRight />
+          <Link href="/certifications">
+            <ActionButton
+              onClick={() => {}}
+              variant="primary"
+              size="lg"
+              icon={<FaArrowRight className="h-4 w-4" />}
+            >
+              View All 100+ IT Certifications
+            </ActionButton>
           </Link>
-        </div>
-
-        {/* SEO-optimized text content */}
-        <div className="mt-16 max-w-4xl mx-auto">
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8 border border-slate-200/60 dark:border-slate-700/60">
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              Why Choose AI-Powered IT Certification Training?
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6 text-slate-600 dark:text-slate-400">
-              <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  Cloud Computing Certifications
-                </h4>
-                <p className="text-sm leading-relaxed">
-                  Master AWS Solutions Architect, Microsoft Azure Administrator, and Google Cloud
-                  Professional certifications with AI-powered practice exams that adapt to your
-                  learning pace and identify knowledge gaps.
-                </p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  Cybersecurity & Networking
-                </h4>
-                <p className="text-sm leading-relaxed">
-                  Excel in CompTIA Security+, Cisco CCNA, and other networking certifications with
-                  realistic exam simulations that mirror actual certification test environments and
-                  question formats.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

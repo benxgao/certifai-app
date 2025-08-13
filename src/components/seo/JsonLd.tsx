@@ -116,7 +116,7 @@ export default function CertificationJsonLd({ certification }: CertificationJson
       availability: 'https://schema.org/InStock',
       validFrom: certification.created_at,
       category: 'Educational Service',
-      description: 'Free beta access to AI-powered certification training',
+      description: 'Professional access to AI-powered certification training',
     },
     hasCourseInstance: {
       '@type': 'CourseInstance',
