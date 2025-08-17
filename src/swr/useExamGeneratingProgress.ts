@@ -20,9 +20,10 @@ interface ExamGeneratingProgressResponse {
 }
 
 export function useExamGeneratingProgress(apiUserId: string, examId: string, examStatus?: string) {
-  // Only fetch when exam is actually generating
+  // Only fetch when exam is actually generating - be very strict about this
   const isGenerating = examStatus === 'QUESTIONS_GENERATING';
-  const shouldFetch = Boolean(apiUserId && examId && isGenerating);
+  const isReady = examStatus === 'READY';
+  const shouldFetch = Boolean(apiUserId && examId && isGenerating && !isReady);
   const key = shouldFetch ? `/api/users/${apiUserId}/exams/${examId}/generating-progress` : null;
 
   const { data, error, isLoading, mutate } = useAuthSWR<ExamGeneratingProgressResponse>(key, {

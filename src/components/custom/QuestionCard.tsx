@@ -82,7 +82,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
       </DashboardCardHeader>
       <DashboardCardContent className="pt-6 bg-gradient-to-b from-transparent via-slate-50/30 to-slate-100/20 dark:via-slate-800/30 dark:to-slate-900/20">
-        <div className="space-y-5 mb-8">
+        <div className="space-y-4 sm:space-y-5 mb-8">
           {question.answerOptions.map(({ option_id, option_text }, optionIndex) => {
             const isSelected = question.selected_option_id === option_id;
             const isCorrect = isCorrectOption(question, option_id);
@@ -93,7 +93,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             return (
               <div
                 key={option_id}
-                className={`flex items-center space-x-4 p-5 sm:p-6 rounded-2xl transition-all duration-300 cursor-pointer group relative border-2 backdrop-blur-sm ${
+                className={`flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 sm:p-5 lg:p-6 rounded-2xl transition-all duration-300 cursor-pointer group relative border-2 backdrop-blur-sm ${
                   // Show correct answer with green background after submission
                   showCorrectAnswer
                     ? 'bg-gradient-to-r from-green-50/90 via-green-25/80 to-emerald-50/70 border-green-300/80 dark:bg-gradient-to-r dark:from-green-900/40 dark:via-green-800/30 dark:to-emerald-900/30 dark:border-green-500/60 shadow-xl shadow-green-200/30 dark:shadow-green-500/10'
@@ -119,55 +119,83 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                   }
                 }}
               >
-                <Checkbox
-                  id={`${question.quiz_question_id}-${option_id}`}
-                  checked={isSelected}
-                  onCheckedChange={() => onOptionChange(question.quiz_question_id, option_id)}
-                  disabled={submittedAt !== null || isAnswering || isSubmittingExamFlag}
-                  className="flex-shrink-0"
-                />
-                <div
-                  className={`w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base sm:text-lg font-bold flex-shrink-0 rounded-xl shadow-md ${
-                    showCorrectAnswer
-                      ? 'text-green-900 dark:text-green-100 bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 dark:from-green-800/40 dark:via-green-700/30 dark:to-emerald-800/40 border border-green-300/60 dark:border-green-500/40'
-                      : showIncorrectSelection
-                      ? 'text-red-900 dark:text-red-100 bg-gradient-to-br from-red-100 via-red-50 to-rose-100 dark:from-red-800/40 dark:via-red-700/30 dark:to-rose-800/40 border border-red-300/60 dark:border-red-500/40'
-                      : isSelected
-                      ? 'text-blue-900 dark:text-blue-100 bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 border border-blue-300/60 dark:border-blue-500/40'
-                      : 'text-slate-700 dark:text-slate-200 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-700/60 dark:via-slate-600/50 dark:to-slate-700/60 border border-slate-300/60 dark:border-slate-500/40'
-                  }`}
-                >
-                  {String.fromCharCode(65 + optionIndex)}
-                </div>
-                <label
-                  htmlFor={`${question.quiz_question_id}-${option_id}`}
-                  className={`text-lg sm:text-xl leading-relaxed cursor-pointer flex-1 select-none font-medium ${
-                    showCorrectAnswer
-                      ? 'text-green-900 dark:text-green-100'
-                      : showIncorrectSelection
-                      ? 'text-red-900 dark:text-red-100'
-                      : 'text-slate-900 dark:text-slate-100'
-                  }`}
-                >
-                  {option_text}
-                </label>
-                {/* Show indicators for correct/incorrect answers after submission */}
-                {submittedAt !== null && (
-                  <div className="flex-shrink-0 flex items-center space-x-2">
-                    {/* Show checkmark for correct answer */}
-                    {isCorrect && (
-                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-gradient-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
-                        <FaCheck className="text-green-700 dark:text-green-300 text-base" />
-                      </div>
-                    )}
-                    {/* Show X for user's incorrect selection */}
-                    {isSelected && question.user_answer_is_correct === false && (
-                      <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-gradient-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
-                        <FaTimes className="text-red-700 dark:text-red-300 text-base" />
-                      </div>
-                    )}
+                {/* Mobile layout: Top row with checkbox, letter, and indicators */}
+                <div className="flex items-center justify-between w-full sm:w-auto">
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      id={`${question.quiz_question_id}-${option_id}`}
+                      checked={isSelected}
+                      onCheckedChange={() => onOptionChange(question.quiz_question_id, option_id)}
+                      disabled={submittedAt !== null || isAnswering || isSubmittingExamFlag}
+                      className="flex-shrink-0"
+                    />
+                    <div
+                      className={`w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 flex items-center justify-center text-sm sm:text-base lg:text-lg font-bold flex-shrink-0 rounded-xl shadow-md ${
+                        showCorrectAnswer
+                          ? 'text-green-900 dark:text-green-100 bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 dark:from-green-800/40 dark:via-green-700/30 dark:to-emerald-800/40 border border-green-300/60 dark:border-green-500/40'
+                          : showIncorrectSelection
+                          ? 'text-red-900 dark:text-red-100 bg-gradient-to-br from-red-100 via-red-50 to-rose-100 dark:from-red-800/40 dark:via-red-700/30 dark:to-rose-800/40 border border-red-300/60 dark:border-red-500/40'
+                          : isSelected
+                          ? 'text-blue-900 dark:text-blue-100 bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 border border-blue-300/60 dark:border-blue-500/40'
+                          : 'text-slate-700 dark:text-slate-200 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-700/60 dark:via-slate-600/50 dark:to-slate-700/60 border border-slate-300/60 dark:border-slate-500/40'
+                      }`}
+                    >
+                      {String.fromCharCode(65 + optionIndex)}
+                    </div>
                   </div>
-                )}
+
+                  {/* Show indicators for correct/incorrect answers after submission */}
+                  {submittedAt !== null && (
+                    <div className="flex items-center gap-2 sm:hidden">
+                      {/* Show checkmark for correct answer */}
+                      {isCorrect && (
+                        <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-gradient-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
+                          <FaCheck className="text-green-700 dark:text-green-300 text-sm" />
+                        </div>
+                      )}
+                      {/* Show X for user's incorrect selection */}
+                      {isSelected && question.user_answer_is_correct === false && (
+                        <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-gradient-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
+                          <FaTimes className="text-red-700 dark:text-red-300 text-sm" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Text content - full width for proper wrapping */}
+                <div className="flex items-center justify-between w-full sm:flex-1">
+                  <label
+                    htmlFor={`${question.quiz_question_id}-${option_id}`}
+                    className={`text-base sm:text-lg lg:text-xl leading-relaxed cursor-pointer select-none font-medium break-words flex-1 pr-2 ${
+                      showCorrectAnswer
+                        ? 'text-green-900 dark:text-green-100'
+                        : showIncorrectSelection
+                        ? 'text-red-900 dark:text-red-100'
+                        : 'text-slate-900 dark:text-slate-100'
+                    }`}
+                  >
+                    {option_text}
+                  </label>
+
+                  {/* Desktop indicators */}
+                  {submittedAt !== null && (
+                    <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+                      {/* Show checkmark for correct answer */}
+                      {isCorrect && (
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-gradient-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
+                          <FaCheck className="text-green-700 dark:text-green-300 text-base" />
+                        </div>
+                      )}
+                      {/* Show X for user's incorrect selection */}
+                      {isSelected && question.user_answer_is_correct === false && (
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-gradient-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
+                          <FaTimes className="text-red-700 dark:text-red-300 text-base" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}

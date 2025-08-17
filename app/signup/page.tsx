@@ -857,6 +857,7 @@ export default function SignUpPage() {
         <Toaster
           richColors
           position="top-right"
+          closeButton
           toastOptions={{
             duration: 5000,
             classNames: {

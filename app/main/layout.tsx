@@ -45,6 +45,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <Toaster
                   richColors
                   position="top-right"
+                  closeButton
                   toastOptions={{
                     duration: 4000,
                     classNames: {

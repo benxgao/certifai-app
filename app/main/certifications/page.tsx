@@ -212,6 +212,7 @@ export default function CertificationsPage() {
         <Toaster
           richColors
           position="top-right"
+          closeButton
           toastOptions={{
             duration: 4000,
             classNames: {

@@ -27,29 +27,6 @@ const data = await response.json();
 return NextResponse.json(data);
 ```
 
-### ✅ **`/app/api/stripe/account/[apiUserId]/route.ts`:**
-
-**Before:**
-
-```typescript
-import { fetchAuthJSON } from '@/src/lib/auth-utils';
-// ...
-const response = await fetchAuthJSON(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/stripe/account/${apiUserId}`,
-);
-return NextResponse.json(response);
-```
-
-**After:**
-
-```typescript
-import { serverFetchWithAuth } from '@/src/stripe/server';
-// ...
-const response = await serverFetchWithAuth(`/stripe/account/${apiUserId}`);
-const data = await response.json();
-return NextResponse.json(data);
-```
-
 ## Benefits of `serverFetchWithAuth`
 
 1. **Centralized Authentication:** Uses server-side authentication utilities specifically designed for backend API communication
