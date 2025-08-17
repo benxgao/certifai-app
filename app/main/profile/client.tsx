@@ -252,7 +252,7 @@ const ProfileClientPage: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
         <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
           <div className="flex items-center justify-center min-h-[400px]">
-            <Card className="w-full max-w-md">
+            <Card className="w-full max-w-md" variant="elevated">
               <CardHeader>
                 <CardTitle className="text-destructive">Error</CardTitle>
               </CardHeader>

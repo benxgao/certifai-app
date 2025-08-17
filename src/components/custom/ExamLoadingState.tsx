@@ -32,8 +32,12 @@ export const ExamLoadingState: React.FC = () => {
 
           {/* Loading Text */}
           <div className="text-center space-y-2">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Loading exam...</h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400">Preparing your exam questions</p>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Loading exam...
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Preparing your exam questions
+            </p>
           </div>
         </div>
       </div>
@@ -44,6 +48,13 @@ export const ExamLoadingState: React.FC = () => {
             <Card
               key={`question-skeleton-${index}`}
               className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-2xl overflow-hidden opacity-50"
+              variant="elevated"
+              isLoading={true}
+              metadata={{
+                type: 'question_skeleton',
+                index: index + 1,
+                status: 'loading',
+              }}
             >
               {/* Individual card gradient orb */}
               <div className="absolute -top-2 -right-2 w-16 h-16 bg-violet-100/30 dark:bg-violet-600/10 rounded-full blur-xl"></div>

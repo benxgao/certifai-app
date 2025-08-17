@@ -7,7 +7,10 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
       <div className="max-w-2xl mx-auto">
-        <Card className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-2xl overflow-hidden">
+        <Card
+          className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-2xl overflow-hidden"
+          variant="elevated"
+        >
           <CardContent className="p-12">
             <div className="text-center space-y-8">
               {/* 404 Illustration */}

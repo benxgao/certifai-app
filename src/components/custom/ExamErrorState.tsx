@@ -37,7 +37,11 @@ export const ExamErrorState: React.FC<ExamErrorStateProps> = ({ certId, examId, 
 
         {/* Error Card */}
         <div className="mt-8">
-          <Card className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-red-200/60 dark:border-red-700/60 shadow-2xl rounded-2xl overflow-hidden">
+          <Card
+            className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-red-200/60 dark:border-red-700/60 shadow-2xl rounded-2xl overflow-hidden"
+            variant="elevated"
+            metadata={{ status: 'error', type: 'exam_error' }}
+          >
             {/* Decorative gradient orbs */}
             <div className="absolute -top-6 -right-6 w-32 h-32 bg-red-200/20 dark:bg-red-600/10 rounded-full blur-3xl"></div>
             <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-orange-200/20 dark:bg-orange-600/10 rounded-full blur-3xl"></div>

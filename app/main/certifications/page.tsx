@@ -263,7 +263,18 @@ export default function CertificationsPage() {
         {/* Modal for Certification Details and Registration */}
         {isModalOpen && selectedCertForModal && (
           <div className="fixed inset-0 bg-slate-900/20 dark:bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-3xl overflow-hidden">
+            <Card
+              className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-3xl overflow-hidden"
+              variant="elevated"
+              metadata={{
+                certification_id: selectedCertForModal.cert_id,
+                status: userCertifications?.some(
+                  (uc: any) => uc.cert_id === selectedCertForModal.cert_id,
+                )
+                  ? 'registered'
+                  : 'available',
+              }}
+            >
               <CardHeader className="bg-gradient-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20 border-b border-slate-100/60 dark:border-slate-700/60 p-8">
                 <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">
                   {selectedCertForModal.name}

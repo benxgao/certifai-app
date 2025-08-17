@@ -545,3 +545,154 @@ body {
   ) !important;
   border-color: rgba(99, 102, 241, 0.4) !important;
 }
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS - PHASE 1
+   ======================================== */
+
+/* Enhanced smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimized scroll containers */
+.scroll-container {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+  scrollbar-gutter: stable; /* Prevent layout shift */
+  overscroll-behavior-y: contain; /* Prevent scroll chaining */
+
+  /* GPU acceleration for smooth scrolling */
+  transform: translateZ(0);
+  will-change: scroll-position;
+
+  /* Custom scrollbar for better UX */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgb(148 163 184);
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(100 116 139);
+}
+
+/* Dark mode scrollbar */
+.dark .scroll-container {
+  scrollbar-color: rgb(100 116 139) transparent;
+}
+
+.dark .scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgb(100 116 139);
+}
+
+.dark .scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(148 163 184);
+}
+
+/* Smooth scroll for page navigation */
+.page-container {
+  scroll-padding-top: 80px; /* Account for fixed header */
+}
+
+/* Optimize scroll snap for better UX */
+.snap-scroll {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.snap-item {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* GPU-accelerated animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimized loading animations */
+@keyframes optimized-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes optimized-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes optimized-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.loading-optimized {
+  animation: optimized-spin 1s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.pulse-optimized {
+  animation: optimized-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: opacity;
+}
+
+.fade-in-optimized {
+  animation: optimized-fade-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: opacity, transform;
+}
+
+/* Smooth transitions for interactive elements */
+.interactive-optimized {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow, background-color;
+}
+
+.interactive-optimized:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .interactive-optimized,
+  .fade-in-optimized,
+  .loading-optimized,
+  .pulse-optimized {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

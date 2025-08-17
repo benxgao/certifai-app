@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, SkeletonCard } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { useAllAvailableCertifications } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 
@@ -31,9 +30,9 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
 
   if (isLoadingAvailableCertifications) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {Array.from({ length: 4 }).map((_, index) => (
-          <CardSkeleton key={index} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <SkeletonCard key={index} variant="default" />
         ))}
       </div>
     );
@@ -66,6 +65,15 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
           <Card
             key={cert.cert_id}
             className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full"
+            variant="default"
+            isSelected={isRegistered}
+            isLoading={isCurrentlyRegistering || isCurrentlyNavigating}
+            metadata={{
+              cert_id: cert.cert_id,
+              status: isRegistered ? 'registered' : 'available',
+              questions: `${cert.min_quiz_counts}-${cert.max_quiz_counts}`,
+              type: 'certification',
+            }}
           >
             <CardHeader className="bg-white dark:bg-slate-800 flex-shrink-0 p-6">
               <div className="mb-4">
