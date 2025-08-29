@@ -54,7 +54,7 @@ const MainPage = () => {
                 <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl">
                   {welcomeMessage}
                 </p>
-                <div className="flex items-center gap-3 pt-2">
+                {/* <div className="flex items-center gap-3 pt-2">
                   <AdaptiveLearningInterestModal
                     trigger={
                       <ActionButton
@@ -68,7 +68,7 @@ const MainPage = () => {
                       </ActionButton>
                     }
                   />
-                </div>
+                </div> */}
               </div>
               <div className="hidden sm:flex items-center space-x-3">
                 <SimpleCertificationsButton />
