@@ -592,13 +592,13 @@ export default function SignUpPage() {
       <LandingHeader />
 
       {/* Notification Bar */}
-      <EnhancedNotificationBar
+      {/* <EnhancedNotificationBar
         message="🚀 Try our platform instantly with demo account - username/password: demo@certestic.com"
         ctaText=""
         ctaLink="/signin"
         variant="promo"
         showIcon={true}
-      />
+      /> */}
 
       {/* Main Container with same width as header */}
       <div className="container mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
