@@ -78,3 +78,6 @@ You can check VS Code's memory usage with:
 # Check VS Code memory usage
 ps aux | grep -i "visual studio code" | head -5
 ```
+
+## Efficient LLM Token Usage
+- Minimize output token consumption in AI API calls by keeping responses concise and simplifying summaries.

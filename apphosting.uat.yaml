@@ -1,5 +1,8 @@
 # Settings for Backend (on Cloud Run) - UAT Environment
 # See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+buildConfig:
+  nodeVersion: 24
+
 runConfig:
   minInstances: 0
   maxInstances: 5

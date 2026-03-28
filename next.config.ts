@@ -2,14 +2,6 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  turbopack: {
-    rules: {
-      // Add specific handling for .well-known paths to prevent issues
-      '**/.well-known/**': {
-        loaders: ['raw-loader'],
-      },
-    },
-  },
   // Performance optimizations
   experimental: {
     optimizePackageImports: ['firebase', '@radix-ui/react-checkbox', '@radix-ui/react-label'],

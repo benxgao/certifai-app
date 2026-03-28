@@ -14,8 +14,6 @@
 
 ## Getting Started
 
-## Getting Started
-
 ### 1. Install dependencies
 
 ```bash
@@ -95,8 +93,3 @@ Copy `.env.example` to `.env.local` and fill in required values (Firebase, API e
   - Build: `npm run build`
   - Deploy: `firebase deploy`
 
----
-
-## License
-
-MIT

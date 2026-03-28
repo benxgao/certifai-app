@@ -1,0 +1,17 @@
+.history
+node_modules/
+venv/
+.venv/
+__pycache__/
+
+chroma_db/
+.duckdb/
+
+dist/
+build/
+.next/
+.cache/
+
+*.log
+*.exe
+*.bin
