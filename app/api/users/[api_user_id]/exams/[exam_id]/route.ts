@@ -81,7 +81,7 @@ export async function DELETE(
   },
 ) {
   try {
-    const { api_user_id, exam_id } = params;
+    const { api_user_id, exam_id } = await params;
 
     if (!api_user_id) {
       return NextResponse.json({ message: 'User ID is required' }, { status: 400 });

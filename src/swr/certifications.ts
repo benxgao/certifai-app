@@ -353,3 +353,82 @@ export function useAuthenticatedCertificationDetail(certificationId: string | nu
     mutateCertification: mutate,
   };
 }
+
+// Fetcher function for unregistering from a certification with auth refresh support
+async function unregisterCertificationFetcher(
+  _key: string,
+  {
+    arg,
+  }: {
+    arg: {
+      apiUserId: string;
+      certificationId: number;
+      refreshToken: () => Promise<string | null>;
+    };
+  },
+): Promise<CertificationResponse> {
+  const { apiUserId, certificationId, refreshToken } = arg;
+  const url = `/api/users/${apiUserId}/certifications?cert_id=${certificationId}`;
+
+  let response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  // If we get a 401, try to refresh token and retry
+  if (response.status === 401) {
+    const newToken = await refreshToken();
+
+    if (newToken) {
+      // Retry the request with refreshed token (cookie should be updated automatically)
+      response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } else {
+      // If refresh failed, throw authentication error
+      throw new Error('Authentication failed. Please sign in again.');
+    }
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || 'Failed to unregister from certification.');
+  }
+
+  return response.json();
+}
+
+// Custom hook for unregistering from a certification
+export function useUnregisterCertification(apiUserId: string | null) {
+  const { refreshToken } = useFirebaseAuth();
+
+  const { trigger, isMutating, error, data, reset } = useSWRMutation(
+    apiUserId ? `UNREGISTER_CERTIFICATION_${apiUserId}` : null,
+    unregisterCertificationFetcher,
+  );
+
+  // Wrapper to inject refreshToken function and apiUserId
+  const unregisterFromCertification = (certificationId: number) => {
+    if (!apiUserId) {
+      throw new Error('User ID is required');
+    }
+    return trigger({
+      apiUserId,
+      certificationId,
+      refreshToken,
+    });
+  };
+
+  return {
+    unregisterFromCertification,
+    isUnregistering: isMutating,
+    unregistrationError: error,
+    unregistrationData: data?.data,
+    resetUnregistration: reset,
+  };
+}

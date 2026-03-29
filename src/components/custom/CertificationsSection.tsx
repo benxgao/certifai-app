@@ -3,34 +3,33 @@ import { useRouter } from 'next/navigation';
 import { ActionButton } from './ActionButton';
 import EnhancedCertificationCard from './CertificationCard';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
-import { UserRegisteredCertification } from '@/swr/certifications';
+import { UserRegisteredCertification, useUnregisterCertification } from '@/swr/certifications';
 import { FaCertificate } from 'react-icons/fa';
 import { UserCertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { AlertMessage } from './AlertMessage';
+import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { toastHelpers } from '@/src/lib/toast';
 
 const CertificationsSection = () => {
   const router = useRouter();
+  const { apiUserId } = useFirebaseAuth();
   const [deletingCerts, setDeletingCerts] = useState<Set<number>>(new Set());
-  const { userCertifications, isLoadingUserCertifications, isUserCertificationsError } =
+  const { userCertifications, isLoadingUserCertifications, isUserCertificationsError, mutateUserCertifications } =
     useUserCertifications();
+  const { unregisterFromCertification, isUnregistering, unregistrationError } = useUnregisterCertification(apiUserId);
 
-  // Handle certification deletion (mock implementation)
+  // Handle certification deletion
   const handleDeleteCertification = async (certId: number) => {
     setDeletingCerts((prev) => new Set(prev).add(certId));
 
-    // Simulate API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // In real implementation, call the API to delete the certification
-
-      // Remove from deleting set after completion
-      setDeletingCerts((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(certId);
-        return newSet;
-      });
+      await unregisterFromCertification(certId);
+      toastHelpers.success.examDeleted();
+      await mutateUserCertifications();
     } catch (error) {
-      // Handle error and remove from deleting set
+      console.error('Error deleting certification:', error);
+      toastHelpers.error.examDeletionFailed((error as Error).message);
+    } finally {
       setDeletingCerts((prev) => {
         const newSet = new Set(prev);
         newSet.delete(certId);

@@ -6,6 +6,7 @@ import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { LoadingComponents } from '@/components/custom';
 import { ActionButton } from '@/src/components/custom/ActionButton';
 import { FaRedo, FaPlay } from 'react-icons/fa';
+import { parseErrorMessage } from '@/src/utils/parseError';
 
 interface CertSummaryProps {
   userId: string;
@@ -58,7 +59,7 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
             Failed to load certification summary
           </p>
         </div>
-        <p className="text-xs text-red-600 dark:text-red-400 mb-4">{(error as Error).message}</p>
+        <p className="text-xs text-red-600 dark:text-red-400 mb-4">{parseErrorMessage(error)}</p>
 
         {/* Show regenerate button only if user has enough exams */}
         {examCount >= 2 && (

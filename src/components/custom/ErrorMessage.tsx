@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react'; // Using AlertTriangle icon
+import { parseErrorMessage } from '@/src/utils/parseError';
 
 interface ErrorMessageProps {
   error: Error | string | null | undefined;
@@ -13,7 +14,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ error, className, title = '
     return null;
   }
 
-  const message = typeof error === 'string' ? error : error.message;
+  const message = parseErrorMessage(error);
 
   if (!message) {
     return null;
