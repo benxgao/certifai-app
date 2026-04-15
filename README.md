@@ -45,6 +45,23 @@ npm run format
 
 Copy `.env.example` to `.env.local` and fill in required values (Firebase, API endpoints, etc).
 
+### 6. Run E2E Tests
+
+Playwright E2E tests are available for testing signin flows and exam management:
+
+```bash
+# Run all E2E tests
+npm run test:e2e
+
+# Run tests in interactive UI mode
+npm run test:e2e:ui
+
+# Run tests with browser window visible
+npm run test:e2e:headed
+```
+
+See [PLAYWRIGHT_SETUP.md](./PLAYWRIGHT_SETUP.md) for detailed testing instructions and setup.
+
 ---
 
 ## Development Patterns

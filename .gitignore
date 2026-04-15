@@ -13,6 +13,12 @@
 # testing
 /coverage
 
+# playwright
+/playwright-report/
+/blob-report/
+/test-results/
+.auth/
+
 # next.js
 /.next/
 /out/
@@ -43,3 +49,5 @@ next-env.d.ts
 .vscode
 .history
 gcp_credentials.json
+test-results/
+test-error-debug.png
