@@ -14,7 +14,9 @@
     "lint": "next lint",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:headed": "playwright test --headed"
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ci-preflight": "bash scripts/e2e-pre-flight.sh",
+    "test:e2e:ci-postdeploy": "bash scripts/e2e-post-deployment.sh"
   },
   "dependencies": {
     "@genkit-ai/vertexai": "^1.16.0",

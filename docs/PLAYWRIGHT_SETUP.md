@@ -317,4 +317,3 @@ Plus any Firebase config secrets needed in `.env.local`
 - Create `.env.local` with your test credentials
 - Run `npm run test:e2e` to execute tests
 - Check `PLAYWRIGHT_SETUP.md` sections above as needed
-

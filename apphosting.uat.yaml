@@ -62,3 +62,9 @@ env:
   - variable: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
     secret: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY # secret
 
+  # E2E Test Credentials (used during pre-flight tests in CI/CD)
+  - variable: PW_TEST_EMAIL
+    secret: PW_TEST_EMAIL # secret
+
+  - variable: PW_TEST_PASSWORD
+    secret: PW_TEST_PASSWORD # secret

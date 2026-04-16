@@ -1,0 +1,51 @@
+# Cloud Build configuration for Firebase App Hosting
+# This file defines the build steps including pre-deployment e2e tests
+# Firebase App Hosting will use this configuration automatically if it exists
+
+steps:
+  # Step 1: Install dependencies
+  - name: 'node:24'
+    entrypoint: npm
+    args: ['ci']
+    id: 'install-dependencies'
+
+  # Step 2: Install Playwright browsers
+  - name: 'node:24'
+    entrypoint: npm
+    args: ['run', 'playwright', 'install', '--with-deps', 'chromium']
+    id: 'install-playwright'
+    waitFor: ['install-dependencies']
+
+  # Step 3: Build the application
+  - name: 'node:24'
+    entrypoint: npm
+    args: ['run', 'build']
+    id: 'build-app'
+    waitFor: ['install-playwright']
+    env:
+      - 'NODE_ENV=${NODE_ENV}'
+
+  # Step 4: Run pre-flight e2e tests (blocks build on failure)
+  - name: 'node:24'
+    entrypoint: bash
+    args: ['scripts/e2e-pre-flight.sh']
+    id: 'run-preflight-tests'
+    waitFor: ['build-app']
+    env:
+      - 'CI=true'
+      - 'NODE_ENV=${NODE_ENV}'
+      - 'PW_TEST_EMAIL=${PW_TEST_EMAIL}'
+      - 'PW_TEST_PASSWORD=${PW_TEST_PASSWORD}'
+      - 'NEXT_PUBLIC_FIREBASE_API_KEY=${NEXT_PUBLIC_FIREBASE_API_KEY}'
+      - 'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}'
+      - 'NEXT_PUBLIC_FIREBASE_PROJECT_ID=${NEXT_PUBLIC_FIREBASE_PROJECT_ID}'
+
+# Images to be built (this will be automatically handled by Firebase App Hosting)
+images:
+  - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME'
+
+# Build timeout
+timeout: '3600s'
+
+# Service account can be specified here if needed
+# serviceAccount: 'apphosting@$PROJECT_ID.iam.gserviceaccount.com'

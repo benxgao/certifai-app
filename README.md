@@ -47,8 +47,9 @@ Copy `.env.example` to `.env.local` and fill in required values (Firebase, API e
 
 ### 6. Run E2E Tests
 
-Playwright E2E tests are available for testing signin flows and exam management:
+Playwright E2E tests validate signin flows and exam management:
 
+#### Local Development
 ```bash
 # Run all E2E tests
 npm run test:e2e
@@ -60,7 +61,39 @@ npm run test:e2e:ui
 npm run test:e2e:headed
 ```
 
-See [PLAYWRIGHT_SETUP.md](./PLAYWRIGHT_SETUP.md) for detailed testing instructions and setup.
+#### CI/CD Pipeline (Firebase App Hosting)
+E2E tests are automatically integrated into the Firebase App Hosting CI/CD pipeline via Cloud Build on both production and UAT environments:
+
+- **Branches with E2E Tests:**
+  - `master` → Production deployment (uses `cloudbuild.yaml`, `apphosting.yaml`)
+  - `uat` → UAT deployment (uses `cloudbuild.uat.yaml`, `apphosting.uat.yaml`)
+
+- **Pre-Deployment Tests:** Run against localhost during the build process. Blocks deployment if tests fail.
+  ```bash
+  npm run test:e2e:ci-preflight
+  ```
+
+- **Post-Deployment Tests:** Run against the live environment after successful deployment (smoke tests only). Non-blocking - alerts on issues.
+  ```bash
+  npm run test:e2e:ci-postdeploy
+  ```
+
+**Setting Up E2E Tests in Cloud Build:**
+
+For pre-flight tests to work in Cloud Build, you must store test credentials in Google Cloud Secret Manager:
+1. Create secrets in your GCP project:
+   ```bash
+   gcloud secrets create PW_TEST_EMAIL --replication-policy="automatic" --data-file=- <<< "your-test-email@example.com"
+   gcloud secrets create PW_TEST_PASSWORD --replication-policy="automatic" --data-file=- <<< "your-test-password"
+   ```
+
+2. Update `apphosting.yaml` and `apphosting.uat.yaml` to reference these secrets (already configured in the repo)
+
+3. Grant Cloud Build service account permissions to access these secrets
+
+4. Configure Firebase App Hosting for both branches (see [docs/FIREBASE_APPHOSTING_SETUP.md](./docs/FIREBASE_APPHOSTING_SETUP.md))
+
+See [docs/E2E_CI_CD_SETUP.md](./docs/E2E_CI_CD_SETUP.md) for detailed testing instructions.
 
 ---
 
