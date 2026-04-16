@@ -4,7 +4,7 @@
 
 import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
-import { resetAuthenticationState } from '@/src/lib/auth-utils';
+import { resetAuthenticationState, clearClientAuthTokens } from '@/src/lib/auth-state-manager';
 
 export interface SigninFormData {
   email: string;
@@ -55,32 +55,13 @@ export const parseAuthURLParams = (): URLParams => {
 };
 
 /**
- * Clear client-side auth tokens and storage
- */
-export const clearClientAuthTokens = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('firebaseToken');
-    localStorage.removeItem('apiUserId');
-    localStorage.removeItem('authToken');
-    sessionStorage.removeItem('firebaseToken');
-    sessionStorage.removeItem('apiUserId');
-    sessionStorage.removeItem('authToken');
-
-    // Clear verification-related states that might cause stuck flows
-    const verificationKeys = [
-      'showVerificationStep',
-      'verificationLoading',
-      'emailVerificationSent',
-    ];
-    verificationKeys.forEach((key) => {
-      localStorage.removeItem(key);
-      sessionStorage.removeItem(key);
-    });
-  }
-};
-
-/**
  * Clear legacy auth state on signin page load
+ *
+ * This function:
+ * 1. Processes URL parameters to detect session expiry
+ * 2. Clears client-side auth tokens
+ * 3. Signs out Firebase session
+ * 4. Clears server-side cookies and cache
  */
 export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string | null> => {
   try {
@@ -90,19 +71,17 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
       errorMessage = 'Your session has expired. Please sign in again.';
     }
 
-    // Clear client-side tokens
-    clearClientAuthTokens();
+    // Clear all authentication state (client + server)
+    await resetAuthenticationState();
 
     // Sign out any existing Firebase auth session
     try {
       await signOut(auth);
     } catch {}
 
-    // Clear server-side cookies and cache
-    await resetAuthenticationState();
-
     return errorMessage;
   } catch (error) {
+    console.warn('[clearLegacyAuthState] Error clearing legacy auth state:', error);
     return null;
   }
 };
@@ -162,12 +141,16 @@ export const cleanupURLParams = (urlParams: URLParams): void => {
 
 /**
  * Handle email verification for unverified users
+ * Clears authentication state and returns verification prompt message
  */
 export const handleUnverifiedUser = async (): Promise<AuthError> => {
   try {
-    await signOut(auth);
+    // Clear all auth state before signing out
     await resetAuthenticationState();
-  } catch (signOutError) {}
+    await signOut(auth);
+  } catch (error) {
+    console.warn('[handleUnverifiedUser] Error cleaning up unverified user:', error);
+  }
 
   return {
     message:
@@ -224,12 +207,16 @@ export const parseFirebaseAuthError = (error: any): string => {
 
 /**
  * Clear auth state after signin error
+ * Ensures complete cleanup of auth state when signin fails
  */
 export const clearAuthStateOnError = async (): Promise<void> => {
   try {
+    // Clear all auth tokens and sign out Firebase
     await resetAuthenticationState();
     await signOut(auth);
-  } catch (clearError) {}
+  } catch (clearError) {
+    console.warn('[clearAuthStateOnError] Error clearing auth state:', clearError);
+  }
 };
 
 /**
@@ -254,13 +241,21 @@ export const resendVerificationEmail = async (): Promise<string> => {
 
 /**
  * Simplified signin operation
- * Cookie setting is now handled by the FirebaseAuthContext automatically
+ *
+ * This function:
+ * 1. Clears any existing auth state (via centralized auth-state-manager)
+ * 2. Performs Firebase authentication
+ * 3. Checks email verification status
+ * 4. Returns success or error
+ *
+ * Note: Cookie setting and API login are handled automatically by FirebaseAuthContext
  */
 export const performSignin = async (
   form: SigninFormData,
 ): Promise<{ success: boolean; error?: AuthError }> => {
   try {
     // Clear any existing auth state before signing in to handle user transitions
+    // Uses centralized auth-state-manager for consistent cleanup
     await resetAuthenticationState();
 
     // Small delay to ensure auth state clearing is complete

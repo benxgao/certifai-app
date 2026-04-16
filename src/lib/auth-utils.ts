@@ -1,6 +1,11 @@
 /**
  * Centralized authentication utilities for handling JWT expiration and refresh token failures
+ *
+ * NOTE: Token clearing logic has been consolidated into auth-state-manager.ts
+ * Old functions here are maintained for backward compatibility but delegate to the new manager.
  */
+
+import { clearAuthTokens as clearAuthTokensFromManager } from './auth-state-manager';
 
 export interface AuthResponse {
   success: boolean;
@@ -26,20 +31,13 @@ export class AuthenticationError extends Error {
 
 /**
  * Clear all authentication state on the client side
+ *
+ * @deprecated Use clearAuthTokens from auth-state-manager instead
+ * This function is maintained for backward compatibility.
  */
 export const clearClientAuthState = async (): Promise<void> => {
-  try {
-    // Clear auth cookie
-    await fetch('/api/auth-cookie/clear', {
-      method: 'POST',
-    });
-
-    // Clear any localStorage tokens if they exist
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('firebaseToken');
-      localStorage.removeItem('apiUserId');
-    }
-  } catch (error) {}
+  // Delegate to the new centralized auth-state-manager
+  await clearAuthTokensFromManager('client', { clearCache: false, logClearing: false });
 };
 
 /**
@@ -177,86 +175,13 @@ export const fetchAuthJSON = async <T = any>(
 /**
  * Complete authentication state reset utility
  * Clears all authentication tokens, cookies, and state
+ *
+ * @deprecated Use resetAuthenticationState or clearAuthTokens from auth-state-manager instead
+ * This function is maintained for backward compatibility.
  */
 export const resetAuthenticationState = async (): Promise<void> => {
-  try {
-    // Clear server-side cookies AND token cache with retry logic
-    try {
-      // Clear cookies
-      await fetch('/api/auth-cookie/clear', {
-        method: 'POST',
-      });
-
-      // Clear server-side token cache to prevent stuck states
-      await fetch('/api/auth-cookie/clear-cache', {
-        method: 'POST',
-      });
-    } catch (serverError) {
-      // Continue with client-side clearing even if server-side fails
-    }
-
-    // Clear any client-side storage
-    if (typeof window !== 'undefined') {
-      // Clear localStorage
-      const localStorageKeys = ['firebaseToken', 'apiUserId', 'authToken'];
-      localStorageKeys.forEach((key) => {
-        try {
-          localStorage.removeItem(key);
-        } catch (e) {}
-      });
-
-      // Clear sessionStorage
-      const sessionStorageKeys = ['firebaseToken', 'apiUserId', 'authToken'];
-      sessionStorageKeys.forEach((key) => {
-        try {
-          sessionStorage.removeItem(key);
-        } catch (e) {}
-      });
-
-      // Clear verification-related states that might cause stuck flows
-      const verificationKeys = [
-        'showVerificationStep',
-        'verificationLoading',
-        'emailVerificationSent',
-      ];
-      verificationKeys.forEach((key) => {
-        try {
-          localStorage.removeItem(key);
-          sessionStorage.removeItem(key);
-        } catch (e) {}
-      });
-
-      // Force clear cookies via document.cookie as additional measure
-      try {
-        const cookiesToClear = ['authToken'];
-        cookiesToClear.forEach((cookieName) => {
-          // Clear for current path
-          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-          // Clear for root domain
-          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
-          // Clear for parent domain (if subdomain)
-          const parts = window.location.hostname.split('.');
-          if (parts.length > 2) {
-            const parentDomain = '.' + parts.slice(-2).join('.');
-            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${parentDomain}`;
-          }
-        });
-      } catch (e) {}
-
-      // Clear any browser cache for auth endpoints
-      try {
-        if ('caches' in window) {
-          caches.keys().then((cacheNames) => {
-            cacheNames.forEach((cacheName) => {
-              if (cacheName.includes('auth') || cacheName.includes('api')) {
-                caches.delete(cacheName);
-              }
-            });
-          });
-        }
-      } catch (e) {}
-    }
-  } catch (error) {}
+  // Delegate to the new centralized auth-state-manager
+  await clearAuthTokensFromManager('all', { clearCache: true, logClearing: false });
 };
 
 /**

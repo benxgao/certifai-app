@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
-import { resetAuthenticationState } from '@/lib/auth-utils';
+import { resetAuthenticationState } from '@/src/lib/auth-state-manager';
 import { toastHelpers } from '@/src/lib/toast';
 import PageLoader from './PageLoader';
 
