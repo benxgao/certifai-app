@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
     // Get additional user data from request body
     const body = await request.json();
-    const { firstName, lastName, initCertId } = body;
+    const { firstName, lastName, initCertId, autoVerify } = body;
 
     // Try to create user in external API first with better error handling
     // This will return our internal api_user_id if successful
@@ -72,6 +72,7 @@ export async function POST(request: NextRequest) {
               email,
               first_name: firstName,
               last_name: lastName,
+              autoVerify: autoVerify || false, // Pass autoVerify flag to backend
             }),
             signal: controller.signal,
           },

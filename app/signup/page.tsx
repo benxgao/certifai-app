@@ -29,6 +29,7 @@ import {
   validateSignupForm,
   getFirebaseErrorMessage,
 } from '@/src/utils/signup-debug';
+import { isUATEnv } from '@/src/utils/env';
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -151,6 +152,17 @@ export default function SignUpPage() {
         const apiUserId = await handleUserRegistration(user, firstName, lastName, selectedCertId!);
         signupDebugger.success('api-registration', `Registered with API ID: ${apiUserId}`);
         registrationSuccess = true;
+
+        // UAT BYPASS: If UAT environment and registration succeeded, redirect directly to signin
+        if (isUATEnv()) {
+          setLoading(false);
+          signupDebugger.success('uat-bypass', 'UAT environment detected, redirecting to signin');
+          setIsRedirectingToSignin(true);
+          // Small delay to allow custom claims to propagate before auth setup runs
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          router.push('/signin');
+          return;
+        }
       } catch (registrationError: any) {
         signupDebugger.error('api-registration', registrationError.message, registrationError);
         // Continue with email verification even if registration fails
@@ -162,52 +174,55 @@ export default function SignUpPage() {
       // Check if component is still mounted before proceeding
       if (!isMountedRef.current) return;
 
-      // Step 2: Send email verification with timeout
-      signupDebugger.pending('email-verification', 'Sending email verification');
+      // Step 2: Send email verification with timeout (skipped in UAT)
+      // In UAT, email is auto-verified by backend, so we skip this step
+      if (!isUATEnv()) {
+        signupDebugger.pending('email-verification', 'Sending email verification');
 
-      try {
-        // Add timeout to email verification to prevent hanging
-        const emailVerificationPromise = sendEmailVerificationWithRetry(user);
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Email verification timed out')), 20000),
-        );
+        try {
+          // Add timeout to email verification to prevent hanging
+          const emailVerificationPromise = sendEmailVerificationWithRetry(user);
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Email verification timed out')), 20000),
+          );
 
-        await Promise.race([emailVerificationPromise, timeoutPromise]);
-        signupDebugger.success('email-verification', 'Email verification sent successfully');
+          await Promise.race([emailVerificationPromise, timeoutPromise]);
+          signupDebugger.success('email-verification', 'Email verification sent successfully');
 
-        // Reset loading state before showing verification step
-        setLoading(false);
-        setShowVerificationStep(true);
-        setSuccess('Account created successfully! Please check your email to verify your account.');
+          // Reset loading state before showing verification step
+          setLoading(false);
+          setShowVerificationStep(true);
+          setSuccess('Account created successfully! Please check your email to verify your account.');
 
-        toast.success('Welcome to Certestic!', {
-          description: 'Please check your email and verify your account to complete registration.',
-        });
+          toast.success('Welcome to Certestic!', {
+            description: 'Please check your email and verify your account to complete registration.',
+          });
 
-        // Show additional message if registration failed but verification succeeded
-        if (!registrationSuccess) {
-          setTimeout(() => {
-            if (isMountedRef.current) {
-              toast.info('Account Setup', {
-                description:
-                  'Your account was created successfully. Some features may be limited until backend registration completes.',
-              });
-            }
-          }, 2000);
+          // Show additional message if registration failed but verification succeeded
+          if (!registrationSuccess) {
+            setTimeout(() => {
+              if (isMountedRef.current) {
+                toast.info('Account Setup', {
+                  description:
+                    'Your account was created successfully. Some features may be limited until backend registration completes.',
+                });
+              }
+            }, 2000);
+          }
+        } catch (verificationError: any) {
+          signupDebugger.error('email-verification', verificationError.message, verificationError);
+
+          // Reset loading state before showing verification step
+          setLoading(false);
+          // Still show verification step but with error message
+          setShowVerificationStep(true);
+          setError(`Account created but verification email failed: ${verificationError.message}`);
+
+          toast.warning('Account created successfully!', {
+            description:
+              'However, the verification email failed to send. You can resend it from the next screen.',
+          });
         }
-      } catch (verificationError: any) {
-        signupDebugger.error('email-verification', verificationError.message, verificationError);
-
-        // Reset loading state before showing verification step
-        setLoading(false);
-        // Still show verification step but with error message
-        setShowVerificationStep(true);
-        setError(`Account created but verification email failed: ${verificationError.message}`);
-
-        toast.warning('Account created successfully!', {
-          description:
-            'However, the verification email failed to send. You can resend it from the next screen.',
-        });
       }
     } catch (error: any) {
       signupDebugger.error('signup-process', 'Signup process failed', error);
@@ -328,6 +343,7 @@ export default function SignUpPage() {
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           initCertId: selectedCertId,
+          autoVerify: isUATEnv(),
         }),
         signal: controller.signal,
       });
