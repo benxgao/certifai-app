@@ -23,7 +23,7 @@ export default function SimpleAppFooter() {
               <span className="font-semibold text-gray-900 dark:text-slate-100">Certestic</span>
             </div>
             <span className="text-gray-500 dark:text-slate-400 text-sm">
-              © 2025 All rights reserved
+              © 2026 All rights reserved
             </span>
           </div>
 

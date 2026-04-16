@@ -15,7 +15,6 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 
 /**
  * Study Guides page - Coming Soon feature page
- * This feature is planned for Q3 2025 as indicated in the roadmap
  */
 export default function StudyGuidesPage() {
   return (

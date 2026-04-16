@@ -237,7 +237,7 @@ export default function MarketingFooter() {
         {/* Bottom Section */}
         <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-700">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0">
-            <div className="text-slate-400 text-sm">© 2025 Certestic. All rights reserved.</div>
+            <div className="text-slate-400 text-sm">© 2026 Certestic. All rights reserved.</div>
             <div className="flex items-center space-x-4 sm:space-x-6">
               <div className="flex items-center space-x-2 text-slate-400 text-sm">
                 <span>🚀</span>
