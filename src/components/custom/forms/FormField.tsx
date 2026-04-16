@@ -74,7 +74,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         minLength={minLength}
         maxLength={maxLength}
         className={cn(
-          'text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-800/80 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md',
+          'text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-800/80 dark:text-slate-100 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 shadow-sm',
           error && 'border-red-300 dark:border-red-600 focus:border-red-500 focus:ring-red-500/20',
           inputClassName,
         )}
