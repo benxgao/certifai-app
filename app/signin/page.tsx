@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -75,7 +76,11 @@ const LoginPage = () => {
 
     try {
       setError('');
-      setIsLoading(true);
+
+      // Force immediate synchronous state update to show spinner instantly
+      flushSync(() => {
+        setIsLoading(true);
+      });
 
       const result = await performSignin(form);
 

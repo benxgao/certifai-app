@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import { flushSync } from 'react-dom';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { useSearchParams } from 'next/navigation';
 import LandingHeader from '@/src/components/custom/LandingHeader';
@@ -52,7 +53,11 @@ function ForgotPasswordContent() {
     try {
       setError('');
       setSuccess('');
-      setIsLoading(true);
+
+      // Force immediate synchronous state update to show spinner instantly
+      flushSync(() => {
+        setIsLoading(true);
+      });
 
       // Configure action code settings to use the new URL structure
       const actionCodeSettings = {

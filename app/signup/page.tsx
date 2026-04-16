@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -105,7 +106,11 @@ export default function SignUpPage() {
     }
 
     signupDebugger.success('form-validation', 'Form validation passed');
-    setLoading(true);
+
+    // Force immediate synchronous state update to show spinner instantly
+    flushSync(() => {
+      setLoading(true);
+    });
 
     // Safety timeout to prevent hanging forever
     const safetyTimeout = setTimeout(() => {
