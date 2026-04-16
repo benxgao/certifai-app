@@ -5,6 +5,13 @@
 import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
 import { resetAuthenticationState, clearClientAuthTokens } from '@/src/lib/auth-state-manager';
+import {
+  clearVerificationState as clearVerificationStateImpl,
+  cleanupStaleVerificationState,
+} from '@/src/lib/auth-verification-state';
+
+// Export verification state clearing for backward compatibility
+export const clearVerificationState = clearVerificationStateImpl;
 
 export interface SigninFormData {
   email: string;
@@ -61,7 +68,8 @@ export const parseAuthURLParams = (): URLParams => {
  * 1. Processes URL parameters to detect session expiry
  * 2. Clears client-side auth tokens
  * 3. Signs out Firebase session
- * 4. Clears server-side cookies and cache
+ * 4. Clears verification state
+ * 5. Clears server-side cookies and cache
  */
 export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string | null> => {
   try {
@@ -70,6 +78,9 @@ export const clearLegacyAuthState = async (urlParams: URLParams): Promise<string
     if (urlParams.hasSessionExpired) {
       errorMessage = 'Your session has expired. Please sign in again.';
     }
+
+    // Clear verification state (replaces scattered localStorage keys)
+    cleanupStaleVerificationState();
 
     // Clear all authentication state (client + server)
     await resetAuthenticationState();

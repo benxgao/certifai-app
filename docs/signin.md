@@ -1,276 +1,225 @@
-# Comprehensive Signin & Authentication System Documentation
+# Authentication System Documentation
 
 ## Overview
 
-The certifai authentication system is a modern Firebase Auth implementation with JWT token management, custom claims integration, and intelligent state management. This system provides both client-side and server-side authentication with a clean, streamlined flow that seamlessly integrates with the signup process.
+The certifai authentication system uses Firebase Auth with JWT token management, custom claims integration, and intelligent state management. It provides a secure, streamlined flow with race condition prevention and explicit state tracking.
 
-## Architecture
+## Core Architecture
 
-### Core Components
+### Key Components
 
-1. **Firebase Authentication**: Primary authentication provider with email verification requirement
-2. **JWT Token Management**: JOSE JWT wrapper containing Firebase tokens for server-side validation
-3. **Custom Claims Integration**: Stores `api_user_id` from backend API in Firebase custom claims
-4. **Intelligent State Management**: Smart auth state handling with race condition prevention
+1. **Firebase Authentication**: Email/password auth with email verification requirement
+2. **JWT Token Management**: Secure HTTP-only cookies containing Firebase tokens
+3. **Custom Claims**: Stores `api_user_id` from backend API in Firebase custom claims
+4. **Intelligent State Management**: Unified token clearing, explicit state transitions, race condition prevention
 5. **Route Protection**: AuthGuard with timeout handling and middleware protection
-6. **Middleware Protection**: Server-side route protection for `/main/*` paths and signin redirection
+6. **Token Refresh**: Context-aware auto-refresh (45 minutes) that skips auth pages
 
-### Signin Flow Architecture
+---
 
-#### High-Level Flow Diagram
+## Signin Flow
+
+### Complete Signin Process
 
 ```mermaid
 graph TD
-    A[User Accesses Signin Page] --> B[Initialize Signin Page]
-    B --> C[Clear Legacy Auth State]
-    C --> D[Process URL Parameters]
-    D --> E[Display Signin Form]
+    A[User Accesses /signin] --> B[Initialize & Clear State]
+    B --> C[Process URL Parameters]
+    C --> D{Has Valid Token?}
 
-    E --> F[User Submits Credentials]
-    F --> G[Form Validation]
-    G -->|Invalid| H[Show Form Errors]
-    G -->|Valid| I[Clear Existing Auth State]
+    D -->|Yes| E[Redirect to /main]
+    D -->|No| F[Display Signin Form]
 
-    I --> J[Firebase Authentication]
-    J -->|Success| K{Email Verified?}
-    J -->|Error| L[Parse Firebase Error]
+    F --> G[User Submits Credentials]
+    G --> H[Form Validation]
+    H -->|Invalid| I[Show Form Errors]
+    I --> F
 
-    K -->|Yes| M[FirebaseAuthContext Processing]
-    K -->|No| N[Handle Unverified User]
+    H -->|Valid| J[Clear Existing Auth State]
+    J --> K[Firebase signInWithEmailAndPassword]
 
-    M --> O[Parallel Auth Setup]
-    O --> P[Create JWT Token]
-    O --> Q[Set Secure Cookie]
-    O --> R[Get API User ID]
+    K -->|Error| L[Parse & Display Error]
+    L --> F
 
-    P --> S[Authentication Complete]
-    Q --> S
-    R --> S
+    K -->|Success| M{Email Verified?}
+    M -->|No| N[Show Verification Prompt]
+    M -->|Yes| O[Execute Signin Transition]
 
-    S --> T[Redirect to Protected Routes]
+    O --> P[Operation Lock Acquired]
+    P --> Q{Another Signin\nIn Progress?}
+    Q -->|Yes| R[Queue This Operation]
+    Q -->|No| S[Run Auth Setup]
 
-    N --> U[Sign Out User]
-    U --> V[Show Verification Prompt]
-    V --> W[Resend Verification Email]
+    S --> T[Parallel Operations]
+    T --> U[Get Fresh Firebase Token]
+    T --> V[Create JWT Cookie]
+    T --> W[API Login]
 
-    L --> X[Show Error Message]
-    H --> E
-    X --> E
+    U --> X[All Complete]
+    V --> X
+    W --> X
 
-    style A fill:#e1f5fe
-    style S fill:#c8e6c9
-    style T fill:#4caf50
-    style V fill:#fff3e0
-    style X fill:#ffcdd2
+    X --> Y[Clear State Storage]
+    Y --> Z[Redirect to /main]
+
+    style A fill:#e3f2fd
+    style Z fill:#c8e6c9
+    style N fill:#fff3e0
+    style L fill:#ffebee
 ```
 
-#### Component Architecture
+### Step-by-Step Explanation
+
+**1. Page Initialization**
+
+- Clears any legacy auth state (scattered localStorage keys)
+- Processes URL parameters (error, message, verification status)
+- If user has valid token → redirect to `/main`
+
+**2. Form Submission**
+
+- Validates email format and password strength
+- Shows inline errors if validation fails
+
+**3. Firebase Authentication**
+
+- Calls `signInWithEmailAndPassword()` with credentials
+- If error → parse Firebase error code and show user-friendly message
+- If success → check if email is verified
+
+**4. Verification Check**
+
+- If email NOT verified → sign out and show resend verification prompt
+- If email verified → proceed to auth setup
+
+**5. Signin Transition (with Race Condition Prevention)**
+
+- `withAuthOperationLock()` acquires a lock
+- If another signin is in progress → queue this operation
+- Otherwise → execute auth setup immediately
+
+**6. Parallel Auth Setup**
+
+- **Get Fresh Firebase Token**: `authUser.getIdToken(true)` - Forces fresh token
+- **Create JWT Cookie**: Call `/api/auth-cookie/set` with Firebase token
+- **API Login**: Call `/api/auth/login` to get `api_user_id`
+- All 3 operations run in parallel for speed
+
+**7. Complete & Redirect**
+
+- All tokens and state cleared
+- Redirect to `/main` with success message
+
+### Error Handling
 
 ```mermaid
 graph LR
-    A[SigninPage] --> B[Form Management]
-    A --> C[State Management]
-    A --> D[Error Handling]
-    A --> E[Loading States]
+    A[Firebase Error] --> B{Error Code}
 
-    F[useSigninHooks] --> G[useAuthRedirect]
-    F --> H[useSigninInitialization]
+    B -->|user-not-found<br/>wrong-password| C[Invalid Credentials]
+    B -->|invalid-email| D[Invalid Email Format]
+    B -->|too-many-requests| E[Too Many Attempts]
+    B -->|network-request-failed| F[Network Error]
 
-    I[signin-helpers.ts] --> J[performSignin]
-    I --> K[parseFirebaseAuthError]
-    I --> L[handleUnverifiedUser]
-    I --> M[URL Parameter Processing]
+    C --> G[Display Friendly Message]
+    D --> G
+    E --> G
+    F --> G
 
-    N[FirebaseAuthContext] --> O[Auth State Management]
-    N --> P[Token Refresh Logic]
-    N --> Q[Cookie Management]
-    N --> R[API Integration]
+    G --> H[User Can Retry]
 
-    S[AuthGuard] --> T[Route Protection]
-    S --> U[Timeout Handling]
-
-    style A fill:#bbdefb
-    style F fill:#c8e6c9
-    style I fill:#fff3e0
-    style N fill:#f3e5f5
-    style S fill:#e0f2f1
+    style A fill:#ffebee
+    style G fill:#fff3e0
+    style H fill:#c8e6c9
 ```
 
-#### Detailed Implementation Flow
+---
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant SP as SigninPage
-    participant SH as signin-helpers
-    participant FB as Firebase Auth
-    participant AC as AuthContext
-    participant API as Backend API
-    participant MW as Middleware
+## Logout Flow
 
-    U->>SP: Access signin page
-    SP->>SH: initializeSigninPage()
-    SH->>SH: Clear legacy auth state
-    SH->>SH: Process URL parameters
-    SH-->>SP: Display messages/errors
-
-    U->>SP: Submit credentials
-    SP->>SH: performSignin(form)
-    SH->>SH: resetAuthenticationState()
-    SH->>FB: signInWithEmailAndPassword()
-
-    alt Email Verified
-        FB-->>SH: Authenticated user
-        SH-->>SP: Success result
-        SP->>AC: Auth state change triggered
-
-        par Parallel Auth Setup
-            AC->>FB: Get fresh token
-            AC->>API: Login to backend
-            AC->>AC: Create JWT wrapper
-            AC->>AC: Set secure cookie
-        end
-
-        AC-->>SP: Authentication complete
-        SP->>SP: Trigger redirect
-        SP->>MW: Navigate to /main
-        MW->>MW: Validate JWT token
-        MW-->>U: Access granted
-
-    else Email Not Verified
-        FB-->>SH: Unverified user
-        SH->>SH: handleUnverifiedUser()
-        SH->>FB: signOut()
-        SH->>SH: Clear auth state
-        SH-->>SP: Show verification prompt
-
-        U->>SP: Request resend email
-        SP->>SH: resendVerificationEmail()
-        SH->>FB: sendEmailVerification()
-        FB-->>SH: Email sent
-        SH-->>SP: Success message
-
-    else Authentication Error
-        FB-->>SH: Error response
-        SH->>SH: parseFirebaseAuthError()
-        SH->>SH: clearAuthStateOnError()
-        SH-->>SP: User-friendly error
-        SP-->>U: Display error message
-    end
-```
-
-### Authentication Flow
-
-#### Primary Flow
-
-1. **Page Initialization**: Clear legacy auth state and process URL parameters
-2. **User Authentication**: Firebase email/password authentication with email verification
-3. **Parallel Auth Setup**: Simultaneous token generation, cookie setting, and API integration
-4. **Token Generation**: Create JOSE JWT wrapper containing Firebase ID token
-5. **Cookie Setting**: Store JWT in secure HTTP-only cookie (`authToken`)
-6. **API Integration**: Get `api_user_id` from backend API and store in custom claims
-7. **Route Protection**: Middleware validates JWT and Firebase token for protected routes
-8. **Smart Signin Handling**: Middleware redirects authenticated users from signin page to main app
-
-#### State Management Architecture
-
-```mermaid
-stateDiagram-v2
-    [*] --> PageLoad
-    PageLoad --> AuthStateClearing: Initialize
-    AuthStateClearing --> URLProcessing: Clear Legacy State
-    URLProcessing --> FormReady: Process Parameters
-
-    FormReady --> FormSubmission: User Input
-    FormSubmission --> ValidationCheck: Submit Form
-    ValidationCheck --> AuthAttempt: Valid Input
-    ValidationCheck --> FormError: Invalid Input
-
-    AuthAttempt --> FirebaseAuth: performSignin()
-    FirebaseAuth --> EmailCheck: Firebase Success
-    FirebaseAuth --> AuthError: Firebase Error
-
-    EmailCheck --> ParallelSetup: Email Verified
-    EmailCheck --> UnverifiedFlow: Email Not Verified
-
-    ParallelSetup --> TokenCreation: Start Parallel Ops
-    ParallelSetup --> CookieSetting: Start Parallel Ops
-    ParallelSetup --> APILogin: Start Parallel Ops
-
-    TokenCreation --> AuthComplete: Token Ready
-    CookieSetting --> AuthComplete: Cookie Set
-    APILogin --> AuthComplete: API Connected
-
-    AuthComplete --> RedirectCheck: All Setup Complete
-    RedirectCheck --> ProtectedRoute: Redirect to /main
-
-    UnverifiedFlow --> SignOut: Clear Firebase State
-    SignOut --> VerificationPrompt: Show Verification UI
-    VerificationPrompt --> ResendEmail: User Action
-    ResendEmail --> EmailSent: Firebase Success
-    EmailSent --> VerificationPrompt: Wait for Verification
-
-    AuthError --> ErrorDisplay: Parse Error
-    FormError --> FormReady: Fix Errors
-    ErrorDisplay --> FormReady: Retry
-
-    state ParallelSetup {
-        [*] --> TokenOp
-        [*] --> CookieOp
-        [*] --> APIOp
-        TokenOp --> Complete
-        CookieOp --> Complete
-        APIOp --> Complete
-    }
-```
-
-#### Token Management Flow
+### Complete Logout Process
 
 ```mermaid
 graph TD
-    A[User Authentication] --> B[FirebaseAuthContext Activated]
-    B --> C[Parallel Operations Start]
+    A[User Clicks Logout] --> B[transitionToSignedOut]
 
-    C --> D[Get Fresh Firebase Token]
-    C --> E[Backend API Login]
-    C --> F[JWT Wrapper Creation]
+    B --> C[Phase 1: Clear Tokens]
+    C --> D[Clear All Storage Locations]
+    D --> E{Success?}
 
-    D --> G[Token Retrieved]
-    E --> H[API User ID Retrieved]
-    F --> I[JWT Structure Created]
+    E -->|Error| F[Log Warning, Continue]
+    E -->|Success| G[Continue to Phase 2]
+    F --> G
 
-    G --> J[Set Secure Cookie]
-    H --> K[Store in Custom Claims]
-    I --> J
+    G --> H[Phase 2: Firebase SignOut]
+    H --> I[auth.signOut]
+    I --> J{Success?}
 
-    J --> L[Cookie Set Successfully]
-    K --> M[Claims Updated]
+    J -->|Error| K[Log Warning, Continue]
+    J -->|Success| L[Continue to Redirect]
+    K --> L
 
-    L --> N[Authentication State Complete]
-    M --> N
-
-    N --> O[Auto-Refresh Setup]
-    O --> P[45-Minute Interval]
-    P --> Q{Page Context Check}
-
-    Q -->|Auth Page| R[Skip Refresh]
-    Q -->|Protected Page| S[Perform Refresh]
-
-    S --> T{Refresh Success?}
-    T -->|Yes| U[Update Token & Cookie]
-    T -->|No| V[Clear Auth State]
-
-    U --> P
-    V --> W[Force Signin Redirect]
-    R --> P
+    L --> M[Return Success Result]
+    M --> N[Redirect to /signin]
+    N --> O[Show Success Message]
 
     style A fill:#e3f2fd
-    style N fill:#c8e6c9
-    style V fill:#ffebee
-    style W fill:#ffcdd2
+    style B fill:#fff3e0
+    style O fill:#c8e6c9
 ```
 
-#### Token Structure
+### Step-by-Step Explanation
+
+**1. Phase 1: Clear All Tokens**
+
+- Clear `/api/auth/logout` (server-side)
+- Clear `/api/auth/clear-cache` (token cache)
+- Clear `localStorage`: authToken, firebaseToken, apiUserId, verification state
+- Clear `sessionStorage`: Same keys as above
+- Clear `document.cookie`: Multiple domain variations
+- Clear browser cache for auth endpoints
+
+**Phase 1 Result**: Included in API response as `phasesFailed` field (if there are issues)
+
+**2. Phase 2: Firebase SignOut**
+
+- Call `auth.signOut()` to sign user out of Firebase
+- Continue even if this fails (client state already cleared)
+
+**3. Redirect**
+
+- Use `window.location.href` for maximum reliability
+- Redirect to `/signin` with success message
+- Clean URL (no verification parameters)
+
+### Error Recovery
+
+Even if logout encounters errors:
+
+- API responds with HTTP 200 (success status)
+- Includes `phasesFailed` field listing which phases had issues
+- Client still redirects to signin
+- User is always logged out even if some operations failed
+
+### Emergency Logout
+
+If normal logout hangs:
+
+```typescript
+emergencyLogout(); // Initiates async cleanup, redirects immediately
+```
+
+This:
+
+- Starts token clearing asynchronously (don't wait)
+- Redirects immediately to `/signin` with error message
+- Ensures user gets logged out even if infrastructure fails
+
+---
+
+## Token Management
+
+### Token Structure
 
 ```json
 {
@@ -280,765 +229,430 @@ graph TD
 }
 ```
 
-#### Error Handling Architecture
+### Token Lifecycle
 
 ```mermaid
 graph LR
-    A[Error Occurs] --> B{Error Category}
+    A[User Signin] --> B[Get Token from Firebase]
+    B --> C[Create JWT Cookie]
+    C --> D[Store httpOnly, Secure]
 
-    B -->|Firebase Auth| C[Parse Firebase Error]
-    B -->|Network Error| D[Handle Network Issues]
-    B -->|Validation Error| E[Handle Form Errors]
-    B -->|Verification Error| F[Handle Email Issues]
+    D --> E[Auto-Refresh Every 45min]
+    E --> F{On Auth Page?}
+    F -->|Yes| G[Skip Refresh]
+    F -->|No| H[Refresh Token]
 
-    C --> G[User-Friendly Message]
-    D --> H[Connection Guidance]
-    E --> I[Form Field Highlighting]
-    F --> J[Verification Prompt]
+    H --> I{Refresh Success?}
+    I -->|Yes| J[Update Cookie]
+    I -->|No| K[Clear State]
+    K --> L[Force Signin]
 
-    G --> K[Clear Auth State]
-    H --> L[Retry Suggestions]
-    I --> M[Field Validation]
-    J --> N[Resend Email Option]
+    J --> E
+    G --> E
 
-    K --> O[Enable Retry]
-    L --> O
-    M --> P[Form Correction]
-    N --> Q[Email Workflow]
-
-    style A fill:#ffebee
-    style B fill:#fff3e0
-    style O fill:#e8f5e8
-    style P fill:#e8f5e8
-    style Q fill:#e8f5e8
+    style A fill:#e3f2fd
+    style J fill:#c8e6c9
+    style L fill:#ffcdd2
 ```
 
-#### Middleware Integration
+### Why Skip Refresh During Auth Pages?
+
+- Prevents race conditions when signin/signup pages are changing auth state
+- User is not authenticated yet on auth pages
+- Refresh would conflict with signin operation
+
+---
+
+## State Management
+
+### Type-Safe State Machine
+
+Auth state is now explicit (not implicit):
+
+```typescript
+enum AuthState {
+  NotAuthenticated = 'not-authenticated',
+  Authenticating = 'authenticating',
+  Authenticated = 'authenticated',
+  SessionExpired = 'session-expired',
+  Error = 'error',
+}
+
+// Valid transitions:
+// NotAuthenticated → Authenticating → Authenticated
+// Authenticated → SessionExpired → NotAuthenticated
+// Any state → Error
+```
+
+### Unified Token Clearing
+
+Before (scattered across 4 locations):
+
+```typescript
+localStorage.removeItem('firebaseToken');
+sessionStorage.removeItem('firebaseToken');
+document.cookie = 'authToken=; expires=...';
+await fetch('/api/auth/clear-cache');
+```
+
+After (single unified call):
+
+```typescript
+import { clearAuthTokens } from '@/src/lib/auth-state-manager';
+await clearAuthTokens('all'); // All clearing operations
+```
+
+Scopes:
+
+- `'all'` - Everything (APIs, localStorage, sessionStorage, cookies, cache)
+- `'client'` - Only localStorage/sessionStorage
+- `'cookies'` - Only document.cookie
+- `'storage'` - Only localStorage/sessionStorage
+
+### Verification State
+
+Before (5 scattered keys):
+
+```typescript
+localStorage.setItem('showVerificationStep', 'true');
+localStorage.setItem('verificationLoading', 'false');
+localStorage.setItem('emailVerificationSent', 'true');
+sessionStorage.setItem('verificationLoading', 'false');
+// etc...
+```
+
+After (centralized API):
+
+```typescript
+import {
+  setVerificationEmailSent,
+  getVerificationState,
+  clearVerificationState,
+} from '@/src/lib/auth-verification-state';
+
+setVerificationEmailSent(email);
+const state = getVerificationState(); // Single object
+clearVerificationState(); // All keys cleared
+```
+
+---
+
+## Race Condition Prevention
+
+### The Problem
+
+Without protection:
+
+```
+Click signin → Request 1 starts
+Click signin again → Request 2 starts (concurrent!)
+Request 1 finishes → Sets apiUserId
+Request 2 finishes → Overwrites with different value
+Result: State mixing, wrong user data
+```
+
+### The Solution
+
+Operation locking with queue:
 
 ```mermaid
 graph TD
-    A[Request to Protected Route] --> B[Middleware Intercept]
-    B --> C{Path Check}
+    A[Request 1: Signin] --> B[Lock Acquired]
+    B --> C[Execute Operation 1]
 
-    C -->|/signin| D[Signin Page Request]
-    C -->|/main/*| E[Protected Route Request]
-    C -->|Public| F[Allow Direct Access]
+    D[Request 2: Signin] --> E[Lock Busy]
+    E --> F[Queue Operation 2]
+    F --> G[Wait...]
 
-    D --> G{Has Valid Token?}
-    G -->|Yes| H[Redirect to /main]
-    G -->|No| I[Allow Signin Access]
+    C --> H[Operation 1 Complete]
+    H --> I[Release Lock]
+    I --> J[Process Queue]
+    J --> K[Lock Acquired Again]
+    K --> L[Execute Operation 2]
 
-    E --> J{Has Valid Token?}
-    J -->|Yes| K[Validate JWT Structure]
-    J -->|No| L[Redirect to Signin]
+    L --> M[Operation 2 Complete]
 
-    K --> M{JWT Valid?}
-    M -->|Yes| N[Allow Route Access]
-    M -->|No| O[Clear Cookie & Redirect]
-
-    H --> P[Prevent Duplicate Auth]
-    I --> Q[Show Signin Form]
-    L --> R[Session Expired Message]
-    N --> S[Protected Content]
-    O --> T[Clean Signin State]
-
-    style A fill:#e3f2fd
-    style S fill:#c8e6c9
-    style P fill:#fff3e0
-    style R fill:#ffebee
+    style B fill:#4caf50
+    style E fill:#ff9800
+    style G fill:#fff3e0
+    style M fill:#4caf50
 ```
 
-#### Simplified Middleware Flow
+How it works:
 
-**For `/signin` path**:
+1. First signin acquires lock
+2. Second signin while locked → queued
+3. First signin completes
+4. Queued signin automatically runs
+5. Only one operation at a time = consistent state
 
-- **Valid token**: Redirect to `/main` (prevents duplicate signin)
-- **Invalid/No token**: Allow access to signin page
-- **Expired token**: Clear cookie and allow signin page access
+---
 
-**For `/main/*` paths**:
+## Route Protection
 
-- **Valid token**: Allow access to protected content
-- **Invalid/No token**: Redirect to signin with session_expired error
-- **Expired token**: Redirect to signin with session_expired error
-
-### Integration with Signup Flow
-
-```mermaid
-graph TB
-    subgraph "Signup Integration"
-        A[User Completes Signup] --> B[Email Verification Sent]
-        B --> C[User Clicks Email Link]
-        C --> D[EmailActionHandler Processing]
-        D --> E[Email Verified Successfully]
-        E --> F[Redirect to Signin Page]
-        F --> G[Show Success Message]
-    end
-
-    subgraph "Signin Flow"
-        G --> H[User Enters Credentials]
-        H --> I[performSignin Called]
-        I --> J[Firebase Authentication]
-        J --> K[Email Verification Check]
-        K -->|Verified| L[FirebaseAuthContext Setup]
-        L --> M[Parallel Auth Operations]
-        M --> N[Authentication Complete]
-        N --> O[Redirect to /main]
-    end
-
-    subgraph "Shared Components"
-        P[signin-helpers.ts]
-        Q[FirebaseAuthContext]
-        R[Error Parsing]
-        S[URL Parameter Handling]
-    end
-
-    I --> P
-    L --> Q
-    J --> R
-    F --> S
-
-    style A fill:#e3f2fd
-    style O fill:#c8e6c9
-    style P fill:#fff3e0
-    style Q fill:#f3e5f5
-```
-
-## Key Features & Implementation Details
-
-### 1. Modern Signin Flow with Race Condition Prevention
-
-**Implementation**:
-
-- Intelligent page initialization with legacy auth state clearing
-- Form validation with real-time error clearing
-- Parallel authentication operations for optimal performance
-- Smart redirect logic that prevents navigation loops
-
-**Key Functions**:
-
-```typescript
-// Core signin operation
-const result = await performSignin(form);
-
-// Parallel auth setup in FirebaseAuthContext
-await Promise.all([
-  createJWTToken(firebaseUser),
-  setSecureCookie(jwtToken),
-  getApiUserId(firebaseUser),
-]);
-```
-
-**Files**:
-
-- `src/lib/signin-helpers.ts` - Core signin operations and error handling
-- `src/hooks/useSigninHooks.ts` - React hooks for signin functionality
-- `app/signin/page.tsx` - Modern signin page implementation
-
-### 2. Firebase Auth with Advanced State Management
-
-**Implementation**:
-
-- Email/password authentication with strict email verification requirement
-- Custom claims store `api_user_id` from backend API
-- Intelligent token refresh with context-aware timing
-- Automatic auth state clearing on refresh failures
-
-**Smart Token Refresh**:
-
-```typescript
-// Prevents refresh during auth pages to avoid race conditions
-const isAuthPage =
-  currentPath.includes('/signin') ||
-  currentPath.includes('/signup') ||
-  currentPath.includes('/forgot-password');
-
-if (isAuthPage) {
-  console.log('Skipping token refresh - user is on auth page');
-  return firebaseToken;
-}
-```
-
-**Files**:
-
-- `src/context/FirebaseAuthContext.tsx` - Enhanced auth context with intelligent refresh
-- `src/lib/auth-claims.ts` - Custom claims utilities
-- `app/api/auth/set-claims/route.ts` - Sets custom claims
-- `src/hooks/useApiUserId.ts` - React hook for accessing claims
-
-### 3. Enhanced JWT Token Security
-
-**Features**:
-
-- Simplified JWT structure for better performance
-- Secure HTTP-only cookies with proper cleanup
-- Context-aware token refresh (skips during auth flows)
-- Force signin on refresh failures to maintain security
-
-**Smart Refresh Logic**:
-
-```typescript
-// Auto-refresh every 45 minutes, but skip during auth flows
-useEffect(() => {
-  if (!firebaseUser || !shouldSetupRefresh()) return;
-
-  const interval = setInterval(async () => {
-    if (isOnAuthPage()) {
-      console.log('Skipping refresh - user on auth page');
-      return;
-    }
-    await refreshToken();
-  }, 45 * 60 * 1000); // 45 minutes
-
-  return () => clearInterval(interval);
-}, [firebaseUser, refreshToken]);
-```
-
-**Files**:
-
-- `middleware.ts` - Enhanced route protection and smart signin redirection
-- `app/api/auth-cookie/set/route.ts` - JWT creation and cookie setting
-- `app/api/auth-cookie/verify/route.ts` - Token verification
-- `src/lib/auth-setup.ts` - Authentication setup utilities
-
-### 4. Advanced Authentication Context
-
-**Implementation**:
-
-- Centralized Firebase auth state management with race condition prevention
-- Parallel authentication setup (cookie + API login + custom claims)
-- Intelligent token refresh with context awareness
-- Clean error handling with forced signin on failures
-
-**Race Condition Prevention**:
-
-```typescript
-// Prevent multiple simultaneous auth operations
-const [authSetupInProgress, setAuthSetupInProgress] = useState(false);
-
-const handleAuthStateChange = useCallback(
-  async (user: User | null) => {
-    if (authSetupInProgress) {
-      console.log('Auth setup already in progress, skipping...');
-      return;
-    }
-
-    if (user) {
-      setAuthSetupInProgress(true);
-      try {
-        await performAuthSetup(user);
-      } finally {
-        setAuthSetupInProgress(false);
-      }
-    }
-  },
-  [authSetupInProgress],
-);
-```
-
-**Files**:
-
-- `src/context/FirebaseAuthContext.tsx` - Enhanced auth context with intelligent features
-- `src/lib/auth-setup.ts` - Authentication setup utilities with parallel operations
-
-### 5. Comprehensive Error Handling System
-
-**Features**:
-
-- Firebase error parsing with user-friendly messages
-- Network error detection and guidance
-- Email verification error handling with resend capability
-- Automatic auth state clearing on errors
-
-**Error Categories**:
-
-```typescript
-// Network and timeout errors
-if (error.message?.includes('signal is aborted')) {
-  return 'Request timed out. Please check your connection and try again.';
-}
-
-// Firebase-specific errors
-switch (error.code) {
-  case 'auth/user-not-found':
-  case 'auth/wrong-password':
-    return 'Invalid email or password.';
-  case 'auth/too-many-requests':
-    return 'Too many failed attempts. Please try again later.';
-}
-```
-
-**Files**:
-
-- `src/lib/signin-helpers.ts` - Comprehensive error parsing and handling
-- `app/signin/page.tsx` - Error display and user guidance
-
-### 6. Route Protection System
-
-**Features**:
-
-- AuthGuard with intelligent timeout handling for user ID loading
-- Emergency timeout with clean error messaging
-- Simple authentication state management
-- Session expiration handling with clean redirects
-
-**Protection Layers**:
+### Signin Page (/signin)
 
 ```mermaid
 graph TD
-    A[Request] --> B[Middleware Check]
-    B --> C[AuthGuard Validation]
-    C --> D[Component Access]
+    A[User Navigates to /signin] --> B{Has Valid Auth Token?}
 
-    B -->|No Token| E[Signin Redirect]
-    C -->|Loading Timeout| F[Error Display]
-    C -->|Auth Failed| G[Clean Signout]
+    B -->|Yes| C[Already Authenticated]
+    C --> D[Redirect to /main]
 
-    style A fill:#e3f2fd
-    style D fill:#c8e6c9
-    style E fill:#fff3e0
-    style F fill:#ffebee
-    style G fill:#ffcdd2
+    B -->|No| E[Show Signin Form]
 ```
 
-**Files**:
-
-- `src/components/custom/AuthGuard.tsx` - Route protection with timeout handling
-- `middleware.ts` - Server-side route protection
-- `src/components/custom/PageLoader.tsx` - Clean loading interface
-
-### 7. Performance Optimization & Debugging
-
-**Features**:
-
-- Parallel authentication operations for faster signin
-- Intelligent token refresh timing to prevent race conditions
-- Conditional Firebase provider for public pages
-- Comprehensive error logging and state tracking
-
-**Performance Patterns**:
+### Protected Routes (/main/\*)
 
 ```mermaid
-graph LR
-    A[User Signin] --> B[Form Validation]
-    B --> C[Firebase Auth]
-    C --> D[Parallel Setup]
+graph TD
+    A[User Navigates to /main/...] --> B{Has Valid Auth Token?}
 
-    D --> E[JWT Creation]
-    D --> F[Cookie Setting]
-    D --> G[API Login]
+    B -->|No| C[Not Authenticated]
+    C --> D[Redirect to /signin]
+    D --> E[Show Session Expired Error]
 
-    E --> H[Auth Complete]
-    F --> H
-    G --> H
+    B -->|Yes| F[Validate JWT Structure]
+    F --> G{JWT Valid?}
 
-    H --> I[Redirect to Main]
+    G -->|No| H[Token Corrupted]
+    H --> D
 
-    style A fill:#e3f2fd
-    style D fill:#fff3e0
-    style H fill:#c8e6c9
-    style I fill:#4caf50
+    G -->|Yes| I[Grant Access]
 ```
 
-**Debug & Monitoring**:
+---
+
+## Error Types & Handling
+
+### Firebase Errors (Typed)
 
 ```typescript
-// Comprehensive logging throughout signin flow
-console.log('Signin successful, auth context will handle cookie setup');
-console.log('Authentication successful, initiating redirect to /main');
-console.log('Skipping token refresh - user is on auth page:', currentPath);
+enum AuthErrorType {
+  InvalidCredentials = 'invalid-credentials',
+  NetworkError = 'network-error',
+  SessionExpired = 'session-expired',
+  EmailNotVerified = 'email-not-verified',
+  TooManyAttempts = 'too-many-attempts',
+  Unknown = 'unknown',
+}
+
+// Type-safe parsing
+const typedError = parseFirebaseErrorToTypedError(code, message);
+// typedError.type is now an enum, not a string
+// typedError.userFacingMessage is pre-formatted
 ```
 
-**Files**:
+### Common Errors & Recovery
 
-- `src/components/auth/ConditionalFirebaseAuthProvider.tsx` - Conditional auth provider
-- `src/lib/auth-setup.ts` - Performance-optimized auth setup
-- All signin-related files include comprehensive logging
+| Error                     | Cause                               | Recovery                          |
+| ------------------------- | ----------------------------------- | --------------------------------- |
+| Invalid email or password | User typed wrong credentials        | Retry signin                      |
+| Too many failed attempts  | Rate limiting after failures        | Wait 15 min or use password reset |
+| Network error             | Connection issue                    | Check internet, retry             |
+| Email not verified        | User didn't click verification link | Resend verification email         |
+| Session expired           | Token refresh failed                | Click signin again                |
+
+---
 
 ## File Structure
 
-### Core Authentication Files
+### Key Auth Files
 
 ```
-src/
-├── context/
-│   └── FirebaseAuthContext.tsx           # Main auth context with state management
-├── lib/
-│   ├── auth-setup.ts                     # Authentication setup utilities
-│   ├── auth-claims.ts                    # Custom claims utilities
-│   ├── auth-utils.ts                     # General auth utilities
-│   ├── server-auth-strategy.ts           # Server-side auth validation
-│   ├── service-only.ts                   # Server-side token management
-│   ├── signin-helpers.ts                 # Signin flow utilities
-│   └── jwt-utils.ts                      # JWT helper functions
-├── hooks/
-│   ├── useApiUserId.ts                   # React hook for api_user_id access
-│   └── useSigninHooks.ts                 # Simplified signin hooks
-├── components/
-│   ├── auth/
-│   │   └── ConditionalFirebaseAuthProvider.tsx  # Conditional auth provider
-│   └── custom/
-│       ├── AuthGuard.tsx                 # Route protection with timeout
-│       └── PageLoader.tsx                # Clean loading interface
-└── swr/
-    └── useAuthSWR.ts                     # SWR with authentication
+src/lib/
+├── auth-state-manager.ts              ← Unified token clearing
+├── auth-state-transitions.ts          ← Explicit signin/logout transitions
+├── auth-operation-guard.ts            ← Race condition prevention
+├── auth-state-types.ts                ← Type-safe definitions
+├── auth-verification-state.ts         ← Centralized verification state
+├── signin-helpers.ts                  ← Signin utilities
+└── auth-setup.ts                      ← Auth setup coordination
+
+src/context/
+└── FirebaseAuthContext.tsx            ← Auth state management
+
+app/api/auth/
+├── login/route.ts                     ← Backend API login
+└── logout/route.ts                    ← Logout with phase tracking
 ```
 
-### API Routes
-
-```
-app/api/
-├── auth/
-│   ├── login/route.ts                    # Backend API login
-│   ├── register/route.ts                 # User registration
-│   ├── set-claims/route.ts               # Sets Firebase custom claims
-│   └── clear-cache/route.ts              # Emergency cache clearing
-└── auth-cookie/
-    ├── set/route.ts                      # JWT creation and cookie setting
-    ├── clear/route.ts                    # Cookie clearing
-    ├── refresh/route.ts                  # Token refresh
-    ├── verify/route.ts                   # Token verification
-    ├── server-refresh/route.ts           # Server-side token refresh
-    └── clear-cache/route.ts              # Cache clearing
-```
-
-### Layout and Middleware
-
-```
-middleware.ts                             # Route protection for /main/* paths and signin redirection
-app/
-├── layout.tsx                           # Root layout
-├── main/layout.tsx                      # Protected routes with AuthGuard
-└── signin/page.tsx                      # Authentication page
-```
+---
 
 ## Usage Examples
 
-### 1. Using Firebase Auth Context
+### Basic Signin
 
-```tsx
+```typescript
+import { performSignin } from '@/src/lib/signin-helpers';
+
+const result = await performSignin({
+  email: 'user@example.com',
+  password: 'password123',
+});
+
+if (!result.success) {
+  console.error(result.error?.message);
+}
+```
+
+### Basic Logout
+
+```typescript
+import { performLogout } from '@/src/lib/logout-utils';
+
+await performLogout('/signin'); // Redirect to signin after logout
+```
+
+### Using Auth Context
+
+```typescript
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 function MyComponent() {
   const { firebaseUser, apiUserId, loading } = useFirebaseAuth();
 
   if (loading) return <div>Loading...</div>;
-  if (!firebaseUser) return <div>Please sign in</div>;
+  if (!firebaseUser) return <div>Not signed in</div>;
 
-  return <div>Welcome {firebaseUser.email}!</div>;
+  return (
+    <div>
+      <p>Email: {firebaseUser.email}</p>
+      <p>API User ID: {apiUserId}</p>
+    </div>
+  );
 }
 ```
 
-### 2. Accessing API User ID
+### Type-Safe Error Handling
 
-```tsx
-import { useApiUserId } from '@/src/hooks/useApiUserId';
+```typescript
+import { parseFirebaseErrorToTypedError, AuthErrorType } from '@/src/lib/auth-state-types';
 
-function ProfileComponent() {
-  const { apiUserId, loading } = useApiUserId();
+try {
+  await signin(credentials);
+} catch (error: any) {
+  const typedError = parseFirebaseErrorToTypedError(error.code, error.message);
 
-  if (loading) return <div>Loading...</div>;
-  if (!apiUserId) return <div>API User ID not available</div>;
-
-  return <div>API User ID: {apiUserId}</div>;
-}
-```
-
-### 3. Server-Side Authentication
-
-```tsx
-import { getServerAuthState } from '@/src/lib/server-auth-strategy';
-
-export default async function ProtectedPage() {
-  const authState = await getServerAuthState();
-
-  if (!authState.isAuthenticated) {
-    redirect('/signin');
+  if (typedError.type === AuthErrorType.EmailNotVerified) {
+    // Show resend verification prompt
+  } else if (typedError.type === AuthErrorType.TooManyAttempts) {
+    // Show rate limit message
+  } else {
+    // Show generic error
   }
 
-  return <div>Protected content</div>;
+  // typedError.userFacingMessage is already formatted for UI
+  console.log(typedError.userFacingMessage);
 }
 ```
 
-### 4. Using AuthGuard
+### Centralized Verification State
 
-```tsx
-import AuthGuard from '@/src/components/custom/AuthGuard';
+```typescript
+import {
+  setVerificationEmailSent,
+  getVerificationState,
+  isVerificationEmailSent,
+  clearVerificationState,
+} from '@/src/lib/auth-verification-state';
 
-export default function ProtectedLayout({ children }) {
-  return <AuthGuard>{children}</AuthGuard>;
+// When verification email is sent
+setVerificationEmailSent('user@example.com');
+
+// In component: check if email was sent
+if (isVerificationEmailSent()) {
+  showResendButton = true;
 }
+
+// Get complete state (type-safe)
+const state = getVerificationState();
+console.log(state.state); // VerificationState enum
+console.log(state.email); // string
+console.log(state.timestamp); // number
+
+// On signin: clear verification state
+clearVerificationState();
 ```
 
-### 5. Emergency Recovery
-
-```tsx
-// In case of authentication issues, AuthGuard provides clean error handling
-// Authentication state is automatically cleared when needed
-```
+---
 
 ## Security Features
 
-### Token Management
+✅ **Email Verification**: Required before signin
+✅ **JWT Tokens**: Secure HTTP-only cookies with proper expiration
+✅ **Token Refresh**: Context-aware (skips auth pages)
+✅ **Middleware Protection**: Server-side validation on all `/main/*` routes
+✅ **Race Condition Prevention**: Operation locking prevents concurrent auth operations
+✅ **Clean Logout**: All tokens, cookies, and state cleared completely
+✅ **Type Safety**: Compile-time error detection with TypeScript enums
+✅ **Error Recovery**: Graceful fallback for network failures
 
-- JOSE JWT wrapper containing Firebase ID token
-- Simplified JWT structure for better performance
-- Secure HTTP-only cookies with proper expiration
-- Smart signin redirection for authenticated users
+---
 
-### Authentication Security
+## Testing Checklist
 
-- Email verification requirement
-- Server-side token validation using Firebase Admin SDK
-- Middleware protection for all `/main/*` routes
-- Smart signin page handling to prevent duplicate authentication
-- Automatic cleanup of invalid authentication state
+### Signin Tests
 
-### Error Prevention
+- [ ] Successful signin with verified email
+- [ ] Failed signin with wrong password
+- [ ] Invalid email format
+- [ ] Unverified email (show verification prompt)
+- [ ] Network error with retry
+- [ ] Rapid signin clicks (queue prevention)
+- [ ] Signin while already logged in (redirect to /main)
 
-- Request timeout handling (10 seconds for auth setup, 5 seconds for API user ID)
-- Clean timeout mechanisms with proper error messaging
-- Graceful fallback when API is unavailable
-- Comprehensive error logging
+### Logout Tests
 
-## Testing
+- [ ] Normal logout with clean redirect
+- [ ] Logout with network delay
+- [ ] Rapid logout clicks
+- [ ] Emergency logout (hangs)
+- [ ] Logout → immediate signin different account
 
-### Manual Testing
+### Token Tests
 
-1. **Authentication Flow**: Sign up → Email verification → Sign in → Access protected routes
-2. **Token Security**: Verify JWT structure includes `jti` field
-3. **Emergency Recovery**: Simulate stuck states and verify recovery options
-4. **Route Protection**: Test middleware protection on `/main/*` paths
+- [ ] Token auto-refresh every 45 minutes
+- [ ] Token refresh skipped on auth pages
+- [ ] Expired token forces signin
+- [ ] Token in cookie is httpOnly and Secure
 
-### Key Test Cases
+### Race Condition Tests
 
-- Email verification requirement
-- Smart signin redirection for authenticated users
-- Emergency timeout handling
-- Conditional Firebase provider behavior
-- Server-side authentication validation
-- Middleware handling of both signin and protected routes
+- [ ] Rapid signin x10 → single operation
+- [ ] Signin + logout concurrently → clean state
+- [ ] Multiple browser tabs (coordinated)
+
+---
 
 ## Troubleshooting
 
-### Common Issues & Solutions
+### User can't signin after signup
 
-**Email Verification Required**:
+**Check**: `firebaseUser.emailVerified` status
+**Solution**: Resend verification email from signin page
 
-- **Symptom**: User can't sign in after registration
-- **Solution**: Check email and click verification link
-- **Prevention**: Clear messaging about email verification requirement
-- **Debug**: Check `firebaseUser.emailVerified` status
+### Stuck on loading (AuthGuard)
 
-**Stuck on Loading/Race Conditions**:
+**Check**: Browser console for timeout logs
+**Cause**: API user ID failed to load
+**Solution**: Automatic 20-second timeout with clean error
 
-- **Symptom**: AuthGuard shows loading for extended periods or auth loops
-- **Solution**: Automatic timeout handling with intelligent refresh prevention
-- **Technical**: Context-aware token refresh skips auth pages, 20-second emergency timeout
-- **Debug**: Check browser console for "Skipping token refresh" messages
+### Multiple auth operations happening
 
-**Duplicate Signin Prevention**:
+**Check**: Console logs for `[authOperationGuard]` messages
+**Solution**: Operation lock ensures sequential execution
 
-- **Symptom**: User with valid session tries to access signin page
-- **Solution**: Middleware automatically redirects to `/main` page
-- **Prevention**: Smart middleware handling prevents confusion and duplicate authentication
-- **Debug**: Check network tab for redirect responses
+### Token not in cookie
 
-**Legacy Token Issues**:
+**Check**: DevTools → Application → Cookies
+**Cause**: `/api/auth-cookie/set` failed
+**Solution**: Check network tab, verify JWT structure
 
-- **Symptom**: Users redirected to signin unexpectedly
-- **Solution**: System automatically clears invalid tokens and forces fresh signin
-- **Prevention**: Simplified token structure with proper validation
-- **Debug**: Check Application tab in DevTools for `authToken` cookie
+### Logout not clearing state
 
-**Auth State Race Conditions**:
+**Check**: Browser DevTools storage after logout
+**Cause**: Some clearing operation failed
+**Solution**: Check `phasesFailed` in response, emergency logout if needed
 
-- **Symptom**: Multiple auth operations causing conflicts
-- **Solution**: `authSetupInProgress` flag prevents concurrent operations
-- **Prevention**: Intelligent state management in FirebaseAuthContext
-- **Debug**: Look for "Auth setup already in progress" console messages
-
-```mermaid
-graph TD
-    A[Auth Issue Detected] --> B{Issue Type}
-
-    B -->|Loading Stuck| C[Check Emergency Timeout]
-    B -->|Race Condition| D[Check Progress Flag]
-    B -->|Token Invalid| E[Check Cookie & Refresh]
-    B -->|Email Unverified| F[Check Verification Status]
-
-    C --> G[20s Timeout Triggers]
-    D --> H[Single Operation Check]
-    E --> I[Force Fresh Signin]
-    F --> J[Resend Verification]
-
-    G --> K[Clean Error Display]
-    H --> L[Auth Progress Logs]
-    I --> M[Clear Auth State]
-    J --> N[Email Workflow]
-
-    style A fill:#ffebee
-    style B fill:#fff3e0
-    style K fill:#e8f5e8
-    style L fill:#e8f5e8
-    style M fill:#e8f5e8
-    style N fill:#e8f5e8
-```
-
-**Middleware Errors**:
-
-- **Symptom**: 401 errors on protected routes or signin redirect loops
-- **Solution**: Check cookie presence, JWT structure, and middleware logs
-- **Debug**: Enable middleware logging for detailed error messages
-- **Prevention**: Proper JWT structure validation and cookie management
-
-### Debug Flow Chart
-
-```mermaid
-graph TB
-    A[Authentication Issue] --> B[Check Browser Console]
-    B --> C{Error Type}
-
-    C -->|Firebase Auth| D[Check Firebase Status]
-    C -->|JWT Token| E[Check Cookie & Structure]
-    C -->|API Integration| F[Check Network Tab]
-    C -->|State Management| G[Check Context Logs]
-
-    D --> H[Email Verification Status]
-    E --> I[Token Validity & Expiry]
-    F --> J[Backend API Responses]
-    G --> K[Auth State Changes]
-
-    H --> L[Verification Flow Debug]
-    I --> M[Token Refresh Debug]
-    J --> N[API Integration Debug]
-    K --> O[Context State Debug]
-
-    L --> P[Resolution Steps]
-    M --> P
-    N --> P
-    O --> P
-
-    style A fill:#ffebee
-    style P fill:#c8e6c9
-```
-
-### Developer Tools
-
-**Auth State Check**: `getServerAuthState()`
-**Token Verification**: `/api/auth-cookie/verify`
-**Cache Clearing**: `/api/auth/clear-cache`
-
-## Configuration
-
-### Environment Variables
-
-```bash
-JOSE_JWT_SECRET=your-jwt-secret
-NEXT_PUBLIC_FIREBASE_BACKEND_URL=your-backend-url
-FIREBASE_PROJECT_ID=your-project-id
-FIREBASE_PRIVATE_KEY=your-private-key
-FIREBASE_CLIENT_EMAIL=your-client-email
-```
-
-### Firebase Setup
-
-- Email/password authentication enabled
-- Email verification required
-- Custom claims support configured
-- Admin SDK properly initialized
-
-## Migration Notes
-
-### From Previous Versions
-
-- Simplified middleware with smart signin handling
-- Enhanced token validation without complex legacy support
-- Streamlined authentication flow with better user experience
-- Automatic redirection for authenticated users accessing signin page
-
-### Future Considerations
-
-- Consider implementing refresh token rotation
-- Add support for additional authentication providers
-- Implement rate limiting for authentication attempts
-- Add comprehensive audit logging
-
-## Benefits of Current Implementation
-
-### Code Quality
-
-- **Race Condition Prevention**: Intelligent auth state management prevents concurrent operations
-- **Better Performance**: Parallel authentication setup and context-aware token refresh
-- **Cleaner Flow**: Streamlined signin process with smart redirection and error handling
-- **Maintainable**: Modular architecture with clear separation of concerns
-- **Reliable**: Robust error handling with automatic recovery mechanisms
-
-### User Experience
-
-- **Faster Authentication**: Parallel operations reduce signin time
-- **Smart Redirection**: Context-aware redirects prevent confusion and loops
-- **Clear Error Messages**: User-friendly error parsing with actionable guidance
-- **Seamless Integration**: Unified flow with signup process for consistent experience
-- **Responsive Design**: Quick validation with appropriate loading states and timeouts
-
-### Security Features
-
-- **Enhanced Token Management**: Context-aware refresh prevents race conditions
-- **Forced Signin on Failures**: Invalid tokens trigger clean auth state reset
-- **Secure Cookie Handling**: HTTP-only cookies with proper expiration
-- **Email Verification Enforcement**: Strict requirement prevents unverified access
-- **Middleware Protection**: Server-side validation for all protected routes
-
-### Developer Experience
-
-- **Comprehensive Logging**: Detailed console output for debugging
-- **Modular Architecture**: Reusable helpers and hooks across auth flows
-- **Type Safety**: Full TypeScript integration with proper error types
-- **Testing Support**: Clear error states and predictable behavior
-- **Documentation**: Extensive inline comments and flow documentation
-
-### Performance Optimizations
-
-```mermaid
-graph LR
-    A[Performance Features] --> B[Parallel Auth Ops]
-    A --> C[Context-Aware Refresh]
-    A --> D[Conditional Providers]
-    A --> E[Smart Caching]
-
-    B --> F[Faster Signin]
-    C --> G[No Race Conditions]
-    D --> H[Reduced API Calls]
-    E --> I[Better UX]
-
-    style A fill:#e3f2fd
-    style F fill:#c8e6c9
-    style G fill:#c8e6c9
-    style H fill:#c8e6c9
-    style I fill:#c8e6c9
-```
-
-## Integration Benefits
-
-### Unified Authentication System
-
-The signin system seamlessly integrates with the signup flow to provide:
-
-- **Consistent Error Handling**: Shared error parsing utilities across both flows
-- **Unified State Management**: Single FirebaseAuthContext manages all auth states
-- **Seamless User Journey**: From signup verification to signin completion
-- **Shared Components**: Reusable authentication utilities and hooks
-- **Consistent UI/UX**: Matching design patterns and user feedback
-
-### Future-Proof Architecture
-
-The current implementation provides a solid foundation for:
-
-- **Additional Auth Providers**: Easy integration of OAuth providers
-- **Enhanced Security**: Ready for 2FA and advanced security features
-- **Scalability**: Modular design supports growing user base
-- **Monitoring**: Built-in logging supports analytics and debugging
-- **Maintenance**: Clear separation of concerns simplifies updates
-
-This documentation reflects the current comprehensive implementation of the certifai signin system as of July 2025, showcasing a modern, reliable, and user-friendly authentication experience.
+This documentation reflects the simplified, consolidated authentication system with explicit state management and race condition prevention (April 2026).
