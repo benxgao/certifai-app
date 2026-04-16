@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import { saveSubscriberIdToClaims } from '@/src/lib/marketing-claims';
+import { isProdEnv } from '@/src/utils/env';
 import {
   StatusCardHeader,
   PasswordResetForm,
@@ -104,7 +105,8 @@ export default function EmailActionHandler() {
 
               // Subscribe user to marketing list after successful email verification
               // Only for new user signups (VERIFY_EMAIL), not email changes (EMAIL_SIGNIN)
-              if (operation === 'VERIFY_EMAIL') {
+              // Only in production environment
+              if (operation === 'VERIFY_EMAIL' && isProdEnv()) {
                 try {
                   // Wait a moment for auth state to update after email verification
                   await new Promise((resolve) => setTimeout(resolve, 1000));
