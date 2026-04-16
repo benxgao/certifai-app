@@ -9,6 +9,9 @@
  * 3. Uses window.location.replace() for auth failures to prevent back navigation to protected pages
  * 4. Only sets up auto-refresh intervals when users are on non-auth pages
  * 5. Intelligent auth state clearing based on current page context
+ * 6. Coordinated signin transitions to prevent concurrent signin operations
+ *
+ * Note: Firebase Auth handles its own token refresh natively, we only coordinate our custom setup
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
@@ -16,11 +19,11 @@ import { useRouter } from 'next/navigation';
 import { User } from 'firebase/auth';
 import { auth } from '@/firebase/firebaseWebConfig';
 import {
-  performAuthSetup,
   refreshTokenAndUpdateCookie,
   clearAuthCookie,
   shouldRedirectToSignIn,
 } from '@/src/lib/auth-setup';
+import { transitionToSignedIn } from '@/src/lib/auth-state-transitions';
 
 interface FirebaseAuthContextType {
   firebaseUser: User | null;
@@ -180,11 +183,14 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
             const token = await authUser.getIdToken(true);
             setFirebaseToken(token);
 
-            // Use the extracted authentication setup utility
-            const setupResult = await performAuthSetup(authUser, token);
+            // Use coordinated signin transition that prevents race conditions
+            // This wraps the auth setup (cookie, API login, claims) with operation locking
+            const transitionResult = await transitionToSignedIn(authUser, token, {
+              enableLogging: false,
+            });
 
-            if (setupResult.success && setupResult.apiUserId) {
-              setApiUserId(setupResult.apiUserId);
+            if (transitionResult.success && transitionResult.apiUserId) {
+              setApiUserId(transitionResult.apiUserId);
             } else {
               setApiUserId(null);
             }
@@ -204,9 +210,11 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
               setTimeout(async () => {
                 try {
                   const retryToken = await authUser.getIdToken(true);
-                  const retrySetupResult = await performAuthSetup(authUser, retryToken);
-                  if (retrySetupResult.success && retrySetupResult.apiUserId) {
-                    setApiUserId(retrySetupResult.apiUserId);
+                  const retryTransitionResult = await transitionToSignedIn(authUser, retryToken, {
+                    enableLogging: false,
+                  });
+                  if (retryTransitionResult.success && retryTransitionResult.apiUserId) {
+                    setApiUserId(retryTransitionResult.apiUserId);
                   } else {
                     setApiUserId(null);
                   }

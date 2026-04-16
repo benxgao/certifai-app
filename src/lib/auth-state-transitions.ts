@@ -2,10 +2,15 @@
  * Authentication State Transitions
  * Coordinates explicit state transitions for signin, logout, and expiry scenarios.
  * Each transition is logged and errors are tracked for observability.
+ *
+ * Note: Firebase handles its own token refresh natively, so we preserve that behavior
  */
 
+import { User } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
 import { clearAuthTokens } from '@/src/lib/auth-state-manager';
+import { performAuthSetup, AuthSetupResult } from '@/src/lib/auth-setup';
+import { withAuthOperationLock } from '@/src/lib/auth-operation-guard';
 
 /**
  * Transition result with detailed information about what happened
@@ -15,6 +20,13 @@ export interface TransitionResult {
   phase: 'clear-tokens' | 'firebase-signout' | 'redirect' | 'complete';
   message: string;
   error?: string;
+}
+
+/**
+ * Signin transition result with API user ID
+ */
+export interface SigninTransitionResult extends TransitionResult {
+  apiUserId: string | null;
 }
 
 /**
@@ -164,6 +176,96 @@ export const validateTransitionState = (): {
     return {
       isClean: false,
       message: 'Error validating transition state',
+    };
+  }
+};
+
+/**
+ * Complete signin state transition
+ *
+ * Coordinates the entire signin process:
+ * 1. Acquire operation lock to prevent concurrent signins
+ * 2. Perform auth setup (cookie setting, API login, custom claims)
+ * 3. Return result with API user ID
+ *
+ * Note: Firebase token refresh is handled natively by Firebase Auth
+ * We only manage the coordination of our custom auth setup (cookies, API login, claims)
+ *
+ * @param firebaseUser - The Firebase user that just signed in
+ * @param firebaseToken - The Firebase ID token
+ * @param options - Configuration for the signin transition
+ * @returns Result object with success status and apiUserId
+ */
+export const transitionToSignedIn = async (
+  firebaseUser: User,
+  firebaseToken: string,
+  options?: {
+    enableLogging?: boolean;
+  },
+): Promise<SigninTransitionResult> => {
+  const { enableLogging = false } = options || {};
+
+  try {
+    if (enableLogging) {
+      console.log('[transitionToSignedIn] Starting signin transition for user:', firebaseUser.uid);
+    }
+
+    // Wrap the auth setup in an operation lock to prevent concurrent signins
+    const setupResult: AuthSetupResult = await withAuthOperationLock(
+      `signin:${firebaseUser.uid}`,
+      async () => {
+        if (enableLogging) {
+          console.log('[transitionToSignedIn] Phase 1: Executing auth setup (cookie, API login, claims)');
+        }
+
+        try {
+          // Perform all auth setup operations (cookie, API login, custom claims)
+          // This internally uses parallel operations for optimal performance
+          const result = await performAuthSetup(firebaseUser, firebaseToken);
+
+          if (enableLogging) {
+            console.log('[transitionToSignedIn] Phase 1: Auth setup complete', {
+              success: result.success,
+              hasApiUserId: !!result.apiUserId,
+            });
+          }
+
+          return result;
+        } catch (error) {
+          console.error('[transitionToSignedIn] Phase 1: Auth setup failed:', error);
+          throw error;
+        }
+      },
+      { enableLogging },
+    );
+
+    if (enableLogging) {
+      console.log('[transitionToSignedIn] Signin transition complete', {
+        success: setupResult.success,
+        apiUserId: setupResult.apiUserId,
+      });
+    }
+
+    // Return signin transition result with API user ID
+    return {
+      success: setupResult.success,
+      phase: 'complete',
+      message: setupResult.success
+        ? 'Signin successful'
+        : setupResult.error || 'Signin setup failed',
+      error: setupResult.error,
+      apiUserId: setupResult.apiUserId || null,
+    };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('[transitionToSignedIn] Signin transition failed:', error);
+
+    return {
+      success: false,
+      phase: 'complete',
+      message: 'Signin encountered errors',
+      error: errorMessage,
+      apiUserId: null,
     };
   }
 };
