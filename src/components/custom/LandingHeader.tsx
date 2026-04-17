@@ -33,7 +33,7 @@ export default function LandingHeader() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-blue-600 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all duration-200">
+              <div className="w-8 h-8 bg-violet-600 rounded-xl flex items-center justify-center shadow-sm hover:shadow-sm transition-colors duration-200">
                 <span className="text-white font-normal text-sm">C</span>
               </div>
               <span className="font-bold text-xl text-violet-700 dark:text-violet-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors md:hidden lg:inline">
@@ -80,7 +80,7 @@ export default function LandingHeader() {
               <Button
                 variant="default"
                 size="sm"
-                className="rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-normal shadow-md hover:shadow-lg transition-all duration-200 px-3 md:px-4 lg:px-6"
+                className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200 px-3 md:px-4 lg:px-6"
               >
                 Get Started
               </Button>
@@ -145,7 +145,7 @@ export default function LandingHeader() {
                 <div className="pt-2">
                   <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
                     <Button
-                      className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-normal shadow-md hover:shadow-lg transition-all duration-200"
+                      className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200"
                       size="sm"
                     >
                       Get Started

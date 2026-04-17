@@ -214,6 +214,7 @@ body {
   }
 
   /* Unified Loading Spinner Styles */
+  /* Disabled: spin-smooth animation for light mode */
   @keyframes spin-smooth {
     0% {
       transform: rotate(0deg);
@@ -224,7 +225,7 @@ body {
   }
 
   .loading-spinner {
-    animation: spin-smooth 1s linear infinite;
+    /* animation: spin-smooth 1s linear infinite; DISABLED */
   }
 
   .loading-spinner-primary {
@@ -247,7 +248,7 @@ body {
 
   /* Enhanced loading transitions */
   .loading-fade-in {
-    animation: fadeIn 0.4s ease-out;
+    /* animation: fadeIn 0.4s ease-out; DISABLED */
   }
 
   @keyframes fadeIn {
@@ -261,7 +262,7 @@ body {
     }
   }
 
-  /* Enhanced bounce animation for loading dots */
+  /* Enhanced bounce animation for loading dots - DISABLED */
   @keyframes bounce-loading {
     0%,
     80%,
@@ -276,7 +277,7 @@ body {
   }
 
   .animate-bounce-loading {
-    animation: bounce-loading 1.4s infinite ease-in-out;
+    /* animation: bounce-loading 1.4s infinite ease-in-out; DISABLED */
   }
 
   /* Mobile-optimized loading states */
@@ -392,7 +393,7 @@ body {
   }
 }
 
-/* Custom animations for exam generation progress */
+/* Custom animations for exam generation progress - DISABLED */
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
@@ -403,7 +404,7 @@ body {
 }
 
 .animate-shimmer {
-  animation: shimmer 2s infinite;
+  /* animation: shimmer 2s infinite; DISABLED */
 }
 
 /* Toast notification enhancements for consistent dashboard styling */
@@ -420,70 +421,53 @@ body {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 
-  /* Enhanced shadow for depth */
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1),
-    0 0 0 1px rgb(255 255 255 / 0.05) !important;
+  /* Subtle shadow instead of heavy shadow */
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
 
   /* Smooth transitions */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Toast success state with gradient */
+/* Toast success state with solid color */
 [data-sonner-toaster] [data-sonner-toast][data-type='success'] {
-  background: linear-gradient(
-    135deg,
-    rgba(16, 185, 129, 0.1) 0%,
-    rgba(5, 150, 105, 0.05) 100%
-  ) !important;
-  border-color: rgba(16, 185, 129, 0.3) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
 }
 
-/* Toast error state with gradient */
+/* Toast error state with solid color */
 [data-sonner-toaster] [data-sonner-toast][data-type='error'] {
-  background: linear-gradient(
-    135deg,
-    rgba(239, 68, 68, 0.1) 0%,
-    rgba(220, 38, 38, 0.05) 100%
-  ) !important;
-  border-color: rgba(239, 68, 68, 0.3) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
 }
 
-/* Toast warning state with gradient */
+/* Toast warning state with solid color */
 [data-sonner-toaster] [data-sonner-toast][data-type='warning'] {
-  background: linear-gradient(
-    135deg,
-    rgba(245, 158, 11, 0.1) 0%,
-    rgba(217, 119, 6, 0.05) 100%
-  ) !important;
-  border-color: rgba(245, 158, 11, 0.3) !important;
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-color: rgba(245, 158, 11, 0.2) !important;
 }
 
-/* Toast info state with gradient */
+/* Toast info state with solid color */
 [data-sonner-toaster] [data-sonner-toast][data-type='info'] {
-  background: linear-gradient(
-    135deg,
-    rgba(59, 130, 246, 0.1) 0%,
-    rgba(37, 99, 235, 0.05) 100%
-  ) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
+  background: rgba(59, 130, 246, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
 }
 
 /* Enhanced button styling for toasts */
 [data-sonner-toaster] [data-sonner-toast] button[data-button] {
-  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%) !important;
+  background: #8b5cf6 !important;
   color: white !important;
   border: none !important;
   padding: 8px 16px !important;
   border-radius: 8px !important;
   font-weight: 600 !important;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.1) !important;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 [data-sonner-toaster] [data-sonner-toast] button[data-button]:hover {
-  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.15) !important;
+  background: #7c3aed !important;
+  /* Removed: transform: translateY(-1px) - no zoom/pop effect */
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.1) !important;
 }
 
 /* Close button styling */
@@ -491,54 +475,37 @@ body {
   background: rgba(148, 163, 184, 0.1) !important;
   color: hsl(var(--muted-foreground)) !important;
   border: 1px solid rgba(148, 163, 184, 0.2) !important;
-  transition: all 0.2s ease !important;
+  transition: background-color 0.2s ease !important;
 }
 
 [data-sonner-toaster] [data-sonner-toast] button[data-close-button]:hover {
   background: rgba(148, 163, 184, 0.2) !important;
-  transform: scale(1.05) !important;
+  /* Removed: transform: scale(1.05) - no zoom effect */
 }
 
 /* Dark mode adaptations */
 .dark [data-sonner-toaster] [data-sonner-toast] {
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.3),
-    0 0 0 1px rgb(255 255 255 / 0.1) !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2) !important;
 }
 
 .dark [data-sonner-toaster] [data-sonner-toast][data-type='success'] {
-  background: linear-gradient(
-    135deg,
-    rgba(34, 197, 94, 0.15) 0%,
-    rgba(21, 128, 61, 0.08) 100%
-  ) !important;
-  border-color: rgba(34, 197, 94, 0.4) !important;
+  background: rgba(34, 197, 94, 0.1) !important;
+  border-color: rgba(34, 197, 94, 0.3) !important;
 }
 
 .dark [data-sonner-toaster] [data-sonner-toast][data-type='error'] {
-  background: linear-gradient(
-    135deg,
-    rgba(239, 68, 68, 0.15) 0%,
-    rgba(185, 28, 28, 0.08) 100%
-  ) !important;
-  border-color: rgba(239, 68, 68, 0.4) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
 .dark [data-sonner-toaster] [data-sonner-toast][data-type='warning'] {
-  background: linear-gradient(
-    135deg,
-    rgba(245, 158, 11, 0.15) 0%,
-    rgba(180, 83, 9, 0.08) 100%
-  ) !important;
-  border-color: rgba(245, 158, 11, 0.4) !important;
+  background: rgba(245, 158, 11, 0.1) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
 }
 
 .dark [data-sonner-toaster] [data-sonner-toast][data-type='info'] {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.15) 0%,
-    rgba(67, 56, 202, 0.08) 100%
-  ) !important;
-  border-color: rgba(99, 102, 241, 0.4) !important;
+  background: rgba(99, 102, 241, 0.1) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
 }
 
 /* ========================================
@@ -673,7 +640,7 @@ html {
 }
 
 .interactive-optimized:hover {
-  transform: translateY(-2px) scale(1.02);
+  /* transform: translateY(-2px) scale(1.02); DISABLED - keeping hover minimal */
 }
 
 /* Reduce motion for users who prefer it */

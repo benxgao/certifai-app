@@ -62,7 +62,7 @@ export default function PricingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br">
         {/* Header with Navigation */}
         <LandingHeader />
 
@@ -85,7 +85,7 @@ export default function PricingPage() {
 
           {/* Beta Access Card */}
           <div className="max-w-2xl mx-auto px-2 sm:px-4">
-            <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-xl">
+            <div className="relative bg-white dark:from-slate-800 dark:to-slate-900 dark:bg-gradient-to-br rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-md">
               <div className="absolute -top-2 sm:-top-3 lg:-top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-violet-600 dark:bg-violet-700 text-white px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 lg:py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg">
                   FREE BETA ACCESS
@@ -198,7 +198,7 @@ export default function PricingPage() {
           </div>
 
           {/* CTA Section */}
-          <div className="mt-16 sm:mt-20 text-center bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/5 dark:to-primary/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mx-2 sm:mx-4 border border-primary/10">
+          <div className="mt-16 sm:mt-20 text-center bg-white dark:from-primary/5 dark:to-primary/10 dark:bg-gradient-to-r rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mx-2 sm:mx-4 border border-primary/10">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
               Ready to Get Started?
             </h2>

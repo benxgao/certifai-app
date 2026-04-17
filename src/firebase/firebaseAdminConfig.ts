@@ -2,6 +2,8 @@ import 'server-only';
 
 import admin, { auth } from 'firebase-admin';
 import { getApps, App } from 'firebase-admin/app';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const getFirebaseAdminApp = (): App => {
   try {
@@ -15,10 +17,28 @@ const getFirebaseAdminApp = (): App => {
 
     /**
      * Use JSON.parse if it is loaded in production, where the string is passed from secret manager
+     * Handle both absolute paths and relative paths
      */
-    const serviceAccount = credentialsString.startsWith('/')
-      ? credentialsString
-      : JSON.parse(credentialsString);
+    let serviceAccount;
+
+    if (credentialsString.startsWith('/')) {
+      // Absolute path
+      const fileContent = fs.readFileSync(credentialsString, 'utf-8');
+      serviceAccount = JSON.parse(fileContent);
+    } else if (credentialsString.startsWith('.') || !credentialsString.includes('{')) {
+      // Relative path or potential file path without leading /
+      const resolvedPath = path.resolve(process.cwd(), credentialsString);
+      if (fs.existsSync(resolvedPath)) {
+        const fileContent = fs.readFileSync(resolvedPath, 'utf-8');
+        serviceAccount = JSON.parse(fileContent);
+      } else {
+        // Try parsing as JSON string directly (for secret manager)
+        serviceAccount = JSON.parse(credentialsString);
+      }
+    } else {
+      // Assume it's a JSON string (from secret manager)
+      serviceAccount = JSON.parse(credentialsString);
+    }
 
     const apps = getApps();
 

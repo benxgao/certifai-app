@@ -8,16 +8,13 @@ import SEOContentBlock from '@/src/components/seo/SEOContentBlock';
 
 export default function LandingPageContent() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br overflow-x-hidden">
       {/* Header with Navigation */}
       <LandingHeader />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden" role="banner">
-        {/* Background decorative elements - mobile responsive */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
-        <div className="absolute top-20 right-2 sm:right-10 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-2 sm:left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+        {/* Background decorative elements - disabled for light mode */}
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
           {/* Hero Content - Centered */}
@@ -28,7 +25,7 @@ export default function LandingPageContent() {
               {/* </span> */}
               Certestic - Your
               <br />
-              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent font-extrabold">
+              <span className="text-violet-600 dark:text-violet-300 font-extrabold">
                 IT Certification
               </span>{' '}
               Success Engine
@@ -109,7 +106,7 @@ export default function LandingPageContent() {
               <Link href="/signup">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                  className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700"
                 >
                   Start Learning
                 </Button>
@@ -129,18 +126,14 @@ export default function LandingPageContent() {
       </section>
 
       {/* Screenshot Slideshow Section - Full Width */}
-      <section className="relative py-16 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 overflow-hidden">
-        {/* Background decorative elements - mobile responsive */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
-        <div className="absolute top-10 right-4 sm:right-20 w-32 sm:w-48 h-32 sm:h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-10 left-4 sm:left-20 w-48 sm:w-64 h-48 sm:h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+      <section className="relative py-16 bg-slate-100 dark:from-slate-800 dark:to-slate-900 dark:bg-gradient-to-br overflow-hidden">
+        {/* Background decorative elements - disabled for light mode */}
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="relative">
-              {/* Decorative background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-1 scale-105"></div>
-              <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 md:p-6">
+              {/* Decorative background - disabled */}
+              <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700 p-4 md:p-6">
                 <ScreenshotSlideshow className="group rounded-xl overflow-hidden w-full" />
               </div>
               {/* Floating elements - mobile responsive positioning */}
@@ -184,16 +177,13 @@ export default function LandingPageContent() {
         id="features"
         className="relative py-16 sm:py-24 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden"
       >
-        {/* Background decorative elements - mobile responsive */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
-        <div className="absolute top-10 sm:top-20 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 sm:bottom-20 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
+        {/* Background decorative elements - disabled for light mode */}
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
               Get Ready for Your IT Certifications with
-              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
+              <span className="text-violet-600 dark:text-violet-300 block">
                 AI-Powered Adaptive Practice Exams
               </span>
             </h2>
@@ -234,11 +224,10 @@ export default function LandingPageContent() {
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {/* Feature 1: AI-Generated Questions */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-transparent dark:from-violet-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
-              <div className="relative w-20 h-20 bg-gradient-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-400/20 to-violet-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay - disabled for light mode */}
+              <div className="relative w-20 h-20 bg-violet-100 dark:bg-gradient-to-br dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-400/20 to-violet-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
                 <svg
                   className="relative w-10 h-10 text-violet-600 dark:text-violet-400 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300"
                   fill="none"
@@ -263,7 +252,7 @@ export default function LandingPageContent() {
                 session adapts to your knowledge gaps, delivering personalized training that&apos;s
                 3x more effective than traditional methods.
               </p>
-              <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 group-hover:translate-x-3 transition-all duration-300">
+              <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
                 <span className="mr-3">Learn more</span>
                 <div className="w-8 h-8 bg-violet-100 dark:bg-violet-900/40 rounded-full flex items-center justify-center group-hover:bg-violet-200 dark:group-hover:bg-violet-800/60 transition-colors duration-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,12 +268,11 @@ export default function LandingPageContent() {
             </div>
 
             {/* Feature 2: Real Exam Simulation */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent dark:from-blue-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay - disabled for light mode */}
 
-              <div className="relative w-20 h-20 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative w-20 h-20 bg-blue-100 dark:bg-gradient-to-br dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
                 <svg
                   className="relative w-10 h-10 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300"
                   fill="none"
@@ -308,7 +296,7 @@ export default function LandingPageContent() {
                 styling you&apos;ll encounter on test day. Build confidence with scenario-based
                 questions and hands-on simulations.
               </p>
-              <div className="relative mt-auto flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:text-blue-700 dark:group-hover:text-blue-300 group-hover:translate-x-3 transition-all duration-300">
+              <div className="relative mt-auto flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
                 <span className="mr-3">Try demo</span>
                 <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/60 transition-colors duration-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,12 +312,11 @@ export default function LandingPageContent() {
             </div>
 
             {/* Feature 3: Performance Analytics */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-emerald-300/60 dark:hover:border-emerald-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent dark:from-emerald-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-emerald-300/60 dark:hover:border-emerald-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay - disabled for light mode */}
 
-              <div className="relative w-20 h-20 bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 dark:from-emerald-900/40 dark:via-emerald-800/40 dark:to-emerald-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative w-20 h-20 bg-emerald-100 dark:bg-gradient-to-br dark:from-emerald-900/40 dark:via-emerald-800/40 dark:to-emerald-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
                 <svg
                   className="relative w-10 h-10 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300"
                   fill="none"
@@ -354,7 +341,7 @@ export default function LandingPageContent() {
                 Kubernetes, or security protocols. Get detailed insights to optimize your study
                 strategy and maximize your investment.
               </p>
-              <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 group-hover:translate-x-3 transition-all duration-300">
+              <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300">
                 <span className="mr-3">View analytics</span>
                 <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/60 transition-colors duration-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -370,12 +357,11 @@ export default function LandingPageContent() {
             </div>
 
             {/* Feature 4: Custom Exam Creation */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-amber-300/60 dark:hover:border-amber-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-transparent to-transparent dark:from-amber-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-amber-300/60 dark:hover:border-amber-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay - disabled for light mode */}
 
-              <div className="relative w-20 h-20 bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300 dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative w-20 h-20 bg-amber-100 dark:bg-gradient-to-br dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
                 <svg
                   className="relative w-10 h-10 text-amber-600 dark:text-amber-400 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300"
                   fill="none"
@@ -400,7 +386,7 @@ export default function LandingPageContent() {
                 minute is optimized for certification success, making your investment highly
                 efficient.
               </p>
-              <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 group-hover:translate-x-3 transition-all duration-300">
+              <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
                 <span className="mr-3">Explore feature</span>
                 <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center group-hover:bg-amber-200 dark:group-hover:bg-amber-800/60 transition-colors duration-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -416,12 +402,11 @@ export default function LandingPageContent() {
             </div>
 
             {/* Feature 6: Progress Tracking */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-indigo-300/60 dark:hover:border-indigo-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-transparent to-transparent dark:from-indigo-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-indigo-300/60 dark:hover:border-indigo-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay - disabled for light mode */}
 
-              <div className="relative w-20 h-20 bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-indigo-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative w-20 h-20 bg-indigo-100 dark:bg-gradient-to-br dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-indigo-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
                 <svg
                   className="relative w-10 h-10 text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300"
                   fill="none"
@@ -444,7 +429,7 @@ export default function LandingPageContent() {
                 your scores improve over time, celebrate achievements, and stay motivated with clear
                 visual feedback on your learning journey.
               </p>
-              <div className="relative mt-auto flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 group-hover:translate-x-3 transition-all duration-300">
+              <div className="relative mt-auto flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
                 <span className="mr-3">View progress</span>
                 <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/60 transition-colors duration-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -460,12 +445,11 @@ export default function LandingPageContent() {
             </div>
 
             {/* Feature 7: Better Than AI Chatbots */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-orange-300/60 dark:hover:border-orange-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-transparent dark:from-orange-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-orange-300/60 dark:hover:border-orange-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              {/* Background gradient overlay - disabled for light mode */}
 
-              <div className="relative w-20 h-20 bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 dark:from-orange-900/40 dark:via-orange-800/40 dark:to-orange-700/40 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative w-20 h-20 bg-orange-100 dark:bg-gradient-to-br dark:from-orange-900/40 dark:via-orange-800/40 dark:to-orange-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
                 <svg
                   className="relative w-10 h-10 text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300"
                   fill="none"
@@ -488,7 +472,7 @@ export default function LandingPageContent() {
                 preparation. Get properly formatted questions, built-in timers, automatic scoring,
                 and all the study tools you need in one integrated platform.
               </p>
-              <div className="relative mt-auto flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:text-orange-700 dark:group-hover:text-orange-300 group-hover:translate-x-3 transition-all duration-300">
+              <div className="relative mt-auto flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300">
                 <span className="mr-3">Learn more</span>
                 <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/40 rounded-full flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-800/60 transition-colors duration-300">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -514,24 +498,18 @@ export default function LandingPageContent() {
 
       {/* Call-to-Action Section */}
       <section className="relative py-16 sm:py-24 overflow-hidden">
-        {/* Background decorative elements - mobile responsive */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-transparent to-blue-50/60 dark:from-violet-900/20 dark:via-transparent dark:to-blue-900/15"></div>
-        <div className="absolute top-10 right-4 sm:right-20 w-48 sm:w-80 h-48 sm:h-80 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 left-4 sm:left-20 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+        {/* Background decorative elements - disabled for light mode */}
 
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 border-2 border-slate-200 dark:border-slate-700 shadow-2xl rounded-3xl p-8 sm:p-12 lg:p-16 text-center overflow-hidden">
-            {/* Decorative background pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 to-blue-50/30 dark:from-violet-900/10 dark:to-blue-900/5 rounded-3xl"></div>
-            <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
+          <div className="relative bg-white dark:from-slate-800 dark:to-slate-900 dark:bg-gradient-to-br border-2 border-slate-200 dark:border-slate-700 shadow-md rounded-3xl p-8 sm:p-12 lg:p-16 text-center overflow-hidden">
+            {/* Decorative background pattern - disabled for light mode */}
 
             <div className="relative z-10">
               <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Your Personal Certification{' '}
-                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                Your Personal Certification
+                <span className="text-violet-600 dark:text-violet-300 block">
                   Success Engine
-                </span>{' '}
+                </span>
                 Awaits You
               </h2>
 
@@ -544,27 +522,27 @@ export default function LandingPageContent() {
               {/* Enhanced stats for CTA */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
                 <div className="text-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Adaptive AI
-                  </div>
+                <div className="text-4xl font-bold text-violet-600 dark:text-violet-300">
+                  Adaptive AI
+                </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
                     Learns How You Learn
                   </div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Smart Focus
-                  </div>
+                <div className="text-4xl font-bold text-violet-600 dark:text-violet-300">
+                  Smart Focus
+                </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
                     Targeted Study Time
                   </div>
                 </div>
                 <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    Personal Engine
-                  </div>
+                <div className="text-4xl font-bold text-violet-600 dark:text-violet-300">
+                  Personal Engine
+                </div>
                   <div className="text-sm text-slate-500 dark:text-slate-400">
                     Your Success System
                   </div>
@@ -575,7 +553,7 @@ export default function LandingPageContent() {
                 <Link href="/signup">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transition-all duration-300 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 transform hover:scale-105"
+                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-md hover:shadow-md transition-colors duration-300 bg-violet-600 hover:bg-violet-700"
                   >
                     Start Learning
                   </Button>
@@ -584,7 +562,7 @@ export default function LandingPageContent() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 transform hover:scale-105"
+                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300"
                   >
                     Sign In
                   </Button>

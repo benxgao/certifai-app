@@ -32,15 +32,15 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0';
+        return 'bg-violet-600 hover:bg-violet-700 text-white border-0';
       case 'secondary':
         return 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/90 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200';
       case 'success':
-        return 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0';
+        return 'bg-emerald-500 hover:bg-emerald-600 text-white border-0';
       case 'outline':
         return 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/90 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200';
       default:
-        return 'bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0';
+        return 'bg-violet-600 hover:bg-violet-700 text-white border-0';
     }
   };
 
@@ -56,8 +56,8 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   };
 
   const baseClasses = `
-    font-semibold rounded-lg shadow-md hover:shadow-lg
-    transition-all duration-300
+    font-semibold rounded-lg shadow-sm hover:shadow-sm
+    transition-colors duration-300
     ${getVariantClasses()}
     ${getSizeClasses()}
     ${fullWidth ? 'w-full' : 'w-auto'}
