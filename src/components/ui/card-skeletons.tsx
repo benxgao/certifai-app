@@ -132,7 +132,7 @@ export function UserCertificationCardSkeleton({
           className="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/50 shadow-sm rounded-lg overflow-hidden"
         >
           {/* Header skeleton */}
-          <div className="bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30 border-b border-slate-100 dark:border-slate-700/50 p-6">
+          <div className="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700/50 p-6">
             <div className="flex items-start justify-between">
               <div className="flex-1 space-y-3">
                 <Skeleton className="h-6 w-3/4" />

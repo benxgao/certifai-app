@@ -101,7 +101,7 @@ const AppHeader: React.FC = () => {
                 >
                   {item.label}
                   <span
-                    className={`absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-violet-600 to-blue-600 transition-all duration-200 ${
+                    className={`absolute left-0 bottom-0 h-0.5 bg-violet-600 transition-all duration-200 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   ></span>
@@ -124,7 +124,7 @@ const AppHeader: React.FC = () => {
                         src={profile?.avatar_url || undefined}
                         alt={displayName || 'User'}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-violet-600 to-blue-600 text-white font-normal text-sm shadow-sm">
+                      <AvatarFallback className="bg-violet-600 text-white font-normal text-sm shadow-sm">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>
@@ -145,14 +145,14 @@ const AppHeader: React.FC = () => {
                 forceMount
               >
                 {/* User Info Header */}
-                <DropdownMenuLabel className="font-normal p-4 bg-gradient-to-br from-violet-50/80 via-violet-50/40 to-transparent dark:from-violet-950/20 dark:via-violet-950/10 dark:to-transparent border-b border-slate-200/60 dark:border-slate-700/60 mb-0">
+                <DropdownMenuLabel className="font-normal p-4 bg-violet-50/80 dark:bg-violet-950/20 border-b border-slate-200/60 dark:border-slate-700/60 mb-0">
                   <div className="flex items-center space-x-3">
                     <Avatar className="h-12 w-12 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-sm">
                       <AvatarImage
                         src={profile?.avatar_url || undefined}
                         alt={displayName || 'User'}
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-violet-600 to-blue-600 text-white font-normal text-sm">
+                      <AvatarFallback className="bg-violet-600 text-white font-normal text-sm">
                         {getUserInitials()}
                       </AvatarFallback>
                     </Avatar>

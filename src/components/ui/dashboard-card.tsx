@@ -48,7 +48,7 @@ function DashboardCardHeader({ children, className }: DashboardCardHeaderProps) 
   return (
     <div
       className={cn(
-        'px-6 sm:px-8 py-6 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20',
+        'px-6 sm:px-8 py-6 border-b border-slate-100 dark:border-slate-700/50 bg-slate-50/60 dark:bg-slate-800/40',
         className,
       )}
     >

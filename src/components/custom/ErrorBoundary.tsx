@@ -45,7 +45,7 @@ const DefaultErrorFallback: React.FC<{ error?: Error; retry?: () => void }> = ({
   error,
   retry,
 }) => (
-  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+  <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
     <div className="max-w-md w-full mx-4">
       <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
         <div className="mb-4">

@@ -159,9 +159,9 @@ export function ExamCard({
 
   return (
     <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl hover:shadow-3xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-xl overflow-hidden group">
-      {/* Enhanced decorative gradient orbs */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-violet-200/30 to-blue-200/20 dark:from-violet-600/20 dark:to-blue-600/10 rounded-bl-full blur-xl"></div>
-      <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-gradient-to-tr from-emerald-100/20 to-cyan-100/15 dark:from-emerald-600/10 dark:to-cyan-600/5 rounded-tr-full blur-lg"></div>
+      {/* Enhanced decorative orbs */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-violet-200/30 dark:bg-violet-600/20 rounded-bl-full blur-xl"></div>
+      <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-emerald-100/20 dark:bg-emerald-600/10 rounded-tr-full blur-lg"></div>
 
       {/* Enhanced delete button with better styling */}
       <DeleteIconButton
@@ -172,11 +172,11 @@ export function ExamCard({
       />
 
       <div className="relative z-10">
-        {/* Enhanced header with premium gradient */}
-        <div className="bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 border-b border-slate-200/80 dark:border-slate-700/60 p-5 sm:p-7 backdrop-blur-sm">
+        {/* Enhanced header section */}
+        <div className="bg-slate-50/90 dark:bg-slate-800/60 border-b border-slate-200/80 dark:border-slate-700/60 p-5 sm:p-7 backdrop-blur-sm">
           {/* Enhanced exam ID badge */}
           <div className="mb-4">
-            <span className="inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-violet-100/80 to-blue-100/60 dark:from-violet-900/40 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 text-sm font-bold border border-violet-200/60 dark:border-violet-700/60 shadow-md backdrop-blur-sm tracking-wide">
+            <span className="inline-flex items-center px-4 py-2 rounded-xl bg-violet-100/80 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 text-sm font-bold border border-violet-200/60 dark:border-violet-700/60 shadow-md backdrop-blur-sm tracking-wide">
               Exam #{exam.exam_id.toString().substring(0, 8)}
             </span>
           </div>
@@ -250,9 +250,9 @@ export function ExamCard({
             }`}
           >
             {/* Enhanced Questions Badge */}
-            <div className="relative bg-gradient-to-br from-blue-50/90 to-violet-50/80 dark:from-blue-900/30 dark:to-violet-900/25 p-5 sm:p-6 rounded-2xl border border-blue-200/50 dark:border-blue-700/40 shadow-lg hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10 hover:border-blue-300/70 dark:hover:border-blue-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden">
+            <div className="relative bg-blue-50/90 dark:bg-blue-900/30 p-5 sm:p-6 rounded-2xl border border-blue-200/50 dark:border-blue-700/40 shadow-lg hover:shadow-xl hover:shadow-blue-500/10 dark:hover:shadow-blue-400/10 hover:border-blue-300/70 dark:hover:border-blue-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden">
               {/* Subtle decorative element */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-200/20 to-transparent dark:from-blue-400/10 rounded-bl-full group-hover/stat:scale-110 transition-transform duration-500"></div>
+              <div className="absolute top-0 right-0 w-16 h-16 bg-blue-200/20 dark:bg-blue-400/10 rounded-bl-full group-hover/stat:scale-110 transition-transform duration-500"></div>
               <div className="relative">
                 <div className="flex items-center space-x-3 mb-3">
                   <div className="w-2 h-2 rounded-full bg-blue-400 dark:bg-blue-500"></div>
@@ -260,16 +260,16 @@ export function ExamCard({
                     Questions
                   </span>
                 </div>
-                <p className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-700 to-violet-700 dark:from-blue-400 dark:to-violet-400 bg-clip-text text-transparent">
+                <p className="text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-400">
                   {exam.total_questions || displayCertification?.max_quiz_counts || '25'}
                 </p>
               </div>
             </div>
 
             {/* Enhanced Status Badge */}
-            <div className="relative bg-gradient-to-br from-cyan-50/90 to-teal-50/80 dark:from-cyan-900/30 dark:to-teal-900/25 p-5 sm:p-6 rounded-2xl border border-cyan-200/50 dark:border-cyan-700/40 shadow-lg hover:shadow-xl hover:shadow-cyan-500/10 dark:hover:shadow-cyan-400/10 hover:border-cyan-300/70 dark:hover:border-cyan-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden">
+            <div className="relative bg-cyan-50/90 dark:bg-cyan-900/30 p-5 sm:p-6 rounded-2xl border border-cyan-200/50 dark:border-cyan-700/40 shadow-lg hover:shadow-xl hover:shadow-cyan-500/10 dark:hover:shadow-cyan-400/10 hover:border-cyan-300/70 dark:hover:border-cyan-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden">
               {/* Subtle decorative element */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-cyan-200/20 to-transparent dark:from-cyan-400/10 rounded-bl-full group-hover/stat:scale-110 transition-transform duration-500"></div>
+              <div className="absolute top-0 right-0 w-16 h-16 bg-cyan-200/20 dark:bg-cyan-400/10 rounded-bl-full group-hover/stat:scale-110 transition-transform duration-500"></div>
               <div className="relative">
                 <div className="flex items-center space-x-3 mb-3">
                   <div className="w-2 h-2 rounded-full bg-cyan-400 dark:bg-cyan-500"></div>
@@ -277,7 +277,7 @@ export function ExamCard({
                     Status
                   </span>
                 </div>
-                <p className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-cyan-700 to-teal-700 dark:from-cyan-400 dark:to-teal-400 bg-clip-text text-transparent">
+                <p className="text-xl sm:text-2xl font-bold text-cyan-700 dark:text-cyan-400">
                   {getOneWordStatus(statusInfo.label)}
                 </p>
               </div>
@@ -285,13 +285,13 @@ export function ExamCard({
 
             {/* Enhanced Score Badge with celebration effect */}
             {hasScore && (
-              <div className="relative bg-gradient-to-br from-emerald-50/90 to-green-50/80 dark:from-emerald-900/30 dark:to-green-900/25 p-5 sm:p-6 rounded-2xl border border-emerald-200/50 dark:border-emerald-700/40 shadow-lg hover:shadow-xl hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/10 hover:border-emerald-300/70 dark:hover:border-emerald-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden">
+              <div className="relative bg-emerald-50/90 dark:bg-emerald-900/30 p-5 sm:p-6 rounded-2xl border border-emerald-200/50 dark:border-emerald-700/40 shadow-lg hover:shadow-xl hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/10 hover:border-emerald-300/70 dark:hover:border-emerald-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden">
                 {/* Celebration sparkle effect for high scores */}
                 {exam.score && exam.score >= (displayCertification?.pass_score || 80) && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-100/20 to-transparent dark:via-emerald-400/10 animate-pulse"></div>
+                  <div className="absolute inset-0 bg-emerald-100/20 dark:bg-emerald-400/10 animate-pulse"></div>
                 )}
                 {/* Subtle decorative element */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-emerald-200/20 to-transparent dark:from-emerald-400/10 rounded-bl-full group-hover/stat:scale-110 transition-transform duration-500"></div>
+                <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-200/20 dark:bg-emerald-400/10 rounded-bl-full group-hover/stat:scale-110 transition-transform duration-500"></div>
                 <div className="relative">
                   <div className="flex items-center space-x-3 mb-3">
                     <div className="w-2 h-2 rounded-full bg-emerald-400 dark:bg-emerald-500"></div>
@@ -302,7 +302,7 @@ export function ExamCard({
                       <FaTrophy className="w-3 h-3 text-amber-500 dark:text-amber-400" />
                     )}
                   </div>
-                  <p className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 dark:from-emerald-400 dark:to-green-400 bg-clip-text text-transparent">
+                    <p className="text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-400">
                     {exam.score}%
                   </p>
                 </div>
@@ -312,7 +312,7 @@ export function ExamCard({
 
           {/* Enhanced Generation Progress Bar */}
           {examStatus === 'generating' && generationEstimate && (
-            <div className="mt-6 p-5 sm:p-6 bg-gradient-to-r from-violet-50/90 via-purple-50/80 to-blue-50/90 dark:from-violet-950/40 dark:via-purple-950/30 dark:to-blue-950/40 rounded-2xl border border-violet-200/60 dark:border-violet-700/50 shadow-lg backdrop-blur-md">
+            <div className="mt-6 p-5 sm:p-6 bg-violet-50/90 dark:bg-violet-950/40 rounded-2xl border border-violet-200/60 dark:border-violet-700/50 shadow-lg backdrop-blur-md">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-2 h-2 rounded-full bg-violet-400 dark:bg-violet-500 animate-pulse"></div>
                 <span className="text-sm font-semibold text-violet-700 dark:text-violet-300">
@@ -354,7 +354,7 @@ export function ExamCard({
 
             {/* Enhanced Error display */}
             {deleteExamError && (
-              <div className="p-4 sm:p-5 bg-gradient-to-r from-red-50/90 to-orange-50/80 dark:from-red-900/30 dark:to-orange-900/20 border border-red-200/60 dark:border-red-700/50 rounded-xl backdrop-blur-sm shadow-md">
+              <div className="p-4 sm:p-5 bg-red-50/90 dark:bg-red-900/30 border border-red-200/60 dark:border-red-700/50 rounded-xl backdrop-blur-sm shadow-md">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 rounded-full bg-red-400 dark:bg-red-500"></div>
                   <p className="text-sm sm:text-base text-red-700 dark:text-red-300 font-medium">
@@ -373,7 +373,7 @@ export function ExamCard({
                   {
                     id: 'exam-report',
                     icon: (
-                      <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-slate-100/80 to-violet-100/60 dark:from-slate-800/60 dark:to-violet-900/40 rounded-xl group-hover:from-violet-100/80 dark:group-hover:from-violet-800/60 group-hover:to-blue-100/60 dark:group-hover:to-blue-900/40 transition-all duration-300 shadow-sm">
+                      <div className="flex items-center justify-center w-10 h-10 bg-slate-100/80 dark:bg-slate-800/60 rounded-xl group-hover:bg-violet-100/80 dark:group-hover:bg-violet-800/60 transition-all duration-300 shadow-sm">
                         <FaChartLine className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300" />
                       </div>
                     ),

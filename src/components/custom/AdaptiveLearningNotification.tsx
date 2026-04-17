@@ -7,10 +7,10 @@ import AdaptiveLearningInterestModal from '@/src/components/custom/AdaptiveLearn
 
 const AdaptiveLearningNotification: React.FC = () => {
   return (
-    <Alert className="border-violet-200/60 bg-gradient-to-r from-violet-50/90 to-purple-50/70 dark:border-violet-800/50 dark:bg-gradient-to-r dark:from-violet-900/25 dark:to-purple-900/15 shadow-sm hover:shadow-md transition-all duration-300">
+    <Alert className="border-violet-200/60 bg-violet-50/90 dark:border-violet-800/50 dark:bg-violet-900/25 shadow-sm hover:shadow-md transition-all duration-300">
       {/* Header with Icon and Title */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 bg-violet-500 rounded-lg flex items-center justify-center flex-shrink-0">
           <Brain className="w-4 h-4 text-white" />
         </div>
         <h3 className="text-lg font-semibold text-violet-900 dark:text-violet-100">

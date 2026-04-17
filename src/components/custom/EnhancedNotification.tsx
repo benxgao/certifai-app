@@ -38,7 +38,7 @@ export const EnhancedNotification: React.FC<EnhancedNotificationProps> = ({
         return {
           icon: CheckCircle,
           bgColor:
-            'bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20',
+            'bg-emerald-50 dark:bg-emerald-900/20',
           borderColor: 'border-emerald-200 dark:border-emerald-800',
           iconColor: 'text-emerald-600 dark:text-emerald-400',
           badgeColor:
@@ -48,7 +48,7 @@ export const EnhancedNotification: React.FC<EnhancedNotificationProps> = ({
         return {
           icon: Star,
           bgColor:
-            'bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20',
+            'bg-violet-50 dark:bg-violet-900/20',
           borderColor: 'border-violet-200 dark:border-violet-800',
           iconColor: 'text-violet-600 dark:text-violet-400',
           badgeColor: 'bg-violet-100 text-violet-800 dark:bg-violet-900/30 dark:text-violet-100',
@@ -57,7 +57,7 @@ export const EnhancedNotification: React.FC<EnhancedNotificationProps> = ({
         return {
           icon: Bell,
           bgColor:
-            'bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20',
+            'bg-blue-50 dark:bg-blue-900/20',
           borderColor: 'border-blue-200 dark:border-blue-800',
           iconColor: 'text-blue-600 dark:text-blue-400',
           badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-100',
@@ -66,7 +66,7 @@ export const EnhancedNotification: React.FC<EnhancedNotificationProps> = ({
         return {
           icon: Info,
           bgColor:
-            'bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20',
+            'bg-slate-50 dark:bg-slate-900/20',
           borderColor: 'border-slate-200 dark:border-slate-700',
           iconColor: 'text-slate-600 dark:text-slate-400',
           badgeColor: 'bg-slate-100 text-slate-800 dark:bg-slate-800/30 dark:text-slate-100',

@@ -57,7 +57,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         return {
           icon: CheckCircle,
           bgGradient: enhanced
-            ? 'bg-gradient-to-r from-emerald-50/95 via-green-50/90 to-emerald-50/95 dark:from-emerald-950/30 dark:via-green-950/25 dark:to-emerald-950/30'
+            ? 'bg-emerald-50/95 dark:bg-emerald-950/30'
             : 'bg-green-50 dark:bg-green-950/50',
           borderColor: 'border-emerald-200/60 dark:border-emerald-700/60',
           textColor: 'text-emerald-900 dark:text-emerald-100',
@@ -69,7 +69,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         return {
           icon: AlertTriangle,
           bgGradient: enhanced
-            ? 'bg-gradient-to-r from-amber-50/95 via-yellow-50/90 to-amber-50/95 dark:from-amber-950/30 dark:via-yellow-950/25 dark:to-amber-950/30'
+            ? 'bg-amber-50/95 dark:bg-amber-950/30'
             : 'bg-amber-50 dark:bg-amber-950/50',
           borderColor: 'border-amber-200/60 dark:border-amber-700/60',
           textColor: 'text-amber-900 dark:text-amber-100',
@@ -81,8 +81,8 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         return {
           icon: Sparkles,
           bgGradient: enhanced
-            ? 'bg-gradient-to-r from-violet-50/95 via-purple-50/90 to-violet-50/95 dark:from-violet-950/30 dark:via-purple-950/25 dark:to-violet-950/30'
-            : 'bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-950/50 dark:to-purple-950/50',
+            ? 'bg-violet-50/95 dark:bg-violet-950/30'
+            : 'bg-violet-50 dark:bg-violet-950/50',
           borderColor: 'border-violet-200/60 dark:border-violet-700/60',
           textColor: 'text-violet-900 dark:text-violet-100',
           iconColor: 'text-violet-600 dark:text-violet-400',
@@ -93,7 +93,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         return {
           icon: Megaphone,
           bgGradient: enhanced
-            ? 'bg-gradient-to-r from-blue-50/95 via-cyan-50/90 to-blue-50/95 dark:from-blue-950/30 dark:via-cyan-950/25 dark:to-blue-950/30'
+            ? 'bg-blue-50/95 dark:bg-blue-950/30'
             : 'bg-blue-50 dark:bg-blue-950/50',
           borderColor: 'border-blue-200/60 dark:border-blue-700/60',
           textColor: 'text-blue-900 dark:text-blue-100',
@@ -104,8 +104,8 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         return {
           icon: Sparkles,
           bgGradient: enhanced
-            ? 'bg-gradient-to-r from-indigo-50/95 via-purple-50/90 to-pink-50/95 dark:from-indigo-950/30 dark:via-purple-950/25 dark:to-pink-950/30'
-            : 'bg-gradient-to-r from-indigo-50 to-pink-50 dark:from-indigo-950/50 dark:to-pink-950/50',
+            ? 'bg-indigo-50/95 dark:bg-indigo-950/30'
+            : 'bg-indigo-50 dark:bg-indigo-950/50',
           borderColor: 'border-indigo-200/60 dark:border-indigo-700/60',
           textColor: 'text-indigo-900 dark:text-indigo-100',
           iconColor: 'text-indigo-600 dark:text-indigo-400',
@@ -117,7 +117,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         return {
           icon: Info,
           bgGradient: enhanced
-            ? 'bg-gradient-to-r from-blue-50/95 via-slate-50/90 to-blue-50/95 dark:from-blue-950/30 dark:via-slate-950/25 dark:to-blue-950/30'
+            ? 'bg-blue-50/95 dark:bg-blue-950/30'
             : 'bg-blue-50 dark:bg-blue-950/50',
           borderColor: 'border-blue-200/60 dark:border-blue-700/60',
           textColor: 'text-blue-900 dark:text-blue-100',
@@ -143,17 +143,17 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         className,
       )}
     >
-      {/* Decorative gradient orb for enhanced mode */}
+      {/* Decorative color orb for enhanced mode */}
       {enhanced && (
         <div
           className={cn(
             'absolute top-0 left-1/4 w-32 h-8 opacity-20 blur-xl rounded-full',
-            variant === 'promo' && 'bg-gradient-to-r from-violet-400 to-purple-500',
-            variant === 'success' && 'bg-gradient-to-r from-emerald-400 to-green-500',
-            variant === 'warning' && 'bg-gradient-to-r from-amber-400 to-yellow-500',
-            variant === 'info' && 'bg-gradient-to-r from-blue-400 to-cyan-500',
-            variant === 'announcement' && 'bg-gradient-to-r from-blue-400 to-cyan-500',
-            variant === 'beta' && 'bg-gradient-to-r from-indigo-400 to-pink-500',
+            variant === 'promo' && 'bg-violet-400',
+            variant === 'success' && 'bg-emerald-400',
+            variant === 'warning' && 'bg-amber-400',
+            variant === 'info' && 'bg-blue-400',
+            variant === 'announcement' && 'bg-blue-400',
+            variant === 'beta' && 'bg-indigo-400',
           )}
         />
       )}
