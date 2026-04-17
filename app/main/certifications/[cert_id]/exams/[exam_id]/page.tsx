@@ -62,7 +62,29 @@ export default function ExamAttemptPage() {
     isCorrectOption,
   } = useExamPageLogic();
 
+  // Show skeleton loading state during initial page load
   if (isLoadingQuestions || isLoadingExamState) {
+    const isInitialLoad = isLoadingQuestions && isLoadingExamState;
+
+    // If initial load showing full-page overlay spinner, use non-overlay mode
+    if (isInitialLoad) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+          {/* Background decorative elements */}
+          <div className="fixed inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-indigo-200/15 dark:bg-indigo-600/5 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="relative z-10 max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
+            <ExamLoadingState isInitialLoad={true} />
+          </div>
+        </div>
+      );
+    }
+
+    // For other loading scenarios, show the full overlay with spinner
     return <ExamLoadingState />;
   }
 

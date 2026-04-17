@@ -1,15 +1,4 @@
-import React from 'react';
-import PageLoader from '@/src/components/custom/PageLoader';
-
+// Route-level loading is disabled - component-level skeletons handle loading UI
 export default function ExamsLoading() {
-  return (
-    <PageLoader
-      isLoading={true}
-      text="Preparing your exam..."
-      showSpinner={true}
-      variant="default"
-      fullScreen={true}
-      showBrand={false}
-    />
-  );
+  return null;
 }

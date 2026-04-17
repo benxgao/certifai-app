@@ -4,7 +4,43 @@ import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const ExamLoadingState: React.FC = () => {
+interface ExamLoadingStateProps {
+  isInitialLoad?: boolean;
+}
+
+export const ExamLoadingState: React.FC<ExamLoadingStateProps> = ({ isInitialLoad = false }) => {
+  // Render skeleton cards only (without overlay) when this is the initial page load
+  if (isInitialLoad) {
+    return (
+      <div className="space-y-6">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Card
+            key={`question-skeleton-${index}`}
+            className="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden"
+            variant="elevated"
+            isLoading={true}
+            metadata={{
+              type: 'question_skeleton',
+              index: index + 1,
+              status: 'loading',
+            }}
+          >
+            <CardHeader className="relative z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 p-6">
+              <Skeleton className="h-6 w-3/4 bg-slate-200 dark:bg-slate-700" />
+            </CardHeader>
+            <CardContent className="relative z-10 space-y-3 p-6">
+              <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-700" />
+              <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-700" />
+              <Skeleton className="h-4 w-5/6 bg-slate-200 dark:bg-slate-700" />
+              <Skeleton className="h-10 w-1/4 mt-4 bg-slate-200 dark:bg-slate-700" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  // Render full overlay with spinner and decorative elements for other loading scenarios
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-violet-950/30 text-foreground pt-16">
       {/* Background decorative elements */}
