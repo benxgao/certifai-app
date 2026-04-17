@@ -133,7 +133,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
   };
 
   return (
-    <div className="hidden lg:flex lg:flex-col lg:justify-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 min-h-full">
+    <div className="hidden lg:flex lg:flex-col lg:justify-start lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
       {/* Enhanced background decoration with more sophisticated patterns */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Multiple gradient orbs for depth - matching landing page style */}
@@ -146,8 +146,8 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
       </div>
 
       {/* Content container with precise form alignment - compact version */}
-      <div className="relative z-10 flex flex-col lg:fixed lg:top-30 lg:left-0 lg:w-1/2 lg:h-screen lg:pointer-events-none">
-        <div className="flex items-center justify-end py-3 sm:py-6 lg:py-12 px-4 sm:px-6 lg:px-18 lg:pointer-events-auto">
+      <div className="relative z-10 flex flex-col">
+        <div className="flex items-center justify-end py-3 sm:py-6 lg:py-12 px-4 sm:px-6 lg:px-18">
           <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl">
             {/* Main content container - compact spacing */}
             <div className="pt-3 sm:pt-4 lg:pt-6">

@@ -134,12 +134,12 @@ const LoginPage = () => {
 
       {/* Main Container with same width as header */}
       <div className="container mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
-        <div className="flex-1 w-full lg:relative lg:bg-none auth-container">
+        <div className="flex-1 w-full lg:flex lg:gap-0 lg:bg-none auth-container">
           {/* Left Column - Welcome Section */}
           <AuthLeftSection mode="signin" />
 
           {/* Right Column - Signin Form */}
-          <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 lg:ml-[50%] relative min-h-full lg:min-h-0 auth-container auth-form-mobile">
+          <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 relative min-h-full lg:min-h-0 lg:w-1/2 auth-container auth-form-mobile">
             {/* Enhanced background decoration matching dashboard */}
             <div className="absolute inset-0 overflow-hidden">
               {/* Large gradient orbs for depth - matching dashboard style */}
