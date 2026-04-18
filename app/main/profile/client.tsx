@@ -486,7 +486,7 @@ const ProfileClientPage: React.FC = () => {
                     </div>
                     <DeleteAccountDialog
                       trigger={
-                        <Button variant="destructive" size="sm" className="w-full sm:w-auto">
+                        <Button variant="destructive" size="sm" data-testid="profile-delete-account-btn" className="w-full sm:w-auto">
                           Delete
                         </Button>
                       }

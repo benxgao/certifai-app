@@ -64,9 +64,9 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ trigger }) =>
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-125">
         {step === 'warning' && (
-          <>
+          <div data-testid="delete-account-warning-dialog">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-destructive">
                 <AlertTriangle className="h-5 w-5" />
@@ -106,18 +106,22 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ trigger }) =>
             </div>
 
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+                data-testid="delete-account-cancel"
+              >
                 Cancel
               </Button>
               <Button variant="destructive" onClick={() => setStep('confirmation')}>
                 Continue
               </Button>
             </DialogFooter>
-          </>
+          </div>
         )}
 
         {step === 'confirmation' && (
-          <>
+          <div data-testid="delete-account-confirmation-dialog">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2 text-destructive">
                 <Trash2 className="h-5 w-5" />
@@ -137,6 +141,7 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ trigger }) =>
                 <Label htmlFor="confirmation">Confirmation Text</Label>
                 <Input
                   id="confirmation"
+                  data-testid="delete-account-confirm-input"
                   value={confirmationText}
                   onChange={(e) => setConfirmationText(e.target.value)}
                   placeholder="DELETE MY ACCOUNT"
@@ -159,11 +164,16 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ trigger }) =>
             </div>
 
             <DialogFooter>
-              <Button variant="outline" onClick={() => setStep('warning')}>
+              <Button
+                variant="outline"
+                onClick={() => setStep('warning')}
+                data-testid="delete-account-back-button"
+              >
                 Back
               </Button>
               <Button
                 variant="destructive"
+                data-testid="delete-account-final-button"
                 onClick={handleDelete}
                 disabled={!isConfirmationValid || isMutating}
               >
@@ -177,7 +187,7 @@ const DeleteAccountDialog: React.FC<DeleteAccountDialogProps> = ({ trigger }) =>
                 )}
               </Button>
             </DialogFooter>
-          </>
+          </div>
         )}
       </DialogContent>
     </Dialog>

@@ -116,6 +116,7 @@ const AppHeader: React.FC = () => {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
+                  data-testid="dropdown-trigger"
                   className="relative h-10 w-auto px-2 rounded-full border-2 border-transparent transition-all duration-200"
                 >
                   <div className="flex items-center space-x-3">
@@ -208,6 +209,7 @@ const AppHeader: React.FC = () => {
                   <div className="space-y-1">
                     <DropdownMenuItem
                       onSelect={() => router.push('/main/profile')}
+                      data-testid="dropdown-view-profile"
                       className={`cursor-pointer rounded-lg p-3 transition-all duration-200 group ${
                         pathname === '/main/profile'
                           ? 'bg-violet-50/80 dark:bg-violet-950/20 text-violet-700 dark:text-violet-300 font-normal border border-violet-200/60 dark:border-violet-700/60 shadow-sm'
@@ -269,6 +271,7 @@ const AppHeader: React.FC = () => {
                     {/* Logout */}
                     <DropdownMenuItem
                       onSelect={handleLogout}
+                      data-testid="dropdown-sign-out"
                       className="cursor-pointer rounded-lg p-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-red-700 dark:hover:text-red-300 hover:shadow-sm transition-all duration-200 font-normal group"
                     >
                       <LogOut className="h-4 w-4 mr-3 group-hover:translate-x-0.5 transition-transform" />
