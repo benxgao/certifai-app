@@ -1,5 +1,5 @@
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { useCallback } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import useSWRMutation, { SWRMutationConfiguration } from 'swr/mutation';
 import { handleAuthFailure } from './utils';
 
@@ -59,6 +59,10 @@ export function useAuthMutationFetcher() {
 /**
  * Custom hook that wraps useSWRMutation with automatic token refresh on 401 errors
  * This ensures that mutations continue to work even when the Firebase token expires
+ *
+ * Note: Using useRef + useCallback to prevent circular dependency issues where
+ * auth state changes during mutation trigger refreshToken recreation, which then
+ * triggers mutationFetcher recreation, causing stack overflow.
  */
 export function useAuthMutation<Data = any, Arg = any>(
   key: string | null,
@@ -66,6 +70,13 @@ export function useAuthMutation<Data = any, Arg = any>(
   config?: SWRMutationConfiguration<Data, any, string, Arg>,
 ) {
   const { refreshToken } = useFirebaseAuth();
+  // Keep a stable reference to refreshToken to prevent mutationFetcher from recreating
+  const refreshTokenRef = useRef(refreshToken);
+
+  // Update the ref whenever refreshToken changes, but don't recreate the callback
+  useMemo(() => {
+    refreshTokenRef.current = refreshToken;
+  }, [refreshToken]);
 
   const mutationFetcher = useCallback(
     async (url: string, { arg }: { arg: Arg }) => {
@@ -79,7 +90,8 @@ export function useAuthMutation<Data = any, Arg = any>(
 
       // If we get a 401, try to refresh token and retry
       if (response.status === 401) {
-        const newToken = await refreshToken();
+        // Use the ref to get the current refreshToken without recreating this callback
+        const newToken = await refreshTokenRef.current();
 
         if (newToken) {
           // Retry the request with refreshed token (cookie should be updated automatically)
@@ -109,16 +121,19 @@ export function useAuthMutation<Data = any, Arg = any>(
 
       return response.json();
     },
-    [refreshToken, method],
+    [method],
   );
+
+  // Extract user's onSuccess callback before spreading config to prevent circular reference
+  const userOnSuccess = config?.onSuccess;
 
   const mutation = useSWRMutation(key || '', mutationFetcher, {
     ...config,
     // Automatically revalidate related SWR caches on success
     onSuccess: (data, key, config) => {
       // Call user-provided onSuccess if it exists
-      if (config?.onSuccess) {
-        config.onSuccess(data, key, config);
+      if (userOnSuccess) {
+        userOnSuccess(data, key, config);
       }
     },
   });

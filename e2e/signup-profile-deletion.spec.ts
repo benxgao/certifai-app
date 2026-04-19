@@ -113,9 +113,19 @@ test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Prof
   // ===== STEP 5B: VERIFY AND EXPAND ACCOUNT SETTINGS =====
   console.log('  - Looking for Account Settings accordion...');
 
+  // Wait for Account Settings content to be visible - profile page loads async content
   // The page should be loaded at /profile - just look for the Account Settings h3 heading
   // There's a page header "Account Settings" and an accordion trigger "Account Settings" - we need the last one
   const allAccountSettingsHeadings = page.locator('h3:has-text("Account Settings")');
+
+  try {
+    await allAccountSettingsHeadings.first().waitFor({ timeout: 8000, state: 'visible' });
+    console.log('  ✓ Account Settings content is now visible');
+  } catch (e) {
+    console.warn('  ⚠ Account Settings not immediately visible, waiting additional time...');
+    await page.waitForTimeout(2000);
+  }
+
   const countHeadings = await allAccountSettingsHeadings.count();
 
   console.log(`  - Found ${countHeadings} "Account Settings" heading(s)`);
@@ -137,22 +147,27 @@ test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Prof
     console.warn('  ⚠ Could not scroll, but continuing...');
   }
 
-  // The h3 is inside a button [role="button"], so find and click the parent button
+  // Find and click the accordion trigger button using data-slot attribute
+  // The button contains the h3 with "Account Settings" text
   try {
-    const parentButton = accordionHeading.locator('xpath=ancestor::button[1]');
-    const isVisible = await parentButton.isVisible({ timeout: 3000 }).catch(() => false);
+    const accountSettingsButton = page.locator('button[data-slot="accordion-trigger"]').filter({
+      has: page.locator('h3:has-text("Account Settings")'),
+    });
 
-    if (isVisible) {
-      await parentButton.click();
-      console.log('  ✓ Clicked accordion trigger button');
-    } else {
-      // Fallback: click the h3 directly
-      await accordionHeading.click();
-      console.log('  ✓ Clicked heading directly');
+    const isVisible = await accountSettingsButton.isVisible({ timeout: 3000 }).catch(() => false);
+
+    if (!isVisible) {
+      console.warn('  ⚠ Account Settings button not visible after scroll, attempting click anyway...');
     }
+
+    await accountSettingsButton.click({ timeout: 5000 });
+    console.log('  ✓ Successfully clicked Account Settings accordion trigger button');
   } catch (e) {
-    console.warn('  ⚠ Could not click accordion, trying direct click on h3...');
-    await accordionHeading.click();
+    const errorMessage = e instanceof Error ? e.message : String(e);
+    console.error(`✗ Failed to click Account Settings accordion button: ${errorMessage}`);
+    throw new Error(
+      `Could not click Account Settings accordion. The button with data-slot="accordion-trigger" containing "Account Settings" h3 was not found or not clickable.`,
+    );
   }
 
   // Wait for accordion to open
@@ -194,7 +209,7 @@ test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Prof
   await emailInput.type(testEmail, { delay: 50 });
   await passwordInput.type(testPassword, { delay: 50 });
 
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(100);
 
   const submitButton = page.locator('button[type="submit"]');
   await submitButton.click({ timeout: 3000 });

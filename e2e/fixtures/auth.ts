@@ -218,7 +218,7 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
       await passwordInput.type(loginPassword, { delay: 50 });
 
       // Wait a bit for form to update
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(500);
 
       // Get submit button reference
       const submitButton = page.locator('button[type="submit"]');
@@ -362,23 +362,29 @@ async function performSignup(
   const confirmPasswordInput = page.locator('input#confirmPassword');
 
   // Clear and fill with proper event triggering
-  await firstNameInput.fill(firstName);
+  // Use clear() + type() instead of fill() to trigger React onChange handlers
+  await firstNameInput.clear();
+  await firstNameInput.type(firstName, { delay: 50 });
   await firstNameInput.blur();
   console.log(`  ✓ First name filled: "${firstName}"`);
 
-  await lastNameInput.fill(lastName);
+  await lastNameInput.clear();
+  await lastNameInput.type(lastName, { delay: 50 });
   await lastNameInput.blur();
   console.log(`  ✓ Last name filled: "${lastName}"`);
 
-  await emailInput.fill(signupEmail);
+  await emailInput.clear();
+  await emailInput.type(signupEmail, { delay: 50 });
   await emailInput.blur();
   console.log(`  ✓ Email filled: "${signupEmail}"`);
 
-  await passwordInput.fill(signupPassword);
+  await passwordInput.clear();
+  await passwordInput.type(signupPassword, { delay: 50 });
   await passwordInput.blur();
   console.log(`  ✓ Password filled: "[${signupPassword.length} chars]"`);
 
-  await confirmPasswordInput.fill(signupPassword);
+  await confirmPasswordInput.clear();
+  await confirmPasswordInput.type(signupPassword, { delay: 50 });
   await confirmPasswordInput.blur();
   console.log(`  ✓ Confirm password filled: "[${signupPassword.length} chars]"`);
 
@@ -474,13 +480,18 @@ async function performSignup(
   console.log('Terms checkbox clicked. Waiting for submit button to be enabled...');
 
   // Check for validation errors on the form before trying submit button
-  const validationErrors = page.locator('[role="alert"], .text-destructive, .error, [data-error="true"]');
+  const validationErrors = page.locator(
+    '[role="alert"], .text-destructive, .error, [data-error="true"]',
+  );
   const errorCount = await validationErrors.count().catch(() => 0);
 
   if (errorCount > 0) {
     console.warn(`⚠ Found ${errorCount} validation error(s) on the form:`);
     for (let i = 0; i < Math.min(errorCount, 5); i++) {
-      const errorText = await validationErrors.nth(i).textContent().catch(() => '');
+      const errorText = await validationErrors
+        .nth(i)
+        .textContent()
+        .catch(() => '');
       if (errorText?.trim()) {
         console.warn(`  - ${errorText.trim()}`);
       }
@@ -519,7 +530,9 @@ async function performSignup(
     // Navigate directly to signin
     await page.goto('/signin', { waitUntil: 'domcontentloaded' });
     await waitForPostSignupSync(page);
-    console.log('✓ Navigated to signin. Signup skipped for existing account (account reused from previous run).');
+    console.log(
+      '✓ Navigated to signin. Signup skipped for existing account (account reused from previous run).',
+    );
     return;
   } else {
     console.log('✓ Submit button is now enabled.');
@@ -644,11 +657,10 @@ async function navigateToProfile(page: Page): Promise<void> {
     { timeout: 20000 },
   );
 
-  // Additional wait for page load state
-  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {
-    // networkidle might not always be reached, so don't fail
-    console.log('  ⚠ Network still busy, but page appears ready');
-  });
+  // Wait for page to be interactive - profile page uses SWR for data loading
+  // so networkidle won't be reached. Instead, wait for DOM to be ready.
+  await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+  console.log('  ✓ Profile page DOM ready - background data loading may continue');
 
   console.log('✓ Successfully navigated to profile via dropdown menu. Current URL:', page.url());
 }
@@ -710,32 +722,33 @@ async function performLogoutAndVerify(page: Page): Promise<void> {
 
 /**
  * Perform account deletion with multi-step confirmation
- * Uses new data-testid attributes for reliable element targeting
+ * Uses data-testid attributes for reliable element targeting
  *
- * User Deletion Request Steps:
- * 1. Click delete button (data-testid="profile-delete-account-btn") on profile page
- * 2. Warning dialog appears (data-testid="delete-account-warning-dialog") showing what will be deleted:
- *    - User profile, account information
- *    - All exam attempts and exam reports
- *    - All user certifications
- *    - All exam answers and progress data
- *    - All account credentials and authentication records
- * 3. User clicks "Continue" button to proceed to confirmation step
- * 4. Confirmation dialog appears (data-testid="delete-account-confirmation-dialog")
- *    requiring exact confirmation text "DELETE MY ACCOUNT" to be typed
- * 5. User types confirmation text in input field (data-testid="delete-account-confirm-input")
- * 6. Delete button (data-testid="delete-account-final-button") becomes enabled
- * 7. User clicks "Delete My Account" to submit the deletion request
- * 8. Frontend sends DELETE request to /api/users/{apiUserId} endpoint
- * 9. Backend processes deletion across multiple systems:
+ * User Deletion Flow:
+ * 1. User clicks delete button on profile page
+ * 2. Warning dialog appears showing what will be deleted
+ * 3. User clicks "Continue" to proceed to confirmation
+ * 4. Confirmation dialog appears requiring text "DELETE MY ACCOUNT"
+ * 5. User types confirmation text
+ * 6. Delete button becomes enabled
+ * 7. User clicks "Delete My Account" to submit
+ * 8. Frontend sends DELETE request to /api/users/{id}
+ * 9. Backend processes deletion (10-20s):
  *    - Firestore: Deletes cert summaries and exam reports
- *    - Prisma (transacted): Deletes exam answers → exam attempts → certifications → user
+ *    - Prisma: Deletes exam answers → attempts → certifications → user
  *    - Firebase Auth: Deletes authentication user
- *    - Cache: Invalidates all user-related caches
- *    - Validation: Confirms complete deletion
- * 10. API returns 200 OK with deletion summary
- * 11. Frontend redirects to /signin page
- * 12. Deleted account cannot be re-registered under same email or Firebase ID
+ *    - Cache: Invalidates user caches
+ * 10. API returns HTTP 200 on success
+ * 11. Frontend redirects to /signin page (hard navigation)
+ * 12. Deleted account cannot be re-registered
+ *
+ * Test Strategy:
+ * - Simple, reliable signals: URL change to /signin (success) OR error alert (failure)
+ * - 40s timeout (accounts for 10-20s backend operation + network overhead)
+ * - Progress logging every 3 seconds with current URL
+ * - Comprehensive error detection: checks for alerts, errors, button state
+ * - Network activity logging for debugging API issues
+ * - Full page state capture if deletion fails
  */
 async function performDeleteAccount(page: Page): Promise<void> {
   console.log('  - Starting account deletion flow...');
@@ -790,21 +803,219 @@ async function performDeleteAccount(page: Page): Promise<void> {
   }
 
   console.log('  ✓ Delete button is enabled, clicking...');
+  const deleteClickTime = Date.now();
+
+  // Set up network listeners to log API activity (helps debug if deletion fails)
+  const requestLog: string[] = [];
+  let deleteApiSucceeded = false; // Flag set when DELETE API returns 200
+  let deleteApiRequestTime = 0; // Timestamp when DELETE request was sent
+
+  const requestListener = (request: any) => {
+    const url = request.url();
+    const method = request.method();
+    if (url.includes('/api/')) {
+      requestLog.push(`[${new Date().toISOString()}] ${method} ${url}`);
+      // Track when DELETE request is sent for fallback detection
+      if (url.includes('/api/users/') && method === 'DELETE') {
+        deleteApiRequestTime = Date.now();
+        console.log(`  ✓ DELETE API request sent: ${url}`);
+      }
+    }
+  };
+  const responseListener = (response: any) => {
+    const url = response.url();
+    const statusCode = response.status();
+    const method = response.request().method();
+
+    if (url.includes('/api/')) {
+      requestLog.push(
+        `[${new Date().toISOString()}] ← HTTP ${statusCode} ${method} ${url}`,
+      );
+
+      // Log ALL DELETE responses, not just 200
+      if (url.includes('/api/users/') && method === 'DELETE') {
+        console.log(`  ✓ DELETE API response: HTTP ${statusCode}`);
+        if (statusCode === 200) {
+          deleteApiSucceeded = true; // Mark flag so Stage 1 can proceed
+          console.log(`  ✓ DELETE API succeeded (HTTP 200) - proceeding to Stage 2`);
+        } else {
+          console.error(`  ✗ DELETE API error: Expected HTTP 200, got ${statusCode}`);
+        }
+      }
+    }
+  };
+
+  page.on('request', requestListener);
+  page.on('response', responseListener);
+
+  console.log('  - ⏳ Deletion can take 10-20 seconds. Waiting for nav to /signin or error...');
+
+  // Click the delete button
   await finalDeleteButton.click({ timeout: 5000 });
   console.log('  ✓ Clicked Delete My Account');
 
-  // Wait for redirect after deletion (should redirect to signin page)
-  console.log('  - Waiting for redirect after account deletion...');
-  await page.waitForURL(
-    (url) => {
-      const pathname = url.pathname;
-      // After successful deletion (HTTP 200), user is redirected to /signin page
-      return pathname === '/signin';
-    },
-    { timeout: 20000 },
-  );
+  // Wait for deletion to complete by detecting observable user-facing signals
+  // Stage 1: API response (or error alert)
+  // Stage 2: After successful API response, wait for redirect to /signin
+  // Timeout: 25s per stage (accounts for 10-20s backend operation + network overhead)
+  const waitStartTime = Date.now();
+  const stageTimeout = 25000; // 25s per stage (backend deletion is 10-20s, add buffer)
+  let progressInterval: NodeJS.Timeout | null = null;
+  let apiResponseReceived = false;
+  let deletionSucceeded = false;
 
-  console.log('✓ Successfully deleted account. Redirected to:', page.url());
+  try {
+    // Set up progress logging every 3 seconds
+    progressInterval = setInterval(() => {
+      const elapsedSeconds = ((Date.now() - waitStartTime) / 1000).toFixed(1);
+      const currentUrl = page.url();
+      console.log(`  ⏳ Still waiting... (${elapsedSeconds}s elapsed) - URL: ${currentUrl}`);
+    }, 3000);
+
+    // STAGE 1: Wait for API response (delete request to complete)
+    console.log(`  - Stage 1: Waiting for DELETE API response (timeout ${stageTimeout}ms)...`);
+    const apiResponseStart = Date.now();
+
+    // Simple approach: Wait for response listener to detect HTTP 200, OR wait 8s then assume processing
+    await Promise.race([
+      // Timeout for stage 1
+      new Promise((_, reject) =>
+        setTimeout(() => {
+          const elapsedMs = Date.now() - apiResponseStart;
+          const debugMsg = `Stage 1 timeout after ${elapsedMs}ms`;
+          console.log(`  ⚠ ${debugMsg} - assuming API is processing, moving to Stage 2...`);
+          apiResponseReceived = true; // Force proceed to Stage 2 anyway
+        }, 8000), // Only 8s - just wait for API to start processing
+      ),
+      // Success signal: DELETE API returned 200
+      (async () => {
+        while (!apiResponseReceived) {
+          if (deleteApiSucceeded) {
+            console.log(`  ✓ DELETE API response received (HTTP 200)`);
+            apiResponseReceived = true;
+            return;
+          }
+          await page.waitForTimeout(500); // Check every 500ms
+        }
+      })(),
+    ]);
+
+    const apiResponseTime = Date.now() - apiResponseStart;
+    console.log(`  ✓ Stage 1 complete: API responded in ${apiResponseTime}ms`);
+
+    // STAGE 2: Wait for redirect to /signin (after API success)
+    if (!deletionSucceeded) {
+      console.log('  - Stage 2: Waiting for redirect to /signin...');
+      const redirectStart = Date.now();
+
+      await Promise.race([
+        // Timeout for stage 2
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error(`Stage 2 timeout: no redirect after ${stageTimeout}ms`)), stageTimeout),
+        ),
+        // URL change to signin
+        (async () => {
+          while (!deletionSucceeded) {
+            const currentUrl = page.url();
+            // Check if URL contains /signin (handles /signin, /signin?..., /signin#..., etc.)
+            if (currentUrl.includes('/signin')) {
+              console.log(`  ✓ Navigation detected: ${currentUrl}`);
+              deletionSucceeded = true;
+              return;
+            }
+
+            // Check for errors during redirect wait
+            const errorAlert = page.locator('[data-slot="alert"]');
+            const isErrorVisible = await errorAlert.isVisible({ timeout: 200 }).catch(() => false);
+            if (isErrorVisible) {
+              const errorText = (await errorAlert.textContent()) || 'Unknown error';
+              throw new Error(`Error during redirect: ${errorText}`);
+            }
+
+            await page.waitForTimeout(200); // Poll every 200ms for URL change
+          }
+        })(),
+      ]);
+
+      const redirectTime = Date.now() - redirectStart;
+      console.log(`  ✓ Stage 2 complete: Redirect detected in ${redirectTime}ms`);
+    }
+
+    if (progressInterval) clearInterval(progressInterval);
+
+    // Success! Wait for page to fully load
+    console.log('  ✓ Redirect to /signin detected. Waiting for page to fully load...');
+    try {
+      await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+      console.log('  ✓ Page fully loaded');
+    } catch (e) {
+      // Non-blocking - we already got to signin
+      console.log('  ⚠ Page load check timed out after 10s, but redirect was confirmed');
+    }
+
+    const totalTimeMs = Date.now() - deleteClickTime;
+    console.log(
+      `✓ Successfully deleted account and redirected to signin. Total time: ${totalTimeMs}ms`,
+    );
+  } catch (error: any) {
+    if (progressInterval) clearInterval(progressInterval);
+
+    const totalTimeMs = Date.now() - deleteClickTime;
+    console.error(`\n  ✗ DELETION STUCK/FAILED after ${totalTimeMs}ms`);
+    console.error(`  Error message: ${error.message}`);
+    console.error(`  Current URL: ${page.url()}`);
+
+    // Log page state for debugging
+    try {
+      const pageTitle = await page.title().catch(() => '(unable to get)');
+      console.error(`  Page title: ${pageTitle}`);
+
+      // Check for any error messages on page
+      const allAlerts = await page
+        .locator('[data-slot="alert"], [role="alert"], .error, .text-destructive')
+        .allTextContents()
+        .catch(() => []);
+      if (allAlerts.length > 0) {
+        console.error('  Alert/Error messages found:');
+        allAlerts.slice(0, 5).forEach((msg) => {
+          if (msg.trim()) console.error(`    - ${msg.trim()}`);
+        });
+      }
+
+      // Check for button state
+      const deleteBtn = page.locator('[data-testid="delete-account-final-button"]');
+      const isBtnVisible = await deleteBtn.isVisible().catch(() => false);
+      if (isBtnVisible) {
+        const isDisabled = await deleteBtn
+          .evaluate((el) => (el as HTMLButtonElement).disabled)
+          .catch(() => null);
+        const btnText = await deleteBtn.textContent().catch(() => '(unable to get)');
+        console.error(
+          `  Delete button state: visible=${isBtnVisible}, disabled=${isDisabled}, text="${btnText}"`,
+        );
+      }
+    } catch (debugError) {
+      console.error(`  (Could not capture page state: ${debugError})`);
+    }
+
+    // Log any network activity we captured for debugging
+    if (requestLog.length > 0) {
+      console.error('  Network activity captured:');
+      requestLog.slice(0, 10).forEach((log) => console.error(`    ${log}`));
+      if (requestLog.length > 10) console.error(`    ... and ${requestLog.length - 10} more`);
+    } else {
+      console.error('  (No /api/ network activity captured)');
+    }
+
+    console.error('');
+    throw new Error(
+      `Account deletion stuck/failed after ${totalTimeMs}ms. URL: ${page.url()}. Details: ${error.message}`,
+    );
+  } finally {
+    // Clean up network listeners
+    page.removeListener('request', requestListener);
+    page.removeListener('response', responseListener);
+  }
 }
 
 /**
