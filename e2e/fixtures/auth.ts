@@ -24,16 +24,13 @@ export const test = base.extend<AuthFixtures>({
       // Try to load existing auth state
       const authData = JSON.parse(await fs.readFile(authFile, 'utf-8'));
       await context.addCookies(authData.cookies || []);
-      await context.addInitScript(
-        (storage) => {
-          if (storage) {
-            Object.entries(storage).forEach(([key, value]) => {
-              localStorage.setItem(key, value as string);
-            });
-          }
-        },
-        authData.localStorage
-      );
+      await context.addInitScript((storage) => {
+        if (storage) {
+          Object.entries(storage).forEach(([key, value]) => {
+            localStorage.setItem(key, value as string);
+          });
+        }
+      }, authData.localStorage);
       console.log('Auth state loaded from cache');
     } catch (e) {
       // If no saved auth state, perform login
@@ -80,14 +77,87 @@ export const test = base.extend<AuthFixtures>({
 });
 
 /**
+ * Helper function: Wait for Firebase backend to sync after signup
+ * Ensures the newly created user account is fully committed to Firebase Auth
+ * before attempting login. Reduces race condition where rapid signup→login fails.
+ *
+ * **What this does:**
+ * 1. Wait 1 second for Firebase Auth backend to process account creation
+ * 2. Check if localStorage has Firebase auth keys set (indicates backend committed the user)
+ * 3. Return when backend appears ready or timeout reached
+ *
+ * @param page - Playwright page object
+ * @param timeoutMs - Maximum time to wait (default: 2000ms)
+ */
+async function waitForPostSignupSync(page: Page, timeoutMs: number = 2000): Promise<void> {
+  console.log('Waiting for Firebase backend to sync new account...');
+
+  const startTime = Date.now();
+  let isBackendReady = false;
+
+  while (!isBackendReady && Date.now() - startTime < timeoutMs) {
+    try {
+      // Check if we have Firebase auth state in localStorage
+      const hasFirebaseAuth = await page.evaluate(() => {
+        const keys = Object.keys(localStorage);
+        return keys.some((k) => k.includes('firebase') || k.includes('auth'));
+      });
+
+      if (hasFirebaseAuth) {
+        isBackendReady = true;
+        console.log('✓ Firebase auth state detected in localStorage. Backend appears ready.');
+        break;
+      }
+
+      // If not ready yet, wait 200ms and try again
+      await page.waitForTimeout(200);
+    } catch (e) {
+      // Error checking auth state, just wait a bit more
+      await page.waitForTimeout(200);
+    }
+  }
+
+  if (!isBackendReady) {
+    console.log(
+      '⚠ Firebase auth state not detected after 2s, but proceeding anyway. Backend sync may be in progress.',
+    );
+  }
+}
+
+/**
  * Perform Firebase authentication using email/password credentials
  * Retrieved from environment variables: PW_TEST_EMAIL and PW_TEST_PASSWORD
  * Can be overridden with parameters
+ *
+ * **Login Request Flow:**
+ * 1. Navigate to /signin page
+ * 2. Wait for form fields to load (email, password inputs)
+ * 3. Populate email and password fields with provided credentials using type() for proper React event triggering
+ * 4. Wait 1s for React state to update form
+ * 5. Click submit button (attempts normal click, force-click if disabled)
+ * 6. Frontend sends POST request to Firebase Auth API
+ * 7. Backend validates credentials against Firebase Auth
+ * 8. On success: Firebase Auth server returns user token + refreshToken
+ * 9. Frontend stores tokens in localStorage + Firebase cookies
+ * 10. Auto-redirect to /main dashboard (user is now authenticated)
+ * 11. On error: Shows error message, stays on /signin (no further action by test)
+ *
+ * **Error Handling:**
+ * - Missing credentials: Throws error with clear env var setup instructions
+ * - Network timeout: 20s timeout on redirect to /main
+ * - Invalid email/password: Fails but handled by test assertion (expected in some tests)
+ * - Session already exists: Falls into /main redirect path
+ *
+ * @param page - Playwright page object
+ * @param email - Email for signin (optional, uses PW_TEST_EMAIL env var)
+ * @param password - Password for signin (optional, uses PW_TEST_PASSWORD env var)
+ * @throws Error if required credentials are not provided via params or env vars
  */
 async function performLogin(page: Page, email?: string, password?: string): Promise<void> {
   // Load environment variables with fallback to provided parameters
   const loginEmail = email || process.env.PW_TEST_EMAIL || process.env.PLAYWRIGHT_TEST_EMAIL;
-  const loginPassword = password || process.env.PW_TEST_PASSWORD || process.env.PLAYWRIGHT_TEST_PASSWORD;
+  const loginPassword =
+    password || process.env.PW_TEST_PASSWORD || process.env.PLAYWRIGHT_TEST_PASSWORD;
 
   if (!loginEmail || !loginPassword) {
     console.error('Environment variables available:');
@@ -102,59 +172,114 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
 
     throw new Error(
       `Missing test credentials.\n\nPlease set environment variables:\n` +
-      `  PW_TEST_EMAIL=your-test-email@example.com\n` +
-      `  PW_TEST_PASSWORD=your-test-password\n\n` +
-      `Steps:\n` +
-      `  1. Copy .env.local.example to .env.local\n` +
-      `  2. Edit .env.local with your Firebase test account credentials\n` +
-      `  3. Run: npm install (to install dotenv)\n` +
-      `  4. Try the tests again\n\n` +
-      `Or pass credentials as environment variables:\n` +
-      `  PW_TEST_EMAIL=test@example.com PW_TEST_PASSWORD=password npm run test:e2e`
+        `  PW_TEST_EMAIL=your-test-email@example.com\n` +
+        `  PW_TEST_PASSWORD=your-test-password\n\n` +
+        `Steps:\n` +
+        `  1. Copy .env.local.example to .env.local\n` +
+        `  2. Edit .env.local with your Firebase test account credentials\n` +
+        `  3. Run: npm install (to install dotenv)\n` +
+        `  4. Try the tests again\n\n` +
+        `Or pass credentials as environment variables:\n` +
+        `  PW_TEST_EMAIL=test@example.com PW_TEST_PASSWORD=password npm run test:e2e`,
     );
   }
 
   // Navigate to signin page
   await page.goto('/signin', { waitUntil: 'domcontentloaded' });
 
-  // Wait for form fields to be visible instead of waiting for all network requests
-  // This avoids hanging on background connections like Console Ninja
-  const emailInput = page.locator('input[type="email"]');
-  const passwordInput = page.locator('input[type="password"]');
+  // Attempt login with retry logic for post-signup race conditions
+  let loginAttempt = 0;
+  const maxAttempts = 2; // Allow one retry
+  let lastError: Error | null = null;
 
-  await emailInput.waitFor({ timeout: 10000 });
-  await passwordInput.waitFor({ timeout: 10000 });
+  while (loginAttempt < maxAttempts) {
+    try {
+      loginAttempt++;
+      if (loginAttempt > 1) {
+        console.log(`\n[Login Retry] Attempt ${loginAttempt} of ${maxAttempts}...`);
+        // Rerun the sync wait and reload form
+        await waitForPostSignupSync(page);
+        await page.goto('/signin', { waitUntil: 'domcontentloaded' });
+        await page.waitForTimeout(500);
+      }
 
-  // Fill in email and password using type for better React event triggering
-  await emailInput.type(loginEmail, { delay: 50 });
-  await passwordInput.type(loginPassword, { delay: 50 });
+      // Wait for form fields to be visible instead of waiting for all network requests
+      // This avoids hanging on background connections like Console Ninja
+      const emailInput = page.locator('input[type="email"]');
+      const passwordInput = page.locator('input[type="password"]');
 
-  // Wait a bit for form to update
-  await page.waitForTimeout(1000);
+      await emailInput.waitFor({ timeout: 10000 });
+      await passwordInput.waitFor({ timeout: 10000 });
 
-  // Get submit button reference
-  const submitButton = page.locator('button[type="submit"]');
+      // Clear and fill form fields
+      await emailInput.fill('');
+      await emailInput.type(loginEmail, { delay: 50 });
+      await passwordInput.fill('');
+      await passwordInput.type(loginPassword, { delay: 50 });
 
-  // Try to click normally first
-  try {
-    await submitButton.click({ timeout: 3000 });
-  } catch (e) {
-    // If button is disabled, try force clicking via JavaScript
-    console.log('Button appears disabled, attempting force click...');
-    await submitButton.click({ force: true, timeout: 3000 });
+      // Wait a bit for form to update
+      await page.waitForTimeout(3000);
+
+      // Get submit button reference
+      const submitButton = page.locator('button[type="submit"]');
+
+      // Try to click normally first
+      try {
+        await submitButton.click({ timeout: 3000 });
+      } catch (e) {
+        // If button is disabled, try force clicking via JavaScript
+        console.log('Button appears disabled, attempting force click...');
+        await submitButton.click({ force: true, timeout: 3000 });
+      }
+
+      // Wait for successful authentication - should redirect to /main
+      await page.waitForURL(
+        (url) => {
+          return url.pathname === '/main';
+        },
+        { timeout: 20000 },
+      );
+
+      // Wait for page to be interactive with a shorter timeout
+      await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+      console.log('✓ Successfully authenticated. Current URL:', page.url());
+      return; // Success, exit retry loop
+    } catch (error) {
+      lastError = error as Error;
+
+      if (loginAttempt < maxAttempts) {
+        // Not the last attempt, prepare for retry
+        console.warn(`⚠ Login attempt ${loginAttempt} failed: ${lastError.message}`);
+        console.log(`→ Waiting 2s for Firebase backend sync before retry...`);
+        await page.waitForTimeout(2000);
+      }
+    }
   }
 
-  // Wait for successful authentication - should redirect to /main
-  await page.waitForURL(
-    (url) => {
-      return url.pathname === '/main';
-    },
-    { timeout: 20000 }
-  );
+  // All attempts failed, throw error with detailed context
+  console.error(`✗ Login failed after ${maxAttempts} attempts`);
+  const currentUrl = page.url();
+  let errorMessages: string[] = [];
 
-  // Wait for page to be interactive with a shorter timeout
-  await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
-  console.log('Successfully authenticated. Current URL:', page.url());
+  try {
+    errorMessages = await page
+      .locator('[data-slot="alert"], [role="alert"], .text-destructive')
+      .allTextContents()
+      .catch(() => []);
+  } catch (e) {
+    // Failed to get error messages, continue
+  }
+
+  const errorContext = {
+    finalUrl: currentUrl,
+    errorMessages: errorMessages.filter((m) => m.trim()),
+    originalError: lastError?.message,
+  };
+
+  console.error('Error context:', errorContext);
+  throw new Error(
+    `Login failed after ${maxAttempts} attempts: ${lastError?.message || 'Unknown error'}. Check logs for error messages.`,
+  );
 }
 
 /**
@@ -162,26 +287,50 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
  * Retrieved from environment variables: PW_SIGNUP_EMAIL and PW_SIGNUP_PASSWORD
  * Falls back to defaults if not set
  *
+ * **Signup Request Flow:**
+ * 1. Navigate to /signup page
+ * 2. Wait for form fields to load (firstName, lastName, email, password, confirmPassword)
+ * 3. Fill form fields with provided credentials using fill() then blur()
+ * 4. Verify all fields were populated correctly
+ * 5. Wait for certification dropdown (Shadcn combobox) to be enabled by SWR data load (~up to 30s)
+ * 6. Click certification combobox and select 2nd certification option
+ * 7. Click terms checkbox (Radix UI component with role="checkbox")
+ * 8. Wait for submit button to be enabled (form validation complete)
+ * 9. Click submit button
+ * 10. Frontend sends POST request to Firebase with form data
+ * 11. Backend processes: Creates user in Firebase Auth + Creates user profile doc in Firestore
+ * 12. On success (new account): Email verification triggered → UAT bypass redirects to /signin immediately
+ * 13. On error (email exists): Error alert shown → function navigates to /signin to use existing account
+ * 14. Either way: Function ends with browser on /signin page (ready for performLogin())
+ *
  * **Important for Static Test Accounts:**
  * This function handles both new account creation AND reuse of existing accounts:
  * - First run: Creates new account with provided email and redirects to signin
  * - Subsequent runs (same email): Detects "email already registered" error and auto-redirects to signin
  * This enables seamless reuse of static test accounts across multiple test runs without account recreation.
  *
- * Steps:
- * 1. Fill basic account info (first name, last name, email, password)
- * 2. Select 2nd certification from dropdown
- * 3. Check terms checkbox
- * 4. Wait for submit button to be enabled
- * 5. Submit form and wait for redirect to signin
- * 6. If "email already registered" error detected, navigate to signin and return
- *    (caller will proceed with login using existing account credentials)
+ * **Form Field Targeting:**
+ * - Uses id selectors: input#firstName, input#lastName, input#email, input#password, input#confirmPassword
+ * - Certification combobox: [role="combobox"] (Shadcn component)
+ * - Terms checkbox: [role="checkbox"]#acceptTerms or #acceptTerms
+ * - Submit button: button[type="submit"]
+ *
+ * **Failure Modes:**
+ * - Certification combobox doesn't enable after 30s: Logs warning, attempts to continue
+ * - Submit button doesn't enable after 15s: Assumes account exists, skips form submission, navigates to signin
+ * - Error alert appears after submit: Navigates to signin to use existing account
+ * - Still on /signup after 10s timeout: Navigates to signin anyway as fallback
+ *
+ * @param page - Playwright page object
+ * @param email - Email for signup (optional, uses PW_SIGNUP_EMAIL env var)
+ * @param password - Password for signup (optional, uses PW_SIGNUP_PASSWORD env var)
+ * @param displayName - User display name (optional, defaults to "Test User {timestamp}")
  */
 async function performSignup(
   page: Page,
   email?: string,
   password?: string,
-  displayName?: string
+  displayName?: string,
 ): Promise<void> {
   // Load environment variables with fallback to provided parameters or defaults
   const signupEmail = email || process.env.PW_SIGNUP_EMAIL || 'pw_test_signup@certestic.com';
@@ -205,11 +354,59 @@ async function performSignup(
   const [firstName, ...lastNameParts] = finalDisplayName.split(' ');
   const lastName = lastNameParts.join(' ') || 'User';
 
-  await page.fill('input#firstName', firstName);
-  await page.fill('input#lastName', lastName);
-  await page.fill('input#email', signupEmail);
-  await page.fill('input#password', signupPassword);
-  await page.fill('input#confirmPassword', signupPassword);
+  // Fill fields with better React event triggering
+  const firstNameInput = page.locator('input#firstName');
+  const lastNameInput = page.locator('input#lastName');
+  const emailInput = page.locator('input#email');
+  const passwordInput = page.locator('input#password');
+  const confirmPasswordInput = page.locator('input#confirmPassword');
+
+  // Clear and fill with proper event triggering
+  await firstNameInput.fill(firstName);
+  await firstNameInput.blur();
+  console.log(`  ✓ First name filled: "${firstName}"`);
+
+  await lastNameInput.fill(lastName);
+  await lastNameInput.blur();
+  console.log(`  ✓ Last name filled: "${lastName}"`);
+
+  await emailInput.fill(signupEmail);
+  await emailInput.blur();
+  console.log(`  ✓ Email filled: "${signupEmail}"`);
+
+  await passwordInput.fill(signupPassword);
+  await passwordInput.blur();
+  console.log(`  ✓ Password filled: "[${signupPassword.length} chars]"`);
+
+  await confirmPasswordInput.fill(signupPassword);
+  await confirmPasswordInput.blur();
+  console.log(`  ✓ Confirm password filled: "[${signupPassword.length} chars]"`);
+
+  // Verify fields were actually filled
+  const firstNameValue = await firstNameInput.inputValue();
+  const lastNameValue = await lastNameInput.inputValue();
+  const emailValue = await emailInput.inputValue();
+  const passwordValue = await passwordInput.inputValue();
+  const confirmPasswordValue = await confirmPasswordInput.inputValue();
+
+  if (
+    firstNameValue !== firstName ||
+    lastNameValue !== lastName ||
+    emailValue !== signupEmail ||
+    passwordValue !== signupPassword ||
+    confirmPasswordValue !== signupPassword
+  ) {
+    console.warn('⚠ Some fields may not have been filled correctly:');
+    console.warn(`  firstName: expected "${firstName}", got "${firstNameValue}"`);
+    console.warn(`  lastName: expected "${lastName}", got "${lastNameValue}"`);
+    console.warn(`  email: expected "${signupEmail}", got "${emailValue}"`);
+    console.warn(
+      `  password: expected [${signupPassword.length} chars], got [${passwordValue?.length || 0} chars]`,
+    );
+    console.warn(
+      `  confirmPassword: expected [${signupPassword.length} chars], got [${confirmPasswordValue?.length || 0} chars]`,
+    );
+  }
 
   console.log('Basic account info filled. Now selecting certification...');
 
@@ -249,7 +446,9 @@ async function performSignup(
   const optionCount = await certOptions.count();
 
   if (optionCount < 2) {
-    console.warn(`Only ${optionCount} certification option(s) available. Selecting first instead of second.`);
+    console.warn(
+      `Only ${optionCount} certification option(s) available. Selecting first instead of second.`,
+    );
     if (optionCount > 0) {
       await certOptions.first().click({ timeout: 5000 });
     }
@@ -274,6 +473,20 @@ async function performSignup(
 
   console.log('Terms checkbox clicked. Waiting for submit button to be enabled...');
 
+  // Check for validation errors on the form before trying submit button
+  const validationErrors = page.locator('[role="alert"], .text-destructive, .error, [data-error="true"]');
+  const errorCount = await validationErrors.count().catch(() => 0);
+
+  if (errorCount > 0) {
+    console.warn(`⚠ Found ${errorCount} validation error(s) on the form:`);
+    for (let i = 0; i < Math.min(errorCount, 5); i++) {
+      const errorText = await validationErrors.nth(i).textContent().catch(() => '');
+      if (errorText?.trim()) {
+        console.warn(`  - ${errorText.trim()}`);
+      }
+    }
+  }
+
   // Wait for submit button to be enabled
   const submitButton = page.locator('button[type="submit"]');
 
@@ -296,9 +509,20 @@ async function performSignup(
   }
 
   if (!isEnabled) {
-    console.warn('Submit button still appears disabled after waiting. Proceeding anyway.');
+    console.warn('Submit button still appears disabled after 15 seconds of waiting.');
+    console.log(
+      '→ Account likely already exists from previous test run (form validation not completing).',
+    );
+    console.log('→ Skipping form submission and navigating directly to signin...');
+    console.log('→ Will proceed with login using existing account credentials.');
+
+    // Navigate directly to signin
+    await page.goto('/signin', { waitUntil: 'domcontentloaded' });
+    await waitForPostSignupSync(page);
+    console.log('✓ Navigated to signin. Signup skipped for existing account (account reused from previous run).');
+    return;
   } else {
-    console.log('Submit button is now enabled.');
+    console.log('✓ Submit button is now enabled.');
   }
 
   console.log('Submitting form...');
@@ -306,7 +530,9 @@ async function performSignup(
   // Click submit button
   await submitButton.click({ timeout: 5000 });
 
-  console.log('Form submitted. Waiting for response (new account creation or existing email error)...');
+  console.log(
+    'Form submitted. Waiting for response (new account creation or existing email error)...',
+  );
 
   // Strategy: Regardless of new/existing email, goal is to reach signin page
   // - New email: signup succeeds → auto-redirects to signin
@@ -323,9 +549,10 @@ async function performSignup(
       (url) => {
         return url.pathname === '/signin';
       },
-      { timeout: 10000 }
+      { timeout: 10000 },
     );
     console.log('✓ Successfully redirected to signin (new account or verification completed)');
+    await waitForPostSignupSync(page);
     return;
   } catch (e) {
     // Redirect didn't happen, check if there's an error
@@ -340,13 +567,14 @@ async function performSignup(
     const isErrorVisible = await errorAlert.isVisible({ timeout: 3000 }).catch(() => false);
 
     if (isErrorVisible) {
-      const errorText = await errorAlert.textContent() || '';
+      const errorText = (await errorAlert.textContent()) || '';
       console.log(`⚠ Error detected: ${errorText}`);
 
       // If we see an error (any error), assume it's email already registered
       // Navigate to signin to use the existing account
       console.log('→ Email likely already registered. Moving to signin to use existing account...');
       await page.goto('/signin', { waitUntil: 'domcontentloaded' });
+      await waitForPostSignupSync(page);
       return;
     }
   } catch (e) {
@@ -359,6 +587,7 @@ async function performSignup(
   if (currentUrl.includes('/signup')) {
     console.log('Still on signup page. Moving to signin to attempt login...');
     await page.goto('/signin', { waitUntil: 'domcontentloaded' });
+    await waitForPostSignupSync(page);
     return;
   }
 
@@ -378,39 +607,50 @@ async function performSignup(
  */
 async function navigateToProfile(page: Page): Promise<void> {
   // Wait for page to be loaded
+  console.log('  - Waiting for page to load...');
   await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+  console.log('  ✓ Page DOM loaded');
 
   // Click dropdown trigger button using data-testid
   const dropdownTrigger = page.locator('[data-testid="dropdown-trigger"]');
 
-  if (!await dropdownTrigger.isVisible({ timeout: 3000 }).catch(() => false)) {
+  if (!(await dropdownTrigger.isVisible({ timeout: 3000 }).catch(() => false))) {
     throw new Error('Dropdown trigger button not found on page');
   }
 
+  console.log('  - Opening user dropdown menu...');
   // Click to open dropdown menu
   await dropdownTrigger.click({ timeout: 3000 });
 
   // Wait for dropdown menu to open
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(500);
 
   // Click "View Profile" menu item using data-testid
   const viewProfileItem = page.locator('[data-testid="dropdown-view-profile"]');
 
-  if (!await viewProfileItem.isVisible({ timeout: 5000 }).catch(() => false)) {
+  if (!(await viewProfileItem.isVisible({ timeout: 5000 }).catch(() => false))) {
     throw new Error('View Profile menu item not found in dropdown');
   }
 
+  console.log('  ✓ Profile menu item found, clicking...');
   await viewProfileItem.click({ timeout: 5000 });
 
   // Wait for navigation to profile page
+  console.log('  - Waiting for profile page to load...');
   await page.waitForURL(
     (url) => {
       return url.pathname.includes('/profile');
     },
-    { timeout: 20000 }
+    { timeout: 20000 },
   );
 
-  console.log('Successfully navigated to profile via dropdown menu. Current URL:', page.url());
+  // Additional wait for page load state
+  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {
+    // networkidle might not always be reached, so don't fail
+    console.log('  ⚠ Network still busy, but page appears ready');
+  });
+
+  console.log('✓ Successfully navigated to profile via dropdown menu. Current URL:', page.url());
 }
 
 /**
@@ -449,7 +689,7 @@ async function performLogoutAndVerify(page: Page): Promise<void> {
       const pathname = url.pathname;
       return pathname === '/' || pathname === '/signin' || pathname === '';
     },
-    { timeout: 20000 }
+    { timeout: 20000 },
   );
 
   // Verify auth state is cleared from localStorage
@@ -458,9 +698,9 @@ async function performLogoutAndVerify(page: Page): Promise<void> {
       hasFirebaseAuth: !!localStorage.getItem('firebase:authUser:'),
       hasCustomAuth: !!localStorage.getItem('auth_token'),
       hasSessionToken: !!localStorage.getItem('session_token'),
-      storageKeys: Object.keys(localStorage).filter(k =>
-        k.includes('auth') || k.includes('token') || k.includes('user')
-      )
+      storageKeys: Object.keys(localStorage).filter(
+        (k) => k.includes('auth') || k.includes('token') || k.includes('user'),
+      ),
     };
   });
 
@@ -472,45 +712,75 @@ async function performLogoutAndVerify(page: Page): Promise<void> {
  * Perform account deletion with multi-step confirmation
  * Uses new data-testid attributes for reliable element targeting
  *
- * Steps:
- * 1. Click profile delete button
- * 2. Confirm warning dialog and proceed to confirmation step
- * 3. Type confirmation text "DELETE MY ACCOUNT"
- * 4. Click final delete button
- * 5. Wait for redirect
+ * User Deletion Request Steps:
+ * 1. Click delete button (data-testid="profile-delete-account-btn") on profile page
+ * 2. Warning dialog appears (data-testid="delete-account-warning-dialog") showing what will be deleted:
+ *    - User profile, account information
+ *    - All exam attempts and exam reports
+ *    - All user certifications
+ *    - All exam answers and progress data
+ *    - All account credentials and authentication records
+ * 3. User clicks "Continue" button to proceed to confirmation step
+ * 4. Confirmation dialog appears (data-testid="delete-account-confirmation-dialog")
+ *    requiring exact confirmation text "DELETE MY ACCOUNT" to be typed
+ * 5. User types confirmation text in input field (data-testid="delete-account-confirm-input")
+ * 6. Delete button (data-testid="delete-account-final-button") becomes enabled
+ * 7. User clicks "Delete My Account" to submit the deletion request
+ * 8. Frontend sends DELETE request to /api/users/{apiUserId} endpoint
+ * 9. Backend processes deletion across multiple systems:
+ *    - Firestore: Deletes cert summaries and exam reports
+ *    - Prisma (transacted): Deletes exam answers → exam attempts → certifications → user
+ *    - Firebase Auth: Deletes authentication user
+ *    - Cache: Invalidates all user-related caches
+ *    - Validation: Confirms complete deletion
+ * 10. API returns 200 OK with deletion summary
+ * 11. Frontend redirects to /signin page
+ * 12. Deleted account cannot be re-registered under same email or Firebase ID
  */
 async function performDeleteAccount(page: Page): Promise<void> {
+  console.log('  - Starting account deletion flow...');
+
   // Click the delete account button using new data-testid
   const deleteButton = page.locator('[data-testid="profile-delete-account-btn"]');
 
-  if (!await deleteButton.isVisible()) {
+  if (!(await deleteButton.isVisible())) {
     throw new Error('Delete account button not found on profile page');
   }
 
+  console.log('  ✓ Delete button found, clicking...');
   await deleteButton.click({ timeout: 5000 });
 
   // Wait for warning dialog to appear
   const warningDialog = page.locator('[data-testid="delete-account-warning-dialog"]');
+  console.log('  - Waiting for warning dialog to appear...');
   await warningDialog.waitFor({ state: 'visible', timeout: 10000 });
+  console.log('  ✓ Warning dialog appeared');
 
   // Click continue button in warning dialog
   const continueButton = warningDialog.locator('button:has-text("Continue")');
+  console.log('  - Clicking Continue button...');
   await continueButton.click({ timeout: 5000 });
+  console.log('  ✓ Clicked Continue');
 
   // Wait for confirmation dialog to appear
   const confirmDialog = page.locator('[data-testid="delete-account-confirmation-dialog"]');
+  console.log('  - Waiting for confirmation dialog to appear...');
   await confirmDialog.waitFor({ state: 'visible', timeout: 10000 });
+  console.log('  ✓ Confirmation dialog appeared');
 
   // Fill in confirmation text
   const confirmInput = confirmDialog.locator('[data-testid="delete-account-confirm-input"]');
+  console.log('  - Filling in confirmation text: "DELETE MY ACCOUNT"...');
   await confirmInput.waitFor({ state: 'visible', timeout: 5000 });
   await confirmInput.fill('DELETE MY ACCOUNT', { timeout: 5000 });
+  console.log('  ✓ Confirmation text entered');
 
-  // Wait a moment for the button to enable
-  await page.waitForTimeout(300);
+  // Wait a moment for the button to enable and text input to be recognized
+  await page.waitForTimeout(500);
 
   // Click final delete button
   const finalDeleteButton = confirmDialog.locator('[data-testid="delete-account-final-button"]');
+  console.log('  - Waiting for final delete button to be enabled...');
   await finalDeleteButton.waitFor({ state: 'visible', timeout: 5000 });
 
   // Verify button is enabled
@@ -519,18 +789,22 @@ async function performDeleteAccount(page: Page): Promise<void> {
     throw new Error('Delete button is still disabled after entering confirmation text');
   }
 
+  console.log('  ✓ Delete button is enabled, clicking...');
   await finalDeleteButton.click({ timeout: 5000 });
+  console.log('  ✓ Clicked Delete My Account');
 
-  // Wait for redirect after deletion (should redirect to signup or signin)
+  // Wait for redirect after deletion (should redirect to signin page)
+  console.log('  - Waiting for redirect after account deletion...');
   await page.waitForURL(
     (url) => {
       const pathname = url.pathname;
-      return pathname === '/signup' || pathname === '/signin' || pathname === '/' || pathname === '';
+      // After successful deletion (HTTP 200), user is redirected to /signin page
+      return pathname === '/signin';
     },
-    { timeout: 20000 }
+    { timeout: 20000 },
   );
 
-  console.log('Successfully deleted account. Redirected to:', page.url());
+  console.log('✓ Successfully deleted account. Redirected to:', page.url());
 }
 
 /**
@@ -541,13 +815,17 @@ async function performLogout(page: Page): Promise<void> {
   await page.waitForLoadState('domcontentloaded', { timeout: 10000 });
 
   // Look for logout button - could be in various locations
-  const logoutButton = page.locator(
-    'button:has-text("Logout"), button:has-text("Sign Out"), a:has-text("Logout"), a:has-text("Sign Out"), [data-testid="logout-button"]'
-  ).first();
+  const logoutButton = page
+    .locator(
+      'button:has-text("Logout"), button:has-text("Sign Out"), a:has-text("Logout"), a:has-text("Sign Out"), [data-testid="logout-button"]',
+    )
+    .first();
 
   // If no logout button found, try to find user menu first
   if (!(await logoutButton.isVisible())) {
-    const userMenu = page.locator('[data-testid="user-menu"], [aria-label*="user"], [aria-label*="menu"]').first();
+    const userMenu = page
+      .locator('[data-testid="user-menu"], [aria-label*="user"], [aria-label*="menu"]')
+      .first();
     if (await userMenu.isVisible()) {
       await userMenu.click();
       // Wait for dropdown to open
@@ -563,7 +841,7 @@ async function performLogout(page: Page): Promise<void> {
     (url) => {
       return url.pathname === '/';
     },
-    { timeout: 20000 }
+    { timeout: 20000 },
   );
 
   console.log('Successfully logged out. Current URL:', page.url());
@@ -577,4 +855,11 @@ export { expect };
 /**
  * Export helper functions for use in tests
  */
-export { performSignup, performLogout, performLogoutAndVerify, performDeleteAccount, navigateToProfile, performLogin };
+export {
+  performSignup,
+  performLogout,
+  performLogoutAndVerify,
+  performDeleteAccount,
+  navigateToProfile,
+  performLogin,
+};

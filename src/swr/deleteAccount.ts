@@ -33,8 +33,10 @@ export function useDeleteAccount(apiUserId: string | null) {
     onSuccess: () => {
       // Clear all authentication state after successful deletion
       if (typeof window !== 'undefined') {
-        // Force redirect to home page
-        window.location.href = '/';
+        // Redirect to signin page after account deletion.
+        // Users must create a new account or use a different existing account to continue.
+        // This endpoint receives HTTP 200 response and all user data is purged from the system.
+        window.location.href = '/signin';
       }
     },
   });
