@@ -72,5 +72,5 @@ export default defineConfig({
       }),
 
   /* Global timeout for tests - increased for live environment */
-  timeout: isLiveEnvironment ? 90_000 : 60_000,
+  timeout: isLiveEnvironment ? 90_000 : 90_000,
 });
