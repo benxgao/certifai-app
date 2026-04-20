@@ -333,6 +333,9 @@ export default function SignUpPage() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
+      const autoVerifyFlag = isUATEnv();
+      console.debug('[handleUserRegistration] UAT Environment:', isUATEnv(), 'Auto-verify flag:', autoVerifyFlag);
+
       const registerResponse = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
@@ -343,7 +346,7 @@ export default function SignUpPage() {
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           initCertId: selectedCertId,
-          autoVerify: isUATEnv(),
+          autoVerify: autoVerifyFlag,
         }),
         signal: controller.signal,
       });

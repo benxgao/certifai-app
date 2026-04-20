@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { resetAuthenticationState } from '@/src/lib/auth-state-manager';
 import { toastHelpers } from '@/src/lib/toast';
+import { isUATEnv } from '@/src/utils/env';
 import PageLoader from './PageLoader';
 
 interface AuthGuardProps {
@@ -67,8 +68,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }, [apiUserId, apiTimeout]);
 
   // Check if user needs email verification
+  // Skip this check in UAT environment since emails are auto-verified by backend
   useEffect(() => {
-    if (firebaseUser && !firebaseUser.emailVerified && !sessionExpired) {
+    if (firebaseUser && !firebaseUser.emailVerified && !sessionExpired && !isUATEnv()) {
       router.push(
         '/signin?error=' +
           encodeURIComponent('Please verify your email address before accessing your account.'),

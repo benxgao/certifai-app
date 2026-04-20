@@ -5,6 +5,7 @@
 import { signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
 import { resetAuthenticationState, clearClientAuthTokens } from '@/src/lib/auth-state-manager';
+import { isUATEnv } from '@/src/utils/env';
 import {
   clearVerificationState as clearVerificationStateImpl,
   cleanupStaleVerificationState,
@@ -275,10 +276,28 @@ export const performSignin = async (
     // Start the authentication process
     const signedIn = await signInWithEmailAndPassword(auth, form.email, form.password);
 
+    // Refresh user state from Firebase to ensure emailVerified reflects backend updates
+    // This is necessary because backend may auto-verify emails (e.g., in UAT environment)
+    // and the client-side token may not immediately reflect those changes
+    try {
+      await signedIn.user.reload();
+      console.debug('[performSignin] User state refreshed. Email verified:', signedIn.user.emailVerified);
+    } catch (reloadError) {
+      console.warn('[performSignin] Failed to refresh user state:', reloadError);
+      // Continue anyway - if reload fails, we'll check with the current state
+    }
+
     // Check if email is verified
-    if (!signedIn.user.emailVerified) {
+    // In UAT, emails are auto-verified by backend, so skip the verification requirement
+    if (!signedIn.user.emailVerified && !isUATEnv()) {
+      console.debug('[performSignin] Email not verified. Environment:', isUATEnv() ? 'UAT' : 'Non-UAT');
       const error = await handleUnverifiedUser();
       return { success: false, error };
+    }
+
+    // UAT bypass: Allow signin even without email verification in UAT environments
+    if (!signedIn.user.emailVerified && isUATEnv()) {
+      console.debug('[performSignin] UAT environment detected. Bypassing email verification requirement.');
     }
 
     // Cookie setting and API login will be handled automatically by FirebaseAuthContext
