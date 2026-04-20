@@ -29,9 +29,9 @@ interface CreateExamModalProps {
   onOpenChange: (open: boolean) => void;
   displayCertification: CertificationData;
   numberOfQuestions: number;
-  setNumberOfQuestions: (value: number) => void;
+  onNumberOfQuestionsChange: (value: number) => void;
   customPromptText: string;
-  setCustomPromptText: (value: string) => void;
+  onCustomPromptChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCreateExam: () => Promise<void>;
   isCreatingExam: boolean;
   createExamError: any;
@@ -45,9 +45,9 @@ export function CreateExamModal({
   onOpenChange,
   displayCertification,
   numberOfQuestions,
-  setNumberOfQuestions,
+  onNumberOfQuestionsChange,
   customPromptText,
-  setCustomPromptText,
+  onCustomPromptChange,
   onCreateExam,
   isCreatingExam,
   createExamError,
@@ -121,7 +121,7 @@ export function CreateExamModal({
             max={displayCertification?.max_quiz_counts || 100}
             step={1}
             value={[numberOfQuestions]}
-            onValueChange={(value) => setNumberOfQuestions(value[0])}
+            onValueChange={(value) => onNumberOfQuestionsChange(value[0])}
             className="w-full"
           />
 
@@ -152,7 +152,7 @@ export function CreateExamModal({
           id="custom-prompt"
           placeholder="Add specific instructions for your exam (optional)..."
           value={customPromptText}
-          onChange={(e) => setCustomPromptText(e.target.value)}
+          onChange={onCustomPromptChange}
           className="min-h-[80px] bg-white/80 dark:bg-slate-800/80 border-slate-200/60 dark:border-slate-700/60 backdrop-blur-sm resize-none focus:ring-violet-500 focus:border-violet-500"
           maxLength={100}
         />

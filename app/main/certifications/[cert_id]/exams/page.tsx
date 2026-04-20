@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { LoadingComponents } from '@/components/custom';
 import { toastHelpers } from '@/src/lib/toast';
@@ -92,6 +92,21 @@ function CertificationExamsContent() {
     // Immediate redirect with optimistic loading
     router.push(`/main/certifications/${certId}/exams/${examId}`);
   };
+
+  // Memoized handlers for form inputs to prevent unnecessary re-renders
+  const handleNumberOfQuestionsChange = useCallback(
+    (value: number) => {
+      setNumberOfQuestions(value);
+    },
+    [],
+  );
+
+  const handleCustomPromptChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setCustomPromptText(e.target.value);
+    },
+    [],
+  );
 
   const handleCreateExam = async () => {
     if (!numberOfQuestions || numberOfQuestions < 1 || !apiUserId || !certId) return;
@@ -246,9 +261,9 @@ function CertificationExamsContent() {
           onOpenChange={setIsCreateModalOpen}
           displayCertification={displayCertification}
           numberOfQuestions={numberOfQuestions}
-          setNumberOfQuestions={setNumberOfQuestions}
+          onNumberOfQuestionsChange={handleNumberOfQuestionsChange}
           customPromptText={customPromptText}
-          setCustomPromptText={setCustomPromptText}
+          onCustomPromptChange={handleCustomPromptChange}
           onCreateExam={handleCreateExam}
           isCreatingExam={isCreatingExam}
           createExamError={createExamError}
