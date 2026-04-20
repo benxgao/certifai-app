@@ -38,6 +38,7 @@ export const ExamEmptyState: React.FC<ExamEmptyStateProps> = ({
               <ExamGenerationProgressBar
                 progress={generationProgress.completionPercentage}
                 estimatedTimeRemaining={generationProgress.estimatedTimeRemaining}
+                stage={generationProgress.stage}
                 className="w-full"
                 showPercentage={true}
                 showTimeRemaining={true}

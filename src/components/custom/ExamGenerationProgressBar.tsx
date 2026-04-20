@@ -9,6 +9,7 @@ interface ExamGenerationProgressBarProps {
   showTimeRemaining?: boolean;
   isAnimated?: boolean;
   variant?: 'default' | 'compact'; // Add variant prop
+  stage?: 'starting' | 'generating' | 'finalizing' | 'complete'; // Add stage prop for better messaging
   realProgress?: {
     currentBatch: number;
     totalBatches: number;
@@ -25,6 +26,7 @@ export function ExamGenerationProgressBar({
   showTimeRemaining = true,
   isAnimated = true,
   variant = 'default',
+  stage = 'generating',
   realProgress,
 }: ExamGenerationProgressBarProps) {
   const formatTimeRemaining = (ms: number): string => {
@@ -43,7 +45,13 @@ export function ExamGenerationProgressBar({
       {/* Progress info row */}
       <div className="flex items-center justify-between text-xs">
         <span className="text-slate-600 dark:text-slate-400 font-medium">
-          {variant === 'compact' ? 'Generating...' : 'Generating Questions'}
+          {variant === 'compact'
+            ? stage === 'finalizing'
+              ? 'Finalizing...'
+              : 'Generating...'
+            : stage === 'finalizing'
+            ? 'Finalizing Exam'
+            : 'Generating Questions'}
         </span>
         <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400">
           {showPercentage && <span className="font-medium">{Math.round(progress)}%</span>}
@@ -105,7 +113,9 @@ export function ExamGenerationProgressBar({
             />
           </div>
           <span>
-            {realProgress
+            {stage === 'finalizing'
+              ? 'Finalizing exam preparation...'
+              : realProgress
               ? // Show batch-based progress when real data is available
                 `Processing batch ${realProgress.currentBatch}/${realProgress.totalBatches}${
                   realProgress.questionsGenerated > 0
@@ -119,8 +129,10 @@ export function ExamGenerationProgressBar({
               ? 'Initializing AI generation...'
               : progress < 60
               ? 'Creating questions...'
-              : progress < 90
-              ? 'Finalizing exam...'
+              : progress < 85
+              ? 'Organizing questions...'
+              : progress < 95
+              ? 'Finishing up...'
               : 'Almost complete...'}
           </span>
         </div>

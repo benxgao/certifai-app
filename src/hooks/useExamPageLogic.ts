@@ -74,7 +74,7 @@ export const useExamPageLogic = () => {
       ? {
           completionPercentage: rawProgress.progress_percentage,
           estimatedTimeRemaining: rawProgress.estimated_time_remaining_seconds * 1000, // Convert to milliseconds
-          isLikelyComplete: rawProgress.status === 'complete',
+          isLikelyComplete: rawProgress.status === 'complete', // Only true when fully complete, not during finalizing
           stage: rawProgress.status,
           realProgress: {
             currentBatch: Math.ceil(

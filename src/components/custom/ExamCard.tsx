@@ -322,6 +322,7 @@ export function ExamCard({
               <ExamGenerationProgressBar
                 progress={generationEstimate.completionPercentage}
                 estimatedTimeRemaining={generationEstimate.estimatedTimeRemaining}
+                stage={generationEstimate.stage}
                 className="w-full"
                 showPercentage={true}
                 showTimeRemaining={true}

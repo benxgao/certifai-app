@@ -7,7 +7,7 @@ interface ExamGeneratingProgress {
   topics_with_questions: number;
   topics_remaining: number;
   progress_percentage: number;
-  status: 'starting' | 'generating' | 'complete';
+  status: 'starting' | 'generating' | 'finalizing' | 'complete';
   estimated_time_remaining_seconds: number;
   created_at: number;
   last_updated: number;
@@ -20,7 +20,8 @@ interface ExamGeneratingProgressResponse {
 }
 
 export function useExamGeneratingProgress(apiUserId: string, examId: string, examStatus?: string) {
-  // Only fetch when exam is actually generating - be very strict about this
+  // Keep polling while exam is generating OR while it's in finalization phase
+  // Only stop when exam status changes to READY or another terminal state
   const isGenerating = examStatus === 'QUESTIONS_GENERATING';
   const isReady = examStatus === 'READY';
   const shouldFetch = Boolean(apiUserId && examId && isGenerating && !isReady);
