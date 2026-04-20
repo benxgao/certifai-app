@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import {
   createUserWithEmailAndPassword,
@@ -48,6 +48,35 @@ export default function SignUpPage() {
   const router = useRouter();
   const { firebaseUser } = useFirebaseAuth();
   const isMountedRef = useRef(true);
+
+  // Memoized onChange handlers to prevent unnecessary re-renders
+  const handleFirstNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstName(e.target.value);
+  }, []);
+
+  const handleLastNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(e.target.value);
+  }, []);
+
+  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }, []);
+
+  const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  }, []);
+
+  const handleConfirmPasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  }, []);
+
+  const handleCertificationChange = useCallback((certId: number | null) => {
+    setSelectedCertId(certId);
+  }, []);
+
+  const handleAcceptTermsChange = useCallback((checked: boolean) => {
+    setAcceptTerms(checked);
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -674,11 +703,7 @@ export default function SignUpPage() {
                           type="text"
                           placeholder="John"
                           value={firstName}
-                          onChange={(e) => {
-                            setFirstName(e.target.value);
-                            // Clear error when user starts typing again
-                            if (error) setError('');
-                          }}
+                          onChange={handleFirstNameChange}
                           required
                           disabled={loading}
                           autoComplete="given-name"
@@ -698,11 +723,7 @@ export default function SignUpPage() {
                           type="text"
                           placeholder="Doe"
                           value={lastName}
-                          onChange={(e) => {
-                            setLastName(e.target.value);
-                            // Clear error when user starts typing again
-                            if (error) setError('');
-                          }}
+                          onChange={handleLastNameChange}
                           required
                           disabled={loading}
                           autoComplete="family-name"
@@ -723,11 +744,7 @@ export default function SignUpPage() {
                         type="email"
                         placeholder="you@example.com"
                         value={email}
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                          // Clear error when user starts typing again
-                          if (error) setError('');
-                        }}
+                        onChange={handleEmailChange}
                         required
                         disabled={loading}
                         autoComplete="off"
@@ -747,11 +764,7 @@ export default function SignUpPage() {
                         type="password"
                         placeholder="••••••••"
                         value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                          // Clear error when user starts typing again
-                          if (error) setError('');
-                        }}
+                        onChange={handlePasswordChange}
                         required
                         disabled={loading}
                         minLength={6}
@@ -772,11 +785,7 @@ export default function SignUpPage() {
                         type="password"
                         placeholder="••••••••"
                         value={confirmPassword}
-                        onChange={(e) => {
-                          setConfirmPassword(e.target.value);
-                          // Clear error when user starts typing again
-                          if (error) setError('');
-                        }}
+                        onChange={handleConfirmPasswordChange}
                         required
                         disabled={loading}
                         minLength={6}
@@ -787,7 +796,7 @@ export default function SignUpPage() {
 
                     <CertificationSelector
                       selectedCertId={selectedCertId}
-                      onCertificationChange={setSelectedCertId}
+                      onCertificationChange={handleCertificationChange}
                       disabled={loading}
                       required={true}
                     />
@@ -796,7 +805,7 @@ export default function SignUpPage() {
                       <Checkbox
                         id="acceptTerms"
                         checked={acceptTerms}
-                        onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
+                        onCheckedChange={(checked) => handleAcceptTermsChange(checked as boolean)}
                         disabled={loading}
                         className="mt-1"
                       />

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Select,
   SelectContent,
@@ -26,7 +26,7 @@ interface CertificationSelectorProps {
   required?: boolean;
 }
 
-export default function CertificationSelector({
+function CertificationSelector({
   selectedCertId,
   onCertificationChange,
   disabled = false,
@@ -58,10 +58,10 @@ export default function CertificationSelector({
     });
   }, [firms]);
 
-  const handleCertificationSelect = (value: string) => {
+  const handleCertificationSelect = useCallback((value: string) => {
     const certId = parseInt(value);
     onCertificationChange(certId);
-  };
+  }, [onCertificationChange]);
 
   if (error) {
     return (
@@ -132,3 +132,5 @@ export default function CertificationSelector({
     </div>
   );
 }
+
+export default React.memo(CertificationSelector);

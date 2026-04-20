@@ -58,12 +58,8 @@ const LoginPage = () => {
         const newForm = { ...prevForm, [name]: value };
         return newForm;
       });
-      // Clear error when user starts typing again
-      if (error) {
-        setError('');
-      }
     },
-    [error],
+    [],
   );
 
   const handleSignin = async (e: React.FormEvent) => {
