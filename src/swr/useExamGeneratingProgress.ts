@@ -1,3 +1,12 @@
+/**
+ * DEPRECATED: Use `useExamLiveStatus` from './useExamLiveStatus.ts' instead
+ *
+ * This hook is deprecated as of 2026-04-22.
+ * Migrate to useExamLiveStatus which provides real-time status without Redis cache.
+ *
+ * Real-time exam status hook that polls the generating-progress endpoint
+ * @deprecated Use useExamLiveStatus instead
+ */
 import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
 

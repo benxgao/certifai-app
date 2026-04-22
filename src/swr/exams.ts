@@ -63,8 +63,8 @@ export function useAllUserExams(apiUserId: string | null) {
       refreshWhenHidden: false,
       refreshWhenOffline: false,
       // Add deduplication settings to prevent duplicate requests
-      dedupingInterval: 10000, // 10 seconds
-      focusThrottleInterval: 30000, // 30 seconds
+      dedupingInterval: 2000, // 2 seconds - reduce to allow faster updates when exam status changes
+      focusThrottleInterval: 10000, // 10 seconds
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       revalidateIfStale: true, // Enable revalidation for fresh dashboard stats

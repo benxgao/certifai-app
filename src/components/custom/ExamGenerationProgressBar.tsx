@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/src/lib/utils';
+import { ExamGenerationStage } from '@/src/types/exam-status';
 
 interface ExamGenerationProgressBarProps {
   progress: number; // 0-100
@@ -9,7 +10,7 @@ interface ExamGenerationProgressBarProps {
   showTimeRemaining?: boolean;
   isAnimated?: boolean;
   variant?: 'default' | 'compact'; // Add variant prop
-  stage?: 'starting' | 'generating' | 'finalizing' | 'complete'; // Add stage prop for better messaging
+  stage?: ExamGenerationStage; // Add stage prop for better messaging
   realProgress?: {
     currentBatch: number;
     totalBatches: number;
@@ -26,7 +27,7 @@ export function ExamGenerationProgressBar({
   showTimeRemaining = true,
   isAnimated = true,
   variant = 'default',
-  stage = 'generating',
+  stage = ExamGenerationStage.Generating,
   realProgress,
 }: ExamGenerationProgressBarProps) {
   const formatTimeRemaining = (ms: number): string => {

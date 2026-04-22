@@ -1,5 +1,13 @@
 // Shared TypeScript types for exam status across the application
 
+// Exam generation progress stages
+export enum ExamGenerationStage {
+  Starting = 'starting',
+  Generating = 'generating',
+  Finalizing = 'finalizing',
+  Complete = 'complete',
+}
+
 // Backend exam status as returned by the API
 export type BackendExamStatus =
   | 'READY'

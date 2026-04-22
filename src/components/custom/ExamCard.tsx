@@ -10,8 +10,8 @@ import { DeleteIconButton } from './DeleteIconButton';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
-import { getDerivedExamStatus, getExamStatusInfo } from '@/src/types/exam-status';
-import { useExamGeneratingProgress } from '@/src/swr/useExamGeneratingProgress';
+import { getDerivedExamStatus, getExamStatusInfo, ExamGenerationStage } from '@/src/types/exam-status';
+import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
 // Flexible certification type to handle different certification objects
@@ -69,28 +69,28 @@ export function ExamCard({
     return statusMap[status] || status;
   };
 
-  // Use simplified progress tracking for generating exams
-  const { progress: rawProgress } = useExamGeneratingProgress(
-    apiUserId || '',
-    exam.exam_id || '',
-    exam.exam_status,
+  // Use real-time progress tracking for generating exams via live-status endpoint
+  const { liveStatus } = useExamLiveStatus(
+    apiUserId || null,
+    exam.exam_id || null,
+    examStatus === 'generating' // Only poll while generating
   );
 
-  // Transform progress to match expected UI format
+  // Transform live status to match expected UI format
   const generationEstimate =
-    rawProgress && examStatus === 'generating'
+    liveStatus && examStatus === 'generating'
       ? {
-          completionPercentage: rawProgress.progress_percentage,
-          estimatedTimeRemaining: rawProgress.estimated_time_remaining_seconds * 1000,
-          isLikelyComplete: rawProgress.status === 'complete',
-          stage: rawProgress.status,
+          completionPercentage: liveStatus.progress_percentage,
+          estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000,
+          isLikelyComplete: liveStatus.is_complete,
+          stage: liveStatus.is_complete ? ExamGenerationStage.Complete : ExamGenerationStage.Generating,
           realProgress: {
             currentBatch: Math.ceil(
-              (rawProgress.topics_with_questions / rawProgress.total_topics) * 5,
+              (liveStatus.topics_with_questions / liveStatus.total_topics) * 5,
             ),
             totalBatches: 5,
-            questionsGenerated: rawProgress.topics_with_questions,
-            targetQuestions: rawProgress.total_topics,
+            questionsGenerated: liveStatus.topics_with_questions,
+            targetQuestions: liveStatus.total_topics,
           },
         }
       : null;

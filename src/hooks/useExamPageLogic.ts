@@ -11,7 +11,7 @@ import {
 } from '@/swr/questions';
 import { useSubmitExam, useAllUserExams, useExamsForCertification } from '@/swr/exams';
 import { useExamState } from '@/src/swr/exams';
-import { useExamGeneratingProgress } from '@/src/swr/useExamGeneratingProgress';
+import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
 import { toastHelpers } from '@/src/lib/toast';
 
@@ -55,11 +55,11 @@ export const useExamPageLogic = () => {
   const { mutateAllExams } = useAllUserExams(apiUserId);
   const { mutateExams } = useExamsForCertification(apiUserId, certId);
 
-  // Get generating progress from RTDB via dedicated API
-  const { progress: rawProgress, isLoading: isLoadingProgress } = useExamGeneratingProgress(
-    apiUserId || '',
-    examId || '',
-    examState?.exam_status,
+  // Get real-time exam status via live-status endpoint (bypasses Redis cache)
+  const { liveStatus, isLoading: isLoadingProgress, isReady: isExamReady } = useExamLiveStatus(
+    apiUserId || null,
+    examId || null,
+    examState?.exam_status === 'QUESTIONS_GENERATING' // Only poll while generating
   );
 
   // Simple force status check function
@@ -68,21 +68,21 @@ export const useExamPageLogic = () => {
   // Show check button for generating exams
   const shouldShowCheckButton = examState?.exam_status === 'QUESTIONS_GENERATING';
 
-  // Transform the progress to match the expected UI structure
+  // Transform the live status to match the expected UI structure
   const generationProgress =
-    rawProgress && examState?.exam_status === 'QUESTIONS_GENERATING'
+    liveStatus && examState?.exam_status === 'QUESTIONS_GENERATING'
       ? {
-          completionPercentage: rawProgress.progress_percentage,
-          estimatedTimeRemaining: rawProgress.estimated_time_remaining_seconds * 1000, // Convert to milliseconds
-          isLikelyComplete: rawProgress.status === 'complete', // Only true when fully complete, not during finalizing
-          stage: rawProgress.status,
+          completionPercentage: liveStatus.progress_percentage,
+          estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000, // Convert to milliseconds
+          isLikelyComplete: liveStatus.is_complete, // True when fully complete
+          stage: liveStatus.is_complete ? 'complete' : 'generating',
           realProgress: {
             currentBatch: Math.ceil(
-              (rawProgress.topics_with_questions / rawProgress.total_topics) * 5,
+              (liveStatus.topics_with_questions / liveStatus.total_topics) * 5,
             ), // Estimate batch number
             totalBatches: 5, // Default estimate
-            questionsGenerated: rawProgress.topics_with_questions,
-            targetQuestions: rawProgress.total_topics,
+            questionsGenerated: liveStatus.topics_with_questions,
+            targetQuestions: liveStatus.total_topics,
           },
         }
       : null;
