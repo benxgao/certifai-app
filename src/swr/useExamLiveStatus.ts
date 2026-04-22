@@ -46,11 +46,22 @@ export function useExamLiveStatus(
       keepPreviousData: true,
       shouldRetryOnError: true,
       onError: (err) => {
-        if (err && typeof err === 'object' && 'status' in err && err.status === 404) {
-          console.log('Exam not found - may have been deleted');
-          return;
+        if (err && typeof err === 'object' && 'status' in err) {
+          const status = err.status;
+          if (status === 404) {
+            console.log('Exam not found - may have been deleted');
+            return;
+          }
+          // Log warnings for other errors to aid debugging
+          if (status >= 500) {
+            console.warn('[live-status] Server error:', status);
+          } else if (status === 0 || !status) {
+            console.warn('[live-status] Network error or timeout:', err instanceof Error ? err.message : '');
+          } else if (status >= 400) {
+            console.warn('[live-status] Client error:', status);
+          }
         }
-        // Silently continue on other errors - don't break polling
+        // Continue polling despite errors (except 404)
       },
     }
   );

@@ -336,7 +336,7 @@ export function useExamState(
     refreshInterval: (data) => {
       const examStatus = data?.data?.exam_status || data?.data?.status;
       if (examStatus === 'QUESTIONS_GENERATING') {
-        return 3000; // Poll every 3 seconds for generating exams
+        return 2000; // Poll every 2 seconds for generating exams (aligned with liveStatus)
       }
       return 0;
     },
