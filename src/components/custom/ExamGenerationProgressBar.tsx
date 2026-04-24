@@ -75,7 +75,7 @@ export function ExamGenerationProgressBar({
         >
           <div
             className={cn(
-              'h-full bg-gradient-to-r from-violet-500 to-blue-500 rounded-full transition-all duration-500 ease-out',
+              'h-full bg-linear-to-r from-violet-500 to-blue-500 rounded-full transition-all duration-500 ease-out',
               isAnimated && 'transform-gpu',
             )}
             style={{
@@ -85,14 +85,14 @@ export function ExamGenerationProgressBar({
           >
             {/* Animated shimmer effect */}
             {isAnimated && (
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
             )}
           </div>
         </div>
 
         {/* Pulse effect for very early stages */}
         {progress < 10 && isAnimated && (
-          <div className="absolute inset-0 bg-gradient-to-r from-violet-400/30 to-blue-400/30 rounded-full animate-pulse" />
+          <div className="absolute inset-0 bg-linear-to-r from-violet-400/30 to-blue-400/30 rounded-full animate-pulse" />
         )}
       </div>
 

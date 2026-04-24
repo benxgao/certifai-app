@@ -87,26 +87,23 @@ function CertificationExamsContent() {
     mutateExams,
   );
 
-  const handleStartExam = (examId: string) => {
-    setNavigatingExamId(examId);
-    // Immediate redirect with optimistic loading
-    router.push(`/main/certifications/${certId}/exams/${examId}`);
-  };
+  const handleStartExam = useCallback(
+    (examId: string) => {
+      setNavigatingExamId(examId);
+      // Immediate redirect with optimistic loading
+      router.push(`/main/certifications/${certId}/exams/${examId}`);
+    },
+    [certId, router],
+  );
 
   // Memoized handlers for form inputs to prevent unnecessary re-renders
-  const handleNumberOfQuestionsChange = useCallback(
-    (value: number) => {
-      setNumberOfQuestions(value);
-    },
-    [],
-  );
+  const handleNumberOfQuestionsChange = useCallback((value: number) => {
+    setNumberOfQuestions(value);
+  }, []);
 
-  const handleCustomPromptChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setCustomPromptText(e.target.value);
-    },
-    [],
-  );
+  const handleCustomPromptChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCustomPromptText(e.target.value);
+  }, []);
 
   const handleCreateExam = async () => {
     if (!numberOfQuestions || numberOfQuestions < 1 || !apiUserId || !certId) return;
@@ -187,28 +184,31 @@ function CertificationExamsContent() {
     }
   };
 
-  const handleDeleteExam = async (examId: string) => {
-    if (!apiUserId || !certId) return;
+  const handleDeleteExam = useCallback(
+    async (examId: string) => {
+      if (!apiUserId || !certId) return;
 
-    try {
-      await deleteExam({
-        apiUserId,
-        examId,
-      });
+      try {
+        await deleteExam({
+          apiUserId,
+          examId,
+        });
 
-      await mutateExams(); // Refresh the exams list
-      await mutateAllExams(); // Refresh dashboard stats
-      console.log('Exam deleted successfully');
+        await mutateExams(); // Refresh the exams list
+        await mutateAllExams(); // Refresh dashboard stats
+        console.log('Exam deleted successfully');
 
-      // Show success toast notification for exam deletion
-      toastHelpers.success.examDeleted();
-    } catch (error) {
-      console.error('Error deleting exam:', error);
+        // Show success toast notification for exam deletion
+        toastHelpers.success.examDeleted();
+      } catch (error) {
+        console.error('Error deleting exam:', error);
 
-      // Show error toast notification for exam deletion failure
-      toastHelpers.error.examDeletionFailed((error as Error).message);
-    }
-  };
+        // Show error toast notification for exam deletion failure
+        toastHelpers.error.examDeletionFailed((error as Error).message);
+      }
+    },
+    [apiUserId, certId, deleteExam, mutateExams, mutateAllExams, toastHelpers],
+  );
 
   // Removed context debug useEffects
 

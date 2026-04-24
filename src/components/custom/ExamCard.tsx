@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { format, differenceInMinutes } from 'date-fns';
 import { FaPlay, FaClipboardList, FaChartLine, FaTrophy, FaRedo } from 'react-icons/fa';
 import { ExamReport } from './ExamReport';
@@ -10,7 +10,11 @@ import { DeleteIconButton } from './DeleteIconButton';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
-import { getDerivedExamStatus, getExamStatusInfo, ExamGenerationStage } from '@/src/types/exam-status';
+import {
+  getDerivedExamStatus,
+  getExamStatusInfo,
+  ExamGenerationStage,
+} from '@/src/types/exam-status';
 import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 
@@ -35,7 +39,7 @@ interface ExamCardProps {
   deleteExamError: any;
 }
 
-export function ExamCard({
+export const ExamCard = memo(function ExamCard({
   exam,
   displayCertification,
   onStartExam,
@@ -47,8 +51,27 @@ export function ExamCard({
   const { apiUserId } = useFirebaseAuth();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  // Use real-time progress tracking for generating exams via live-status endpoint
+  // Only poll if backend says it's actively generating
+  const { liveStatus } = useExamLiveStatus(
+    apiUserId || null,
+    exam.exam_id || null,
+    exam.exam_status === 'QUESTIONS_GENERATING', // Poll only during active generation
+  );
+
   // Get typed exam status and info
-  const examStatus = getDerivedExamStatus(exam);
+  let examStatus = getDerivedExamStatus(exam);
+
+  // OVERRIDE: If live-status shows generation is complete (100%, is_complete=true),
+  // override the derived status to 'ready' to prevent UI flashing when the database
+  // is still catching up with the backend exam_status field transition
+  const isGenerationComplete =
+    liveStatus?.is_complete === true && liveStatus?.progress_percentage === 100;
+
+  if (isGenerationComplete && (examStatus === 'generating' || examStatus === 'in_progress')) {
+    examStatus = 'ready';
+  }
+
   const statusInfo = getExamStatusInfo(examStatus);
   const isCompleted = exam.submitted_at !== null;
   const hasStarted = exam.started_at !== null;
@@ -68,22 +91,15 @@ export function ExamCard({
     };
     return statusMap[status] || status;
   };
-
-  // Use real-time progress tracking for generating exams via live-status endpoint
-  const { liveStatus } = useExamLiveStatus(
-    apiUserId || null,
-    exam.exam_id || null,
-    examStatus === 'generating' // Only poll while generating
-  );
-
-  // Transform live status to match expected UI format
   const generationEstimate =
     liveStatus && examStatus === 'generating'
       ? {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000,
           isLikelyComplete: liveStatus.is_complete,
-          stage: liveStatus.is_complete ? ExamGenerationStage.Complete : ExamGenerationStage.Generating,
+          stage: liveStatus.is_complete
+            ? ExamGenerationStage.Complete
+            : ExamGenerationStage.Generating,
           realProgress: {
             currentBatch: Math.ceil(
               (liveStatus.topics_with_questions / liveStatus.total_topics) * 5,
@@ -156,6 +172,12 @@ export function ExamCard({
   };
 
   const buttonContent = getButtonContent();
+
+  useEffect(() => {
+    console.log(`
+      | progress: ${liveStatus?.progress_percentage}
+      | examStatus: ${examStatus}`);
+  }, [examStatus, liveStatus]);
 
   return (
     <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl hover:shadow-3xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-xl overflow-hidden group">
@@ -302,7 +324,7 @@ export function ExamCard({
                       <FaTrophy className="w-3 h-3 text-amber-500 dark:text-amber-400" />
                     )}
                   </div>
-                    <p className="text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-400">
+                  <p className="text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-400">
                     {exam.score}%
                   </p>
                 </div>
@@ -311,7 +333,7 @@ export function ExamCard({
           </div>
 
           {/* Enhanced Generation Progress Bar */}
-          {examStatus === 'generating' && generationEstimate && (
+          {examStatus === 'generating' && generationEstimate && !isGenerationComplete && (
             <div className="mt-6 p-5 sm:p-6 bg-violet-50/90 dark:bg-violet-950/40 rounded-2xl border border-violet-200/60 dark:border-violet-700/50 shadow-lg backdrop-blur-md">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-2 h-2 rounded-full bg-violet-400 dark:bg-violet-500 animate-pulse"></div>
@@ -417,4 +439,4 @@ export function ExamCard({
       />
     </div>
   );
-}
+});
