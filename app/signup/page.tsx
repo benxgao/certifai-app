@@ -187,8 +187,8 @@ export default function SignUpPage() {
           setLoading(false);
           signupDebugger.success('uat-bypass', 'UAT environment detected, redirecting to signin');
           setIsRedirectingToSignin(true);
-          // Small delay to allow custom claims to propagate before auth setup runs
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          // 5 second delay to allow Firestore and Prisma account creation, plus custom claims propagation
+          await new Promise((resolve) => setTimeout(resolve, 5000));
           router.push('/signin');
           return;
         }

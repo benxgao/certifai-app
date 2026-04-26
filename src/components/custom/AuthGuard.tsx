@@ -242,8 +242,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
-  // Case 3: User authenticated but email not verified - show loading while redirect happens
-  if (firebaseUser && !firebaseUser.emailVerified) {
+  // Case 3: User authenticated but email not verified - show loading while redirect happens (non-UAT only)
+  // In UAT, email verification is auto-completed by backend, so skip this block
+  if (firebaseUser && !firebaseUser.emailVerified && !isUATEnv()) {
     return (
       <PageLoader
         isLoading={true}

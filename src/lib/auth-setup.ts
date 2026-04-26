@@ -6,6 +6,7 @@
 
 import { User } from 'firebase/auth';
 import { optimizedFetch, AUTH_FETCH_OPTIONS } from '@/src/lib/fetch-config';
+import { isUATEnv } from '@/src/utils/env';
 
 export interface AuthSetupResult {
   success: boolean;
@@ -305,12 +306,17 @@ export const shouldRedirectToSignIn = (): boolean => {
 /**
  * Complete authentication setup process
  * Handles all async authentication processes in parallel for optimal performance
+ * In UAT environment, skips API login and relies on Firebase custom claims
  */
 export const performAuthSetup = async (authUser: User, token: string): Promise<AuthSetupResult> => {
   try {
     // Use the centralized auth manager for cookie setting
     const cookiePromise = authManager.setAuthCookie(token);
+
+    // Always call API login to ensure we have the latest api_user_id
+    // The 5-second delay in signup waits for backend account creation before auth setup runs
     const loginPromise = authManager.performApiLogin(token);
+
     const claimsPromise = getApiUserIdFromClaims(authUser);
 
     // Execute all requests in parallel
@@ -324,6 +330,11 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
     const finalCookieResult = cookieResult.status === 'fulfilled' ? cookieResult.value : null;
     const finalApiUserId = loginResult.status === 'fulfilled' ? loginResult.value : null;
     let finalClaimsUserId = claimsResult.status === 'fulfilled' ? claimsResult.value : null;
+
+    // In UAT environment, log that we're using claims fallback
+    if (isUATEnv() && !finalApiUserId && finalClaimsUserId) {
+      console.debug('[performAuthSetup] UAT environment: using api_user_id from Firebase claims');
+    }
 
     // If no claims found, retry after delay (for newly created accounts)
     if (!finalClaimsUserId) {
