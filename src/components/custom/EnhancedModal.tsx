@@ -33,6 +33,9 @@ interface EnhancedModalProps {
 
   // Optional decorative elements
   decorativeElements?: React.ReactNode;
+
+  // Test selectors
+  'data-testid'?: string;
 }
 
 export function EnhancedModal({
@@ -48,6 +51,7 @@ export function EnhancedModal({
   variant = 'default',
   maxWidth = 'sm:max-w-[500px]',
   decorativeElements,
+  'data-testid': dataTestid,
 }: EnhancedModalProps) {
   // Define variant-specific styling
   const variantStyles = {
@@ -71,7 +75,7 @@ export function EnhancedModal({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}
-      <DialogContent className={cn(maxWidth, styles.container)}>
+      <DialogContent className={cn(maxWidth, styles.container)} data-testid={dataTestid}>
         {/* Decorative elements for enhanced visual appeal */}
         {decorativeElements}
 
