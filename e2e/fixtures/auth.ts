@@ -33,12 +33,12 @@ export const test = base.extend<AuthFixtures>({
       }, authData.localStorage);
       console.log('Auth state loaded from cache');
     } catch (e) {
-      // If no saved auth state, perform login
-      console.log('No existing auth state found. Logging in...');
+      // If no saved auth state, perform login with auto-signup fallback
+      console.log('No existing auth state found. Attempting login with auto-signup...');
       try {
-        await performLogin(page);
+        await performLoginWithAutoSignup(page);
       } catch (error) {
-        console.error('Login failed:', error);
+        console.error('Login with auto-signup failed:', error);
         throw error;
       }
 
@@ -89,37 +89,44 @@ export const test = base.extend<AuthFixtures>({
  * @param page - Playwright page object
  * @param timeoutMs - Maximum time to wait (default: 2000ms)
  */
-async function waitForPostSignupSync(page: Page, timeoutMs: number = 2000): Promise<void> {
-  console.log('Waiting for Firebase backend to sync new account...');
+async function waitForPostSignupSync(page: Page, timeoutMs: number = 5000): Promise<void> {
+  console.log('[SIGNUP SYNC] Waiting for Firebase backend to sync new account (timeout: 5s)...');
 
   const startTime = Date.now();
   let isBackendReady = false;
+  let attempts = 0;
 
   while (!isBackendReady && Date.now() - startTime < timeoutMs) {
+    attempts++;
     try {
       // Check if we have Firebase auth state in localStorage
       const hasFirebaseAuth = await page.evaluate(() => {
         const keys = Object.keys(localStorage);
-        return keys.some((k) => k.includes('firebase') || k.includes('auth'));
+        const authKeys = keys.filter((k) => k.includes('firebase') || k.includes('auth'));
+        return authKeys.length > 0;
       });
 
       if (hasFirebaseAuth) {
         isBackendReady = true;
-        console.log('✓ Firebase auth state detected in localStorage. Backend appears ready.');
+        const elapsed = Date.now() - startTime;
+        console.log(
+          `[SIGNUP SYNC] ✓ Firebase auth state detected after ${elapsed}ms (attempt ${attempts})`,
+        );
         break;
       }
 
-      // If not ready yet, wait 200ms and try again
-      await page.waitForTimeout(200);
+      // If not ready yet, wait 300ms and try again
+      await page.waitForTimeout(300);
     } catch (e) {
       // Error checking auth state, just wait a bit more
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(300);
     }
   }
 
   if (!isBackendReady) {
+    const elapsed = Date.now() - startTime;
     console.log(
-      '⚠ Firebase auth state not detected after 2s, but proceeding anyway. Backend sync may be in progress.',
+      `[SIGNUP SYNC] ⚠ Firebase auth state not detected after ${elapsed}ms, but proceeding anyway. Backend sync may be in progress.`,
     );
   }
 }
@@ -280,6 +287,183 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
   throw new Error(
     `Login failed after ${maxAttempts} attempts: ${lastError?.message || 'Unknown error'}. Check logs for error messages.`,
   );
+}
+
+/**
+ * Perform login with automatic signup fallback if account doesn't exist
+ *
+ * **Flow:**
+ * 1. Attempt login with provided credentials
+ * 2. If login fails with "user not found" error:
+ *    - Generate display name from email (e.g., "test user" from "test.user@example.com")
+ *    - Call performSignup to create the account
+ *    - Retry login once more
+ * 3. If login succeeds or fails with different error, return/throw accordingly
+ *
+ * **Error Detection:**
+ * - "user not found" patterns: "no user", "not found", "does not exist", "unrecognized"
+ * - "wrong password" patterns: "invalid", "incorrect", "match"
+ * - Only triggers auto-signup for account-not-found errors, not password errors
+ *
+ * **Display Name Generation:**
+ * - Extracts from email prefix (before @)
+ * - Example: "test.user@example.com" → "test user" (replace dots/underscores with spaces, capitalize)
+ *
+ * @param page - Playwright page object
+ * @param email - Email for login/signup (optional, uses PW_TEST_EMAIL env var)
+ * @param password - Password for login/signup (optional, uses PW_TEST_PASSWORD env var)
+ * @throws Error if login fails permanently or signup fails
+ */
+async function performLoginWithAutoSignup(
+  page: Page,
+  email?: string,
+  password?: string,
+): Promise<void> {
+  const loginEmail = email || process.env.PW_TEST_EMAIL || process.env.PLAYWRIGHT_TEST_EMAIL;
+  const loginPassword =
+    password || process.env.PW_TEST_PASSWORD || process.env.PLAYWRIGHT_TEST_PASSWORD;
+
+  if (!loginEmail || !loginPassword) {
+    throw new Error(
+      'Missing test credentials. Please set PW_TEST_EMAIL and PW_TEST_PASSWORD environment variables.',
+    );
+  }
+
+  console.log('[LOGIN WITH AUTO-SIGNUP] Attempting login with provided credentials...');
+
+  // Try initial login
+  let loginAttempts = 0;
+  try {
+    loginAttempts++;
+    console.log(`[LOGIN WITH AUTO-SIGNUP] Attempt ${loginAttempts}/3: Trying initial login...`);
+    const initialPageBefore = page.url();
+    console.log(`[LOGIN WITH AUTO-SIGNUP]   Current page before login: ${initialPageBefore}`);
+
+    await performLogin(page, loginEmail, loginPassword);
+
+    const initialPageAfter = page.url();
+    console.log(`[LOGIN WITH AUTO-SIGNUP]   Current page after login: ${initialPageAfter}`);
+    console.log('[LOGIN WITH AUTO-SIGNUP] ✓ Login succeeded on first attempt');
+    return;
+  } catch (loginError) {
+    const errorMessage = (loginError as Error).message || '';
+    console.log(
+      '[LOGIN WITH AUTO-SIGNUP] ⚠ Login failed. Analyzing error to determine if auto-signup needed...',
+    );
+    console.log(`[LOGIN WITH AUTO-SIGNUP] Error message: ${errorMessage}`);
+
+    // Check if this is a "user not found" error vs "wrong password" error
+    const isUserNotFoundError = /no user|not found|does not exist|not recognized|unrecognized/i.test(
+      errorMessage,
+    );
+    console.log(
+      `[LOGIN WITH AUTO-SIGNUP] Pattern check: User not found error = ${isUserNotFoundError}`,
+    );
+
+    if (isUserNotFoundError || errorMessage.includes('Login failed')) {
+      // Try to get more specific error from page
+      try {
+        const errorAlert = page.locator('[data-slot="alert"]');
+        const alertVisible = await errorAlert.isVisible({ timeout: 2000 }).catch(() => false);
+
+        if (alertVisible) {
+          const alertText = (await errorAlert.textContent()) || '';
+          console.log(`  Alert message: ${alertText}`);
+
+          // Check if it's a "user not found" pattern in the alert
+          const isNotFoundInAlert = /no user|not found|does not exist|not recognized|unrecognized/i.test(
+            alertText,
+          );
+
+          if (!isNotFoundInAlert && /invalid|incorrect|don't match|wrong/i.test(alertText)) {
+            // This looks like a password error, not account-not-found
+            console.log(
+              '[LOGIN WITH AUTO-SIGNUP] ✗ Password appears to be incorrect. Not triggering auto-signup.',
+            );
+            throw loginError;
+          }
+        }
+      } catch (e) {
+        // Failed to check alert, but we got a login error - proceed with auto-signup attempt
+        console.log('[LOGIN WITH AUTO-SIGNUP] Could not verify error type, attempting auto-signup as fallback...');
+      }
+
+      // Looks like account not found - trigger auto-signup
+      console.log(
+        '[LOGIN WITH AUTO-SIGNUP] → Account not found. Triggering auto-signup registration...',
+      );
+
+      // Generate display name from email
+      const emailPrefix = loginEmail.split('@')[0];
+      const displayName = emailPrefix
+        .replace(/[._-]/g, ' ')
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
+      console.log(`[LOGIN WITH AUTO-SIGNUP] Generated display name: "${displayName}"`);
+
+      try {
+        // Perform signup with the provided credentials
+        console.log('[LOGIN WITH AUTO-SIGNUP] Starting signup process...');
+        const signupPageBefore = page.url();
+        console.log(`[LOGIN WITH AUTO-SIGNUP]   Page before signup: ${signupPageBefore}`);
+
+        await performSignup(page, loginEmail, loginPassword, displayName);
+
+        const signupPageAfter = page.url();
+        console.log(`[LOGIN WITH AUTO-SIGNUP]   Page after signup: ${signupPageAfter}`);
+        console.log('[LOGIN WITH AUTO-SIGNUP] ✓ Signup completed');
+
+        // Validate signup actually completed
+        if (!signupPageAfter.includes('/signin')) {
+          console.warn(
+            `[LOGIN WITH AUTO-SIGNUP] ⚠ Expected to be on /signin after signup, but got: ${signupPageAfter}`,
+          );
+        }
+      } catch (signupError) {
+        console.error('[LOGIN WITH AUTO-SIGNUP] ✗ Signup failed:', signupError);
+        throw signupError;
+      }
+
+      // Wait longer before retrying login to ensure Firebase has synced
+      console.log('[LOGIN WITH AUTO-SIGNUP] Waiting 3s for Firebase backend to sync before login retry...');
+      await page.waitForTimeout(3000);
+
+      // Now retry login after signup
+      loginAttempts++;
+      console.log(
+        `[LOGIN WITH AUTO-SIGNUP] Attempt ${loginAttempts}/3: Retrying login after signup...`,
+      );
+      try {
+        const retryPageBefore = page.url();
+        console.log(`[LOGIN WITH AUTO-SIGNUP]   Page before retry login: ${retryPageBefore}`);
+
+        await performLogin(page, loginEmail, loginPassword);
+
+        const retryPageAfter = page.url();
+        console.log(`[LOGIN WITH AUTO-SIGNUP]   Page after retry login: ${retryPageAfter}`);
+        console.log('[LOGIN WITH AUTO-SIGNUP] ✓ Login succeeded after auto-signup');
+        return;
+      } catch (retryError) {
+        console.error(
+          `[LOGIN WITH AUTO-SIGNUP] ✗ Login failed on attempt ${loginAttempts}:`,
+          retryError,
+        );
+        // Prevent infinite loop - fail after retry
+        console.error(
+          '[LOGIN WITH AUTO-SIGNUP] ✗ Max login attempts reached after signup. Failing account creation flow.',
+        );
+        throw retryError;
+      }
+    } else {
+      // Not a "user not found" error, so re-throw the original error
+      console.log(
+        '[LOGIN WITH AUTO-SIGNUP] ✗ Login failed with a different error. Not attempting auto-signup.',
+      );
+      throw loginError;
+    }
+  }
 }
 
 /**
@@ -864,4 +1048,5 @@ export {
   performDeleteAccount,
   navigateToProfile,
   performLogin,
+  performLoginWithAutoSignup,
 };

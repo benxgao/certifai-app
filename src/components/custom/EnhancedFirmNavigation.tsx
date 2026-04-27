@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
-import { FaSearch, FaList, FaTh } from 'react-icons/fa';
+import { FaList, FaTh } from 'react-icons/fa';
 import { useAllAuthenticatedFirms } from '@/swr/firms';
 import { useAllAvailableCertifications, CertificationListItem } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
@@ -13,6 +13,7 @@ import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/src/lib/utils';
 import { AlertMessage } from './AlertMessage';
+import CertificationSearchControls from './CertificationSearchControls';
 
 interface EnhancedFirmNavigationProps {
   onRegister: (cert: CertificationListItem) => void;
@@ -29,7 +30,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
   const [navigatingCertId, setNavigatingCertId] = useState<number | null>(null);
   const [selectedFirm, setSelectedFirm] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<ViewMode>('tree');
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
   // Fetch firms and certifications data - using hooks that load ALL data recursively
   const { firms, isLoadingFirms, isFirmsError } = useAllAuthenticatedFirms(true); // Load all firms with cert counts
@@ -107,8 +108,8 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
             <div className="flex-1 min-w-0">
               <h3
                 className={cn(
-                  'font-bold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2 leading-tight mb-3',
-                  isCompact ? 'text-base' : 'text-xl',
+                  'font-bold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-3 leading-snug mb-3',
+                  isCompact ? 'text-base min-h-[3.5rem]' : 'text-xl min-h-[5.25rem]',
                 )}
               >
                 {cert.name}
@@ -161,7 +162,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 size={isCompact ? 'sm' : 'lg'}
                 onClick={() => onRegister(cert)}
                 disabled={isCurrentlyRegistering}
-                className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
+                className="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl"
               >
                 {isCurrentlyRegistering ? (
                   <div className="flex items-center space-x-2">
@@ -170,7 +171,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                   </div>
                 ) : (
                   <div className="flex items-center space-x-2">
-                    <span>Register</span>
+                    <span>Register Now</span>
                   </div>
                 )}
               </Button>
@@ -303,7 +304,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
               </div>
 
               {/* Certifications Grid */}
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <div id="cert-card-list" className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 {certificationsByFirm[selectedFirm]?.map((cert) =>
                   renderCertificationCard(cert, true),
                 )}
@@ -336,7 +337,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
           organized grid layout
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div id="cert-card-list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {availableCertifications
           ?.filter(
             (cert) =>
@@ -359,7 +360,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
           compact list format
         </p>
       </div>
-      <div className="space-y-4">
+      <div id="cert-card-list" className="space-y-4">
         {availableCertifications
           ?.filter(
             (cert) =>
@@ -399,67 +400,61 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
     <div className="space-y-8">
       {/* Enhanced Header with Search and View Controls */}
       <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-3xl shadow-lg border border-slate-200/60 dark:border-slate-700/60 p-8">
-        <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-          <div className="flex-1 max-w-lg">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight">
-              Certification Catalog
-            </h1>
-            <div className="relative">
-              <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
-              <Input
-                placeholder="Search certifications or providers..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 pr-4 h-12 text-base bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 focus:border-violet-500 dark:focus:border-violet-400 transition-all duration-300 rounded-xl shadow-sm"
-              />
-            </div>
-          </div>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 tracking-tight">
+          Certification Catalog
+        </h1>
 
-          <div className="flex items-center space-x-1 bg-slate-100/80 dark:bg-slate-700/50 backdrop-blur-sm p-1 rounded-2xl border border-slate-200/60 dark:border-slate-600/60">
-            <Button
-              variant={viewMode === 'tree' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('tree')}
-              className={cn(
-                'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
-                viewMode === 'tree'
-                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-md text-white border-0'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
-              )}
-            >
-              <FaList className="w-4 h-4" />
-              <span className="font-medium">Tree</span>
-            </Button>
-            <Button
-              variant={viewMode === 'grid' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('grid')}
-              className={cn(
-                'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
-                viewMode === 'grid'
-                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-md text-white border-0'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
-              )}
-            >
-              <FaTh className="w-4 h-4" />
-              <span className="font-medium">Grid</span>
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('list')}
-              className={cn(
-                'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
-                viewMode === 'list'
-                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 shadow-md text-white border-0'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
-              )}
-            >
-              <FaList className="w-4 h-4" />
-              <span className="font-medium">List</span>
-            </Button>
-          </div>
-        </div>
+        <CertificationSearchControls
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          placeholder="Search certifications or providers..."
+          controls={
+            <div className="flex items-center space-x-1 bg-slate-100/80 dark:bg-slate-700/50 backdrop-blur-sm p-1 rounded-2xl border border-slate-200/60 dark:border-slate-600/60">
+              <Button
+                variant={viewMode === 'tree' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('tree')}
+                className={cn(
+                  'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
+                  viewMode === 'tree'
+                    ? 'bg-slate-300 dark:bg-slate-600 shadow-sm text-slate-700 dark:text-slate-200 border-0 hover:bg-slate-400 dark:hover:bg-slate-500'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
+                )}
+              >
+                <FaList className="w-4 h-4" />
+                <span className="font-medium">Tree</span>
+              </Button>
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('grid')}
+                className={cn(
+                  'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
+                  viewMode === 'grid'
+                    ? 'bg-slate-300 dark:bg-slate-600 shadow-sm text-slate-700 dark:text-slate-200 border-0 hover:bg-slate-400 dark:hover:bg-slate-500'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
+                )}
+              >
+                <FaTh className="w-4 h-4" />
+                <span className="font-medium">Grid</span>
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('list')}
+                className={cn(
+                  'flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300',
+                  viewMode === 'list'
+                    ? 'bg-slate-300 dark:bg-slate-600 shadow-sm text-slate-700 dark:text-slate-200 border-0 hover:bg-slate-400 dark:hover:bg-slate-500'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-600/50',
+                )}
+              >
+                <FaList className="w-4 h-4" />
+                <span className="font-medium">List</span>
+              </Button>
+            </div>
+          }
+        />
       </div>
 
       {/* Results Summary */}

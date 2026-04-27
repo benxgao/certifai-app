@@ -5,13 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { FaSearch, FaAward, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaAward, FaExternalLinkAlt } from 'react-icons/fa';
 import Link from 'next/link';
 import { CertificationsCatalogJsonLd } from '@/src/components/seo/JsonLd';
 import { createSlug } from '@/src/utils/slug';
 import { AlertMessage } from './AlertMessage';
 import { FirmWithCertifications } from '@/src/lib/server-actions/certifications';
 import { linkifyText } from '@/src/lib/text-utils';
+import CertificationSearchControls from './CertificationSearchControls';
 
 interface CertificationsOverviewClientProps {
   initialFirms: FirmWithCertifications[];
@@ -120,30 +121,25 @@ export default function CertificationsOverviewClient({
         </div>
 
         {/* Search Controls */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="relative">
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
-            <Input
-              type="text"
-              placeholder="Search certifications or firms..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
-            />
-          </div>
-          <select
-            value={selectedFirm || ''}
-            onChange={(e) => setSelectedFirm(e.target.value || null)}
-            className="px-3 py-2 border border-slate-200 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
-          >
-            <option value="">All Firms</option>
-            {firms.map((firm) => (
-              <option key={firm.id} value={firm.code}>
-                {firm.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <CertificationSearchControls
+          searchValue={searchTerm}
+          onSearchChange={setSearchTerm}
+          placeholder="Search certifications or firms..."
+          controls={
+            <select
+              value={selectedFirm || ''}
+              onChange={(e) => setSelectedFirm(e.target.value || null)}
+              className="w-full px-3 py-2 h-12 border border-slate-200 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-500"
+            >
+              <option value="">All Firms</option>
+              {firms.map((firm) => (
+                <option key={firm.id} value={firm.code}>
+                  {firm.name}
+                </option>
+              ))}
+            </select>
+          }
+        />
       </div>
 
       {/* Results Summary */}
