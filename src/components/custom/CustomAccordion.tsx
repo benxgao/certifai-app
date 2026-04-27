@@ -88,11 +88,11 @@ export const CustomAccordion: React.FC<CustomAccordionProps> = ({
       ? {
           type: 'single' as const,
           collapsible,
-          defaultValue: defaultValue as string | undefined,
+          defaultValue: typeof defaultValue === 'string' ? defaultValue : undefined,
         }
       : {
           type: 'multiple' as const,
-          defaultValue: defaultValue as string[] | undefined,
+          defaultValue: Array.isArray(defaultValue) ? defaultValue : undefined,
         };
 
   return (

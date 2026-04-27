@@ -1,6 +1,6 @@
 /**
  * Stripe configuration for Certifai frontend
- * Stripe API version: 2025-07-30.basil
+ * Stripe API version: 2025-08-27.basil
  */
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
@@ -9,7 +9,7 @@ if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
 
 export const STRIPE_CONFIG = {
   publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-  apiVersion: '2025-07-30.basil' as const,
+  apiVersion: '2025-08-27.basil' as const,
 } as const;
 
 // Stripe redirect URLs
