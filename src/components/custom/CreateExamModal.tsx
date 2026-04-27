@@ -205,6 +205,7 @@ export function CreateExamModal({
           isLoading={isCreatingExam}
           loadingText="Creating Exam..."
           className="w-full"
+          data-testid="create-exam-button"
         >
           {isLoadingSubscription ? 'Loading...' : 'Create Exam'}
         </ActionButton>
@@ -222,6 +223,7 @@ export function CreateExamModal({
       variant="default"
       content={content}
       footer={footer}
+      data-testid="create-exam-modal"
     >
       {children}
     </EnhancedModal>

@@ -180,7 +180,7 @@ export const ExamCard = memo(function ExamCard({
   }, [examStatus, liveStatus]);
 
   return (
-    <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl hover:shadow-3xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-xl overflow-hidden group">
+    <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl hover:shadow-3xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 transition-all duration-500 rounded-xl overflow-hidden group" data-testid="exam-card">
       {/* Enhanced decorative orbs */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-violet-200/30 dark:bg-violet-600/20 rounded-bl-full blur-xl"></div>
       <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-emerald-100/20 dark:bg-emerald-600/10 rounded-tr-full blur-lg"></div>

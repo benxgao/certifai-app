@@ -117,6 +117,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                 <Button
                   onClick={() => (isRegistered ? handleViewExams(cert.cert_id) : onRegister(cert))}
                   disabled={isCurrentlyRegistering || isRegistering || isCurrentlyNavigating}
+                  data-testid={isRegistered ? 'view-exams-button' : 'register-cert-button'}
                   className={`w-full rounded-xl py-3 font-semibold transition-all duration-200 flex-shrink-0 ${
                     isRegistered
                       ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-200 dark:hover:shadow-emerald-900/20'

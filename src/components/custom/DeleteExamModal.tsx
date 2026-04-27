@@ -126,6 +126,7 @@ export function DeleteExamModal({
         onClick={handleConfirm}
         disabled={isDeleting}
         className="flex-1 sm:flex-none bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 backdrop-blur-sm border-0"
+        data-testid="delete-exam-confirm-button"
       >
         {isDeleting ? (
           <>
@@ -153,6 +154,7 @@ export function DeleteExamModal({
       content={content}
       footer={footer}
       decorativeElements={decorativeElements}
+      data-testid="delete-exam-modal"
     />
   );
 }

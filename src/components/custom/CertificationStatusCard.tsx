@@ -98,6 +98,7 @@ export function CertificationStatusCard({
                 disabled={!canCreateExam}
                 onClick={onCreateExamClick}
                 icon={<FaRegFileAlt className="w-4 h-4" />}
+                data-testid="new-exam-button-desktop"
               >
                 New Exam
               </ActionButton>
@@ -185,6 +186,7 @@ export function CertificationStatusCard({
             onClick={onCreateExamClick}
             icon={<FaRegFileAlt className="w-4 h-4" />}
             fullWidth
+            data-testid="new-exam-button-mobile"
           >
             New Exam
           </ActionButton>

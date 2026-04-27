@@ -144,6 +144,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 size={isCompact ? 'sm' : 'lg'}
                 onClick={() => handleViewExams(cert.cert_id)}
                 disabled={isCurrentlyNavigating}
+                data-testid="view-exams-button"
                 className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
               >
                 {isCurrentlyNavigating ? (
@@ -162,6 +163,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 size={isCompact ? 'sm' : 'lg'}
                 onClick={() => onRegister(cert)}
                 disabled={isCurrentlyRegistering}
+                data-testid="register-cert-button"
                 className="w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl"
               >
                 {isCurrentlyRegistering ? (

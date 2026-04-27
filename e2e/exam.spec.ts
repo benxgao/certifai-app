@@ -9,47 +9,27 @@ type TestFixtures = {
  * Helper function to delete the first exam card
  * Finds delete button, clicks it, confirms deletion, and waits for modal to close
  */
-async function deleteFirstExam(page: Page, testName: string): Promise<{ success: boolean; error?: string }> {
+async function deleteFirstExam(
+  page: Page,
+  testName: string,
+): Promise<{ success: boolean; error?: string }> {
   try {
-    console.log(`${testName} → Attempting to delete first exam...`);
+    console.log(`${testName} → Deleting first exam...`);
 
-    // Strategy 1: Use page-level selector with data-testid (most reliable)
-    console.log(`${testName} → Looking for delete button using data-testid...`);
-    let deleteButton = page.locator('button[data-testid="exam-card-delete-button"]').first();
-    let isDeleteButtonVisible = await deleteButton.isVisible({ timeout: 3000 }).catch(() => false);
-
-    // Strategy 2: Fallback to rightmost button in first exam card (usually the delete button)
-    if (!isDeleteButtonVisible) {
-      console.log(`${testName} ⚠ data-testid selector failed, trying fallback selector...`);
-      const examCards = page.locator('div[class*="border"][class*="rounded-xl"]');
-      const firstExamCard = examCards.first();
-      const isFirstExamVisible = await firstExamCard.isVisible({ timeout: 2000 }).catch(() => false);
-
-      if (isFirstExamVisible) {
-        deleteButton = firstExamCard.locator('button').last();
-        isDeleteButtonVisible = await deleteButton.isVisible({ timeout: 2000 }).catch(() => false);
-      }
-    }
+    const deleteButton = page.locator('button[data-testid="exam-card-delete-button"]').first();
+    const isDeleteButtonVisible = await deleteButton
+      .isVisible({ timeout: 3000 })
+      .catch(() => false);
 
     if (!isDeleteButtonVisible) {
       return { success: false, error: 'Delete button not found' };
     }
 
-    console.log(`${testName} ✓ Delete button found`);
+    console.log(`${testName} ✓ Delete button found, clicking...`);
+    await deleteButton.click({ timeout: 5000 });
 
-    // Click delete button
-    console.log(`${testName} → Clicking delete button...`);
-    try {
-      await deleteButton.click({ timeout: 5000 });
-    } catch (e) {
-      // Fallback to force click
-      console.log(`${testName} ⚠ Normal click failed, trying force click...`);
-      await deleteButton.click({ force: true, timeout: 5000 });
-    }
-
-    // Wait for delete confirmation modal
     console.log(`${testName} → Waiting for delete confirmation modal...`);
-    const deleteModal = page.locator('div[role="dialog"]').first();
+    const deleteModal = page.locator('div[data-testid="delete-exam-modal"]');
     const isDeleteModalVisible = await deleteModal
       .waitFor({ state: 'visible', timeout: 5000 })
       .then(() => true)
@@ -61,16 +41,13 @@ async function deleteFirstExam(page: Page, testName: string): Promise<{ success:
 
     console.log(`${testName} ✓ Delete confirmation modal appeared`);
 
-    // Click delete confirmation button
     console.log(`${testName} → Clicking delete confirmation button...`);
-    let deleteConfirmButton = deleteModal.locator('button:has-text("Delete")').first();
-    let isConfirmButtonVisible = await deleteConfirmButton.isVisible({ timeout: 2000 }).catch(() => false);
-
-    // Fallback: look for destructive button
-    if (!isConfirmButtonVisible) {
-      deleteConfirmButton = deleteModal.locator('button[class*="red"], button[class*="destructive"]').first();
-      isConfirmButtonVisible = await deleteConfirmButton.isVisible({ timeout: 2000 }).catch(() => false);
-    }
+    const deleteConfirmButton = deleteModal.locator(
+      'button[data-testid="delete-exam-confirm-button"]',
+    );
+    const isConfirmButtonVisible = await deleteConfirmButton
+      .isVisible({ timeout: 2000 })
+      .catch(() => false);
 
     if (!isConfirmButtonVisible) {
       return { success: false, error: 'Delete confirmation button not found in modal' };
@@ -78,7 +55,6 @@ async function deleteFirstExam(page: Page, testName: string): Promise<{ success:
 
     await deleteConfirmButton.click({ timeout: 5000 });
 
-    // Wait for modal to close
     console.log(`${testName} → Waiting for delete modal to close...`);
     const isDeleteModalClosed = await deleteModal
       .waitFor({ state: 'hidden', timeout: 10000 })
@@ -90,8 +66,6 @@ async function deleteFirstExam(page: Page, testName: string): Promise<{ success:
     }
 
     console.log(`${testName} ✓ Exam deleted successfully`);
-
-    // Wait for UI to update
     await page.waitForTimeout(500);
 
     return { success: true };
@@ -109,11 +83,71 @@ async function handleExamCreation(page: Page, testName: string) {
   // ===== Click "New Exam" button =====
   console.log(`${testName} → Clicking "New Exam" button...`);
 
-  let newExamButton = page.locator('button:has-text("New Exam")').first();
-  let isNewExamButtonVisible = await newExamButton.isVisible({ timeout: 10000 }).catch(() => false);
+  // ===== Find and verify "New Exam" button with multi-strategy approach =====
+  console.log(`${testName} → Finding "New Exam" button (trying multiple selectors)...`);
+
+  let newExamButton = page.locator('button[data-testid="new-exam-button-desktop"]');
+  let buttonCount = await newExamButton.count();
+  console.log(`${testName} → Strategy 1: desktop button testid found ${buttonCount} button(s)`);
+
+  let isNewExamButtonVisible = false;
+  let debugInfo = '';
+
+  // Strategy 1: Try desktop button testid
+  if (buttonCount > 0) {
+    try {
+      await newExamButton.first().waitFor({ state: 'visible', timeout: 5000 });
+      isNewExamButtonVisible = true;
+      console.log(`${testName} ✓ Desktop button found and visible`);
+    } catch (e) {
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      debugInfo = `desktop-button: ${errorMsg.substring(0, 80)}`;
+      console.log(`${testName} ⚠ Strategy 1 (desktop) failed: ${debugInfo}`);
+    }
+  }
+
+  // Strategy 2: Fallback to mobile button testid
+  if (!isNewExamButtonVisible) {
+    console.log(`${testName} → Strategy 2: Trying mobile button testid...`);
+    newExamButton = page.locator('button[data-testid="new-exam-button-mobile"]');
+    buttonCount = await newExamButton.count();
+    console.log(`${testName} → Strategy 2: mobile button testid found ${buttonCount} button(s)`);
+
+    if (buttonCount > 0) {
+      try {
+        await newExamButton.first().waitFor({ state: 'visible', timeout: 5000 });
+        isNewExamButtonVisible = true;
+        console.log(`${testName} ✓ Mobile button found and visible`);
+      } catch (e) {
+        const errorMsg = e instanceof Error ? e.message : String(e);
+        debugInfo += ` | mobile-button: ${errorMsg.substring(0, 80)}`;
+        console.log(`${testName} ⚠ Strategy 2 (mobile) failed`);
+      }
+    }
+  }
+
+  // Strategy 3: Final fallback - try text selector with .first() to avoid strict mode violation
+  if (!isNewExamButtonVisible) {
+    console.log(`${testName} → Strategy 3: Trying text selector "New Exam"...`);
+    newExamButton = page.locator('button:has-text("New Exam")').first();
+    buttonCount = await newExamButton.count();
+    console.log(`${testName} → Strategy 3: Text selector found buttons, using .first()`);
+
+    try {
+      await newExamButton.waitFor({ state: 'visible', timeout: 5000 });
+      isNewExamButtonVisible = true;
+      console.log(`${testName} ✓ Button found and visible via text selector`);
+    } catch (e) {
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      debugInfo += ` | text-selector: ${errorMsg.substring(0, 80)}`;
+      console.log(`${testName} ⚠ Strategy 3 failed`);
+    }
+  }
 
   if (!isNewExamButtonVisible) {
-    throw new Error(`${testName} ✗ "New Exam" button not found or not visible`);
+    throw new Error(
+      `${testName} ✗ "New Exam"/"Create Exam" button not found or not visible. Debug: ${debugInfo}`,
+    );
   }
 
   // Check if button is disabled (e.g., due to 3/3 exams created today quota)
@@ -140,20 +174,23 @@ async function handleExamCreation(page: Page, testName: string) {
       // Wait a bit for UI to fully update
       await page.waitForTimeout(1000);
     } else {
-      console.log(`${testName} ⚠ Delete failed: ${deleteResult.error}, but attempting to click "New Exam" anyway...`);
+      console.log(
+        `${testName} ⚠ Delete failed: ${deleteResult.error}, but attempting to click "New Exam" anyway...`,
+      );
     }
   }
 
   // Now try to click the "New Exam" button (should be enabled now)
   console.log(`${testName} → Attempting to click "New Exam" button...`);
   try {
-    await newExamButton.click({ timeout: 5000 });
+    // Always use .first() to avoid strict mode violation when multiple buttons match
+    await newExamButton.first().click({ timeout: 5000 });
     console.log(`${testName} ✓ "New Exam" button clicked`);
   } catch (e) {
     // Fallback to force click
     console.log(`${testName} ⚠ Normal click timeout, attempting force click...`);
     try {
-      await newExamButton.click({ force: true, timeout: 5000 });
+      await newExamButton.first().click({ force: true, timeout: 5000 });
       console.log(`${testName} ✓ "New Exam" button clicked (force)`);
     } catch (forceError) {
       throw new Error(`${testName} ✗ Failed to click "New Exam" button: ${forceError}`);
@@ -167,18 +204,16 @@ async function handleExamCreation(page: Page, testName: string) {
   await page.waitForTimeout(500);
 
   // Try specific selector first (modal containing the number of questions slider)
-  let createExamModal = page.locator('div[role="dialog"]:has(input[id="number-of-questions"])').first();
-  let isModalVisible = await createExamModal
-    .isVisible({ timeout: 2000 })
-    .catch(() => false);
+  let createExamModal = page
+    .locator('div[role="dialog"]:has(input[id="number-of-questions"])')
+    .first();
+  let isModalVisible = await createExamModal.isVisible({ timeout: 2000 }).catch(() => false);
 
   // Fallback 1: Look for modal by slider role element
   if (!isModalVisible) {
     console.log(`${testName} ⚠ Specific modal selector failed, trying slider role fallback...`);
     createExamModal = page.locator('div[role="dialog"]:has([role="slider"])').first();
-    isModalVisible = await createExamModal
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
+    isModalVisible = await createExamModal.isVisible({ timeout: 2000 }).catch(() => false);
   }
 
   // Fallback 2: Use generic dialog selector (last resort)
@@ -198,67 +233,6 @@ async function handleExamCreation(page: Page, testName: string) {
   }
 
   console.log(`${testName} ✓ Create Exam modal opened`);
-
-  // ===== Set number of questions =====
-  console.log(`${testName} → Setting number of questions...`);
-  let sliderSet = false;
-
-  // Try multiple approaches to find and interact with the slider
-  // Approach 1: Look for slider by ID (shadcn/ui Slider with id="number-of-questions")
-  let questionSlider = createExamModal.locator('[id="number-of-questions"]').first();
-  let isSliderVisible = await questionSlider.isVisible({ timeout: 2000 }).catch(() => false);
-
-  // Approach 2: Look for input[type="range"] as fallback
-  if (!isSliderVisible) {
-    console.log(`${testName} ⚠ Slider by ID not found, trying input[type="range"]...`);
-    questionSlider = createExamModal.locator('input[type="range"]').first();
-    isSliderVisible = await questionSlider.isVisible({ timeout: 2000 }).catch(() => false);
-  }
-
-  // Approach 3: Look for slider role element (shadcn/ui Slider renders this)
-  if (!isSliderVisible) {
-    console.log(`${testName} ⚠ Range input not found, trying slider role...`);
-    questionSlider = createExamModal.locator('[role="slider"]').first();
-    isSliderVisible = await questionSlider.isVisible({ timeout: 2000 }).catch(() => false);
-  }
-
-  if (isSliderVisible) {
-    try {
-      const valueToSet = '1';
-      await questionSlider.fill(valueToSet);
-
-      // Verify the value was actually set by checking the input value
-      const actualValue = await questionSlider.inputValue().catch(() => null);
-      if (actualValue === valueToSet) {
-        console.log(`${testName} ✓ Set questions to ${valueToSet} (verified)`);
-        sliderSet = true;
-      } else {
-        console.log(
-          `${testName} ⚠ Slider fill returned, but value may not be set (got: ${actualValue}). Trying keyboard input...`,
-        );
-        // Fallback: try using keyboard to set value
-        await questionSlider.focus();
-        await questionSlider.press('Home'); // Go to min value
-        await questionSlider.press('ArrowRight'); // Increment to 1
-        console.log(`${testName} ✓ Set questions to 1 (via keyboard)`);
-        sliderSet = true;
-      }
-    } catch (e) {
-      console.log(`${testName} ⚠ Error setting slider: ${e}`);
-    }
-  } else {
-    console.log(
-      `${testName} ⚠ Question slider not found via any selector. Proceeding with default value.`,
-    );
-  }
-
-  if (!sliderSet) {
-    console.log(
-      `${testName} ⚠ Could not verify slider was set. Button may be disabled if form requires numberOfQuestions > 0.`,
-    );
-  }
-
-  // Skip custom prompt - leave empty for simpler test
 
   // ===== Click "Create" button in modal =====
   console.log(`${testName} → Clicking "Create" button in modal...`);
@@ -342,21 +316,17 @@ async function handleExamCreation(page: Page, testName: string) {
   const pollInterval = 2000; // 2 seconds
   const startTime = Date.now();
   let examAppeared = false;
-  let finalCardCount = 0;
 
   while (Date.now() - startTime < maxWaitTime && !examAppeared) {
-    // Count exam cards on the page
-    const examCards = page.locator('div[class*="border"][class*="rounded-xl"]');
+    const examCards = page.locator('div[data-testid="exam-card"]');
     const cardCount = await examCards.count().catch(() => 0);
 
     if (cardCount > 0) {
       examAppeared = true;
-      finalCardCount = cardCount;
       console.log(`${testName} ✓ Exam appeared in list! Found ${cardCount} exam card(s)`);
       break;
     }
 
-    // Wait before next poll
     await page.waitForTimeout(pollInterval);
   }
 
@@ -384,13 +354,11 @@ test.describe('Exam Flows', () => {
     testInfo.setTimeout(360000);
   });
 
-  test('should view the first exam of the first certification', async ({
-    authenticatedPage,
-  }: TestFixtures) => {
+  test('[Dashboard → Cert → Exams]', async ({ authenticatedPage }: TestFixtures) => {
     // test.setTimeout(120000);
     // await authenticatedPage.waitForTimeout(10000);
 
-    const testName = '[Dashboard → Cert → Exams]';
+    const testName = 'step';
     console.log(`\n${testName} Starting test. Navigating to dashboard...`);
 
     // ===== STEP 1: Navigate to dashboard and check for registered certs =====

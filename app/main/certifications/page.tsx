@@ -262,7 +262,7 @@ export default function CertificationsPage() {
 
         {/* Modal for Certification Details and Registration */}
         {isModalOpen && selectedCertForModal && (
-          <div className="fixed inset-0 bg-slate-900/20 dark:bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="fixed inset-0 bg-slate-900/20 dark:bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50" data-testid="cert-registration-modal">
             <Card
               className="w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-3xl overflow-hidden"
               variant="elevated"
@@ -302,6 +302,7 @@ export default function CertificationsPage() {
                   <Button
                     onClick={handleRegisterFromModal}
                     disabled={isRegistering && registeringCertId === selectedCertForModal.cert_id}
+                    data-testid="cert-register-confirm-button"
                     className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
                   >
                     {isRegistering && registeringCertId === selectedCertForModal.cert_id
