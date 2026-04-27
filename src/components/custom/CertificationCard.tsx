@@ -158,7 +158,7 @@ const CertificationCard = ({
         return {
           variant: 'primary' as const,
           icon: <FaBookOpen className="w-4 h-4" />,
-          text: 'Continue Learning',
+          text: 'Continue Journey',
           disabled: false,
         };
       case 'failed':
@@ -179,14 +179,14 @@ const CertificationCard = ({
         return {
           variant: 'primary' as const,
           icon: <FaPlay className="w-4 h-4" />,
-          text: 'Start Learning',
+          text: 'Start Journey',
           disabled: false,
         };
       default:
         return {
           variant: 'primary' as const,
           icon: <FaBookOpen className="w-4 h-4" />,
-          text: 'Continue Learning',
+          text: 'Continue Journey',
           disabled: false,
         };
     }

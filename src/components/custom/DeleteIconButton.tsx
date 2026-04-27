@@ -9,6 +9,7 @@ interface DeleteIconButtonProps {
   title?: string;
   className?: string;
   size?: 'sm' | 'md' | 'lg';
+  'data-testid'?: string;
 }
 
 export function DeleteIconButton({
@@ -17,6 +18,7 @@ export function DeleteIconButton({
   title = 'Delete',
   className = '',
   size = 'md',
+  'data-testid': dataTestId,
 }: DeleteIconButtonProps) {
   // Size variants
   const sizeClasses = {
@@ -35,6 +37,7 @@ export function DeleteIconButton({
     <button
       onClick={onClick}
       disabled={disabled}
+      data-testid={dataTestId}
       className={`
         ${sizeClasses[size]}
         bg-white/95 dark:bg-slate-800/95

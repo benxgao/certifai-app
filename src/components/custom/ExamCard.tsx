@@ -191,6 +191,7 @@ export const ExamCard = memo(function ExamCard({
         disabled={isDeletingExam}
         title="Delete this exam"
         className="absolute top-4 right-4 z-20"
+        data-testid="exam-card-delete-button"
       />
 
       <div className="relative z-10">

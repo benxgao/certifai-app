@@ -58,18 +58,14 @@ function CertificationExamsContent() {
     certification ||
     (exams && exams.length > 0 && exams[0].certification ? exams[0].certification : null);
 
-  // Update numberOfQuestions when certification data changes
+  // Default numberOfQuestions to 1 when certification data loads
   useEffect(() => {
-    if (displayCertification?.min_quiz_counts) {
-      setNumberOfQuestions(displayCertification.min_quiz_counts);
-    }
-  }, [displayCertification?.min_quiz_counts]);
+    setNumberOfQuestions(1);
+  }, [displayCertification?.cert_id]);
 
   // State for create exam modal
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [numberOfQuestions, setNumberOfQuestions] = useState(
-    displayCertification?.min_quiz_counts || 1,
-  );
+  const [numberOfQuestions, setNumberOfQuestions] = useState(1);
   const [customPromptText, setCustomPromptText] = useState('');
   const [navigatingExamId, setNavigatingExamId] = useState<string | null>(null);
 
@@ -110,7 +106,7 @@ function CertificationExamsContent() {
 
     // Close modal immediately after starting the action
     setIsCreateModalOpen(false);
-    setNumberOfQuestions(displayCertification?.min_quiz_counts || 1);
+    setNumberOfQuestions(1);
     setCustomPromptText('');
 
     try {

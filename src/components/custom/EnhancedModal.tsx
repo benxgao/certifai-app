@@ -4,6 +4,7 @@ import React from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -97,6 +98,7 @@ export function EnhancedModal({
               </div>
             </div>
           </DialogHeader>
+          <DialogDescription className="sr-only">{title}</DialogDescription>
 
           {/* Modal content */}
           <div className="space-y-6 py-2">{content}</div>

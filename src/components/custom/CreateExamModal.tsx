@@ -117,7 +117,7 @@ export function CreateExamModal({
 
           <Slider
             id="number-of-questions"
-            min={displayCertification?.min_quiz_counts || 1}
+            min={1}
             max={displayCertification?.max_quiz_counts || 100}
             step={1}
             value={[numberOfQuestions]}
@@ -126,7 +126,7 @@ export function CreateExamModal({
           />
 
           <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-2">
-            <span>{displayCertification?.min_quiz_counts || 1}</span>
+            <span>1</span>
             <span>{displayCertification?.max_quiz_counts || 100}</span>
           </div>
         </div>
