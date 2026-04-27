@@ -143,3 +143,9 @@ See [docs/E2E_CI_CD_SETUP.md](./docs/E2E_CI_CD_SETUP.md) for detailed testing in
   - Build: `npm run build`
   - Deploy: `firebase deploy`
 
+## License
+
+Starting from version 2.0.0, this project is licensed under **MPL 2.0** (Mozilla Public License 2.0). Previous versions remain under MIT.
+
+For details, see the [LICENSE](LICENSE) file in this repository.
+

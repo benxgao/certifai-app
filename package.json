@@ -5,8 +5,8 @@
     "name": "Ben Gao",
     "email": "info@certestic.com"
   },
-  "version": "1.0.0",
-  "license": "MIT",
+  "version": "2.0.0",
+  "license": "MPL-2.0",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
