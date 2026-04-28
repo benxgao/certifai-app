@@ -1,47 +1,12 @@
 import useSWR from 'swr';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import {
+  CertSummaryData,
+  SwrDataCertSummaryFetchResponse,
+  SwrDataCertSummaryGenerateResponse,
+} from '@/src/types/swr-data/certSummary';
 
-export interface CertSummaryData {
-  cert_id: string;
-  user_id: string;
-  summary: string;
-  structured_data: {
-    cert_id: string;
-    user_id: string;
-    certification_name: string;
-    total_exams_taken: number;
-    average_score: number;
-    best_score: number;
-    worst_score: number;
-    total_questions_answered: number;
-    total_correct_answers: number;
-    overall_accuracy_rate: number;
-    topic_mastery: Array<{
-      topic: string;
-      exams_covered: number;
-      average_accuracy: number;
-      mastery_level: 'novice' | 'developing' | 'proficient' | 'advanced' | 'expert';
-      total_questions: number;
-      total_correct: number;
-    }>;
-    performance_trend: 'improving' | 'declining' | 'stable';
-    strengths: string[];
-    areas_for_improvement: string[];
-    generated_at: string;
-    ai_summary: string;
-  };
-  already_existed: boolean;
-  generated_at: string;
-  summary_stats: {
-    total_exams: number;
-    average_score: number;
-    best_score: number;
-    topics_mastered: number;
-    performance_trend: 'improving' | 'declining' | 'stable';
-    strengths_count: number;
-    improvement_areas_count: number;
-  };
-}
+export type { CertSummaryData } from '@/src/types/swr-data/certSummary';
 
 // Fetcher function for cert summaries
 async function certSummaryFetcher(url: string): Promise<CertSummaryData> {
@@ -83,7 +48,7 @@ async function certSummaryFetcher(url: string): Promise<CertSummaryData> {
     throw new Error(result.error || 'Failed to fetch certification summary');
   }
 
-  return result.data;
+  return result.data; // SwrDataCertSummaryFetchResponse
 }
 
 // Generate cert summary (regenerate)
@@ -119,7 +84,7 @@ async function generateCertSummary(userId: string, certId: string): Promise<Cert
     throw new Error(result.error || 'Failed to generate certification summary');
   }
 
-  return result.data;
+  return result.data; // SwrDataCertSummaryGenerateResponse
 }
 
 /**
@@ -146,7 +111,7 @@ export function useCertSummary(userId: string, certId: string) {
   });
 
   return {
-    certSummary: data,
+    certSummary: data, // SwrDataCertSummaryFetchResponse
     isLoading,
     error,
     mutate,

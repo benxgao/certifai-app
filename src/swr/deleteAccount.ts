@@ -2,29 +2,15 @@
 
 import { useCallback } from 'react';
 import { useAuthMutation } from './useAuthMutation';
+import {
+  DeleteAccountResponse,
+  SwrDataDeleteAccountResponse,
+} from '@/src/types/swr-data/deleteAccount';
 
-export interface DeleteAccountResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    deleted_user_id: string;
-    deleted_firebase_user_id: string;
-    deletion_summary: {
-      user_answers_deleted: number;
-      exam_attempts_deleted: number;
-      user_certifications_deleted: number;
-    };
-    validation: {
-      completely_deleted: boolean;
-      remaining_data_check: {
-        user: number;
-        examAttempts: number;
-        userCertifications: number;
-        examUserAnswers: number;
-      };
-    };
-  };
-}
+// Re-export types for backward compatibility
+export type {
+  DeleteAccountResponse,
+} from '@/src/types/swr-data/deleteAccount';
 
 /**
  * Hook to delete user account
@@ -48,6 +34,7 @@ export function useDeleteAccount(apiUserId: string | null) {
   }, []);
 
   return useAuthMutation<DeleteAccountResponse, void>(url, 'DELETE', {
+    // SwrDataDeleteAccountResponse
     onSuccess: handleDeleteSuccess,
   });
 }

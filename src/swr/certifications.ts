@@ -137,7 +137,7 @@ export function useRegisterCertification() {
     registerCertification, // Rename trigger to something more descriptive
     isCreating: isMutating,
     creationError: error,
-    registeredCertification: data?.data,
+    registeredCertification: data?.data, // SwrDataApiCertificationMutationResponse
     resetCreation: reset,
   };
 }
@@ -180,7 +180,7 @@ export function useAllAvailableCertifications() {
   };
 
   return {
-    availableCertifications: data?.data,
+    availableCertifications: data?.data, // SwrDataApiCertificationsListResponse
     pagination: data?.meta,
     isLoadingAvailableCertifications: isLoading,
     isAvailableCertificationsError: error,
@@ -223,7 +223,7 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
   );
 
   return {
-    userCertifications: data?.data,
+    userCertifications: data?.data, // SwrDataApiUserCertificationsResponse
     pagination: data?.meta,
     isLoadingUserCertifications: isLoading,
     isUserCertificationsError: error,
@@ -308,7 +308,7 @@ export function useRegisterUserForCertification(apiUserId: string | null) {
     registerForCertification,
     isRegistering: isMutating,
     registrationError: error,
-    registrationData: data?.data,
+    registrationData: data?.data, // SwrDataApiCertificationMutationResponse
     resetRegistration: reset,
   };
 }
@@ -345,7 +345,7 @@ export function useAuthenticatedCertificationDetail(certificationId: string | nu
   );
 
   return {
-    certification: data?.data,
+    certification: data?.data, // SwrDataApiCertificationDetailResponse
     meta: data?.meta,
     isLoadingCertification: isLoading,
     isCertificationError: error,
@@ -428,7 +428,7 @@ export function useUnregisterCertification(apiUserId: string | null) {
     unregisterFromCertification,
     isUnregistering: isMutating,
     unregistrationError: error,
-    unregistrationData: data?.data,
+    unregistrationData: data?.data, // SwrDataApiCertificationMutationResponse
     resetUnregistration: reset,
   };
 }

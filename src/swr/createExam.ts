@@ -1,37 +1,21 @@
 import useSWRMutation from 'swr/mutation';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ApiResponse } from '../types/api';
+import {
+  CreateExamRequest,
+  CreateExamResponse,
+  SwrDataCreateExamResponse,
+  RateLimitError,
+  CreateExamError,
+} from '@/src/types/swr-data/createExam';
 
-export interface CreateExamRequest {
-  numberOfQuestions: number;
-  customPromptText?: string;
-}
-
-export interface CreateExamResponse {
-  exam_id: string;
-  api_user_id: string; // Our internal UUID for API operations
-  cert_id: number;
-  status: string;
-  total_questions: number;
-  token_cost: number;
-  total_batches: number;
-  topics_generated: number; // NEW: Number of AI-generated topics
-  custom_prompt: string;
-  // Deprecated: keeping for backward compatibility only
-  user_id?: string; // @deprecated Use api_user_id instead
-}
-
-export interface RateLimitError {
-  maxExamsAllowed: number;
-  currentCount: number;
-  remainingCount: number;
-  resetTime: string;
-}
-
-export interface CreateExamError extends Error {
-  status?: number;
-  rateLimitInfo?: RateLimitError;
-}
+// Re-export types for backward compatibility
+export type {
+  CreateExamRequest,
+  CreateExamResponse,
+  RateLimitError,
+  CreateExamError,
+} from '@/src/types/swr-data/createExam';
 
 // Fetcher function for creating exams with auth refresh support
 async function createExamFetcher(
@@ -91,7 +75,7 @@ async function createExamFetcher(
     throw error;
   }
 
-  return response.json();
+  return response.json(); // ApiResponse<SwrDataCreateExamResponse>
 }
 
 export function useCreateExam() {
