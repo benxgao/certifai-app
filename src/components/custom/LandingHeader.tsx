@@ -57,9 +57,6 @@ export default function LandingHeader() {
                   }`}
                 >
                   {item.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-violet-600 dark:bg-violet-400 rounded-full"></span>
-                  )}
                 </Link>
               );
             })}
@@ -72,9 +69,6 @@ export default function LandingHeader() {
               }`}
             >
               Sign In
-              {pathname === '/signin' && (
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-violet-600 dark:bg-violet-400 rounded-full"></span>
-              )}
             </Link>
             <Link href="/signup">
               <Button
@@ -82,7 +76,7 @@ export default function LandingHeader() {
                 size="sm"
                 className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200 px-3 md:px-4 lg:px-6"
               >
-                Get Started
+                Begin Learning
               </Button>
             </Link>
           </nav>

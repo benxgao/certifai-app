@@ -2,9 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import LandingHeader from '@/src/components/custom/LandingHeader';
-import ScreenshotSlideshow from '@/src/components/landing/ScreenshotSlideshow';
 import PopularCertifications from '@/src/components/landing/PopularCertifications';
-import SEOContentBlock from '@/src/components/seo/SEOContentBlock';
 
 export default function LandingPageContent() {
   return (
@@ -13,109 +11,43 @@ export default function LandingPageContent() {
       <LandingHeader />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden" role="banner">
-        {/* Background decorative elements - disabled for light mode */}
-
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-28 pb-16 sm:pb-20 lg:pb-24">
+      <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden" role="banner">
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Content - Centered */}
           <div className="text-center max-w-5xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
-              {/* <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent"> */}
-              {/* Master AWS, Azure, GCP & More */}
-              {/* </span> */}
-              Certestic - Your
-              <br />
-              <span className="text-violet-600 dark:text-violet-300 font-extrabold">
-                IT Certification
-              </span>{' '}
-              Success Engine
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
+              Learning that adapts to how you think
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light px-2">
-              Transform your IT career with our premium AI-powered certification training platform.
-              Get unlimited access to adaptive practice exams for{' '}
-              <Link
-                href="/certifications/AWS/aws-certified-solutions-architect"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                AWS Solutions Architect
-              </Link>
-              ,{' '}
-              <Link
-                href="/certifications/AZURE/microsoft-certified-azure-administrator-associate"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                Microsoft Azure Administrator
-              </Link>
-              ,{' '}
-              <Link
-                href="/certifications/GCP/google-cloud-professional-cloud-architect"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                Google Cloud Professional
-              </Link>
-              ,{' '}
-              <Link
-                href="/certifications/COMPTIA/comptia-security"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                CompTIA Security+
-              </Link>
-              , and{' '}
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light max-w-3xl mx-auto">
+              Practice questions adjust as understanding deepens. The app learns what helps, then builds on it.
+            </p>
+
+            <p className="text-sm sm:text-base lg:text-lg text-slate-500 dark:text-slate-400 mb-10 leading-relaxed font-light max-w-3xl mx-auto">
+              Explore topics in{' '}
               <Link
                 href="/certifications"
                 className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
               >
-                100+ other certifications
+                AWS, Azure, GCP, CompTIA, and 100+ certification paths
               </Link>
-              . Our professional-grade adaptive AI creates personalized study plans, identifies
-              knowledge gaps, and provides realistic exam simulations.
+              .
             </p>
 
-            {/* Enhanced Stats with IT certification focus */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  100+ Certifications
-                </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">AWS • Azure • GCP</div>
-              </div>
-              <div
-                className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
-                aria-hidden="true"
-              ></div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  AI-Powered
-                </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Practice Exams</div>
-              </div>
-              <div
-                className="hidden sm:block w-px h-12 bg-slate-200 dark:bg-slate-700"
-                aria-hidden="true"
-              ></div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-violet-600 dark:text-violet-400">
-                  Adaptive Learning
-                </div>
-                <div className="text-sm text-slate-500 dark:text-slate-400">Analysis Reports</div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/signup">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700"
+                  className="w-full sm:w-auto rounded-lg px-8 py-4 text-lg font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700"
                 >
-                  Start Learning
+                  Begin Learning
                 </Button>
               </Link>
               <Link href="/signin">
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                  className="w-full sm:w-auto rounded-lg px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
                 >
                   Sign In
                 </Button>
@@ -125,366 +57,70 @@ export default function LandingPageContent() {
         </div>
       </section>
 
-      {/* Screenshot Slideshow Section - Full Width */}
-      <section className="relative py-16 bg-slate-100 dark:from-slate-800 dark:to-slate-900 dark:bg-gradient-to-br overflow-hidden">
-        {/* Background decorative elements - disabled for light mode */}
-
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="relative">
-              {/* Decorative background - disabled */}
-              <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700 p-4 md:p-6">
-                <ScreenshotSlideshow className="group rounded-xl overflow-hidden w-full" />
-              </div>
-              {/* Floating elements - mobile responsive positioning */}
-              <div className="absolute -top-3 -right-3 sm:-top-6 sm:-right-6 bg-green-500 text-white rounded-full p-2 sm:p-4 shadow-lg">
-                <svg
-                  className="w-4 h-4 sm:w-8 sm:h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-              <div className="absolute -bottom-3 -left-3 sm:-bottom-6 sm:-left-6 bg-violet-500 text-white rounded-full p-2 sm:p-4 shadow-lg">
-                <svg
-                  className="w-4 h-4 sm:w-8 sm:h-8"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
+      {/* How It Works Section */}
       <section
         id="features"
         className="relative py-16 sm:py-24 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden"
       >
         {/* Background decorative elements - disabled for light mode */}
-
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-              Get Ready for Your IT Certifications with
-              <span className="text-violet-600 dark:text-violet-300 block">
-                AI-Powered Adaptive Practice Exams
-              </span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+              How it works
             </h2>
-            <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-              Our premium platform delivers professional-grade certification training. Whether
-              you&apos;re targeting{' '}
-              <Link
-                href="/certifications/AWS/aws-certified-solutions-architect"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                AWS Solutions Architect
-              </Link>
-              ,{' '}
-              <Link
-                href="/certifications/AZURE/microsoft-certified-azure-fundamentals"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                Microsoft Azure Fundamentals
-              </Link>
-              ,{' '}
-              <Link
-                href="/certifications/GCP/google-cloud-professional-cloud-architect"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                Google Cloud Professional
-              </Link>
-              , or{' '}
-              <Link
-                href="/certifications/COMPTIA"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                CompTIA certifications
-              </Link>
-              , our intelligent training system provides access to adaptive practice exams,
-              personalized study plans, and comprehensive analytics.
-            </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {/* Feature 1: AI-Generated Questions */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay - disabled for light mode */}
-              <div className="relative w-20 h-20 bg-violet-100 dark:bg-gradient-to-br dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-400/20 to-violet-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
-                <svg
-                  className="relative w-10 h-10 text-violet-600 dark:text-violet-400 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
+          <div className="grid gap-8 md:grid-cols-2">
+            {/* Feature 1: Adaptive Learning */}
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              <div className="relative w-10 h-10 bg-violet-100 dark:bg-violet-900/40 rounded-lg flex items-center justify-center mb-8">
+                <span className="text-sm font-bold text-violet-600 dark:text-violet-400">1</span>
               </div>
-              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
-                Premium Adaptive Training
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
+                Questions adapt to understanding
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Our premium AI engine analyzes your performance across AWS, Azure, GCP, and 100+
-                other IT certifications. Struggling with EC2 instance types? Get more compute
-                questions. Mastering Azure networking? Move to advanced scenarios. Each practice
-                session adapts to your knowledge gaps, delivering personalized training that&apos;s
-                3x more effective than traditional methods.
+                As patterns become clear, question types shift. Sticky concepts get more practice; solid areas move forward. No wasted time on what's already secure.
               </p>
-              <div className="relative mt-auto flex items-center text-violet-600 dark:text-violet-400 font-semibold group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
-                <span className="mr-3">Learn more</span>
-                <div className="w-8 h-8 bg-violet-100 dark:bg-violet-900/40 rounded-full flex items-center justify-center group-hover:bg-violet-200 dark:group-hover:bg-violet-800/60 transition-colors duration-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
             </div>
 
-            {/* Feature 2: Real Exam Simulation */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay - disabled for light mode */}
-
-              <div className="relative w-20 h-20 bg-blue-100 dark:bg-gradient-to-br dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
-                <svg
-                  className="relative w-10 h-10 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+            {/* Feature 2: Exam Format */}
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              <div className="relative w-10 h-10 bg-slate-100 dark:bg-slate-700/40 rounded-lg flex items-center justify-center mb-8">
+                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">2</span>
               </div>
-              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
-                Real IT Certification Experience
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
+                Exam format feels like test day
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Practice with exam formats that mirror AWS, Microsoft, Google Cloud, and CompTIA
-                certifications. Experience the same time pressure, question types, and interface
-                styling you&apos;ll encounter on test day. Build confidence with scenario-based
-                questions and hands-on simulations.
+                Question types, timing, interface—all match the real exam. When test day arrives, nothing feels new.
               </p>
-              <div className="relative mt-auto flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
-                <span className="mr-3">Try demo</span>
-                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center group-hover:bg-blue-200 dark:group-hover:bg-blue-800/60 transition-colors duration-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
             </div>
 
-            {/* Feature 3: Performance Analytics */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-emerald-300/60 dark:hover:border-emerald-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay - disabled for light mode */}
-
-              <div className="relative w-20 h-20 bg-emerald-100 dark:bg-gradient-to-br dark:from-emerald-900/40 dark:via-emerald-800/40 dark:to-emerald-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
-                <svg
-                  className="relative w-10 h-10 text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
+            {/* Feature 3: Progress Tracking */}
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              <div className="relative w-10 h-10 bg-slate-100 dark:bg-slate-700/40 rounded-lg flex items-center justify-center mb-8">
+                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">3</span>
               </div>
-              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300">
-                Professional Analytics Dashboard
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
+                Progress shows when patterns are clear
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Comprehensive analytics included with your premium subscription. Track your progress
-                across AWS services, Azure resources, GCP products, and all 100+ certification
-                domains. Monitor mastery levels for specific topics like VPCs, Active Directory,
-                Kubernetes, or security protocols. Get detailed insights to optimize your study
-                strategy and maximize your investment.
+                Charts and insights show what's solid and what needs focus. Progress tracking is there—without pressure to optimize.
               </p>
-              <div className="relative mt-auto flex items-center text-emerald-600 dark:text-emerald-400 font-semibold group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors duration-300">
-                <span className="mr-3">View analytics</span>
-                <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800/60 transition-colors duration-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
             </div>
 
-            {/* Feature 4: Custom Exam Creation */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-amber-300/60 dark:hover:border-amber-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay - disabled for light mode */}
-
-              <div className="relative w-20 h-20 bg-amber-100 dark:bg-gradient-to-br dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-amber-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
-                <svg
-                  className="relative w-10 h-10 text-amber-600 dark:text-amber-400 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
+            {/* Feature 4: Study Rhythm */}
+            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
+              <div className="relative w-10 h-10 bg-slate-100 dark:bg-slate-700/40 rounded-lg flex items-center justify-center mb-8">
+                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">4</span>
               </div>
-              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
-                Premium Study Optimization
+              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
+                Study rhythm is personal
               </h3>
               <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Maximize your premium subscription value with intelligent study allocation. Our
-                advanced algorithm dedicates 50% of questions to your growth areas, 25% for mastery
-                validation of strong topics, and strategically explores new domains. Every study
-                minute is optimized for certification success, making your investment highly
-                efficient.
+                  Difficult areas get revisited more; strong topics move forward. Pace adapts to individual learning rhythm, not a preset schedule.
               </p>
-              <div className="relative mt-auto flex items-center text-amber-600 dark:text-amber-400 font-semibold group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors duration-300">
-                <span className="mr-3">Explore feature</span>
-                <div className="w-8 h-8 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center group-hover:bg-amber-200 dark:group-hover:bg-amber-800/60 transition-colors duration-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature 6: Progress Tracking */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-indigo-300/60 dark:hover:border-indigo-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay - disabled for light mode */}
-
-              <div className="relative w-20 h-20 bg-indigo-100 dark:bg-gradient-to-br dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-indigo-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
-                <svg
-                  className="relative w-10 h-10 text-indigo-600 dark:text-indigo-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
-              </div>
-              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
-                Performance Tracking
-              </h3>
-              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Monitor your certification progress with comprehensive performance metrics. Watch
-                your scores improve over time, celebrate achievements, and stay motivated with clear
-                visual feedback on your learning journey.
-              </p>
-              <div className="relative mt-auto flex items-center text-indigo-600 dark:text-indigo-400 font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors duration-300">
-                <span className="mr-3">View progress</span>
-                <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-full flex items-center justify-center group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/60 transition-colors duration-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Feature 7: Better Than AI Chatbots */}
-            <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-orange-300/60 dark:hover:border-orange-700/60 transition-colors duration-300 flex flex-col h-full overflow-hidden">
-              {/* Background gradient overlay - disabled for light mode */}
-
-              <div className="relative w-20 h-20 bg-orange-100 dark:bg-gradient-to-br dark:from-orange-900/40 dark:via-orange-800/40 dark:to-orange-700/40 rounded-3xl flex items-center justify-center mb-8 transition-colors duration-300 shadow-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-orange-600/20 rounded-3xl opacity-0 dark:opacity-100 transition-opacity duration-500"></div>
-                <svg
-                  className="relative w-10 h-10 text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                  />
-                </svg>
-              </div>
-              <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300">
-                Purpose-Built for Studying
-              </h3>
-              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
-                Unlike generic AI chatbots, our platform is specifically designed for certification
-                preparation. Get properly formatted questions, built-in timers, automatic scoring,
-                and all the study tools you need in one integrated platform.
-              </p>
-              <div className="relative mt-auto flex items-center text-orange-600 dark:text-orange-400 font-semibold group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors duration-300">
-                <span className="mr-3">Learn more</span>
-                <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/40 rounded-full flex items-center justify-center group-hover:bg-orange-200 dark:group-hover:bg-orange-800/60 transition-colors duration-300">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -492,91 +128,6 @@ export default function LandingPageContent() {
 
       {/* Popular Certifications Section */}
       <PopularCertifications />
-
-      {/* SEO Content Block */}
-      <SEOContentBlock />
-
-      {/* Call-to-Action Section */}
-      <section className="relative py-16 sm:py-24 overflow-hidden">
-        {/* Background decorative elements - disabled for light mode */}
-
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-white dark:from-slate-800 dark:to-slate-900 dark:bg-gradient-to-br border-2 border-slate-200 dark:border-slate-700 shadow-md rounded-3xl p-8 sm:p-12 lg:p-16 text-center overflow-hidden">
-            {/* Decorative background pattern - disabled for light mode */}
-
-            <div className="relative z-10">
-              <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-8 leading-tight">
-                Your Personal Certification
-                <span className="text-violet-600 dark:text-violet-300 block">
-                  Success Engine
-                </span>
-                Awaits You
-              </h2>
-
-              <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-                Experience adaptive AI that learns from your performance, optimizes study
-                efficiency, and creates truly personalized exams. Join professionals who are already
-                mastering certifications faster with our intelligent learning platform.
-              </p>
-
-              {/* Enhanced stats for CTA */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-12">
-                <div className="text-center">
-                <div className="text-4xl font-bold text-violet-600 dark:text-violet-300">
-                  Adaptive AI
-                </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Learns How You Learn
-                  </div>
-                </div>
-                <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
-                <div className="text-center">
-                <div className="text-4xl font-bold text-violet-600 dark:text-violet-300">
-                  Smart Focus
-                </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Targeted Study Time
-                  </div>
-                </div>
-                <div className="hidden sm:block w-px h-16 bg-slate-200 dark:bg-slate-700"></div>
-                <div className="text-center">
-                <div className="text-4xl font-bold text-violet-600 dark:text-violet-300">
-                  Personal Engine
-                </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">
-                    Your Success System
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-6 justify-center mb-10">
-                <Link href="/signup">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold shadow-md hover:shadow-md transition-colors duration-300 bg-violet-600 hover:bg-violet-700"
-                  >
-                    Start Learning
-                  </Button>
-                </Link>
-                <Link href="/signin">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto rounded-2xl px-12 py-6 text-xl font-bold border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Premium value message */}
-              <p className="text-center text-slate-600 dark:text-slate-400 text-sm">
-                Access to 100+ certifications • Cancel anytime
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

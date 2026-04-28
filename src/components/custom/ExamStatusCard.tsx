@@ -73,7 +73,7 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
                 <p className="text-sm sm:text-base font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-4">
                   Final Score
                 </p>
-                <p className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                <p className="text-5xl sm:text-6xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                   {score}%
                 </p>
               </div>
