@@ -38,7 +38,7 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
           </div>
 
           {/* Status Badge */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             {submittedAt !== null ? (
               <StatusBadge
                 status={

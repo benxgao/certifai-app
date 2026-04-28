@@ -11,6 +11,7 @@ import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGeneratio
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
 import {
+  DerivedExamStatus,
   getDerivedExamStatus,
   getExamStatusInfo,
   ExamGenerationStage,
@@ -69,7 +70,7 @@ export const ExamCard = memo(function ExamCard({
     liveStatus?.is_complete === true && liveStatus?.progress_percentage === 100;
 
   if (isGenerationComplete && (examStatus === 'generating' || examStatus === 'in_progress')) {
-    examStatus = 'ready';
+    examStatus = DerivedExamStatus.ready;
   }
 
   const statusInfo = getExamStatusInfo(examStatus);

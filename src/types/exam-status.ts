@@ -9,22 +9,26 @@ export enum ExamGenerationStage {
 }
 
 // Backend exam status as returned by the API
-export type BackendExamStatus =
-  | 'READY'
-  | 'QUESTIONS_GENERATING'
-  | 'QUESTION_GENERATION_FAILED'
-  | 'PENDING_QUESTIONS';
+export enum BackendExamStatus {
+  READY = 'READY',
+  QUESTIONS_GENERATING = 'QUESTIONS_GENERATING',
+  PENDING_QUESTIONS = 'PENDING_QUESTIONS',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  QUESTION_GENERATION_FAILED = 'QUESTION_GENERATION_FAILED',
+}
 
 // Derived exam status for UI display
-export type DerivedExamStatus =
-  | 'not_started'
-  | 'ready'
-  | 'generating'
-  | 'generation_failed'
-  | 'in_progress'
-  | 'completed'
-  | 'completed_successful'
-  | 'completed_review';
+export enum DerivedExamStatus {
+  not_started = 'not_started',
+  ready = 'ready',
+  generating = 'generating',
+  generation_failed = 'generation_failed',
+  in_progress = 'in_progress',
+  completed = 'completed',
+  completed_successful = 'completed_successful',
+  completed_review = 'completed_review',
+}
 
 // Interface for exam status display information
 export interface ExamStatusInfo {
@@ -49,10 +53,10 @@ export const getDerivedExamStatus = (exam: {
   const backendStatus = exam.exam_status;
 
   // Priority order: backend status first, then user actions
-  if (backendStatus === 'QUESTIONS_GENERATING') {
-    return 'generating';
-  } else if (backendStatus === 'QUESTION_GENERATION_FAILED') {
-    return 'generation_failed';
+  if (backendStatus === BackendExamStatus.QUESTIONS_GENERATING) {
+    return DerivedExamStatus.generating;
+  } else if (backendStatus === BackendExamStatus.QUESTION_GENERATION_FAILED) {
+    return DerivedExamStatus.generation_failed;
   } else if (isCompleted) {
     // If we have score and pass score, determine if passed
     if (
@@ -61,69 +65,69 @@ export const getDerivedExamStatus = (exam: {
       exam.certification?.pass_score !== undefined
     ) {
       return exam.score >= exam.certification.pass_score
-        ? 'completed_successful'
-        : 'completed_review';
+        ? DerivedExamStatus.completed_successful
+        : DerivedExamStatus.completed_review;
     }
     // Default to completed if no score/pass criteria available
-    return 'completed';
+    return DerivedExamStatus.completed;
   } else if (hasStarted) {
-    return 'in_progress';
-  } else if (backendStatus === 'READY') {
-    return 'ready';
-  } else if (backendStatus === 'PENDING_QUESTIONS') {
-    return 'not_started';
+    return DerivedExamStatus.in_progress;
+  } else if (backendStatus === BackendExamStatus.READY) {
+    return DerivedExamStatus.ready;
+  } else if (backendStatus === BackendExamStatus.PENDING_QUESTIONS) {
+    return DerivedExamStatus.not_started; // Treat pending questions as not started for user clarity
   }
 
-  return 'not_started';
+  return DerivedExamStatus.not_started;
 };
 
 // Helper function to get status information for UI display
 export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => {
   const statusConfig: Record<DerivedExamStatus, ExamStatusInfo> = {
-    not_started: {
-      status: 'not_started',
+    [DerivedExamStatus.not_started]: {
+      status: DerivedExamStatus.not_started,
       label: 'Not Started',
       bgColor: 'bg-blue-25 dark:bg-blue-950/20',
       borderColor: 'border-blue-100 dark:border-blue-900/30',
     },
-    ready: {
-      status: 'ready',
+    [DerivedExamStatus.ready]: {
+      status: DerivedExamStatus.ready,
       label: 'Ready',
       bgColor: 'bg-green-25 dark:bg-green-950/20',
       borderColor: 'border-green-100 dark:border-green-900/30',
     },
-    generating: {
-      status: 'generating',
+    [DerivedExamStatus.generating]: {
+      status: DerivedExamStatus.generating,
       label: 'Generating Questions...',
       bgColor: 'bg-yellow-25 dark:bg-yellow-950/20',
       borderColor: 'border-yellow-100 dark:border-yellow-900/30',
     },
-    generation_failed: {
-      status: 'generation_failed',
+    [DerivedExamStatus.generation_failed]: {
+      status: DerivedExamStatus.generation_failed,
       label: 'Generation Failed',
       bgColor: 'bg-red-25 dark:bg-red-950/20',
       borderColor: 'border-red-100 dark:border-red-900/30',
     },
-    in_progress: {
-      status: 'in_progress',
+    [DerivedExamStatus.in_progress]: {
+      status: DerivedExamStatus.in_progress,
       label: 'In Progress',
       bgColor: 'bg-green-25 dark:bg-green-950/20',
       borderColor: 'border-green-100 dark:border-green-900/30',
     },
-    completed: {
-      status: 'completed',
+    [DerivedExamStatus.completed]: {
+      status: DerivedExamStatus.completed,
       label: 'Completed',
       bgColor: 'bg-blue-25 dark:bg-blue-950/20',
       borderColor: 'border-blue-100 dark:border-blue-900/30',
     },
-    completed_successful: {
-      status: 'completed_successful',
+    [DerivedExamStatus.completed_successful]: {
+      status: DerivedExamStatus.completed_successful,
       label: 'Score Above Threshold',
       bgColor: 'bg-emerald-25 dark:bg-emerald-950/20',
       borderColor: 'border-emerald-100 dark:border-emerald-900/30',
     },
-    completed_review: {
-      status: 'completed_review',
+    [DerivedExamStatus.completed_review]: {
+      status: DerivedExamStatus.completed_review,
       label: 'Score Below Threshold',
       bgColor: 'bg-amber-25 dark:bg-amber-950/20',
       borderColor: 'border-amber-100 dark:border-amber-900/30',
