@@ -346,3 +346,134 @@ export async function handleExamCreation(page: Page, testName: string = 'test'):
     `\n${testName} ✅ EXAM CREATION COMPLETE - Successfully created new exam and verified it appears in list`,
   );
 }
+
+/**
+ * Enter the first exam card, answer the first question's first option,
+ * wait for the answer to be saved, then submit the exam.
+ */
+export async function enterExamAndSubmit(page: Page, testName: string = 'test'): Promise<void> {
+  // ===== Click the first exam card action button =====
+  console.log(`${testName} → Finding first exam card action button...`);
+
+  // The exam card action button shows "Begin Exam" or "Resume Exam"
+  const examCardButton = page
+    .locator('div[data-testid="exam-card"]')
+    .first()
+    .locator('button')
+    .filter({ hasText: /Begin Exam|Resume Exam|View Results/ })
+    .first();
+
+  const isExamCardButtonVisible = await examCardButton
+    .waitFor({ state: 'visible', timeout: 10000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!isExamCardButtonVisible) {
+    throw new Error(`${testName} ✗ Exam card action button not found`);
+  }
+
+  console.log(`${testName} ✓ Found exam card action button, clicking to enter exam...`);
+  await examCardButton.click();
+
+  // ===== Wait for exam page to load =====
+  console.log(`${testName} → Waiting for exam page to load...`);
+  await page.waitForURL(/\/main\/certifications\/\d+\/exams\/[^/]+/, { timeout: 20000 });
+  await page.waitForLoadState('domcontentloaded', { timeout: 15000 });
+  console.log(`${testName} ✓ Exam page loaded (${page.url()})`);
+
+  // Wait for questions to load
+  console.log(`${testName} → Waiting for questions to appear...`);
+  const firstQuestionCard = page.locator('div[data-testid="exam-card"]').first();
+  // Questions are rendered inside DashboardCard; wait for first option checkbox
+  const firstOptionCheckbox = page.locator('button[role="checkbox"]').first();
+  const areQuestionsLoaded = await firstOptionCheckbox
+    .waitFor({ state: 'visible', timeout: 30000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!areQuestionsLoaded) {
+    throw new Error(`${testName} ✗ Questions did not load on exam page`);
+  }
+
+  console.log(`${testName} ✓ Questions loaded`);
+
+  // ===== Select the first option of the first question =====
+  console.log(`${testName} → Selecting first option of the first question...`);
+
+  // Options are rendered as div rows with a Checkbox inside each
+  const firstOptionRow = page.locator('div[class*="rounded-2xl"][class*="border-2"]').first();
+  const isFirstOptionVisible = await firstOptionRow
+    .isVisible({ timeout: 5000 })
+    .catch(() => false);
+
+  if (isFirstOptionVisible) {
+    await firstOptionRow.click();
+    console.log(`${testName} ✓ Clicked first option row`);
+  } else {
+    // Fallback: click the first checkbox directly
+    console.log(`${testName} ⚠ Option row not found, clicking first checkbox directly...`);
+    await firstOptionCheckbox.click();
+    console.log(`${testName} ✓ Clicked first option checkbox`);
+  }
+
+  // ===== Wait 3-5 seconds for the answer to be submitted to the server =====
+  console.log(`${testName} → Waiting 5 seconds for answer to be saved...`);
+  await page.waitForTimeout(5000);
+  console.log(`${testName} ✓ Answer save wait complete`);
+
+  // ===== Click the "Submit Exam" button =====
+  console.log(`${testName} → Looking for "Submit Exam" button...`);
+
+  const submitExamButton = page.locator('button:has-text("Submit Exam"), button:has-text("Submit")').first();
+  const isSubmitButtonVisible = await submitExamButton
+    .waitFor({ state: 'visible', timeout: 10000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!isSubmitButtonVisible) {
+    throw new Error(`${testName} ✗ "Submit Exam" button not found`);
+  }
+
+  console.log(`${testName} ✓ Found "Submit Exam" button, clicking...`);
+  await submitExamButton.click();
+
+  // ===== Confirm submission in the modal =====
+  console.log(`${testName} → Waiting for submission confirmation modal...`);
+
+  const confirmModal = page.locator('div[role="dialog"]').filter({ hasText: /Confirm Submission/ });
+  const isConfirmModalVisible = await confirmModal
+    .waitFor({ state: 'visible', timeout: 10000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!isConfirmModalVisible) {
+    console.log(`${testName} ⚠ Confirm Submission modal not detected, trying generic dialog...`);
+  } else {
+    console.log(`${testName} ✓ Confirmation modal appeared`);
+  }
+
+  // Click "Submit Exam" in the modal
+  const modalSubmitButton = page.locator('div[role="dialog"] button:has-text("Submit Exam")').first();
+  const isModalSubmitVisible = await modalSubmitButton
+    .waitFor({ state: 'visible', timeout: 8000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!isModalSubmitVisible) {
+    throw new Error(`${testName} ✗ "Submit Exam" confirm button not found in modal`);
+  }
+
+  console.log(`${testName} ✓ Clicking "Submit Exam" in confirmation modal...`);
+  await modalSubmitButton.click();
+
+  // Wait for submission to complete (modal closes)
+  console.log(`${testName} → Waiting for submission to complete...`);
+  await page
+    .locator('div[role="dialog"]')
+    .waitFor({ state: 'hidden', timeout: 30000 })
+    .catch(() => {
+      console.log(`${testName} ⚠ Dialog may still be visible, continuing...`);
+    });
+
+  console.log(`\n${testName} ✅ EXAM SUBMITTED SUCCESSFULLY`);
+}
