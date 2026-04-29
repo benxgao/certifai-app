@@ -5,7 +5,7 @@ import CertificationsOverviewClient from '@/src/components/custom/Certifications
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import { Card, CardContent } from '@/src/components/ui/card';
-import { FaCloud, FaShieldAlt, FaNetworkWired, FaArrowRight } from 'react-icons/fa';
+
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
 export const metadata: Metadata = {
@@ -49,40 +49,21 @@ export default async function CertificationsPage({
     typeof resolvedSearchParams.firm === 'string' ? resolvedSearchParams.firm : undefined;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
+    <div className="certifications-page min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
       {/* Header with Navigation */}
       <LandingHeader />
 
       {/* Hero Section with decorative background */}
-      <section className="relative overflow-hidden" role="banner">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 bg-linear-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
-        <div className="absolute top-20 right-2 sm:right-10 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-2 sm:left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <section className="certifications-hero relative py-16 sm:py-20 lg:py-24 overflow-hidden" role="banner">
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <Breadcrumb items={breadcrumbItems} />
 
-          <div className="mb-8 sm:mb-12 text-center max-w-4xl mx-auto">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 rounded-full px-3 py-1 mb-4 sm:mb-6">
-              <div
-                className="w-2 h-2 bg-violet-500 rounded-full animate-pulse"
-                aria-hidden="true"
-              ></div>
-              <span className="text-xs sm:text-sm font-medium text-violet-700 dark:text-violet-300">
-                AI-Powered Certification Training
-              </span>
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
-              <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                IT Certifications Catalog
-              </span>
-              <br />
+          <div className="certifications-hero-content mb-8 sm:mb-12 text-center max-w-4xl mx-auto">
+            <h1 className="certifications-hero-title text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
+              IT Certifications Catalog<br />
               Simulate Exams by AI
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-slate-500 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light">
+            <p className="certifications-hero-description text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light">
               Explore certification programs from leading technology companies and prepare for IT
               certification by self exams. Each certification is designed to validate your skills
               and advance your career with AI-powered exam simulation technology.
@@ -92,77 +73,65 @@ export default async function CertificationsPage({
       </section>
 
       {/* Category Navigation Section */}
-      <section className="relative py-12 bg-white/60 dark:bg-slate-800/60">
+      <section className="certifications-category-section relative py-16 sm:py-20 lg:py-24 bg-white/60 dark:bg-slate-800/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+          <div className="certifications-category-header text-center mb-16">
+            <h2 className="certifications-category-title text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4 leading-tight">
               Browse by Category
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            <p className="certifications-category-description text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
               Explore certifications organized by technology focus areas and career paths
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="certifications-category-grid grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {/* Cloud Computing */}
             <Link href="/certifications/categories/cloud">
-              <Card className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <FaCloud className="text-2xl text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <Card className="category-card category-card-cloud group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 shadow-md rounded-2xl transition-colors duration-300">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <h3 className="category-card-title text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                     Cloud Computing
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  <p className="category-card-description text-base text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3 flex-auto mb-6">
                     AWS, Azure, GCP certifications for cloud architects and engineers
                   </p>
-                  <div className="flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm group-hover:translate-x-1 transition-transform duration-200">
-                    <span>Explore Cloud Certs</span>
-                    <FaArrowRight className="ml-2" />
-                  </div>
+                  <button className="category-card-button mt-auto rounded-lg px-6 py-2 text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-100/80 dark:bg-slate-700/40 hover:bg-slate-200 dark:hover:bg-slate-600/60 transition-colors duration-200">
+                    Explore
+                  </button>
                 </CardContent>
               </Card>
             </Link>
 
             {/* Cybersecurity */}
             <Link href="/certifications/categories/security">
-              <Card className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-red-300 dark:hover:border-red-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <FaShieldAlt className="text-2xl text-red-600 dark:text-red-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+              <Card className="category-card category-card-security group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 shadow-md rounded-2xl transition-colors duration-300">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <h3 className="category-card-title text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                     Cybersecurity
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  <p className="category-card-description text-base text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3 flex-auto mb-6">
                     Security+, CISSP, CEH certifications for security professionals
                   </p>
-                  <div className="flex items-center justify-center text-red-600 dark:text-red-400 font-medium text-sm group-hover:translate-x-1 transition-transform duration-200">
-                    <span>Explore Security Certs</span>
-                    <FaArrowRight className="ml-2" />
-                  </div>
+                  <button className="category-card-button mt-auto rounded-lg px-6 py-2 text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-100/80 dark:bg-slate-700/40 hover:bg-slate-200 dark:hover:bg-slate-600/60 transition-colors duration-200">
+                    Explore
+                  </button>
                 </CardContent>
               </Card>
             </Link>
 
             {/* Networking */}
             <Link href="/certifications/categories/networking">
-              <Card className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <FaNetworkWired className="text-2xl text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+              <Card className="category-card category-card-networking group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 shadow-md rounded-2xl transition-colors duration-300">
+                <CardContent className="p-8 text-center flex flex-col h-full">
+                  <h3 className="category-card-title text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                     Networking
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                  <p className="category-card-description text-base text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3 flex-auto mb-6">
                     CCNA, Network+, CCNP certifications for network engineers
                   </p>
-                  <div className="flex items-center justify-center text-green-600 dark:text-green-400 font-medium text-sm group-hover:translate-x-1 transition-transform duration-200">
-                    <span>Explore Network Certs</span>
-                    <FaArrowRight className="ml-2" />
-                  </div>
+                  <button className="category-card-button mt-auto rounded-lg px-6 py-2 text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-100/80 dark:bg-slate-700/40 hover:bg-slate-200 dark:hover:bg-slate-600/60 transition-colors duration-200">
+                    Explore
+                  </button>
                 </CardContent>
               </Card>
             </Link>
@@ -171,12 +140,7 @@ export default async function CertificationsPage({
       </section>
 
       {/* Content Section */}
-      <section className="relative py-8 sm:py-12 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
-        <div className="absolute top-10 sm:top-20 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 sm:bottom-20 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
-
+      <section className="certifications-content-section relative py-16 sm:py-20 lg:py-24 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden">
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <Suspense fallback={<CertificationsOverviewSkeleton />}>
             <CertificationsOverviewClient
@@ -193,18 +157,18 @@ export default async function CertificationsPage({
 
 function CertificationsOverviewSkeleton() {
   return (
-    <div className="space-y-8">
+    <div className="certifications-skeleton space-y-8">
       {/* Stats skeleton */}
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div className="skeleton-stats-card bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-md border border-slate-200/60 dark:border-slate-700/60 p-8">
+        <div className="skeleton-stats-grid grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="text-center">
-              <div className="w-16 h-8 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mx-auto mb-2" />
+            <div key={i} className="skeleton-stat-item text-center">
+              <div className="w-16 h-8 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mx-auto mb-3" />
               <div className="w-24 h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mx-auto" />
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="skeleton-search-grid grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="w-full h-12 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
           <div className="w-full h-12 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
         </div>
@@ -214,19 +178,19 @@ function CertificationsOverviewSkeleton() {
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6"
+          className="skeleton-firm-card bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-md border border-slate-200/60 dark:border-slate-700/60 p-8"
         >
-          <div className="flex items-center gap-4 mb-4">
+          <div className="skeleton-firm-header flex items-center gap-4 mb-6">
             <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
-            <div className="space-y-2">
+            <div className="skeleton-firm-info space-y-3">
               <div className="w-48 h-6 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
               <div className="w-32 h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="skeleton-cert-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
             {[1, 2, 3, 4].map((j) => (
-              <div key={j} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                <div className="w-full h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-2" />
+              <div key={j} className="skeleton-cert-card p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-lg bg-slate-50/50 dark:bg-slate-700/30">
+                <div className="w-full h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse mb-3" />
                 <div className="w-3/4 h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
               </div>
             ))}

@@ -139,7 +139,7 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
 
 - No colored badges or provider indicators
 - Provider name: `text-sm font-semibold` (neutral gray)
-- Title: `text-xl font-bold tracking-tight` with `min-h-[4.5rem]` for fixed 3-line height
+- Title: `text-xl font-bold tracking-tight` with `min-h-18` for fixed 3-line height
 - Description: `text-base leading-relaxed` with `line-clamp-3`
 - Grid: `gap-8 md:grid-cols-2 lg:grid-cols-2` (2 columns on large screens)
 - Button: `ActionButton variant="secondary" size="lg" fullWidth`
@@ -334,7 +334,7 @@ hover:shadow-sm transition-colors duration-200
 'text-base text-slate-600 dark:text-slate-400 leading-relaxed';
 
 // Card Certification Title - Fixed height
-'text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-3 leading-tight min-h-[4.5rem] flex items-start';
+'text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start';
 ```
 
 ## Landing Page Refinements (Current Implementation)
@@ -351,7 +351,7 @@ hover:shadow-sm transition-colors duration-200
 - **Benefit**: Better card visibility and spacing on all screen sizes
 
 ### Card Title Height
-- **Certification Cards**: `min-h-[4.5rem]` fixed 3-line title height for perfect alignment
+- **Certification Cards**: `min-h-18` fixed 3-line title height for perfect alignment
 - **Ensures**: All cards maintain same height regardless of title length variations
 - **Improves**: Visual consistency and layout predictability
 
@@ -367,7 +367,7 @@ hover:shadow-sm transition-colors duration-200
 | **Headings (H3)**  | `text-2xl` (feature cards)                         | `text-xl` (unified across sections)                   |
 | **Body Text**      | `text-lg` (mixed across cards)                     | `text-base` (unified)                                 |
 | **Grid Columns**   | 3 columns on large screens                         | 2 columns on large screens                            |
-| **Title Height**   | Variable by content                                | Fixed 3-line (`min-h-[4.5rem]`)                       |
+| **Title Height**   | Variable by content                                | Fixed 3-line (`min-h-18`)                       |
 | **Spacing**        | Various padding sizes                              | Standardized `py-16 sm:py-20 lg:py-24`                |
 | **Visual Effects** | Multiple hover effects (scale, translate, shadows) | Minimal (shadow + border shift)                        |
 | **Typography**     | Bold headers with colored spans                    | Clean bold headers, `font-light` body                 |
@@ -384,13 +384,13 @@ When refactoring marketing pages to match this style:
 
 2. **Grid & Layout**
    - Use 2-column grids on large screens (`lg:grid-cols-2`), not 3
-   - Apply `min-h-[4.5rem]` to card titles for consistent card heights
+   - Apply `min-h-18` to card titles for consistent card heights
    - Use `line-clamp-3` for multiline descriptions
    - Maintain `gap-8` for consistent spacing
 
 3. **Card Styling**
    - Remove all colored badges/icons - Replace with neutral styling
-   - Use fixed title heights: `min-h-[4.5rem] flex items-start`
+   - Use fixed title heights: `min-h-18 flex items-start`
    - Apply `rounded-2xl` for certification cards, `rounded-3xl` for feature cards
    - No colored backgrounds - stick to `bg-white/90 dark:bg-slate-800/90`
 
