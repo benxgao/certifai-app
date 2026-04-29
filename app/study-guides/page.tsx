@@ -42,13 +42,6 @@ export default function StudyGuidesPage() {
 
               {/* Main heading */}
               <div className="mb-8">
-                <div className="inline-flex items-center gap-3 bg-violet-100 dark:bg-violet-900/30 rounded-full px-6 py-3 mb-6">
-                  <BookOpen className="h-5 w-5 text-violet-600 dark:text-violet-400" />
-                  <span className="text-sm font-medium text-violet-700 dark:text-violet-300">
-                    Coming Q3 2025
-                  </span>
-                </div>
-
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
                   <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                     AI Study Guides

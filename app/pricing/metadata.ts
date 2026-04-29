@@ -1,25 +1,30 @@
 import { Metadata } from 'next';
 
 const description =
-  'Get free access to our AI-powered IT certification training platform. Complete access to all features while we gather feedback and improve the platform.';
+  'Join our free beta program and get unlimited access to AI-powered IT certification training. Complete platform access while we develop features with your feedback. No credit card required.';
 
 const keywords = [
   'Certestic beta program',
-  'free IT certification training',
-  'AI certification beta',
-  'free practice exam platform',
-  'beta testing certification',
-  'feedback driven development',
-  'free AI training platform',
-  'certification training beta',
-  'IT certification feedback',
-  'free certification practice',
+  'free certification training',
+  'AI certification platform',
+  'free practice exams',
+  'beta testing program',
+  'free access',
+  'certification platform',
+  'AI learning beta',
+  'free exam prep',
+  'unlimited access',
   'beta user program',
+  'early access program',
+  'free training platform',
+  'no credit card',
+  'beta features',
+  'platform beta',
 ].join(', ');
 
 export const metadata: Metadata = {
   title:
-    'Free Beta Program | Certestic - AI-Powered IT Certification Training | Help Us Build the Future',
+    'Free Beta Program | Certestic - Unlimited AI-Powered Certification Training | Join Now',
   description,
   keywords,
   authors: [{ name: 'Certestic Team' }],
@@ -39,36 +44,37 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Beta Program | Certestic - Shape the Future of IT Certification Training',
     description:
-      'Get free access to our AI-powered IT certification training platform. Complete access while we develop and improve.',
+      'Get unlimited access to our AI-powered certification training platform for free. Help us build the future while perfecting your certifications. No credit card required.',
     type: 'website',
     locale: 'en_US',
     url: 'https://certestic.com/pricing',
     siteName: 'Certestic',
     images: [
       {
-        url: '/favicon.ico',
+        url: 'https://certestic.com/og-pricing.png',
         width: 1200,
         height: 630,
-        alt: 'Certestic Free Beta Program - Help Build the Future of IT Certification Training',
+        alt: 'Certestic Free Beta Program',
+        type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Beta Program | Certestic - Shape the Future',
+    title: 'Free Beta | Certestic - Unlimited Certification Training',
     description:
-      'Join our free beta program and help build the most effective AI-powered IT certification training platform.',
+      'Join our free beta program and get unlimited access to AI-powered IT certification training. Help shape the platform while you study.',
     creator: '@Certestic',
     site: '@Certestic',
     images: [
       {
-        url: '/favicon.ico',
-        alt: 'Certestic Free Beta Program - Help Build the Future',
+        url: 'https://certestic.com/og-pricing.png',
+        alt: 'Certestic Free Beta Program',
       },
     ],
   },
   alternates: {
     canonical: 'https://certestic.com/pricing',
   },
-  category: 'Education',
+  category: 'Technology',
 };

@@ -63,7 +63,7 @@ export default function ComingSoonPage() {
   const defaultFeatureInfo = useMemo(
     () => ({
       feature: 'Exciting New Feature',
-      expectedDate: 'Q3 2025',
+      expectedDate: 'Coming Soon',
       description:
         'Something cool is brewing! This new feature will enhance your IT certification journey with AI-powered learning.',
       icon: Sparkles,
@@ -82,35 +82,35 @@ export default function ComingSoonPage() {
       > = {
         '/documentation': {
           feature: 'Smart Documentation',
-          expectedDate: 'Q3 2025',
+          expectedDate: 'Coming Soon',
           description:
             'Interactive guides that adapt to how you learn and track your progress through IT certification materials.',
           icon: FileText,
         },
         '/blog': {
           feature: 'Learning Insights Blog',
-          expectedDate: 'Q4 2025',
+          expectedDate: 'Coming Soon',
           description:
             'Insights, success stories, and strategies from IT professionals who aced their certifications using this platform.',
           icon: Newspaper,
         },
         '/study-guides': {
           feature: 'AI Study Guides',
-          expectedDate: 'Q3 2025',
+          expectedDate: 'Coming Soon',
           description:
             'Personalized study paths powered by AI that adapt to your knowledge gaps and help you learn more effectively.',
           icon: BookOpen,
         },
         '/community': {
           feature: 'Expert Community',
-          expectedDate: 'Q4 2025',
+          expectedDate: 'Coming Soon',
           description:
             'Connect with certified professionals, get mentorship, and collaborate with peers on your certification journey.',
           icon: Users,
         },
         '/support': {
           feature: 'Smart Support Center',
-          expectedDate: 'Q3 2025',
+          expectedDate: 'Coming Soon',
           description:
             'AI-powered help system with instant answers, video tutorials, and direct access to the support team when you need it.',
           icon: HeadphonesIcon,
