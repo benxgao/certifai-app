@@ -6,7 +6,7 @@ import PopularCertifications from '@/src/components/landing/PopularCertification
 
 export default function LandingPageContent() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
       {/* Header with Navigation */}
       <LandingHeader />
 
@@ -79,7 +79,7 @@ export default function LandingPageContent() {
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
                 Questions adapt to understanding
               </h3>
-              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-auto mb-8">
                 As patterns become clear, question types shift. Sticky concepts get more practice; solid areas move forward. No wasted time on what's already secure.
               </p>
             </div>
@@ -92,7 +92,7 @@ export default function LandingPageContent() {
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
                 Exam format feels like test day
               </h3>
-              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg grow mb-8">
                 Question types, timing, interface—all match the real exam. When test day arrives, nothing feels new.
               </p>
             </div>
@@ -105,7 +105,7 @@ export default function LandingPageContent() {
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
                 Progress shows when patterns are clear
               </h3>
-              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg grow mb-8">
                 Charts and insights show what's solid and what needs focus. Progress tracking is there—without pressure to optimize.
               </p>
             </div>
@@ -118,7 +118,7 @@ export default function LandingPageContent() {
               <h3 className="relative text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 transition-colors duration-300">
                 Study rhythm is personal
               </h3>
-              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow mb-8">
+              <p className="relative text-slate-600 dark:text-slate-400 leading-relaxed text-lg grow mb-8">
                   Difficult areas get revisited more; strong topics move forward. Pace adapts to individual learning rhythm, not a preset schedule.
               </p>
             </div>

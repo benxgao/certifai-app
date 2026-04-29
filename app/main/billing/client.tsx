@@ -71,7 +71,7 @@ export default function BillingClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
       <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
         {/* Breadcrumb Navigation */}
         <Breadcrumb items={breadcrumbItems} />
@@ -121,7 +121,7 @@ export default function BillingClient() {
                 >
                   <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <div className="w-8 h-8 bg-linear-to-br from-violet-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
                         <Crown className="w-4 h-4 text-white" />
                       </div>
                       <div className="text-left">
@@ -158,7 +158,7 @@ export default function BillingClient() {
                 >
                   <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-sm">
                         <CreditCard className="w-4 h-4 text-white" />
                       </div>
                       <div className="text-left">
@@ -216,7 +216,7 @@ export default function BillingClient() {
                 >
                   <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <div className="w-8 h-8 bg-linear-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-sm">
                         <History className="w-4 h-4 text-white" />
                       </div>
                       <div className="text-left">

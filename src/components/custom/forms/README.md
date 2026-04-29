@@ -33,7 +33,7 @@ const SigninPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-violet-50/30">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-violet-50/30">
       <SigninForm
         onSubmit={handleSignin}
         loading={false}

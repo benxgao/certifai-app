@@ -221,7 +221,7 @@ function CertificationExamsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
       <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
         {/* Breadcrumb Navigation */}
         <Breadcrumb

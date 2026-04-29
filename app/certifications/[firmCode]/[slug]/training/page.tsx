@@ -95,7 +95,7 @@ export default async function CertificationMarketingPageRoute({ params }: Props)
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
       {/* Header with Navigation */}
       <LandingHeader />
 

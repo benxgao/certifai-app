@@ -150,7 +150,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
   if (error || !certification) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -159,7 +159,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 flex items-center justify-center min-h-screen">
           <div className="text-center max-w-2xl mx-auto">
-            <div className="w-20 h-20 bg-gradient-to-br from-red-100 via-red-200 to-red-300 dark:from-red-900/40 dark:via-red-800/40 dark:to-red-700/40 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-lg">
+            <div className="w-20 h-20 bg-linear-to-br from-red-100 via-red-200 to-red-300 dark:from-red-900/40 dark:via-red-800/40 dark:to-red-700/40 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-lg">
               <svg
                 className="w-10 h-10 text-red-600 dark:text-red-400"
                 fill="none"
@@ -201,7 +201,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
     <>
       <CertificationJsonLd certification={certification} />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -271,7 +271,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
             <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <FaBullseye className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -289,7 +289,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
             <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-green-300/60 dark:hover:border-green-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <FaChartLine className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
                 <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
@@ -307,7 +307,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
             <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-purple-300/60 dark:hover:border-purple-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                <div className="w-16 h-16 bg-linear-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <FaUsers className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                 </div>
                 <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
@@ -332,7 +332,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 text-center">
                 <div>
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 dark:from-orange-900/40 dark:via-orange-800/40 dark:to-orange-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-orange-100 via-orange-200 to-orange-300 dark:from-orange-900/40 dark:via-orange-800/40 dark:to-orange-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <FaStar className="w-8 h-8 text-orange-600 dark:text-orange-400" />
                   </div>
                   <div className="text-3xl sm:text-4xl font-bold text-orange-600 dark:text-orange-400 mb-2">
@@ -343,7 +343,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   </p>
                 </div>
                 <div>
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <svg
                       className="w-8 h-8 text-green-600 dark:text-green-400"
                       fill="currentColor"
@@ -362,7 +362,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   <p className="text-slate-600 dark:text-slate-400 text-sm">Required Pass Score</p>
                 </div>
                 <div>
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <svg
                       className="w-8 h-8 text-blue-600 dark:text-blue-400"
                       fill="currentColor"
@@ -383,7 +383,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   </p>
                 </div>
                 <div>
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <FaUsers className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div className="text-3xl sm:text-4xl font-bold text-purple-600 dark:text-purple-400 mb-2">
@@ -401,7 +401,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                   <FaCheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
                 </div>
                 What You&apos;ll Master in {certification.name}
@@ -459,7 +459,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                   <svg
                     className="w-6 h-6 text-violet-600 dark:text-violet-400"
                     fill="currentColor"
@@ -597,7 +597,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300 dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-amber-100 via-amber-200 to-amber-300 dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                   <FaBullseye className="w-6 h-6 text-amber-600 dark:text-amber-400" />
                 </div>
                 {certification.name} Exam Preparation Strategy
@@ -606,7 +606,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
             <CardContent className="p-8 sm:p-12 pt-0">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <span className="text-2xl font-bold text-green-600 dark:text-green-400">1</span>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
@@ -620,7 +620,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                 </div>
 
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">2</span>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
@@ -633,7 +633,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                 </div>
 
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
                     <span className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                       3
                     </span>
@@ -686,7 +686,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 dark:from-emerald-900/40 dark:via-emerald-800/40 dark:to-emerald-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-emerald-100 via-emerald-200 to-emerald-300 dark:from-emerald-900/40 dark:via-emerald-800/40 dark:to-emerald-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                   <FaChartLine className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 Career Benefits of {certification.name} Certification
@@ -868,7 +868,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                   <svg
                     className="w-6 h-6 text-indigo-600 dark:text-indigo-400"
                     fill="currentColor"
@@ -959,7 +959,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           <Card className="bg-gradient-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
             <CardContent className="p-8 sm:p-12 text-center relative">
               {/* Background decoration */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-white/5"></div>
 
               <div className="relative max-w-4xl mx-auto">
                 <FaGraduationCap className="text-6xl mb-6 mx-auto opacity-90" />
@@ -1008,7 +1008,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
 function MarketingPageSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>

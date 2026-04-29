@@ -77,7 +77,7 @@ export const ExamOverview: React.FC<ExamOverviewProps> = ({
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm animate-pulse"
+            className="bg-linear-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm animate-pulse"
           >
             <div className="space-y-3">
               <div className="flex items-center justify-center space-x-2">
@@ -94,10 +94,10 @@ export const ExamOverview: React.FC<ExamOverviewProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {/* Total Questions */}
-      <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
+      <div className="bg-linear-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
         <div className="space-y-3">
           <div className="flex items-center justify-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-800/50 dark:to-indigo-800/50 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 bg-linear-to-br from-blue-100 to-indigo-100 dark:from-blue-800/50 dark:to-indigo-800/50 rounded-lg flex items-center justify-center shadow-sm">
               <svg
                 className="w-4 h-4 text-blue-600 dark:text-blue-400"
                 fill="none"
@@ -123,10 +123,10 @@ export const ExamOverview: React.FC<ExamOverviewProps> = ({
       </div>
 
       {/* Started Date */}
-      <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
+      <div className="bg-linear-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
         <div className="space-y-3">
           <div className="flex items-center justify-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-800/50 dark:to-green-800/50 rounded-lg flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 bg-linear-to-br from-emerald-100 to-green-100 dark:from-emerald-800/50 dark:to-green-800/50 rounded-lg flex items-center justify-center shadow-sm">
               <svg
                 className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
                 fill="none"
@@ -153,10 +153,10 @@ export const ExamOverview: React.FC<ExamOverviewProps> = ({
 
       {/* Progress or Submission Date */}
       {submittedAt !== null ? (
-        <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="bg-linear-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="space-y-3">
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-100 to-green-100 dark:from-emerald-800/50 dark:to-green-800/50 rounded-lg flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 bg-linear-to-br from-emerald-100 to-green-100 dark:from-emerald-800/50 dark:to-green-800/50 rounded-lg flex items-center justify-center shadow-sm">
                 <FaCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               </div>
               <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
@@ -169,10 +169,10 @@ export const ExamOverview: React.FC<ExamOverviewProps> = ({
           </div>
         </div>
       ) : (
-        <div className="bg-gradient-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="bg-linear-to-br from-white/90 to-white/70 dark:from-slate-800/90 dark:to-slate-800/70 backdrop-blur-sm p-5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="space-y-3">
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-violet-100 to-purple-100 dark:from-violet-800/50 dark:to-purple-800/50 rounded-lg flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 bg-linear-to-br from-violet-100 to-purple-100 dark:from-violet-800/50 dark:to-purple-800/50 rounded-lg flex items-center justify-center shadow-sm">
                 <svg
                   className="w-4 h-4 text-violet-600 dark:text-violet-400"
                   fill="none"

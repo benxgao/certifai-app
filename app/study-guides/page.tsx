@@ -21,11 +21,11 @@ export default function StudyGuidesPage() {
     <>
       <LandingHeader />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
         {/* Hero Section */}
         <section className="relative py-16 sm:py-24 overflow-hidden">
           {/* Background decorative elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
           <div className="absolute top-10 right-4 sm:right-20 w-32 sm:w-48 h-32 sm:h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
           <div className="absolute bottom-10 left-4 sm:left-20 w-48 sm:w-64 h-48 sm:h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
 
@@ -65,7 +65,7 @@ export default function StudyGuidesPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <Card className="text-center p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                   <CardHeader className="pb-4">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                       <Sparkles className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-lg">AI-Powered Adaptation</CardTitle>
@@ -80,7 +80,7 @@ export default function StudyGuidesPage() {
 
                 <Card className="text-center p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                   <CardHeader className="pb-4">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                       <Target className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-lg">Focused Learning</CardTitle>
@@ -95,7 +95,7 @@ export default function StudyGuidesPage() {
 
                 <Card className="text-center p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                   <CardHeader className="pb-4">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                       <TrendingUp className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-lg">Progress Tracking</CardTitle>
@@ -202,7 +202,7 @@ export default function StudyGuidesPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20">
+        <section className="py-16 bg-linear-to-br from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">

@@ -14,7 +14,7 @@ interface ExamErrorStateProps {
 
 export const ExamErrorState: React.FC<ExamErrorStateProps> = ({ certId, examId, error }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-violet-950/30 pt-16">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-violet-950/30 pt-16">
       {/* Background decorative elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-200/20 dark:bg-red-600/10 rounded-full blur-3xl"></div>

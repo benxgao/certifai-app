@@ -83,7 +83,7 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
   if (examCount < 2) {
     return (
       <div className={`p-6 text-center space-y-4 ${className}`}>
-        <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto bg-linear-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-full flex items-center justify-center">
           <svg
             className="w-8 h-8 text-blue-600 dark:text-blue-400"
             fill="none"
@@ -130,7 +130,7 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
   if (!hasSummary) {
     return (
       <div className={`p-6 text-center space-y-4 ${className}`}>
-        <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto bg-linear-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-full flex items-center justify-center">
           <svg
             className="w-8 h-8 text-blue-600 dark:text-blue-400"
             fill="none"
@@ -228,9 +228,9 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
   return (
     <div className={`space-y-6 ${className}`}>
       {/* AI Summary Section */}
-      <div className="p-6 bg-gradient-to-br from-violet-50 to-blue-50 dark:from-violet-950/30 dark:to-blue-950/30 rounded-xl border border-violet-200/50 dark:border-violet-700/50">
+      <div className="p-6 bg-linear-to-br from-violet-50 to-blue-50 dark:from-violet-950/30 dark:to-blue-950/30 rounded-xl border border-violet-200/50 dark:border-violet-700/50">
         <div className="flex items-center space-x-3 mb-4">
-          <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-linear-to-br from-violet-500 to-blue-500 rounded-lg flex items-center justify-center">
             <svg
               className="w-4 h-4 text-white"
               fill="none"

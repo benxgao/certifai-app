@@ -49,14 +49,14 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
       <LandingHeader />
 
       <main className="relative pt-16" role="main">
         {/* Hero Section */}
         <section className="relative overflow-hidden" role="banner">
           {/* Background decorative elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
           <div className="absolute top-20 right-2 sm:right-10 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 left-2 sm:left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
@@ -110,13 +110,13 @@ export default function ContactPage() {
                     }`}
                   >
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br ${
+                      className={`absolute inset-0 bg-linear-to-br ${
                         method.primary ? 'from-violet-50/20' : 'from-blue-50/20'
                       } to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl`}
                     ></div>
                     <div className="relative z-10 text-center">
                       <div
-                        className={`h-16 w-16 bg-gradient-to-br ${
+                        className={`h-16 w-16 bg-linear-to-br ${
                           method.primary
                             ? 'from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30'
                             : 'from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30'
@@ -184,9 +184,9 @@ export default function ContactPage() {
                     key={index}
                     className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
                     <div className="relative z-10">
-                      <div className="h-12 w-12 bg-gradient-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mb-6 shadow-sm">
+                      <div className="h-12 w-12 bg-linear-to-br from-violet-100 to-violet-200 dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mb-6 shadow-sm">
                         <faq.icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
                       </div>
                       <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-4 tracking-tight">
@@ -207,9 +207,9 @@ export default function ContactPage() {
         <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
           <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-              <div className="group relative bg-gradient-to-br from-violet-50/90 to-blue-50/70 dark:from-violet-900/30 dark:to-blue-900/20 border border-violet-200/60 dark:border-violet-700/50 shadow-xl rounded-3xl p-8 sm:p-16 hover:shadow-2xl transition-all duration-500 overflow-hidden">
+              <div className="group relative bg-linear-to-br from-violet-50/90 to-blue-50/70 dark:from-violet-900/30 dark:to-blue-900/20 border border-violet-200/60 dark:border-violet-700/50 shadow-xl rounded-3xl p-8 sm:p-16 hover:shadow-2xl transition-all duration-500 overflow-hidden">
                 {/* Decorative background pattern */}
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 to-blue-50/20 dark:from-violet-900/10 dark:to-blue-900/5 rounded-3xl"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-violet-50/30 to-blue-50/20 dark:from-violet-900/10 dark:to-blue-900/5 rounded-3xl"></div>
                 <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl"></div>
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl"></div>
 

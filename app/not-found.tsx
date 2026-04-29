@@ -5,7 +5,7 @@ import { FaHome, FaArrowLeft, FaCompass } from 'react-icons/fa';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
       <div className="max-w-2xl mx-auto">
         <Card
           className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-2xl overflow-hidden"
@@ -16,7 +16,7 @@ export default function NotFound() {
               {/* 404 Illustration */}
               <div className="flex justify-center">
                 <div className="relative">
-                  <div className="w-32 h-32 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 rounded-full flex items-center justify-center">
+                  <div className="w-32 h-32 bg-linear-to-br from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 rounded-full flex items-center justify-center">
                     <FaCompass className="w-16 h-16 text-violet-600 dark:text-violet-400 animate-pulse" />
                   </div>
                   <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 dark:bg-red-600 rounded-full flex items-center justify-center">

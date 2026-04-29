@@ -111,7 +111,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                 )}
               </div>
             </CardHeader>
-            <CardContent className="p-6 pt-4 flex flex-col flex-grow">
+            <CardContent className="p-6 pt-4 flex flex-col grow">
               <div className="flex flex-col h-full justify-end">
                 {/* Action Button */}
                 <Button

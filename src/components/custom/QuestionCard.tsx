@@ -132,12 +132,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     <div
                       className={`w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 flex items-center justify-center text-sm sm:text-base lg:text-lg font-bold flex-shrink-0 rounded-xl shadow-md ${
                         showCorrectAnswer
-                          ? 'text-green-900 dark:text-green-100 bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 dark:from-green-800/40 dark:via-green-700/30 dark:to-emerald-800/40 border border-green-300/60 dark:border-green-500/40'
+                          ? 'text-green-900 dark:text-green-100 bg-linear-to-br from-green-100 via-green-50 to-emerald-100 dark:from-green-800/40 dark:via-green-700/30 dark:to-emerald-800/40 border border-green-300/60 dark:border-green-500/40'
                           : showIncorrectSelection
-                          ? 'text-red-900 dark:text-red-100 bg-gradient-to-br from-red-100 via-red-50 to-rose-100 dark:from-red-800/40 dark:via-red-700/30 dark:to-rose-800/40 border border-red-300/60 dark:border-red-500/40'
+                          ? 'text-red-900 dark:text-red-100 bg-linear-to-br from-red-100 via-red-50 to-rose-100 dark:from-red-800/40 dark:via-red-700/30 dark:to-rose-800/40 border border-red-300/60 dark:border-red-500/40'
                           : isSelected
-                          ? 'text-blue-900 dark:text-blue-100 bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 border border-blue-300/60 dark:border-blue-500/40'
-                          : 'text-slate-700 dark:text-slate-200 bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-700/60 dark:via-slate-600/50 dark:to-slate-700/60 border border-slate-300/60 dark:border-slate-500/40'
+                          ? 'text-blue-900 dark:text-blue-100 bg-linear-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 border border-blue-300/60 dark:border-blue-500/40'
+                          : 'text-slate-700 dark:text-slate-200 bg-linear-to-br from-slate-100 via-slate-50 to-slate-100 dark:from-slate-700/60 dark:via-slate-600/50 dark:to-slate-700/60 border border-slate-300/60 dark:border-slate-500/40'
                       }`}
                     >
                       {String.fromCharCode(65 + optionIndex)}
@@ -149,13 +149,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     <div className="flex items-center gap-2 sm:hidden">
                       {/* Show checkmark for correct answer */}
                       {isCorrect && (
-                        <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-gradient-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
+                        <div className="w-7 h-7 rounded-xl bg-linear-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-linear-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
                           <FaCheck className="text-green-700 dark:text-green-300 text-sm" />
                         </div>
                       )}
                       {/* Show X for user's incorrect selection */}
                       {isSelected && question.user_answer_is_correct === false && (
-                        <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-gradient-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
+                        <div className="w-7 h-7 rounded-xl bg-linear-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-linear-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
                           <FaTimes className="text-red-700 dark:text-red-300 text-sm" />
                         </div>
                       )}
@@ -183,13 +183,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                     <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
                       {/* Show checkmark for correct answer */}
                       {isCorrect && (
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-gradient-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
+                        <div className="w-8 h-8 rounded-xl bg-linear-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-linear-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
                           <FaCheck className="text-green-700 dark:text-green-300 text-base" />
                         </div>
                       )}
                       {/* Show X for user's incorrect selection */}
                       {isSelected && question.user_answer_is_correct === false && (
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-gradient-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
+                        <div className="w-8 h-8 rounded-xl bg-linear-to-br from-red-100 via-red-50 to-rose-100 border-2 border-red-400/80 dark:bg-linear-to-br dark:from-red-900/50 dark:via-red-800/40 dark:to-rose-900/50 dark:border-red-500/70 flex items-center justify-center shadow-lg shadow-red-200/40 dark:shadow-red-500/20">
                           <FaTimes className="text-red-700 dark:text-red-300 text-base" />
                         </div>
                       )}
@@ -221,7 +221,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 <AccordionItem value="item-1" className="border-none">
                   <AccordionTrigger className="px-7 py-5 hover:bg-gradient-to-r hover:from-blue-100/60 hover:via-indigo-100/40 hover:to-blue-100/60 dark:hover:from-blue-800/30 dark:hover:via-indigo-800/20 dark:hover:to-blue-800/30 transition-all duration-300 group hover:no-underline cursor-pointer">
                     <div className="flex items-center space-x-4 w-full">
-                      <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 rounded-xl group-hover:shadow-lg group-hover:shadow-blue-200/40 dark:group-hover:shadow-blue-500/20 transition-all duration-300 border border-blue-300/60 dark:border-blue-600/50">
+                      <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 rounded-xl group-hover:shadow-lg group-hover:shadow-blue-200/40 dark:group-hover:shadow-blue-500/20 transition-all duration-300 border border-blue-300/60 dark:border-blue-600/50">
                         <FaLightbulb className="w-5 h-5 text-blue-700 dark:text-blue-300" />
                       </div>
                       <div className="flex-1 text-left">

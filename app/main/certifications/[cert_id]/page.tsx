@@ -46,7 +46,7 @@ export default function CertificationPage() {
   // Handle other types of errors
   if (error && !is404Error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
         <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
           <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-red-200 dark:border-red-800">
             <div className="space-y-6">
@@ -97,7 +97,7 @@ export default function CertificationPage() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
         <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
           <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
             <div className="space-y-4">

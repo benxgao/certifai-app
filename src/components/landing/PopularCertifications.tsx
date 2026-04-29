@@ -123,12 +123,12 @@ export default function PopularCertifications() {
                 </div>
 
                 {/* Certification Title */}
-                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-3 leading-tight min-h-[4.5rem] flex items-start">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                   {cert.name}
                 </h3>
 
                 {/* Description */}
-                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-3 flex-grow">
+                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400 line-clamp-3 flex-auto">
                   {cert.description}
                 </p>
 

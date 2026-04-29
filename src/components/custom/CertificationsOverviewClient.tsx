@@ -235,7 +235,7 @@ export default function CertificationsOverviewClient({
                         href={`/certifications/${firm.code}/${createSlug(cert.name)}`}
                         className="group"
                       >
-                        <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-violet-300 dark:hover:border-violet-600 hover:bg-gradient-to-br hover:from-violet-50/50 hover:to-blue-50/50 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 transition-all duration-300 cursor-pointer hover:shadow-md dark:hover:shadow-slate-900/20">
+                        <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-xl hover:border-violet-300 dark:hover:border-violet-600 hover:bg-linear-to-br hover:from-violet-50/50 hover:to-blue-50/50 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 transition-all duration-300 cursor-pointer hover:shadow-md dark:hover:shadow-slate-900/20">
                           <div className="flex items-start gap-2 mb-2">
                             <FaAward className="text-violet-600 dark:text-violet-400 mt-1 flex-shrink-0" />
                             <h4 className="font-medium text-slate-900 dark:text-slate-100 group-hover:text-violet-800 dark:group-hover:text-violet-300 line-clamp-2 transition-colors duration-200">

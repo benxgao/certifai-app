@@ -49,14 +49,14 @@ export default async function CertificationsPage({
     typeof resolvedSearchParams.firm === 'string' ? resolvedSearchParams.firm : undefined;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
       {/* Header with Navigation */}
       <LandingHeader />
 
       {/* Hero Section with decorative background */}
       <section className="relative overflow-hidden" role="banner">
         {/* Background decorative elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
         <div className="absolute top-20 right-2 sm:right-10 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 left-2 sm:left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
@@ -173,7 +173,7 @@ export default async function CertificationsPage({
       {/* Content Section */}
       <section className="relative py-8 sm:py-12 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden">
         {/* Background decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
         <div className="absolute top-10 sm:top-20 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 sm:bottom-20 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
 

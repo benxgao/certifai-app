@@ -16,7 +16,7 @@ export const AuthPageLayout: React.FC<AuthPageLayoutProps> = ({ children, classN
   return (
     <div
       className={cn(
-        'min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20',
+        'min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20',
         className,
       )}
     >

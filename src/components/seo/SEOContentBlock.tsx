@@ -14,7 +14,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
         aria-labelledby="seo-content-heading"
       >
         {/* Background decorative elements matching top sections */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
         <div className="absolute top-10 left-10 w-72 h-72 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
 
@@ -41,10 +41,10 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
               {/* Cloud Computing Certifications - Enhanced card styling */}
               <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
                 {/* Background gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-transparent dark:from-violet-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-violet-50/50 via-transparent to-transparent dark:from-violet-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
 
                 <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg">
                     <svg
                       className="w-8 h-8 text-violet-600 dark:text-violet-400"
                       fill="none"
@@ -62,7 +62,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors duration-300">
                     Cloud Computing Certifications
                   </h3>
-                  <ul className="relative space-y-3 text-slate-600 dark:text-slate-400 flex-grow">
+                  <ul className="relative space-y-3 text-slate-600 dark:text-slate-400 grow">
                     <li>
                       <Link
                         href="/certifications/AWS/aws-certified-solutions-architect"
@@ -110,10 +110,10 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
               {/* Cybersecurity Certifications - Enhanced card styling */}
               <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-green-300/60 dark:hover:border-green-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
                 {/* Background gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-transparent dark:from-green-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-green-50/50 via-transparent to-transparent dark:from-green-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
 
                 <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg">
                     <svg
                       className="w-8 h-8 text-green-600 dark:text-green-400"
                       fill="none"
@@ -131,7 +131,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-300">
                     Cybersecurity Certifications
                   </h3>
-                  <ul className="relative space-y-3 text-slate-600 dark:text-slate-400 flex-grow">
+                  <ul className="relative space-y-3 text-slate-600 dark:text-slate-400 grow">
                     <li>
                       <Link
                         href="/certifications/COMPTIA/comptia-security"
@@ -179,10 +179,10 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
               {/* Networking & Infrastructure - Enhanced card styling */}
               <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
                 {/* Background gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent dark:from-blue-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-blue-50/50 via-transparent to-transparent dark:from-blue-900/20 dark:via-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
 
                 <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg">
+                  <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 shadow-lg">
                     <svg
                       className="w-8 h-8 text-blue-600 dark:text-blue-400"
                       fill="none"
@@ -200,7 +200,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
                     Networking & Infrastructure
                   </h3>
-                  <ul className="relative space-y-3 text-slate-600 dark:text-slate-400 flex-grow">
+                  <ul className="relative space-y-3 text-slate-600 dark:text-slate-400 grow">
                     <li>
                       <Link
                         href="/certifications/CISCO/cisco-certified-network-associate-ccna"

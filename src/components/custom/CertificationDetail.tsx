@@ -188,7 +188,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
   const { firm } = certification;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -247,7 +247,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
             <div className="space-y-8">
               <div>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                     <FaAward className="w-6 h-6 text-violet-600 dark:text-violet-400" />
                   </div>
                   <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
@@ -264,7 +264,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
               {firm.description && (
                 <div>
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                       <FaUsers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
@@ -285,7 +285,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
           <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+            <div className="w-16 h-16 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
               <FaGraduationCap className="w-8 h-8 text-violet-600 dark:text-violet-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
@@ -297,7 +297,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
           </Card>
 
           <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+            <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
               <FaClock className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
@@ -310,7 +310,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
           </Card>
 
           <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-indigo-300/60 dark:hover:border-indigo-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+            <div className="w-16 h-16 bg-linear-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
               <FaStar className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
@@ -328,7 +328,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
           <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl sm:text-3xl">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
                   <FaGraduationCap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
                 Related {firm.name} Certifications
@@ -385,7 +385,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
         <Card className="bg-gradient-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
           <CardContent className="p-8 sm:p-12 text-center relative">
             {/* Background decoration */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5"></div>
+            <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-white/5"></div>
 
             <div className="relative max-w-4xl mx-auto">
               <FaAward className="text-6xl mb-6 mx-auto opacity-90" />
@@ -427,7 +427,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
 
 function CertificationDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>

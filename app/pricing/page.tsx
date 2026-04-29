@@ -62,7 +62,7 @@ export default function PricingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
 
-      <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br">
+      <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br">
         {/* Header with Navigation */}
         <LandingHeader />
 
@@ -85,7 +85,7 @@ export default function PricingPage() {
 
           {/* Beta Access Card */}
           <div className="max-w-2xl mx-auto px-2 sm:px-4">
-            <div className="relative bg-white dark:from-slate-800 dark:to-slate-900 dark:bg-gradient-to-br rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-md">
+            <div className="relative bg-white dark:from-slate-800 dark:to-slate-900 dark:bg-linear-to-br rounded-xl sm:rounded-2xl border-2 border-primary/20 dark:border-primary/40 p-4 sm:p-6 lg:p-8 shadow-md">
               <div className="absolute -top-2 sm:-top-3 lg:-top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-violet-600 dark:bg-violet-700 text-white px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 lg:py-2.5 rounded-full text-xs sm:text-sm font-medium shadow-lg">
                   FREE BETA ACCESS

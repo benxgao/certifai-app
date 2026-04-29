@@ -16,7 +16,7 @@ Essential patterns and reusable components for consistent development.
 ### Standard Page Container (Landing/Marketing Pages)
 
 ```tsx
-<div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br overflow-x-hidden">
+<div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
   {/* Page sections with consistent padding */}
 </div>
 ```
@@ -42,7 +42,7 @@ Essential patterns and reusable components for consistent development.
 
 ```css
 /* Page backgrounds */
-bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br
+bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br
 
 /* Section backgrounds (subtle) */
 bg-slate-50/50 dark:bg-slate-800/30
@@ -90,7 +90,7 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
 
   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Feature Title</h3>
 
-  <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg flex-grow">
+  <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg grow">
     Feature description text.
   </p>
 </div>
@@ -115,7 +115,7 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
 
     <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Certification Name</h3>
 
-    <p className="text-base text-slate-600 dark:text-slate-400 flex-grow">Description text.</p>
+    <p className="text-base text-slate-600 dark:text-slate-400 flex-auto">Description text.</p>
 
     {/* CTA Button */}
     <ActionButton variant="secondary" size="lg" fullWidth>
@@ -272,7 +272,7 @@ hover:shadow-sm transition-colors duration-200
 
 ```tsx
 // Page wrapper
-'min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br overflow-x-hidden';
+'min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden';
 
 // Section container
 'relative py-16 sm:py-20 lg:py-24 overflow-hidden';

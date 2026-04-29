@@ -231,7 +231,7 @@ export default function NetworkingCertificationsPage() {
   const allCertifications = networkingCertifications;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50/30 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-green-50/30 dark:from-slate-900 dark:to-slate-800">
       <LandingHeader />
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -240,7 +240,7 @@ export default function NetworkingCertificationsPage() {
         {/* Hero Section */}
         <section className="text-center mb-16 relative">
           {/* Background Elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-blue-50/30 dark:from-green-900/10 dark:via-transparent dark:to-blue-900/10 rounded-3xl"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-green-50/50 via-transparent to-blue-50/30 dark:from-green-900/10 dark:via-transparent dark:to-blue-900/10 rounded-3xl"></div>
           <div className="absolute top-10 right-10 w-64 h-64 bg-green-200/20 dark:bg-green-600/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-10 w-80 h-80 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 

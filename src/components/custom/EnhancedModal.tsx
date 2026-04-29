@@ -65,7 +65,7 @@ export function EnhancedModal({
       container:
         'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl shadow-red-500/10 dark:shadow-red-400/10',
       iconBg:
-        'bg-gradient-to-br from-red-100/80 to-orange-100/60 dark:from-red-900/60 dark:to-orange-900/40',
+        'bg-linear-to-br from-red-100/80 to-orange-100/60 dark:from-red-900/60 dark:to-orange-900/40',
       iconText: 'text-red-600 dark:text-red-400',
     },
   };

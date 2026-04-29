@@ -47,7 +47,7 @@ export default function StripeCallbackClient() {
   // Show processing state
   if (isProcessing || (!sessionId && !canceled)) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-md mx-auto mt-20">
             <Card>
@@ -68,7 +68,7 @@ export default function StripeCallbackClient() {
   // Show success state
   if (sessionId && !canceled) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-md mx-auto mt-20">
             <Card>
@@ -110,7 +110,7 @@ export default function StripeCallbackClient() {
 
   // Show cancel state
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-md mx-auto mt-20">
           <Card>

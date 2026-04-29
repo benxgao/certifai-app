@@ -199,7 +199,7 @@ const ProfileClientPage: React.FC = () => {
 
     // Show skeleton loading after initial spinner
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
         <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
           {/* Breadcrumb Navigation */}
           <Breadcrumb
@@ -249,7 +249,7 @@ const ProfileClientPage: React.FC = () => {
   // isError and error are now from useProfileData
   if (isError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16">
         <div className="max-w-4xl mx-auto px-4 py-6 md:px-6 md:py-8">
           <div className="flex items-center justify-center min-h-[400px]">
             <Card className="w-full max-w-md" variant="elevated">
@@ -281,7 +281,7 @@ const ProfileClientPage: React.FC = () => {
     : 'N/A';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20 pt-16">
       <div className="max-w-4xl mx-auto px-4 py-8 md:px-8 md:py-12 space-y-10">
         {/* Breadcrumb Navigation */}
         <Breadcrumb
@@ -298,7 +298,7 @@ const ProfileClientPage: React.FC = () => {
               <div className="flex items-center space-x-3 md:space-x-4">
                 <Avatar className="w-12 h-12 md:w-16 md:h-16 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-sm">
                   <AvatarImage src={profile.avatar_url || undefined} alt={displayName || 'User'} />
-                  <AvatarFallback className="bg-gradient-to-br from-violet-600 to-blue-600 text-white font-normal text-base md:text-lg">
+                  <AvatarFallback className="bg-linear-to-br from-violet-600 to-blue-600 text-white font-normal text-base md:text-lg">
                     {displayName?.charAt(0).toUpperCase() || 'U'}
                   </AvatarFallback>
                 </Avatar>
@@ -338,7 +338,7 @@ const ProfileClientPage: React.FC = () => {
               >
                 <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+                    <div className="w-8 h-8 bg-linear-to-br from-violet-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
                       <UserIcon className="w-4 h-4 text-white" />
                     </div>
                     <div className="text-left">
@@ -386,7 +386,7 @@ const ProfileClientPage: React.FC = () => {
               >
                 <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-sm">
+                    <div className="w-8 h-8 bg-linear-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-sm">
                       <Award className="w-4 h-4 text-white" />
                     </div>
                     <div className="text-left">
@@ -447,7 +447,7 @@ const ProfileClientPage: React.FC = () => {
               >
                 <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]]:border-b [&[data-state=open]]:border-slate-200/60 [&[data-state=open]]:dark:border-slate-700/60">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-sm">
+                    <div className="w-8 h-8 bg-linear-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-sm">
                       <Settings className="w-4 h-4 text-white" />
                     </div>
                     <div className="text-left">

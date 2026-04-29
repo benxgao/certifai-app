@@ -103,7 +103,7 @@ export const ProfileQuickView: React.FC<ProfileQuickViewProps> = ({
       <CardContent className="space-y-4">
         {/* User Info */}
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-violet-500 flex items-center justify-center text-white font-medium">
+          <div className="w-10 h-10 rounded-full bg-linear-to-br from-violet-500 to-violet-500 flex items-center justify-center text-white font-medium">
             {displayName.charAt(0).toUpperCase()}
           </div>
           <div>

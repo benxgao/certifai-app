@@ -263,7 +263,7 @@ const CertificationCard = ({
             {/* Enhanced Stats Grid with Status */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               {/* Status Badge */}
-              <div className="relative bg-gradient-to-br from-violet-50/90 to-blue-50/80 dark:from-violet-900/30 dark:to-blue-900/25 p-4 sm:p-5 rounded-2xl border border-violet-200/50 dark:border-violet-700/40 shadow-lg hover:shadow-xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 hover:border-violet-300/70 dark:hover:border-violet-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center">
+              <div className="relative bg-linear-to-br from-violet-50/90 to-blue-50/80 dark:from-violet-900/30 dark:to-blue-900/25 p-4 sm:p-5 rounded-2xl border border-violet-200/50 dark:border-violet-700/40 shadow-lg hover:shadow-xl hover:shadow-violet-500/10 dark:hover:shadow-violet-400/10 hover:border-violet-300/70 dark:hover:border-violet-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center">
                 <div className="flex flex-col items-center gap-1 w-full">
                   <div className="flex items-center justify-center mb-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-violet-400 dark:bg-violet-500 mr-2"></span>
@@ -278,7 +278,7 @@ const CertificationCard = ({
               </div>
 
               {/* Practice Exams Badge */}
-              <div className="relative bg-gradient-to-br from-emerald-50/90 to-green-50/80 dark:from-emerald-900/30 dark:to-green-900/25 p-4 sm:p-5 rounded-2xl border border-emerald-200/50 dark:border-emerald-700/40 shadow-lg hover:shadow-xl hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/10 hover:border-emerald-300/70 dark:hover:border-emerald-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center">
+              <div className="relative bg-linear-to-br from-emerald-50/90 to-green-50/80 dark:from-emerald-900/30 dark:to-green-900/25 p-4 sm:p-5 rounded-2xl border border-emerald-200/50 dark:border-emerald-700/40 shadow-lg hover:shadow-xl hover:shadow-emerald-500/10 dark:hover:shadow-emerald-400/10 hover:border-emerald-300/70 dark:hover:border-emerald-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center">
                 <div className="flex flex-col items-center gap-1 w-full">
                   <div className="flex items-center justify-center mb-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 dark:bg-emerald-500 mr-2"></span>
@@ -293,7 +293,7 @@ const CertificationCard = ({
               </div>
 
               {/* Started Badge */}
-              <div className="relative bg-gradient-to-br from-cyan-50/90 to-teal-50/80 dark:from-cyan-900/30 dark:to-teal-900/25 p-4 sm:p-5 rounded-2xl border border-cyan-200/50 dark:border-cyan-700/40 shadow-lg hover:shadow-xl hover:shadow-cyan-500/10 dark:hover:shadow-cyan-400/10 hover:border-cyan-300/70 dark:hover:border-cyan-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center">
+              <div className="relative bg-linear-to-br from-cyan-50/90 to-teal-50/80 dark:from-cyan-900/30 dark:to-teal-900/25 p-4 sm:p-5 rounded-2xl border border-cyan-200/50 dark:border-cyan-700/40 shadow-lg hover:shadow-xl hover:shadow-cyan-500/10 dark:hover:shadow-cyan-400/10 hover:border-cyan-300/70 dark:hover:border-cyan-600/60 transition-all duration-400 group/stat backdrop-blur-md overflow-hidden flex flex-col items-center justify-center text-center">
                 <div className="flex flex-col items-center gap-1 w-full">
                   <div className="flex items-center justify-center mb-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 dark:bg-cyan-500 mr-2"></span>
@@ -320,7 +320,7 @@ const CertificationCard = ({
                     {
                       id: 'cert-summary',
                       icon: (
-                        <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-slate-100/80 to-violet-100/60 dark:from-slate-800/60 dark:to-violet-900/40 rounded-xl group-hover:from-violet-100/80 dark:group-hover:from-violet-800/60 group-hover:to-blue-100/60 dark:group-hover:to-blue-900/40 transition-all duration-300 shadow-sm">
+                        <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-slate-100/80 to-violet-100/60 dark:from-slate-800/60 dark:to-violet-900/40 rounded-xl group-hover:from-violet-100/80 dark:group-hover:from-violet-800/60 group-hover:to-blue-100/60 dark:group-hover:to-blue-900/40 transition-all duration-300 shadow-sm">
                           <FaChartLine className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-300" />
                         </div>
                       ),

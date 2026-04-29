@@ -162,7 +162,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     const loadingDuration = Math.round((Date.now() - loadingStartTime.current) / 1000);
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
         <div className="max-w-md w-full mx-4 p-8 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-xl border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
           <div className="text-center">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-violet-600 to-blue-600 rounded-full flex items-center justify-center mb-6">

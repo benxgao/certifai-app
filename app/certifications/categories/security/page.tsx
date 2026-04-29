@@ -224,7 +224,7 @@ export default function SecurityCertificationsPage() {
   const allCertifications = securityCertifications;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-red-50/30 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-red-50/30 dark:from-slate-900 dark:to-slate-800">
       <LandingHeader />
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -233,7 +233,7 @@ export default function SecurityCertificationsPage() {
         {/* Hero Section */}
         <section className="text-center mb-16 relative">
           {/* Background Elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-red-50/50 via-transparent to-purple-50/30 dark:from-red-900/10 dark:via-transparent dark:to-purple-900/10 rounded-3xl"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-red-50/50 via-transparent to-purple-50/30 dark:from-red-900/10 dark:via-transparent dark:to-purple-900/10 rounded-3xl"></div>
           <div className="absolute top-10 right-10 w-64 h-64 bg-red-200/20 dark:bg-red-600/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-200/20 dark:bg-purple-600/10 rounded-full blur-3xl"></div>
 

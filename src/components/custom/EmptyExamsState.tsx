@@ -9,13 +9,13 @@ export function EmptyExamsState() {
     <div className="relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-6 left-6 w-20 h-20 bg-gradient-to-br from-violet-400/20 to-purple-500/20 rounded-full blur-xl"></div>
-        <div className="absolute bottom-6 right-6 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-violet-500/20 rounded-full blur-xl"></div>
+        <div className="absolute top-6 left-6 w-20 h-20 bg-linear-to-br from-violet-400/20 to-purple-500/20 rounded-full blur-xl"></div>
+        <div className="absolute bottom-6 right-6 w-32 h-32 bg-linear-to-br from-blue-400/20 to-violet-500/20 rounded-full blur-xl"></div>
       </div>
 
       <div className="relative text-center py-20 space-y-8">
         {/* Enhanced Icon Container */}
-        <div className="w-20 h-20 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/50 dark:to-blue-900/50 rounded-full flex items-center justify-center mx-auto shadow-lg backdrop-blur-sm border border-white/50 dark:border-slate-700/50">
+        <div className="w-20 h-20 bg-linear-to-br from-violet-100 to-blue-100 dark:from-violet-900/50 dark:to-blue-900/50 rounded-full flex items-center justify-center mx-auto shadow-lg backdrop-blur-sm border border-white/50 dark:border-slate-700/50">
           <FaClipboardList className="w-10 h-10 text-violet-600 dark:text-violet-400" />
         </div>
 

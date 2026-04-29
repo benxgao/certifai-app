@@ -109,7 +109,7 @@ export function CertificationStatusCard({
 
       {/* Rate Limit Info - Simplified Design */}
       {rateLimitInfo && !isLoadingRateLimit && (
-        <div className="px-6 sm:px-8 py-4 bg-gradient-to-br from-blue-50/90 via-indigo-50/80 to-violet-50/70 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-violet-950/20 border-b border-blue-200/40 dark:border-blue-800/40 backdrop-blur-sm">
+        <div className="px-6 sm:px-8 py-4 bg-linear-to-br from-blue-50/90 via-indigo-50/80 to-violet-50/70 dark:from-blue-950/40 dark:via-indigo-950/30 dark:to-violet-950/20 border-b border-blue-200/40 dark:border-blue-800/40 backdrop-blur-sm">
           <div className="flex items-center justify-between">
             {/* Left side - Info */}
             <div className="flex items-center space-x-3">

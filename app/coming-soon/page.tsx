@@ -156,14 +156,14 @@ export default function ComingSoonPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
         {/* Header */}
         <LandingHeader />
 
         {/* Main Content */}
         <main className="relative overflow-hidden">
           {/* Background decorative elements - matching home page */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
           <div className="absolute top-20 right-2 sm:right-10 w-48 sm:w-72 h-48 sm:h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 left-2 sm:left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
@@ -234,9 +234,9 @@ export default function ComingSoonPage() {
         </main>
 
         {/* Email Subscription Section - styled like home page features */}
-        <section className="relative py-16 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 overflow-hidden">
+        <section className="relative py-16 bg-linear-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 overflow-hidden">
           {/* Background decorative elements */}
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
           <div className="absolute top-10 right-4 sm:right-20 w-32 sm:w-48 h-32 sm:h-48 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-2xl"></div>
           <div className="absolute bottom-10 left-4 sm:left-20 w-48 sm:w-64 h-48 sm:h-64 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-2xl"></div>
 
@@ -244,7 +244,7 @@ export default function ComingSoonPage() {
             <div className="max-w-2xl mx-auto">
               <div className="relative">
                 {/* Decorative background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-1 scale-105"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-1 scale-105"></div>
 
                 <Card className="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-2xl">
                   <CardHeader className="text-center pb-4">
@@ -311,7 +311,7 @@ export default function ComingSoonPage() {
         {/* Alternative Actions Section - styled like home page */}
         <section className="relative py-16 sm:py-24 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden">
           {/* Background decorative elements */}
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-violet-50/30 via-transparent to-blue-50/20 dark:from-violet-900/5 dark:via-transparent dark:to-blue-900/5"></div>
           <div className="absolute top-10 sm:top-20 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-violet-200/10 dark:bg-violet-600/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 sm:bottom-20 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-200/10 dark:bg-blue-600/5 rounded-full blur-3xl"></div>
 
@@ -354,7 +354,7 @@ export default function ComingSoonPage() {
               {/* Feature highlights */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
                 <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                     <Sparkles className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
@@ -366,7 +366,7 @@ export default function ComingSoonPage() {
                 </div>
 
                 <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                     <BookOpen className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
@@ -378,7 +378,7 @@ export default function ComingSoonPage() {
                 </div>
 
                 <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                     <Users className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">

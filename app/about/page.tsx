@@ -153,7 +153,7 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-gradient-to-br overflow-x-hidden">
+      <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
         <LandingHeader />
 
         <main className="relative pt-16" role="main">
@@ -218,7 +218,7 @@ export default function AboutPage() {
                       className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-6 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105"
                     >
                       <div className="text-center">
-                        <div className="h-12 w-12 bg-violet-100 dark:bg-gradient-to-br dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                        <div className="h-12 w-12 bg-violet-100 dark:bg-linear-to-br dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                           <stat.icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
                         </div>
                         <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:bg-gradient-to-r dark:from-slate-100 dark:to-slate-300 dark:bg-clip-text dark:text-transparent mb-2">
@@ -244,7 +244,7 @@ export default function AboutPage() {
               <div className="max-w-7xl mx-auto">
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
                   <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
                     <div className="relative z-10">
                       <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-6 tracking-tight">
                         Mission
@@ -334,9 +334,9 @@ export default function AboutPage() {
                       key={index}
                       className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
+                      <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
                       <div className="relative z-10">
-                        <div className="h-12 w-12 bg-violet-100 dark:bg-gradient-to-br dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mb-6 shadow-sm">
+                        <div className="h-12 w-12 bg-violet-100 dark:bg-linear-to-br dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mb-6 shadow-sm">
                           <value.icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
                         </div>
                         <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4 tracking-tight">
@@ -432,7 +432,7 @@ export default function AboutPage() {
                 </div>
                 <div className="max-w-4xl mx-auto">
                   <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 sm:p-12 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
+                    <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
                     <div className="relative z-10 text-center">
                       <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-3 tracking-tight">
                         Ben Gao
@@ -487,7 +487,7 @@ export default function AboutPage() {
           <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
             <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-7xl mx-auto">
-                <div className="group relative bg-white dark:from-violet-900/30 dark:to-blue-900/20 dark:bg-gradient-to-br border border-slate-200 dark:border-violet-700/50 shadow-md rounded-3xl p-8 sm:p-16 hover:shadow-md dark:hover:shadow-2xl transition-colors dark:transition-all duration-500 overflow-hidden">
+                <div className="group relative bg-white dark:from-violet-900/30 dark:to-blue-900/20 dark:bg-linear-to-br border border-slate-200 dark:border-violet-700/50 shadow-md rounded-3xl p-8 sm:p-16 hover:shadow-md dark:hover:shadow-2xl transition-colors dark:transition-all duration-500 overflow-hidden">
                   {/* Decorative background pattern */}
                   {/* Background overlay - disabled for light mode */}
                   <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl"></div>

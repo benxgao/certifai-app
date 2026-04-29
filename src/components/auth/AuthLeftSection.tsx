@@ -133,7 +133,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
   };
 
   return (
-    <div className="hidden lg:flex lg:flex-col lg:justify-start lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
+    <div className="hidden lg:flex lg:flex-col lg:justify-start lg:w-1/2 relative overflow-hidden bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
       {/* Enhanced background decoration with more sophisticated patterns */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Multiple gradient orbs for depth - matching landing page style */}
@@ -142,7 +142,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
         <div className="absolute top-1/2 left-1/4 w-40 h-40 bg-purple-200/15 dark:bg-purple-600/8 rounded-full blur-2xl"></div>
 
         {/* Subtle gradient overlay for enhanced depth */}
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-violet-50/50 via-transparent to-blue-50/30 dark:from-violet-900/10 dark:via-transparent dark:to-blue-900/10"></div>
       </div>
 
       {/* Content container with precise form alignment - compact version */}
@@ -193,7 +193,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
 
                     <div className="relative z-10 flex items-center space-x-3 w-full">
                       <div
-                        className={`flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br ${feature.bgColor} rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}
+                        className={`flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 bg-linear-to-br ${feature.bgColor} rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}
                       >
                         {renderIcon(feature.icon, 'w-5 h-5 sm:w-6 sm:h-6 text-white')}
                       </div>

@@ -109,7 +109,7 @@ const Card = memo<CardProps>(
       <div data-slot="card" className={cardStyles} {...interactiveProps} {...props}>
         {/* Optimized gradient overlay */}
         {onClick && (
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-50/10 to-blue-50/10 dark:from-violet-950/10 dark:to-blue-950/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 gpu-accelerated" />
+          <div className="absolute inset-0 bg-linear-to-br from-violet-50/10 to-blue-50/10 dark:from-violet-950/10 dark:to-blue-950/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 gpu-accelerated" />
         )}
 
         {/* Loading overlay */}
