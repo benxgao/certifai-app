@@ -121,7 +121,7 @@ const LoginPage = () => {
 
       {/* Notification Bar */}
       <EnhancedNotificationBar
-        message="🚀 Try our platform instantly with demo account - username/password: demo@certestic.com"
+        message="Try our platform instantly with demo account - username/password: demo@certestic.com"
         ctaText=""
         ctaLink="/signin"
         variant="promo"
@@ -151,12 +151,12 @@ const LoginPage = () => {
 
               <div className="relative z-10">
                 {/* Header with dashboard card header styling */}
-                <div className="px-6 sm:px-8 py-6 border-b border-slate-100 dark:border-slate-700/50 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
+                <div className="px-6 sm:px-8 py-8 sm:py-10 border-b border-slate-100 dark:border-slate-700/50 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
                   <div className="text-center">
-                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight mb-2">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-50 tracking-tight mb-3 leading-tight">
                       Sign In
                     </h1>
-                    <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+                    <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-light">
                       Enter your credentials to access your account
                     </p>
                   </div>
@@ -164,11 +164,11 @@ const LoginPage = () => {
 
                 <form onSubmit={handleSignin} autoComplete="on">
                   {/* Form Content with dashboard card content styling */}
-                  <div className="p-6 sm:p-8 space-y-3 sm:space-y-4 lg:space-y-6 auth-content-mobile">
-                    <div className="space-y-1 sm:space-y-2">
+                  <div className="p-6 sm:p-8 space-y-4 sm:space-y-5 lg:space-y-6 auth-content-mobile">
+                    <div className="space-y-2 sm:space-y-2.5">
                       <Label
                         htmlFor="email"
-                        className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
+                        className="text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-base"
                       >
                         Email address
                       </Label>
@@ -185,17 +185,17 @@ const LoginPage = () => {
                         className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:bg-white dark:focus:bg-slate-900/80 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
                       />
                     </div>
-                    <div className="space-y-1 sm:space-y-2">
+                    <div className="space-y-2 sm:space-y-2.5">
                       <div className="flex items-center justify-between">
                         <Label
                           htmlFor="password"
-                          className="text-slate-700 dark:text-slate-200 font-medium text-sm sm:text-base"
+                          className="text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-base"
                         >
                           Password
                         </Label>
                         <Link
                           href="/forgot-password"
-                          className="text-xs sm:text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
+                          className="text-xs sm:text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
                         >
                           Forgot password?
                         </Link>
@@ -214,10 +214,10 @@ const LoginPage = () => {
                       />
                     </div>
                     {error && (
-                      <AlertMessage message={error} className="text-sm p-4 sm:p-5 lg:p-6">
+                      <AlertMessage message={error} className="text-base p-4 sm:p-5 lg:p-6">
                         {showVerificationPrompt && (
                           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50 rounded-lg">
-                            <p className="text-sm text-blue-700 dark:text-blue-200 mb-3">
+                            <p className="text-sm sm:text-base text-blue-700 dark:text-blue-200 mb-3 font-medium">
                               Didn&apos;t receive the email? Check your spam folder or resend it.
                             </p>
                             <Button
@@ -225,7 +225,7 @@ const LoginPage = () => {
                               disabled={verificationLoading}
                               variant="outline"
                               size="sm"
-                              className="text-xs"
+                              className="text-xs sm:text-sm font-medium"
                             >
                               {verificationLoading ? 'Sending...' : 'Resend verification email'}
                             </Button>
@@ -235,7 +235,7 @@ const LoginPage = () => {
                     )}
                     <Button
                       type="submit"
-                      className="w-full rounded-xl bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-0.5 text-base sm:text-lg relative overflow-hidden group"
+                      className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01] text-base sm:text-base py-3 sm:py-3.5 relative overflow-hidden group"
                       disabled={
                         isLoading || isRedirecting || !form.email.trim() || !form.password.trim()
                       }
@@ -254,11 +254,11 @@ const LoginPage = () => {
                   </div>
 
                   {/* Form Footer with dashboard card footer styling */}
-                  <div className="flex justify-center text-sm text-slate-600 dark:text-slate-300 pt-2 sm:pt-4 lg:pt-6 border-t border-slate-100 dark:border-slate-700/70 px-6 sm:px-8 lg:px-12 pb-4 sm:pb-6 lg:pb-10 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
+                  <div className="flex justify-center text-base sm:text-base text-slate-600 dark:text-slate-400 pt-4 sm:pt-5 border-t border-slate-100 dark:border-slate-700/70 px-6 sm:px-8 lg:px-12 pb-5 sm:pb-7 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20 font-light">
                     Don&apos;t have an account?&nbsp;
                     <Link
                       href="/signup"
-                      className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-500 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
+                      className="font-semibold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
                     >
                       Sign up
                     </Link>

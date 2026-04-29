@@ -1,18 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  FaAward,
-  FaUsers,
-  FaGraduationCap,
-  FaExternalLinkAlt,
-  FaClock,
-  FaStar,
-  FaCalendar,
-} from 'react-icons/fa';
+import { FaAward, FaUsers, FaGraduationCap, FaExternalLinkAlt, FaCalendar } from 'react-icons/fa';
 import Link from 'next/link';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
 import { linkifyText } from '@/src/lib/text-utils';
@@ -188,232 +180,147 @@ export default function CertificationDetail({ certId, initialData }: Props) {
   const { firm } = certification;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-200/10 dark:bg-purple-800/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 space-y-8 sm:space-y-12">
+    <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* SEO JSON-LD */}
         <CertificationJsonLd certification={certification} />
-
         {/* Hero Section */}
-        <div className="text-center space-y-4 sm:space-y-6 px-4 sm:px-0">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Badge
-              variant="secondary"
-              className="text-base sm:text-lg px-4 py-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300"
-            >
-              {firm.name}
-            </Badge>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight px-2">
-            <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-              {certification.name}
-            </span>
-          </h1>
-
-          <p className="text-lg sm:text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed font-light px-2">
-            Master your certification journey with comprehensive training designed to ensure your
-            success. Join thousands of professionals who have advanced their careers.
-          </p>
-
-          <div className="flex items-center justify-center gap-6 text-sm text-slate-600 dark:text-slate-400 mb-8">
-            <div className="flex items-center gap-2">
-              <FaCalendar className="text-green-500" />
-              <span>Updated {formatDate(certification.updated_at)}</span>
-            </div>
-            {firm.website_url && (
-              <a
-                href={firm.website_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+        <section className="certification-hero relative py-8 sm:py-12 mb-6 sm:mb-16 lg:mb-12 text-center">
+          <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+            <div className="flex items-center justify-center gap-3">
+              <Badge
+                variant="secondary"
+                className="text-sm sm:text-base px-4 py-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 font-medium"
               >
-                <FaExternalLinkAlt />
-                <span>Official Website</span>
-              </a>
-            )}
-          </div>
-        </div>
+                {firm.name}
+              </Badge>
+            </div>
 
-        {/* Main Content Card */}
-        <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 mx-4 sm:mx-0">
-          <CardContent className="p-8 sm:p-12">
-            <div className="space-y-8">
-              <div>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
-                    <FaAward className="w-6 h-6 text-violet-600 dark:text-violet-400" />
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
-                    About This Certification
-                  </h3>
-                </div>
-                <div className="prose max-w-none">
-                  <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {linkifyText(certification.description)}
-                  </p>
-                </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+              <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                {certification.name}
+              </span>
+            </h1>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm text-slate-600 dark:text-slate-400">
+              <div className="flex items-center gap-2">
+                <FaCalendar className="text-green-500" />
+                <span>Updated {formatDate(certification.updated_at)}</span>
               </div>
-
               {firm.description && (
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
-                      <FaUsers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
-                      About {firm.name}
-                    </h3>
-                  </div>
-                  <div className="prose max-w-none">
-                    <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-                      {linkifyText(firm.description)}
-                    </p>
-                  </div>
-                </div>
+                <a
+                  href={firm.description}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+                >
+                  <FaExternalLinkAlt />
+                  <span>Official Website</span>
+                </a>
               )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
-          <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
-            <div className="w-16 h-16 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-              <FaGraduationCap className="w-8 h-8 text-violet-600 dark:text-violet-400" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              Expert Training
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-              Comprehensive curriculum designed by industry experts to ensure certification success.
-            </p>
-          </Card>
+        {/* About Certification Section */}
+        <section className="about-section relative py-8 sm:py-12 mb-12 sm:mb-16">
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500">
+              <CardContent className="p-8 sm:p-12">
+                <div className="space-y-2">
+                  <div>
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                        <FaAward className="w-6 h-6 text-violet-600 dark:text-violet-400" />
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
+                        About This Certification
+                      </h2>
+                    </div>
+                    <div className="prose max-w-none">
+                      <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+                        {linkifyText(certification.description)}
+                      </p>
+                    </div>
+                  </div>
 
-          <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-blue-300/60 dark:hover:border-blue-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
-            <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-              <FaClock className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              Flexible Learning
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-              Study at your own pace with adaptive learning technology that adjusts to your
-              progress.
-            </p>
-          </Card>
-
-          <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-indigo-300/60 dark:hover:border-indigo-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
-            <div className="w-16 h-16 bg-linear-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
-              <FaStar className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-              Proven Success
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-              Join thousands of successful certification candidates who achieved their goals with
-              us.
-            </p>
-          </Card>
-        </div>
-
-        {/* Related Certifications */}
-        {certification.related_certifications.length > 0 && (
-          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
-            <CardHeader className="p-8 sm:p-12 pb-6">
-              <CardTitle className="flex items-center gap-3 text-2xl sm:text-3xl">
-                <div className="w-12 h-12 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
-                  <FaGraduationCap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                Related {firm.name} Certifications
-              </CardTitle>
-              <p className="text-slate-600 dark:text-slate-400 text-lg mt-4">
-                Expand your expertise with these related certifications from {firm.name}
-              </p>
-            </CardHeader>
-            <CardContent className="p-8 sm:p-12 pt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {certification.related_certifications.map((relatedCert) => (
-                  <Link
-                    key={relatedCert.cert_id}
-                    href={
-                      certification.firm?.code
-                        ? `/certifications/${certification.firm.code.toLowerCase()}/${createSlug(
-                            relatedCert.name,
-                          )}`
-                        : `/certifications/cert/${relatedCert.cert_id}`
-                    }
-                    className="block group"
-                  >
-                    <Card className="h-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 rounded-2xl">
-                      <CardContent className="p-6">
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-3 line-clamp-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
-                          {relatedCert.name}
-                        </h4>
-                        <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3 text-sm leading-relaxed">
-                          {relatedCert.description}
+                  {firm.description && (
+                    <div className="border-t border-slate-200/60 dark:border-slate-700/60 pt-8">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-12 h-12 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-2xl flex items-center justify-center shadow-lg">
+                          <FaUsers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
+                          About {firm.name}
+                        </h3>
+                      </div>
+                      <div className="prose max-w-none">
+                        <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+                          {linkifyText(firm.description)}
                         </p>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full group-hover:bg-violet-50 dark:group-hover:bg-violet-900/20 group-hover:border-violet-300 dark:group-hover:border-violet-600 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-all"
-                        >
-                          Learn More
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Related Certifications Section */}
+        {certification.related_certifications.length > 0 && (
+          <section className="related-section relative py-8 sm:py-12 mb-12 sm:mb-16">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12 sm:mb-16">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4 leading-tight">
+                  Related {firm.name} Certifications
+                </h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
+                  Expand your expertise with these related certifications from {firm.name}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+
+              <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl overflow-hidden">
+                <CardContent className="p-8 sm:p-12">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    {certification.related_certifications.map((relatedCert) => (
+                      <Link
+                        key={relatedCert.cert_id}
+                        href={
+                          certification.firm?.code
+                            ? `/certifications/${certification.firm.code.toLowerCase()}/${createSlug(
+                                relatedCert.name,
+                              )}`
+                            : `/certifications/cert/${relatedCert.cert_id}`
+                        }
+                        className="block group"
+                      >
+                        <Card className="h-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 rounded-2xl">
+                          <CardContent className="p-6">
+                            <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-3 line-clamp-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                              {relatedCert.name}
+                            </h4>
+                            <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3 text-sm leading-relaxed">
+                              {relatedCert.description}
+                            </p>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="w-full group-hover:bg-violet-50 dark:group-hover:bg-violet-900/20 group-hover:border-violet-300 dark:group-hover:border-violet-600 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-all"
+                            >
+                              Learn More
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
         )}
 
-        {/* Call to Action */}
-        <Card className="bg-linear-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
-          <CardContent className="p-8 sm:p-12 text-center relative">
-            {/* Background decoration */}
-            <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-white/5"></div>
-
-            <div className="relative max-w-4xl mx-auto">
-              <FaAward className="text-6xl mb-6 mx-auto opacity-90" />
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                Ready to Start Your Certification Journey?
-              </h2>
-              <p className="text-xl sm:text-2xl mb-8 sm:mb-10 opacity-90 leading-relaxed max-w-2xl mx-auto">
-                Join thousands of professionals who have advanced their careers with
-                Certestic&apos;s AI-powered certification training platform.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-                <Link href="/signup">
-                  <Button
-                    size="lg"
-                    variant="secondary"
-                    className="w-full sm:w-auto px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 bg-white text-violet-600 hover:bg-violet-50 hover:text-violet-700 hover:scale-105 transform"
-                  >
-                    <FaGraduationCap className="mr-2" />
-                    Get Started
-                  </Button>
-                </Link>
-                <Link href="/certifications">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full sm:w-auto px-8 py-4 text-lg font-semibold rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-violet-600 transition-all duration-200"
-                  >
-                    Browse More Certifications
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

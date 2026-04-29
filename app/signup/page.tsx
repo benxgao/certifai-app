@@ -646,7 +646,7 @@ export default function SignUpPage() {
 
       {/* Notification Bar */}
       <EnhancedNotificationBar
-        message="🚀 Try our platform instantly with demo account - username/password: demo@certestic.com"
+        message="Try our platform instantly with demo account - username/password: demo@certestic.com"
         ctaText=""
         ctaLink="/signin"
         variant="promo"
@@ -847,7 +847,7 @@ export default function SignUpPage() {
 
                     <Button
                       type="submit"
-                      className="w-full rounded-2xl bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-0.5 text-base sm:text-lg relative overflow-hidden group"
+                      className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01] text-base sm:text-base py-3 sm:py-3.5 relative overflow-hidden group"
                       disabled={
                         loading ||
                         !firstName.trim() ||

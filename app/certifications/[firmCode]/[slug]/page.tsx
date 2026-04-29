@@ -117,18 +117,6 @@ export default async function CertificationSlugPage({ params }: Props) {
 
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         <Breadcrumb items={breadcrumbItems} />
-
-        {/* Page Header */}
-        <div className="mb-12 sm:mb-16 max-w-4xl">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-            {certification.name}
-          </h1>
-          <p className="text-lg sm:text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed font-light">
-            {firmCode.toUpperCase()} Certification - Learn about exam requirements, practice
-            questions, and training materials.
-          </p>
-        </div>
-
         <Suspense fallback={<CertificationDetailSkeleton />}>
           <CertificationDetail certId={certification.cert_id.toString()} />
         </Suspense>

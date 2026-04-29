@@ -23,7 +23,11 @@ export default function LandingHeader() {
     if (href.startsWith('/#')) {
       return false; // Anchor links don't match pathname
     }
-    return pathname === href;
+    // Exact match or starts with the href for nested routes (e.g., /certifications/*)
+    if (href === '/') {
+      return pathname === '/';
+    }
+    return pathname === href || pathname.startsWith(href + '/');
   };
 
   return (
@@ -70,15 +74,17 @@ export default function LandingHeader() {
             >
               Sign In
             </Link>
-            <Link href="/signup">
-              <Button
-                variant="default"
-                size="sm"
-                className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200 px-3 md:px-4 lg:px-6"
-              >
-                Start Practicing
-              </Button>
-            </Link>
+            {pathname !== '/signup' && (
+              <Link href="/signup">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200 px-3 md:px-4 lg:px-6"
+                >
+                  Start Practicing
+                </Button>
+              </Link>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -136,16 +142,18 @@ export default function LandingHeader() {
                 >
                   Sign In
                 </Link>
-                <div className="pt-2">
-                  <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
-                    <Button
-                      className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200"
-                      size="sm"
-                    >
-                      Get Started
-                    </Button>
-                  </Link>
-                </div>
+                {pathname !== '/signup' && (
+                  <div className="pt-2">
+                    <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
+                      <Button
+                        className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200"
+                        size="sm"
+                      >
+                        Get Started
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           )}

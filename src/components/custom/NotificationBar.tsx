@@ -209,20 +209,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
         </div>
       </div>
 
-      {/* Subtle animation line for enhanced mode */}
-      {enhanced && (
-        <div
-          className={cn(
-            'absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r opacity-30',
-            variant === 'promo' && 'from-violet-400 via-purple-500 to-violet-400',
-            variant === 'success' && 'from-emerald-400 via-green-500 to-emerald-400',
-            variant === 'warning' && 'from-amber-400 via-yellow-500 to-amber-400',
-            variant === 'info' && 'from-blue-400 via-cyan-500 to-blue-400',
-            variant === 'announcement' && 'from-blue-400 via-cyan-500 to-blue-400',
-            variant === 'beta' && 'from-indigo-400 via-purple-500 to-pink-400',
-          )}
-        />
-      )}
+      {/* Subtle animation line for enhanced mode - removed */}
     </div>
   );
 };

@@ -54,19 +54,24 @@ export default async function CertificationsPage({
       <LandingHeader />
 
       {/* Hero Section with decorative background */}
-      <section className="certifications-hero relative py-16 sm:py-20 lg:py-24 overflow-hidden" role="banner">
+      <section className="certifications-hero relative py-8 sm:py-12 lg:py-16 overflow-hidden" role="banner">
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb items={breadcrumbItems} />
+          <Breadcrumb items={breadcrumbItems} className="mb-8 sm:mb-12" />
 
-          <div className="certifications-hero-content mb-8 sm:mb-12 text-center max-w-4xl mx-auto">
-            <h1 className="certifications-hero-title text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
-              IT Certifications Catalog<br />
-              Simulate Exams by AI
+          <div className="certifications-hero-content text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+              <span>100+ Certifications Available</span>
+            </div>
+
+            <h1 className="certifications-hero-title text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+              <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                IT Certifications Catalog
+              </span>
             </h1>
-            <p className="certifications-hero-description text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light">
-              Explore certification programs from leading technology companies and prepare for IT
-              certification by self exams. Each certification is designed to validate your skills
-              and advance your career with AI-powered exam simulation technology.
+
+            <p className="certifications-hero-description text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
+              Explore certification programs from leading technology companies. Create personalized practice exams with AI-powered simulation and advance your career.
             </p>
           </div>
         </div>

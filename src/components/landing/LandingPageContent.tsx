@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Star } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import PopularCertifications from '@/src/components/landing/PopularCertifications';
 
@@ -11,27 +12,23 @@ export default function LandingPageContent() {
       <LandingHeader />
 
       {/* Hero Section */}
-      <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden" role="banner">
+      <section className="relative py-8 sm:py-12 lg:py-16 overflow-hidden" role="banner">
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Content - Centered */}
-          <div className="text-center max-w-5xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
-              Certification practice that adapts to you
+          <div className="text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
+            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
+              <Star className="w-4 h-4" />
+              <span>Adaptive Learning Powered by AI</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+              <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                Certification practice that adapts to you
+              </span>
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-8 sm:mb-10 leading-relaxed font-light max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
               Practice questions adjust as understanding deepens. The app learns what helps, then builds on it.
-            </p>
-
-            <p className="text-sm sm:text-base lg:text-lg text-slate-500 dark:text-slate-400 mb-10 leading-relaxed font-light max-w-3xl mx-auto">
-              Explore topics in{' '}
-              <Link
-                href="/certifications"
-                className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 underline"
-              >
-                AWS, Azure, GCP, Cisco, and 100+ certification paths
-              </Link>
-              .
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
