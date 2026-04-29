@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'IT Certifications Directory | Browse 100+ AWS, Azure, GCP, Cisco & More Certifications',
   description:
-    'Explore our comprehensive directory of IT certifications from leading tech companies. Find AWS, Azure, Google Cloud, Cisco, CompTIA, VMware, and 100+ more certification programs. Create personalized study plans and simulate exams with AI-powered practice tests.',
+    'Explore our comprehensive directory of IT certifications from leading tech companies. Find AWS Solutions Architect, Azure Administrator, Google Cloud Associate Engineer, CompTIA Security+, Cisco CCNA, VMware certifications and 100+ more programs. Get AI-powered practice exams and personalized preparation paths for each certification.',
   keywords: [
     'IT certifications directory',
     'AWS certifications',

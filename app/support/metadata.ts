@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Support & Help Center | Certestic Customer Support',
   description:
-    'Get help with Certestic platform. Access our help center, FAQs, troubleshooting guides, and customer support for your AI-powered IT certification training journey. Contact our support team today.',
+    'Get comprehensive help with Certestic platform. Access our help center with troubleshooting guides, FAQs, step-by-step tutorials, and feature documentation. Contact our customer support team for technical assistance. Find answers to questions about practice exams, performance tracking, knowledge gap analysis, and platform features.',
   keywords: [
     'Certestic support',
     'help center',

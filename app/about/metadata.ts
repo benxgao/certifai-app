@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title:
     'About Certestic | Our Mission to Revolutionize AI-Powered IT Certification Training',
   description:
-    "Discover Certestic's story and mission. Learn how we're using adaptive AI technology to help IT professionals pass certifications faster. Meet our team, explore our values, and understand our approach to personalized exam preparation.",
+    "Discover Certestic's story and mission. We're transforming IT certification training through artificial intelligence and machine learning. Learn how adaptive technology identifies knowledge gaps, personalizes learning paths, and helps IT professionals pass certifications faster and more efficiently. Our AI-powered platform combines learning science with practical exam preparation.",
   keywords: [
     'about Certestic',
     'company mission',

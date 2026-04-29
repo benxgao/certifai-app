@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Blog | IT Certification Tips, Study Strategies & Career Advice | Certestic',
   description:
-    'Discover expert insights, study strategies, and success tips for passing IT certifications faster. Read our blog for AWS, Azure, GCP, CompTIA, Cisco, and other certification preparation guides, learning psychology articles, and career advancement advice.',
+    'Expert insights and proven strategies for passing IT certifications faster. Read articles on AWS, Azure, GCP, CompTIA, and Cisco certification preparation. Learn study techniques, test-taking strategies, knowledge retention methods, certification exam tips, and career advancement advice from certified professionals and learning experts.',
   keywords: [
     'IT certification blog',
     'certification study tips',
@@ -69,26 +69,6 @@ export const metadata: Metadata = {
       {
         url: 'https://certestic.com/og-blog.png',
         alt: 'Certestic Blog - IT Certification Insights',
-      },
-    ],
-  },
-  alternates: {
-    canonical: 'https://certestic.com/blog',
-  },
-  category: 'Education',
-};
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog | Certestic - IT Certification Training Insights',
-    description:
-      'Expert insights and strategies for IT certification success with AI-powered learning.',
-    creator: '@Certestic',
-    site: '@Certestic',
-    images: [
-      {
-        url: '/favicon.ico',
-        alt: 'Certestic Blog - IT Certification Training Insights',
       },
     ],
   },

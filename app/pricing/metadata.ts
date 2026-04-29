@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 const description =
-  'Join our free beta program and get unlimited access to AI-powered IT certification training. Complete platform access while we develop features with your feedback. No credit card required.';
+  'Join our free beta program and get unlimited access to AI-powered IT certification training. Complete platform access with 300 free credit coins to create custom practice exams. No credit card required. Experience adaptive learning, knowledge gap analysis, personalized study plans, and realistic exam simulation for free.';
 
 const keywords = [
   'Certestic beta program',

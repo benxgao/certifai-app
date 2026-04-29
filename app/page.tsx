@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import EmailActionHandler from '@/src/components/auth/EmailActionHandler';
 import LandingPageContent from '@/src/components/landing/LandingPageContent';
 import PageLoader from '@/src/components/custom/PageLoader';
+import { expandedFaqSchema } from '@/src/lib/schemas/expandedFaqSchema';
+import { certificationTrainingHowToSchema, certificationTrainingServiceSchema, learningResourceSchema } from '@/src/lib/schemas/aiVisibilitySchema';
 
 // Structured Data for SEO
 const organizationSchema = {
@@ -12,9 +14,9 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Certestic',
   description:
-    'AI-powered IT certification training platform for AWS, Azure, GCP, CompTIA, and 100+ other certifications. Create personalized practice exams with adaptive AI technology to accelerate your IT career.',
+    'AI-powered IT certification training platform for AWS, Azure, GCP, CompTIA, Cisco, and 100+ other certifications. Create personalized practice exams with adaptive AI technology to accelerate your IT career.',
   url: 'https://certestic.com',
-  logo: 'https://certestic.com/favicon.ico',
+  logo: 'https://certestic.com/og-image.png',
   foundingDate: '2025',
   founders: [
     {
@@ -26,13 +28,20 @@ const organizationSchema = {
   sameAs: [
     'https://twitter.com/Certestic',
     'https://linkedin.com/company/certestic',
-    'https://github.com/certestic',
   ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    contactType: 'customer service',
-    email: 'support@certestic.com',
-  },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'support@certestic.com',
+      availableLanguage: ['en'],
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'technical support',
+      url: 'https://certestic.com/support',
+    },
+  ],
 };
 
 const softwareApplicationSchema = {
@@ -40,14 +49,16 @@ const softwareApplicationSchema = {
   '@type': 'SoftwareApplication',
   name: 'Certestic',
   description:
-    'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 100+ IT certifications. Adaptive learning technology creates personalized study plans with realistic exam simulation to help IT professionals pass certifications faster.',
+    'AI-powered practice exams for AWS, Azure, GCP, CompTIA, and 100+ IT certifications. Adaptive learning technology analyzes your knowledge gaps and creates personalized study plans with realistic exam simulation to help IT professionals pass certifications faster.',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web Browser',
+  url: 'https://certestic.com',
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    description: 'Comprehensive IT certification practice exams and training',
+    availability: 'https://schema.org/InStock',
+    description: 'Comprehensive AI-powered IT certification practice exams and training. 300 free credits for exam creation. Free beta access.',
   },
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -56,15 +67,20 @@ const softwareApplicationSchema = {
     bestRating: '5',
   },
   featureList: [
-    'AI-powered practice exams for AWS, Azure, GCP certifications',
-    'Adaptive learning technology that personalizes study plans',
+    'AI-powered practice exams for 100+ IT certifications',
+    'AWS, Azure, Google Cloud certification preparation',
+    'CompTIA, Cisco, VMware certification support',
+    'Adaptive learning technology personalizes study plans',
+    'Intelligence identifies and analyzes knowledge gaps',
     'Realistic exam simulation with timed sessions',
-    'Comprehensive analytics for AWS, Azure, GCP progress tracking',
-    'Practice questions for CompTIA, Cisco, VMware certifications',
+    'Comprehensive progress analytics and reporting',
+    'Custom AI-generated practice questions by topic',
     'Personalized study recommendations based on performance',
-    'Real-time insights on IT certification knowledge gaps',
-    'Custom exam creation for specific technology domains',
-    'Professional exam interface designed for IT certifications',
+    'Real-time insights on certification readiness',
+    'Professional exam interface and user experience',
+    'Free 300 credit coins for exam generation',
+    'Cross-device synchronization of progress',
+    'Detailed question explanations and learning resources',
   ],
 };
 
@@ -100,6 +116,22 @@ function MainPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(expandedFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(certificationTrainingHowToSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(certificationTrainingServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(learningResourceSchema) }}
       />
       <script
         type="application/ld+json"

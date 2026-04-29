@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://certestic.com'),
   title: 'Certestic | AI-Powered IT Certification Training for AWS, Azure, GCP & More | Free Beta',
   description:
-    'Master AWS, Azure, GCP, and 100+ IT certifications with AI-powered adaptive practice exams. Get personalized study plans, identify knowledge gaps, and pass certifications faster with realistic exam simulations. Free beta access available now.',
+    'Master AWS, Azure, GCP, and 100+ IT certifications with AI-powered adaptive practice exams and intelligent knowledge gap analysis. Certestic uses machine learning to personalize your study experience, identify weak areas, create smart study plans, and simulate real certification exams. Get started free with 300 credit coins. Perfect for cloud architects, security professionals, and IT career advancement. Pass your certification faster with AI-driven learning.',
   keywords: [
     'Certestic',
     'AWS certification practice exams',

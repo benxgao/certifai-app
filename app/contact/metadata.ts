@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contact Certestic | Expert Support Team',
     description:
-      'Get in touch with our support team. We're here to help with technical issues, feedback, or questions about our platform.',
+      'Get in touch with our support team. We\'re here to help with technical issues, feedback, or questions about our platform.',
     creator: '@Certestic',
     site: '@Certestic',
     images: [

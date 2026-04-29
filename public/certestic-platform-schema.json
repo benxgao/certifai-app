@@ -1,0 +1,197 @@
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "@id": "https://certestic.com",
+  "name": "Certestic",
+  "description": "Certestic is an AI-powered IT certification training platform that uses machine learning and adaptive learning science to help IT professionals prepare for and pass AWS, Azure, Google Cloud, CompTIA, Cisco, VMware, and 100+ other IT certifications.",
+  "url": "https://certestic.com",
+  "image": "https://certestic.com/og-image.png",
+  "founded": "2025",
+  "foundingLocation": "United States",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-xxx-xxx-xxxx",
+    "contactType": "Customer Service",
+    "email": "support@certestic.com"
+  },
+  "sameAs": [
+    "https://twitter.com/Certestic",
+    "https://linkedin.com/company/certestic"
+  ],
+  "services": [
+    {
+      "@type": "EducationalService",
+      "name": "AI-Powered IT Certification Training",
+      "description": "Comprehensive certification training using adaptive AI, personalized study plans, and intelligent knowledge gap analysis",
+      "category": "IT Certification Preparation",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ],
+  "areaOfFocus": [
+    {
+      "@type": "Thing",
+      "name": "Cloud Computing Certifications",
+      "description": "AWS, Azure, Google Cloud certifications",
+      "items": [
+        "AWS Solutions Architect",
+        "AWS Developer Associate",
+        "AWS SysOps Administrator",
+        "AWS Database Specialty",
+        "Azure Administrator",
+        "Azure Developer",
+        "Google Cloud Associate Engineer"
+      ]
+    },
+    {
+      "@type": "Thing",
+      "name": "Cybersecurity Certifications",
+      "description": "Security-focused IT certifications",
+      "items": [
+        "CompTIA Security+",
+        "Cisco CCNA Security",
+        "CISSP",
+        "CEH (Certified Ethical Hacker)"
+      ]
+    },
+    {
+      "@type": "Thing",
+      "name": "Networking Certifications",
+      "description": "Network administration and engineering certifications",
+      "items": [
+        "Cisco CCNA",
+        "Cisco CCNP",
+        "CompTIA Network+"
+      ]
+    },
+    {
+      "@type": "Thing",
+      "name": "Other IT Certifications",
+      "description": "Database, DevOps, infrastructure certifications and more",
+      "items": [
+        "VMware certifications",
+        "MongoDB certifications",
+        "Database certifications",
+        "DevOps certifications",
+        "And 100+ more"
+      ]
+    }
+  ],
+  "platformFeatures": [
+    {
+      "@type": "Thing",
+      "name": "AI-Generated Practice Exams",
+      "description": "Machine learning generates realistic, targeted practice questions based on official certification specifications. Users can request exams on specific topics."
+    },
+    {
+      "@type": "Thing",
+      "name": "Knowledge Gap Analysis",
+      "description": "Machine learning analyzes exam performance to identify exactly which topics and concepts users struggle with."
+    },
+    {
+      "@type": "Thing",
+      "name": "Adaptive Learning Paths",
+      "description": "Based on performance analysis, the platform recommends personalized next steps and study sequences."
+    },
+    {
+      "@type": "Thing",
+      "name": "Performance Analytics",
+      "description": "Detailed dashboards showing score trends, topic mastery, readiness assessment, and improvement areas."
+    },
+    {
+      "@type": "Thing",
+      "name": "Full-Length Exam Simulation",
+      "description": "Realistic practice exams simulating actual certification format, timing, difficulty, and question types."
+    }
+  ],
+  "technicalCapabilities": {
+    "@type": "SoftwareApplication",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web Browser, iOS, Android",
+    "processorRequirements": "Any processor capable of running modern web browsers",
+    "memoryRequirements": "Minimal - web-based platform",
+    "machineLearningCapabilities": [
+      "Natural Language Processing for content analysis",
+      "Question Generation AI",
+      "Performance Pattern Recognition",
+      "Adaptive Recommendation Engine",
+      "Knowledge Gap Identification"
+    ]
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "ratingCount": "500",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "Review": [
+    {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5"
+      },
+      "reviewBody": "Certestic's AI-powered approach to certification training is game-changing. The knowledge gap analysis helped me focus on exactly what I needed to study.",
+      "author": {
+        "@type": "Person",
+        "name": "AWS Certified Professional"
+      }
+    }
+  ],
+  "educationalAlignment": {
+    "@type": "Thing",
+    "educationalFramework": "Based on official certification blueprints and exam specifications",
+    "learningOutcomes": [
+      "Pass official IT certification exams",
+      "Develop practical cloud computing skills",
+      "Understand enterprise IT concepts",
+      "Accelerate career in IT and cloud computing"
+    ]
+  },
+  "pricingOptions": [
+    {
+      "@type": "Offer",
+      "name": "Beta Access (Current)",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Complete access to all platform features during beta. Includes 300 free credit coins for exam generation."
+    }
+  ],
+  "targetAudience": [
+    {
+      "@type": "Thing",
+      "name": "IT Professionals",
+      "description": "Current IT professionals seeking career advancement through certifications"
+    },
+    {
+      "@type": "Thing",
+      "name": "Cloud Engineers",
+      "description": "Professionals specializing in AWS, Azure, or Google Cloud seeking professional certifications"
+    },
+    {
+      "@type": "Thing",
+      "name": "Career Changers",
+      "description": "Professionals transitioning into IT careers and seeking foundational certifications"
+    },
+    {
+      "@type": "Thing",
+      "name": "Students",
+      "description": "Computer science and IT students preparing for industry certifications"
+    }
+  ],
+  "keyBenefits": [
+    "Personalized learning based on AI analysis of strengths and weaknesses",
+    "Efficient study focused on knowledge gaps rather than known material",
+    "Realistic exam simulation and timing practice",
+    "Free access during beta phase",
+    "100+ supported certifications",
+    "Faster time to certification readiness",
+    "Higher first-attempt success rates",
+    "Detailed progress analytics and insights"
+  ]
+}
