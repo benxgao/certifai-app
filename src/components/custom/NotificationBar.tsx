@@ -163,7 +163,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
           <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
             {/* Icon */}
             {showIcon && IconComponent && (
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <IconComponent className={cn('h-4 w-4 sm:h-5 sm:w-5', config.iconColor)} />
               </div>
             )}
@@ -181,7 +181,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
                   'text-sm sm:text-base font-semibold underline decoration-2 underline-offset-2',
                   'transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2',
                   'focus-visible:ring-offset-2 focus-visible:ring-violet-500/20 rounded-sm',
-                  'flex-shrink-0',
+                  'shrink-0',
                   config.ctaColor,
                 )}
               >
@@ -198,7 +198,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
                 'ml-3 sm:ml-4 p-1.5 rounded-lg transition-all duration-200',
                 'hover:bg-black/5 dark:hover:bg-white/5 hover:scale-110',
                 'focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-violet-500/20',
-                'text-current opacity-70 hover:opacity-100 flex-shrink-0',
+                'text-current opacity-70 hover:opacity-100 shrink-0',
                 enhanced && 'backdrop-blur-sm shadow-sm hover:shadow-md',
               )}
               aria-label="Dismiss notification"

@@ -221,7 +221,7 @@ export default function EmailVerification() {
               <div className="bg-green-50 border border-green-200 text-green-800 text-sm p-4 rounded-lg">
                 <div className="flex items-center">
                   <svg
-                    className="w-4 h-4 mr-2 flex-shrink-0"
+                    className="w-4 h-4 mr-2 shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >

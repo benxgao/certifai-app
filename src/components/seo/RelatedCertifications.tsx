@@ -195,7 +195,7 @@ export default function RelatedCertifications({
                       </p>
                     </div>
                     <svg
-                      className="w-5 h-5 text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-200 ml-2 flex-shrink-0"
+                      className="w-5 h-5 text-slate-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-200 ml-2 shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

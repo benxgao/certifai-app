@@ -150,7 +150,7 @@ export function UserCertificationCardSkeleton({
                     className="bg-slate-50 dark:bg-slate-800/80 rounded-lg px-5 py-4 border border-slate-100 dark:border-slate-700/50"
                   >
                     <div className="flex items-center space-x-4">
-                      <Skeleton className="w-10 h-10 rounded-lg flex-shrink-0" />
+                      <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
                       <div className="flex-1 space-y-2 min-w-0">
                         <Skeleton className="h-4 w-16" />
                         <Skeleton className="h-5 w-12" />

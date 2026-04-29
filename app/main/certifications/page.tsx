@@ -135,7 +135,7 @@ export default function CertificationsPage() {
                     with expert-crafted content.
                   </p>
                 </div>
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <span className="inline-flex items-center rounded-xl bg-linear-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 px-4 py-2.5 text-sm font-medium text-violet-700 dark:text-violet-400 border border-violet-200/60 dark:border-violet-700/60 shadow-sm backdrop-blur-sm">
                     <FaAward className="w-4 h-4 mr-2" />
                     Explore & Register

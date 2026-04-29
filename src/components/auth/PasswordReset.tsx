@@ -289,7 +289,7 @@ export default function PasswordReset() {
                   <div className="bg-red-50 text-red-800 text-sm p-3 rounded-xl border border-red-200">
                     <div className="flex items-start">
                       <svg
-                        className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5"
+                        className="w-4 h-4 mr-2 shrink-0 mt-0.5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -385,7 +385,7 @@ export default function PasswordReset() {
               <div className="bg-linear-to-r from-blue-50 to-indigo-50 text-blue-800 text-sm p-5 rounded-xl border border-blue-200/50 shadow-sm">
                 <div className="flex items-center justify-center">
                   <svg
-                    className="w-5 h-5 mr-3 flex-shrink-0"
+                    className="w-5 h-5 mr-3 shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >

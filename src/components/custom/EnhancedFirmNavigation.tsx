@@ -100,7 +100,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
       >
         <CardHeader
           className={cn(
-            'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm flex-shrink-0',
+            'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm shrink-0',
             isCompact ? 'p-3' : 'p-6',
           )}
         >
@@ -191,7 +191,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
         {/* Left Panel - Compact Firm Navigation */}
         <div className="lg:col-span-1">
           <Card className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg h-fit max-h-[600px] flex flex-col">
-            <CardHeader className="pb-3 border-b border-slate-100/60 dark:border-slate-700/60 flex-shrink-0">
+            <CardHeader className="pb-3 border-b border-slate-100/60 dark:border-slate-700/60 shrink-0">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   Providers

@@ -229,7 +229,7 @@ export default function CertificationsOverviewClient({
                       >
                         <div className="h-full p-6 border border-slate-200/60 dark:border-slate-700/60 rounded-lg bg-white/90 dark:bg-slate-800/90 hover:border-slate-300/60 dark:hover:border-slate-600/60 hover:shadow-md dark:hover:shadow-slate-900/20 transition-all duration-300 cursor-pointer flex flex-col">
                           <div className="flex items-start gap-3 mb-4">
-                            <FaAward className="text-slate-400 dark:text-slate-500 mt-1 flex-shrink-0" />
+                            <FaAward className="text-slate-400 dark:text-slate-500 mt-1 shrink-0" />
                             <h4 className="cert-card-title text-base font-semibold text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100 line-clamp-3 leading-tight min-h-[4.5rem] flex items-start transition-colors duration-200">
                               {cert.name}
                             </h4>

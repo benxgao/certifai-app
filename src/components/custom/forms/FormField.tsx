@@ -82,7 +82,7 @@ export const FormField: React.FC<FormFieldProps> = ({
       {error && (
         <p className="text-sm text-red-600 dark:text-red-400 flex items-start">
           <svg
-            className="w-4 h-4 mr-1 flex-shrink-0 mt-0.5"
+            className="w-4 h-4 mr-1 shrink-0 mt-0.5"
             fill="currentColor"
             viewBox="0 0 20 20"
           >

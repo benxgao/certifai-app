@@ -83,7 +83,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         />
       ) : (
         <span className="flex items-center justify-center space-x-2">
-          {icon && <span className="flex-shrink-0">{icon}</span>}
+          {icon && <span className="shrink-0">{icon}</span>}
           <span>{children}</span>
         </span>
       )}

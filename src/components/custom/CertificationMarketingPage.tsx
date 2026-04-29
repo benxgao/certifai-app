@@ -356,10 +356,6 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                       />
                     </svg>
                   </div>
-                  <div className="text-3xl sm:text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
-                    {certification.pass_score}%
-                  </div>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm">Required Pass Score</p>
                 </div>
                 <div>
                   <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-4 mx-auto shadow-lg">
@@ -415,37 +411,37 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       AI-powered practice questions tailored to {certification.name} exam format
                     </span>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Adaptive learning system that adjusts to your knowledge gaps
                     </span>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Personalized study recommendations for optimal learning efficiency
                     </span>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Real-world scenarios and hands-on practice exercises
                     </span>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Comprehensive performance analytics and progress tracking
                     </span>
                   </div>
                   <div className="flex items-start gap-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 mt-1 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Expert-level insights and industry best practices
                     </span>
@@ -484,7 +480,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   </h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3 p-4 bg-violet-50 dark:bg-violet-900/20 rounded-xl border border-violet-200 dark:border-violet-800">
-                      <div className="w-8 h-8 bg-violet-100 dark:bg-violet-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-violet-100 dark:bg-violet-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-violet-600 dark:text-violet-400"
                           fill="currentColor"
@@ -509,7 +505,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                     </div>
 
                     <div className="flex items-start gap-3 p-4 bg-violet-50 dark:bg-violet-900/20 rounded-xl border border-violet-200 dark:border-violet-800">
-                      <div className="w-8 h-8 bg-violet-100 dark:bg-violet-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-violet-100 dark:bg-violet-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-violet-600 dark:text-violet-400"
                           fill="currentColor"
@@ -540,7 +536,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   </h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-blue-600 dark:text-blue-400"
                           fill="currentColor"
@@ -565,7 +561,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                     </div>
 
                     <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-blue-600 dark:text-blue-400"
                           fill="currentColor"
@@ -654,25 +650,25 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       40% more efficient than traditional study methods
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Personalized learning path based on your progress
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Real-time feedback and performance analytics
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-green-600 dark:text-green-400 flex-shrink-0" />
+                    <FaCheckCircle className="text-green-600 dark:text-green-400 shrink-0" />
                     <span className="text-slate-700 dark:text-slate-300">
                       Higher pass rates with targeted practice
                     </span>
@@ -700,7 +696,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   </h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl">
-                      <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
                           fill="currentColor"
@@ -730,7 +726,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                     </div>
 
                     <div className="flex items-start gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl">
-                      <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-emerald-600 dark:text-emerald-400"
                           fill="currentColor"
@@ -761,7 +757,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                   </h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-blue-600 dark:text-blue-400"
                           fill="currentColor"
@@ -786,7 +782,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                     </div>
 
                     <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-800 rounded-lg flex items-center justify-center shrink-0">
                         <svg
                           className="w-4 h-4 text-blue-600 dark:text-blue-400"
                           fill="currentColor"

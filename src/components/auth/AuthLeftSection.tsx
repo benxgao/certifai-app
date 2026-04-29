@@ -193,7 +193,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
 
                     <div className="relative z-10 flex items-center space-x-3 w-full">
                       <div
-                        className={`flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 bg-linear-to-br ${feature.bgColor} rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}
+                        className={`shrink-0 w-10 h-10 sm:w-11 sm:h-11 bg-linear-to-br ${feature.bgColor} rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300`}
                       >
                         {renderIcon(feature.icon, 'w-5 h-5 sm:w-6 sm:h-6 text-white')}
                       </div>

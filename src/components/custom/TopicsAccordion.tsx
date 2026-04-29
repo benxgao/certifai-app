@@ -75,7 +75,7 @@ export const TopicsAccordion: React.FC<TopicsAccordionProps> = ({
             <div className="flex items-center space-x-2">
               <Badge
                 variant="secondary"
-                className="bg-violet-100 text-violet-800 dark:bg-violet-900/50 dark:text-violet-200 text-xs px-2 py-1 flex-shrink-0"
+                className="bg-violet-100 text-violet-800 dark:bg-violet-900/50 dark:text-violet-200 text-xs px-2 py-1 shrink-0"
               >
                 {topic.question_count}
               </Badge>

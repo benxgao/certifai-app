@@ -122,7 +122,7 @@ function CertificationSelector({
             allCertifications.map((cert) => (
               <SelectItem key={cert.cert_id} value={cert.cert_id.toString()}>
                 <div className="flex items-center gap-2 py-1">
-                  <Award className="h-4 w-4 text-primary flex-shrink-0" />
+                  <Award className="h-4 w-4 text-primary shrink-0" />
                   <span className="font-medium text-foreground truncate">{cert.name}</span>
                 </div>
               </SelectItem>

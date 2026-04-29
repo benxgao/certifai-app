@@ -30,7 +30,7 @@ export const RateLimitDisplay: React.FC<RateLimitDisplayProps> = ({
     >
       <CardContent className="p-4">
         <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0 mt-0.5">
+          <div className="shrink-0 mt-0.5">
             {isAtLimit ? (
               <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
             ) : (

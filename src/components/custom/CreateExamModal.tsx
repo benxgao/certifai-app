@@ -64,7 +64,7 @@ export function CreateExamModal({
         !hasActiveSubscription && (
           <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
               <div>
                 <p className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-1">
                   Active Subscription Required

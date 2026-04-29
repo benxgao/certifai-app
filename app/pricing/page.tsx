@@ -106,37 +106,37 @@ export default function PricingPage() {
 
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 lg:mb-8">
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     Unlimited AI-generated practice exams
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     All IT certification tracks
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     Performance analytics & insights
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
                     Personalized study recommendations
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                     Email support & feedback
                   </span>
                 </div>
                 <div className="flex items-start gap-2 sm:gap-3">
-                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 sm:w-5 h-4 sm:h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-xs sm:text-sm lg:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                     Direct developer feedback
                   </span>

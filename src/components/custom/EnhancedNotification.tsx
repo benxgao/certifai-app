@@ -83,7 +83,7 @@ export const EnhancedNotification: React.FC<EnhancedNotificationProps> = ({
       <CardContent className="p-4">
         <div className="flex items-start space-x-3">
           {showIcon && (
-            <div className="flex-shrink-0 mt-0.5">
+            <div className="shrink-0 mt-0.5">
               <IconComponent className={`w-5 h-5 ${iconColor}`} />
             </div>
           )}

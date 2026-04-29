@@ -75,7 +75,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
               type: 'certification',
             }}
           >
-            <CardHeader className="bg-white dark:bg-slate-800 flex-shrink-0 p-6">
+            <CardHeader className="bg-white dark:bg-slate-800 shrink-0 p-6">
               <div className="mb-4">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2 leading-tight mb-3">
@@ -118,7 +118,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
                   onClick={() => (isRegistered ? handleViewExams(cert.cert_id) : onRegister(cert))}
                   disabled={isCurrentlyRegistering || isRegistering || isCurrentlyNavigating}
                   data-testid={isRegistered ? 'view-exams-button' : 'register-cert-button'}
-                  className={`w-full rounded-xl py-3 font-semibold transition-all duration-200 flex-shrink-0 ${
+                  className={`w-full rounded-xl py-3 font-semibold transition-all duration-200 shrink-0 ${
                     isRegistered
                       ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-200 dark:hover:shadow-emerald-900/20'
                       : 'bg-violet-600 hover:bg-violet-700 text-white shadow-lg hover:shadow-violet-200 dark:hover:shadow-primary-900/20'

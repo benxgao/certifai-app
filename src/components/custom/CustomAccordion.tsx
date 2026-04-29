@@ -117,7 +117,7 @@ export const CustomAccordion: React.FC<CustomAccordionProps> = ({
               )}
             >
               <div className="flex items-center space-x-3 w-full pr-2">
-                {item.icon && <div className="flex-shrink-0">{item.icon}</div>}
+                {item.icon && <div className="shrink-0">{item.icon}</div>}
                 <div className="flex-1 text-left">{item.trigger}</div>
               </div>
             </AccordionTrigger>

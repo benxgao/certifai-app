@@ -123,7 +123,7 @@ export default function StudyGuidesPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                         Adaptive Learning Paths
@@ -135,7 +135,7 @@ export default function StudyGuidesPage() {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                         Interactive Content
@@ -147,7 +147,7 @@ export default function StudyGuidesPage() {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                         Smart Recommendations
@@ -161,7 +161,7 @@ export default function StudyGuidesPage() {
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                         Knowledge Gap Analysis
@@ -173,7 +173,7 @@ export default function StudyGuidesPage() {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                         Certification-Specific Guides
@@ -185,7 +185,7 @@ export default function StudyGuidesPage() {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <CheckCircle className="h-6 w-6 text-green-500 mt-1 shrink-0" />
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-slate-100">
                         Mobile-Friendly

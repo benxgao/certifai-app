@@ -518,7 +518,7 @@ export default function SignUpPage() {
                     <div className="bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800/50 shadow-sm">
                       <div className="flex items-start space-x-3">
                         <svg
-                          className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0"
+                          className="w-6 h-6 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

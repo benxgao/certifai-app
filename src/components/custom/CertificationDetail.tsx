@@ -359,12 +359,6 @@ export default function CertificationDetail({ certId, initialData }: Props) {
                         <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-3 text-sm leading-relaxed">
                           {relatedCert.description}
                         </p>
-                        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-4">
-                          <span>Pass Score: {relatedCert.pass_score}%</span>
-                          <span>
-                            {relatedCert.min_quiz_counts}-{relatedCert.max_quiz_counts} Questions
-                          </span>
-                        </div>
                         <Button
                           variant="outline"
                           size="sm"

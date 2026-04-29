@@ -24,7 +24,7 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
               className="text-slate-400 hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400 transition-colors"
             >
               <svg
-                className="h-5 w-5 flex-shrink-0"
+                className="h-5 w-5 shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -45,7 +45,7 @@ export default function Breadcrumbs({ items, className = '' }: BreadcrumbsProps)
           <li key={item.name}>
             <div className="flex items-center">
               <svg
-                className="h-5 w-5 flex-shrink-0 text-slate-300 dark:text-slate-600"
+                className="h-5 w-5 shrink-0 text-slate-300 dark:text-slate-600"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"

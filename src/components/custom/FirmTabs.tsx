@@ -76,7 +76,7 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
         key={cert.cert_id}
         className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-600 hover:shadow-lg transition-all duration-200 rounded-2xl overflow-hidden group flex flex-col h-full"
       >
-        <CardHeader className="bg-white dark:bg-slate-800 flex-shrink-0 p-6">
+        <CardHeader className="bg-white dark:bg-slate-800 shrink-0 p-6">
           <div className="mb-4">
             <div className="flex-1 min-w-0">
               <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors line-clamp-2 leading-tight mb-3">
@@ -237,7 +237,7 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
             <TabsContent key={firm.code} value={firm.code} className="mt-6">
               <div className="mb-6 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center">
+                  <div className="shrink-0 w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center">
                     <FaBuilding className="w-6 h-6 text-violet-600 dark:text-violet-400" />
                   </div>
                   <div className="flex-1 min-w-0">

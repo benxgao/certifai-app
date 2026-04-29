@@ -255,20 +255,20 @@ export default function AboutPage() {
                       </p>
                       <div className="space-y-4">
                         <div className="flex items-start space-x-3">
-                          <Zap className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 flex-shrink-0" />
+                          <Zap className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 shrink-0" />
                           <span className="text-slate-700 dark:text-slate-200">
                             <strong>Adaptive Intelligence:</strong> AI that learns from your
                             performance
                           </span>
                         </div>
                         <div className="flex items-start space-x-3">
-                          <BookOpen className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 flex-shrink-0" />
+                          <BookOpen className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 shrink-0" />
                           <span className="text-slate-700 dark:text-slate-200">
                             <strong>Real Experience:</strong> Content based on actual certifications
                           </span>
                         </div>
                         <div className="flex items-start space-x-3">
-                          <Target className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 flex-shrink-0" />
+                          <Target className="h-5 w-5 text-violet-600 dark:text-violet-400 mt-0.5 shrink-0" />
                           <span className="text-slate-700 dark:text-slate-200">
                             <strong>Smart Focus:</strong> Concentrate time on what you need to
                             master
@@ -290,20 +290,20 @@ export default function AboutPage() {
                       </p>
                       <div className="space-y-4">
                         <div className="flex items-start space-x-3">
-                          <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                          <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                           <span className="text-slate-700 dark:text-slate-200">
                             <strong>Global Access:</strong> Available to IT professionals everywhere
                           </span>
                         </div>
                         <div className="flex items-start space-x-3">
-                          <Brain className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                          <Brain className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                           <span className="text-slate-700 dark:text-slate-200">
                             <strong>Continuous Learning:</strong> Technology that evolves with the
                             field
                           </span>
                         </div>
                         <div className="flex items-start space-x-3">
-                          <Rocket className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                          <Rocket className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                           <span className="text-slate-700 dark:text-slate-200">
                             <strong>Career Growth:</strong> Tools that help professionals advance
                           </span>
@@ -348,7 +348,7 @@ export default function AboutPage() {
                         <div className="space-y-2">
                           {value.benefits.map((benefit, idx) => (
                             <div key={idx} className="flex items-center space-x-3">
-                              <div className="w-1.5 h-1.5 bg-violet-600 dark:bg-violet-400 rounded-full flex-shrink-0"></div>
+                              <div className="w-1.5 h-1.5 bg-violet-600 dark:bg-violet-400 rounded-full shrink-0"></div>
                               <span className="text-sm text-slate-600 dark:text-slate-400">
                                 {benefit}
                               </span>
@@ -406,7 +406,7 @@ export default function AboutPage() {
                             </div>
                           </div>
                         </div>
-                        <div className="flex-shrink-0 z-10">
+                        <div className="shrink-0 z-10">
                           <div className="h-4 w-4 rounded-full bg-violet-600 dark:bg-linear-to-r dark:from-violet-600 dark:to-blue-600 border-4 border-white dark:border-slate-900 shadow-md"></div>
                         </div>
                         <div className="flex-1"></div>

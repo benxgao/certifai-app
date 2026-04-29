@@ -49,7 +49,7 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
                 <Skeleton className="h-6 sm:h-8 w-full max-w-64" />
                 <Skeleton className="h-4 w-full max-w-80 sm:max-w-96" />
               </div>
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <Skeleton className="h-10 w-full sm:w-32" />
               </div>
             </div>
@@ -70,7 +70,7 @@ export const PageSkeleton: React.FC<PageSkeletonProps> = ({
                     <Skeleton className="h-6 w-full max-w-48" />
                     <Skeleton className="h-4 w-full" />
                   </div>
-                  <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
+                  <Skeleton className="h-8 w-8 rounded-full shrink-0" />
                 </div>
               </div>
 

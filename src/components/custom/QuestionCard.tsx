@@ -127,10 +127,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                       checked={isSelected}
                       onCheckedChange={() => onOptionChange(question.quiz_question_id, option_id)}
                       disabled={submittedAt !== null || isAnswering || isSubmittingExamFlag}
-                      className="flex-shrink-0"
+                      className="shrink-0"
                     />
                     <div
-                      className={`w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 flex items-center justify-center text-sm sm:text-base lg:text-lg font-bold flex-shrink-0 rounded-xl shadow-md ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 flex items-center justify-center text-sm sm:text-base lg:text-lg font-bold shrink-0 rounded-xl shadow-md ${
                         showCorrectAnswer
                           ? 'text-green-900 dark:text-green-100 bg-linear-to-br from-green-100 via-green-50 to-emerald-100 dark:from-green-800/40 dark:via-green-700/30 dark:to-emerald-800/40 border border-green-300/60 dark:border-green-500/40'
                           : showIncorrectSelection
@@ -180,7 +180,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 
                   {/* Desktop indicators */}
                   {submittedAt !== null && (
-                    <div className="hidden sm:flex items-center gap-2 flex-shrink-0">
+                    <div className="hidden sm:flex items-center gap-2 shrink-0">
                       {/* Show checkmark for correct answer */}
                       {isCorrect && (
                         <div className="w-8 h-8 rounded-xl bg-linear-to-br from-green-100 via-green-50 to-emerald-100 border-2 border-green-400/80 dark:bg-linear-to-br dark:from-green-900/50 dark:via-green-800/40 dark:to-emerald-900/50 dark:border-green-500/70 flex items-center justify-center shadow-lg shadow-green-200/40 dark:shadow-green-500/20">
