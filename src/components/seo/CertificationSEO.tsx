@@ -184,7 +184,6 @@ export function generateCertificationSEOMetadata({
 
       // Mobile optimization
       'mobile-web-app-capable': 'yes',
-      'apple-mobile-web-app-capable': 'yes',
       'apple-mobile-web-app-status-bar-style': 'default',
 
       // Social media optimization

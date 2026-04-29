@@ -17,6 +17,7 @@ interface PopularCertification {
 }
 
 const popularCertifications: PopularCertification[] = [
+  // AWS
   {
     name: 'AWS Certified Solutions Architect - Associate',
     slug: 'aws-certified-solutions-architect',
@@ -29,42 +30,7 @@ const popularCertifications: PopularCertification[] = [
     popularityScore: 95,
     keywords: ['AWS', 'cloud architect', 'EC2', 'S3', 'VPC', 'IAM'],
   },
-  {
-    name: 'Microsoft Certified: Azure Administrator Associate',
-    slug: 'microsoft-certified-azure-administrator-associate',
-    firmCode: 'AZURE',
-    firmName: 'Microsoft Azure',
-    description:
-      'Excel in Azure administration with comprehensive practice covering virtual machines, storage, networking, and Active Directory integration.',
-    difficulty: 'Intermediate',
-    avgStudyTime: '6-10 weeks',
-    popularityScore: 88,
-    keywords: ['Azure', 'administrator', 'virtual machines', 'Active Directory'],
-  },
-  {
-    name: 'Google Cloud Professional Cloud Architect',
-    slug: 'google-cloud-professional-cloud-architect',
-    firmCode: 'GCP',
-    firmName: 'Google Cloud Platform',
-    description:
-      'Design scalable GCP solutions with AI-powered practice exams covering Compute Engine, BigQuery, Kubernetes, and cloud-native architectures.',
-    difficulty: 'Advanced',
-    avgStudyTime: '10-14 weeks',
-    popularityScore: 82,
-    keywords: ['Google Cloud', 'GCP', 'cloud architect', 'Kubernetes', 'BigQuery'],
-  },
-  {
-    name: 'CompTIA Security+',
-    slug: 'comptia-security',
-    firmCode: 'COMPTIA',
-    firmName: 'CompTIA',
-    description:
-      'Essential cybersecurity certification covering network security, risk management, cryptography, and incident response for IT security professionals.',
-    difficulty: 'Beginner',
-    avgStudyTime: '4-8 weeks',
-    popularityScore: 90,
-    keywords: ['CompTIA', 'cybersecurity', 'network security', 'risk management'],
-  },
+  // Cisco
   {
     name: 'Cisco Certified Network Associate (CCNA)',
     slug: 'cisco-certified-network-associate-ccna',
@@ -77,23 +43,63 @@ const popularCertifications: PopularCertification[] = [
     popularityScore: 85,
     keywords: ['Cisco', 'CCNA', 'networking', 'routing', 'switching'],
   },
+  // CNCF (Kubernetes)
   {
-    name: 'AWS Certified Developer - Associate',
-    slug: 'aws-certified-developer-associate',
-    firmCode: 'AWS',
-    firmName: 'Amazon Web Services',
+    name: 'Certified Kubernetes Administrator (CKA)',
+    slug: 'certified-kubernetes-administrator',
+    firmCode: 'CNCF',
+    firmName: 'Cloud Native Computing Foundation',
     description:
-      'Practice AWS development with exams covering Lambda, API Gateway, DynamoDB, and DevOps practices for cloud developers.',
+      'Master Kubernetes administration with comprehensive practice exams covering container orchestration, cluster management, security, and troubleshooting for DevOps professionals.',
+    difficulty: 'Advanced',
+    avgStudyTime: '8-12 weeks',
+    popularityScore: 91,
+    keywords: ['Kubernetes', 'CKA', 'container orchestration', 'DevOps', 'cluster management'],
+  },
+  // GCP
+  {
+    name: 'Google Cloud Professional Cloud Architect',
+    slug: 'google-cloud-professional-cloud-architect',
+    firmCode: 'GCP',
+    firmName: 'Google Cloud Platform',
+    description:
+      'Design scalable GCP solutions with AI-powered practice exams covering Compute Engine, BigQuery, Kubernetes, and cloud-native architectures.',
+    difficulty: 'Advanced',
+    avgStudyTime: '10-14 weeks',
+    popularityScore: 82,
+    keywords: ['Google Cloud', 'GCP', 'cloud architect', 'Kubernetes', 'BigQuery'],
+  },
+  // HashiCorp
+  {
+    name: 'HashiCorp Certified: Terraform Associate',
+    slug: 'hashicorp-terraform-associate',
+    firmCode: 'HASHICORP',
+    firmName: 'HashiCorp',
+    description:
+      'Master infrastructure-as-code with comprehensive practice exams covering Terraform fundamentals, resource management, state management, and security for infrastructure specialists.',
     difficulty: 'Intermediate',
-    avgStudyTime: '6-10 weeks',
-    popularityScore: 87,
-    keywords: ['AWS', 'developer', 'Lambda', 'API Gateway', 'DynamoDB'],
+    avgStudyTime: '4-6 weeks',
+    popularityScore: 91,
+    keywords: ['Terraform', 'infrastructure-as-code', 'IaC', 'provisioning', 'automation'],
+  },
+  // Azure Solutions Architect
+  {
+    name: 'Azure Solutions Architect Expert',
+    slug: 'azure-solutions-architect-expert',
+    firmCode: 'AZURE',
+    firmName: 'Microsoft Azure',
+    description:
+      'Design scalable Azure solutions with comprehensive practice exams covering architecture patterns, security, compliance, performance optimization, and cost management for enterprise architects.',
+    difficulty: 'Advanced',
+    avgStudyTime: '8-12 weeks',
+    popularityScore: 94,
+    keywords: ['Azure', 'solutions architect', 'infrastructure', 'design patterns', 'enterprise'],
   },
 ];
 
 export default function PopularCertifications() {
   return (
-    <section className="py-16 sm:py-20 lg:py-24" aria-labelledby="popular-certs-heading">
+    <section className="py-16 sm:py-20 lg:py-24 overflow-hidden" aria-labelledby="popular-certs-heading">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
@@ -103,14 +109,10 @@ export default function PopularCertifications() {
           >
             Available topics
           </h2>
-
-          <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-light">
-            Choose from cloud platforms, security, networking, and 100+ certification paths.
-          </p>
         </div>
 
         {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
           {popularCertifications.map((cert) => (
             <Card
               key={cert.slug}
@@ -152,13 +154,15 @@ export default function PopularCertifications() {
         </div>
 
         {/* View All CTA */}
-        <div className="text-center">
-          <Link href="/certifications">
+        <div className="flex justify-center mt-8 sm:mt-12 lg:mt-16 px-4 sm:px-6 lg:px-8 w-full">
+          <Link href="/certifications" className="w-full sm:w-auto">
             <ActionButton
               onClick={() => {}}
               variant="primary"
               size="lg"
               icon={<FaArrowRight className="h-4 w-4" />}
+              fullWidth={true}
+              className="w-full sm:w-auto"
             >
               Explore All Topics
             </ActionButton>

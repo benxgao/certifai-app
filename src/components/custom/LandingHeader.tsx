@@ -76,7 +76,7 @@ export default function LandingHeader() {
                 size="sm"
                 className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200 px-3 md:px-4 lg:px-6"
               >
-                Begin Learning
+                Start Practicing
               </Button>
             </Link>
           </nav>

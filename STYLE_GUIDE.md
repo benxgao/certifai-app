@@ -88,9 +88,11 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
     <span className="text-sm font-bold text-slate-700 dark:text-slate-300">1</span>
   </div>
 
-  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Feature Title</h3>
+  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight mb-6">
+    Feature Title
+  </h3>
 
-  <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-lg grow">
+  <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400 flex-auto">
     Feature description text.
   </p>
 </div>
@@ -101,21 +103,29 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
 - Rounded corners: `rounded-3xl` (large), `rounded-2xl` (medium)
 - No colored backgrounds for indicators (first item uses violet, others use slate)
 - Padding: `p-8`
-- Grid: `gap-8 md:grid-cols-2` or `md:grid-cols-3`
+- Grid: `gap-8 md:grid-cols-2`
 - Hover: subtle shadow increase, border color shift
-- Typography: headings `text-2xl font-bold`, body `text-lg leading-relaxed`
+- Typography: headings `text-xl font-bold tracking-tight`, body `text-base leading-relaxed`
+- First indicator: `bg-violet-100 dark:bg-violet-900/40`
+- Other indicators: `bg-slate-100 dark:bg-slate-700/40`
 
 ### Certification Card (Landing Page Style)
 
 ```tsx
 <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-2xl overflow-hidden flex flex-col h-full hover:shadow-md transition-colors duration-300">
   <CardContent className="p-8 flex flex-col h-full space-y-6">
-    {/* Simple text, no colored badge */}
+    {/* Provider Name */}
     <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">Provider Name</div>
 
-    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Certification Name</h3>
+    {/* Certification Title - Fixed 3-line height */}
+    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
+      Certification Name
+    </h3>
 
-    <p className="text-base text-slate-600 dark:text-slate-400 flex-auto">Description text.</p>
+    {/* Description */}
+    <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3 flex-auto">
+      Description text.
+    </p>
 
     {/* CTA Button */}
     <ActionButton variant="secondary" size="lg" fullWidth>
@@ -128,8 +138,11 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
 **Key characteristics:**
 
 - No colored badges or provider indicators
-- Simple text for provider name (neutral gray)
-- Grid: `gap-8 md:grid-cols-2 lg:grid-cols-3`
+- Provider name: `text-sm font-semibold` (neutral gray)
+- Title: `text-xl font-bold tracking-tight` with `min-h-[4.5rem]` for fixed 3-line height
+- Description: `text-base leading-relaxed` with `line-clamp-3`
+- Grid: `gap-8 md:grid-cols-2 lg:grid-cols-2` (2 columns on large screens)
+- Button: `ActionButton variant="secondary" size="lg" fullWidth`
 
 ### Step Indicator Badges
 
@@ -171,43 +184,48 @@ space-y-2     /* Between related items */
 ### Headings
 
 ```css
-/* Page/Section Title (H1/H2) */
-text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight
+/* Hero Title (H1) */
+text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 leading-tight
 
-/* Card Title (H3) */
-text-2xl font-bold text-slate-900 dark:text-slate-100
+/* Section Title (H2) */
+text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-50 tracking-tight
 
-/* Smaller Title (H4) */
-text-xl font-bold text-slate-900 dark:text-slate-100
+/* Card/Feature Titles (H3) - Unified across sections */
+text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight
 ```
 
 ### Body Text
 
 ```css
-/* Primary body - featured content */
+/* Hero/Primary body */
 text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-light
 
-/* Secondary body - smaller */
+/* Secondary body text */
 text-sm sm:text-base lg:text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-light
 
-/* Card body text */
+/* Card/Feature body text (Unified across sections) */
 text-base text-slate-600 dark:text-slate-400 leading-relaxed
+
+/* Provider/Meta text */
+text-sm font-semibold text-slate-500 dark:text-slate-400
 ```
 
 ### Key Typography Rules
 
 - Use `font-light` for body (lighter weight, more minimal)
 - Use `font-bold` for headings only
+- Use `font-semibold` for provider/provider names
 - Use `leading-relaxed` for readability
-- Use `tracking-tight` for tighter letter spacing on headings
+- Use `tracking-tight` on all headings
+- **Across all sections**: headings `text-xl`, body `text-base` for consistency
 
 ## Buttons (Landing/Marketing Pages)
 
 ### Primary Button (CTA)
 
 ```tsx
-<Button className="rounded-lg px-8 py-4 text-lg font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700">
-  Begin Learning
+<Button className="rounded-lg px-8 py-4 text-base font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700">
+  Start Practicing
 </Button>
 ```
 
@@ -216,7 +234,7 @@ text-base text-slate-600 dark:text-slate-400 leading-relaxed
 ```tsx
 <Button
   variant="outline"
-  className="rounded-lg px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+  className="rounded-lg px-8 py-4 text-base font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
 >
   Sign In
 </Button>
@@ -234,10 +252,11 @@ text-base text-slate-600 dark:text-slate-400 leading-relaxed
 
 - Border radius: `rounded-lg` (NOT `rounded-xl` or `rounded-3xl`)
 - Padding: `px-8 py-4` for full-size, `px-6 py-3` for medium
-- Font: `font-semibold text-lg` or `font-semibold`
+- Font: `font-semibold text-base` (unified across ALL landing page buttons)
 - States: `transition-colors duration-200` (color only, no scale/translate)
 - Hover shadow: minimal `hover:shadow-sm`
 - Primary color: `bg-violet-600 hover:bg-violet-700`
+- Secondary variant: `bg-white/80 dark:bg-slate-800/80 hover:bg-slate-50/90 dark:hover:bg-slate-700/90`
 
 ## Interactive States
 
@@ -281,45 +300,122 @@ hover:shadow-sm transition-colors duration-200
 // Feature/Product Card
 'bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl p-8 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300';
 
+// Feature Grid
+'grid gap-8 md:grid-cols-2';
+
 // Certification Card
-'bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-2xl';
+'group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-2xl overflow-hidden flex flex-col h-full hover:shadow-md transition-colors duration-300';
+
+// Certification Grid (2 columns on large screens)
+'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12';
 
 // Step Badge (First - Violet)
-'w-10 h-10 bg-violet-100 dark:bg-violet-900/40 rounded-lg flex items-center justify-center';
+'w-10 h-10 bg-violet-100 dark:bg-violet-900/40 rounded-lg flex items-center justify-center mb-8';
 
 // Step Badge (Other - Neutral)
-'w-10 h-10 bg-slate-100 dark:bg-slate-700/40 rounded-lg flex items-center justify-center';
+'w-10 h-10 bg-slate-100 dark:bg-slate-700/40 rounded-lg flex items-center justify-center mb-8';
 
 // Primary Button
-'rounded-lg px-8 py-4 text-lg font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700';
+'rounded-lg px-8 py-4 text-base font-semibold shadow-sm hover:shadow-sm transition-colors duration-200 bg-violet-600 hover:bg-violet-700';
 
-// Heading (H2/Section Title)
-'text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight';
+// Hero Title (H1)
+'text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 leading-tight';
 
-// Body Text
+// Section Title (H2)
+'text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-50 tracking-tight';
+
+// Feature/Card Heading (H3) - Unified
+'text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight';
+
+// Body Text (Hero/Primary)
 'text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-light';
+
+// Card Body Text - Unified
+'text-base text-slate-600 dark:text-slate-400 leading-relaxed';
+
+// Card Certification Title - Fixed height
+'text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight line-clamp-3 leading-tight min-h-[4.5rem] flex items-start';
 ```
+
+## Landing Page Refinements (Current Implementation)
+
+### Typography Unification
+- **Feature & Certification Card Headings**: Both use `text-xl font-bold tracking-tight`
+- **Card Body Text**: Unified to `text-base leading-relaxed`
+- **Button Text**: Unified to `text-base font-semibold` (was `text-lg`)
+- **Result**: Consistent, minimal aesthetic across all sections
+
+### Grid Layouts
+- **How It Works**: `grid-cols-1 md:grid-cols-2` (2 columns on tablet+)
+- **Available Topics**: `grid-cols-1 md:grid-cols-2 lg:grid-cols-2` (2 columns on desktop, not 3)
+- **Benefit**: Better card visibility and spacing on all screen sizes
+
+### Card Title Height
+- **Certification Cards**: `min-h-[4.5rem]` fixed 3-line title height for perfect alignment
+- **Ensures**: All cards maintain same height regardless of title length variations
+- **Improves**: Visual consistency and layout predictability
 
 ## Key Changes from Previous Design
 
-| Aspect             | Before                                             | Now                                                   |
+| Aspect             | Before                                             | Now (Current)                                         |
 | ------------------ | -------------------------------------------------- | ----------------------------------------------------- |
 | **Colors**         | Colored badges (AWS: orange, Azure: blue, etc.)    | Neutral palette + violet accent only                  |
 | **Icons**          | Colored SVG icons with gradients                   | Numbered step badges (1, 2, 3, 4)                     |
 | **Cards**          | `rounded-3xl` with hover scale/translate           | `rounded-2xl`/`rounded-3xl` with subtle hover effects |
 | **Buttons**        | `rounded-xl` with complex styling                  | `rounded-lg` with `transition-colors` only            |
-| **Spacing**        | Various padding sizes                              | Standardized `py-16 sm:py-20 lg:py-24` sections       |
-| **Visual Effects** | Multiple hover effects (scale, translate, shadows) | Minimal (shadow increase + border color shift)        |
-| **Typography**     | Bold headers with colored spans                    | Clean bold headers, `font-light` body text            |
+| **Button Text**    | `text-lg` (varying)                                | `text-base` (unified)                                 |
+| **Headings (H3)**  | `text-2xl` (feature cards)                         | `text-xl` (unified across sections)                   |
+| **Body Text**      | `text-lg` (mixed across cards)                     | `text-base` (unified)                                 |
+| **Grid Columns**   | 3 columns on large screens                         | 2 columns on large screens                            |
+| **Title Height**   | Variable by content                                | Fixed 3-line (`min-h-[4.5rem]`)                       |
+| **Spacing**        | Various padding sizes                              | Standardized `py-16 sm:py-20 lg:py-24`                |
+| **Visual Effects** | Multiple hover effects (scale, translate, shadows) | Minimal (shadow + border shift)                        |
+| **Typography**     | Bold headers with colored spans                    | Clean bold headers, `font-light` body                 |
 
 ## Refactoring Other Pages
 
 When refactoring marketing pages to match this style:
 
-1. **Remove all colored badges/icons** - Replace with neutral styling
-2. **Update button styling** - Change all buttons to `rounded-lg`
-3. **Simplify cards** - Remove colored backgrounds, use neutral whites/slates
-4. **Standardize spacing** - Use section padding `py-16 sm:py-20 lg:py-24`
-5. **Minimize hover effects** - Keep to shadow and border color changes only
-6. **Use single accent color** - Violet only for highlights and CTAs
-7. **Apply typography rules** - `font-light` for body, `font-bold` for headings
+1. **Typography Consistency**
+   - Use `text-xl font-bold tracking-tight` for all card/feature headings
+   - Use `text-base leading-relaxed` for all card body text
+   - Use `text-base font-semibold` for ALL buttons (unified across page)
+   - Use `text-sm font-semibold` for provider/meta text
+
+2. **Grid & Layout**
+   - Use 2-column grids on large screens (`lg:grid-cols-2`), not 3
+   - Apply `min-h-[4.5rem]` to card titles for consistent card heights
+   - Use `line-clamp-3` for multiline descriptions
+   - Maintain `gap-8` for consistent spacing
+
+3. **Card Styling**
+   - Remove all colored badges/icons - Replace with neutral styling
+   - Use fixed title heights: `min-h-[4.5rem] flex items-start`
+   - Apply `rounded-2xl` for certification cards, `rounded-3xl` for feature cards
+   - No colored backgrounds - stick to `bg-white/90 dark:bg-slate-800/90`
+
+4. **Buttons**
+   - Change all buttons to `rounded-lg` with `transition-colors` only
+   - Use `text-base font-semibold` (not `text-lg`)
+   - Padding: `px-8 py-4` for full-size buttons
+   - Primary: `bg-violet-600 hover:bg-violet-700`
+   - Secondary: `bg-white/80 dark:bg-slate-800/80 hover:bg-slate-50/90`
+
+5. **Spacing & Responsive**
+   - Standardize section padding: `py-16 sm:py-20 lg:py-24`
+   - Use responsive containers: `px-4 sm:px-6 lg:px-8`
+   - Add proper spacing between sections with `mt-8 sm:mt-12 lg:mt-16`
+   - Mobile-first grid: `grid-cols-1 md:grid-cols-2 lg:grid-cols-2`
+
+6. **Colors & Effects**
+   - Minimize hover effects - Keep to shadow and border color changes only
+   - Use single accent color (violet) only for highlights and CTAs
+   - Apply dark mode variants to all elements
+   - No scale/translate transforms - minimal interactions only
+
+7. **Typography Rules**
+   - Use `font-light` for body text and hero content
+   - Use `font-bold` for headings only
+   - Use `font-semibold` for provider/meta data
+   - Use `leading-relaxed` for all body text
+   - Use `tracking-tight` on all headings
