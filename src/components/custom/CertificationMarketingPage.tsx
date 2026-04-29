@@ -175,7 +175,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
               </svg>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
                 {error || 'Certification not found'}
               </span>
             </h2>
@@ -231,7 +231,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight px-2">
-              <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                 Master {certification.name} with AI-Powered Practice Questions
               </span>
             </h1>
@@ -648,7 +648,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
                 </div>
               </div>
 
-              <div className="mt-8 p-6 bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20 rounded-2xl border border-violet-200 dark:border-violet-800">
+              <div className="mt-8 p-6 bg-linear-to-r from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20 rounded-2xl border border-violet-200 dark:border-violet-800">
                 <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
                   Why Choose AI-Powered Study Method?
                 </h4>
@@ -956,7 +956,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           </Card>
 
           {/* Call to Action */}
-          <Card className="bg-gradient-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
+          <Card className="bg-linear-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
             <CardContent className="p-8 sm:p-12 text-center relative">
               {/* Background decoration */}
               <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-white/5"></div>
@@ -1021,7 +1021,7 @@ function MarketingPageSkeleton() {
           <div className="flex justify-center mb-4">
             <div className="w-32 h-8 bg-violet-200 dark:bg-violet-800 rounded-full animate-pulse" />
           </div>
-          <div className="w-3/4 h-12 sm:h-16 bg-gradient-to-r from-violet-200 to-blue-200 dark:from-violet-800 dark:to-blue-800 rounded-2xl animate-pulse mx-auto" />
+          <div className="w-3/4 h-12 sm:h-16 bg-linear-to-r from-violet-200 to-blue-200 dark:from-violet-800 dark:to-blue-800 rounded-2xl animate-pulse mx-auto" />
           <div className="w-2/3 h-6 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse mx-auto" />
           <div className="flex justify-center gap-4">
             <div className="w-32 h-12 bg-violet-200 dark:bg-violet-800 rounded-xl animate-pulse" />

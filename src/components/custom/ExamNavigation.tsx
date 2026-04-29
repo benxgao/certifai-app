@@ -187,8 +187,8 @@ export const ExamNavigation = memo<ExamNavigationProps>(
                   disabled={buttonStates.nextDisabled}
                   className={`flex-1 lg:flex-none lg:min-w-[140px] shadow-md interactive-optimized ${
                     derivedState.isLastPage
-                      ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-0'
-                      : 'bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0'
+                      ? 'bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-0'
+                      : 'bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0'
                   }`}
                 >
                   {navigationContent.next}

@@ -50,7 +50,7 @@ export const ExamSubmissionModal: React.FC<ExamSubmissionModalProps> = ({
           <Button
             onClick={onConfirmSubmit}
             disabled={submittedAt !== null || isSubmittingExamFlag}
-            className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg shadow-emerald-500/25"
+            className="bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-lg shadow-emerald-500/25"
           >
             {isSubmittingExamFlag ? (
               <>

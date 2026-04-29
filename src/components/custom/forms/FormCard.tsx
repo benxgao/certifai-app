@@ -64,7 +64,7 @@ export const FormCard: React.FC<FormCardProps> = ({
         <div className="relative z-10">
           {/* Header */}
           {(title || description) && (
-            <div className="px-6 sm:px-8 py-6 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
+            <div className="px-6 sm:px-8 py-6 border-b border-slate-100 dark:border-slate-700/50 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
               <div className="text-center">
                 {title && (
                   <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight mb-2">

@@ -27,7 +27,7 @@ export default function NotFound() {
 
               {/* 404 Content */}
               <div className="space-y-4">
-                <h1 className="text-6xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                <h1 className="text-6xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   404
                 </h1>
                 <h2 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">
@@ -74,7 +74,7 @@ export default function NotFound() {
                 </Button>
                 <Button
                   asChild
-                  className="min-w-[160px] h-12 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg"
+                  className="min-w-[160px] h-12 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg"
                 >
                   <Link href="/">
                     <FaHome className="w-4 h-4 mr-2" />

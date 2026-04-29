@@ -192,7 +192,7 @@ export default function BillingClient() {
                     </div>
 
                     {!hasActiveSubscription && (
-                      <Card className="bg-gradient-to-r from-blue-50 to-violet-50 dark:from-blue-950/20 dark:to-violet-950/20 border border-blue-200/50 dark:border-blue-800/30 shadow-sm">
+                      <Card className="bg-linear-to-r from-blue-50 to-violet-50 dark:from-blue-950/20 dark:to-violet-950/20 border border-blue-200/50 dark:border-blue-800/30 shadow-sm">
                         <CardContent className="pt-6">
                           <div className="text-center">
                             <h4 className="text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">

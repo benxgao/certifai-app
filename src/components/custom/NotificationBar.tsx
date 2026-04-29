@@ -213,7 +213,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
       {enhanced && (
         <div
           className={cn(
-            'absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r opacity-30',
+            'absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r opacity-30',
             variant === 'promo' && 'from-violet-400 via-purple-500 to-violet-400',
             variant === 'success' && 'from-emerald-400 via-green-500 to-emerald-400',
             variant === 'warning' && 'from-amber-400 via-yellow-500 to-amber-400',

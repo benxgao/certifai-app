@@ -33,7 +33,7 @@ export function EmptyExamsState() {
         {/* Enhanced Action Button */}
         <Button
           onClick={() => window.location.reload()}
-          className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-lg shadow-violet-500/25 dark:shadow-violet-500/20 transition-all duration-200 px-6 py-3 text-base font-medium"
+          className="bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-lg shadow-violet-500/25 dark:shadow-violet-500/20 transition-all duration-200 px-6 py-3 text-base font-medium"
         >
           Refresh Page
         </Button>

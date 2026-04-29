@@ -71,7 +71,7 @@ export default function ContactPage() {
               </Badge>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 tracking-tight">
-                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   Get in Touch
                 </span>
               </h1>

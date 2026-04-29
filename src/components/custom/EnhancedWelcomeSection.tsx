@@ -91,7 +91,7 @@ const EnhancedWelcomeSection: React.FC<EnhancedWelcomeSectionProps> = ({
 
   return (
     <div
-      className={`mb-6 bg-gradient-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6 ${className}`}
+      className={`mb-6 bg-linear-to-r from-violet-50 to-violet-50 dark:from-primary-900/20 dark:to-violet-900/20 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6 ${className}`}
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">

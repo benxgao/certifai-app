@@ -98,7 +98,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
         <div className="text-center space-y-6">
           {/* Brand name - only show if requested */}
           {showBrand && (
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-violet-800 dark:from-violet-400 dark:via-purple-400 dark:to-violet-200 bg-clip-text text-transparent mb-4">
+            <h1 className="text-2xl font-bold bg-linear-to-r from-violet-600 via-purple-600 to-violet-800 dark:from-violet-400 dark:via-purple-400 dark:to-violet-200 bg-clip-text text-transparent mb-4">
               Certestic
             </h1>
           )}
@@ -125,7 +125,7 @@ const PageLoader: React.FC<PageLoaderProps> = ({
 
               {/* Center Icon Container with enhanced styling */}
               <div
-                className={`relative w-12 h-12 rounded-full bg-gradient-to-r ${config.iconBg} flex items-center justify-center text-white shadow-xl transform-gpu will-change-transform animate-pulse backdrop-blur-sm`}
+                className={`relative w-12 h-12 rounded-full bg-linear-to-r ${config.iconBg} flex items-center justify-center text-white shadow-xl transform-gpu will-change-transform animate-pulse backdrop-blur-sm`}
                 style={{
                   boxShadow:
                     '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',

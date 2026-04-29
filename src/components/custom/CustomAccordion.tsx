@@ -35,7 +35,7 @@ const getVariantStyles = (variant: CustomAccordionProps['variant']) => {
     case 'explanation':
       return {
         accordion:
-          'bg-gradient-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/60 dark:border-blue-800/50 rounded-xl overflow-hidden shadow-lg backdrop-blur-sm',
+          'bg-linear-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/60 dark:border-blue-800/50 rounded-xl overflow-hidden shadow-lg backdrop-blur-sm',
         item: 'border-none',
         trigger:
           'px-6 py-5 hover:bg-blue-50/70 dark:hover:bg-blue-900/30 transition-all duration-300 group hover:no-underline cursor-pointer',
@@ -44,7 +44,7 @@ const getVariantStyles = (variant: CustomAccordionProps['variant']) => {
     case 'topics':
       return {
         accordion:
-          'bg-gradient-to-r from-violet-50/80 via-purple-50/80 to-blue-50/80 dark:from-violet-950/40 dark:via-purple-950/40 dark:to-blue-950/40 border border-violet-200/60 dark:border-violet-800/50 rounded-xl overflow-hidden shadow-lg backdrop-blur-sm',
+          'bg-linear-to-r from-violet-50/80 via-purple-50/80 to-blue-50/80 dark:from-violet-950/40 dark:via-purple-950/40 dark:to-blue-950/40 border border-violet-200/60 dark:border-violet-800/50 rounded-xl overflow-hidden shadow-lg backdrop-blur-sm',
         item: 'border-none',
         trigger:
           'px-6 py-5 hover:bg-violet-50/70 dark:hover:bg-violet-900/30 transition-all duration-300 group hover:no-underline cursor-pointer',

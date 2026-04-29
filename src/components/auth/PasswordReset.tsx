@@ -128,7 +128,7 @@ export default function PasswordReset() {
           <CardHeader className="text-center space-y-6 pb-8">
             {status === 'loading' && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-20 h-20 bg-linear-to-r from-violet-500 to-purple-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
                   <svg
                     className="w-10 h-10 text-white animate-spin"
                     fill="none"
@@ -163,7 +163,7 @@ export default function PasswordReset() {
 
             {status === 'ready' && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-20 h-20 bg-linear-to-r from-blue-500 to-indigo-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
                   <svg
                     className="w-10 h-10 text-white"
                     fill="none"
@@ -191,7 +191,7 @@ export default function PasswordReset() {
 
             {status === 'success' && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-20 h-20 bg-linear-to-r from-green-500 to-emerald-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
                   <svg
                     className="w-10 h-10 text-white"
                     fill="none"
@@ -220,7 +220,7 @@ export default function PasswordReset() {
 
             {(status === 'error' || status === 'expired') && (
               <>
-                <div className="w-20 h-20 bg-gradient-to-r from-red-500 to-rose-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
+                <div className="w-20 h-20 bg-linear-to-r from-red-500 to-rose-500 rounded-full mx-auto flex items-center justify-center shadow-lg">
                   <svg
                     className="w-10 h-10 text-white"
                     fill="none"
@@ -306,7 +306,7 @@ export default function PasswordReset() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                  className="w-full bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
                   size="lg"
                   disabled={isSubmitting || !password || !confirmPassword}
                 >
@@ -344,7 +344,7 @@ export default function PasswordReset() {
             {status === 'success' && (
               <Button
                 onClick={handleContinueToSignIn}
-                className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                className="w-full bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
                 size="lg"
               >
                 Continue to Sign In
@@ -354,7 +354,7 @@ export default function PasswordReset() {
             {status === 'expired' && (
               <Button
                 onClick={handleRequestNewLink}
-                className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                className="w-full bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
                 size="lg"
               >
                 Request New Reset Link
@@ -365,7 +365,7 @@ export default function PasswordReset() {
               <div className="space-y-3">
                 <Button
                   onClick={handleRequestNewLink}
-                  className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
+                  className="w-full bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-semibold transition-all duration-200 transform hover:scale-[1.02]"
                   size="lg"
                 >
                   Request New Reset Link
@@ -382,7 +382,7 @@ export default function PasswordReset() {
             )}
 
             {status === 'loading' && (
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-800 text-sm p-5 rounded-xl border border-blue-200/50 shadow-sm">
+              <div className="bg-linear-to-r from-blue-50 to-indigo-50 text-blue-800 text-sm p-5 rounded-xl border border-blue-200/50 shadow-sm">
                 <div className="flex items-center justify-center">
                   <svg
                     className="w-5 h-5 mr-3 flex-shrink-0"

@@ -198,7 +198,7 @@ export default function PricingPage() {
           </div>
 
           {/* CTA Section */}
-          <div className="mt-16 sm:mt-20 text-center bg-white dark:from-primary/5 dark:to-primary/10 dark:bg-gradient-to-r rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mx-2 sm:mx-4 border border-primary/10">
+          <div className="mt-16 sm:mt-20 text-center bg-white dark:from-primary/5 dark:to-primary/10 dark:bg-linear-to-r rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12 mx-2 sm:mx-4 border border-primary/10">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
               Ready to Get Started?
             </h2>

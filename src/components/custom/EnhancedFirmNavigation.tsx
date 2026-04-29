@@ -145,7 +145,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                 onClick={() => handleViewExams(cert.cert_id)}
                 disabled={isCurrentlyNavigating}
                 data-testid="view-exams-button"
-                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
+                className="w-full bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
               >
                 {isCurrentlyNavigating ? (
                   <div className="flex items-center space-x-2">
@@ -219,7 +219,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
                         className={cn(
                           'group p-3 rounded-xl cursor-pointer transition-all duration-300 border backdrop-blur-sm',
                           isSelected
-                            ? 'bg-gradient-to-r from-violet-100/80 to-blue-100/80 dark:from-violet-900/30 dark:to-blue-900/30 border-violet-200/60 dark:border-violet-700/60 text-violet-700 dark:text-violet-300 shadow-md'
+                            ? 'bg-linear-to-r from-violet-100/80 to-blue-100/80 dark:from-violet-900/30 dark:to-blue-900/30 border-violet-200/60 dark:border-violet-700/60 text-violet-700 dark:text-violet-300 shadow-md'
                             : 'hover:bg-slate-50/80 dark:hover:bg-slate-800/50 border-transparent hover:border-slate-200/60 dark:hover:border-slate-700/60 hover:shadow-sm',
                         )}
                         onClick={() => setSelectedFirm(firm.code)}
@@ -258,7 +258,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
           {selectedFirm && filteredFirms.find((f) => f.code === selectedFirm) ? (
             <div>
               {/* Selected Firm Header */}
-              <div className="mb-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+              <div className="mb-4 bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
                 <div className="flex items-start space-x-3">
                   <div className="flex-1 min-w-0">
                     <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-1">
@@ -461,7 +461,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
 
       {/* Results Summary */}
       {searchQuery && (
-        <div className="bg-gradient-to-r from-blue-100/80 to-violet-100/80 dark:from-blue-900/20 dark:to-violet-900/20 backdrop-blur-sm border border-blue-200/60 dark:border-blue-700/60 rounded-2xl p-6 shadow-sm">
+        <div className="bg-linear-to-r from-blue-100/80 to-violet-100/80 dark:from-blue-900/20 dark:to-violet-900/20 backdrop-blur-sm border border-blue-200/60 dark:border-blue-700/60 rounded-2xl p-6 shadow-sm">
           <p className="text-blue-800 dark:text-blue-200 font-medium">
             Found {totalCertifications} certification{totalCertifications !== 1 ? 's' : ''}
             {searchQuery && ` matching "${searchQuery}"`}
@@ -472,7 +472,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
       {/* Content based on view mode */}
       {totalCertifications === 0 ? (
         <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-3xl shadow-lg border border-slate-200/60 dark:border-slate-700/60 p-12 text-center">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-slate-100 to-violet-100 dark:from-slate-700/50 dark:to-violet-900/30 rounded-full flex items-center justify-center mb-6 shadow-md">
+          <div className="mx-auto w-20 h-20 bg-linear-to-r from-slate-100 to-violet-100 dark:from-slate-700/50 dark:to-violet-900/30 rounded-full flex items-center justify-center mb-6 shadow-md">
             <span className="text-3xl font-bold text-slate-400 dark:text-slate-500">?</span>
           </div>
           <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 tracking-tight">
@@ -486,7 +486,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
           {searchQuery && (
             <Button
               onClick={() => setSearchQuery('')}
-              className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
+              className="bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white border-0 shadow-md hover:shadow-lg transition-all duration-200 rounded-xl"
             >
               Clear Search
             </Button>

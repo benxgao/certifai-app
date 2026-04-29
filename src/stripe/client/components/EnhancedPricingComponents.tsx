@@ -91,7 +91,7 @@ export function PricingCard({
     <Card className={cn('relative', className, isPopular && 'border-primary shadow-lg')}>
       {isPopular && (
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-          <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+          <Badge className="bg-linear-to-r from-primary to-primary/80 text-primary-foreground">
             <Crown className="w-3 h-3 mr-1" />
             Most Popular
           </Badge>
@@ -203,7 +203,7 @@ export function PricingPlansGrid() {
     <div className="space-y-8">
       {/* Current subscription status */}
       {hasActiveSubscription && accountData && (
-        <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
+        <Card className="bg-linear-to-r from-primary/10 to-primary/5 border-primary/20">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>

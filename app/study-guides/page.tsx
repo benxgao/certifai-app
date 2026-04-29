@@ -50,7 +50,7 @@ export default function StudyGuidesPage() {
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-                  <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                     AI Study Guides
                   </span>
                 </h1>
@@ -218,7 +218,7 @@ export default function StudyGuidesPage() {
                 <Link href="/signup">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                   >
                     Start Free Beta Now
                   </Button>

@@ -61,7 +61,7 @@ export const ExamLoadingState: React.FC<ExamLoadingStateProps> = ({ isInitialLoa
             <div className="absolute inset-0 border-4 border-transparent border-t-violet-600 dark:border-t-violet-400 rounded-full animate-spin" />
 
             {/* Center Icon */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-violet-500 to-purple-600 dark:from-violet-400 dark:to-purple-500 flex items-center justify-center text-white text-lg font-bold shadow-lg animate-pulse">
+            <div className="w-10 h-10 rounded-full bg-linear-to-r from-violet-500 to-purple-600 dark:from-violet-400 dark:to-purple-500 flex items-center justify-center text-white text-lg font-bold shadow-lg animate-pulse">
               ✨
             </div>
           </div>
@@ -95,7 +95,7 @@ export const ExamLoadingState: React.FC<ExamLoadingStateProps> = ({ isInitialLoa
               {/* Individual card gradient orb */}
               <div className="absolute -top-2 -right-2 w-16 h-16 bg-violet-100/30 dark:bg-violet-600/10 rounded-full blur-xl"></div>
 
-              <CardHeader className="relative z-10 bg-gradient-to-r from-slate-50/80 to-violet-50/40 dark:from-slate-800/60 dark:to-violet-950/30 border-b border-slate-100/60 dark:border-slate-700/50 p-6 backdrop-blur-sm">
+              <CardHeader className="relative z-10 bg-linear-to-r from-slate-50/80 to-violet-50/40 dark:from-slate-800/60 dark:to-violet-950/30 border-b border-slate-100/60 dark:border-slate-700/50 p-6 backdrop-blur-sm">
                 <Skeleton className="h-6 w-3/4 bg-slate-200/60 dark:bg-slate-700/60" />
               </CardHeader>
               <CardContent className="relative z-10 space-y-3 p-6">

@@ -254,7 +254,7 @@ export default function NetworkingCertificationsPage() {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
               Build the
-              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                 {' '}
                 Network Backbone{' '}
               </span>
@@ -370,7 +370,7 @@ export default function NetworkingCertificationsPage() {
 
                   <Link
                     href={`/certifications/${cert.firmCode}/${cert.slug}`}
-                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 transform group-hover:scale-105"
+                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 transform group-hover:scale-105"
                   >
                     <span>Start Practice Exam</span>
                     <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />

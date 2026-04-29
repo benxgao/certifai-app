@@ -201,7 +201,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
 
           {/* Email verification actions */}
           {!firebaseUser?.emailVerified && (
-            <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800/50 shadow-sm">
+            <div className="bg-linear-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800/50 shadow-sm">
               <div className="flex items-start space-x-3">
                 <svg
                   className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0"

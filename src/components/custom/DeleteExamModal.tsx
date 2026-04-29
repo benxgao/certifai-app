@@ -71,7 +71,7 @@ export function DeleteExamModal({
       </p>
 
       {/* Enhanced exam details card */}
-      <div className="bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 border border-slate-200/80 dark:border-slate-700/60 rounded-xl p-4 space-y-2 backdrop-blur-sm shadow-sm">
+      <div className="bg-linear-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 border border-slate-200/80 dark:border-slate-700/60 rounded-xl p-4 space-y-2 backdrop-blur-sm shadow-sm">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-1.5 h-1.5 rounded-full bg-violet-400 dark:bg-violet-500"></div>
           <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
@@ -125,7 +125,7 @@ export function DeleteExamModal({
         variant="destructive"
         onClick={handleConfirm}
         disabled={isDeleting}
-        className="flex-1 sm:flex-none bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 backdrop-blur-sm border-0"
+        className="flex-1 sm:flex-none bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 backdrop-blur-sm border-0"
         data-testid="delete-exam-confirm-button"
       >
         {isDeleting ? (

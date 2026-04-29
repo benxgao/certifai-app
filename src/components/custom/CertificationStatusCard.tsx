@@ -121,7 +121,7 @@ export function CertificationStatusCard({
                   <InfoTooltip content="You can create at most 3 exams every 24 hours to ensure fair usage and optimal system performance." />
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                  <span className="text-xl font-bold bg-linear-to-r from-blue-700 to-indigo-700 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
                     {rateLimitInfo.currentCount}/3
                   </span>
                   <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
@@ -134,7 +134,7 @@ export function CertificationStatusCard({
             {/* Right side - Simple Progress Bar */}
             <div className="w-20 h-2 bg-blue-200/60 dark:bg-blue-800/40 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500 ease-out"
+                className="h-full bg-linear-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${(rateLimitInfo.currentCount / 3) * 100}%` }}
               />
             </div>

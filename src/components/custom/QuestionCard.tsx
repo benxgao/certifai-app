@@ -44,16 +44,16 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   return (
     <DashboardCard className="hover:shadow-2xl hover:shadow-violet-500/20 dark:hover:shadow-violet-400/10 transition-all duration-500 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60">
-      <DashboardCardHeader className="bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 backdrop-blur-sm">
+      <DashboardCardHeader className="bg-linear-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 backdrop-blur-sm">
         <div className="flex items-start justify-between">
           <div className="text-base sm:text-lg leading-relaxed flex-1 mr-3 sm:mr-5 text-slate-900 dark:text-slate-100">
             <div className="space-y-3 sm:space-y-4">
               <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-                <div className="inline-flex items-center px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-violet-100/80 via-violet-50/70 to-blue-100/60 dark:from-violet-900/40 dark:via-violet-800/30 dark:to-blue-900/40 text-violet-700 dark:text-violet-300 text-sm sm:text-base font-semibold border border-violet-200/80 dark:border-violet-600/60 shadow-lg backdrop-blur-sm hover:shadow-violet-200/60 dark:hover:shadow-violet-500/20 transition-all duration-300">
+                <div className="inline-flex items-center px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-linear-to-r from-violet-100/80 via-violet-50/70 to-blue-100/60 dark:from-violet-900/40 dark:via-violet-800/30 dark:to-blue-900/40 text-violet-700 dark:text-violet-300 text-sm sm:text-base font-semibold border border-violet-200/80 dark:border-violet-600/60 shadow-lg backdrop-blur-sm hover:shadow-violet-200/60 dark:hover:shadow-violet-500/20 transition-all duration-300">
                   Q{((pagination?.currentPage || 1) - 1) * pageSize + index + 1}
                 </div>
                 {question.exam_topic && (
-                  <div className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-slate-100/90 via-slate-50/80 to-slate-100/70 dark:from-slate-800/80 dark:via-slate-700/70 dark:to-slate-800/60 text-slate-700 dark:text-slate-300 text-sm sm:text-base font-medium border border-slate-300/70 dark:border-slate-600/60 shadow-md backdrop-blur-sm hover:shadow-slate-200/60 dark:hover:shadow-slate-500/20 transition-all duration-300">
+                  <div className="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-linear-to-r from-slate-100/90 via-slate-50/80 to-slate-100/70 dark:from-slate-800/80 dark:via-slate-700/70 dark:to-slate-800/60 text-slate-700 dark:text-slate-300 text-sm sm:text-base font-medium border border-slate-300/70 dark:border-slate-600/60 shadow-md backdrop-blur-sm hover:shadow-slate-200/60 dark:hover:shadow-slate-500/20 transition-all duration-300">
                     <svg
                       className="w-4 h-4 mr-2 sm:mr-2.5 text-slate-600 dark:text-slate-400"
                       fill="currentColor"
@@ -96,18 +96,18 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 className={`flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 sm:p-5 lg:p-6 rounded-2xl transition-all duration-300 cursor-pointer group relative border-2 backdrop-blur-sm ${
                   // Show correct answer with green background after submission
                   showCorrectAnswer
-                    ? 'bg-gradient-to-r from-green-50/90 via-green-25/80 to-emerald-50/70 border-green-300/80 dark:bg-gradient-to-r dark:from-green-900/40 dark:via-green-800/30 dark:to-emerald-900/30 dark:border-green-500/60 shadow-xl shadow-green-200/30 dark:shadow-green-500/10'
+                    ? 'bg-linear-to-r from-green-50/90 via-green-25/80 to-emerald-50/70 border-green-300/80 dark:bg-linear-to-r dark:from-green-900/40 dark:via-green-800/30 dark:to-emerald-900/30 dark:border-green-500/60 shadow-xl shadow-green-200/30 dark:shadow-green-500/10'
                     : // Show selected wrong answer with red background
                     showIncorrectSelection
-                    ? 'bg-gradient-to-r from-red-50/90 via-red-25/80 to-rose-50/70 border-red-300/80 dark:bg-gradient-to-r dark:from-red-900/40 dark:via-red-800/30 dark:to-rose-900/30 dark:border-red-500/60 shadow-xl shadow-red-200/30 dark:shadow-red-500/10'
+                    ? 'bg-linear-to-r from-red-50/90 via-red-25/80 to-rose-50/70 border-red-300/80 dark:bg-linear-to-r dark:from-red-900/40 dark:via-red-800/30 dark:to-rose-900/30 dark:border-red-500/60 shadow-xl shadow-red-200/30 dark:shadow-red-500/10'
                     : // Show selected correct answer (already handled above, but for clarity)
                     isSelected && submittedAt !== null && question.user_answer_is_correct === true
-                    ? 'bg-gradient-to-r from-green-50/90 via-green-25/80 to-emerald-50/70 border-green-300/80 dark:bg-gradient-to-r dark:from-green-900/40 dark:via-green-800/30 dark:to-emerald-900/30 dark:border-green-500/60 shadow-xl shadow-green-200/30 dark:shadow-green-500/10'
+                    ? 'bg-linear-to-r from-green-50/90 via-green-25/80 to-emerald-50/70 border-green-300/80 dark:bg-linear-to-r dark:from-green-900/40 dark:via-green-800/30 dark:to-emerald-900/30 dark:border-green-500/60 shadow-xl shadow-green-200/30 dark:shadow-green-500/10'
                     : // Show regular selected state during exam
                     isSelected && submittedAt === null && question.user_answer_is_correct !== true
-                    ? 'bg-gradient-to-r from-blue-50/90 via-blue-25/80 to-indigo-50/70 border-blue-300/80 dark:bg-gradient-to-r dark:from-blue-900/40 dark:via-blue-800/30 dark:to-indigo-900/30 dark:border-blue-500/60 shadow-xl shadow-blue-200/30 dark:shadow-blue-500/10'
+                    ? 'bg-linear-to-r from-blue-50/90 via-blue-25/80 to-indigo-50/70 border-blue-300/80 dark:bg-linear-to-r dark:from-blue-900/40 dark:via-blue-800/30 dark:to-indigo-900/30 dark:border-blue-500/60 shadow-xl shadow-blue-200/30 dark:shadow-blue-500/10'
                     : // Default state with hover
-                      'bg-white/90 border-slate-200/80 hover:bg-gradient-to-r hover:from-slate-50/90 hover:via-white/80 hover:to-violet-50/40 hover:border-violet-200/60 dark:bg-slate-800/90 dark:border-slate-600/70 dark:hover:bg-gradient-to-r dark:hover:from-slate-700/80 dark:hover:via-slate-800/70 dark:hover:to-violet-900/30 dark:hover:border-violet-500/50'
+                      'bg-white/90 border-slate-200/80 hover:bg-linear-to-r hover:from-slate-50/90 hover:via-white/80 hover:to-violet-50/40 hover:border-violet-200/60 dark:bg-slate-800/90 dark:border-slate-600/70 dark:hover:bg-linear-to-r dark:hover:from-slate-700/80 dark:hover:via-slate-800/70 dark:hover:to-violet-900/30 dark:hover:border-violet-500/50'
                 } ${
                   submittedAt !== null || isAnswering || isSubmittingExamFlag
                     ? 'cursor-not-allowed opacity-70'
@@ -216,10 +216,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               <Accordion
                 type="single"
                 collapsible
-                className="w-full bg-gradient-to-r from-blue-50/80 via-indigo-50/60 to-blue-50/80 dark:from-blue-900/20 dark:via-indigo-900/15 dark:to-blue-900/20 border-2 border-blue-200/80 dark:border-blue-700/60 rounded-2xl overflow-hidden shadow-lg backdrop-blur-sm"
+                className="w-full bg-linear-to-r from-blue-50/80 via-indigo-50/60 to-blue-50/80 dark:from-blue-900/20 dark:via-indigo-900/15 dark:to-blue-900/20 border-2 border-blue-200/80 dark:border-blue-700/60 rounded-2xl overflow-hidden shadow-lg backdrop-blur-sm"
               >
                 <AccordionItem value="item-1" className="border-none">
-                  <AccordionTrigger className="px-7 py-5 hover:bg-gradient-to-r hover:from-blue-100/60 hover:via-indigo-100/40 hover:to-blue-100/60 dark:hover:from-blue-800/30 dark:hover:via-indigo-800/20 dark:hover:to-blue-800/30 transition-all duration-300 group hover:no-underline cursor-pointer">
+                  <AccordionTrigger className="px-7 py-5 hover:bg-linear-to-r hover:from-blue-100/60 hover:via-indigo-100/40 hover:to-blue-100/60 dark:hover:from-blue-800/30 dark:hover:via-indigo-800/20 dark:hover:to-blue-800/30 transition-all duration-300 group hover:no-underline cursor-pointer">
                     <div className="flex items-center space-x-4 w-full">
                       <div className="flex items-center justify-center w-10 h-10 bg-linear-to-br from-blue-100 via-blue-50 to-indigo-100 dark:from-blue-800/40 dark:via-blue-700/30 dark:to-indigo-800/40 rounded-xl group-hover:shadow-lg group-hover:shadow-blue-200/40 dark:group-hover:shadow-blue-500/20 transition-all duration-300 border border-blue-300/60 dark:border-blue-600/50">
                         <FaLightbulb className="w-5 h-5 text-blue-700 dark:text-blue-300" />

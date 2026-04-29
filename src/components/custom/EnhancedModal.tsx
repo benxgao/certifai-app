@@ -58,7 +58,7 @@ export function EnhancedModal({
     default: {
       container:
         'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl',
-      iconBg: 'bg-gradient-to-r from-violet-600 to-blue-600',
+      iconBg: 'bg-linear-to-r from-violet-600 to-blue-600',
       iconText: 'text-white',
     },
     destructive: {

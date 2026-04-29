@@ -61,7 +61,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         <div className="text-center">
           <div
             className={cn(
-              'font-bold bg-gradient-to-r bg-clip-text text-transparent',
+              'font-bold bg-linear-to-r bg-clip-text text-transparent',
               variant === 'overview'
                 ? 'text-3xl sm:text-4xl from-slate-900 via-violet-700 to-blue-700 dark:from-slate-100 dark:via-violet-300 dark:to-blue-300'
                 : 'text-2xl from-slate-900 to-violet-700 dark:from-slate-100 dark:to-violet-300',

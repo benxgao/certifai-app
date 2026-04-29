@@ -27,7 +27,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight"
               >
                 Master IT Certifications with
-                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
+                <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent block">
                   AI-Powered Training
                 </span>
               </h2>
@@ -98,7 +98,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                     <li className="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
                       <Link
                         href="/certifications/categories/cloud"
-                        className="block py-2 px-3 rounded-lg bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/10 dark:to-blue-900/10 border border-violet-200/50 dark:border-violet-700/50 hover:from-violet-100 hover:to-blue-100 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 text-violet-700 dark:text-violet-300 font-semibold transition-all duration-200"
+                        className="block py-2 px-3 rounded-lg bg-linear-to-r from-violet-50 to-blue-50 dark:from-violet-900/10 dark:to-blue-900/10 border border-violet-200/50 dark:border-violet-700/50 hover:from-violet-100 hover:to-blue-100 dark:hover:from-violet-900/20 dark:hover:to-blue-900/20 text-violet-700 dark:text-violet-300 font-semibold transition-all duration-200"
                       >
                         View All Cloud Certifications
                       </Link>
@@ -167,7 +167,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                     <li className="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
                       <Link
                         href="/certifications/categories/security"
-                        className="block py-2 px-3 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 border border-green-200/50 dark:border-green-700/50 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 text-green-700 dark:text-green-300 font-semibold transition-all duration-200"
+                        className="block py-2 px-3 rounded-lg bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 border border-green-200/50 dark:border-green-700/50 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/20 dark:hover:to-emerald-900/20 text-green-700 dark:text-green-300 font-semibold transition-all duration-200"
                       >
                         View All Security Certifications
                       </Link>
@@ -236,7 +236,7 @@ export default function SEOContentBlock({ className = '' }: SEOContentProps) {
                     <li className="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
                       <Link
                         href="/certifications/categories/networking"
-                        className="block py-2 px-3 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 border border-blue-200/50 dark:border-blue-700/50 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/20 dark:hover:to-cyan-900/20 text-blue-700 dark:text-blue-300 font-semibold transition-all duration-200"
+                        className="block py-2 px-3 rounded-lg bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/10 dark:to-cyan-900/10 border border-blue-200/50 dark:border-blue-700/50 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/20 dark:hover:to-cyan-900/20 text-blue-700 dark:text-blue-300 font-semibold transition-all duration-200"
                       >
                         View All Networking Certifications
                       </Link>

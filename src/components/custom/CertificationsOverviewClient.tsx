@@ -80,7 +80,7 @@ export default function CertificationsOverviewClient({
           />
           <Button
             onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white"
+            className="bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white"
           >
             Refresh Page
           </Button>
@@ -101,19 +101,19 @@ export default function CertificationsOverviewClient({
       <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg dark:shadow-slate-900/20 border border-slate-200/60 dark:border-slate-700/60 p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="text-center">
-            <div className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-1">
+            <div className="text-3xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-1">
               {firms.length}
             </div>
             <div className="text-slate-600 dark:text-slate-400">Technology Firms</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-1">
+            <div className="text-3xl font-bold bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-1">
               {totalCertifications}
             </div>
             <div className="text-slate-600 dark:text-slate-400">Total Certifications</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-1">
+            <div className="text-3xl font-bold bg-linear-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-1">
               {Math.round(totalCertifications / firms.length)}
             </div>
             <div className="text-slate-600 dark:text-slate-400">Avg per Firm</div>
@@ -144,7 +144,7 @@ export default function CertificationsOverviewClient({
 
       {/* Results Summary */}
       {(searchTerm || selectedFirm) && (
-        <div className="bg-gradient-to-r from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20 rounded-xl p-4 border border-violet-200/60 dark:border-violet-800/50">
+        <div className="bg-linear-to-r from-violet-50 to-blue-50 dark:from-violet-900/20 dark:to-blue-900/20 rounded-xl p-4 border border-violet-200/60 dark:border-violet-800/50">
           <p className="text-violet-800 dark:text-violet-200">
             Showing {filteredFirms.length} firm{filteredFirms.length !== 1 ? 's' : ''} with{' '}
             {filteredFirms.reduce((sum, firm) => sum + firm.certification_count, 0)} certification
@@ -194,7 +194,7 @@ export default function CertificationsOverviewClient({
                       </CardTitle>
                       <Badge
                         variant="secondary"
-                        className="text-sm bg-gradient-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800/50"
+                        className="text-sm bg-linear-to-r from-violet-100 to-blue-100 dark:from-violet-900/30 dark:to-blue-900/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800/50"
                       >
                         {firm.certification_count} certification
                         {firm.certification_count !== 1 ? 's' : ''}

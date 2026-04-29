@@ -32,7 +32,7 @@ export const FormButton: React.FC<FormButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg';
+        return 'bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg';
       case 'secondary':
         return 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600';
       case 'outline':

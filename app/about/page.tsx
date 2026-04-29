@@ -221,7 +221,7 @@ export default function AboutPage() {
                         <div className="h-12 w-12 bg-violet-100 dark:bg-linear-to-br dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-sm">
                           <stat.icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
                         </div>
-                        <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:bg-gradient-to-r dark:from-slate-100 dark:to-slate-300 dark:bg-clip-text dark:text-transparent mb-2">
+                        <div className="text-2xl md:text-3xl font-bold text-slate-900 dark:bg-linear-to-r dark:from-slate-100 dark:to-slate-300 dark:bg-clip-text dark:text-transparent mb-2">
                           {stat.value}
                         </div>
                         <div className="text-base font-bold text-slate-900 dark:text-slate-50 mb-2">
@@ -407,7 +407,7 @@ export default function AboutPage() {
                           </div>
                         </div>
                         <div className="flex-shrink-0 z-10">
-                          <div className="h-4 w-4 rounded-full bg-violet-600 dark:bg-gradient-to-r dark:from-violet-600 dark:to-blue-600 border-4 border-white dark:border-slate-900 shadow-md"></div>
+                          <div className="h-4 w-4 rounded-full bg-violet-600 dark:bg-linear-to-r dark:from-violet-600 dark:to-blue-600 border-4 border-white dark:border-slate-900 shadow-md"></div>
                         </div>
                         <div className="flex-1"></div>
                       </div>
@@ -503,7 +503,7 @@ export default function AboutPage() {
                     </p>
                     <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
                       <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
-                        <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                        <div className="text-2xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                           Adaptive AI
                         </div>
                         <div className="text-base text-slate-600 dark:text-slate-400">
@@ -511,7 +511,7 @@ export default function AboutPage() {
                         </div>
                       </div>
                       <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
-                        <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                        <div className="text-2xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                           Smart Focus
                         </div>
                         <div className="text-base text-slate-600 dark:text-slate-400">
@@ -519,7 +519,7 @@ export default function AboutPage() {
                         </div>
                       </div>
                       <div className="text-center p-6 bg-white/60 dark:bg-slate-900/60 rounded-lg backdrop-blur-sm">
-                        <div className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                        <div className="text-2xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-2">
                           Personal Engine
                         </div>
                         <div className="text-base text-slate-600 dark:text-slate-400">

@@ -212,7 +212,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight px-2">
-            <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
               {certification.name}
             </span>
           </h1>
@@ -382,7 +382,7 @@ export default function CertificationDetail({ certId, initialData }: Props) {
         )}
 
         {/* Call to Action */}
-        <Card className="bg-gradient-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
+        <Card className="bg-linear-to-r from-violet-600 to-blue-600 text-white mx-4 sm:mx-0 rounded-3xl shadow-2xl overflow-hidden">
           <CardContent className="p-8 sm:p-12 text-center relative">
             {/* Background decoration */}
             <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-white/5"></div>
@@ -440,7 +440,7 @@ function CertificationDetailSkeleton() {
           <div className="flex justify-center mb-4">
             <div className="w-32 h-8 bg-violet-200 dark:bg-violet-800 rounded-full animate-pulse" />
           </div>
-          <div className="w-3/4 h-12 sm:h-16 bg-gradient-to-r from-violet-200 to-blue-200 dark:from-violet-800 dark:to-blue-800 rounded-2xl animate-pulse mx-auto" />
+          <div className="w-3/4 h-12 sm:h-16 bg-linear-to-r from-violet-200 to-blue-200 dark:from-violet-800 dark:to-blue-800 rounded-2xl animate-pulse mx-auto" />
           <div className="w-2/3 h-6 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse mx-auto" />
 
           {/* Stats skeleton */}
@@ -512,7 +512,7 @@ function CertificationDetailSkeleton() {
         </div>
 
         {/* CTA Skeleton */}
-        <div className="bg-gradient-to-r from-violet-600 to-blue-600 rounded-3xl p-8 sm:p-12 text-center mx-4 sm:mx-0">
+        <div className="bg-linear-to-r from-violet-600 to-blue-600 rounded-3xl p-8 sm:p-12 text-center mx-4 sm:mx-0">
           <div className="w-16 h-16 bg-white/20 rounded-2xl animate-pulse mx-auto mb-6" />
           <div className="w-96 h-12 bg-white/20 rounded-2xl animate-pulse mx-auto mb-6" />
           <div className="w-2/3 h-6 bg-white/20 rounded-xl animate-pulse mx-auto mb-8" />

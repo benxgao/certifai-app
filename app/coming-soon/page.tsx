@@ -182,7 +182,7 @@ export default function ComingSoonPage() {
             {/* Hero Section - matching home page style */}
             <div className="text-center max-w-5xl mx-auto">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-4 sm:mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   {featureInfo.feature}
                 </span>
                 <br />
@@ -284,7 +284,7 @@ export default function ComingSoonPage() {
                             type="submit"
                             disabled={isSubmitting}
                             size="lg"
-                            className="h-12 px-6 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                            className="h-12 px-6 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
                           >
                             {isSubmitting ? (
                               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
@@ -318,7 +318,7 @@ export default function ComingSoonPage() {
           <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-                <span className="bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   Don&apos;t Wait
                 </span>
                 <br />
@@ -335,7 +335,7 @@ export default function ComingSoonPage() {
                 <Link href="/signup">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                   >
                     Start Learning Now!
                   </Button>

@@ -169,7 +169,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-50 mb-2 sm:mb-3 leading-tight">
                   {currentContent.title}
                 </h2>
-                <h3 className="text-base sm:text-lg lg:text-xl font-semibold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-3 sm:mb-4 leading-tight">
+                <h3 className="text-base sm:text-lg lg:text-xl font-semibold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-3 sm:mb-4 leading-tight">
                   {currentContent.subtitle}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
@@ -189,7 +189,7 @@ const AuthLeftSection: React.FC<AuthLeftSectionProps> = memo(({ mode }) => {
                     <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-xl group-hover:scale-110 transition-transform duration-300"></div>
 
                     {/* Subtle hover glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-violet-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
 
                     <div className="relative z-10 flex items-center space-x-3 w-full">
                       <div

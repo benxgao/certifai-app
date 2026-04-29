@@ -127,7 +127,7 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
     <Button
       variant="default"
       size="sm"
-      className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+      className="bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
     >
       <Sparkles className="mr-2 h-4 w-4" />
       Stay Updated
@@ -238,7 +238,7 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting || !email.trim()}
-              className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+              className="bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
             >
               {isSubmitting ? (
                 <div className="flex items-center gap-2">

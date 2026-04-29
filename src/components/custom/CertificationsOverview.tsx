@@ -165,7 +165,7 @@ export default function CertificationsOverview() {
       <div className="space-y-8">
         {filteredFirms.map((firm) => (
           <Card key={firm.id} className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+            <CardHeader className="bg-linear-to-r from-blue-50 to-indigo-50 border-b">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div>
@@ -259,7 +259,7 @@ function CertificationsOverviewSkeleton() {
       {/* Firms Skeleton */}
       {[1, 2, 3].map((i) => (
         <Card key={i} className="overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+          <CardHeader className="bg-linear-to-r from-blue-50 to-indigo-50 border-b">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-gray-200 rounded-lg animate-pulse" />
               <div className="space-y-2">

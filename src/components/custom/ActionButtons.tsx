@@ -26,7 +26,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         return (
           <Button
             onClick={onContinueToSignIn}
-            className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
+            className="w-full bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
             size="lg"
           >
             Continue to Sign In
@@ -37,7 +37,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         return (
           <Button
             onClick={onRequestNewLink}
-            className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
+            className="w-full bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
             size="lg"
           >
             Request New Link
@@ -49,7 +49,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
           <div className="space-y-3">
             <Button
               onClick={onRequestNewLink}
-              className="w-full bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
+              className="w-full bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-medium border-0 shadow-md hover:shadow-lg transition-all duration-300 rounded-xl"
               size="lg"
             >
               Get New Link

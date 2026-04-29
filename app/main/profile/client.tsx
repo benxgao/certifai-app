@@ -212,7 +212,7 @@ const ProfileClientPage: React.FC = () => {
           {/* Profile Loading Skeleton */}
           <div className="space-y-6">
             {/* Profile Header Skeleton */}
-            <div className="bg-gradient-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
+            <div className="bg-linear-to-r from-violet-50 to-violet-50 dark:from-violet-950/30 dark:to-violet-900/40 border border-violet-100 dark:border-violet-800/50 rounded-xl p-6">
               <div className="flex items-center space-x-4">
                 <Skeleton className="h-16 w-16 rounded-full" />
                 <div className="space-y-2 flex-1">
@@ -228,7 +228,7 @@ const ProfileClientPage: React.FC = () => {
 
             {/* Profile Content Skeleton */}
             <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-lg rounded-xl overflow-hidden">
-              <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-gradient-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
+              <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 bg-linear-to-r from-slate-25 to-slate-50/50 dark:from-slate-700/50 dark:to-slate-600/30">
                 <Skeleton className="h-8 w-32" />
               </div>
               <div className="p-6 space-y-6">

@@ -191,7 +191,7 @@ export default function ToastDemo() {
         </div>
 
         {/* Style Preview */}
-        <div className="bg-gradient-to-r from-violet-50/80 to-blue-50/80 dark:from-violet-950/20 dark:to-blue-950/20 border border-violet-200/60 dark:border-violet-700/60 rounded-xl p-6">
+        <div className="bg-linear-to-r from-violet-50/80 to-blue-50/80 dark:from-violet-950/20 dark:to-blue-950/20 border border-violet-200/60 dark:border-violet-700/60 rounded-xl p-6">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
             ✨ Enhanced Features
           </h3>

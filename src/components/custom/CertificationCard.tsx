@@ -84,7 +84,7 @@ const CertificationCard = ({
           container:
             'bg-white/90 dark:bg-slate-900/90 border-emerald-200/60 dark:border-emerald-700/60 shadow-lg hover:shadow-xl ring-1 ring-emerald-100/50 dark:ring-emerald-900/20',
           header:
-            'bg-gradient-to-r from-emerald-50/80 to-green-50/60 dark:from-emerald-950/40 dark:to-green-950/30 border-emerald-100 dark:border-emerald-800/50',
+            'bg-linear-to-r from-emerald-50/80 to-green-50/60 dark:from-emerald-950/40 dark:to-green-950/30 border-emerald-100 dark:border-emerald-800/50',
           accent: 'bg-emerald-200/20 dark:bg-emerald-600/10',
           iconBg: 'bg-emerald-50 dark:bg-emerald-900/30',
           iconColor: 'text-emerald-600 dark:text-emerald-400',
@@ -94,7 +94,7 @@ const CertificationCard = ({
           container:
             'bg-white/90 dark:bg-slate-900/90 border-violet-200/60 dark:border-violet-700/60 shadow-lg hover:shadow-xl ring-1 ring-violet-100/50 dark:ring-violet-900/20',
           header:
-            'bg-gradient-to-r from-violet-50/80 to-blue-50/60 dark:from-violet-950/40 dark:to-blue-950/30 border-violet-100 dark:border-violet-800/50',
+            'bg-linear-to-r from-violet-50/80 to-blue-50/60 dark:from-violet-950/40 dark:to-blue-950/30 border-violet-100 dark:border-violet-800/50',
           accent: 'bg-violet-200/20 dark:bg-violet-600/10',
           iconBg: 'bg-violet-50 dark:bg-violet-900/30',
           iconColor: 'text-violet-600 dark:text-violet-400',
@@ -104,7 +104,7 @@ const CertificationCard = ({
           container:
             'bg-white/90 dark:bg-slate-900/90 border-red-200/60 dark:border-red-700/60 shadow-lg hover:shadow-xl ring-1 ring-red-100/50 dark:ring-red-900/20',
           header:
-            'bg-gradient-to-r from-red-50/80 to-rose-50/60 dark:from-red-950/40 dark:to-rose-950/30 border-red-100 dark:border-red-800/50',
+            'bg-linear-to-r from-red-50/80 to-rose-50/60 dark:from-red-950/40 dark:to-rose-950/30 border-red-100 dark:border-red-800/50',
           accent: 'bg-red-200/20 dark:bg-red-600/10',
           iconBg: 'bg-red-50 dark:bg-red-900/30',
           iconColor: 'text-red-600 dark:text-red-400',
@@ -114,7 +114,7 @@ const CertificationCard = ({
           container:
             'bg-white/60 dark:bg-slate-900/60 border-orange-200/60 dark:border-orange-700/60 shadow-md opacity-75 ring-1 ring-orange-100/50 dark:ring-orange-900/20',
           header:
-            'bg-gradient-to-r from-orange-50/80 to-amber-50/60 dark:from-orange-950/40 dark:to-amber-950/30 border-orange-100 dark:border-orange-800/50',
+            'bg-linear-to-r from-orange-50/80 to-amber-50/60 dark:from-orange-950/40 dark:to-amber-950/30 border-orange-100 dark:border-orange-800/50',
           accent: 'bg-orange-200/20 dark:bg-orange-600/10',
           iconBg: 'bg-orange-50 dark:bg-orange-900/30',
           iconColor: 'text-orange-600 dark:text-orange-400',
@@ -124,7 +124,7 @@ const CertificationCard = ({
           container:
             'bg-white/80 dark:bg-slate-900/80 border-slate-200/60 dark:border-slate-700/60 shadow-md hover:shadow-lg ring-1 ring-slate-100/50 dark:ring-slate-900/20',
           header:
-            'bg-gradient-to-r from-slate-50/80 to-slate-100/60 dark:from-slate-800/40 dark:to-slate-700/30 border-slate-100 dark:border-slate-700/50',
+            'bg-linear-to-r from-slate-50/80 to-slate-100/60 dark:from-slate-800/40 dark:to-slate-700/30 border-slate-100 dark:border-slate-700/50',
           accent: 'bg-slate-200/20 dark:bg-slate-600/10',
           iconBg: 'bg-slate-50 dark:bg-slate-800/60',
           iconColor: 'text-slate-600 dark:text-slate-400',
@@ -134,7 +134,7 @@ const CertificationCard = ({
           container:
             'bg-white/90 dark:bg-slate-900/90 border-slate-200/60 dark:border-slate-700/60 shadow-lg hover:shadow-xl',
           header:
-            'bg-gradient-to-r from-slate-50/80 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20 border-slate-100 dark:border-slate-700/50',
+            'bg-linear-to-r from-slate-50/80 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20 border-slate-100 dark:border-slate-700/50',
           accent: 'bg-violet-200/20 dark:bg-violet-600/10',
           iconBg: 'bg-violet-50 dark:bg-violet-900/30',
           iconColor: 'text-violet-600 dark:text-violet-400',
@@ -220,14 +220,14 @@ const CertificationCard = ({
 
       {/* Subtle progress indicator for in-progress certifications */}
       {getCertificationStatus(cert.status) === 'in_progress' && (
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 to-blue-500 opacity-60"></div>
+        <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-violet-500 to-blue-500 opacity-60"></div>
       )}
 
       <div className="relative z-10">
         {/* Enhanced Header with premium gradient */}
         <div
           className={cn(
-            'bg-gradient-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 border-b border-slate-200/80 dark:border-slate-700/60 p-5 sm:p-6 backdrop-blur-sm',
+            'bg-linear-to-r from-slate-50/90 via-white/80 to-violet-50/40 dark:from-slate-800/60 dark:via-slate-700/40 dark:to-violet-950/30 border-b border-slate-200/80 dark:border-slate-700/60 p-5 sm:p-6 backdrop-blur-sm',
             cardVariant.header,
           )}
         >
@@ -271,7 +271,7 @@ const CertificationCard = ({
                       Status
                     </span>
                   </div>
-                  <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-violet-700 to-blue-700 dark:from-violet-400 dark:to-blue-400 bg-clip-text text-transparent leading-tight">
+                  <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-violet-700 to-blue-700 dark:from-violet-400 dark:to-blue-400 bg-clip-text text-transparent leading-tight">
                     {getStatusText(cert.status)}
                   </span>
                 </div>
@@ -286,7 +286,7 @@ const CertificationCard = ({
                       Practice Exams
                     </span>
                   </div>
-                  <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-700 to-green-700 dark:from-emerald-400 dark:to-green-400 bg-clip-text text-transparent leading-tight">
+                  <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-emerald-700 to-green-700 dark:from-emerald-400 dark:to-green-400 bg-clip-text text-transparent leading-tight">
                     {examCount}
                   </span>
                 </div>
@@ -301,7 +301,7 @@ const CertificationCard = ({
                       Started
                     </span>
                   </div>
-                  <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-700 to-teal-700 dark:from-cyan-400 dark:to-teal-400 bg-clip-text text-transparent leading-tight">
+                  <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-cyan-700 to-teal-700 dark:from-cyan-400 dark:to-teal-400 bg-clip-text text-transparent leading-tight">
                     {new Date(cert.assigned_at).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
