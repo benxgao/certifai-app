@@ -1,6 +1,6 @@
 import { test, expect } from './fixtures/auth';
 import type { Page } from '@playwright/test';
-import { deleteFirstExam, handleExamCreation } from './helpers/exams';
+import { deleteFirstExam, handleExamCreation, enterExamAndSubmit } from './helpers/exams';
 
 type TestFixtures = {
   authenticatedPage: Page;
@@ -368,6 +368,9 @@ test.describe('Exam Flows', () => {
 
       // ===== STEP 4: Create a new exam (no-certs path) =====
       await handleExamCreation(authenticatedPage, testName);
+
+      // ===== STEP 5: Enter the exam and submit =====
+      await enterExamAndSubmit(authenticatedPage, testName);
     } else {
       // If user already has registered certs, use the first one
       console.log(`${testName} → User has registered certs, using first one...`);
@@ -463,6 +466,9 @@ test.describe('Exam Flows', () => {
 
       // ===== STEP 4: Create a new exam (existing-certs path) =====
       await handleExamCreation(authenticatedPage, testName);
+
+      // ===== STEP 5: Enter the exam and submit =====
+      await enterExamAndSubmit(authenticatedPage, testName);
     }
   });
 
