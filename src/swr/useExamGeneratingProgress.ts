@@ -10,6 +10,7 @@
 import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
 import { ExamGeneratingProgressData } from '@/src/types/swr-data/useExamGeneratingProgress';
+import { BackendExamStatus } from '../types/exam-status';
 
 export type { ExamGeneratingProgressData } from '@/src/types/swr-data/useExamGeneratingProgress';
 
@@ -22,8 +23,8 @@ interface ExamGeneratingProgressResponse {
 export function useExamGeneratingProgress(apiUserId: string, examId: string, examStatus?: string) {
   // Keep polling while exam is generating OR while it's in finalization phase
   // Only stop when exam status changes to READY or another terminal state
-  const isGenerating = examStatus === 'QUESTIONS_GENERATING';
-  const isReady = examStatus === 'READY';
+  const isGenerating = examStatus === BackendExamStatus.QUESTIONS_GENERATING;
+  const isReady = examStatus === BackendExamStatus.READY;
   const shouldFetch = Boolean(apiUserId && examId && isGenerating && !isReady);
   const key = shouldFetch ? `/api/users/${apiUserId}/exams/${examId}/generating-progress` : null;
 

@@ -4,10 +4,13 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { FaEdit, FaTimes } from 'react-icons/fa';
 import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGenerationProgressBar';
+import { ExamState } from '@/src/swr/exams';
+import { BackendExamStatus } from '@/src/types/exam-status';
+import { ExamGenerationProgressUI } from '@/src/types/swr-data/exams';
 
 interface ExamEmptyStateProps {
-  examState: any;
-  generationProgress: any;
+  examState: ExamState | undefined;
+  generationProgress: ExamGenerationProgressUI | null;
   shouldShowCheckButton: boolean;
   isValidatingExamState: boolean;
   onForceStatusCheck: () => void;
@@ -22,7 +25,7 @@ export const ExamEmptyState: React.FC<ExamEmptyStateProps> = ({
 }) => {
   return (
     <div className="text-center py-12 mt-6 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-xl shadow-lg border border-slate-200/60 dark:border-slate-700/60">
-      {examState?.exam_status === 'QUESTIONS_GENERATING' ? (
+      {examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING ? (
         <>
           <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
           <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
@@ -73,7 +76,7 @@ export const ExamEmptyState: React.FC<ExamEmptyStateProps> = ({
             </div>
           )}
         </>
-      ) : examState?.exam_status === 'QUESTION_GENERATION_FAILED' ? (
+      ) : examState?.exam_status === BackendExamStatus.QUESTION_GENERATION_FAILED ? (
         <>
           <FaTimes className="w-8 h-8 text-red-600 dark:text-red-400 mx-auto mb-4" />
           <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
@@ -83,7 +86,7 @@ export const ExamEmptyState: React.FC<ExamEmptyStateProps> = ({
             Please try refreshing the page or contact support if the issue persists.
           </p>
         </>
-      ) : examState?.exam_status === 'PENDING_QUESTIONS' ? (
+      ) : examState?.exam_status === BackendExamStatus.PENDING_QUESTIONS ? (
         <>
           <div className="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <FaEdit className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />

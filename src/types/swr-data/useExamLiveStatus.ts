@@ -1,4 +1,5 @@
 // === Exam Live Status API Response Types ===
+import type { BackendExamStatus } from '../exam-status';
 
 /**
  * Real-time exam status data returned from the live-status endpoint
@@ -6,7 +7,7 @@
  */
 export interface ExamLiveStatusData {
   exam_id: string;
-  exam_status: string;
+  exam_status: BackendExamStatus;
   progress_percentage: number;
   topics_with_questions: number;
   total_topics: number;

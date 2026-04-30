@@ -9,7 +9,7 @@ import Breadcrumb from '@/components/custom/Breadcrumb';
 interface ExamErrorStateProps {
   certId: number | null;
   examId: string | null;
-  error: any;
+  error: Error | undefined;
 }
 
 export const ExamErrorState: React.FC<ExamErrorStateProps> = ({ certId, examId, error }) => {
