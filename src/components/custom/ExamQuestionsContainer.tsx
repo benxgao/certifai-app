@@ -4,17 +4,18 @@ import React from 'react';
 import { Question } from '@/swr/questions';
 import { QuestionCard } from './QuestionCard';
 import { ExamBottomNavigation } from './ExamBottomNavigation';
+import { PaginationInfo } from '@/src/swr/utils';
 
 interface ExamQuestionsContainerProps {
   questions: Question[];
-  pagination: any;
+  pagination: PaginationInfo | undefined;
   pageSize: number;
   submittedAt: number | null;
   isAnswering: boolean;
   isSubmittingExamFlag: boolean;
   isNavigatingPage: boolean;
   isLoadingQuestions: boolean;
-  submitError: any;
+  submitError: Error | undefined;
   onOptionChange: (questionId: string, optionId: string) => void;
   isCorrectOption: (question: Question, optionId: string) => boolean;
   onPreviousPage: () => void;

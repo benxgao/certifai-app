@@ -10,12 +10,15 @@ import {
   DashboardCardContent,
 } from '@/src/components/ui/dashboard-card';
 import { StatusBadge } from '@/src/components/ui/status-badge';
+import { ExamState } from '@/src/swr/exams';
+import { PaginationInfo } from '@/src/swr/utils';
+import { BackendExamStatus } from '@/src/types/exam-status';
 
 interface ExamStatusCardProps {
-  examState: any;
+  examState: ExamState | undefined;
   submittedAt: number | null;
   score: number | null;
-  pagination: any;
+  pagination: PaginationInfo | undefined;
   examId: string | null;
 }
 
@@ -49,13 +52,13 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
                     : 'completed'
                 }
               />
-            ) : examState?.exam_status === 'QUESTIONS_GENERATING' ? (
+            ) : examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING ? (
               <StatusBadge status="generating" />
-            ) : examState?.exam_status === 'QUESTION_GENERATION_FAILED' ? (
+            ) : examState?.exam_status === BackendExamStatus.QUESTION_GENERATION_FAILED ? (
               <StatusBadge status="generation_failed" />
-            ) : examState?.exam_status === 'READY' ? (
+            ) : examState?.exam_status === BackendExamStatus.READY ? (
               <StatusBadge status="ready" />
-            ) : examState?.exam_status === 'PENDING_QUESTIONS' ? (
+            ) : examState?.exam_status === BackendExamStatus.PENDING_QUESTIONS ? (
               <StatusBadge status="pending" />
             ) : (
               <StatusBadge status="in_progress" />

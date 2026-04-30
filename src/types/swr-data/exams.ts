@@ -97,7 +97,7 @@ export interface ExamDetailData {
   exam_id: string;
   api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
-  exam_status: string;
+  exam_status: BackendExamStatus;
   total_questions: number;
   score: number | null;
   token_cost: number;
@@ -193,6 +193,25 @@ export interface ExamDeleteData {
  * data?.data resolves to this type
  */
 export type SwrDataApiExamDeleteResponse = ExamDeleteData;
+
+// === UI State Types ===
+
+/**
+ * Generation progress shape used by exam page UI components
+ * Derived from ExamLiveStatusData in useExamPageLogic
+ */
+export interface ExamGenerationProgressUI {
+  completionPercentage: number;
+  estimatedTimeRemaining: number; // milliseconds
+  isLikelyComplete: boolean;
+  stage: string; // ExamGenerationStage value
+  realProgress: {
+    currentBatch: number;
+    totalBatches: number;
+    questionsGenerated: number;
+    targetQuestions: number;
+  };
+}
 
 // === Request/Input Types ===
 

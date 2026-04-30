@@ -375,7 +375,25 @@ export type { ExamAnswerSubmission } from '@/src/types/swr-data/exams';
 - [x] Add required imports for new types (`BackendExamStatus` in `ExamCard.tsx`)
 - [x] Verify TypeScript compilation: `npx tsc --noEmit`
 
-### Phase 4: Verification
+### Phase 5: Extended Type Enforcement (components and derived types)
+
+- [x] Update `ExamLiveStatusData.exam_status` from `string` to `BackendExamStatus`
+- [x] Update `ExamDetailData.exam_status` from `string` to `BackendExamStatus`
+- [x] Add `ExamGenerationProgressUI` interface to `src/types/swr-data/exams.ts`
+- [x] Replace string literals in `useExamLiveStatus.ts` with `BackendExamStatus` enum
+- [x] Replace string literals in `useExamGeneratingProgress.ts` with `BackendExamStatus` enum
+- [x] Replace string literals in `useExamPageLogic.ts` with `BackendExamStatus` enum
+- [x] Fix `submissionResult: any` in `useExamPageLogic.ts` with proper union type
+- [x] Fix `error: any` catch in `useExamPageLogic.ts`
+- [x] Update `ExamEmptyState.tsx`: type `examState`, `generationProgress`; use enum
+- [x] Update `ExamStatusCard.tsx`: type `examState`, `pagination`; use enum
+- [x] Update `ExamOverview.tsx`: switch from `PaginationMeta` to `PaginationInfo`
+- [x] Update `ExamBottomNavigation.tsx`: type `pagination` as `PaginationInfo`
+- [x] Update `ExamErrorState.tsx`: type `error` as `Error | undefined`
+- [x] Update `ExamQuestionsContainer.tsx`: type `pagination`, `submitError`
+- [x] Update `QuestionCard.tsx`: type `pagination`, `submitError`
+
+### Phase 6: Verification
 
 - [ ] Run TypeScript compiler: `npx tsc --noEmit 2>&1 | grep "^src/"`
 - [ ] Grep for remaining `any` in exam-related code

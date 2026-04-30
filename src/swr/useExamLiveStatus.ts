@@ -1,6 +1,7 @@
 import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
 import { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
+import { BackendExamStatus } from '../types/exam-status';
 
 export type { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
 
@@ -71,9 +72,9 @@ export function useExamLiveStatus(
     /**
      * Convenience methods for common status checks
      */
-    isGenerating: data?.data?.exam_status === 'QUESTIONS_GENERATING',
-    isReady: data?.data?.exam_status === 'READY',
-    isFailed: data?.data?.exam_status === 'QUESTION_GENERATION_FAILED',
+    isGenerating: data?.data?.exam_status === BackendExamStatus.QUESTIONS_GENERATING,
+    isReady: data?.data?.exam_status === BackendExamStatus.READY,
+    isFailed: data?.data?.exam_status === BackendExamStatus.QUESTION_GENERATION_FAILED,
     progressPercent: data?.data?.progress_percentage ?? 0,
   };
 }

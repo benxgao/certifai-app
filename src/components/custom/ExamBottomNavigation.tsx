@@ -3,9 +3,10 @@
 import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa';
 import { ActionButton } from './ActionButton';
+import { PaginationInfo } from '@/src/swr/utils';
 
 interface ExamBottomNavigationProps {
-  pagination: any;
+  pagination: PaginationInfo | undefined;
   submittedAt: number | null;
   isLoadingQuestions: boolean;
   isAnswering: boolean;

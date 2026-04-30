@@ -16,16 +16,17 @@ import {
   DashboardCardHeader,
   DashboardCardContent,
 } from '@/src/components/ui/dashboard-card';
+import { PaginationInfo } from '@/src/swr/utils';
 
 interface QuestionCardProps {
   question: Question;
   index: number;
-  pagination: any;
+  pagination: PaginationInfo | undefined;
   pageSize: number;
   submittedAt: number | null;
   isAnswering: boolean;
   isSubmittingExamFlag: boolean;
-  submitError: any;
+  submitError: Error | undefined;
   onOptionChange: (questionId: string, optionId: string) => void;
   isCorrectOption: (question: Question, optionId: string) => boolean;
 }
