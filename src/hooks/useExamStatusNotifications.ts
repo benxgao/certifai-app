@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { toastHelpers } from '@/src/lib/toast';
+import { ExamState } from '@/src/swr/exams';
+import { BackendExamStatus } from '@/src/types/exam-status';
 
 /**
  * Hook to detect exam status changes and provide user feedback
  * Particularly useful for detecting when generation completes
  */
-export function useExamStatusNotifications(examState: any) {
-  const previousStatusRef = useRef<string | null>(null);
+export function useExamStatusNotifications(examState: ExamState | null | undefined) {
+  const previousStatusRef = useRef<BackendExamStatus | null>(null);
   const notificationShownRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -15,8 +17,8 @@ export function useExamStatusNotifications(examState: any) {
 
     // Detect when exam generation completes
     if (
-      previousStatus === 'QUESTIONS_GENERATING' &&
-      currentStatus === 'READY' &&
+      previousStatus === BackendExamStatus.QUESTIONS_GENERATING &&
+      currentStatus === BackendExamStatus.READY &&
       !notificationShownRef.current
     ) {
       // Show success notification
@@ -45,8 +47,8 @@ export function useExamStatusNotifications(examState: any) {
 
     // Detect generation failure
     if (
-      previousStatus === 'QUESTIONS_GENERATING' &&
-      currentStatus === 'QUESTION_GENERATION_FAILED'
+      previousStatus === BackendExamStatus.QUESTIONS_GENERATING &&
+      currentStatus === BackendExamStatus.QUESTION_GENERATION_FAILED
     ) {
       toastHelpers.error.examCreationFailed(
         'Exam generation failed. Please try creating a new exam.',
@@ -54,11 +56,14 @@ export function useExamStatusNotifications(examState: any) {
     }
 
     // Reset notification flag if user starts a new generation
-    if (currentStatus === 'QUESTIONS_GENERATING' && previousStatus !== 'QUESTIONS_GENERATING') {
+    if (
+      currentStatus === BackendExamStatus.QUESTIONS_GENERATING &&
+      previousStatus !== BackendExamStatus.QUESTIONS_GENERATING
+    ) {
       notificationShownRef.current = false;
     }
 
-    previousStatusRef.current = currentStatus;
+    previousStatusRef.current = currentStatus ?? null;
   }, [examState?.exam_status]);
 
   // Return utility to manually reset notifications (useful for testing)

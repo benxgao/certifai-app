@@ -10,8 +10,9 @@ export interface UserProfileResponse {
 }
 
 export interface UpdateProfileData {
-  // Add any fields that can be updated through the profile API
-  [key: string]: any;
+  displayName?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 /**

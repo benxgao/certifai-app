@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react';
+import { ExamListItem } from '@/src/swr/exams';
+import { BackendExamStatus } from '@/src/types/exam-status';
 
 /**
  * Hook to monitor exams list for generation status and enable simple polling
  * This helps keep the exam list updated when exams are generating
  */
 export function useExamListGenerationMonitor(
-  exams: any[] | undefined,
+  exams: ExamListItem[] | undefined,
   mutateExams: () => void,
   isLoading: boolean,
 ) {
@@ -16,7 +18,9 @@ export function useExamListGenerationMonitor(
     if (!exams || isLoading) return;
 
     // Count exams that are currently generating
-    const generatingExams = exams.filter((exam) => exam.exam_status === 'QUESTIONS_GENERATING');
+    const generatingExams = exams.filter(
+      (exam) => exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING,
+    );
     const generatingCount = generatingExams.length;
 
     // Clear existing interval
@@ -60,6 +64,7 @@ export function useExamListGenerationMonitor(
 
   return {
     generatingCount:
-      exams?.filter((exam) => exam.exam_status === 'QUESTIONS_GENERATING').length || 0,
+      exams?.filter((exam) => exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING).length ||
+      0,
   };
 }

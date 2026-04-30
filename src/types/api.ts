@@ -30,6 +30,16 @@ export interface ApiErrorResponse {
   error: string;
 }
 
+/**
+ * Extended Error type for HTTP/API errors returned by SWR hooks
+ * Includes additional properties commonly present on fetch-based errors
+ */
+export interface ApiError extends Error {
+  status?: number;
+  response?: { status?: number };
+  code?: string;
+}
+
 // Legacy pagination format for backward compatibility
 export interface LegacyPaginationInfo {
   currentPage: number;

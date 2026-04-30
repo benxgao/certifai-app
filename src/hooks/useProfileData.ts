@@ -2,13 +2,15 @@
 
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
+import { UserProfile } from '@/src/swr/profile';
+import { ApiError } from '@/src/types/api';
 
 export interface ProfileData {
   userId: string | null;
-  profile: any;
+  profile: UserProfile | null;
   isLoading: boolean;
   isError: boolean;
-  error: any;
+  error: ApiError | undefined;
   mutate: () => void;
   displayName: string;
   email: string | null;

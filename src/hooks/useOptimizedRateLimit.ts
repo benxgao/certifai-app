@@ -1,5 +1,6 @@
 import { useRateLimitFromExams } from './useRateLimitFromExams';
-import { useAllUserExams } from '@/src/swr/exams';
+import { useAllUserExams, ExamListItem } from '@/src/swr/exams';
+import { ExamRateLimitData } from '@/src/types/swr-data/exams';
 
 // Re-export the type for backward compatibility
 export type { RateLimitInfo } from '@/src/lib/rateLimitUtils';
@@ -17,10 +18,10 @@ export type { RateLimitInfo } from '@/src/lib/rateLimitUtils';
  */
 export function useOptimizedRateLimit(
   apiUserId: string | null,
-  examData?: any[],
-  rateLimit?: any,
+  examData?: ExamListItem[],
+  rateLimit?: ExamRateLimitData,
   isLoading?: boolean,
-  mutateExams?: () => Promise<any>,
+  mutateExams?: () => Promise<unknown>,
 ) {
   // Try to get rate limit from all user exams if no specific data is provided
   const {
