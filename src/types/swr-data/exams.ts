@@ -1,4 +1,5 @@
 // === Exams API Response Types ===
+import type { BackendExamStatus } from '../exam-status';
 
 /**
  * Certification details embedded within exam data
@@ -35,7 +36,7 @@ export interface ExamListItemData {
   exam_id: string;
   api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
-  exam_status?: string; // Database exam status
+  exam_status?: BackendExamStatus; // Database exam status
   score: number | null;
   token_cost: number;
   total_questions: number;

@@ -1,18 +1,9 @@
 import { useAuthSWR } from './useAuthSWR';
 import { useAuthMutation } from './useAuthMutation';
+import { UserProfileData } from '@/src/types/swr-data/profile';
 
-export interface UserProfile {
-  api_user_id: string; // Our internal UUID for API operations
-  firebase_user_id: string; // Firebase UID for reference
-  first_name?: string;
-  last_name?: string;
-  credit_tokens: number;
-  energy_tokens: number;
-  created_at: string;
-  updated_at: string;
-  // Deprecated: keeping for backward compatibility only
-  user_id?: string; // @deprecated Use api_user_id instead
-}
+// Type aliases for backward compatibility
+export type UserProfile = UserProfileData;
 
 export interface UserProfileResponse {
   data: UserProfile;

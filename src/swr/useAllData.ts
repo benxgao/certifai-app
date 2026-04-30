@@ -1,16 +1,9 @@
 import useSWR from 'swr';
 import { fetchAllFirms, fetchAllCertifications } from '../lib/pagination-utils';
+import { FirmWithCertificationsData } from '@/src/types/swr-data/useAllData';
 
-interface FirmWithCertifications {
-  id: number;
-  code: string;
-  name: string;
-  description: string;
-  website_url: string;
-  logo_url: string;
-  certification_count: number;
-  certifications: any[];
-}
+// Type alias for backward compatibility
+type FirmWithCertifications = FirmWithCertificationsData;
 
 /**
  * Custom hook to fetch all firms with their certifications
@@ -39,9 +32,19 @@ export function useAllFirmsWithCertifications() {
         website_url: firm.website_url || '',
         logo_url: firm.logo_url || '',
         certification_count: firm._count?.certifications || 0,
-        certifications: allCertifications.filter(
-          (cert: any) => (cert.firm?.firm_id || cert.firm_id) === firm.firm_id,
-        ),
+        certifications: allCertifications
+          .filter((cert: any) => (cert.firm?.firm_id || cert.firm_id) === firm.firm_id)
+          .map((cert: any) => ({
+            cert_id: cert.cert_id,
+            firm_id: cert.firm_id,
+            name: cert.name,
+            description: cert.description || '',
+            exam_guide_url: cert.exam_guide_url,
+            min_quiz_counts: cert.min_quiz_counts,
+            max_quiz_counts: cert.max_quiz_counts,
+            pass_score: cert.pass_score,
+            created_at: cert.created_at || new Date().toISOString(),
+          })),
       }));
 
       return firmsWithCerts;

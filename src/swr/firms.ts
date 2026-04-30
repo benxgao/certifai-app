@@ -2,33 +2,11 @@ import useSWR from 'swr';
 import { useAuthSWR } from './useAuthSWR';
 import { PaginatedApiResponse, ApiResponse } from '../types/api';
 import { fetchAllFirms, fetchAllCertificationsByFirm } from '../lib/pagination-utils';
+import { FirmData, CertificationByFirmData } from '@/src/types/swr-data/firms';
 
-// Define the type for a firm
-export interface Firm {
-  firm_id: number;
-  name: string;
-  code: string;
-  description: string;
-  website_url: string | null;
-  logo_url: string | null;
-  created_at: string;
-  updated_at: string;
-  _count?: {
-    certifications: number;
-  };
-}
-
-// Define the type for certification data associated with a firm
-export interface CertificationByFirm {
-  cert_id: number;
-  firm_id: number;
-  name: string;
-  exam_guide_url: string;
-  min_quiz_counts: number;
-  max_quiz_counts: number;
-  pass_score: number;
-  firm?: Firm;
-}
+// Type aliases for backward compatibility
+export type Firm = FirmData;
+export type CertificationByFirm = CertificationByFirmData;
 
 /**
  * Hook to fetch all firms with optional certification counts
