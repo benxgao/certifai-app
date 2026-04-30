@@ -202,7 +202,6 @@ export type SwrDataApiExamDeleteResponse = ExamDeleteData;
 export interface UserAnswer {
   question_id: string;
   selected_option_id: string;
-  [key: string]: any;
 }
 
 /**
@@ -211,5 +210,4 @@ export interface UserAnswer {
  */
 export interface ExamAnswerSubmission {
   answers?: UserAnswer[];
-  [key: string]: any;
 }
