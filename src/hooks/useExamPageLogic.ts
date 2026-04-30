@@ -14,11 +14,14 @@ import { useExamState } from '@/src/swr/exams';
 import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
 import { toastHelpers } from '@/src/lib/toast';
-import { BackendExamStatus } from '@/src/types/exam-status';
+import { BackendExamStatus, ExamGenerationStage } from '@/src/types/exam-status';
 import { ExamSubmitData, ExamGenerationProgressUI } from '@/src/types/swr-data/exams';
 import { ApiResponse } from '@/src/types/api';
 
-type SubmissionResult = (ApiResponse<ExamSubmitData> & { error?: string }) | { error: string } | null;
+type SubmissionResult =
+  | (ApiResponse<ExamSubmitData> & { error?: never })
+  | { error: string; success?: false }
+  | null;
 
 export const useExamPageLogic = () => {
   const params = useParams();
@@ -80,7 +83,7 @@ export const useExamPageLogic = () => {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000, // Convert to milliseconds
           isLikelyComplete: liveStatus.is_complete, // True when fully complete
-          stage: liveStatus.is_complete ? 'complete' : 'generating',
+          stage: liveStatus.is_complete ? ExamGenerationStage.Complete : ExamGenerationStage.Generating,
           realProgress: {
             currentBatch: Math.ceil(
               (liveStatus.topics_with_questions / liveStatus.total_topics) * 5,
