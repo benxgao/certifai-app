@@ -3,12 +3,13 @@ import { useRouter } from 'next/navigation';
 import { ActionButton } from './ActionButton';
 import EnhancedCertificationCard from './CertificationCard';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
-import { UserRegisteredCertification, useUnregisterCertification } from '@/swr/certifications';
+import {  useUnregisterCertification } from '@/swr/certifications';
 import { FaCertificate } from 'react-icons/fa';
 import { UserCertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { AlertMessage } from './AlertMessage';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { toastHelpers } from '@/src/lib/toast';
+import { UserRegisteredCertification } from '@/src/types/swr-data/certifications';
 
 const CertificationsSection = () => {
   const router = useRouter();

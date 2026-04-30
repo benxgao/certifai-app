@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ActionButton } from './ActionButton';
-import { UserRegisteredCertification } from '@/swr/certifications';
 import { FaBookOpen, FaTrophy, FaPlay, FaTrash, FaChartLine } from 'react-icons/fa';
 import { useExamCountForCertification } from '@/src/hooks/useExamCounts';
 import { cn } from '@/src/lib/utils';
@@ -11,6 +10,7 @@ import { DeleteIconButton } from './DeleteIconButton';
 import { CustomAccordion } from './CustomAccordion';
 import { CertSummary } from './CertSummary';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { UserRegisteredCertification } from '@/src/types/swr-data/certifications';
 
 interface CertificationCardProps {
   cert: UserRegisteredCertification;

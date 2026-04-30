@@ -1,11 +1,38 @@
+/**
+ * Input type for creating a new certification
+ * Used by POST /api/public/certifications
+ */
+export interface CertificationInput {
+  name: string;
+}
 
-// === Certification API Response Types ===
+/**
+ * Input type for registering a user for a certification
+ * Used by POST /api/users/:user_id/certifications
+ */
+export interface UserCertificationRegistrationInput {
+  certificationId: number;
+}
+
+/**
+ * Generic response type for certification mutation operations (POST/DELETE)
+ * Used by register, unregister, and other mutation operations
+ */
+export interface CertificationMutationResponse {
+  id?: string;
+  message?: string;
+  cert_id?: number;
+  status?: string;
+  assigned_at?: string;
+  updated_at?: string;
+  [key: string]: any;
+}
 
 /**
  * Data structure for a single certification item from GET /api/public/certifications
  * This matches the CertificationListItem in certifications.ts
  */
-export interface CertificationListItemData {
+export interface CertificationListItem {
   cert_id: number;
   firm_id: number;
   name: string;
@@ -26,17 +53,10 @@ export interface CertificationListItemData {
 }
 
 /**
- * Response data type for GET /api/public/certifications (list all certifications)
- * data?.data resolves to this type
- */
-export type SwrDataApiCertificationsListResponse = CertificationListItemData[];
-
-/**
  * Data structure for a certification when registered by a user
  * From GET /api/users/:user_id/certifications
- * This matches the UserRegisteredCertification in certifications.ts
  */
-export interface UserRegisteredCertificationData {
+export interface UserRegisteredCertification {
   api_user_id: string;
   cert_id: number;
   status: string;
@@ -52,12 +72,6 @@ export interface UserRegisteredCertificationData {
     pass_score: number;
   };
 }
-
-/**
- * Response data type for GET /api/users/:user_id/certifications
- * data?.data resolves to this type
- */
-export type SwrDataApiUserCertificationsResponse = UserRegisteredCertificationData[];
 
 /**
  * Data structure for detailed certification info
@@ -95,29 +109,3 @@ export interface CertificationDetailData {
     pass_score: number;
   }>;
 }
-
-/**
- * Response data type for GET /api/public/certifications/:certId (certification detail)
- * data?.data resolves to this type
- */
-export type SwrDataApiCertificationDetailResponse = CertificationDetailData;
-
-/**
- * Generic response type for certification mutation operations (POST/DELETE)
- * Used by register, unregister, and other mutation operations
- */
-export interface CertificationMutationResponseData {
-  id?: string;
-  message?: string;
-  cert_id?: number;
-  status?: string;
-  assigned_at?: string;
-  updated_at?: string;
-  [key: string]: any;
-}
-
-/**
- * Response data type for certification mutations (register, unregister, etc.)
- * data?.data resolves to this type
- */
-export type SwrDataApiCertificationMutationResponse = CertificationMutationResponseData;

@@ -7,13 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 import { FaList, FaTh } from 'react-icons/fa';
 import { useAllAuthenticatedFirms } from '@/swr/firms';
-import { useAllAvailableCertifications, CertificationListItem } from '@/swr/certifications';
+import { useAllAvailableCertifications } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/src/lib/utils';
 import { AlertMessage } from './AlertMessage';
 import CertificationSearchControls from './CertificationSearchControls';
+import { CertificationListItem } from '@/src/types/swr-data/certifications';
 
 interface EnhancedFirmNavigationProps {
   onRegister: (cert: CertificationListItem) => void;

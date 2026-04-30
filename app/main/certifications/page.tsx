@@ -9,8 +9,6 @@ import { toastHelpers } from '@/src/lib/toast';
 import {
   useAllAvailableCertifications,
   useRegisterUserForCertification,
-  CertificationListItem,
-  UserCertificationRegistrationInput,
 } from '@/swr/certifications';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
@@ -18,6 +16,7 @@ import Breadcrumb from '@/components/custom/Breadcrumb';
 import EnhancedFirmNavigation from '@/components/custom/EnhancedFirmNavigation';
 import { CertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
+import { CertificationListItem, UserCertificationRegistrationInput } from '@/src/types/swr-data/certifications';
 
 export default function CertificationsPage() {
   const router = useRouter();

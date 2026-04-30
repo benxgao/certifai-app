@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useUserRegisteredCertifications, UserRegisteredCertification } from '@/swr/certifications';
+import { useUserRegisteredCertifications } from '@/swr/certifications';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
+import { UserRegisteredCertification } from '../types/swr-data/certifications';
 
 interface UserCertificationsContextType {
   userCertifications: UserRegisteredCertification[] | undefined;

@@ -7,11 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter } from 'next/navigation';
 import { FaAward, FaGraduationCap, FaBuilding, FaCertificate } from 'react-icons/fa';
 import { useAuthenticatedFirms } from '@/swr/firms';
-import { useAllAvailableCertifications, CertificationListItem } from '@/swr/certifications';
+import { useAllAvailableCertifications } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { linkifyText } from '@/src/lib/text-utils';
 import { AlertMessage } from './AlertMessage';
+import { CertificationListItem } from '@/src/types/swr-data/certifications';
 
 interface FirmTabsProps {
   onRegister: (cert: CertificationListItem) => void;

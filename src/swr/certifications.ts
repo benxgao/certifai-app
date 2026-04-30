@@ -4,65 +4,13 @@ import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { PaginatedApiResponse } from '../types/api';
 import { fetchAllCertifications } from '../lib/pagination-utils';
-
-// Define the type for the certification data you expect to send
-export interface CertificationInput {
-  name: string;
-}
-
-// Define the type for registering a user for a certification
-export interface UserCertificationRegistrationInput {
-  certificationId: number;
-}
-
-// Define the type for the expected response (optional, but good practice)
-export interface CertificationResponse {
-  // Example: Adjust based on what your API returns upon successful creation
-  id: string;
-  message?: string;
-  [key: string]: any;
-}
-
-// Define the type for a single certification item in the list
-export interface CertificationListItem {
-  cert_id: number;
-  firm_id: number;
-  // cert_category_id: number;
-  name: string;
-  exam_guide_url: string;
-  min_quiz_counts: number;
-  max_quiz_counts: number;
-  pass_score: number;
-  firm?: {
-    firm_id: number;
-    name: string;
-    code: string;
-    description: string;
-    website_url: string | null;
-    logo_url: string | null;
-    created_at: string;
-    updated_at: string;
-  };
-}
-
-export interface UserRegisteredCertification {
-  api_user_id: string; // Our internal UUID for API operations
-  cert_id: number;
-  status: string;
-  assigned_at: string;
-  updated_at: string;
-  // Deprecated: keeping for backward compatibility only
-  user_id?: string; // @deprecated Use api_user_id instead
-  certification: {
-    cert_id: number;
-    // cert_category_id: number;
-    name: string;
-    exam_guide_url: string;
-    min_quiz_counts: number;
-    max_quiz_counts: number;
-    pass_score: number;
-  };
-}
+import {
+  CertificationInput,
+  CertificationMutationResponse,
+  CertificationListItem,
+  UserCertificationRegistrationInput,
+  UserRegisteredCertification,
+} from '../types/swr-data/certifications';
 
 // Fetcher function for registering certifications with auth refresh support
 async function registerCertificationFetcher(
@@ -74,7 +22,7 @@ async function registerCertificationFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<CertificationResponse> {
+): Promise<CertificationMutationResponse> {
   const { refreshToken, ...certificationData } = arg;
 
   let response = await fetch('/api/public/certifications', {
@@ -244,7 +192,7 @@ async function registerUserForCertificationFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<CertificationResponse> {
+): Promise<CertificationMutationResponse> {
   const { apiUserId, certificationId, refreshToken } = arg;
   const url = `/api/users/${apiUserId}/certifications`;
 
@@ -366,7 +314,7 @@ async function unregisterCertificationFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<CertificationResponse> {
+): Promise<CertificationMutationResponse> {
   const { apiUserId, certificationId, refreshToken } = arg;
   const url = `/api/users/${apiUserId}/certifications?cert_id=${certificationId}`;
 
@@ -432,3 +380,4 @@ export function useUnregisterCertification(apiUserId: string | null) {
     resetUnregistration: reset,
   };
 }
+
