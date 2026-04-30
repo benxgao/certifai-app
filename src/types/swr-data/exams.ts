@@ -195,6 +195,7 @@ export interface ExamDeleteData {
 export type SwrDataApiExamDeleteResponse = ExamDeleteData;
 
 // === UI State Types ===
+import { ExamGenerationStage } from '../exam-status';
 
 /**
  * Generation progress shape used by exam page UI components
@@ -204,7 +205,7 @@ export interface ExamGenerationProgressUI {
   completionPercentage: number;
   estimatedTimeRemaining: number; // milliseconds
   isLikelyComplete: boolean;
-  stage: string; // ExamGenerationStage value
+  stage: ExamGenerationStage;
   realProgress: {
     currentBatch: number;
     totalBatches: number;
