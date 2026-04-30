@@ -186,7 +186,7 @@ async function submitExamFetcher(
 export function useSubmitExam() {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error } = useSWRMutation(
+  const { trigger, isMutating, error } = useSWRMutation<ApiResponse<ExamSubmitData>, Error>(
     'SUBMIT_EXAM', // Static key for this type of mutation
     submitExamFetcher,
   );
@@ -258,7 +258,7 @@ async function deleteExamFetcher(
 export function useDeleteExam() {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error } = useSWRMutation(
+  const { trigger, isMutating, error } = useSWRMutation<ApiResponse<ExamDeleteData>, Error>(
     'DELETE_EXAM', // Static key for this type of mutation
     deleteExamFetcher,
   );
@@ -328,7 +328,7 @@ export function useExamState(
     shouldRetryOnError: (error) => {
       // Don't retry if we have a successful response with stable status
       const examStatus = data?.data?.exam_status || data?.data?.status;
-      if (examStatus && examStatus !== 'QUESTIONS_GENERATING') {
+      if (examStatus && examStatus !== BackendExamStatus.QUESTIONS_GENERATING) {
         return false;
       }
       return true;

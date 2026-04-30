@@ -11,6 +11,7 @@ import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGeneratio
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
 import {
+  BackendExamStatus,
   DerivedExamStatus,
   getDerivedExamStatus,
   getExamStatusInfo,
@@ -57,7 +58,7 @@ export const ExamCard = memo(function ExamCard({
   const { liveStatus } = useExamLiveStatus(
     apiUserId || null,
     exam.exam_id || null,
-    exam.exam_status === 'QUESTIONS_GENERATING', // Poll only during active generation
+    exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING, // Poll only during active generation
   );
 
   // Get typed exam status and info

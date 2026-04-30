@@ -358,22 +358,22 @@ export type { ExamAnswerSubmission } from '@/src/types/swr-data/exams';
 
 ### Phase 2: SWR Hook Updates
 
-- [ ] Update `submitExamFetcher` return type to `Promise<ApiResponse<ExamSubmitData>>`
-- [ ] Update `submitExamFetcher` parameter to use `ExamAnswerSubmission`
-- [ ] Update `useSubmitExam()` parameter type and error type
-- [ ] Update `deleteExamFetcher` return type to `Promise<ApiResponse<ExamDeleteData>>`
-- [ ] Update `useDeleteExam()` error type
-- [ ] Update all string literal `'QUESTIONS_GENERATING'` comparisons to use `BackendExamStatus.QUESTIONS_GENERATING`
-- [ ] Verify TypeScript compilation: `npx tsc --noEmit`
+- [x] Update `submitExamFetcher` return type to `Promise<ApiResponse<ExamSubmitData>>`
+- [x] Update `submitExamFetcher` parameter to use `ExamAnswerSubmission`
+- [x] Update `useSubmitExam()` error type — added `Error` generic to `useSWRMutation`
+- [x] Update `deleteExamFetcher` return type to `Promise<ApiResponse<ExamDeleteData>>`
+- [x] Update `useDeleteExam()` error type — added `Error` generic to `useSWRMutation`
+- [x] Update all string literal `'QUESTIONS_GENERATING'` comparisons to use `BackendExamStatus.QUESTIONS_GENERATING`
+- [x] Verify TypeScript compilation: `npx tsc --noEmit`
 
 ### Phase 3: Consumer Component Updates
 
-- [ ] Update `ExamCard.tsx` line 40: `deleteExamError: any` → `deleteExamError?: Error`
-- [ ] Update `ExamOverview.tsx` line 11: `pagination?: any` → `pagination?: PaginationMeta`
-- [ ] Update `useRateLimitFromExams.ts` line 16: `rateLimit?: any` → `rateLimit?: ExamRateLimitData`
-- [ ] Update `useRateLimitFromExams.ts` line 19: `mutateExams?: () => Promise<any>` → `mutateExams?: () => Promise<void>`
-- [ ] Add required imports for new types
-- [ ] Verify TypeScript compilation: `npx tsc --noEmit`
+- [x] Update `ExamCard.tsx` line 40: `deleteExamError: any` → `deleteExamError?: Error | null`
+- [x] Update `ExamOverview.tsx` line 11: `pagination?: any` → `pagination?: PaginationMeta`
+- [x] Update `useRateLimitFromExams.ts` line 16: `rateLimit?: any` → `rateLimit?: ExamRateLimitData`
+- [x] Update `useRateLimitFromExams.ts` line 19: `mutateExams?: () => Promise<any>` → `mutateExams?: () => Promise<void>`
+- [x] Add required imports for new types (`BackendExamStatus` in `ExamCard.tsx`)
+- [x] Verify TypeScript compilation: `npx tsc --noEmit`
 
 ### Phase 4: Verification
 
