@@ -194,6 +194,23 @@ export interface ExamDeleteData {
  */
 export type SwrDataApiExamDeleteResponse = ExamDeleteData;
 
+/**
+ * UI-adapted generation progress data for displaying exam generation status
+ * Computed from ExamLiveStatusData in useExamPageLogic
+ */
+export interface ExamGenerationProgressUI {
+  completionPercentage: number;
+  estimatedTimeRemaining: number; // milliseconds
+  isLikelyComplete: boolean;
+  stage: import('../exam-status').ExamGenerationStage;
+  realProgress: {
+    currentBatch: number;
+    totalBatches: number;
+    questionsGenerated: number;
+    targetQuestions: number;
+  };
+}
+
 // === Request/Input Types ===
 
 /**

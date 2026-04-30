@@ -348,13 +348,13 @@ export type { ExamAnswerSubmission } from '@/src/types/swr-data/exams';
 
 ### Phase 1: Type Definition Fixes
 
-- [ ] Create `ExamCertificationDetails` interface (or use existing `ExamCertificationData`)
-- [ ] Create `ExamAnswerSubmission` interface for submit POST body
-- [ ] Update `ExamState.exam_status` from `string | undefined` to `BackendExamStatus | undefined`
-- [ ] Update `ExamState.certification` to use explicit `ExamCertificationData` type
-- [ ] Update `ExamState.generation_progress` to use `ExamGenerationProgressData` type
+- [x] Create `ExamCertificationDetails` interface (or use existing `ExamCertificationData`)
+- [x] Create `ExamAnswerSubmission` interface for submit POST body
+- [x] Update `ExamState.exam_status` from `string | undefined` to `BackendExamStatus | undefined`
+- [x] Update `ExamState.certification` to use explicit `ExamCertificationData` type
+- [x] Update `ExamState.generation_progress` to use `ExamGenerationProgressData` type
 - [ ] Add JSDoc comments marking @guaranteed vs @optional fields on `ExamState`
-- [ ] Verify TypeScript compilation: `npx tsc --noEmit`
+- [x] Verify TypeScript compilation: `npx tsc --noEmit`
 
 ### Phase 2: SWR Hook Updates
 
@@ -377,10 +377,20 @@ export type { ExamAnswerSubmission } from '@/src/types/swr-data/exams';
 
 ### Phase 4: Verification
 
-- [ ] Run TypeScript compiler: `npx tsc --noEmit 2>&1 | grep "^src/"`
-- [ ] Grep for remaining `any` in exam-related code
-- [ ] Search for remaining string literal `'QUESTIONS_GENERATING'` comparisons
-- [ ] Spot-check that component optional fields use `?.` operator
+- [x] Run TypeScript compiler: `npx tsc --noEmit 2>&1 | grep "^src/"`
+- [x] Grep for remaining `any` in exam-related code
+- [x] Search for remaining string literal `'QUESTIONS_GENERATING'` comparisons
+- [x] Spot-check that component optional fields use `?.` operator
+
+### Phase 5: Extended Type Enforcement (remaining components and SWR hooks)
+
+- [x] `src/types/swr-data/useExamLiveStatus.ts` — `exam_status: string` → `exam_status: BackendExamStatus`
+- [x] `src/types/swr-data/exams.ts` — add `ExamGenerationProgressUI` interface for UI-adapted progress data
+- [x] `src/swr/useExamLiveStatus.ts` — replace string literals with `BackendExamStatus` enum values
+- [x] `src/swr/useExamGeneratingProgress.ts` — replace string literals + fix `examStatus` param type to `BackendExamStatus`
+- [x] `src/hooks/useExamPageLogic.ts` — fix `useState<any>` → `ExamSubmissionResult | null`, replace string literals, fix `catch (error: any)`
+- [x] `src/components/custom/ExamEmptyState.tsx` — fix `examState: any` → `ExamState | undefined`, `generationProgress: any` → `ExamGenerationProgressUI | null`, replace string literals
+- [x] `src/components/custom/ExamStatusCard.tsx` — fix `examState: any` → `ExamState | undefined`, `pagination: any` → `PaginationMeta | undefined`, replace string literals
 
 ---
 

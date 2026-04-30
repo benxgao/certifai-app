@@ -14,6 +14,11 @@ import { useExamState } from '@/src/swr/exams';
 import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
 import { toastHelpers } from '@/src/lib/toast';
+import { BackendExamStatus, ExamGenerationStage } from '@/src/types/exam-status';
+import { ApiResponse } from '@/src/types/api';
+import { ExamSubmitData, ExamGenerationProgressUI } from '@/src/types/swr-data/exams';
+
+type ExamSubmissionResult = ApiResponse<ExamSubmitData> | { error: string };
 
 export const useExamPageLogic = () => {
   const params = useParams();
@@ -25,7 +30,7 @@ export const useExamPageLogic = () => {
   const [pageSize] = useState(10);
   const [questionsApiUrl, setQuestionsApiUrl] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [submissionResult, setSubmissionResult] = useState<any>(null);
+  const [submissionResult, setSubmissionResult] = useState<ExamSubmissionResult | null>(null);
   const [isSubmittingExamFlag, setIsSubmittingExamFlag] = useState(false);
   const [isNavigatingPage, setIsNavigatingPage] = useState(false);
 
@@ -59,23 +64,23 @@ export const useExamPageLogic = () => {
   const { liveStatus, isLoading: isLoadingProgress, isReady: isExamReady } = useExamLiveStatus(
     apiUserId || null,
     examId || null,
-    examState?.exam_status === 'QUESTIONS_GENERATING' // Only poll while generating
+    examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING // Only poll while generating
   );
 
   // Simple force status check function
   const forceStatusCheck = () => mutateExamState();
 
   // Show check button for generating exams
-  const shouldShowCheckButton = examState?.exam_status === 'QUESTIONS_GENERATING';
+  const shouldShowCheckButton = examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING;
 
   // Transform the live status to match the expected UI structure
-  const generationProgress =
-    liveStatus && examState?.exam_status === 'QUESTIONS_GENERATING'
+  const generationProgress: ExamGenerationProgressUI | null =
+    liveStatus && examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING
       ? {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000, // Convert to milliseconds
           isLikelyComplete: liveStatus.is_complete, // True when fully complete
-          stage: liveStatus.is_complete ? 'complete' : 'generating',
+          stage: liveStatus.is_complete ? ExamGenerationStage.Complete : ExamGenerationStage.Generating,
           realProgress: {
             currentBatch: Math.ceil(
               (liveStatus.topics_with_questions / liveStatus.total_topics) * 5,
@@ -224,10 +229,10 @@ export const useExamPageLogic = () => {
         mutateExams(), // Certification exam list
         mutateQuestions(undefined, true), // Refresh questions to show final state
       ]);
-    } catch (error: any) {
+    } catch (error) {
       // Show error toast notification
-      toastHelpers.error.examSubmissionFailed(error.message);
-      setSubmissionResult({ error: error.message });
+      toastHelpers.error.examSubmissionFailed((error as Error).message);
+      setSubmissionResult({ error: (error as Error).message });
     } finally {
       setIsSubmittingExamFlag(false);
     }
