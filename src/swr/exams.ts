@@ -6,7 +6,15 @@ import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
 import { useRef, useCallback, useEffect } from 'react';
-import { ExamListItemData, ExamRateLimitData } from '@/src/types/swr-data/exams';
+import {
+  ExamListItemData,
+  ExamRateLimitData,
+  ExamAnswerSubmission,
+  ExamSubmitData,
+  ExamDeleteData,
+  ExamCertificationWithPerformance,
+  ExamGenerationProgressData,
+} from '@/src/types/swr-data/exams';
 
 // Type aliases for backward compatibility
 export type ExamListItem = ExamListItemData;
@@ -28,7 +36,8 @@ export function useAllUserExams(apiUserId: string | null) {
       refreshInterval: (data) => {
         const hasGeneratingExams = data?.data?.some(
           (exam) =>
-            exam.exam_status === 'QUESTIONS_GENERATING' || exam.status === 'QUESTIONS_GENERATING',
+            exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING ||
+            exam.status === BackendExamStatus.QUESTIONS_GENERATING,
         );
         return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating (more conservative)
       },
@@ -88,7 +97,8 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
       refreshInterval: (data) => {
         const hasGeneratingExams = data?.data?.some(
           (exam) =>
-            exam.exam_status === 'QUESTIONS_GENERATING' || exam.status === 'QUESTIONS_GENERATING',
+            exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING ||
+            exam.status === BackendExamStatus.QUESTIONS_GENERATING,
         );
         return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating (more conservative)
       },
@@ -127,11 +137,11 @@ async function submitExamFetcher(
       apiUserId: string;
       certId: number;
       examId: string;
-      body: any;
+      body: ExamAnswerSubmission;
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<any> {
+): Promise<ApiResponse<ExamSubmitData>> {
   const { apiUserId, certId, examId, body, refreshToken } = arg;
   const url = `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/submit`;
 
@@ -166,10 +176,11 @@ async function submitExamFetcher(
 
   // Handle empty responses (like 204 No Content)
   if (response.status === 204) {
-    return null;
+    return { success: true, data: { score: 0, tokens_deducted: 0, energy_tokens_awarded: 0, correct_answers: 0 } };
   }
 
-  return response.json();
+  const result = await response.json();
+  return result;
 }
 
 export function useSubmitExam() {
@@ -181,7 +192,12 @@ export function useSubmitExam() {
   );
 
   // Wrapper to inject refreshToken function
-  const submitExam = (arg: { apiUserId: string; certId: number; examId: string; body: any }) => {
+  const submitExam = (arg: {
+    apiUserId: string;
+    certId: number;
+    examId: string;
+    body: ExamAnswerSubmission;
+  }) => {
     return trigger({ ...arg, refreshToken });
   };
 
@@ -204,7 +220,7 @@ async function deleteExamFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<any> {
+): Promise<ApiResponse<ExamDeleteData>> {
   const { apiUserId, examId, refreshToken } = arg;
   const url = `/api/users/${apiUserId}/exams/${examId}`;
 
@@ -235,7 +251,8 @@ async function deleteExamFetcher(
     throw new Error(errorData.message || 'Failed to delete exam.');
   }
 
-  return response.json();
+  const result = await response.json();
+  return result;
 }
 
 export function useDeleteExam() {
@@ -263,29 +280,15 @@ export interface ExamState {
   exam_id: string;
   user_id: string;
   cert_id: number;
-  exam_status?: string; // Database exam status
+  exam_status?: BackendExamStatus; // Database exam status - typed enum
   score: number | null;
   total_questions: number; // Actual number of questions in this exam
   custom_prompt_text?: string | null; // Custom prompt used for question generation
   started_at: string;
   submitted_at: number | null;
   status: string; // Computed status from API
-  certification?: {
-    cert_id: number;
-    name: string;
-    exam_guide_url: string;
-    min_quiz_counts: number;
-    max_quiz_counts: number;
-    pass_score: number;
-  };
-  generation_progress?: {
-    current_batch: number;
-    total_batches: number;
-    questions_generated: number;
-    target_questions?: number;
-    completion_percentage: number;
-    updated_at: number;
-  };
+  certification?: ExamCertificationWithPerformance;
+  generation_progress?: ExamGenerationProgressData;
 }
 
 // Hook to get exam state/details with optimized polling for generation status
@@ -307,7 +310,7 @@ export function useExamState(
     // Enable simple polling for generating exams
     refreshInterval: (data) => {
       const examStatus = data?.data?.exam_status || data?.data?.status;
-      if (examStatus === 'QUESTIONS_GENERATING') {
+      if (examStatus === BackendExamStatus.QUESTIONS_GENERATING) {
         return 2000; // Poll every 2 seconds for generating exams (aligned with liveStatus)
       }
       return 0;

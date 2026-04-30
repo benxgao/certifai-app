@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { ExamListItem } from '@/src/swr/exams';
+import { ExamRateLimitData } from '@/src/types/swr-data/exams';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
 
 /**
@@ -13,10 +14,10 @@ import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
  * @returns Rate limit information and loading state
  */
 export function useRateLimitFromExams(
-  rateLimit?: any,
+  rateLimit?: ExamRateLimitData,
   exams?: ExamListItem[],
   isLoading: boolean = false,
-  mutateExams?: () => Promise<any>,
+  mutateExams?: (() => Promise<any>) | undefined,
 ) {
   const rateLimitInfo = useMemo(() => {
     if (isLoading) return null;

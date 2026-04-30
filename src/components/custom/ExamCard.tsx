@@ -37,7 +37,7 @@ interface ExamCardProps {
   onDeleteExam: (examId: string) => Promise<void>;
   navigatingExamId: string | null;
   isDeletingExam: boolean;
-  deleteExamError: any;
+  deleteExamError?: Error | null;
 }
 
 export const ExamCard = memo(function ExamCard({

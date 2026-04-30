@@ -63,7 +63,8 @@ async function registerCertificationFetcher(
     throw new Error(errorData.message || 'Failed to register certification.');
   }
 
-  return response.json();
+  const result = await response.json();
+  return result.data || result;
 }
 
 // Custom hook to use for creating a certification
@@ -234,7 +235,8 @@ async function registerUserForCertificationFetcher(
     throw new Error(errorData.message || 'Failed to register user for certification.');
   }
 
-  return response.json();
+  const result = await response.json();
+  return result.data || result;
 }
 
 // Custom hook for a user to register for a certification
@@ -354,7 +356,8 @@ async function unregisterCertificationFetcher(
     throw new Error(errorData.message || 'Failed to unregister from certification.');
   }
 
-  return response.json();
+  const result = await response.json();
+  return result.data || result;
 }
 
 // Custom hook for unregistering from a certification

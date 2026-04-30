@@ -5,10 +5,11 @@ import { FaCheck } from 'react-icons/fa';
 import { format, isToday, isThisYear, isValid, parseISO } from 'date-fns';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { useExamInfo } from '@/src/swr/examInfo';
+import { PaginationMeta } from '@/src/types/api';
 
 interface ExamOverviewProps {
   examId: string | null;
-  pagination?: any; // Fallback for pagination data
+  pagination?: PaginationMeta; // Proper typing for pagination data
   fallbackSubmittedAt?: number | null; // Fallback for submitted at
 }
 

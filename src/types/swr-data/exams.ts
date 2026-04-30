@@ -193,3 +193,23 @@ export interface ExamDeleteData {
  * data?.data resolves to this type
  */
 export type SwrDataApiExamDeleteResponse = ExamDeleteData;
+
+// === Request/Input Types ===
+
+/**
+ * User answer structure for exam submission
+ */
+export interface UserAnswer {
+  question_id: string;
+  selected_option_id: string;
+  [key: string]: any;
+}
+
+/**
+ * Request body for submitting exam answers
+ * Used by POST /api/users/:user_id/certifications/:cert_id/exams/:exam_id/submit
+ */
+export interface ExamAnswerSubmission {
+  answers?: UserAnswer[];
+  [key: string]: any;
+}
