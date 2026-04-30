@@ -3,6 +3,7 @@
 import { useAuthSWR } from './useAuthSWR';
 import { ApiResponse } from '@/src/types/api';
 import { ExamInfoData } from '@/src/types/swr-data/examInfo';
+import { BackendExamStatus } from '@/src/types/exam-status';
 
 /**
  * Hook to fetch exam info data independently for the ExamProgressInfo component
@@ -28,7 +29,7 @@ export function useExamInfo(apiUserId: string | null, examId: string | null) {
     // Only refresh if exam is in generating state
     refreshInterval: (data) => {
       const examStatus = data?.data?.exam_status || data?.data?.status;
-      if (examStatus === 'QUESTIONS_GENERATING') {
+      if (examStatus === BackendExamStatus.QUESTIONS_GENERATING) {
         return 10000; // Poll every 10 seconds for generating exams
       }
       return 0; // No polling for stable states

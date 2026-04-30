@@ -3,7 +3,8 @@ import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
 import { PaginationInfo } from './utils';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { AnswerOptionData, QuestionData, ExamQuestionsData } from '@/src/types/swr-data/questions';
+import { AnswerOptionData, QuestionData, ExamQuestionsData, SubmitAnswerData } from '@/src/types/swr-data/questions';
+import { ApiResponse } from '@/src/types/api';
 
 // Type aliases for backward compatibility
 export type AnswerOption = AnswerOptionData;
@@ -58,7 +59,7 @@ async function submitAnswerFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<any> {
+): Promise<ApiResponse<SubmitAnswerData>> {
   const { apiUserId, certId, examId, questionId, optionId, refreshToken } = arg;
   const apiUrl = `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}/questions/${questionId}`;
 

@@ -6,29 +6,32 @@
 
 ## 📊 Overall Progress
 
-- **Completed**: 2/17 files (certifications.ts, exams.ts)
+- **Completed**: 5/17 files (certifications.ts, exams.ts, exams.ts types, questions.ts, examInfo.ts)
 - **In Progress**: ⏸️ None (ready to start)
-- **Remaining**: 15 files
+- **Remaining**: 12 files
 
-**Progress Bar**: `██░░░░░░░░░░░░░░░░░░░░░░░░░░░` (12%)
+**Progress Bar**: `████░░░░░░░░░░░░░░░░░░░░░░░░░` (29%)
 
 ---
 
 ## 📋 NEXT FILE TO WORK ON
 
-**→ [Phase 1.1] exams.ts** - Remove `[key: string]: any` from request types
+**→ [Phase 2.1] profile.ts** - Fix UpdateProfileData interface
 
-- **File**: `src/types/swr-data/exams.ts`
-- **Time**: 15 min | **Complexity**: LOW
-- **Impact**: Type safety for request bodies
-- **Commit Message**: `chore: enforce strict types in exams request interfaces`
+- **File**: `src/types/swr-data/profile.ts` or `src/swr/profile.ts`
+- **Time**: 20 min | **Complexity**: LOW
+- **Impact**: Type safety for profile update requests
+- **Commit Message**: `chore: enforce strict UpdateProfileData types`
 
 ---
 
-## ✅ COMPLETED FILES (2)
+## ✅ COMPLETED FILES (5)
 
 - [x] certifications.ts (Phase 1)
 - [x] exams.ts (Phase 2 - major refactor)
+- [x] exams.ts types - Phase 1.1 (Remove `[key: string]: any` from UserAnswer & ExamAnswerSubmission)
+- [x] questions.ts - Phase 1.2 (Change `Promise<any>` to `Promise<ApiResponse<SubmitAnswerData>>`)
+- [x] examInfo.ts - Phase 1.3 (Replace `'QUESTIONS_GENERATING'` string literal with `BackendExamStatus.QUESTIONS_GENERATING`)
 
 ---
 
@@ -36,7 +39,7 @@
 
 ### PHASE 1️⃣: QUICK WINS (45 minutes total | 3 files)
 
-#### [ ] 1.1 - exams.ts (Request Types)
+#### [x] 1.1 - exams.ts (Request Types)
 
 **Status**: ⏹️ NOT STARTED | **Est**: 15 min
 **File**: `src/types/swr-data/exams.ts` (lines ~205-214)
@@ -50,7 +53,7 @@
 - Commit: chore: enforce strict types in exams request interfaces
 ```
 
-#### [ ] 1.2 - questions.ts (Fetcher Return Type)
+#### [x] 1.2 - questions.ts (Fetcher Return Type)
 
 **Status**: ⏹️ NOT STARTED | **Est**: 15 min
 **File**: `src/swr/questions.ts` (line ~61)
@@ -63,7 +66,7 @@
 - Commit: chore: type submitAnswerFetcher return value properly
 ```
 
-#### [ ] 1.3 - examInfo.ts (String Literal → Enum)
+#### [x] 1.3 - examInfo.ts (String Literal → Enum)
 
 **Status**: ⏹️ NOT STARTED | **Est**: 15 min
 **File**: `src/swr/examInfo.ts` (line ~31)
@@ -183,9 +186,9 @@ STEP 3 - Implementation:
 
 | Phase | File                    | Steps            | Status | Est  | Complexity |
 | ----- | ----------------------- | ---------------- | ------ | ---- | ---------- |
-| 1     | exams.ts (types)        | Remove any       | ⏹️     | 15m  | 🟢 LOW     |
-| 1     | questions.ts            | Fix return type  | ⏹️     | 15m  | 🟢 LOW     |
-| 1     | examInfo.ts             | Replace string   | ⏹️     | 15m  | 🟢 LOW     |
+| 1     | exams.ts (types)        | Remove any       | ✅     | 15m  | 🟢 LOW     |
+| 1     | questions.ts            | Fix return type  | ✅     | 15m  | 🟢 LOW     |
+| 1     | examInfo.ts             | Replace string   | ✅     | 15m  | 🟢 LOW     |
 | 2     | profile.ts              | Fix interface    | ⏹️     | 20m  | 🟢 LOW     |
 | 2     | useAuthMutation/AuthSWR | Document         | ⏹️     | 10m  | 🔵 DOCS    |
 | 3     | useAllData.ts           | 3× any callbacks | ⏹️     | 2-3h | 🔴 HIGH    |
