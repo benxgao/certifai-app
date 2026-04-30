@@ -33,7 +33,7 @@ export function useAllFirmsWithCertifications() {
         logo_url: firm.logo_url || '',
         certification_count: firm._count?.certifications || 0,
         certifications: allCertifications
-          .filter((cert) => (cert.firm_id) === firm.firm_id)
+          .filter((cert) => cert.firm_id === firm.firm_id)
           .map((cert) => ({
             cert_id: cert.cert_id,
             firm_id: cert.firm_id,
