@@ -3,30 +3,14 @@ import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
 import { PaginationInfo } from './utils';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { AnswerOptionData, QuestionData, ExamQuestionsData } from '@/src/types/swr-data/questions';
 
-export interface AnswerOption {
-  option_id: string; // Or number, depending on API
-  option_text: string;
-  is_correct?: boolean; // Optional field to indicate if this is the correct answer
-}
-
-export interface Question {
-  quiz_question_id: string;
-  question_text: string;
-  answerOptions: AnswerOption[];
-  selected_option_id: string | null;
-  difficulty: string;
-  // topic_id: number;
-  cert_id: number;
-  exam_topic?: string | null; // AI-generated exam topic for this question
-  user_answer_id: string;
-  explanations?: string;
-  user_answer_is_correct: boolean | null;
-  correct_option_id?: string | null; // Optional field to indicate the correct answer
-}
+// Type aliases for backward compatibility
+export type AnswerOption = AnswerOptionData;
+export type Question = Omit<QuestionData, 'answerOptions'> & { answerOptions: AnswerOption[] };
 
 export interface ExamQuestionsResponse {
-  data: { questions: Question[] };
+  data: ExamQuestionsData;
   meta: PaginationInfo; // Updated to use meta instead of pagination to match API
 }
 

@@ -8,10 +8,12 @@ export interface FirmCertificationItemData {
   cert_id: number;
   firm_id: number;
   name: string;
+  description: string;
   exam_guide_url: string;
   min_quiz_counts: number;
   max_quiz_counts: number;
   pass_score: number;
+  created_at: string;
 }
 
 /**

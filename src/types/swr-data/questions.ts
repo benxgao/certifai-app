@@ -24,6 +24,7 @@ export interface QuestionData {
   selected_option_id: string | null;
   explanations?: string | null; // Only present when exam has been submitted
   user_answer_is_correct?: boolean | null; // Only present when exam has been submitted
+  correct_option_id?: string | null; // Optional field to indicate the correct answer
   answerOptions: AnswerOptionData[];
 }
 

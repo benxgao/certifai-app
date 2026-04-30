@@ -1,24 +1,14 @@
 import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
+import { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
 
-interface ExamLiveStatus {
-  exam_id: string;
-  exam_status: string;
-  progress_percentage: number;
-  topics_with_questions: number;
-  total_topics: number;
-  total_questions: number;
-  estimated_seconds_remaining: number;
-  is_complete: boolean;
-  query_duration_ms: number;
-  timestamp_ms: number;
-}
+export type { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
 
 interface ExamLiveStatusResponse {
   success: boolean;
-  data: ExamLiveStatus;
+  data: ExamLiveStatusData;
   error?: string;
-}
+} 
 
 /**
  * Real-time exam status hook that bypasses Redis cache for freshness

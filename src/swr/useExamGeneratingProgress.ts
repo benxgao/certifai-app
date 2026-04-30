@@ -9,22 +9,13 @@
  */
 import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
+import { ExamGeneratingProgressData } from '@/src/types/swr-data/useExamGeneratingProgress';
 
-interface ExamGeneratingProgress {
-  exam_id: string;
-  total_topics: number;
-  topics_with_questions: number;
-  topics_remaining: number;
-  progress_percentage: number;
-  status: 'starting' | 'generating' | 'finalizing' | 'complete';
-  estimated_time_remaining_seconds: number;
-  created_at: number;
-  last_updated: number;
-}
+export type { ExamGeneratingProgressData } from '@/src/types/swr-data/useExamGeneratingProgress';
 
 interface ExamGeneratingProgressResponse {
   success: boolean;
-  data: ExamGeneratingProgress;
+  data: ExamGeneratingProgressData;
   error?: string;
 }
 

@@ -6,42 +6,14 @@ import { BackendExamStatus } from '../types/exam-status';
 import { fetchAllPages } from '@/src/lib/pagination-utils';
 import { getRateLimitInfo } from '@/src/lib/rateLimitUtils';
 import { useRef, useCallback, useEffect } from 'react';
+import { ExamListItemData, ExamRateLimitData } from '@/src/types/swr-data/exams';
+
+// Type aliases for backward compatibility
+export type ExamListItem = ExamListItemData;
 
 // Enhanced response that includes rate limit information
 export interface EnhancedExamListResponse extends PaginatedApiResponse<ExamListItem[]> {
-  rateLimit: {
-    maxExamsAllowed: number;
-    currentCount: number;
-    remainingCount: number;
-    canCreateExam: boolean;
-    resetTime: string;
-    error?: string;
-  };
-}
-
-export interface ExamListItem {
-  exam_id: string;
-  api_user_id: string; // Our internal UUID for API operations
-  cert_id: number;
-  exam_status?: BackendExamStatus; // Database exam status
-  score: number | null;
-  token_cost: number;
-  total_questions: number; // Actual number of questions in this exam
-  custom_prompt_text?: string | null; // Custom prompt used for question generation
-  // Deprecated: keeping for backward compatibility only
-  user_id?: string; // @deprecated Use api_user_id instead
-  started_at: string | null; // Fixed: should be string | null to match backend
-  submitted_at: number | null; // Fixed: should be number | null to match backend timestamp
-  certification: {
-    cert_id: number;
-    // cert_category_id: number;
-    name: string;
-    exam_guide_url: string;
-    min_quiz_counts: number;
-    max_quiz_counts: number;
-    pass_score: number;
-  };
-  status: string; // Computed status from API
+  rateLimit: ExamRateLimitData;
 }
 
 // Hook to get all exams for a user across all certifications with rate limit info

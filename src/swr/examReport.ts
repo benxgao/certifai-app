@@ -1,40 +1,9 @@
 import useSWR from 'swr';
 import React from 'react';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { ExamReportData } from '@/src/types/swr-data/examReport';
 
-export interface ExamReportData {
-  exam_id: string;
-  report: string;
-  already_existed: boolean;
-  generated_at: string;
-  structured_data?: {
-    exam_id: string;
-    overall_score: number;
-    total_questions: number;
-    correct_answers: number;
-    topic_performance: Array<{
-      topic: string;
-      correct_answers: number;
-      total_attempts: number;
-      accuracy_rate: number;
-      difficulty_level: string;
-      performance_category: string;
-    }>;
-    generated_at: string;
-    text_summary: string;
-  };
-  performance_summary: {
-    overall_score: number;
-    total_questions: number;
-    correct_answers: number;
-    topics_analyzed?: number;
-    topic_breakdown?: Array<{
-      topic: string;
-      accuracy: number;
-      questions: number;
-    }>;
-  };
-}
+export type { ExamReportData } from '@/src/types/swr-data/examReport';
 
 // Fetcher function for exam reports
 async function examReportFetcher(url: string): Promise<ExamReportData> {
