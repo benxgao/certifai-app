@@ -230,9 +230,10 @@ export const useExamPageLogic = () => {
         mutateQuestions(undefined, true), // Refresh questions to show final state
       ]);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       // Show error toast notification
-      toastHelpers.error.examSubmissionFailed((error as Error).message);
-      setSubmissionResult({ error: (error as Error).message });
+      toastHelpers.error.examSubmissionFailed(errorMessage);
+      setSubmissionResult({ error: errorMessage });
     } finally {
       setIsSubmittingExamFlag(false);
     }

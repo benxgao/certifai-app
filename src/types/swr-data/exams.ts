@@ -1,5 +1,5 @@
 // === Exams API Response Types ===
-import type { BackendExamStatus } from '../exam-status';
+import type { BackendExamStatus, ExamGenerationStage } from '../exam-status';
 
 /**
  * Certification details embedded within exam data
@@ -202,7 +202,7 @@ export interface ExamGenerationProgressUI {
   completionPercentage: number;
   estimatedTimeRemaining: number; // milliseconds
   isLikelyComplete: boolean;
-  stage: import('../exam-status').ExamGenerationStage;
+  stage: ExamGenerationStage;
   realProgress: {
     currentBatch: number;
     totalBatches: number;
