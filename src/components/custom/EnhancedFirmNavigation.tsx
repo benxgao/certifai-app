@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/src/lib/utils';
 import { AlertMessage } from './AlertMessage';
 import CertificationSearchControls from './CertificationSearchControls';
-import { CertificationListItem } from '@/src/types/swr-data/certifications';
+import { CertificationListItem, UserRegisteredCertification } from '@/src/types/swr-data/certifications';
 
 interface EnhancedFirmNavigationProps {
   onRegister: (cert: CertificationListItem) => void;
@@ -87,7 +87,7 @@ const EnhancedFirmNavigation: React.FC<EnhancedFirmNavigationProps> = ({
   };
 
   const renderCertificationCard = (cert: CertificationListItem, isCompact = false) => {
-    const isRegistered = userCertifications?.some((uc: any) => uc.cert_id === cert.cert_id);
+    const isRegistered = userCertifications?.some((uc: UserRegisteredCertification) => uc.cert_id === cert.cert_id);
     const isCurrentlyRegistering = registeringCertId === cert.cert_id;
     const isCurrentlyNavigating = navigatingCertId === cert.cert_id;
 

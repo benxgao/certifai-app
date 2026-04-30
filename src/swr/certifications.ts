@@ -10,7 +10,13 @@ import {
   CertificationListItem,
   UserCertificationRegistrationInput,
   UserRegisteredCertification,
+  CertificationStatus,
+  CertificationInfo,
 } from '../types/swr-data/certifications';
+
+// Re-export types for backward compatibility
+export type { CertificationStatus, CertificationInfo };
+export { CertificationStatus as CertificationStatusEnum };
 
 // Fetcher function for registering certifications with auth refresh support
 async function registerCertificationFetcher(
@@ -85,7 +91,7 @@ export function useRegisterCertification() {
     registerCertification, // Rename trigger to something more descriptive
     isCreating: isMutating,
     creationError: error,
-    registeredCertification: data?.data, // SwrDataApiCertificationMutationResponse
+    registeredCertification: data,
     resetCreation: reset,
   };
 }
@@ -256,7 +262,7 @@ export function useRegisterUserForCertification(apiUserId: string | null) {
     registerForCertification,
     isRegistering: isMutating,
     registrationError: error,
-    registrationData: data?.data, // SwrDataApiCertificationMutationResponse
+    registrationData: data,
     resetRegistration: reset,
   };
 }
@@ -376,7 +382,7 @@ export function useUnregisterCertification(apiUserId: string | null) {
     unregisterFromCertification,
     isUnregistering: isMutating,
     unregistrationError: error,
-    unregistrationData: data?.data, // SwrDataApiCertificationMutationResponse
+    unregistrationData: data,
     resetUnregistration: reset,
   };
 }

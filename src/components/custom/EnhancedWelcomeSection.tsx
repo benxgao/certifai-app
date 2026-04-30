@@ -6,12 +6,13 @@
 import React from 'react';
 import { Badge } from '@/src/components/ui/badge';
 import { BookOpen, Target, CheckCircle2 } from 'lucide-react';
+import { UserRegisteredCertification, CertificationStatus } from '@/src/types/swr-data/certifications';
 
 interface EnhancedWelcomeSectionProps {
   displayName: string;
   profile: any;
   isLoading: boolean;
-  userCertifications?: any[];
+  userCertifications?: UserRegisteredCertification[];
   className?: string;
 }
 
@@ -28,8 +29,8 @@ const EnhancedWelcomeSection: React.FC<EnhancedWelcomeSectionProps> = ({
 
   // Calculate progress statistics
   const total = userCertifications.length;
-  const active = userCertifications.filter((cert) => cert.status === 'IN_PROGRESS').length;
-  const completed = userCertifications.filter((cert) => cert.status === 'COMPLETED').length;
+  const active = userCertifications.filter((cert) => cert.status === CertificationStatus.ACTIVE).length;
+  const completed = userCertifications.filter((cert) => cert.status === CertificationStatus.COMPLETED).length;
 
   const getWelcomeMessage = () => {
     if (!profile) {

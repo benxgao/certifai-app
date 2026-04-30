@@ -12,7 +12,7 @@ import { useUserCertifications } from '@/context/UserCertificationsContext';
 import { CardSkeleton } from '@/components/custom/LoadingComponents';
 import { linkifyText } from '@/src/lib/text-utils';
 import { AlertMessage } from './AlertMessage';
-import { CertificationListItem } from '@/src/types/swr-data/certifications';
+import { CertificationListItem, UserRegisteredCertification } from '@/src/types/swr-data/certifications';
 
 interface FirmTabsProps {
   onRegister: (cert: CertificationListItem) => void;
@@ -68,7 +68,7 @@ const FirmTabs: React.FC<FirmTabsProps> = ({ onRegister, registeringCertId }) =>
   };
 
   const renderCertificationCard = (cert: CertificationListItem) => {
-    const isRegistered = userCertifications?.some((uc: any) => uc.cert_id === cert.cert_id);
+    const isRegistered = userCertifications?.some((uc: UserRegisteredCertification) => uc.cert_id === cert.cert_id);
     const isCurrentlyRegistering = registeringCertId === cert.cert_id;
     const isCurrentlyNavigating = navigatingCertId === cert.cert_id;
 

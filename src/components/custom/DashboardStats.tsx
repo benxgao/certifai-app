@@ -5,6 +5,7 @@ import { useExamStats } from '@/src/context/ExamStatsContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StatsCard } from './StatsCard';
 import { AlertMessage } from './AlertMessage';
+import { CertificationStatus } from '@/src/types/swr-data/certifications';
 
 const DashboardStats = () => {
   const { userCertifications, isLoadingUserCertifications } = useUserCertifications();
@@ -13,7 +14,7 @@ const DashboardStats = () => {
 
   // Memoize calculated values to prevent unnecessary re-calculations
   const inProgressCount = useMemo(() => {
-    return userCertifications?.filter((cert) => cert.status === 'active')?.length || 0;
+    return userCertifications?.filter((cert) => cert.status === CertificationStatus.ACTIVE)?.length || 0;
   }, [userCertifications]);
 
   // Show loading skeleton only while certifications are loading

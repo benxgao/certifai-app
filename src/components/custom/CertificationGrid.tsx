@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, SkeletonCard } from '@/components/ui/car
 import { Button } from '@/components/ui/button';
 import { useAllAvailableCertifications } from '@/swr/certifications';
 import { useUserCertifications } from '@/context/UserCertificationsContext';
+import { CertificationListItem, UserRegisteredCertification } from '@/src/types/swr-data/certifications';
 
 interface CertificationGridProps {
-  onRegister: (cert: any) => void;
+  onRegister: (cert: CertificationListItem) => void;
   isRegistering: boolean;
   registeringCertId: number | null;
 }
@@ -57,7 +58,7 @@ const CertificationGrid: React.FC<CertificationGridProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {availableCertifications.map((cert) => {
-        const isRegistered = userCertifications?.some((uc: any) => uc.cert_id === cert.cert_id);
+        const isRegistered = userCertifications?.some((uc: UserRegisteredCertification) => uc.cert_id === cert.cert_id);
         const isCurrentlyRegistering = registeringCertId === cert.cert_id;
         const isCurrentlyNavigating = navigatingCertId === cert.cert_id;
 
