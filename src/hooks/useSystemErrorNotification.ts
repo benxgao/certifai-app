@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useUserProfileContext } from '@/src/context/UserProfileContext';
-
 interface SystemErrorState {
   showNotification: boolean;
   errorType: 'server_error' | 'network_error' | null;

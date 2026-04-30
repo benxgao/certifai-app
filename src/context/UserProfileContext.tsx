@@ -3,12 +3,13 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useFirebaseAuth } from './FirebaseAuthContext';
 import { useUserProfile, UserProfile } from '@/src/swr/profile';
+import { ApiError } from '@/src/types/api';
 
 interface UserProfileContextType {
   profile: UserProfile | null;
   isLoading: boolean;
   isError: boolean;
-  error: any;
+  error: ApiError | undefined;
   mutate: () => void;
 }
 

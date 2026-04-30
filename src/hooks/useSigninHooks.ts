@@ -4,6 +4,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { User } from 'firebase/auth';
 import { initializeSigninPage } from '@/src/lib/signin-helpers';
 
 /**
@@ -12,7 +13,7 @@ import { initializeSigninPage } from '@/src/lib/signin-helpers';
  */
 export const useAuthRedirect = (
   loading: boolean,
-  firebaseUser: any,
+  firebaseUser: User | null,
   apiUserId: string | null,
   isRedirecting: boolean,
   error: string,

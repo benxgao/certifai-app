@@ -2,6 +2,7 @@
  * Utility functions for handling paginated API responses
  * Recursively fetches all pages to get complete datasets
  */
+import type { AllFirmData, FirmCertificationItemData } from '@/src/types/swr-data/useAllData';
 
 export interface PaginatedResponse<T> {
   data: T[];
@@ -98,7 +99,7 @@ export async function fetchAllPages<T>(
 export async function fetchAllFirms(
   includeCount: boolean = false,
   options: RequestInit = {},
-): Promise<any[]> {
+): Promise<AllFirmData[]> {
   const baseUrl = includeCount ? '/api/public/firms?includeCount=true' : '/api/public/firms';
 
   return fetchAllPages(baseUrl, options, 50); // Use smaller page size for firms
@@ -109,7 +110,7 @@ export async function fetchAllFirms(
  * @param options - Additional fetch options
  * @returns Promise resolving to all certifications
  */
-export async function fetchAllCertifications(options: RequestInit = {}): Promise<any[]> {
+export async function fetchAllCertifications(options: RequestInit = {}): Promise<FirmCertificationItemData[]> {
   return fetchAllPages('/api/public/certifications', options, 100);
 }
 
@@ -122,6 +123,6 @@ export async function fetchAllCertifications(options: RequestInit = {}): Promise
 export async function fetchAllCertificationsByFirm(
   firmId: number,
   options: RequestInit = {},
-): Promise<any[]> {
+): Promise<FirmCertificationItemData[]> {
   return fetchAllPages(`/api/public/firms/${firmId}/certifications`, options, 50);
 }

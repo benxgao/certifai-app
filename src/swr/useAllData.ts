@@ -24,7 +24,7 @@ export function useAllFirmsWithCertifications() {
       }
 
       // Group certifications by firm
-      const firmsWithCerts: FirmWithCertifications[] = allFirms.map((firm: any) => ({
+      const firmsWithCerts: FirmWithCertifications[] = allFirms.map((firm) => ({
         id: firm.firm_id,
         code: firm.code,
         name: firm.name,
@@ -33,8 +33,8 @@ export function useAllFirmsWithCertifications() {
         logo_url: firm.logo_url || '',
         certification_count: firm._count?.certifications || 0,
         certifications: allCertifications
-          .filter((cert: any) => (cert.firm?.firm_id || cert.firm_id) === firm.firm_id)
-          .map((cert: any) => ({
+          .filter((cert) => (cert.firm_id) === firm.firm_id)
+          .map((cert) => ({
             cert_id: cert.cert_id,
             firm_id: cert.firm_id,
             name: cert.name,
