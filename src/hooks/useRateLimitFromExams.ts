@@ -17,7 +17,7 @@ export function useRateLimitFromExams(
   rateLimit?: ExamRateLimitData,
   exams?: ExamListItem[],
   isLoading: boolean = false,
-  mutateExams?: (() => Promise<any>) | undefined,
+  mutateExams?: (() => Promise<void>) | undefined,
 ) {
   const rateLimitInfo = useMemo(() => {
     if (isLoading) return null;
