@@ -296,19 +296,20 @@ export function useDeleteExam() {
 }
 
 // Interface for exam state/details
+// Source of Truth: functions/src/endpoints/api/users/exams/getUserExam.ts
 export interface ExamState {
-  exam_id: string;
-  user_id: string;
-  cert_id: number;
-  exam_status?: BackendExamStatus; // Database exam status - typed enum
-  score: number | null;
-  total_questions: number; // Actual number of questions in this exam
-  custom_prompt_text?: string | null; // Custom prompt used for question generation
-  started_at: string;
-  submitted_at: number | null;
-  status: string; // Computed status from API
-  certification?: ExamCertificationWithPerformance;
-  generation_progress?: ExamGenerationProgressData;
+  exam_id: string; // @guaranteed
+  user_id: string; // @guaranteed
+  cert_id: number; // @guaranteed
+  exam_status?: BackendExamStatus; // Database exam status - typed enum @guaranteed
+  score: number | null; // @optional
+  total_questions: number; // Actual number of questions in this exam @guaranteed
+  custom_prompt_text?: string | null; // Custom prompt used for question generation @optional
+  started_at: string; // ISO 8601 datetime string @guaranteed
+  submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
+  status: string; // Computed status from API @guaranteed
+  certification?: ExamCertificationWithPerformance; // @optional
+  generation_progress?: ExamGenerationProgressData; // @optional
 }
 
 // Hook to get exam state/details with optimized polling for generation status

@@ -31,20 +31,21 @@ export interface ExamRateLimitData {
  * Single exam item returned in exam list responses
  * From GET /api/users/:user_id/exams
  * From GET /api/users/:user_id/certifications/:cert_id/exams
+ * Source of Truth: functions/src/endpoints/api/users/exams/getUserExams.ts
  */
 export interface ExamListItemData {
-  exam_id: string;
-  api_user_id: string; // Our internal UUID for API operations
-  cert_id: number;
-  exam_status?: BackendExamStatus; // Database exam status
-  score: number | null;
-  token_cost: number;
-  total_questions: number;
-  custom_prompt_text?: string | null;
-  started_at: string | null;
-  submitted_at: number | null;
-  certification: ExamCertificationData;
-  status: string; // Computed status from API
+  exam_id: string; // @guaranteed
+  api_user_id: string; // Our internal UUID for API operations @guaranteed
+  cert_id: number; // @guaranteed
+  exam_status?: BackendExamStatus; // Database exam status @guaranteed
+  score: number | null; // @optional
+  token_cost: number; // @guaranteed
+  total_questions: number; // @guaranteed
+  custom_prompt_text?: string | null; // @optional
+  started_at: string | null; // ISO 8601 datetime string or null @guaranteed
+  submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
+  certification: ExamCertificationData; // @guaranteed
+  status: string; // Computed status from API @guaranteed
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
 }
@@ -92,24 +93,25 @@ export interface ExamProgressData {
  * Detailed exam data returned from a single exam fetch
  * From GET /api/users/:user_id/certifications/:cert_id/exams/:exam_id
  * From GET /api/users/:user_id/exams/:exam_id
+ * Source of Truth: functions/src/endpoints/api/users/exams/getUserExam.ts
  */
 export interface ExamDetailData {
-  exam_id: string;
-  api_user_id: string; // Our internal UUID for API operations
-  cert_id: number;
-  exam_status: BackendExamStatus;
-  total_questions: number;
-  score: number | null;
-  token_cost: number;
-  custom_prompt_text?: string | null;
-  started_at: string | null;
-  submitted_at: string | number | null;
-  status: string; // Computed status from API
+  exam_id: string; // @guaranteed
+  api_user_id: string; // Our internal UUID for API operations @guaranteed
+  cert_id: number; // @guaranteed
+  exam_status: BackendExamStatus; // @guaranteed
+  total_questions: number; // @guaranteed
+  score: number | null; // @optional
+  token_cost: number; // @guaranteed
+  custom_prompt_text?: string | null; // @optional
+  started_at: string | null; // ISO 8601 datetime string or null @guaranteed
+  submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
+  status: string; // Computed status from API @guaranteed
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
-  progress?: ExamProgressData;
-  certification?: ExamCertificationWithPerformance | null;
-  generation_progress?: ExamGenerationProgressData | null;
+  progress?: ExamProgressData; // @optional
+  certification?: ExamCertificationWithPerformance | null; // @optional
+  generation_progress?: ExamGenerationProgressData | null; // @optional
 }
 
 /**

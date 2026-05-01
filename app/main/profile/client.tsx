@@ -297,7 +297,6 @@ const ProfileClientPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:justify-between">
               <div className="flex items-center space-x-3 md:space-x-4">
                 <Avatar className="w-12 h-12 md:w-16 md:h-16 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-sm">
-                  <AvatarImage src={profile.avatar_url || undefined} alt={displayName || 'User'} />
                   <AvatarFallback className="bg-linear-to-br from-violet-600 to-blue-600 text-white font-normal text-base md:text-lg">
                     {displayName?.charAt(0).toUpperCase() || 'U'}
                   </AvatarFallback>

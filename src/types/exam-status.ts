@@ -40,7 +40,7 @@ export interface ExamStatusInfo {
 
 // Helper function to determine derived exam status from exam data
 export const getDerivedExamStatus = (exam: {
-  submitted_at: number | null;
+  submitted_at: string | number | null; // Can be ISO 8601 string from API or unix timestamp from converted data
   started_at: string | null; // Fixed: should be string | null to match API response
   exam_status?: BackendExamStatus;
   score?: number | null;

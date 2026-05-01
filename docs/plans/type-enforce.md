@@ -12,15 +12,77 @@
 
 ## 📊 Overall Progress
 
-- **Completed**: 8/17 files (certifications.ts, exams.ts, exams.ts types, questions.ts, examInfo.ts, profile.ts, useSubmitAnswer hook, useSubmitExam/useDeleteExam hooks)
+- **Completed**: 9/17 files (certifications.ts, exams.ts, exams.ts types, questions.ts, examInfo.ts, profile.ts, useSubmitAnswer hook, useSubmitExam/useDeleteExam hooks, ExamState interface)
 - **In Progress**: ⏹️ None (ready to start)
-- **Remaining**: 9 files
+- **Remaining**: 8 files
 
-**Progress Bar**: `████████░░░░░░░░░░░░░░░░░░░░░░` (47%)
+**Progress Bar**: `█████████░░░░░░░░░░░░░░░░░░░░░░` (53%)
+
+---
+
+## ⚠️ CRITICAL DISCOVERIES - API SOURCE OF TRUTH VALIDATION
+
+**These patterns MUST be followed for remaining files to avoid type mismatches:**
+
+### 1. **Always Verify Fields Exist in API Before Type Definition**
+
+**Problem Found**: Added `avatar_url`, `first_name`, `last_name` to `UserProfileData` - NONE exist in the API
+**Source Check**:
+
+- Open `certifai-api/functions/src/endpoints/api/users/getUserProfile.ts`
+- Search response object - if field isn't in the return statement, don't add it to type
+  **Action**: Before defining any SWR data type, grep the API endpoint to see exact fields returned
+
+### 2. **Check API DateTime Handling - Always String, Never Number**
+
+**Problem Found**: Defined `submitted_at: number | null` when API returns ISO 8601 strings
+**Why**: Prisma DateTime fields serialize as ISO 8601 strings in JSON, never as timestamps
+**How to Verify**: Look for `DateTime` type in Prisma schema → API returns it as string
+**Example**:
+
+```prisma
+model ExamAttempt {
+  submitted_at DateTime?
+}
+// Returns as JSON: submitted_at: "2026-01-15T10:30:00Z" (string), NOT milliseconds
+```
+
+### 3. **Duplicate Type Definitions Will Cause Mismatches**
+
+**Problem**: `ExamState` interface shadowed `ExamListItemData` with different `submitted_at` type
+**Risk**: When one type is fixed, duplicates aren't updated → cascading errors
+**Prevention**: Search codebase for duplicate interfaces before fixing
+
+```bash
+grep -r "interface ExamState\|interface ExamListItem" src/
+# Should ideally have only ONE definition of each
+```
+
+### 4. **Component Usage Can Reveal Missing API Fields (But Beware False Positives)**
+
+**Pattern**: Components trying to access `profile.avatar_url` → doesn't mean API returns it
+**Reality Check**: Always verify in API endpoint, don't assume UI is correct
+**Better Process**:
+
+1. Fix TypeScript error → shows missing field
+2. Don't blindly add field to type
+3. Check API endpoint for that field
+4. If not in API: remove from component usage instead
 
 ---
 
 ## 📋 NEXT FILE TO WORK ON
+
+**→ [Phase 2.5] useAuthMutation.ts & useAuthSWR.ts** - Document acceptable generic patterns
+
+- **Files**: `src/hooks/useAuthMutation.ts`, `src/hooks/useAuthSWR.ts`
+- **Time**: 10 min | **Complexity**: LOW (documentation only)
+- **Impact**: Clarify why generic `any` defaults are acceptable in these files
+- **Commit Message**: `docs: document acceptable generic any patterns in auth hook wrappers`
+
+---
+
+## ✅ COMPLETED FILES (9)
 
 **→ [Phase 3] useAllData.ts** - Complex data transformation hook
 
@@ -31,16 +93,17 @@
 
 ---
 
-## ✅ COMPLETED FILES (8)
+## ✅ COMPLETED FILES (9)
 
 - [x] certifications.ts (Phase 1)
 - [x] exams.ts (Phase 2 - major refactor)
 - [x] exams.ts types - Phase 1.1 (Remove `[key: string]: any` from UserAnswer & ExamAnswerSubmission)
 - [x] questions.ts - Phase 1.2 (Change `Promise<any>` to `Promise<ApiResponse<SubmitAnswerData>>`)
 - [x] examInfo.ts - Phase 1.3 (Replace `'QUESTIONS_GENERATING'` string literal with `BackendExamStatus.QUESTIONS_GENERATING`)
-- [x] profile.ts - Phase 2 (Added `avatar_url?: string` to UserProfileData interface)
-- [x] questions.ts (hook) - Phase 2 (Added SubmitAnswerError type with questionId field, fixed useSWRMutation generics)
-- [x] exams.ts (hooks) - Phase 2 (Fixed useSWRMutation generics for submitExam and deleteExam hooks)
+- [x] profile.ts (types) - Phase 2.3 (Removed non-API fields: avatar_url, first_name, last_name; fixed firebase_user_id to nullable)
+- [x] questions.ts (hook) - Phase 2.4 (Added SubmitAnswerError type with questionId field, fixed useSWRMutation generics)
+- [x] exams.ts (hooks) - Phase 2.4 (Fixed useSWRMutation generics for submitExam and deleteExam hooks)
+- [x] exams.ts (ExamState) - Phase 2.6 (Aligned submitted_at type with ExamListItemData: string | null)
 
 ---
 
@@ -345,6 +408,45 @@ Each time you complete a file:
 
 ---
 
-**Last Updated**: 1 May 2026 (Session: Type Enforcement Commit Review)
+**Last Updated**: 1 May 2026 (Session 2.6: API Source of Truth Validation + ExamState Fix)
+**Latest Commit**: 07de7e3 (Align type contract)
 **Workflow**: One file per session/commit
 **Next Session Should Start With**: Phase 2.5 (useAuthMutation/AuthSWR documentation)
+
+---
+
+## 🔴 CRITICAL DISCOVERIES FOR FUTURE REFACTORING
+
+**These must be applied to all remaining 8 files to avoid wasted time:**
+
+1. **Never Trust TypeScript Errors Alone**
+   - "Property X does not exist" error ≠ "Add field X to type"
+   - ALWAYS check the API endpoint source code first
+   - If field not in API → remove from component, don't add to type
+
+2. **Prisma DateTime Always = ISO 8601 String**
+   - Any `DateTime` field in Prisma schema → `string | null` in JSON API response
+   - NEVER type as `number` (milliseconds) - will cause type mismatches
+   - Check: `grep "DateTime" functions/prisma/schema.prisma`
+
+3. **Duplicate Type Definitions Cause Cascading Errors**
+   - When you fix one type (e.g., ExamListItemData), grep for similar types (ExamState, ExamDetailData)
+   - Fix ALL of them to match - difference will cause type incompatibility errors
+   - Command: `grep -rn "interface.*Exam" src/types/ src/swr/`
+
+4. **Always Verify Against API Before Coding**
+   - Step 1: Find the endpoint that returns this data
+   - Step 2: Read the exact response object structure
+   - Step 3: Check Prisma schema for field types
+   - Step 4: Search for duplicate type definitions
+   - Step 5: Run TypeScript - should have 0 errors
+
+5. **Process For Remaining 8 Files**
+   - Open API endpoint in certifai-api
+   - Compare API response with SWR type definition
+   - Fix mismatches (DateTime→string, remove non-existent fields, etc.)
+   - Check for duplicate types that need same fix
+   - Update all components that use the type
+   - Run `npx tsc --noEmit` - verify 0 errors
+
+This will save hours of debugging and prevent the avatar_url/submitted_at/ExamState mistakes from happening again.

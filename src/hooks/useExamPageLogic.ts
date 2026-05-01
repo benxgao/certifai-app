@@ -115,7 +115,9 @@ export const useExamPageLogic = () => {
 
   // Extract values from exam state for easier access
   const score = examState?.score ?? null;
-  const submittedAt = examState?.submitted_at ?? null;
+  const submittedAt = examState?.submitted_at
+    ? new Date(examState.submitted_at).getTime()
+    : null;
 
   // Use the SWR Mutation hooks
   const { submitAnswer, isAnswering, submitError } = useSubmitAnswer();

@@ -121,10 +121,6 @@ const AppHeader: React.FC = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage
-                        src={profile?.avatar_url || undefined}
-                        alt={displayName || 'User'}
-                      />
                       <AvatarFallback className="bg-violet-600 text-white font-normal text-sm shadow-sm">
                         {getUserInitials()}
                       </AvatarFallback>
@@ -149,10 +145,6 @@ const AppHeader: React.FC = () => {
                 <DropdownMenuLabel className="font-normal p-4 bg-violet-50/80 dark:bg-violet-950/20 border-b border-slate-200/60 dark:border-slate-700/60 mb-0">
                   <div className="flex items-center space-x-3">
                     <Avatar className="h-12 w-12 border-2 border-violet-200/60 dark:border-violet-700/60 shadow-sm">
-                      <AvatarImage
-                        src={profile?.avatar_url || undefined}
-                        alt={displayName || 'User'}
-                      />
                       <AvatarFallback className="bg-violet-600 text-white font-normal text-sm">
                         {getUserInitials()}
                       </AvatarFallback>

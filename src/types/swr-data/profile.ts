@@ -4,17 +4,15 @@
  * Data structure for user profile
  * From GET /api/users/:user_id/profile
  * From PUT /api/users/:user_id/profile
+ * Source of Truth: functions/src/endpoints/api/users/getUserProfile.ts
  */
 export interface UserProfileData {
-  api_user_id: string; // Our internal UUID for API operations
-  firebase_user_id: string; // Firebase UID for reference
-  first_name?: string;
-  last_name?: string;
-  avatar_url?: string; // User avatar/profile image URL @optional
-  credit_tokens: number;
-  energy_tokens: number;
-  created_at: string;
-  updated_at: string;
+  api_user_id: string; // Our internal UUID for API operations @guaranteed
+  firebase_user_id: string | null; // Firebase UID for reference - may be null for legacy accounts @optional
+  credit_tokens: number; // Number of credit tokens user has @guaranteed
+  energy_tokens: number; // Number of energy tokens user has @guaranteed
+  created_at: string; // Account creation timestamp (ISO 8601) @guaranteed
+  updated_at: string; // Last profile update timestamp (ISO 8601) @guaranteed
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
 }
