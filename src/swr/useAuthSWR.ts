@@ -5,6 +5,27 @@ import { fetcherWithAuth } from './utils';
 /**
  * Custom hook that wraps useSWR with automatic token refresh on 401 errors
  * This ensures that API calls continue to work even when the Firebase token expires
+ *
+ * **Generic Type Pattern (Generic Wrapper)**
+ * This hook uses generic defaults (`Data = any, Error = any`) which is ACCEPTABLE because:
+ * - This is a reusable wrapper function, not a final consumer hook
+ * - Concrete types are specified at call sites (e.g., `useAuthSWR<UserProfileData>('/profile')`)
+ * - Type narrowing happens at the call site, not here
+ * - The hook treats Data/Error generically - authentication logic is data-agnostic
+ *
+ * Example correct usage:
+ * ```typescript
+ * // In exams.ts hook:
+ * useAuthSWR<ExamListItemData[]>(`/user/{userId}/exams`, config)
+ *
+ * // In profile.ts hook:
+ * useAuthSWR<UserProfileData>('/profile', config)
+ * ```
+ *
+ * The type casts on error checks below are safe because:
+ * - Error type narrowing happens at call site
+ * - We're checking standard HTTP status codes and error names
+ * - Consumer hooks that wrap this will provide proper error types
  */
 export function useAuthSWR<Data = any, Error = any>(
   key: string | null,

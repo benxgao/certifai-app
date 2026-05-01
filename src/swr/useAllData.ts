@@ -1,6 +1,10 @@
 import useSWR from 'swr';
 import { fetchAllFirms, fetchAllCertifications } from '../lib/pagination-utils';
-import { FirmWithCertificationsData } from '@/src/types/swr-data/useAllData';
+import {
+  FirmWithCertificationsData,
+  AllFirmData,
+  FirmCertificationItemData,
+} from '@/src/types/swr-data/useAllData';
 
 // Type alias for backward compatibility
 type FirmWithCertifications = FirmWithCertificationsData;
@@ -24,7 +28,7 @@ export function useAllFirmsWithCertifications() {
       }
 
       // Group certifications by firm
-      const firmsWithCerts: FirmWithCertifications[] = allFirms.map((firm) => ({
+      const firmsWithCerts: FirmWithCertifications[] = allFirms.map((firm: AllFirmData) => ({
         id: firm.firm_id,
         code: firm.code,
         name: firm.name,
@@ -33,8 +37,8 @@ export function useAllFirmsWithCertifications() {
         logo_url: firm.logo_url || '',
         certification_count: firm._count?.certifications || 0,
         certifications: allCertifications
-          .filter((cert) => cert.firm?.firm_id === firm.firm_id)
-          .map((cert) => ({
+          .filter((cert: FirmCertificationItemData) => cert.firm?.firm_id === firm.firm_id)
+          .map((cert: FirmCertificationItemData) => ({
             cert_id: cert.cert_id,
             name: cert.name,
             slug: cert.slug,

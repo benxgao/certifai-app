@@ -60,6 +60,22 @@ export function useAuthMutationFetcher() {
  * Custom hook that wraps useSWRMutation with automatic token refresh on 401 errors
  * This ensures that mutations continue to work even when the Firebase token expires
  *
+ * **Generic Type Pattern (Generic Wrapper)**
+ * This hook uses generic defaults (`Data = any, Arg = any`) which is ACCEPTABLE because:
+ * - This is a reusable wrapper function, not a final consumer hook
+ * - Concrete types are specified at call sites (e.g., `useSubmitExam<ExamSubmitData>`)
+ * - Type narrowing happens at the call site, not here
+ * - The hook treats Data/Arg generically - authentication logic is data-agnostic
+ *
+ * Example correct usage:
+ * ```typescript
+ * // In useSubmitExam hook:
+ * useAuthMutation<ApiResponse<ExamSubmitData>, ExamAnswerSubmission>(
+ *   `/exams/${examId}/submit`,
+ *   'POST'
+ * )
+ * ```
+ *
  * Note: Using useRef + useCallback to prevent circular dependency issues where
  * auth state changes during mutation trigger refreshToken recreation, which then
  * triggers mutationFetcher recreation, causing stack overflow.

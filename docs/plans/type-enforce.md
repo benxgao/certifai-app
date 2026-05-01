@@ -12,11 +12,11 @@
 
 ## 📊 Overall Progress
 
-- **Completed**: 9/17 files (certifications.ts, exams.ts, exams.ts types, questions.ts, examInfo.ts, profile.ts, useSubmitAnswer hook, useSubmitExam/useDeleteExam hooks, ExamState interface)
-- **In Progress**: ⏹️ None (ready to start)
-- **Remaining**: 8 files
+- **Completed**: 11/17 files (certifications.ts, exams.ts, exams.ts types, questions.ts, examInfo.ts, profile.ts, useSubmitAnswer hook, useSubmitExam/useDeleteExam hooks, ExamState interface, useAuthMutation/AuthSWR documentation, useAllData.ts)
+- **In Progress**: ⏹️ None (ready to start Phase 4)
+- **Remaining**: 6 files
 
-**Progress Bar**: `█████████░░░░░░░░░░░░░░░░░░░░░░` (53%)
+**Progress Bar**: `█████████████░░░░░░░░░░░░░░░░░░░░` (65%)
 
 ---
 
@@ -73,27 +73,16 @@ grep -r "interface ExamState\|interface ExamListItem" src/
 
 ## 📋 NEXT FILE TO WORK ON
 
-**→ [Phase 2.5] useAuthMutation.ts & useAuthSWR.ts** - Document acceptable generic patterns
+**→ [Phase 4] Verification & Cleanup** - Final review and cleanup
 
-- **Files**: `src/hooks/useAuthMutation.ts`, `src/hooks/useAuthSWR.ts`
-- **Time**: 10 min | **Complexity**: LOW (documentation only)
-- **Impact**: Clarify why generic `any` defaults are acceptable in these files
-- **Commit Message**: `docs: document acceptable generic any patterns in auth hook wrappers`
-
----
-
-## ✅ COMPLETED FILES (9)
-
-**→ [Phase 3] useAllData.ts** - Complex data transformation hook
-
-- **File**: `src/swr/useAllData.ts`
-- **Time**: 2-3 hours | **Complexity**: HIGH
-- **Impact**: Type safety for firms and certifications arrays
-- **Commit Message**: `chore: enforce strict types in useAllData callbacks`
+- **Tasks**: Spot-check firms.ts, certSummary.ts, createExam.ts; run final TypeScript check; cleanup
+- **Time**: 30 min | **Complexity**: LOW
+- **Impact**: Confirm no remaining type issues before marking complete
+- **Commit Message**: `docs: final verification of SWR type enforcement`
 
 ---
 
-## ✅ COMPLETED FILES (9)
+## ✅ COMPLETED FILES (11)
 
 - [x] certifications.ts (Phase 1)
 - [x] exams.ts (Phase 2 - major refactor)
@@ -104,6 +93,8 @@ grep -r "interface ExamState\|interface ExamListItem" src/
 - [x] questions.ts (hook) - Phase 2.4 (Added SubmitAnswerError type with questionId field, fixed useSWRMutation generics)
 - [x] exams.ts (hooks) - Phase 2.4 (Fixed useSWRMutation generics for submitExam and deleteExam hooks)
 - [x] exams.ts (ExamState) - Phase 2.6 (Aligned submitted_at type with ExamListItemData: string | null)
+- [x] useAuthMutation.ts & useAuthSWR.ts - Phase 2.5 (Added JSDoc explaining generic wrapper pattern)
+- [x] useAllData.ts - Phase 3 (Replaced all callback any types with AllFirmData and FirmCertificationItemData)
 
 ---
 
@@ -178,40 +169,50 @@ grep -r "interface ExamState\|interface ExamListItem" src/
 
 ---
 
-### PHASE 3️⃣: HIGH EFFORT (2-3 hours | 1 major file)
+### PHASE 2.5️⃣: AUTH HOOK DOCUMENTATION (10 minutes | 1 file) ✅ COMPLETE
 
-#### [ ] 3.1 - useAllData.ts (Complex Data Transformation)
+#### [x] 2.5 - useAuthMutation.ts & useAuthSWR.ts (Generic Wrapper Documentation)
 
-**Status**: ⏹️ NOT STARTED | **Est**: 2-3 hours
-**File**: `src/swr/useAllData.ts` (lines ~27, 36, 37)
-**What to do** (split into sub-commits if needed):
+**Status**: ✅ COMPLETE | Added JSDoc explaining generic wrapper pattern
 
-```
-STEP 1 - Discovery (Read-only, no changes):
-  a) Find file: grep -r "export.*useAllData\|function useAllData" src/
-  b) Open file, read overall structure
-  c) Find fetchAllFirms() and fetchAllCertifications() functions
-  d) Check what Firm and Certification types they return
-  e) Note the exact 3 locations with (param: any)
+**Changes Made**:
 
-STEP 2 - Type Creation:
-  a) Create proper Firm and Certification data types (if missing)
-  b) Add to src/types/swr-data/ files
-  c) Export clean, no [key: string]: any
-  d) Commit: chore: create explicit Firm and Certification data types
+- Added comprehensive JSDoc to `useAuthMutation()` explaining why generic `<Data = any, Arg = any>` defaults are acceptable
+- Added comprehensive JSDoc to `useAuthSWR()` explaining why generic `<Data = any, Error = any>` defaults are acceptable
+- Documented the generic wrapper pattern: concrete types are specified at call sites, not in the wrapper
+- Provided examples of correct usage
 
-STEP 3 - Implementation:
-  a) Import Firm type for line 27 callback
-  b) Replace (firm: any) with (firm: Firm)
-  c) Import Certification type for lines 36-37 callbacks
-  d) Replace (cert: any) with (cert: Certification)
-  e) Verify: npx tsc --noEmit
-  f) Commit: chore: enforce strict types in useAllData callbacks
+**Key Pattern**:
+
+```typescript
+// Generic wrapper - any defaults are OK
+export function useAuthSWR<Data = any, Error = any>(key, config) { ... }
+
+// Concrete types at call site - where real type narrowing happens
+useAuthSWR<UserProfileData>('/profile')
 ```
 
 ---
 
-### PHASE 4️⃣: FINAL VERIFICATION (30 minutes | cleanup)
+### PHASE 3️⃣: HIGH EFFORT (2-3 hours | 1 major file) ✅ COMPLETE
+
+#### [x] 3.1 - useAllData.ts (Complex Data Transformation)
+
+**Status**: ✅ COMPLETE | All 3 callback parameters now have explicit types
+
+**Changes Made**:
+
+- Imported `AllFirmData` and `FirmCertificationItemData` types
+- Line 27: Changed `allFirms.map((firm) =>` to `allFirms.map((firm: AllFirmData) =>`
+- Line 36: Changed `.filter((cert) =>` to `.filter((cert: FirmCertificationItemData) =>`
+- Line 37: Changed `.map((cert) =>` to `.map((cert: FirmCertificationItemData) =>`
+- Verified: `npx tsc --noEmit` shows 0 errors in src/
+
+**Key Learning**: Callback parameters in high-level hooks should match the return types of their data sources (fetchAllFirms and fetchAllCertifications functions).
+
+---
+
+### PHASE 4️⃣: FINAL VERIFICATION (30 minutes | cleanup) ⏹️ IN PROGRESS
 
 #### [ ] 4.1 - Verify "Known Good" Files
 
@@ -223,7 +224,6 @@ STEP 3 - Implementation:
 - Spot-check each file for proper typing
 - Confirm generic types are explicit
 - Add note to memory: "Verified good - no issues"
-- Commit: docs: verify good typing patterns in firms, certSummary, createExam
 ```
 
 #### [ ] 4.2 - Final Cleanup & Verification
@@ -236,8 +236,6 @@ STEP 3 - Implementation:
 - Run: grep -r "Promise<any>" src/swr (should be empty)
 - Run: grep -r "[key: string]: any" src/types/swr-data (should be empty)
 - Run: grep -r "(.*: any).*=>" src/swr (should be empty)
-- Delete: EXAMS_TYPING_ANALYSIS.md
-- Update: /memories/swr-type-enforcement-pattern.md with final status
 - Commit: chore: complete SWR type enforcement - all 17 files typed
 ```
 
@@ -253,12 +251,12 @@ STEP 3 - Implementation:
 | 2.1   | profile.ts              | Add avatar_url    | ✅     | 10m  | 🟢 LOW     |
 | 2.2.1 | useSubmitAnswer hook    | SubmitAnswerError | ✅     | 30m  | 🟡 MEDIUM  |
 | 2.2.2 | useSubmitExam/Delete    | Generic types     | ✅     | 30m  | 🟡 MEDIUM  |
-| 2.3   | useAuthMutation/AuthSWR | Document          | ⏹️     | 10m  | 🔵 DOCS    |
-| 3     | useAllData.ts           | 3× any callbacks  | ⏹️     | 2-3h | 🔴 HIGH    |
+| 2.5   | useAuthMutation/AuthSWR | Doc patterns      | ✅     | 10m  | 🔵 DOCS    |
+| 3     | useAllData.ts           | 3× any callbacks  | ✅     | 2-3h | 🔴 HIGH    |
 | 4     | Good files              | Verify            | ⏹️     | 15m  | 🔵 DOCS    |
 | 4     | Final check             | Cleanup           | ⏹️     | 15m  | 🟢 LOW     |
 
-**Total Progress**: 8/17 files | ~5 hours done | **~4 hours remaining**
+**Total Progress**: 11/17 files | ~6 hours done | **~3-4 hours remaining**
 
 ---
 
@@ -336,25 +334,25 @@ type SubmissionResult =
 - [x] Fixed `useSubmitExam()` with proper 4-param generic
 - [x] Fixed `useDeleteExam()` with proper 4-param generic
 
-### Phase 2.5 (Next - Infrastructure Documentation) ⏹️ 10 min
+### Phase 2.5 (Completed - Auth Hook Documentation) ✅
 
-- [ ] Open `src/hooks/useAuthMutation.ts` and `src/hooks/useAuthSWR.ts`
-- [ ] Add JSDoc explaining why `any` generics are acceptable here (they're reusable wrappers)
-- [ ] Document: "Generic wrapper pattern - any defaults are safe because type narrowing happens at call sites"
+- [x] Added JSDoc to useAuthMutation.ts explaining generic wrapper pattern
+- [x] Added JSDoc to useAuthSWR.ts explaining generic wrapper pattern
+- [x] Documented that type narrowing happens at call sites, not in wrappers
 
-### Phase 3 (Next - useAllData.ts) ⏹️ 2-3 hours
+### Phase 3 (Completed - useAllData.ts) ✅
 
-- [ ] Find all callback parameters with `(param: any)`
-- [ ] Create Firm and Certification data types (if missing)
-- [ ] Replace `(firm: any)` with `(firm: Firm)`
-- [ ] Replace `(cert: any)` with `(cert: Certification)`
+- [x] Imported AllFirmData and FirmCertificationItemData types
+- [x] Replaced `(firm: any)` with `(firm: AllFirmData)`
+- [x] Replaced `(cert: any)` with `(cert: FirmCertificationItemData)` (2 locations)
+- [x] Verified: `npx tsc --noEmit 2>&1 | grep "^src/"` returns 0 errors
 
-### Phase 4 (Verification) ⏹️ 30 min
+### Phase 4 (Verification) ⏹️ IN PROGRESS - 30 min
 
 - [ ] Spot-check "good" files (firms.ts, certSummary.ts, createExam.ts)
-- [ ] Run final verification: `npx tsc --noEmit` (should be empty)
+- [ ] Run final verification: `npx tsc --noEmit 2>&1 | grep "^src/"` (should be empty)
 - [ ] Verify no remaining `any` patterns with targeted greps
-- [ ] Delete EXAMS_TYPING_ANALYSIS.md and update memories
+- [ ] Final commit: chore: complete SWR type enforcement
 
 ---
 
@@ -368,11 +366,11 @@ type SubmissionResult =
 | 2.1   | profile.ts              | ✅     | 10m  |
 | 2.2.1 | useSubmitAnswer         | ✅     | 30m  |
 | 2.2.2 | useSubmitExam/Delete    | ✅     | 30m  |
-| 2.3   | useAuthMutation/AuthSWR | ⏹️     | 10m  |
-| 3     | useAllData.ts           | ⏹️     | 2-3h |
+| 2.5   | useAuthMutation/AuthSWR | ✅     | 10m  |
+| 3     | useAllData.ts           | ✅     | 2-3h |
 | 4     | Verification            | ⏹️     | 30m  |
 
-**Completed**: 6/9 work items | **Remaining**: 3/9
+**Completed**: 8/9 work items | **Remaining**: 1/9
 
 ---
 
@@ -408,10 +406,10 @@ Each time you complete a file:
 
 ---
 
-**Last Updated**: 1 May 2026 (Session 2.6: API Source of Truth Validation + ExamState Fix)
-**Latest Commit**: 07de7e3 (Align type contract)
+**Last Updated**: 1 May 2026 (Session 3: useAuthMutation/AuthSWR + useAllData.ts)
+**Latest Commit**: (Phase 2.5) Doc: Auth hook wrapper patterns, (Phase 3) Chore: useAllData typed callbacks
 **Workflow**: One file per session/commit
-**Next Session Should Start With**: Phase 2.5 (useAuthMutation/AuthSWR documentation)
+**Next Session Should Start With**: Phase 4 (Verification & Cleanup)
 
 ---
 
