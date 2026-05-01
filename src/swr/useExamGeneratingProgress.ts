@@ -28,7 +28,7 @@ export function useExamGeneratingProgress(apiUserId: string, examId: string, exa
   const shouldFetch = Boolean(apiUserId && examId && isGenerating && !isReady);
   const key = shouldFetch ? `/api/users/${apiUserId}/exams/${examId}/generating-progress` : null;
 
-  const { data, error, isLoading, mutate } = useAuthSWR<ExamGeneratingProgressResponse>(key, {
+  const { data, error, isLoading, mutate } = useAuthSWR<ExamGeneratingProgressResponse, Error>(key, {
     refreshInterval: 2000, // Poll every 2 seconds
     revalidateOnFocus: true,
     revalidateOnReconnect: true,

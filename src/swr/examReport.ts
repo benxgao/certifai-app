@@ -81,7 +81,7 @@ async function generateExamReportFetcher(url: string): Promise<ExamReportData> {
 export function useExamReport(examId: string | null, shouldFetch: boolean = true) {
   const { firebaseUser, apiUserId } = useFirebaseAuth();
 
-  const { data, error, isLoading, mutate } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR<ExamReportData, Error>(
     examId && shouldFetch && firebaseUser && apiUserId
       ? `/api/users/${apiUserId}/exams/${examId}/exam-report`
       : null,

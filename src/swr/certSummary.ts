@@ -96,7 +96,7 @@ export function useCertSummary(userId: string, certId: string) {
   const shouldFetch = firebaseUser && userId && certId;
   const key = shouldFetch ? `/api/users/${userId}/certifications/${certId}/cert-summary` : null;
 
-  const { data, error, isLoading, mutate } = useSWR(key, certSummaryFetcher, {
+  const { data, error, isLoading, mutate } = useSWR<CertSummaryData, Error>(key, certSummaryFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     errorRetryCount: 3,

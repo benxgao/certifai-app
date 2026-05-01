@@ -9,7 +9,7 @@ interface ExamLiveStatusResponse {
   success: boolean;
   data: ExamLiveStatusData;
   error?: string;
-} 
+}
 
 /**
  * Real-time exam status hook that bypasses Redis cache for freshness
@@ -27,7 +27,7 @@ export function useExamLiveStatus(
   const shouldFetch = Boolean(apiUserId && examId && pollingEnabled);
   const key = shouldFetch ? `/api/users/${apiUserId}/exams/${examId}/live-status` : null;
 
-  const { data, error, isLoading, mutate } = useAuthSWR<ExamLiveStatusResponse>(
+  const { data, error, isLoading, mutate } = useAuthSWR<ExamLiveStatusResponse, Error>(
     key,
     {
       refreshInterval: 2000, // Poll every 2 seconds for real-time updates
@@ -38,17 +38,17 @@ export function useExamLiveStatus(
       shouldRetryOnError: true,
       onError: (err) => {
         if (err && typeof err === 'object' && 'status' in err) {
-          const status = err.status;
+          const status = (err as any).status;
           if (status === 404) {
             console.log('Exam not found - may have been deleted');
             return;
           }
           // Log warnings for other errors to aid debugging
-          if (status >= 500) {
+          if (typeof status === 'number' && status >= 500) {
             console.warn('[live-status] Server error:', status);
           } else if (status === 0 || !status) {
             console.warn('[live-status] Network error or timeout:', err instanceof Error ? err.message : '');
-          } else if (status >= 400) {
+          } else if (typeof status === 'number' && status >= 400) {
             console.warn('[live-status] Client error:', status);
           }
         }

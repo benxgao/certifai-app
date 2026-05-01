@@ -81,10 +81,17 @@ async function createExamFetcher(
 export function useCreateExam() {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error } = useSWRMutation(
-    'CREATE_EXAM', // Static key for this type of mutation
-    createExamFetcher,
-  );
+  const { trigger, isMutating, error } = useSWRMutation<
+    ApiResponse<CreateExamResponse>,
+    CreateExamError,
+    string,
+    {
+      apiUserId: string;
+      certId: number;
+      body: CreateExamRequest;
+      refreshToken: () => Promise<string | null>;
+    }
+  >('CREATE_EXAM', createExamFetcher);
 
   // Wrapper to inject refreshToken function
   const createExam = (arg: { apiUserId: string; certId: number; body: CreateExamRequest }) => {
