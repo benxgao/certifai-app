@@ -33,17 +33,19 @@ export function useAllFirmsWithCertifications() {
         logo_url: firm.logo_url || '',
         certification_count: firm._count?.certifications || 0,
         certifications: allCertifications
-          .filter((cert) => cert.firm_id === firm.firm_id)
+          .filter((cert) => cert.firm?.firm_id === firm.firm_id)
           .map((cert) => ({
             cert_id: cert.cert_id,
-            firm_id: cert.firm_id,
             name: cert.name,
-            description: cert.description || '',
+            slug: cert.slug,
             exam_guide_url: cert.exam_guide_url,
             min_quiz_counts: cert.min_quiz_counts,
             max_quiz_counts: cert.max_quiz_counts,
             pass_score: cert.pass_score,
-            created_at: cert.created_at || new Date().toISOString(),
+            firm_id: cert.firm?.firm_id || 0,
+            description: '',
+            created_at: new Date().toISOString(),
+            firm: cert.firm,
           })),
       }));
 

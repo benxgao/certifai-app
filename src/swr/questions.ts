@@ -3,7 +3,7 @@ import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
 import { PaginationInfo } from './utils';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { AnswerOptionData, QuestionData, ExamQuestionsData, SubmitAnswerData } from '@/src/types/swr-data/questions';
+import { AnswerOptionData, QuestionData, ExamQuestionsData, SubmitAnswerData, SubmitAnswerError } from '@/src/types/swr-data/questions';
 import { ApiResponse } from '@/src/types/api';
 
 // Type aliases for backward compatibility
@@ -109,33 +109,62 @@ export function useSubmitAnswer() {
   const { refreshToken } = useFirebaseAuth();
 
   const {
-    trigger,
+    trigger: rawTrigger,
     isMutating, // Renaming this in the return object
-    error,
+    error: rawError,
     data,
     reset, // Optional: if the component needs to reset mutation state
-  } = useSWRMutation(
+  } = useSWRMutation<
+    ApiResponse<SubmitAnswerData>,
+    Error,
+    string,
+    {
+      apiUserId: string;
+      certId: number;
+      examId: string;
+      questionId: string;
+      optionId: string;
+      refreshToken: () => Promise<string | null>;
+    }
+  >(
     'SUBMIT_ANSWER', // A unique static key for this type of mutation
     submitAnswerFetcher,
     // Optional: Configuration for the mutation can be added here
     // e.g., for optimistic updates or revalidation strategies.
   );
 
-  // Wrapper to inject refreshToken function
-  const submitAnswer = (arg: {
+  // Wrapper to inject refreshToken function and transform errors
+  const submitAnswer = async (arg: {
     apiUserId: string;
     certId: number;
     examId: string;
     questionId: string;
     optionId: string;
   }) => {
-    return trigger({ ...arg, refreshToken });
+    try {
+      return await rawTrigger({ ...arg, refreshToken });
+    } catch (err) {
+      // Transform caught errors to include questionId for better error tracking
+      if (err instanceof Error) {
+        throw new SubmitAnswerError(err.message, arg.questionId);
+      }
+      throw err;
+    }
   };
+
+  // Transform raw error to SubmitAnswerError if available
+  // Note: This handles errors from useSWRMutation's internal state
+  let submitError: SubmitAnswerError | undefined;
+  if (rawError instanceof Error) {
+    // We don't have questionId from the hook state, so we use a generic error with empty questionId
+    // The actual questionId is added by the submitAnswer wrapper above
+    submitError = rawError as SubmitAnswerError;
+  }
 
   return {
     submitAnswer, // The function to trigger the mutation
     isAnswering: isMutating, // Renamed from isSubmitting
-    submitError: error, // Error state of the mutation
+    submitError, // Error state of the mutation
     submitData: data, // Data returned from a successful mutation
     resetSubmitState: reset, // Function to reset the mutation state
   };

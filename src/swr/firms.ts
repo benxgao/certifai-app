@@ -3,6 +3,7 @@ import { useAuthSWR } from './useAuthSWR';
 import { PaginatedApiResponse, ApiResponse } from '../types/api';
 import { fetchAllFirms, fetchAllCertificationsByFirm } from '../lib/pagination-utils';
 import { FirmData, CertificationByFirmData } from '@/src/types/swr-data/firms';
+import { AllFirmData } from '@/src/types/swr-data/useAllData';
 
 // Type aliases for backward compatibility
 export type Firm = FirmData;
@@ -217,7 +218,7 @@ export function useAuthenticatedSearchFirms(
 export function useAllFirms(includeCount: boolean = false) {
   // Use custom fetcher to load all pages recursively
   const { data, error, isLoading, isValidating, mutate } = useSWR<
-    { data: Firm[]; meta: { total: number } },
+    { data: AllFirmData[]; meta: { total: number } },
     Error
   >(`all-firms-${includeCount}`, () => fetchAllFirmsPaginated(includeCount), {
     revalidateOnFocus: false,

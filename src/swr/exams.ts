@@ -186,7 +186,18 @@ async function submitExamFetcher(
 export function useSubmitExam() {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error } = useSWRMutation<ApiResponse<ExamSubmitData>, Error>(
+  const { trigger, isMutating, error } = useSWRMutation<
+    ApiResponse<ExamSubmitData>,
+    Error,
+    string,
+    {
+      apiUserId: string;
+      certId: number;
+      examId: string;
+      body: ExamAnswerSubmission;
+      refreshToken: () => Promise<string | null>;
+    }
+  >(
     'SUBMIT_EXAM', // Static key for this type of mutation
     submitExamFetcher,
   );
@@ -258,7 +269,16 @@ async function deleteExamFetcher(
 export function useDeleteExam() {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error } = useSWRMutation<ApiResponse<ExamDeleteData>, Error>(
+  const { trigger, isMutating, error } = useSWRMutation<
+    ApiResponse<ExamDeleteData>,
+    Error,
+    string,
+    {
+      apiUserId: string;
+      examId: string;
+      refreshToken: () => Promise<string | null>;
+    }
+  >(
     'DELETE_EXAM', // Static key for this type of mutation
     deleteExamFetcher,
   );

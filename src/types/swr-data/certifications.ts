@@ -48,14 +48,12 @@ export interface CertificationMutationResponse {
 /**
  * Data structure for a single certification item from GET /api/public/certifications
  * This matches the CertificationListItem in certifications.ts
- * @guaranteed cert_id, firm_id, name, min_quiz_counts, max_quiz_counts, pass_score
- * @optional exam_guide_url, firm, firm.created_at, firm.updated_at
+ * @guaranteed cert_id, name, min_quiz_counts, max_quiz_counts, pass_score, firm.firm_id
+ * @optional exam_guide_url, firm.name, firm.code, firm.logo_url
  */
 export interface CertificationListItem {
   /** Globally unique certification ID @guaranteed */
   cert_id: number;
-  /** Firm/organization that owns this certification @guaranteed */
-  firm_id: number;
   /** Human-readable certification name @guaranteed */
   name: string;
   /** URL to exam guide/study materials (may not be provided by API) @optional */

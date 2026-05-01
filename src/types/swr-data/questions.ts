@@ -59,3 +59,19 @@ export interface SubmitAnswerData {
  * data?.data resolves to this type
  */
 export type SwrDataApiSubmitAnswerResponse = SubmitAnswerData;
+
+/**
+ * Custom error type for answer submission failures
+ * Includes the questionId that failed to help identify which question had the error
+ */
+export class SubmitAnswerError extends Error {
+  constructor(
+    message: string,
+    public questionId: string,
+  ) {
+    super(message);
+    this.name = 'SubmitAnswerError';
+    // Ensure proper prototype chain for instanceof checks
+    Object.setPrototypeOf(this, SubmitAnswerError.prototype);
+  }
+}

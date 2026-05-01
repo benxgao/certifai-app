@@ -17,6 +17,7 @@ import {
   DashboardCardContent,
 } from '@/src/components/ui/dashboard-card';
 import { PaginationInfo } from '@/src/swr/utils';
+import { SubmitAnswerError } from '@/src/types/swr-data/questions';
 
 interface QuestionCardProps {
   question: Question;
@@ -26,7 +27,7 @@ interface QuestionCardProps {
   submittedAt: number | null;
   isAnswering: boolean;
   isSubmittingExamFlag: boolean;
-  submitError: Error | undefined;
+  submitError: SubmitAnswerError | undefined;
   onOptionChange: (questionId: string, optionId: string) => void;
   isCorrectOption: (question: Question, optionId: string) => boolean;
 }

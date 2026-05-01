@@ -10,6 +10,7 @@ export interface UserProfileData {
   firebase_user_id: string; // Firebase UID for reference
   first_name?: string;
   last_name?: string;
+  avatar_url?: string; // User avatar/profile image URL @optional
   credit_tokens: number;
   energy_tokens: number;
   created_at: string;

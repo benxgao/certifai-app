@@ -5,6 +5,7 @@ import { Question } from '@/swr/questions';
 import { QuestionCard } from './QuestionCard';
 import { ExamBottomNavigation } from './ExamBottomNavigation';
 import { PaginationInfo } from '@/src/swr/utils';
+import { SubmitAnswerError } from '@/src/types/swr-data/questions';
 
 interface ExamQuestionsContainerProps {
   questions: Question[];
@@ -15,7 +16,7 @@ interface ExamQuestionsContainerProps {
   isSubmittingExamFlag: boolean;
   isNavigatingPage: boolean;
   isLoadingQuestions: boolean;
-  submitError: Error | undefined;
+  submitError: SubmitAnswerError | undefined;
   onOptionChange: (questionId: string, optionId: string) => void;
   isCorrectOption: (question: Question, optionId: string) => boolean;
   onPreviousPage: () => void;

@@ -2,18 +2,17 @@
 
 /**
  * Data structure for a single firm
- * From GET /api/public/firms
- * From GET /api/public/firms/:firm_id
+ * From GET /api/public/firms or GET /api/public/firms/:firm_id
+ * Note: API does not return updated_at field, only created_at
  */
 export interface FirmData {
   firm_id: number;
   name: string;
   code: string;
-  description: string;
+  description: string | null;
   website_url: string | null;
   logo_url: string | null;
   created_at: string;
-  updated_at: string;
   _count?: {
     certifications: number;
   };
