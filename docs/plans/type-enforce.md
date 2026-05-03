@@ -4,6 +4,134 @@
 
 ---
 
+# 🚨 BACKEND API CHANGES TO IMPLEMENT
+
+**Last Sync with certifai-api type enforcement**: 2026-05-04 (Phase 5b Complete)
+**Status**: Implementation Ready - See [api-types-phase-5b.md](./api-types-phase-5b.md)
+
+---
+
+## 📋 Phase 5b: Exam Endpoints Alignment
+
+**Detailed Plan**: [api-types-phase-5b.md](./api-types-phase-5b.md)
+**Backend Commit**: `9039b7cb37ee4186c57cadd81db644bfeaf99825`
+**Estimated Time**: 105 minutes (~2 hours)
+**Status**: Ready for Implementation
+
+### Implementation Tracking
+
+- [ ] **Phase 5b.1**: Type Definition Updates (20 min)
+  - Update `ExamDetailData` with nested answers structure
+  - Add `ExamAnswerWithQuestion` interface
+  - Update `ExamQuestionsResponseData` type
+  - **Commit**: `types: align ExamDetailData and ExamQuestionResponse with Phase 5b API contracts`
+
+- [ ] **Phase 5b.2**: Questions Hook Refactor (25 min)
+  - Update `useExamQuestions` for nested response shape
+  - Update components consuming questions hook
+  - **Commit**: `refactor: update useExamQuestions to handle nested response shape`
+
+- [ ] **Phase 5b.3**: Exam Detail Hook Updates (25 min)
+  - Update `useExamState`/`useExamDetail` for new answer structure
+  - Update exam detail page components
+  - **Commit**: `refactor: update exam detail hooks to use nested answer structure`
+
+- [ ] **Phase 5b.4**: Component Integration Testing (20 min)
+  - Test all exam flows end-to-end
+  - Verify no console errors
+  - **Commit**: `test: verify Phase 5b exam endpoint integration`
+
+- [ ] **Phase 5b.5**: Documentation & Cleanup (15 min)
+  - Update this file with completion status
+  - Add JSDoc to updated hooksallie
+  - **Commit**: `docs: update Phase 5b exam endpoint documentation`
+
+---
+
+## Pending Frontend Updates (Detailed Breakdown)
+
+### ✅ Already Aligned (No Changes Needed)
+
+- [x] Endpoint: `POST /api/users/{userId}/certifications/{certId}/exams` (Create Exam)
+  - Frontend `CreateExamResponse` matches backend ✅
+
+- [x] Endpoint: `GET /api/users/{userId}/exams/{examId}/live-status` (Live Status)
+  - Frontend `ExamLiveStatusData` matches backend ✅
+
+- [x] Endpoint: `POST /api/users/{userId}/certifications/{certId}/exams/{examId}/submit` (Submit)
+  - Frontend `ExamSubmitData` matches backend ✅
+
+- [x] Endpoint: `GET /api/users/{userId}/exams` (List Exams)
+  - Frontend `ExamListItemData` matches backend ✅
+
+### High Priority (Contract Drift - Phase 5b)
+
+- [ ] Endpoint: `GET /api/users/{userId}/exams/{examId}`
+  - CHANGED: response includes `progress`, `generation_progress`, and nested `answers` array with full question data
+  - Components/Hooks Affected: exam detail consumers using `ExamDetailData`
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/exams/getUserExam.ts`
+  - **Phase**: 5b.1, 5b.3
+  - PR: (link)
+
+- [ ] Endpoint: `GET /api/users/{userId}/exams/{examId}/questions`
+  - CHANGED: response shape is `{ success, data: { questions: [...], total_questions, answered_questions }, pagination }`
+  - Components/Hooks Affected: question list hooks/components expecting flat array
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/exams/getExamQuestions.ts`
+  - **Phase**: 5b.1, 5b.2
+  - PR: (link)
+
+### Medium Priority (Verification Needed - Phase 5b)
+
+- [ ] Endpoint: `DELETE /api/users/{userId}/exams/{examId}`
+  - VERIFY: response includes detailed `deletion_summary`, `rtdb_cleanup`, `validation` (already typed, needs verification)
+  - Components/Hooks Affected: exam deletion flows
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/exams/deleteExam.ts`
+  - **Phase**: 5b.4 (testing)
+  - PR: (link)
+
+---
+
+## Phase 5c: Certification Endpoints (Future Work)
+
+**Status**: Pending Phase 5b completion
+**Backend Source**: certifai-api Phase 5c commit (TBD)
+
+### High Priority (Phase 5c certification contract drift)
+
+- [ ] Endpoint: `POST /api/users/{userId}/certifications`
+  - CHANGED: route accepts `cert_id` in request **body** (not `/{certId}` path), and returns `{ success, data: UserCertification, performance }`
+  - Components/Hooks Affected: certification registration mutation hooks and payload typing
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/register.ts`
+  - PR: (link)
+
+- [ ] Endpoint: `DELETE /api/users/{userId}/certifications/{certId}`
+  - CHANGED: response is detailed `{ success, message, data: { deletion_summary, rtdb_cleanup, validation, timing, ... } }` (not `success: true` only)
+  - Components/Hooks Affected: certification deletion flows expecting minimal delete response
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/deleteCertification.ts`
+  - PR: (link)
+
+- [ ] Endpoint: `GET /api/users/{userId}/certifications`
+  - CHANGED: pagination metadata shape is `{ currentPage, pageSize, totalItems, totalPages, hasNextPage, hasPreviousPage }` and data items are DB-shaped user-certification records with nested `certification`
+  - Components/Hooks Affected: certification list hooks expecting `ListResponse<UserRegisteredCertification>` with `{ page, pageSize, total }`
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/getUserCertifications.ts`
+  - PR: (link)
+
+### Medium Priority (Phase 5c additional typed endpoints not covered by Phase 2 cert DTOs)
+
+- [ ] Endpoint: `GET/POST /api/users/{userId}/certifications/{certId}/knowledge-pooling`
+  - ADDED/DIFF: returns envelope with `message`, `metadata`, and consolidated knowledge insights payload; currently not represented in `types/api/certifications.ts`
+  - Components/Hooks Affected: knowledge pooling hooks/components
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/getKnowledgePooling.ts`, `.../generateKnowledgePooling.ts`
+  - PR: (link)
+
+- [ ] Endpoint: `GET/POST /api/users/{userId}/certifications/{certId}/cert-summary`
+  - ADDED/DIFF: returns cert summary payload with `structured_data`, `summary_stats`, and contextual `message`; currently not represented in `types/api/certifications.ts`
+  - Components/Hooks Affected: cert summary hooks/components
+  - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/getCertSummary.ts`
+  - PR: (link)
+
+---
+
 # SWR Type Enforcement - Work Tracker (Per-File Commits)
 
 **Purpose**: One file per commit - check off as you complete each file
