@@ -618,6 +618,202 @@ Each time you complete a file:
 - [x] 0 `[key: string]: any` in data interfaces (verified session 5)
 - [x] 0 `(param: any)` in callbacks (verified session 5)
 - [x] All status strings → enums (fixed in Phases 1-2)
+
+---
+
+# Phase 6: App-Wide `any` Elimination
+
+**Planned**: May 5, 2026
+**Status**: 🔲 Not Started
+**Scope**: All remaining `any` usages in `src/` and `app/api/` (excludes `__tests__/`)
+
+## 📊 Audit Summary (99 total as of May 5, 2026)
+
+| Category          | Count | Primary Files                                                              |
+| ----------------- | ----- | -------------------------------------------------------------------------- |
+| `as-any-cast`     | 35    | `src/swr/utils.ts`, `useAuthSWR.ts`, `certSummary.ts`, `certifications.ts` |
+| `error-catch`     | 17    | 14 files across `src/lib/`, `src/components/`, `app/api/`                  |
+| `callback-param`  | 16    | `src/lib/auth-error-handler.ts`, `rateLimitUtils.ts`, `server-actions/`    |
+| `props-interface` | 14    | 2 components, 3 contexts, 8 Next.js API routes                             |
+| `variable-type`   | 13    | `app/api/auth/` (customClaims), `src/lib/` utilities                       |
+| `generic-default` | 4     | `useAuthMutation` (intentional — keep as-is)                               |
+
+**Verification command** (run after each phase):
+
+```bash
+npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
+# Expected: no output
+```
+
+---
+
+## Phase 6a — SWR Error `as any` Casts
+
+**Status**: 🔲 Not Started
+**Files**: `src/types/api.ts`, `src/swr/utils.ts`, `src/swr/useAuthSWR.ts`, `src/swr/certSummary.ts`, `src/swr/certifications.ts`, `src/swr/profile.ts`, `src/swr/useExamLiveStatus.ts`
+**Count**: ~25 `as any` casts
+
+### Root fix — extend `ApiError` + add type guard
+
+`src/types/api.ts` already has `interface ApiError extends Error`. Extend it:
+
+- Add `info?: unknown` field (for JSON/text body attached to fetch errors)
+- Add exported `isApiError(err: unknown): err is ApiError` type guard
+
+### Per-file tasks
+
+- [ ] **6a.1** — `src/types/api.ts`: add `info?: unknown` to `ApiError`; add `isApiError` type guard
+- [ ] **6a.2** — `src/swr/utils.ts` (9 casts): `(error as any).info = ...` / `.status = ...` → create `class SWRFetchError extends Error` with typed `status: number` and `info: unknown` fields; assign directly without cast
+- [ ] **6a.3** — `src/swr/useAuthSWR.ts` (10 casts): replace all `(error as any)?.name/status/message` with `isApiError(error)` guard
+- [ ] **6a.4** — `src/swr/certSummary.ts` (6 casts): replace guards + fix `return null as any` by widening useSWR generic to `CertSummaryData | null`
+- [ ] **6a.5** — `src/swr/certifications.ts`, `profile.ts`, `useExamLiveStatus.ts` (5 casts): `isApiError()` guard replacements
+- [ ] **6a.6** — `app/api/auth-cookie/set/route.ts` L17: `(body as any).firebaseToken` → `const body = await request.json() as { firebaseToken?: string }`
+
+**Commit**: `fix(types): replace as-any error casts with typed ApiError guard in SWR layer`
+
+---
+
+## Phase 6b — Next.js Route `params: any`
+
+**Status**: 🔲 Not Started
+**Files**: 7 route files under `app/api/users/[api_user_id]/`
+**Count**: 8 `params: any` instances
+
+**Pattern** (use existing `app/api/users/[api_user_id]/certifications/route.ts` as reference template):
+
+```typescript
+// Before
+{ params }: { params: any }
+
+// After (Next.js 15 async params)
+{ params }: { params: Promise<{ api_user_id: string; cert_id: string }> }
+```
+
+### Per-file tasks
+
+- [ ] **6b.1** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/route.ts`
+  - Params: `{ api_user_id: string; cert_id: string }`
+- [ ] **6b.2** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/route.ts`
+  - Params: `{ api_user_id: string; cert_id: string; exam_id: string }`
+- [ ] **6b.3** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/submit/route.ts`
+  - Params: `{ api_user_id: string; cert_id: string; exam_id: string }`
+- [ ] **6b.4** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/questions/route.ts`
+  - Params: `{ api_user_id: string; cert_id: string; exam_id: string }`
+- [ ] **6b.5** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/questions/[question_id]/route.ts`
+  - Params: `{ api_user_id: string; cert_id: string; exam_id: string; question_id: string }`
+- [ ] **6b.6** — `app/api/users/[api_user_id]/exams/route.ts`
+  - Params: `{ api_user_id: string }`
+- [ ] **6b.7** — `app/api/users/[api_user_id]/exams/[exam_id]/route.ts`
+  - Params: `{ api_user_id: string; exam_id: string }`
+
+**Commit**: `fix(routes): replace params: any with typed async params in Next.js 15 route handlers`
+
+---
+
+## Phase 6c — Component Prop `any`
+
+**Status**: 🔲 Not Started
+**Files**: `src/components/custom/EnhancedWelcomeSection.tsx`, `src/components/custom/CreateExamModal.tsx`, `src/context/ExamStatsContext.tsx`
+**Count**: 3 instances
+
+### Per-file tasks
+
+- [ ] **6c.1** — `src/components/custom/EnhancedWelcomeSection.tsx` L13
+  - `profile: any` → `UserProfileData` (import from `src/types/swr-data/profile.ts`)
+- [ ] **6c.2** — `src/components/custom/CreateExamModal.tsx` L37
+  - `createExamError: any` → `CreateExamError | undefined` (already exported from `src/swr/createExam.ts`)
+- [ ] **6c.3** — `src/context/ExamStatsContext.tsx` L22
+  - `isError: any` → `Error | undefined`
+
+**Commit**: `fix(components): replace any props with typed interfaces in EnhancedWelcomeSection, CreateExamModal, ExamStatsContext`
+
+---
+
+## Phase 6d — Auth `customClaims` + `firebaseUser` Types
+
+**Status**: 🔲 Not Started
+**Files**: `app/api/auth/login/route.ts`, `app/api/auth/register/route.ts`, `app/api/auth/set-claims/route.ts`, `src/lib/auth-state-types.ts`
+**Count**: 3 `customClaims: any` + 3 `firebaseUser: any`
+
+### Per-file tasks
+
+- [ ] **6d.1** — `app/api/auth/login/route.ts`, `register/route.ts`, `set-claims/route.ts`
+  - Add private `interface CustomClaims { api_user_id: string; init_cert_id?: number }` inline in each file
+  - Replace `const customClaims: any = {` with `const customClaims: CustomClaims = {`
+- [ ] **6d.2** — `src/lib/auth-state-types.ts` L23, L91, L125
+  - `firebaseUser: any | null` → `User | null`
+  - Add `import type { User } from 'firebase/auth'`
+
+**Commit**: `fix(auth): type customClaims and firebaseUser fields in auth state and route handlers`
+
+---
+
+## Phase 6e — `catch (error: any)` → `catch (error: unknown)`
+
+**Status**: 🔲 Not Started
+**Files**: 14 files across `src/components/`, `src/hooks/`, `src/lib/`, `app/api/`
+**Count**: 17 occurrences
+
+**Mechanical rule**: `catch (error: any)` → `catch (error: unknown)`. Where `error.message` is used, wrap with `error instanceof Error ? error.message : String(error)`, or delegate to the existing `parseAuthError()` utility already in `src/lib/auth-error-handler.ts`.
+
+### Files to fix
+
+- [ ] **6e.1** — `src/components/custom/DeleteAccountDialog.tsx`
+- [ ] **6e.2** — `src/components/custom/AdaptiveLearningInterestModalEnhanced.tsx`
+- [ ] **6e.3** — `src/components/custom/AdaptiveLearningInterestModal.tsx`
+- [ ] **6e.4** — `src/components/custom/ProfileSettings.tsx`
+- [ ] **6e.5** — `src/hooks/useEmailUpdate.ts`
+- [ ] **6e.6** — `src/lib/server-auth-strategy.ts` (4 catches)
+- [ ] **6e.7** — `src/lib/signin-helpers.ts`
+- [ ] **6e.8** — `src/lib/marketing-api.ts`
+- [ ] **6e.9** — `app/api/stripe/account/route.ts`
+- [ ] **6e.10** — `app/api/marketing/update-profile/route.ts`
+- [ ] **6e.11** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/submit/route.ts` (2 catches)
+- [ ] **6e.12** — `app/api/auth/register/route.ts`
+- [ ] **6e.13** — `app/api/auth-cookie/refresh/route.ts` (2 catches)
+- [ ] **6e.14** — `app/api/auth-cookie/verify/route.ts`
+
+**Commit**: `fix(errors): replace catch (error: any) with catch (error: unknown) across components and API routes`
+
+---
+
+## Phase 6f — Callback Param `any` + Remaining Loose Types
+
+**Status**: 🔲 Not Started
+**Files**: `src/lib/auth-error-handler.ts`, `src/lib/auth-utils.ts`, `src/lib/rateLimitUtils.ts`, `src/lib/server-actions/certifications.ts`, `src/hooks/useOptimizedForm.ts`
+
+### Per-file tasks
+
+- [ ] **6f.1** — `src/lib/auth-error-handler.ts` L15, L89, L118: `(error: any)` / `(error: any, ...)` → `(error: unknown)` — internal `error?.code` access already safe via optional chaining
+- [ ] **6f.2** — `src/lib/auth-utils.ts` L80: `isAuthenticationError(error: any)` → `(error: unknown)`
+- [ ] **6f.3** — `src/lib/rateLimitUtils.ts` L22, L124: `rateLimit: any` → `ExamRateLimitInfo` (import from `src/types/swr-data/profile.ts`)
+- [ ] **6f.4** — `src/lib/server-actions/certifications.ts` L712, L727, L738: `validateFirmData(firm: any)` / `validateAndCleanFirmsData(firms: any[])` → use `Partial<CertificationListItem>` or `unknown` + guard
+- [ ] **6f.5** — `src/hooks/useOptimizedForm.ts` L15: `T extends Record<string, any>` → `T extends Record<string, unknown>`
+- [ ] **6f.6** — `src/lib/api-utils.ts` L19, L130: `details?: any` in `ApiError` constructor + `let errorData: any` → `details?: unknown` + `let errorData: unknown`
+- [ ] **6f.7** — `app/api/auth/login/route.ts`, `register/route.ts`, `set-claims/route.ts`: `const customClaims: any` (duplicate handled in 6d.1 — skip here)
+- [ ] **6f.8** — `src/hooks/useAnalytics.ts` L11: `custom_parameters?: Record<string, any>` → `Record<string, string | number | boolean>`
+
+**Commit**: `fix(lib): replace any params in auth/rate-limit/server-action utilities with proper types`
+
+---
+
+## Phase 6 Progress Matrix
+
+| Phase | Scope                                 | Count | Status | Complexity |
+| ----- | ------------------------------------- | ----- | ------ | ---------- |
+| 6a    | SWR error `as any` + `ApiError` guard | ~25   | 🔲     | 🟡 MEDIUM  |
+| 6b    | Next.js route `params: any`           | 8     | 🔲     | 🟢 LOW     |
+| 6c    | Component prop `any`                  | 3     | 🔲     | 🟢 LOW     |
+| 6d    | Auth `customClaims` + `firebaseUser`  | 6     | 🔲     | 🟢 LOW     |
+| 6e    | `catch (error: any)` → `unknown`      | 17    | 🔲     | 🟢 LOW     |
+| 6f    | Callback params + loose types         | ~18   | 🔲     | 🟡 MEDIUM  |
+
+**Decisions**:
+
+- `useAuthMutation<Data = any, Arg = any>` generic defaults: **keep** — intentional base wrapper with JSDoc
+- `ApiError` in `src/lib/api-utils.ts` (server-only, `statusCode`) vs `ApiError` in `src/types/api.ts` (client, `status`): **do NOT merge** — different shapes, different contexts
+- `customClaims` interface: define inline per-file (private) — no shared file needed for 3 small routes
+- Firebase `User` import path: `import type { User } from 'firebase/auth'`
 - [x] All actively used SWR files fixed/verified (17/17 complete)
 - [x] All 4 remaining files completed (examReport, useExamGeneratingProgress, useExamLiveStatus, deleteAccount)
 - [x] Final API documentation created for certifai-api team
