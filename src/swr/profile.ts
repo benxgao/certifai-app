@@ -35,11 +35,12 @@ export function useUserProfile(apiUserId: string | null) {
     // Prevent multiple rapid requests
     shouldRetryOnError: (error) => {
       // Don't retry on cancellation errors
-      if ((error as any)?.name === 'CancelledError') {
+      if (error instanceof Error && error.name === 'CancelledError') {
         return false;
       }
       // Retry on timeout and network errors
-      return (error as any)?.name === 'TimeoutError' || (error as any)?.name === 'NetworkError';
+      return error instanceof Error &&
+        (error.name === 'TimeoutError' || error.name === 'NetworkError');
     },
   });
 }

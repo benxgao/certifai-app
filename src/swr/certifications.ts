@@ -1,7 +1,8 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { useAuthSWR } from './useAuthSWR';
+import { isApiError } from '@/src/types/api';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
+import { useAuthSWR } from './useAuthSWR';
 import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { fetchAllCertifications } from '../lib/pagination-utils';
 import {
@@ -129,7 +130,7 @@ export function useAllAvailableCertifications() {
     keepPreviousData: true, // Keep previous data while revalidating
     // Only retry on network errors, not on API errors
     shouldRetryOnError: (error) => {
-      return (error as any)?.name === 'NetworkError';
+      return error instanceof Error && error.name === 'NetworkError';
     },
   });
 
@@ -171,12 +172,13 @@ export function useUserRegisteredCertifications(apiUserId: string | null) {
       keepPreviousData: true, // Keep previous data while revalidating for better UX
       // Be more selective about retries
       shouldRetryOnError: (error) => {
+        const status = isApiError(error) ? error.status : undefined;
         // Don't retry on cancellation errors or auth errors
-        if ((error as any)?.name === 'CancelledError' || (error as any)?.status === 401) {
-          return false;
-        }
+        if (error instanceof Error && error.name === 'CancelledError') return false;
+        if (status === 401) return false;
         // Only retry on network/timeout errors
-        return (error as any)?.name === 'TimeoutError' || (error as any)?.name === 'NetworkError';
+        return error instanceof Error &&
+          (error.name === 'TimeoutError' || error.name === 'NetworkError');
       },
     },
   );

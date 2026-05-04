@@ -9,12 +9,12 @@ export async function POST(request: Request) {
     return new Response('JWT secret not configured', { status: 500 });
   }
 
-  const body: { firebaseToken: string } = await request.json();
+  const body = await request.json() as { firebaseToken?: string };
 
   console.log(`auth-cookie/set:0
     | req_body: ${JSON.stringify(body)}`);
 
-  const firebaseToken = (body as any).firebaseToken;
+  const firebaseToken = body.firebaseToken;
 
   if (!firebaseToken) {
     return new Response('Firebase token required', { status: 400 });

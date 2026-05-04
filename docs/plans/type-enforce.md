@@ -649,9 +649,9 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ## Phase 6a — SWR Error `as any` Casts
 
-**Status**: 🔲 Not Started
+**Status**: ✅ COMPLETE (May 5, 2026)
 **Files**: `src/types/api.ts`, `src/swr/utils.ts`, `src/swr/useAuthSWR.ts`, `src/swr/certSummary.ts`, `src/swr/certifications.ts`, `src/swr/profile.ts`, `src/swr/useExamLiveStatus.ts`
-**Count**: ~25 `as any` casts
+**Count**: ~25 `as any` casts — all eliminated
 
 ### Root fix — extend `ApiError` + add type guard
 
@@ -662,12 +662,14 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ### Per-file tasks
 
-- [ ] **6a.1** — `src/types/api.ts`: add `info?: unknown` to `ApiError`; add `isApiError` type guard
-- [ ] **6a.2** — `src/swr/utils.ts` (9 casts): `(error as any).info = ...` / `.status = ...` → create `class SWRFetchError extends Error` with typed `status: number` and `info: unknown` fields; assign directly without cast
-- [ ] **6a.3** — `src/swr/useAuthSWR.ts` (10 casts): replace all `(error as any)?.name/status/message` with `isApiError(error)` guard
-- [ ] **6a.4** — `src/swr/certSummary.ts` (6 casts): replace guards + fix `return null as any` by widening useSWR generic to `CertSummaryData | null`
-- [ ] **6a.5** — `src/swr/certifications.ts`, `profile.ts`, `useExamLiveStatus.ts` (5 casts): `isApiError()` guard replacements
-- [ ] **6a.6** — `app/api/auth-cookie/set/route.ts` L17: `(body as any).firebaseToken` → `const body = await request.json() as { firebaseToken?: string }`
+- [x] **6a.1** — `src/types/api.ts`: added `info?: unknown` to `ApiError`; added `isApiError` type guard export
+- [x] **6a.2** — `src/swr/utils.ts` (9 casts): Created `export class SWRFetchError extends Error` with typed `status: number` and `info: unknown`; replaced all `(error as any).info/status = ...` assignments with direct throw of `new SWRFetchError(...)`
+- [x] **6a.3** — `src/swr/useAuthSWR.ts` (10 casts): imported `isApiError`; replaced all `(error as any)?.name/status/message` with `error instanceof Error ? error.name : ''` for name checks and `isApiError(error) ? error.status : undefined` for status checks
+- [x] **6a.4** — `src/swr/certSummary.ts` (6 casts): imported `SWRFetchError` and `isApiError`; threw `SWRFetchError` instead of mutating generic `Error`; widened fetcher return type to `CertSummaryData | null` and useSWR generic to `<CertSummaryData | null, Error>` to remove `return null as any`; replaced `(err as any)?.status` in `shouldRetryOnError` with `isApiError` guard
+- [x] **6a.5** — `src/swr/certifications.ts` (5 casts): imported `isApiError`; replaced all `(error as any)?.name/status` with `error instanceof Error && error.name === ...` and `isApiError` status guard
+- [x] **6a.5b** — `src/swr/profile.ts` (3 casts): replaced `(error as any)?.name` with `error instanceof Error && error.name === ...`
+- [x] **6a.5c** — `src/swr/useExamLiveStatus.ts` (1 cast): replaced `(err as any).status` with `isApiError(err)` guard; simplified `status === 0 ||` branch to `!status` using typed access
+- [x] **6a.6** — `app/api/auth-cookie/set/route.ts` L17: `(body as any).firebaseToken` → `const body = await request.json() as { firebaseToken?: string }; const firebaseToken = body.firebaseToken`
 
 **Commit**: `fix(types): replace as-any error casts with typed ApiError guard in SWR layer`
 
@@ -801,7 +803,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 | Phase | Scope                                 | Count | Status | Complexity |
 | ----- | ------------------------------------- | ----- | ------ | ---------- |
-| 6a    | SWR error `as any` + `ApiError` guard | ~25   | 🔲     | 🟡 MEDIUM  |
+| 6a    | SWR error `as any` + `ApiError` guard | ~25   | ✅     | 🟡 MEDIUM  |
 | 6b    | Next.js route `params: any`           | 8     | 🔲     | 🟢 LOW     |
 | 6c    | Component prop `any`                  | 3     | 🔲     | 🟢 LOW     |
 | 6d    | Auth `customClaims` + `firebaseUser`  | 6     | 🔲     | 🟢 LOW     |

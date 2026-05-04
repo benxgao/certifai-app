@@ -5,11 +5,13 @@ import {
   SwrDataCertSummaryFetchResponse,
   SwrDataCertSummaryGenerateResponse,
 } from '@/src/types/swr-data/certSummary';
+import { SWRFetchError } from './utils';
+import { isApiError } from '@/src/types/api';
 
 export type { CertSummaryData } from '@/src/types/swr-data/certSummary';
 
 // Fetcher function for cert summaries
-async function certSummaryFetcher(url: string): Promise<CertSummaryData> {
+async function certSummaryFetcher(url: string): Promise<CertSummaryData | null> {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -18,28 +20,28 @@ async function certSummaryFetcher(url: string): Promise<CertSummaryData> {
   });
 
   if (!response.ok) {
+    if (response.status === 404) {
+      // Return null for 404 (no summary exists yet)
+      return null;
+    }
+
     // Try to parse error response as JSON, fallback to text
     let errorMessage = response.statusText;
+    let info: unknown = response.statusText;
     try {
       const errorData = await response.json();
       errorMessage = errorData.error || errorData.message || errorMessage;
-    } catch (e) {
-      // If JSON parsing fails, use statusText or response text
+      info = errorData;
+    } catch {
       try {
-        errorMessage = await response.text();
-      } catch (textError) {
-        errorMessage = response.statusText;
+        const text = await response.text();
+        errorMessage = text || errorMessage;
+        info = text;
+      } catch {
+        // Use statusText fallback already set above
       }
     }
-
-    if (response.status === 404) {
-      // Return null for 404 (no summary exists)
-      return null as any;
-    }
-
-    const error = new Error(errorMessage);
-    (error as any).status = response.status;
-    throw error;
+    throw new SWRFetchError(errorMessage, response.status, info);
   }
 
   const result = await response.json();
@@ -62,20 +64,21 @@ async function generateCertSummary(userId: string, certId: string): Promise<Cert
 
   if (!response.ok) {
     let errorMessage = response.statusText;
+    let info: unknown = response.statusText;
     try {
       const errorData = await response.json();
       errorMessage = errorData.error || errorData.message || errorMessage;
-    } catch (e) {
+      info = errorData;
+    } catch {
       try {
-        errorMessage = await response.text();
-      } catch (textError) {
-        errorMessage = response.statusText;
+        const text = await response.text();
+        errorMessage = text || errorMessage;
+        info = text;
+      } catch {
+        // Use statusText fallback already set above
       }
     }
-
-    const error = new Error(errorMessage);
-    (error as any).status = response.status;
-    throw error;
+    throw new SWRFetchError(errorMessage, response.status, info);
   }
 
   const result = await response.json();
@@ -96,16 +99,17 @@ export function useCertSummary(userId: string, certId: string) {
   const shouldFetch = firebaseUser && userId && certId;
   const key = shouldFetch ? `/api/users/${userId}/certifications/${certId}/cert-summary` : null;
 
-  const { data, error, isLoading, mutate } = useSWR<CertSummaryData, Error>(key, certSummaryFetcher, {
+  const { data, error, isLoading, mutate } = useSWR<CertSummaryData | null, Error>(key, certSummaryFetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     errorRetryCount: 3,
     errorRetryInterval: 1000,
     shouldRetryOnError: (err) => {
+      const status = isApiError(err) ? err.status : undefined;
       // Don't retry on 404 (summary doesn't exist)
-      if ((err as any)?.status === 404) return false;
+      if (status === 404) return false;
       // Don't retry on client errors (400-499)
-      if ((err as any)?.status >= 400 && (err as any)?.status < 500) return false;
+      if (status !== undefined && status >= 400 && status < 500) return false;
       return true;
     },
   });

@@ -1,6 +1,7 @@
 import useSWR, { SWRConfiguration } from 'swr';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { fetcherWithAuth } from './utils';
+import { isApiError } from '@/src/types/api';
 
 /**
  * Custom hook that wraps useSWR with automatic token refresh on 401 errors
@@ -41,34 +42,29 @@ export function useAuthSWR<Data = any, Error = any>(
 
     // Enhanced error handling for cancellation scenarios
     shouldRetryOnError: (error) => {
+      const name = error instanceof Error ? error.name : '';
+      const status = isApiError(error) ? error.status : undefined;
+
       // Don't retry on cancellation errors (component unmounted, navigation, etc.)
-      if ((error as any)?.name === 'CancelledError') {
+      if (name === 'CancelledError') {
         console.log('Request was cancelled, not retrying');
         return false;
       }
 
       // Don't retry on auth errors (401, 403) to avoid infinite loops
-      if ((error as any)?.status === 401 || (error as any)?.status === 403) {
-        console.error('Authentication error in useAuthSWR:', (error as any)?.message || error);
+      if (status === 401 || status === 403) {
+        console.error('Authentication error in useAuthSWR:', error instanceof Error ? error.message : error);
         return false;
       }
 
       // Don't retry on 4xx client errors except 408 (timeout)
-      if (
-        (error as any)?.status >= 400 &&
-        (error as any)?.status < 500 &&
-        (error as any)?.status !== 408
-      ) {
-        console.error(
-          'Client error in useAuthSWR:',
-          (error as any)?.status,
-          (error as any)?.message || error,
-        );
+      if (status !== undefined && status >= 400 && status < 500 && status !== 408) {
+        console.error('Client error in useAuthSWR:', status, error instanceof Error ? error.message : error);
         return false;
       }
 
       // Retry on timeout errors but with limit
-      if ((error as any)?.name === 'TimeoutError') {
+      if (name === 'TimeoutError') {
         console.warn('Timeout error in useAuthSWR, retrying...');
         return true;
       }

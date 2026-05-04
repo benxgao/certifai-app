@@ -38,6 +38,20 @@ export interface ApiError extends Error {
   status?: number;
   response?: { status?: number };
   code?: string;
+  /** Response body attached when the fetch succeeded structurally but returned a non-ok status */
+  info?: unknown;
+}
+
+/**
+ * Type guard to narrow an unknown value to ApiError.
+ * Checks that the value is an Error instance and carries at least one of the
+ * extended HTTP / API error properties defined above.
+ */
+export function isApiError(err: unknown): err is ApiError {
+  return (
+    err instanceof Error &&
+    ('status' in err || 'code' in err || 'info' in err || 'response' in err)
+  );
 }
 
 // Legacy pagination format for backward compatibility

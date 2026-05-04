@@ -14,6 +14,24 @@ export type {
   LegacyPaginationInfo,
 } from '../types/api';
 
+/**
+ * Typed error class for SWR fetch failures.
+ * Carries the HTTP `status` code and the parsed response `info` body
+ * so callers can inspect both without `as any` casts.
+ */
+export class SWRFetchError extends Error {
+  status: number;
+  info: unknown;
+
+  constructor(message: string, status: number, info: unknown) {
+    super(message);
+    this.name = 'SWRFetchError';
+    this.status = status;
+    this.info = info;
+    Object.setPrototypeOf(this, SWRFetchError.prototype);
+  }
+}
+
 // Re-export authentication utilities for convenience
 export {
   clearClientAuthState,
@@ -40,16 +58,17 @@ export const handleAuthFailure = async (redirectToSignin: boolean = true): Promi
 export const fetcher = async (url: string) => {
   const res = await optimizedFetch(url);
   if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.');
-    // Attach extra info to the error object.
+    let info: unknown;
     try {
-      (error as any).info = await res.json();
-    } catch (e) {
-      // If response is not JSON, use text
-      (e as any).info = await res.text();
+      info = await res.json();
+    } catch {
+      try {
+        info = await res.text();
+      } catch {
+        info = res.statusText;
+      }
     }
-    (error as any).status = res.status;
-    throw error;
+    throw new SWRFetchError('An error occurred while fetching the data.', res.status, info);
   }
   return res.json();
 };
@@ -95,9 +114,7 @@ export const fetcherWithAuth = async (
         currentPath.includes('/forgot-password');
 
       if (isAuthPage) {
-        const error = new Error('Authentication required. Please sign in.');
-        (error as any).status = 401;
-        throw error;
+        throw new SWRFetchError('Authentication required. Please sign in.', 401, null);
       }
     }
 
@@ -114,27 +131,23 @@ export const fetcherWithAuth = async (
       } else {
         // If all refresh attempts fail, clear auth state and force signin
         await handleAuthFailure();
-        const error = new Error('Session expired. Please sign in again.');
-        (error as any).status = 401;
-        throw error;
+        throw new SWRFetchError('Session expired. Please sign in again.', 401, null);
       }
     }
   }
 
   if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.');
+    let info: unknown;
     try {
-      (error as any).info = await res.json();
+      info = await res.json();
     } catch {
       try {
-        (error as any).info = await res.text();
+        info = await res.text();
       } catch {
-        // If we can't read the response, use status text
-        (error as any).info = res.statusText;
+        info = res.statusText;
       }
     }
-    (error as any).status = res.status;
-    throw error;
+    throw new SWRFetchError('An error occurred while fetching the data.', res.status, info);
   }
 
   return res.json();

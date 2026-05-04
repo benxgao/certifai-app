@@ -2,6 +2,7 @@ import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
 import { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
 import { BackendExamStatus } from '../types/exam-status';
+import { isApiError } from '@/src/types/api';
 
 export type { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
 
@@ -37,8 +38,8 @@ export function useExamLiveStatus(
       keepPreviousData: true,
       shouldRetryOnError: true,
       onError: (err) => {
-        if (err && typeof err === 'object' && 'status' in err) {
-          const status = (err as any).status;
+        if (isApiError(err)) {
+          const status = err.status;
           if (status === 404) {
             console.log('Exam not found - may have been deleted');
             return;
@@ -46,8 +47,8 @@ export function useExamLiveStatus(
           // Log warnings for other errors to aid debugging
           if (typeof status === 'number' && status >= 500) {
             console.warn('[live-status] Server error:', status);
-          } else if (status === 0 || !status) {
-            console.warn('[live-status] Network error or timeout:', err instanceof Error ? err.message : '');
+          } else if (!status) {
+            console.warn('[live-status] Network error or timeout:', err.message);
           } else if (typeof status === 'number' && status >= 400) {
             console.warn('[live-status] Client error:', status);
           }
