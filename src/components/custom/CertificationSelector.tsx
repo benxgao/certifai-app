@@ -58,10 +58,13 @@ function CertificationSelector({
     });
   }, [firms]);
 
-  const handleCertificationSelect = useCallback((value: string) => {
-    const certId = parseInt(value);
-    onCertificationChange(certId);
-  }, [onCertificationChange]);
+  const handleCertificationSelect = useCallback(
+    (value: string) => {
+      const certId = parseInt(value);
+      onCertificationChange(certId);
+    },
+    [onCertificationChange],
+  );
 
   if (error) {
     return (
@@ -97,14 +100,17 @@ function CertificationSelector({
         onValueChange={handleCertificationSelect}
         disabled={disabled || isLoading}
       >
-        <SelectTrigger className="border-input bg-background text-foreground hover:border-ring/50 focus:ring-ring/20 focus:border-ring transition-all duration-200 w-full">
+        <SelectTrigger
+          data-testid="certification-selector"
+          className="border-input bg-background text-foreground hover:border-ring/50 focus:ring-ring/20 focus:border-ring transition-all duration-200 w-full"
+        >
           <SelectValue
             placeholder={
               isLoading
                 ? 'Loading certifications...'
                 : required
-                ? 'Select a certification exam'
-                : 'Select a certification exam (optional)'
+                  ? 'Select a certification exam'
+                  : 'Select a certification exam (optional)'
             }
           />
         </SelectTrigger>

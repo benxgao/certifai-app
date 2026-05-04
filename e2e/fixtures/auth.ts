@@ -269,17 +269,20 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
   let errorMessages: string[] = [];
 
   try {
-    errorMessages = await page
+    const rawMessages = await page
       .locator('[data-slot="alert"], [role="alert"], .text-destructive')
-      .allTextContents()
+      .allInnerTexts()
       .catch(() => []);
+    errorMessages = rawMessages
+      .map((m) => m.trim().replace(/^\*+$/, ''))
+      .filter((m) => m.length > 0);
   } catch (e) {
     // Failed to get error messages, continue
   }
 
   const errorContext = {
     finalUrl: currentUrl,
-    errorMessages: errorMessages.filter((m) => m.trim()),
+    errorMessages,
     originalError: lastError?.message,
   };
 
@@ -353,9 +356,8 @@ async function performLoginWithAutoSignup(
     console.log(`[LOGIN WITH AUTO-SIGNUP] Error message: ${errorMessage}`);
 
     // Check if this is a "user not found" error vs "wrong password" error
-    const isUserNotFoundError = /no user|not found|does not exist|not recognized|unrecognized/i.test(
-      errorMessage,
-    );
+    const isUserNotFoundError =
+      /no user|not found|does not exist|not recognized|unrecognized/i.test(errorMessage);
     console.log(
       `[LOGIN WITH AUTO-SIGNUP] Pattern check: User not found error = ${isUserNotFoundError}`,
     );
@@ -371,9 +373,8 @@ async function performLoginWithAutoSignup(
           console.log(`  Alert message: ${alertText}`);
 
           // Check if it's a "user not found" pattern in the alert
-          const isNotFoundInAlert = /no user|not found|does not exist|not recognized|unrecognized/i.test(
-            alertText,
-          );
+          const isNotFoundInAlert =
+            /no user|not found|does not exist|not recognized|unrecognized/i.test(alertText);
 
           if (!isNotFoundInAlert && /invalid|incorrect|don't match|wrong/i.test(alertText)) {
             // This looks like a password error, not account-not-found
@@ -385,7 +386,9 @@ async function performLoginWithAutoSignup(
         }
       } catch (e) {
         // Failed to check alert, but we got a login error - proceed with auto-signup attempt
-        console.log('[LOGIN WITH AUTO-SIGNUP] Could not verify error type, attempting auto-signup as fallback...');
+        console.log(
+          '[LOGIN WITH AUTO-SIGNUP] Could not verify error type, attempting auto-signup as fallback...',
+        );
       }
 
       // Looks like account not found - trigger auto-signup
@@ -427,7 +430,9 @@ async function performLoginWithAutoSignup(
       }
 
       // Wait longer before retrying login to ensure Firebase has synced
-      console.log('[LOGIN WITH AUTO-SIGNUP] Waiting 3s for Firebase backend to sync before login retry...');
+      console.log(
+        '[LOGIN WITH AUTO-SIGNUP] Waiting 3s for Firebase backend to sync before login retry...',
+      );
       await page.waitForTimeout(3000);
 
       // Now retry login after signup
@@ -600,11 +605,11 @@ async function performSignup(
 
   console.log('Basic account info filled. Now selecting certification...');
 
-  // Wait for certification selector (Shadcn combobox) to be ready
-  await page.waitForSelector('[role="combobox"]', { timeout: 15000 });
+  // Wait for certification selector to be visible by data-testid
+  await page.waitForSelector('[data-testid="certification-selector"]', { timeout: 15000 });
 
   // Wait for certification combobox to be enabled (data loads from SWR hook)
-  const certCombobox = page.locator('[role="combobox"]').first();
+  const certCombobox = page.locator('[data-testid="certification-selector"]');
   let isComboboxEnabled = false;
   let enableAttempts = 0;
   const maxEnableAttempts = 30; // 30 seconds max wait
@@ -625,31 +630,64 @@ async function performSignup(
     console.warn('Certification combobox still appears disabled after waiting.');
   }
 
-  // Click the certification dropdown (combobox)
+  // Click the certification dropdown (combobox) to open it
   await certCombobox.click({ timeout: 5000 });
 
-  // Wait for dropdown options to appear
-  await page.waitForTimeout(100);
-
-  // Get all certification options and select the 2nd one
-  const certOptions = page.locator('[role="option"]');
-  const optionCount = await certOptions.count();
-
-  if (optionCount < 2) {
+  // Wait for real (non-loading, non-disabled) options to appear
+  // The dropdown renders a disabled "Loading..." item during data fetch — we must skip it
+  console.log('Waiting for selectable certification options to load...');
+  try {
+    await page.waitForSelector('[role="option"]:not([aria-disabled="true"])', { timeout: 15000 });
+    console.log('  ✓ Selectable certification options are available.');
+  } catch {
     console.warn(
-      `Only ${optionCount} certification option(s) available. Selecting first instead of second.`,
+      '  ⚠ No selectable certification options found after 15s — dropdown may still be loading.',
     );
-    if (optionCount > 0) {
-      await certOptions.first().click({ timeout: 5000 });
-    }
+  }
+
+  // Get only real (non-disabled) certification options
+  const certOptions = page.locator('[role="option"]:not([aria-disabled="true"])');
+  const optionCount = await certOptions.count();
+  console.log(`  Found ${optionCount} selectable certification option(s).`);
+
+  if (optionCount === 0) {
+    console.warn(
+      '  ⚠ No selectable options found — selectedCertId will remain null and submit button will stay disabled.',
+    );
+  } else if (optionCount < 2) {
+    console.warn(`  Only ${optionCount} option(s) available. Selecting first.`);
+    await certOptions.first().click({ timeout: 5000 });
   } else {
     // Select the 2nd certification option
     await certOptions.nth(1).click({ timeout: 5000 });
-    console.log('Selected 2nd certification option');
+    console.log('  ✓ Selected 2nd certification option.');
   }
 
-  // Wait for dropdown to close
-  await page.waitForTimeout(500);
+  // Wait for the dropdown to close (aria-expanded becomes false/absent)
+  await page
+    .waitForFunction(
+      () => {
+        const trigger = document.querySelector(
+          '[data-testid="certification-selector"]',
+        ) as HTMLButtonElement | null;
+        return trigger !== null && trigger.getAttribute('aria-expanded') !== 'true';
+      },
+      { timeout: 5000 },
+    )
+    .catch(() => {
+      console.warn(
+        '  ⚠ Combobox did not close after selection — value may not have been registered.',
+      );
+    });
+
+  // Log the selected value for diagnostic purposes
+  const selectedCertText = await certCombobox.textContent().catch(() => '');
+  const trimmedText = selectedCertText?.trim() ?? '';
+  if (trimmedText && !trimmedText.toLowerCase().includes('select a certification')) {
+    console.log(`  ✓ Certification selected: "${trimmedText}"`);
+  } else {
+    console.warn(`  ⚠ Certification may not have been selected — trigger text: "${trimmedText}"`);
+  }
 
   // Check terms checkbox (Shadcn/Radix UI component, not plain HTML input)
   // The checkbox has id="acceptTerms" but uses role="checkbox"
@@ -663,23 +701,100 @@ async function performSignup(
 
   console.log('Terms checkbox clicked. Waiting for submit button to be enabled...');
 
-  // Check for validation errors on the form before trying submit button
-  const validationErrors = page.locator(
-    '[role="alert"], .text-destructive, .error, [data-error="true"]',
-  );
-  const errorCount = await validationErrors.count().catch(() => 0);
+  // Check for validation errors on the form before trying submit button.
+  // Each selector group is checked independently so logs clearly identify the source.
+  const errorSelectorGroups: { label: string; selector: string }[] = [
+    { label: '[role="alert"]', selector: '[role="alert"]' },
+    { label: '.text-destructive', selector: '.text-destructive' },
+    { label: '.error', selector: '.error' },
+    { label: '[data-error="true"]', selector: '[data-error="true"]' },
+  ];
 
-  if (errorCount > 0) {
-    console.warn(`⚠ Found ${errorCount} validation error(s) on the form:`);
-    for (let i = 0; i < Math.min(errorCount, 5); i++) {
-      const errorText = await validationErrors
-        .nth(i)
-        .textContent()
-        .catch(() => '');
-      if (errorText?.trim()) {
-        console.warn(`  - ${errorText.trim()}`);
-      }
+  let totalErrorCount = 0;
+  const errorGroupResults: {
+    label: string;
+    items: { text: string; tag: string; id: string; cls: string }[];
+  }[] = [];
+
+  for (const group of errorSelectorGroups) {
+    const locator = page.locator(group.selector);
+    const count = await locator.count().catch(() => 0);
+    if (count === 0) continue;
+
+    const items: { text: string; tag: string; id: string; cls: string }[] = [];
+    for (let i = 0; i < Math.min(count, 5); i++) {
+      const el = locator.nth(i);
+      const text = await el.innerText().catch(() => '');
+      const trimmed = text.trim().replace(/^\*+$/, ''); // strip bare asterisks (required-field decorators)
+      if (!trimmed) continue;
+      const meta = await el
+        .evaluate((node) => ({
+          tag: node.tagName.toLowerCase(),
+          id: (node as HTMLElement).id || '',
+          cls: (node as HTMLElement).className.split(' ').filter(Boolean).slice(0, 3).join(' '),
+        }))
+        .catch(() => ({ tag: '?', id: '', cls: '' }));
+      items.push({ text: trimmed, ...meta });
+      totalErrorCount++;
     }
+    if (items.length > 0) errorGroupResults.push({ label: group.label, items });
+  }
+
+  if (totalErrorCount > 0) {
+    console.warn(`⚠ Found ${totalErrorCount} validation error(s) on the form:`);
+    for (const group of errorGroupResults) {
+      console.warn(
+        `  ${group.label} (${group.items.length} match${group.items.length !== 1 ? 'es' : ''}):`,
+      );
+      group.items.forEach((item, idx) => {
+        const idPart = item.id ? ` id="${item.id}"` : '';
+        console.warn(
+          `    [${idx + 1}] <${item.tag}${idPart} class="${item.cls}"> → "${item.text}"`,
+        );
+      });
+    }
+
+    // Dump form state at the moment validation errors are detected
+    const [fnVal, lnVal, emVal, pwVal, cpwVal] = await Promise.all([
+      page
+        .locator('#firstName')
+        .inputValue()
+        .catch(() => '?'),
+      page
+        .locator('#lastName')
+        .inputValue()
+        .catch(() => '?'),
+      page
+        .locator('#email')
+        .inputValue()
+        .catch(() => '?'),
+      page
+        .locator('#password')
+        .inputValue()
+        .catch(() => '?'),
+      page
+        .locator('#confirmPassword')
+        .inputValue()
+        .catch(() => '?'),
+    ]);
+    const certSelected = await page
+      .locator('[role="combobox"]')
+      .first()
+      .evaluate((el) => (el as HTMLButtonElement).getAttribute('aria-expanded') !== null)
+      .catch(() => false);
+    const termsCheckedState = await page
+      .locator('[role="checkbox"]#acceptTerms, #acceptTerms')
+      .first()
+      .evaluate(
+        (el) => (el as HTMLInputElement).checked || el.getAttribute('aria-checked') === 'true',
+      )
+      .catch(() => false);
+    console.warn('  Form state at error time:');
+    console.warn(`    firstName: "${fnVal}"  lastName: "${lnVal}"  email: "${emVal}"`);
+    console.warn(
+      `    password: [${pwVal.length} chars]  confirmPassword: [${cpwVal.length} chars]`,
+    );
+    console.warn(`    certSelected: ${certSelected}  termsChecked: ${termsCheckedState}`);
   }
 
   // Wait for submit button to be enabled
@@ -988,7 +1103,9 @@ async function performDeleteAccount(page: Page): Promise<void> {
   }
 
   console.log('  ✓ Delete request sent to backend');
-  console.log('  ℹ Deletion verification complete. Backend processing will be tested in next phase.');
+  console.log(
+    '  ℹ Deletion verification complete. Backend processing will be tested in next phase.',
+  );
 
   return;
 }
