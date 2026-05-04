@@ -1,15 +1,17 @@
 'use client';
 
 import React, { createContext, useContext, ReactNode } from 'react';
+import { KeyedMutator } from 'swr';
 import { useUserRegisteredCertifications } from '@/swr/certifications';
 import { useFirebaseAuth } from '@/context/FirebaseAuthContext';
 import { UserRegisteredCertification } from '../types/swr-data/certifications';
+import { PaginatedApiResponse } from '../types/api';
 
 interface UserCertificationsContextType {
   userCertifications: UserRegisteredCertification[] | undefined;
   isLoadingUserCertifications: boolean;
-  isUserCertificationsError: any;
-  mutateUserCertifications: any;
+  isUserCertificationsError: Error | undefined;
+  mutateUserCertifications: KeyedMutator<PaginatedApiResponse<UserRegisteredCertification[]>>;
 }
 
 const UserCertificationsContext = createContext<UserCertificationsContextType | undefined>(

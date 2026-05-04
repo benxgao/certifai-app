@@ -16,7 +16,7 @@ import Breadcrumb from '@/components/custom/Breadcrumb';
 import EnhancedFirmNavigation from '@/components/custom/EnhancedFirmNavigation';
 import { CertificationCardSkeleton } from '@/src/components/ui/card-skeletons';
 import { FaAward, FaGraduationCap, FaCheck } from 'react-icons/fa';
-import { CertificationListItem, UserCertificationRegistrationInput } from '@/src/types/swr-data/certifications';
+import { CertificationListItem, UserCertificationRegistrationInput, UserRegisteredCertification } from '@/src/types/swr-data/certifications';
 
 export default function CertificationsPage() {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function CertificationsPage() {
       handleCloseModal();
       return;
     }
-    if (userCertifications?.some((uc: any) => uc.cert_id === selectedCertForModal.cert_id)) {
+    if (userCertifications?.some((uc: UserRegisteredCertification) => uc.cert_id === selectedCertForModal.cert_id)) {
       toastHelpers.info.loadingData(); // Fallback until types are updated
       handleCloseModal();
       return;

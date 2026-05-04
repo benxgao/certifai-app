@@ -6,8 +6,30 @@
 
 # 🚨 BACKEND API CHANGES TO IMPLEMENT
 
-**Last Sync with certifai-api type enforcement**: 2026-05-04 (Phase 5b Complete)
-**Status**: Implementation Ready - See [api-types-phase-5b.md](./api-types-phase-5b.md)
+**Last Sync with certifai-api type enforcement**: 2026-05-05 (Phase 5d Complete — Phase 6b)
+**Status**: Phase 5b/5c items pending frontend implementation. Phase 5d: No frontend changes required.
+
+---
+
+## 📋 Phase 5d: Other Endpoints — No Frontend Changes Required
+
+**Detailed Plan**: [api-tpyes-phase-5d.md](./api-tpyes-phase-5d.md)
+**Backend Commit**: Phase 5d (May 5, 2026)
+**Status**: ✅ Documentation Complete — Zero frontend changes needed
+
+### Summary
+
+All Phase 5d changes (admin, AI, auth, Stripe, Cloud Task delegators) are **internal type enforcement only**.
+
+| Category                | Frontend Impact                              | Status              |
+| ----------------------- | -------------------------------------------- | ------------------- |
+| Admin endpoints         | ⚪ None — internal/admin only                | ✅ No action needed |
+| AI endpoints            | ⚪ None — server-side only                   | ✅ No action needed |
+| Auth `login`/`register` | 🟡 Additive — `api_user_id` already consumed | ✅ Already aligned  |
+| Stripe subscriptions    | 🟡 Stripe v18 fix — API shape unchanged      | ✅ No action needed |
+| Cloud Task delegators   | ⚪ None — server-to-server                   | ✅ No action needed |
+
+**Frontend action required**: **None**
 
 ---
 
@@ -106,44 +128,51 @@
 
 ---
 
-## Phase 5c: Certification Endpoints (Future Work)
+## Phase 5c: Certification Endpoints
 
-**Status**: Pending Phase 5b completion
-**Backend Source**: certifai-api Phase 5c commit (TBD)
+**Status**: ✅ COMPLETE (May 5, 2026)
+**Detailed Plan**: [api-tpyes-phase-5c.md](./api-tpyes-phase-5c.md)
+**Backend Source**: certifai-api Phase 5c commit
 
 ### High Priority (Phase 5c certification contract drift)
 
-- [ ] Endpoint: `POST /api/users/{userId}/certifications`
+- [x] Endpoint: `POST /api/users/{userId}/certifications`
   - CHANGED: route accepts `cert_id` in request **body** (not `/{certId}` path), and returns `{ success, data: UserCertification, performance }`
   - Components/Hooks Affected: certification registration mutation hooks and payload typing
   - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/register.ts`
-  - PR: (link)
+  - **Resolution**: `registerUserForCertificationFetcher` already sends `{ cert_id }` in body; return type is `UserCertificationData` matching Prisma `UserCertification` shape
 
-- [ ] Endpoint: `DELETE /api/users/{userId}/certifications/{certId}`
+- [x] Endpoint: `DELETE /api/users/{userId}/certifications/{certId}`
   - CHANGED: response is detailed `{ success, message, data: { deletion_summary, rtdb_cleanup, validation, timing, ... } }` (not `success: true` only)
   - Components/Hooks Affected: certification deletion flows expecting minimal delete response
   - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/deleteCertification.ts`
-  - PR: (link)
+  - **Resolution**: `CertificationDeletionData` type fully matches backend response shape; proxy route correctly converts `?cert_id=` query param to path param before calling backend
 
-- [ ] Endpoint: `GET /api/users/{userId}/certifications`
+- [x] Endpoint: `GET /api/users/{userId}/certifications`
   - CHANGED: pagination metadata shape is `{ currentPage, pageSize, totalItems, totalPages, hasNextPage, hasPreviousPage }` and data items are DB-shaped user-certification records with nested `certification`
   - Components/Hooks Affected: certification list hooks expecting `ListResponse<UserRegisteredCertification>` with `{ page, pageSize, total }`
   - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/getUserCertifications.ts`
-  - PR: (link)
+  - **Resolution**: `PaginationMeta` in `src/types/api.ts` already matches backend shape; `UserRegisteredCertification` matches Prisma `UserCertification & { certification: Certification }` shape
 
-### Medium Priority (Phase 5c additional typed endpoints not covered by Phase 2 cert DTOs)
+### Medium Priority (Phase 5c additional typed endpoints)
 
-- [ ] Endpoint: `GET/POST /api/users/{userId}/certifications/{certId}/knowledge-pooling`
-  - ADDED/DIFF: returns envelope with `message`, `metadata`, and consolidated knowledge insights payload; currently not represented in `types/api/certifications.ts`
+- [x] Endpoint: `GET/POST /api/users/{userId}/certifications/{certId}/knowledge-pooling`
+  - ADDED/DIFF: returns envelope with `message`, `metadata`, and consolidated knowledge insights payload
   - Components/Hooks Affected: knowledge pooling hooks/components
   - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/getKnowledgePooling.ts`, `.../generateKnowledgePooling.ts`
-  - PR: (link)
+  - **Resolution**: `KnowledgePoolingData` types added to `src/types/swr-data/certifications.ts`; `useGetKnowledgePooling` and `useGenerateKnowledgePooling` hooks added to `src/swr/certifications.ts`; proxy route added at `app/api/users/[api_user_id]/certifications/[cert_id]/knowledge-pooling/route.ts`
 
-- [ ] Endpoint: `GET/POST /api/users/{userId}/certifications/{certId}/cert-summary`
-  - ADDED/DIFF: returns cert summary payload with `structured_data`, `summary_stats`, and contextual `message`; currently not represented in `types/api/certifications.ts`
+- [x] Endpoint: `GET/POST /api/users/{userId}/certifications/{certId}/cert-summary`
+  - ADDED/DIFF: returns cert summary payload with `structured_data`, `summary_stats`, and contextual `message`
   - Components/Hooks Affected: cert summary hooks/components
   - Backend Source: `certifai-api/functions/src/endpoints/api/users/certifications/getCertSummary.ts`
-  - PR: (link)
+  - **Resolution**: `CertSummaryData` type in `src/types/swr-data/certSummary.ts`; `useCertSummary` and `useGenerateCertSummary` hooks in `src/swr/certSummary.ts`; proxy route at `app/api/users/[api_user_id]/certifications/[cert_id]/cert-summary/route.ts`
+
+### Additional Fix (May 5, 2026)
+
+- [x] Fixed `any` types in `UserCertificationsContextType` (`src/context/UserCertificationsContext.tsx`)
+  - `isUserCertificationsError: any` → `isUserCertificationsError: Error | undefined`
+  - `mutateUserCertifications: any` → `mutateUserCertifications: KeyedMutator<PaginatedApiResponse<UserRegisteredCertification[]>>`
 
 ---
 
