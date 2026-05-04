@@ -14,7 +14,7 @@ const DashboardStats = () => {
 
   // Memoize calculated values to prevent unnecessary re-calculations
   const inProgressCount = useMemo(() => {
-    return userCertifications?.filter((cert) => cert.status === CertificationStatus.ACTIVE)?.length || 0;
+    return userCertifications?.filter((cert) => cert.status === CertificationStatus.IN_PROGRESS)?.length || 0;
   }, [userCertifications]);
 
   // Show loading skeleton only while certifications are loading

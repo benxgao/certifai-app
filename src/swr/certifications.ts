@@ -2,16 +2,20 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import { PaginatedApiResponse } from '../types/api';
+import { ApiResponse, PaginatedApiResponse } from '../types/api';
 import { fetchAllCertifications } from '../lib/pagination-utils';
 import {
   CertificationInput,
   CertificationMutationResponse,
+  UserCertificationData,
+  CertificationDeletionData,
   CertificationListItem,
   UserCertificationRegistrationInput,
   UserRegisteredCertification,
   CertificationStatus,
   CertificationInfo,
+  KnowledgePoolingData,
+  KnowledgePoolingGenerateData,
 } from '../types/swr-data/certifications';
 
 // Re-export types for backward compatibility
@@ -199,7 +203,7 @@ async function registerUserForCertificationFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<CertificationMutationResponse> {
+): Promise<UserCertificationData> {
   const { apiUserId, certificationId, refreshToken } = arg;
   const url = `/api/users/${apiUserId}/certifications`;
 
@@ -243,7 +247,12 @@ async function registerUserForCertificationFetcher(
 export function useRegisterUserForCertification(apiUserId: string | null) {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error, data, reset } = useSWRMutation(
+  const { trigger, isMutating, error, data, reset } = useSWRMutation<
+    UserCertificationData,
+    Error,
+    string | null,
+    { apiUserId: string; certificationId: number; refreshToken: () => Promise<string | null> }
+  >(
     apiUserId ? `REGISTER_USER_FOR_CERTIFICATION_${apiUserId}` : null, // The API endpoint for user registration
     registerUserForCertificationFetcher,
   );
@@ -322,7 +331,7 @@ async function unregisterCertificationFetcher(
       refreshToken: () => Promise<string | null>;
     };
   },
-): Promise<CertificationMutationResponse> {
+): Promise<CertificationDeletionData> {
   const { apiUserId, certificationId, refreshToken } = arg;
   const url = `/api/users/${apiUserId}/certifications?cert_id=${certificationId}`;
 
@@ -364,7 +373,12 @@ async function unregisterCertificationFetcher(
 export function useUnregisterCertification(apiUserId: string | null) {
   const { refreshToken } = useFirebaseAuth();
 
-  const { trigger, isMutating, error, data, reset } = useSWRMutation(
+  const { trigger, isMutating, error, data, reset } = useSWRMutation<
+    CertificationDeletionData,
+    Error,
+    string | null,
+    { apiUserId: string; certificationId: number; refreshToken: () => Promise<string | null> }
+  >(
     apiUserId ? `UNREGISTER_CERTIFICATION_${apiUserId}` : null,
     unregisterCertificationFetcher,
   );
@@ -390,3 +404,118 @@ export function useUnregisterCertification(apiUserId: string | null) {
   };
 }
 
+// === Knowledge Pooling Hooks ===
+
+/**
+ * Hook to fetch existing knowledge pooling data for a certification.
+ * GET /api/users/:apiUserId/certifications/:certId/knowledge-pooling
+ */
+export function useGetKnowledgePooling(apiUserId: string | null, certId: number | null) {
+  const key = apiUserId && certId ? `/api/users/${apiUserId}/certifications/${certId}/knowledge-pooling` : null;
+
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
+    ApiResponse<KnowledgePoolingData>,
+    Error
+  >(key, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    dedupingInterval: 300000, // 5 minutes
+    refreshInterval: 0,
+    keepPreviousData: true,
+    errorRetryCount: 1,
+    errorRetryInterval: 5000,
+  });
+
+  return {
+    knowledgePooling: data?.data,
+    isLoadingKnowledgePooling: isLoading,
+    knowledgePoolingError: error,
+    isValidatingKnowledgePooling: isValidating,
+    mutateKnowledgePooling: mutate,
+  };
+}
+
+async function generateKnowledgePoolingFetcher(
+  _key: string,
+  {
+    arg,
+  }: {
+    arg: {
+      apiUserId: string;
+      certId: number;
+      examId: string;
+      forceGenerate?: boolean;
+      refreshToken: () => Promise<string | null>;
+    };
+  },
+): Promise<KnowledgePoolingGenerateData> {
+  const { apiUserId, certId, examId, forceGenerate = true, refreshToken } = arg;
+  const url = `/api/users/${apiUserId}/certifications/${certId}/knowledge-pooling`;
+
+  const body = JSON.stringify({ exam_id: examId, forceGenerate });
+
+  let response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  });
+
+  if (response.status === 401) {
+    const newToken = await refreshToken();
+    if (newToken) {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+      });
+    } else {
+      throw new Error('Authentication failed. Please sign in again.');
+    }
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+    throw new Error(errorData.message || 'Failed to generate knowledge pooling.');
+  }
+
+  return response.json();
+}
+
+/**
+ * Hook to generate knowledge pooling insights for a certification.
+ * POST /api/users/:apiUserId/certifications/:certId/knowledge-pooling
+ */
+export function useGenerateKnowledgePooling(apiUserId: string | null) {
+  const { refreshToken } = useFirebaseAuth();
+
+  const { trigger, isMutating, error, data, reset } = useSWRMutation<
+    KnowledgePoolingGenerateData,
+    Error,
+    string | null,
+    {
+      apiUserId: string;
+      certId: number;
+      examId: string;
+      forceGenerate?: boolean;
+      refreshToken: () => Promise<string | null>;
+    }
+  >(
+    apiUserId ? `GENERATE_KNOWLEDGE_POOLING_${apiUserId}` : null,
+    generateKnowledgePoolingFetcher,
+  );
+
+  const generateKnowledgePooling = (arg: { certId: number; examId: string; forceGenerate?: boolean }) => {
+    if (!apiUserId) {
+      throw new Error('User ID is required');
+    }
+    return trigger({ ...arg, apiUserId, refreshToken });
+  };
+
+  return {
+    generateKnowledgePooling,
+    isGenerating: isMutating,
+    generationError: error,
+    generationData: data,
+    resetGeneration: reset,
+  };
+}

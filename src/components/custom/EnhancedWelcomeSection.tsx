@@ -29,8 +29,8 @@ const EnhancedWelcomeSection: React.FC<EnhancedWelcomeSectionProps> = ({
 
   // Calculate progress statistics
   const total = userCertifications.length;
-  const active = userCertifications.filter((cert) => cert.status === CertificationStatus.ACTIVE).length;
-  const completed = userCertifications.filter((cert) => cert.status === CertificationStatus.COMPLETED).length;
+  const active = userCertifications.filter((cert) => cert.status === CertificationStatus.IN_PROGRESS).length;
+  const completed = userCertifications.filter((cert) => cert.status === CertificationStatus.PASSED).length;
 
   const getWelcomeMessage = () => {
     if (!profile) {

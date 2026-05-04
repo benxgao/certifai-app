@@ -4,13 +4,17 @@
 
 /**
  * Status values for user certification registration
- * @guaranteed ACTIVE | INACTIVE | PENDING | COMPLETED - follows backend enum
+ * Matches Prisma enum values from certifai-api schema
+ * @guaranteed PASSED | IN_PROGRESS | INTERESTED | DELETING | NOT_STARTED | EXPIRED | SUSPENDED
  */
 export enum CertificationStatus {
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
+  PASSED = 'PASSED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  INTERESTED = 'INTERESTED',
+  DELETING = 'DELETING',
+  NOT_STARTED = 'NOT_STARTED',
+  EXPIRED = 'EXPIRED',
+  SUSPENDED = 'SUSPENDED',
 }
 
 // === Request/Input Types ===
@@ -32,18 +36,66 @@ export interface UserCertificationRegistrationInput {
 }
 
 /**
- * Generic response type for certification mutation operations (POST/DELETE)
- * Used by register, unregister, and other mutation operations
- * @note This is a strict interface - no extra fields allowed. If API returns additional fields, add them explicitly.
+ * Data structure for a registered user certification (POST /api/users/:user_id/certifications)
+ * Matches the `data` field of the API register response
  */
-export interface CertificationMutationResponse {
-  id?: string;
-  message?: string;
-  cert_id?: number;
-  status?: string;
-  assigned_at?: string;
-  updated_at?: string;
+export interface UserCertificationData {
+  user_id: string;
+  cert_id: number;
+  status: CertificationStatus;
+  /** ISO 8601 datetime string (Prisma DateTime serializes as string) */
+  assigned_at: string;
+  updated_at: string;
 }
+
+/**
+ * Deletion summary for a certification (DELETE /api/users/:user_id/certifications/:certId)
+ */
+export interface DeletionSummary {
+  exams_deleted: number;
+  exams_expected: number;
+  exam_ids_deleted: string[];
+  exam_user_answers_deleted: number;
+  exam_user_answers_expected: number;
+  answer_options_deleted: number;
+  answer_options_expected: number;
+  quiz_questions_deleted: number;
+  quiz_questions_expected: number;
+  quiz_question_ids_deleted: string[];
+}
+
+/**
+ * Data structure for a certification deletion response
+ * Matches the `data` field of the API delete response
+ */
+export interface CertificationDeletionData {
+  cert_id: number;
+  user_id: string;
+  certification_name: string;
+  firm_name: string;
+  certification_status: CertificationStatus;
+  deletion_summary: DeletionSummary;
+  rtdb_cleanup: {
+    exam_plans_deleted: number;
+    exam_data_deleted: number;
+    total_exams_processed: number;
+  };
+  validation: {
+    completely_deleted: boolean;
+    remaining_data_check: Record<string, number>;
+  };
+  timing: {
+    total_duration_ms: number;
+    database_transaction_ms: number;
+    rtdb_cleanup_ms: number;
+  };
+}
+
+/**
+ * @deprecated Use UserCertificationData instead
+ * Kept for backward compatibility
+ */
+export type CertificationMutationResponse = UserCertificationData;
 
 /**
  * Data structure for a single certification item from GET /api/public/certifications
@@ -104,18 +156,23 @@ export interface CertificationInfo {
  * @guaranteed api_user_id, cert_id, status, assigned_at, updated_at, certification
  */
 export interface UserRegisteredCertification {
-  /** Internal UUID for API operations @guaranteed */
-  api_user_id: string;
+  /**
+   * Internal Prisma user UUID — matches `User.user_id` in the database schema.
+   * This is NOT the Firebase UID (`firebase_user_id`). The API serializes this
+   * field as `user_id` in the JSON response, so the field name must stay `user_id`
+   * (not `api_user_id`, which is only used as a variable name inside app-layer code
+   * to distinguish it from the Firebase UID).
+   * @guaranteed
+   */
+  user_id: string;
   /** Certification ID @guaranteed */
   cert_id: number;
-  /** Current status of user registration (ACTIVE, INACTIVE, PENDING, COMPLETED) @guaranteed */
+  /** Current status of user registration @guaranteed */
   status: CertificationStatus;
   /** Timestamp when certification was assigned to user @guaranteed */
   assigned_at: string;
   /** Timestamp when registration was last updated @guaranteed */
   updated_at: string;
-  /** @deprecated Use api_user_id instead */
-  // user_id?: string;
   /** Certification details for this registration @guaranteed */
   certification: CertificationInfo;
 }
@@ -155,4 +212,45 @@ export interface CertificationDetailData {
     max_quiz_counts: number;
     pass_score: number;
   }>;
+}
+
+// === Knowledge Pooling Types ===
+
+export interface KnowledgeInsight {
+  insight_id: string;
+  exam_id: string;
+  topic: string;
+  insight: string;
+  generated_at: string;
+}
+
+export interface KnowledgePoolingStats {
+  total_insights: number;
+  unique_exams: number;
+  unique_topics: number;
+}
+
+export interface KnowledgePoolingData {
+  cert_id: number;
+  user_id: string;
+  knowledge_insights: KnowledgeInsight[];
+  certification_name: string;
+  last_updated: string;
+  stats: KnowledgePoolingStats;
+}
+
+export interface KnowledgePoolingGenerateMetadata {
+  exam_id_used: string;
+  force_regenerate: boolean;
+  processing_time_ms: number;
+  analysis_needed: boolean;
+  timestamp: string;
+}
+
+export interface KnowledgePoolingGenerateData {
+  success: boolean;
+  data: KnowledgePoolingData;
+  message: string;
+  generated: boolean;
+  metadata: KnowledgePoolingGenerateMetadata;
 }

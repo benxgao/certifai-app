@@ -6,14 +6,14 @@
 
 ## 📊 Overall Progress
 
-| Phase | Title                                        | Status         |
-| ----- | -------------------------------------------- | -------------- |
-| A     | Fix `CertificationStatus` Enum               | ⬜ Not Started |
-| B     | Fix `UserRegisteredCertification` Field Name | ⬜ Not Started |
-| C     | Fix Mutation Response Types                  | ⬜ Not Started |
-| D     | Add Knowledge Pooling Client Support         | ⬜ Not Started |
+| Phase | Title                                        | Status      |
+| ----- | -------------------------------------------- | ----------- |
+| A     | Fix `CertificationStatus` Enum               | ✅ Complete |
+| B     | Fix `UserRegisteredCertification` Field Name | ✅ Complete |
+| C     | Fix Mutation Response Types                  | ✅ Complete |
+| D     | Add Knowledge Pooling Client Support         | ✅ Complete |
 
-**Current Phase → Phase A**
+**Status: COMPLETE** (May 4, 2026)
 
 ---
 
@@ -49,14 +49,14 @@
   - `CertificationStatus.ACTIVE` → `CertificationStatus.IN_PROGRESS`
   - `CertificationStatus.COMPLETED` → `CertificationStatus.PASSED`
 
-- [ ] **A4** — Scan for any other consumers
+- [x] **A4** — Scan for any other consumers
   ```bash
   grep -r "CertificationStatus\." src app --include="*.ts" --include="*.tsx"
   ```
 
 ### Build & Test Checklist
 
-- [ ] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
+- [x] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
 - [ ] `npm run dev` — open Dashboard, verify "In Progress" cert count shows correctly
 - [ ] Certification list page renders without errors
 
@@ -74,11 +74,11 @@ fix(types): align CertificationStatus enum with Prisma schema values
 
 ### Tasks
 
-- [ ] **B1** — In `src/types/swr-data/certifications.ts`, rename field in `UserRegisteredCertification`:
+- [x] **B1** — In `src/types/swr-data/certifications.ts`, rename field in `UserRegisteredCertification`:
   - `api_user_id: string` → `user_id: string`
   - Remove the `@deprecated` comment for `user_id` that was there before
 
-- [ ] **B2** — Verify no consumer breaks:
+- [x] **B2** — Verify no consumer breaks:
   ```bash
   grep -r "api_user_id" src app --include="*.ts" --include="*.tsx"
   ```
@@ -86,7 +86,7 @@ fix(types): align CertificationStatus enum with Prisma schema values
 
 ### Build & Test Checklist
 
-- [ ] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
+- [x] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
 - [ ] `npm run dev` — open certifications page, list loads without errors
 
 ### Commit
@@ -103,7 +103,7 @@ fix(types): rename api_user_id to user_id in UserRegisteredCertification
 
 ### Tasks
 
-- [ ] **C1** — Add `UserCertificationData` type to `src/types/swr-data/certifications.ts` (register response — what API returns inside `data`):
+- [x] **C1** — Add `UserCertificationData` type to `src/types/swr-data/certifications.ts` (register response — what API returns inside `data`):
 
   ```typescript
   export interface UserCertificationData {
@@ -115,76 +115,26 @@ fix(types): rename api_user_id to user_id in UserRegisteredCertification
   }
   ```
 
-- [ ] **C2** — Add `CertificationDeletionData` type to `src/types/swr-data/certifications.ts` (delete response — what API returns inside `data`):
+- [x] **C2** — Add `CertificationDeletionData` type to `src/types/swr-data/certifications.ts` (delete response — what API returns inside `data`):
 
-  ```typescript
-  export interface DeletionSummary {
-    exams_deleted: number;
-    exams_expected: number;
-    exam_ids_deleted: string[];
-    exam_user_answers_deleted: number;
-    exam_user_answers_expected: number;
-    answer_options_deleted: number;
-    answer_options_expected: number;
-    quiz_questions_deleted: number;
-    quiz_questions_expected: number;
-    quiz_question_ids_deleted: string[];
-  }
-  export interface CertificationDeletionData {
-    cert_id: number;
-    user_id: string;
-    certification_name: string;
-    firm_name: string;
-    certification_status: CertificationStatus;
-    deletion_summary: DeletionSummary;
-    rtdb_cleanup: {
-      exam_plans_deleted: number;
-      exam_data_deleted: number;
-      total_exams_processed: number;
-    };
-    validation: { completely_deleted: boolean; remaining_data_check: Record<string, number> };
-    timing: { total_duration_ms: number; database_transaction_ms: number; rtdb_cleanup_ms: number };
-  }
-  ```
-
-- [ ] **C3** — Keep `CertificationMutationResponse` as a **deprecated alias** pointing to `UserCertificationData` for backward compat:
+- [x] **C3** — Keep `CertificationMutationResponse` as a **deprecated alias** pointing to `UserCertificationData` for backward compat:
 
   ```typescript
   /** @deprecated Use UserCertificationData instead */
   export type CertificationMutationResponse = UserCertificationData;
   ```
 
-- [ ] **C4** — Update `registerUserForCertificationFetcher` in `src/swr/certifications.ts`:
+- [x] **C4** — Update `registerUserForCertificationFetcher` in `src/swr/certifications.ts`:
   - Return type: `Promise<UserCertificationData>`
-  - The API responds `{ success, data: UserCertification, performance }` so `result.data` is correct
 
-- [ ] **C5** — Update `unregisterCertificationFetcher` in `src/swr/certifications.ts`:
+- [x] **C5** — Update `unregisterCertificationFetcher` in `src/swr/certifications.ts`:
   - Return type: `Promise<CertificationDeletionData>`
-  - The API responds `{ success, message, data: {...} }` so `result.data` is correct
 
-- [ ] **C6** — Add explicit generic types to `useSWRMutation` calls:
-  - `useRegisterUserForCertification`:
-    ```typescript
-    useSWRMutation<
-      UserCertificationData,
-      Error,
-      string | null,
-      { apiUserId: string; certificationId: number; refreshToken: () => Promise<string | null> }
-    >;
-    ```
-  - `useUnregisterCertification`:
-    ```typescript
-    useSWRMutation<
-      CertificationDeletionData,
-      Error,
-      string | null,
-      { apiUserId: string; certificationId: number; refreshToken: () => Promise<string | null> }
-    >;
-    ```
+- [x] **C6** — Add explicit generic types to `useSWRMutation` calls for both hooks
 
 ### Build & Test Checklist
 
-- [ ] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
+- [x] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
 - [ ] `npm run dev` — register for a certification and confirm no console errors
 - [ ] Delete a certification and confirm no console errors (deletion summary logged)
 
@@ -207,63 +157,28 @@ fix(types): replace CertificationMutationResponse with accurate register/delete 
 
 ### Tasks
 
-- [ ] **D1** — Add knowledge pooling types to `src/types/swr-data/certifications.ts`:
+- [x] **D1** — Add knowledge pooling types to `src/types/swr-data/certifications.ts`:
+  - `KnowledgeInsight`, `KnowledgePoolingStats`, `KnowledgePoolingData`
+  - `KnowledgePoolingGenerateMetadata`, `KnowledgePoolingGenerateData`
 
-  ```typescript
-  export interface KnowledgeInsight {
-    insight_id: string;
-    exam_id: string;
-    topic: string;
-    insight: string;
-    generated_at: string;
-  }
-  export interface KnowledgePoolingStats {
-    total_insights: number;
-    unique_exams: number;
-    unique_topics: number;
-  }
-  export interface KnowledgePoolingData {
-    cert_id: number;
-    user_id: string;
-    knowledge_insights: KnowledgeInsight[];
-    certification_name: string;
-    last_updated: string;
-    stats: KnowledgePoolingStats;
-  }
-  export interface KnowledgePoolingGenerateMetadata {
-    exam_id_used: string;
-    force_regenerate: boolean;
-    processing_time_ms: number;
-    analysis_needed: boolean;
-    timestamp: string;
-  }
-  export interface KnowledgePoolingGenerateData {
-    success: boolean;
-    data: KnowledgePoolingData;
-    message: string;
-    generated: boolean;
-    metadata: KnowledgePoolingGenerateMetadata;
-  }
-  ```
-
-- [ ] **D2** — Add `useGetKnowledgePooling(apiUserId, certId)` hook to `src/swr/certifications.ts`:
+- [x] **D2** — Add `useGetKnowledgePooling(apiUserId, certId)` hook to `src/swr/certifications.ts`:
   - Uses `useAuthSWR<ApiResponse<KnowledgePoolingData>, Error>`
   - Key: `/api/users/${apiUserId}/certifications/${certId}/knowledge-pooling`
-  - Returns `{ knowledgePooling, isLoading, error, mutate }`
+  - Returns `{ knowledgePooling, isLoadingKnowledgePooling, knowledgePoolingError, mutateKnowledgePooling }`
 
-- [ ] **D3** — Add `useGenerateKnowledgePooling(apiUserId)` hook to `src/swr/certifications.ts`:
-  - Uses `useSWRMutation<KnowledgePoolingGenerateData, Error, string | null, { apiUserId: string; certId: number; examId: string; forceGenerate?: boolean; refreshToken: () => Promise<string | null> }>`
+- [x] **D3** — Add `useGenerateKnowledgePooling(apiUserId)` hook to `src/swr/certifications.ts`:
+  - Uses full 4-parameter `useSWRMutation` generics
   - Key: `GENERATE_KNOWLEDGE_POOLING_${apiUserId}`
-  - POST to `/api/users/${apiUserId}/certifications/${certId}/knowledge-pooling` with body `{ exam_id: examId, forceGenerate }`
+  - Returns `{ generateKnowledgePooling, isGenerating, generationError, generationData, resetGeneration }`
 
-- [ ] **D4** — Add proxy route in app: `app/api/users/[api_user_id]/certifications/[cert_id]/knowledge-pooling/route.ts`
+- [x] **D4** — Add proxy route in app: `app/api/users/[api_user_id]/certifications/[cert_id]/knowledge-pooling/route.ts`
   - Implement `GET` and `POST`
   - Forward Firebase bearer token
   - Follow existing user-route pattern (including Firebase UID → API user ID conversion safeguard)
 
 ### Build & Test Checklist
 
-- [ ] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
+- [x] `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` → 0 errors
 - [ ] Hooks are importable — add a temporary import in any component to confirm no module errors, then remove
 - [ ] Proxy route compiles and returns backend payload for both GET and POST
 - [ ] (No UI to test yet — hooks are ready for future feature components)
