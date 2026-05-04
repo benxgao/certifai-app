@@ -80,6 +80,36 @@ export interface ExamGenerationProgressData {
 }
 
 /**
+ * Answer entry in a detailed exam response (from getUserExam)
+ * Matches Prisma include: ExamUserAnswer + quizQuestion + selectedOption
+ * From GET /api/users/:user_id/exams/:exam_id
+ */
+export interface ExamAnswerWithQuestion {
+  user_answer_id: string;
+  selected_option_id: string | null;
+  is_correct: boolean | null;
+  quizQuestion: {
+    quiz_question_id: string;
+    question_text: string;
+    difficulty: string | null;
+    generated_from: string | null;
+    cert_id: number;
+    explanations: string | null;
+    exam_topic: string | null;
+    answerOptions: {
+      option_id: string;
+      option_text: string;
+      is_correct?: boolean; // Only present after submission
+    }[];
+  };
+  selectedOption: {
+    option_id: string;
+    option_text: string;
+    is_correct?: boolean;
+  } | null;
+}
+
+/**
  * Exam answer progress (how many questions answered correctly)
  */
 export interface ExamProgressData {
@@ -109,9 +139,10 @@ export interface ExamDetailData {
   status: string; // Computed status from API @guaranteed
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
-  progress?: ExamProgressData; // @optional
-  certification?: ExamCertificationWithPerformance | null; // @optional
-  generation_progress?: ExamGenerationProgressData | null; // @optional
+  progress: ExamProgressData; // Always present @guaranteed
+  certification: ExamCertificationWithPerformance | null; // @guaranteed (null when not included)
+  generation_progress?: ExamGenerationProgressData | null; // @optional – only when QUESTIONS_GENERATING
+  answers: ExamAnswerWithQuestion[]; // Full answer list with embedded question data @guaranteed
 }
 
 /**

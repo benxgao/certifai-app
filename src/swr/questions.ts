@@ -1,25 +1,33 @@
 // src/swr/questions.ts
 import useSWRMutation from 'swr/mutation'; // Import useSWRMutation
-import { PaginationInfo } from './utils';
 import { useAuthSWR } from './useAuthSWR';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { AnswerOptionData, QuestionData, ExamQuestionsData, SubmitAnswerData, SubmitAnswerError } from '@/src/types/swr-data/questions';
-import { ApiResponse } from '@/src/types/api';
+import { ApiResponse, PaginationMeta } from '@/src/types/api';
 
 // Type aliases for backward compatibility
 export type AnswerOption = AnswerOptionData;
 export type Question = Omit<QuestionData, 'answerOptions'> & { answerOptions: AnswerOption[] };
 
-export interface ExamQuestionsResponse {
-  data: ExamQuestionsData;
-  meta: PaginationInfo; // Updated to use meta instead of pagination to match API
-}
-
-// Hook to fetch questions for a specific exam page URL
+/**
+ * Hook to fetch paginated exam questions.
+ *
+ * Response shape changed in Phase 5b:
+ * - Questions are nested in `data.data.questions` (ApiResponse<ExamQuestionsData>)
+ * - Pagination metadata is in `data.meta` (PaginationMeta)
+ *
+ * @param url - Full API URL for the questions page, e.g.
+ *   `/api/users/{userId}/exams/{examId}/questions?page=1&pageSize=10`
+ *
+ * @example
+ * const { questions, pagination, isLoadingQuestions } = useExamQuestions(questionsApiUrl);
+ *
+ * @see functions/src/endpoints/api/users/exams/getExamQuestions.ts
+ */
 export function useExamQuestions(
   url: string | null, // The full API URL for the questions (can be first page or next_page)
 ) {
-  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ExamQuestionsResponse, Error>(
+  const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ApiResponse<ExamQuestionsData>, Error>(
     url, // SWR key is the URL itself; SWR re-fetches if this changes
     {
       shouldRetryOnError: false, // Optional: configure SWR behavior
@@ -36,7 +44,7 @@ export function useExamQuestions(
 
   return {
     questions: data?.data?.questions,
-    pagination: data?.meta,
+    pagination: data?.meta as PaginationMeta | undefined,
     isLoadingQuestions: isLoading,
     isQuestionsError: error,
     isValidatingQuestions: isValidating,

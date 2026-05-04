@@ -2,7 +2,7 @@
 
 **Backend Commit**: `9039b7cb37ee4186c57cadd81db644bfeaf99825` (Type Enforcement Phase 5b)
 **Date**: May 4, 2026
-**Status**: Ready for Implementation
+**Status**: ✅ COMPLETE (May 4, 2026)
 
 ---
 
@@ -55,12 +55,14 @@ Align certifai-app frontend with certifai-api exam endpoint type enforcement cha
 
 ### Phase 5b.1: Type Definition Updates (20 min)
 
-**Goal**: Update type definitions to match actual API response shapes
+**Goal**: Update type definitions to match actual API response shapes ✅ COMPLETE (May 4, 2026)
 
-**Files to Update**:
+**Files Updated**:
 
-- `src/types/swr-data/exams.ts`
-- `src/types/swr-data/questions.ts` (if needed)
+- `src/types/swr-data/exams.ts` — added `ExamAnswerWithQuestion`, made `answers`/`progress`/`certification` required on `ExamDetailData`
+- `src/types/swr-data/questions.ts` — added `ExamQuestionsResponseData` alias, `ExamQuestionWithAnswer` alias, updated `SwrDataApiExamQuestionsResponse`
+
+**API Shape Note**: `getExamQuestions` data is `{ questions: [] }` only — no `total_questions`/`answered_questions` in data body (those are in `pagination.totalItems`). Plan doc had aspirational extra fields; actual API is source of truth.
 
 **Changes**:
 

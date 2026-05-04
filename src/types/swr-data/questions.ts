@@ -31,16 +31,30 @@ export interface QuestionData {
 /**
  * Questions list wrapped within the paginated response data
  * From GET /api/users/:user_id/exams/:exam_id/questions
+ * Response shape: { success, data: { questions: [...] }, pagination }
+ * Note: total_questions / answered_questions are in pagination.totalItems and
+ * getUserExam.progress respectively — NOT in this data object.
  */
 export interface ExamQuestionsData {
   questions: QuestionData[];
 }
 
 /**
+ * Alias for ExamQuestionsData — preferred name going forward
+ */
+export type ExamQuestionsResponseData = ExamQuestionsData;
+
+/**
+ * Alias for QuestionData — preferred name going forward
+ * Matches the structure returned by getExamQuestions handler
+ */
+export type ExamQuestionWithAnswer = QuestionData;
+
+/**
  * Response data type for GET /api/users/:user_id/exams/:exam_id/questions
  * data?.data resolves to this type
  */
-export type SwrDataApiExamQuestionsResponse = ExamQuestionsData;
+export type SwrDataApiExamQuestionsResponse = ExamQuestionsResponseData;
 
 /**
  * Updated answer record returned after submitting an answer

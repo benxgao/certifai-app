@@ -12,8 +12,7 @@ import {
   ExamAnswerSubmission,
   ExamSubmitData,
   ExamDeleteData,
-  ExamCertificationWithPerformance,
-  ExamGenerationProgressData,
+  ExamDetailData,
 } from '@/src/types/swr-data/exams';
 
 // Type aliases for backward compatibility
@@ -295,37 +294,44 @@ export function useDeleteExam() {
   };
 }
 
-// Interface for exam state/details
-// Source of Truth: functions/src/endpoints/api/users/exams/getUserExam.ts
-export interface ExamState {
-  exam_id: string; // @guaranteed
-  user_id: string; // @guaranteed
-  cert_id: number; // @guaranteed
-  exam_status?: BackendExamStatus; // Database exam status - typed enum @guaranteed
-  score: number | null; // @optional
-  total_questions: number; // Actual number of questions in this exam @guaranteed
-  custom_prompt_text?: string | null; // Custom prompt used for question generation @optional
-  started_at: string; // ISO 8601 datetime string @guaranteed
-  submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
-  status: string; // Computed status from API @guaranteed
-  certification?: ExamCertificationWithPerformance; // @optional
-  generation_progress?: ExamGenerationProgressData; // @optional
-}
+/**
+ * ExamState is an alias for ExamDetailData — the full exam detail shape.
+ * Kept for backward compatibility with existing consumers.
+ * Source of Truth: functions/src/endpoints/api/users/exams/getUserExam.ts
+ */
+export type ExamState = ExamDetailData;
 
-// Hook to get exam state/details with optimized polling for generation status
+/**
+ * Hook to fetch full exam detail for a single exam.
+ *
+ * Updated in Phase 5b.3:
+ * - URL fixed to `/api/users/{userId}/exams/{examId}` (certId is NOT in backend path)
+ * - Returns `answers`, `progress`, `generationProgress`, `certification` directly
+ * - `ExamState` is now an alias for `ExamDetailData` (single source of truth)
+ *
+ * @param apiUserId - User ID
+ * @param certId - Certification ID (kept for backward-compatibility, not used in URL)
+ * @param examId - Exam ID
+ *
+ * @example
+ * const { examState, answers, progress, isLoadingExamState } = useExamState(apiUserId, certId, examId);
+ *
+ * @see functions/src/endpoints/api/users/exams/getUserExam.ts
+ */
 export function useExamState(
   apiUserId: string | null,
-  certId: number | null,
+  certId: number | null, // Not used in URL — kept for backward compatibility
   examId: string | null,
 ) {
   // Create a stable key for caching and conditional fetching
+  // Backend endpoint: GET /api/users/:user_id/exams/:exam_id (certId is NOT in path)
   const cacheKey =
-    apiUserId && certId && examId
-      ? `/api/users/${apiUserId}/certifications/${certId}/exams/${examId}`
+    apiUserId && examId
+      ? `/api/users/${apiUserId}/exams/${examId}`
       : null;
 
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<
-    ApiResponse<ExamState>,
+    ApiResponse<ExamDetailData>,
     Error
   >(cacheKey, {
     // Enable simple polling for generating exams
@@ -384,6 +390,10 @@ export function useExamState(
 
   return {
     examState: data?.data,
+    answers: data?.data?.answers,
+    progress: data?.data?.progress,
+    generationProgress: data?.data?.generation_progress,
+    certification: data?.data?.certification,
     isLoadingExamState: isLoading,
     isExamStateError: error,
     isValidatingExamState: isValidating,
