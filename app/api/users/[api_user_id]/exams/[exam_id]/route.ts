@@ -6,8 +6,7 @@ export async function GET(
   {
     params,
   }: {
-    params: any;
-    // { api_user_id: string; exam_id: string }
+    params: Promise<{ api_user_id: string; exam_id: string }>;
   },
 ) {
   try {
@@ -76,8 +75,7 @@ export async function DELETE(
   {
     params,
   }: {
-    params: any;
-    // { api_user_id: string; exam_id: string }
+    params: Promise<{ api_user_id: string; exam_id: string }>;
   },
 ) {
   try {

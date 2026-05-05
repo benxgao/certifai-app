@@ -7,7 +7,7 @@ export async function GET(
   {
     params,
   }: {
-    params: any;
+    params: Promise<{ api_user_id: string }>;
   },
 ) {
   try {

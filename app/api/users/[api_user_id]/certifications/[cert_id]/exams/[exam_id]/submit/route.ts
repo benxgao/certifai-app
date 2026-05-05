@@ -6,8 +6,7 @@ export async function POST(
   {
     params,
   }: {
-    params: any;
-    // { api_user_id: string; cert_id: string; exam_id: string }
+    params: Promise<{ api_user_id: string; cert_id: string; exam_id: string }>;
   },
 ) {
   try {

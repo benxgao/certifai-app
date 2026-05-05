@@ -6,7 +6,7 @@ export async function POST(
   {
     params,
   }: {
-    params: any;
+    params: Promise<{ api_user_id: string; cert_id: string }>;
   },
 ) {
   try {
@@ -84,8 +84,7 @@ export async function GET(
   {
     params,
   }: {
-    params: any;
-    // { api_user_id: string }
+    params: Promise<{ api_user_id: string; cert_id: string }>;
   },
 ) {
   try {

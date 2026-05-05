@@ -624,7 +624,7 @@ Each time you complete a file:
 # Phase 6: App-Wide `any` Elimination
 
 **Planned**: May 5, 2026
-**Status**: 🔲 Not Started
+**Status**: 🟡 In Progress (6a, 6b complete)
 **Scope**: All remaining `any` usages in `src/` and `app/api/` (excludes `__tests__/`)
 
 ## 📊 Audit Summary (99 total as of May 5, 2026)
@@ -677,7 +677,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ## Phase 6b — Next.js Route `params: any`
 
-**Status**: 🔲 Not Started
+**Status**: ✅ COMPLETE (May 5, 2026)
 **Files**: 7 route files under `app/api/users/[api_user_id]/`
 **Count**: 8 `params: any` instances
 
@@ -693,20 +693,26 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ### Per-file tasks
 
-- [ ] **6b.1** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/route.ts`
+- [x] **6b.1** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/route.ts`
   - Params: `{ api_user_id: string; cert_id: string }`
-- [ ] **6b.2** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/route.ts`
+- [x] **6b.2** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/route.ts`
   - Params: `{ api_user_id: string; cert_id: string; exam_id: string }`
-- [ ] **6b.3** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/submit/route.ts`
+- [x] **6b.3** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/submit/route.ts`
   - Params: `{ api_user_id: string; cert_id: string; exam_id: string }`
-- [ ] **6b.4** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/questions/route.ts`
+- [x] **6b.4** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/questions/route.ts`
   - Params: `{ api_user_id: string; cert_id: string; exam_id: string }`
-- [ ] **6b.5** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/questions/[question_id]/route.ts`
+- [x] **6b.5** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/questions/[question_id]/route.ts`
   - Params: `{ api_user_id: string; cert_id: string; exam_id: string; question_id: string }`
-- [ ] **6b.6** — `app/api/users/[api_user_id]/exams/route.ts`
+- [x] **6b.6** — `app/api/users/[api_user_id]/exams/route.ts`
   - Params: `{ api_user_id: string }`
-- [ ] **6b.7** — `app/api/users/[api_user_id]/exams/[exam_id]/route.ts`
+- [x] **6b.7** — `app/api/users/[api_user_id]/exams/[exam_id]/route.ts`
   - Params: `{ api_user_id: string; exam_id: string }`
+
+**Completed implementation notes**:
+
+- Updated all route handler signatures to Next.js 15 typed async params (`params: Promise<...>`)
+- Covered all 9 concrete occurrences of `params: any` across the 7 files above (including multi-method files)
+- Verified with `npx tsc --noEmit` and route-level diagnostics (no errors)
 
 **Commit**: `fix(routes): replace params: any with typed async params in Next.js 15 route handlers`
 
@@ -804,7 +810,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 | Phase | Scope                                 | Count | Status | Complexity |
 | ----- | ------------------------------------- | ----- | ------ | ---------- |
 | 6a    | SWR error `as any` + `ApiError` guard | ~25   | ✅     | 🟡 MEDIUM  |
-| 6b    | Next.js route `params: any`           | 8     | 🔲     | 🟢 LOW     |
+| 6b    | Next.js route `params: any`           | 8     | ✅     | 🟢 LOW     |
 | 6c    | Component prop `any`                  | 3     | 🔲     | 🟢 LOW     |
 | 6d    | Auth `customClaims` + `firebaseUser`  | 6     | 🔲     | 🟢 LOW     |
 | 6e    | `catch (error: any)` → `unknown`      | 17    | 🔲     | 🟢 LOW     |

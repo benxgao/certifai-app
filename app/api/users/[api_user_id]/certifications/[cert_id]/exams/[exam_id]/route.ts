@@ -6,7 +6,7 @@ export async function GET(
   {
     params,
   }: {
-    params: any;
+    params: Promise<{ api_user_id: string; cert_id: string; exam_id: string }>;
   },
 ) {
   try {
