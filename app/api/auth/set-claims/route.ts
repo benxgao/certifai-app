@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminSDK } from '@/src/firebase/firebaseAdminConfig';
 
+interface CustomClaims {
+  api_user_id: string;
+  init_cert_id?: number;
+  subscriber_id?: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Get the Firebase token from Authorization header
@@ -29,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build custom claims object
-    const customClaims: any = {
+    const customClaims: CustomClaims = {
       api_user_id: api_user_id,
     };
 

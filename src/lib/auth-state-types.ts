@@ -4,6 +4,8 @@
  * Replaces implicit state detection with type-safe state machine
  */
 
+import type { User } from 'firebase/auth';
+
 /**
  * Core auth state - explicit enum for state machine
  */
@@ -20,7 +22,7 @@ export enum AuthState {
  */
 export interface TypedAuthState {
   state: AuthState;
-  firebaseUser: any | null;
+  firebaseUser: User | null;
   apiUserId: string | null;
   token: string | null;
   timestamp: number;
@@ -88,7 +90,7 @@ export const assertValidStateTransition = (from: AuthState, to: AuthState): void
  * @returns Current AuthState
  */
 export const determineAuthState = (
-  firebaseUser: any | null,
+  firebaseUser: User | null,
   apiUserId: string | null,
   token: string | null,
 ): AuthState => {
@@ -122,7 +124,7 @@ export const determineAuthState = (
  * @returns Array of validation errors (empty if valid)
  */
 export const validateAuthStateConsistency = (
-  firebaseUser: any | null,
+  firebaseUser: User | null,
   apiUserId: string | null,
   token: string | null,
 ): string[] => {

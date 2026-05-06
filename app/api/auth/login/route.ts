@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAdminSDK } from '@/src/firebase/firebaseAdminConfig';
 import { checkRateLimit, createRateLimitHeaders } from '@/src/lib/rate-limiting';
 
+interface CustomClaims {
+  api_user_id: string;
+  init_cert_id?: number;
+}
+
 export async function POST(request: NextRequest) {
   // Apply rate limiting
   const rateLimitResult = checkRateLimit(request, 'LOGIN');
@@ -143,7 +148,7 @@ export async function POST(request: NextRequest) {
       if ((needsApiUserIdFix || !decodedToken.api_user_id) && !usingFallbackFromClaims) {
         // Set custom claims with the api_user_id for future use
         try {
-          const customClaims: any = {
+          const customClaims: CustomClaims = {
             api_user_id: apiUserId, // Our internal UUID for API operations
           };
 

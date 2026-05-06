@@ -19,7 +19,7 @@ interface ExamStatsContextType {
     completedExams: number;
   };
   isLoading: boolean;
-  isError: any;
+  isError: Error | undefined;
 }
 
 // Create the context

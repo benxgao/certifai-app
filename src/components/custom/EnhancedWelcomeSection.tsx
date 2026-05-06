@@ -7,10 +7,11 @@ import React from 'react';
 import { Badge } from '@/src/components/ui/badge';
 import { BookOpen, Target, CheckCircle2 } from 'lucide-react';
 import { UserRegisteredCertification, CertificationStatus } from '@/src/types/swr-data/certifications';
+import type { UserProfileData } from '@/src/types/swr-data/profile';
 
 interface EnhancedWelcomeSectionProps {
   displayName: string;
-  profile: any;
+  profile: UserProfileData | null;
   isLoading: boolean;
   userCertifications?: UserRegisteredCertification[];
   className?: string;

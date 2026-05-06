@@ -12,6 +12,7 @@ import RateLimitDisplay from '@/src/components/custom/RateLimitDisplay';
 import { Lightbulb, BookOpen, Target, CreditCard, AlertTriangle } from 'lucide-react';
 import { EnhancedModal } from './EnhancedModal';
 import { isFeatureEnabled } from '@/src/config/featureFlags';
+import type { CreateExamError } from '@/src/swr/createExam';
 
 // Flexible certification type to handle different certification objects
 type CertificationData = {
@@ -34,7 +35,7 @@ interface CreateExamModalProps {
   onCustomPromptChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCreateExam: () => Promise<void>;
   isCreatingExam: boolean;
-  createExamError: any;
+  createExamError: CreateExamError | undefined;
   hasActiveSubscription: boolean;
   isLoadingSubscription: boolean;
   children?: React.ReactNode;

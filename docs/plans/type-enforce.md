@@ -624,7 +624,7 @@ Each time you complete a file:
 # Phase 6: App-Wide `any` Elimination
 
 **Planned**: May 5, 2026
-**Status**: 🟡 In Progress (6a, 6b complete)
+**Status**: 🟡 In Progress (6a, 6b, 6c, 6d complete)
 **Scope**: All remaining `any` usages in `src/` and `app/api/` (excludes `__tests__/`)
 
 ## 📊 Audit Summary (99 total as of May 5, 2026)
@@ -720,18 +720,24 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ## Phase 6c — Component Prop `any`
 
-**Status**: 🔲 Not Started
+**Status**: ✅ COMPLETE (May 7, 2026)
 **Files**: `src/components/custom/EnhancedWelcomeSection.tsx`, `src/components/custom/CreateExamModal.tsx`, `src/context/ExamStatsContext.tsx`
 **Count**: 3 instances
 
 ### Per-file tasks
 
-- [ ] **6c.1** — `src/components/custom/EnhancedWelcomeSection.tsx` L13
+- [x] **6c.1** — `src/components/custom/EnhancedWelcomeSection.tsx` L13
   - `profile: any` → `UserProfileData` (import from `src/types/swr-data/profile.ts`)
-- [ ] **6c.2** — `src/components/custom/CreateExamModal.tsx` L37
+- [x] **6c.2** — `src/components/custom/CreateExamModal.tsx` L37
   - `createExamError: any` → `CreateExamError | undefined` (already exported from `src/swr/createExam.ts`)
-- [ ] **6c.3** — `src/context/ExamStatsContext.tsx` L22
+- [x] **6c.3** — `src/context/ExamStatsContext.tsx` L22
   - `isError: any` → `Error | undefined`
+
+**Completed implementation notes**:
+
+- `EnhancedWelcomeSection` now uses `profile: UserProfileData | null`.
+- `CreateExamModal` now uses `createExamError: CreateExamError | undefined`.
+- `ExamStatsContextType` now uses `isError: Error | undefined`.
 
 **Commit**: `fix(components): replace any props with typed interfaces in EnhancedWelcomeSection, CreateExamModal, ExamStatsContext`
 
@@ -739,18 +745,25 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ## Phase 6d — Auth `customClaims` + `firebaseUser` Types
 
-**Status**: 🔲 Not Started
+**Status**: ✅ COMPLETE (May 7, 2026)
 **Files**: `app/api/auth/login/route.ts`, `app/api/auth/register/route.ts`, `app/api/auth/set-claims/route.ts`, `src/lib/auth-state-types.ts`
 **Count**: 3 `customClaims: any` + 3 `firebaseUser: any`
 
 ### Per-file tasks
 
-- [ ] **6d.1** — `app/api/auth/login/route.ts`, `register/route.ts`, `set-claims/route.ts`
+- [x] **6d.1** — `app/api/auth/login/route.ts`, `register/route.ts`, `set-claims/route.ts`
   - Add private `interface CustomClaims { api_user_id: string; init_cert_id?: number }` inline in each file
   - Replace `const customClaims: any = {` with `const customClaims: CustomClaims = {`
-- [ ] **6d.2** — `src/lib/auth-state-types.ts` L23, L91, L125
+- [x] **6d.2** — `src/lib/auth-state-types.ts` L23, L91, L125
   - `firebaseUser: any | null` → `User | null`
   - Add `import type { User } from 'firebase/auth'`
+
+**Completed implementation notes**:
+
+- Added typed `CustomClaims` interfaces in `login`, `register`, and `set-claims` auth routes.
+- Replaced all `customClaims: any` declarations with `customClaims: CustomClaims`.
+- In `set-claims`, retained existing `subscriber_id` behavior with an optional typed field.
+- Updated `src/lib/auth-state-types.ts` to import `User` from `firebase/auth` and replaced all `firebaseUser: any | null` usages with `User | null`.
 
 **Commit**: `fix(auth): type customClaims and firebaseUser fields in auth state and route handlers`
 
@@ -811,8 +824,8 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 | ----- | ------------------------------------- | ----- | ------ | ---------- |
 | 6a    | SWR error `as any` + `ApiError` guard | ~25   | ✅     | 🟡 MEDIUM  |
 | 6b    | Next.js route `params: any`           | 8     | ✅     | 🟢 LOW     |
-| 6c    | Component prop `any`                  | 3     | 🔲     | 🟢 LOW     |
-| 6d    | Auth `customClaims` + `firebaseUser`  | 6     | 🔲     | 🟢 LOW     |
+| 6c    | Component prop `any`                  | 3     | ✅     | 🟢 LOW     |
+| 6d    | Auth `customClaims` + `firebaseUser`  | 6     | ✅     | 🟢 LOW     |
 | 6e    | `catch (error: any)` → `unknown`      | 17    | 🔲     | 🟢 LOW     |
 | 6f    | Callback params + loose types         | ~18   | 🔲     | 🟡 MEDIUM  |
 
@@ -828,7 +841,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ---
 
-**Last Updated**: 1 May 2026 (Session 5: Completed all 17 files + API guide)
+**Last Updated**: 7 May 2026 (Session 6: Completed Phase 6c + 6d)
 **Latest Commits**:
 
 - examReport.ts: Add explicit generic types to useSWR
@@ -836,8 +849,10 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 - useExamLiveStatus.ts: Add Error generic parameter + type guards
 - type-enforce.md: Mark Phase 4.3 complete - ALL 17 FILES DONE
 - certifai-api/type-enforcement.md: Create comprehensive API guide
+- EnhancedWelcomeSection.tsx/CreateExamModal.tsx/ExamStatsContext.tsx: Phase 6c component/context `any` removal
+- app/api/auth/{login,register,set-claims}/route.ts + src/lib/auth-state-types.ts: Phase 6d auth typing
   **Status**: ✅ PROJECT COMPLETE - All SWR hooks fully typed
-  **Next**: certifai-api type enforcement implementation (based on documented patterns)
+  **Next**: Continue with Phase 6e (`catch (error: any)` → `unknown`) and Phase 6f loose callback/utility typing
 
 ---
 
