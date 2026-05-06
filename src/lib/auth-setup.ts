@@ -43,10 +43,20 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
     );
 
     if (response && response.ok) {
+      // [DEBUG] Verify the server actually returned a Set-Cookie header.
+      // If this is empty the cookie was never created server-side.
+      const setCookieHeader = response.headers.get('set-cookie');
       console.log('[AUTH-SETUP] Auth cookie set successfully');
+      console.log('[AUTH-SETUP][DEBUG] Response Set-Cookie header:', setCookieHeader ?? '(none – header not forwarded by Next.js route handler, this is expected)');
+      console.log('[AUTH-SETUP][DEBUG] Response status:', response.status);
       return { success: true };
     } else {
       console.error('[AUTH-SETUP] Cookie request failed with status:', response?.status);
+      // [DEBUG] Log full response body to understand why the server rejected the request
+      try {
+        const errorBody = await response?.text();
+        console.error('[AUTH-SETUP][DEBUG] Error response body:', errorBody);
+      } catch {}
       return { success: false, error: 'Cookie request failed' };
     }
   } catch (error) {

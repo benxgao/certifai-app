@@ -75,13 +75,27 @@ export function getLogoutClearCookieOptions() {
  * Log cookie options for debugging
  */
 export function logCookieOptions(operation: 'SET' | 'CLEAR' | 'LOGOUT', options: any) {
-  console.log(`[COOKIE-${operation}] Name: ${COOKIE_AUTH_NAME}, Options: {
+  const nodeEnv = process.env.NODE_ENV;
+  const warnings: string[] = [];
+
+  // [DEBUG] Detect common misconfiguration that causes cookies to be silently dropped
+  if (options.secure && nodeEnv !== 'production' && nodeEnv !== 'uat') {
+    warnings.push('WARN: secure=true in non-HTTPS env – cookie will be dropped by the browser');
+  }
+  if (options.sameSite === 'strict') {
+    warnings.push('NOTE: sameSite=strict – cookie will NOT be sent on cross-origin redirects (e.g. OAuth flows)');
+  }
+  if (options.domain && !options.domain.startsWith('.')) {
+    warnings.push(`WARN: domain "${options.domain}" does not start with "." – subdomains may not receive the cookie`);
+  }
+
+  console.log(`[COOKIE-${operation}][DEBUG] Name: ${COOKIE_AUTH_NAME}, Options: {
     secure: ${options.secure},
     httpOnly: ${options.httpOnly},
     sameSite: ${options.sameSite},
     path: ${options.path},
     maxAge: ${options.maxAge},
     domain: ${options.domain || 'undefined'},
-    NODE_ENV: ${process.env.NODE_ENV}
+    NODE_ENV: ${nodeEnv}${warnings.length ? '\n    ' + warnings.join('\n    ') : ''}
   }`);
 }

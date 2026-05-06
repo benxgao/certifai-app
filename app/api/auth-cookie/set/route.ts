@@ -48,6 +48,21 @@ export async function POST(request: Request) {
     cookieStore.set(COOKIE_AUTH_NAME, joseToken, cookieOptions);
 
     logCookieOptions('SET', cookieOptions);
+
+    // [DEBUG] Immediately read back the cookie to confirm it was stored in the
+    // Next.js cookie jar before the response is flushed.
+    const written = cookieStore.get(COOKIE_AUTH_NAME);
+    if (written) {
+      console.log(
+        `[COOKIE-SET][DEBUG] Cookie "${COOKIE_AUTH_NAME}" verified in cookie store ` +
+          `(value length=${written.value.length}, first8=${written.value.substring(0, 8)}…)`,
+      );
+    } else {
+      console.error(
+        `[COOKIE-SET][DEBUG] Cookie "${COOKIE_AUTH_NAME}" NOT found in cookie store immediately after set – ` +
+          'this means Next.js rejected the write. Check options above.',
+      );
+    }
     console.log('[COOKIE-SET] Successfully set new auth cookie');
 
     return Response.json({ success: true });

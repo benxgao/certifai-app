@@ -87,6 +87,12 @@ export const AUTH_FETCH_OPTIONS: RequestInit = {
   ...DEFAULT_FETCH_OPTIONS,
   // Prioritize auth requests
   priority: 'high' as any, // Modern browsers support this
+  // [DEBUG] credentials:'include' is required so the browser attaches the
+  // httpOnly auth cookie on same-origin API calls (e.g. /api/auth-cookie/set).
+  // Without it the Set-Cookie response header is still honoured, but any
+  // subsequent same-origin request made through this config will NOT send the
+  // cookie back, rendering the session invisible on the server.
+  credentials: 'include',
 
   headers: {
     ...DEFAULT_FETCH_OPTIONS.headers,

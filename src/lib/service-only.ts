@@ -85,11 +85,44 @@ export function clearUserTokenCache(userId: string, reason?: string): void {
   }
 }
 
+interface CookieReadDiagnostics {
+  hasAuthCookie: boolean;
+  authCookieLength: number;
+  totalCookieCount: number;
+}
+
+function buildCookieReadDiagnostics(cookieStore: Awaited<ReturnType<typeof cookies>>): CookieReadDiagnostics {
+  const authCookie = cookieStore.get(COOKIE_AUTH_NAME)?.value;
+
+  return {
+    hasAuthCookie: Boolean(authCookie),
+    authCookieLength: authCookie?.length ?? 0,
+    totalCookieCount: cookieStore.getAll().length,
+  };
+}
+
 export async function getFirebaseTokenFromCookie(): Promise<string | undefined> {
-  const cookieToken = (await cookies()).get(COOKIE_AUTH_NAME)?.value;
+  const cookieStore = await cookies();
+  const diagnostics = buildCookieReadDiagnostics(cookieStore);
+
+  console.log(
+    `[COOKIE-READ][DEBUG] authCookiePresent=${diagnostics.hasAuthCookie}, ` +
+      `authCookieLength=${diagnostics.authCookieLength}, ` +
+      `totalCookieCount=${diagnostics.totalCookieCount}`,
+  );
+
+  const cookieToken = cookieStore.get(COOKIE_AUTH_NAME)?.value;
 
   if (!cookieToken) {
-    console.error('getFirebaseTokenFromCookie: Auth cookie not found');
+    console.error(
+      `[COOKIE-READ][DEBUG] Auth cookie "${COOKIE_AUTH_NAME}" NOT found. ` +
+        `Total cookies received: ${diagnostics.totalCookieCount}. ` +
+        `NODE_ENV=${process.env.NODE_ENV}. ` +
+        'Likely causes: (1) credentials:"include" missing on the fetch call that set the cookie, ' +
+        '(2) secure:true cookie sent over HTTP in dev, ' +
+        '(3) sameSite:"strict" blocking cross-origin redirect flow, ' +
+        '(4) cookie domain mismatch.',
+    );
     return undefined;
   }
 
