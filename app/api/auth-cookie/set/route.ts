@@ -9,6 +9,21 @@ import {
 
 const secretKey = process.env.JOSE_JWT_SECRET;
 
+/**
+ * POST /api/auth-cookie/set
+ *
+ * Wraps a Firebase ID token inside a signed JOSE JWT and stores it as a
+ * server-side httpOnly cookie.  This is the ONLY place the auth cookie is
+ * created; all other endpoints read or clear it.
+ *
+ * ⚠️  Refactoring notes:
+ * - The JOSE JWT MUST include `jti` (unique id) — the verify endpoint rejects
+ *   tokens older than 2 hours that lack it.
+ * - The cookie is deleted before being rewritten so stale tokens never persist.
+ * - `logCookieOptions` and the post-write readback are intentional debug guards;
+ *   keep them until the cookie behaviour is 100% stable in all environments.
+ * - CSRF guard (assertAllowedOrigin) must remain the first check.
+ */
 export async function POST(request: Request) {
   const csrfError = assertAllowedOrigin(request);
   if (csrfError) return csrfError;

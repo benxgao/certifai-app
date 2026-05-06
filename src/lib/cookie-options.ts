@@ -9,6 +9,11 @@ import { allowedOrigins } from '@/src/config/serverOnlyConfig';
 
 /**
  * Get cookie options for setting auth cookies
+ *
+ * ⚠️  KEEP `secure` TIED TO APP_ENV, NOT NODE_ENV ALONE.
+ * UAT runs as NODE_ENV=production but is identified by APP_ENV=uat.
+ * Changing this logic will break cookie delivery in UAT or local dev.
+ *
  * secure: true for production and UAT (both HTTPS environments)
  * domain: undefined for both UAT and dev (no domain restrictions)
  * domain: .certestic.com only for production
@@ -104,10 +109,12 @@ export function logCookieOptions(operation: 'SET' | 'CLEAR' | 'LOGOUT', options:
 /**
  * Validate that a request's Origin header is from an allowed source.
  *
+ * ⚠️  DO NOT remove the origin-absent (server-to-server) bypass. SSR route handlers
+ * issuing internal fetches have no Origin header and must be allowed through.
+ *
  * Rules:
  * - If Origin is absent the request is server-to-server (e.g. SSR, curl) → allowed.
- * - If Origin is present it must match the configured NEXT_PUBLIC_FIREBASE_BACKEND_URL
- *   or one of the hardcoded production/UAT origins.
+ * - If Origin is present it must be in the allowedOrigins list from serverOnlyConfig.
  * - Returns a 403 Response when the check fails, otherwise null.
  */
 export function assertAllowedOrigin(request: Request): Response | null {

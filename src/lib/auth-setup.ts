@@ -27,7 +27,11 @@ let lastLoginTime = 0;
 const LOGIN_CACHE_DURATION = 30000; // 30 seconds cache for login results
 
 /**
- * Set authentication cookie for the user session
+ * Set authentication cookie for the user session.
+ *
+ * ⚠️  Always await this call.  Callers that fire-and-forget will silently leave
+ * the user with a stale or missing cookie, causing session expiry at the 1-hour mark.
+ * The result must also be checked — a false `success` should trigger rollback or redirect.
  */
 export const setAuthCookie = async (token: string): Promise<AuthCookieResult> => {
   try {
@@ -67,7 +71,10 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
 };
 
 /**
- * Clear authentication cookie
+ * Clear authentication cookie.
+ *
+ * ⚠️  Always await this call before redirecting to /signin.  Fire-and-forget
+ * leaves the stale cookie in-flight, which can interfere with the re-signin flow.
  */
 export const clearAuthCookie = async (): Promise<void> => {
   try {
@@ -325,6 +332,21 @@ export const shouldRedirectToSignIn = (): boolean => {
  * Handles all async authentication processes in parallel for optimal performance
  * In UAT environment, skips API login and relies on Firebase custom claims
  */
+/**
+ * Run all auth setup operations in parallel after Firebase sign-in succeeds.
+ *
+ * Executes three concurrent operations via Promise.allSettled:
+ *   1. setAuthCookie — writes the JOSE JWT httpOnly cookie.
+ *   2. performApiLogin — calls /api/auth/login to get the backend api_user_id.
+ *   3. getApiUserIdFromClaims — reads api_user_id from Firebase custom claims (fallback).
+ *
+ * ⚠️  Partial failure handling is intentional and must be preserved:
+ * - If api_user_id cannot be resolved from either source the cookie is rolled back
+ *   (clearAuthCookie) so the user is never left in a partially-authenticated state.
+ * - Promise.allSettled is used (not Promise.all) so one failure doesn't abort the others.
+ * - The claims retry (retryGetApiUserIdFromClaims) handles newly created accounts where
+ *   custom claims propagation is delayed.
+ */
 export const performAuthSetup = async (authUser: User, token: string): Promise<AuthSetupResult> => {
   try {
     // Use the centralized auth manager for cookie setting
@@ -406,7 +428,15 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
 };
 
 /**
- * Refresh token and update cookie
+ * Refresh token and update cookie.
+ *
+ * Forces a fresh Firebase ID token, then AWAITS the cookie update.
+ *
+ * ⚠️  Both steps must stay sequential and awaited:
+ * 1. getIdToken(true) — forces Firebase to issue a new token.
+ * 2. setAuthCookie(newToken) — writes the updated JOSE JWT cookie.
+ * If step 2 fails this throws, so the caller (refreshToken in FirebaseAuthContext)
+ * correctly catches it, clears state and redirects to /signin.
  */
 export const refreshTokenAndUpdateCookie = async (firebaseUser: User): Promise<string | null> => {
   try {
