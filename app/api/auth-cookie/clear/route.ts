@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server';
 import { COOKIE_AUTH_NAME } from '../../../../src/config/constants';
-import { getClearCookieOptions, logCookieOptions } from '../../../../src/lib/cookie-options';
+import {
+  getClearCookieOptions,
+  logCookieOptions,
+  assertAllowedOrigin,
+} from '../../../../src/lib/cookie-options';
 
-export async function POST() {
+export async function POST(request: Request) {
+  const csrfError = assertAllowedOrigin(request);
+  if (csrfError) return csrfError;
+
   const response = NextResponse.json({ success: true });
 
   // Clear the auth cookie with the correct name

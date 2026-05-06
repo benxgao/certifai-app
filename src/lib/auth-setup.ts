@@ -381,6 +381,14 @@ export const performAuthSetup = async (authUser: User, token: string): Promise<A
       };
     } else {
       console.warn('No api_user_id found from either API login or custom claims');
+
+      // Rollback: if the cookie was set successfully but identity resolution failed,
+      // clear the cookie so the user is not left in a partially-authenticated state.
+      if (finalCookieResult?.success) {
+        console.warn('[performAuthSetup] Rolling back auth cookie due to missing api_user_id');
+        await clearAuthCookie();
+      }
+
       return {
         success: false,
         apiUserId: null,
@@ -404,8 +412,11 @@ export const refreshTokenAndUpdateCookie = async (firebaseUser: User): Promise<s
   try {
     const newToken = await firebaseUser.getIdToken(true); // Force refresh
 
-    // Update the auth cookie with the new token (non-blocking)
-    setAuthCookie(newToken);
+    // Update the auth cookie with the new token and wait for confirmation
+    const cookieResult = await setAuthCookie(newToken);
+    if (!cookieResult.success) {
+      throw new Error(`Cookie refresh failed: ${cookieResult.error ?? 'unknown'}`);
+    }
 
     return newToken;
   } catch (error) {

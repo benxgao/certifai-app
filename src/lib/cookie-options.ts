@@ -5,6 +5,7 @@
  */
 
 import { COOKIE_AUTH_NAME } from '@/src/config/constants';
+import { allowedOrigins } from '@/src/config/serverOnlyConfig';
 
 /**
  * Get cookie options for setting auth cookies
@@ -75,7 +76,7 @@ export function getLogoutClearCookieOptions() {
  * Log cookie options for debugging
  */
 export function logCookieOptions(operation: 'SET' | 'CLEAR' | 'LOGOUT', options: any) {
-  const nodeEnv = process.env.NODE_ENV;
+  const nodeEnv = process.env.NODE_ENV as string;
   const warnings: string[] = [];
 
   // [DEBUG] Detect common misconfiguration that causes cookies to be silently dropped
@@ -98,4 +99,29 @@ export function logCookieOptions(operation: 'SET' | 'CLEAR' | 'LOGOUT', options:
     domain: ${options.domain || 'undefined'},
     NODE_ENV: ${nodeEnv}${warnings.length ? '\n    ' + warnings.join('\n    ') : ''}
   }`);
+}
+
+/**
+ * Validate that a request's Origin header is from an allowed source.
+ *
+ * Rules:
+ * - If Origin is absent the request is server-to-server (e.g. SSR, curl) → allowed.
+ * - If Origin is present it must match the configured NEXT_PUBLIC_FIREBASE_BACKEND_URL
+ *   or one of the hardcoded production/UAT origins.
+ * - Returns a 403 Response when the check fails, otherwise null.
+ */
+export function assertAllowedOrigin(request: Request): Response | null {
+  const origin = request.headers.get('origin');
+
+  // No Origin header → server-to-server call, allow
+  if (!origin) return null;
+
+  const allowed = new Set(allowedOrigins);
+
+  if (!allowed.has(origin)) {
+    console.warn(`[CSRF] Blocked request from disallowed origin: ${origin}`);
+    return new Response('Forbidden', { status: 403 });
+  }
+
+  return null;
 }

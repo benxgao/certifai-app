@@ -84,8 +84,8 @@ export function FirebaseAuthProvider({ children }: { children: React.ReactNode }
       setFirebaseToken(null);
       setApiUserId(null);
 
-      // Clear the auth cookie (non-blocking)
-      clearAuthCookie();
+      // Clear the auth cookie before redirecting to avoid stale cookie on re-signin
+      await clearAuthCookie();
 
       // Force user to sign in when refresh token is invalid
       if (typeof window !== 'undefined') {

@@ -1,11 +1,18 @@
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 import { COOKIE_AUTH_NAME } from '../../../../src/config/constants';
-import { getAuthCookieOptions, logCookieOptions } from '../../../../src/lib/cookie-options';
+import {
+  getAuthCookieOptions,
+  logCookieOptions,
+  assertAllowedOrigin,
+} from '../../../../src/lib/cookie-options';
 
 const secretKey = process.env.JOSE_JWT_SECRET;
 
 export async function POST(request: Request) {
+  const csrfError = assertAllowedOrigin(request);
+  if (csrfError) return csrfError;
+
   if (!secretKey) {
     return new Response('JWT secret not configured', { status: 500 });
   }
