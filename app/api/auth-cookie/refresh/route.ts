@@ -60,12 +60,25 @@ export async function POST() {
       // Decode the JWT to get the Firebase token
       const result = await jwtVerify(joseToken, new TextEncoder().encode(secretKey));
       payload = result.payload;
-    } catch (jwtError: any) {
+    } catch (jwtError: unknown) {
+      const jwtErrorCode =
+        typeof jwtError === 'object' && jwtError !== null && 'code' in jwtError
+          ? String((jwtError as { code: unknown }).code)
+          : undefined;
+      const jwtErrorMessage =
+        typeof jwtError === 'object' && jwtError !== null && 'message' in jwtError
+          ? String((jwtError as { message: unknown }).message)
+          : undefined;
+      const jwtErrorName =
+        typeof jwtError === 'object' && jwtError !== null && 'name' in jwtError
+          ? String((jwtError as { name: unknown }).name)
+          : undefined;
+
       // Check if the error is specifically a JWT expiration error
       if (
-        jwtError.code === 'ERR_JWT_EXPIRED' ||
-        jwtError.message?.includes('exp') ||
-        jwtError.name === 'JWTExpired'
+        jwtErrorCode === 'ERR_JWT_EXPIRED' ||
+        jwtErrorMessage?.includes('exp') ||
+        jwtErrorName === 'JWTExpired'
       ) {
         console.log(
           'auth-cookie/refresh: JWT token expired, attempting to extract payload without verification',
@@ -168,7 +181,7 @@ export async function POST() {
       message: 'Token refreshed successfully',
       userId: decodedToken.uid,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('auth-cookie/refresh: Unexpected error:', error);
 
     // If token verification fails, clear the cookie

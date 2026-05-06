@@ -73,15 +73,31 @@ export async function POST() {
     await validateAndGetFirebaseToken(authorization);
 
     return NextResponse.json({ valid: true });
-  } catch (error: any) {
-    if (error.status && error.message) {
+  } catch (error: unknown) {
+    const hasStatusAndMessage =
+      typeof error === 'object' &&
+      error !== null &&
+      'status' in error &&
+      'message' in error;
+
+    if (hasStatusAndMessage) {
       // This is a TokenValidationError
-      return NextResponse.json({ error: error.message }, { status: error.status });
+      const typedError = error as { message: string; status: number };
+      return NextResponse.json({ error: typedError.message }, { status: typedError.status });
     }
     // This is an unexpected internal server error
+    const unknownMessage =
+      typeof error === 'object' && error !== null && 'message' in error
+        ? String((error as { message: unknown }).message)
+        : String(error);
+    const unknownCode =
+      typeof error === 'object' && error !== null && 'code' in error
+        ? String((error as { code: unknown }).code)
+        : undefined;
+
     console.error('/api/auth-cookie/verify:', {
-      message: error.message,
-      code: error.code,
+      message: unknownMessage,
+      code: unknownCode,
       // stack: error.stack,
     });
 

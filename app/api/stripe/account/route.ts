@@ -117,11 +117,16 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Account data API error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStatus =
+      typeof error === 'object' && error !== null && 'status' in error
+        ? Number((error as { status: unknown }).status)
+        : undefined;
 
     // Provide more specific error responses
-    if (error.message?.includes('No authentication token')) {
+    if (errorMessage.includes('No authentication token')) {
       return NextResponse.json(
         {
           success: false,
@@ -132,7 +137,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (error.message?.includes('Request timed out')) {
+    if (errorMessage.includes('Request timed out')) {
       return NextResponse.json(
         {
           success: false,
@@ -145,9 +150,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || 'Failed to fetch account data',
+        error: errorMessage || 'Failed to fetch account data',
       },
-      { status: error.status || 500 },
+      { status: errorStatus || 500 },
     );
   }
 }

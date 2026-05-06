@@ -116,9 +116,9 @@ async function updateMarketingProfile(
       console.warn('marketing_api: Marketing profile update failed:', result.message);
       return { success: false, error: result.message };
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Handle network errors, timeouts, etc.
-    const errorMessage = error.message || 'Unknown error occurred';
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error('marketing_api: Error during marketing profile update:', errorMessage);
 
     // Don't block profile updates for marketing errors

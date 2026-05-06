@@ -106,18 +106,29 @@ export async function POST(request: NextRequest) {
 
           console.warn('Failed to register user in external API:', errorDetails);
         }
-      } catch (apiError: any) {
+      } catch (apiError: unknown) {
+        const apiErrorName =
+          typeof apiError === 'object' && apiError !== null && 'name' in apiError
+            ? String((apiError as { name: unknown }).name)
+            : undefined;
+        const apiErrorMessage =
+          apiError instanceof Error
+            ? apiError.message
+            : typeof apiError === 'string'
+              ? apiError
+              : String(apiError);
+
         // Handle specific errors with better logging
-        if (apiError.name === 'AbortError') {
+        if (apiErrorName === 'AbortError') {
           console.error('External API registration timed out after 12 seconds');
-        } else if (apiError.message?.includes('ECONNREFUSED')) {
+        } else if (apiErrorMessage.includes('ECONNREFUSED')) {
           console.error('External API connection refused - API server may be down');
-        } else if (apiError.message?.includes('ENOTFOUND')) {
+        } else if (apiErrorMessage.includes('ENOTFOUND')) {
           console.error('External API host not found - check API URL configuration');
         } else {
           console.error(
             'Error calling external API for user registration:',
-            apiError.message || apiError,
+            apiErrorMessage || apiError,
           );
         }
       }

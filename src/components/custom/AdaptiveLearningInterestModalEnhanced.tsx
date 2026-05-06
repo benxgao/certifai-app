@@ -123,8 +123,9 @@ const AdaptiveLearningInterestModal: React.FC<AdaptiveLearningInterestModalProps
       } else {
         throw new Error(result.error || 'Failed to join group');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to join group. Please try again.');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      setError(errorMessage || 'Failed to join group. Please try again.');
       toast.error('Failed to join group. Please try again.');
     } finally {
       setIsSubmitting(false);

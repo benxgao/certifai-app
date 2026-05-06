@@ -69,10 +69,15 @@ export function useEmailUpdate(): UseEmailUpdateResult {
       );
 
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorCode =
+        typeof error === 'object' && error !== null && 'code' in error
+          ? String((error as { code: unknown }).code)
+          : undefined;
+      const errorMessage = error instanceof Error ? error.message : String(error);
 
       // Handle specific error codes
-      switch (error.code) {
+      switch (errorCode) {
         case 'auth/email-already-in-use':
           setError('This email address is already in use by another account');
           break;
@@ -94,7 +99,7 @@ export function useEmailUpdate(): UseEmailUpdateResult {
           setError('Network error. Please check your connection and try again');
           break;
         default:
-          setError(error.message || 'Failed to send email verification. Please try again');
+          setError(errorMessage || 'Failed to send email verification. Please try again');
       }
       return false;
     } finally {

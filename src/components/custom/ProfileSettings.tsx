@@ -79,11 +79,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ className }) => {
       setSuccess('Profile updated successfully!');
       await mutate();
       setIsEditing(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Show error toast notification
-      toastHelpers.error.generic(error?.message || 'Failed to update profile. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      toastHelpers.error.generic(errorMessage || 'Failed to update profile. Please try again.');
 
-      setErrorMsg(error?.message || 'Error updating profile');
+      setErrorMsg(errorMessage || 'Error updating profile');
     }
   };
 

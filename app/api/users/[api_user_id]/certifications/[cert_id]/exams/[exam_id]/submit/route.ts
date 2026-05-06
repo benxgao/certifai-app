@@ -37,9 +37,10 @@ export async function POST(
 
     try {
       responseData = await apiResponse.json();
-    } catch (e: any) {
+    } catch (e: unknown) {
+      const parseError = e instanceof Error ? e.message : String(e);
       responseData = {
-        error: `Received non-JSON response from target API: ${e}: ${apiResponse.statusText}`,
+        error: `Received non-JSON response from target API: ${parseError}: ${apiResponse.statusText}`,
       };
       if (apiResponse.status === 204) {
         return new NextResponse(null, { status: 204 });
@@ -47,13 +48,14 @@ export async function POST(
     }
 
     return NextResponse.json(responseData, { status: apiResponse.status });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error submitting exam:', error);
     let errorMessage = 'Internal Server Error';
+    const details = error instanceof Error ? error.message : String(error);
     if (error instanceof SyntaxError) {
       errorMessage = 'Invalid JSON in request body';
       return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
-    return NextResponse.json({ error: errorMessage, details: error.message }, { status: 500 });
+    return NextResponse.json({ error: errorMessage, details }, { status: 500 });
   }
 }

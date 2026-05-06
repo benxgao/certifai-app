@@ -178,26 +178,36 @@ export const handleUnverifiedUser = async (): Promise<AuthError> => {
 /**
  * Parse Firebase auth errors into user-friendly messages
  */
-export const parseFirebaseAuthError = (error: any): string => {
+export const parseFirebaseAuthError = (error: unknown): string => {
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  const errorCode =
+    typeof error === 'object' && error !== null && 'code' in error
+      ? String((error as { code: unknown }).code)
+      : undefined;
+  const errorName =
+    typeof error === 'object' && error !== null && 'name' in error
+      ? String((error as { name: unknown }).name)
+      : undefined;
+
   // Handle specific signal abortion errors first
-  if (error.message?.includes('signal is aborted')) {
+  if (errorMessage.includes('signal is aborted')) {
     return 'Request timed out. Please check your connection and try again.';
   }
 
-  if (error.message?.includes('timeout')) {
+  if (errorMessage.includes('timeout')) {
     return 'Connection timeout. Please try again.';
   }
 
-  if (error.message?.includes('network') || error.message?.includes('Network')) {
+  if (errorMessage.includes('network') || errorMessage.includes('Network')) {
     return 'Network error. Please check your connection and try again.';
   }
 
-  if (error.name === 'AbortError') {
+  if (errorName === 'AbortError') {
     return 'Request was cancelled. Please try again.';
   }
 
-  if (error.code) {
-    switch (error.code) {
+  if (errorCode) {
+    switch (errorCode) {
       case 'auth/user-not-found':
       case 'auth/wrong-password':
         return 'Invalid email or password.';
@@ -303,7 +313,7 @@ export const performSignin = async (
     // Cookie setting and API login will be handled automatically by FirebaseAuthContext
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     const errorMessage = parseFirebaseAuthError(error);
     await clearAuthStateOnError();
     return { success: false, error: { message: errorMessage } };

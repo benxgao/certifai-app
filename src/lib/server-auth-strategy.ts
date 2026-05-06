@@ -39,9 +39,14 @@ export async function getServerAuthState(): Promise<ServerAuthResult> {
         new TextEncoder().encode(secretKey),
       );
       payload = jwtPayload;
-    } catch (jwtError: any) {
+    } catch (jwtError: unknown) {
       // If JWT is expired, we might still be able to refresh
-      if (jwtError.code === 'ERR_JWT_EXPIRED') {
+      const jwtErrorCode =
+        typeof jwtError === 'object' && jwtError !== null && 'code' in jwtError
+          ? String((jwtError as { code: unknown }).code)
+          : undefined;
+
+      if (jwtErrorCode === 'ERR_JWT_EXPIRED') {
         return { isAuthenticated: false, needsRefresh: true, error: 'JWT wrapper expired' };
       }
       return { isAuthenticated: false, needsRefresh: false, error: 'Invalid JWT wrapper' };
@@ -61,9 +66,14 @@ export async function getServerAuthState(): Promise<ServerAuthResult> {
         userId: decodedToken.uid,
         needsRefresh: false,
       };
-    } catch (firebaseError: any) {
+    } catch (firebaseError: unknown) {
       // Firebase token is invalid or expired
-      if (firebaseError.code === 'auth/id-token-expired') {
+      const firebaseErrorCode =
+        typeof firebaseError === 'object' && firebaseError !== null && 'code' in firebaseError
+          ? String((firebaseError as { code: unknown }).code)
+          : undefined;
+
+      if (firebaseErrorCode === 'auth/id-token-expired') {
         return { isAuthenticated: false, needsRefresh: true, error: 'Firebase token expired' };
       }
       return { isAuthenticated: false, needsRefresh: false, error: 'Firebase token invalid' };
@@ -129,10 +139,14 @@ export async function getServerAuthStateWithRefresh(): Promise<
         new TextEncoder().encode(secretKey),
       );
       payload = jwtPayload;
-    } catch (jwtError: any) {
+    } catch (jwtError: unknown) {
+      const jwtErrorCode =
+        typeof jwtError === 'object' && jwtError !== null && 'code' in jwtError
+          ? String((jwtError as { code: unknown }).code)
+          : undefined;
 
       // If JWT is expired, try to decode payload without verification
-      if (jwtError.code === 'ERR_JWT_EXPIRED') {
+      if (jwtErrorCode === 'ERR_JWT_EXPIRED') {
         jwtExpired = true;
         try {
           // Decode without verification to get the Firebase token
@@ -178,10 +192,14 @@ export async function getServerAuthStateWithRefresh(): Promise<
         userId: decodedToken.uid,
         needsRefresh: false,
       };
-    } catch (firebaseError: any) {
+    } catch (firebaseError: unknown) {
+      const firebaseErrorCode =
+        typeof firebaseError === 'object' && firebaseError !== null && 'code' in firebaseError
+          ? String((firebaseError as { code: unknown }).code)
+          : undefined;
 
       // Firebase token is invalid or expired
-      if (firebaseError.code === 'auth/id-token-expired') {
+      if (firebaseErrorCode === 'auth/id-token-expired') {
         return {
           isAuthenticated: false,
           needsRefresh: true,

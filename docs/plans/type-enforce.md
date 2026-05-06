@@ -771,7 +771,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ## Phase 6e — `catch (error: any)` → `catch (error: unknown)`
 
-**Status**: 🔲 Not Started
+**Status**: ✅ COMPLETE (May 7, 2026)
 **Files**: 14 files across `src/components/`, `src/hooks/`, `src/lib/`, `app/api/`
 **Count**: 17 occurrences
 
@@ -779,20 +779,27 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ### Files to fix
 
-- [ ] **6e.1** — `src/components/custom/DeleteAccountDialog.tsx`
-- [ ] **6e.2** — `src/components/custom/AdaptiveLearningInterestModalEnhanced.tsx`
-- [ ] **6e.3** — `src/components/custom/AdaptiveLearningInterestModal.tsx`
-- [ ] **6e.4** — `src/components/custom/ProfileSettings.tsx`
-- [ ] **6e.5** — `src/hooks/useEmailUpdate.ts`
-- [ ] **6e.6** — `src/lib/server-auth-strategy.ts` (4 catches)
-- [ ] **6e.7** — `src/lib/signin-helpers.ts`
-- [ ] **6e.8** — `src/lib/marketing-api.ts`
-- [ ] **6e.9** — `app/api/stripe/account/route.ts`
-- [ ] **6e.10** — `app/api/marketing/update-profile/route.ts`
-- [ ] **6e.11** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/submit/route.ts` (2 catches)
-- [ ] **6e.12** — `app/api/auth/register/route.ts`
-- [ ] **6e.13** — `app/api/auth-cookie/refresh/route.ts` (2 catches)
-- [ ] **6e.14** — `app/api/auth-cookie/verify/route.ts`
+- [x] **6e.1** — `src/components/custom/DeleteAccountDialog.tsx`
+- [x] **6e.2** — `src/components/custom/AdaptiveLearningInterestModalEnhanced.tsx`
+- [x] **6e.3** — `src/components/custom/AdaptiveLearningInterestModal.tsx`
+- [x] **6e.4** — `src/components/custom/ProfileSettings.tsx`
+- [x] **6e.5** — `src/hooks/useEmailUpdate.ts`
+- [x] **6e.6** — `src/lib/server-auth-strategy.ts` (4 catches)
+- [x] **6e.7** — `src/lib/signin-helpers.ts`
+- [x] **6e.8** — `src/lib/marketing-api.ts`
+- [x] **6e.9** — `app/api/stripe/account/route.ts`
+- [x] **6e.10** — `app/api/marketing/update-profile/route.ts`
+- [x] **6e.11** — `app/api/users/[api_user_id]/certifications/[cert_id]/exams/[exam_id]/submit/route.ts` (2 catches)
+- [x] **6e.12** — `app/api/auth/register/route.ts`
+- [x] **6e.13** — `app/api/auth-cookie/refresh/route.ts` (2 catches)
+- [x] **6e.14** — `app/api/auth-cookie/verify/route.ts`
+
+**Completed implementation notes**:
+
+- Replaced all 17 `catch (...: any)` occurrences in Phase 6e scope with `unknown`.
+- Added safe error extraction (`instanceof Error`, guarded `code`/`status` access) where message/code/status fields are used.
+- Preserved existing user-facing error copy and API response shapes.
+- Validation: `npx tsc --noEmit 2>&1 | grep "^(app|src)/"` produced no output (no app/src TypeScript errors from these changes).
 
 **Commit**: `fix(errors): replace catch (error: any) with catch (error: unknown) across components and API routes`
 
@@ -826,7 +833,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 | 6b    | Next.js route `params: any`           | 8     | ✅     | 🟢 LOW     |
 | 6c    | Component prop `any`                  | 3     | ✅     | 🟢 LOW     |
 | 6d    | Auth `customClaims` + `firebaseUser`  | 6     | ✅     | 🟢 LOW     |
-| 6e    | `catch (error: any)` → `unknown`      | 17    | 🔲     | 🟢 LOW     |
+| 6e    | `catch (error: any)` → `unknown`      | 17    | ✅     | 🟢 LOW     |
 | 6f    | Callback params + loose types         | ~18   | 🔲     | 🟡 MEDIUM  |
 
 **Decisions**:
@@ -841,7 +848,7 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 
 ---
 
-**Last Updated**: 7 May 2026 (Session 6: Completed Phase 6c + 6d)
+**Last Updated**: 7 May 2026 (Session 7: Completed Phase 6e)
 **Latest Commits**:
 
 - examReport.ts: Add explicit generic types to useSWR
@@ -851,8 +858,9 @@ npx tsc --noEmit 2>&1 | grep -v "^__tests__" | grep "error TS"
 - certifai-api/type-enforcement.md: Create comprehensive API guide
 - EnhancedWelcomeSection.tsx/CreateExamModal.tsx/ExamStatsContext.tsx: Phase 6c component/context `any` removal
 - app/api/auth/{login,register,set-claims}/route.ts + src/lib/auth-state-types.ts: Phase 6d auth typing
-  **Status**: ✅ PROJECT COMPLETE - All SWR hooks fully typed
-  **Next**: Continue with Phase 6e (`catch (error: any)` → `unknown`) and Phase 6f loose callback/utility typing
+- Phase 6e: `catch (...: any)` elimination across 14 files (17 occurrences) with `unknown` + guarded error access
+  **Status**: ✅ Phase 6e complete; continue with Phase 6f callback/utility loose typing
+  **Next**: Execute Phase 6f (`auth-error-handler`, `auth-utils`, `rateLimitUtils`, `server-actions/certifications`, `useOptimizedForm`, `api-utils`, `useAnalytics`)
 
 ---
 
