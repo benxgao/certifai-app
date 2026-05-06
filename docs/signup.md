@@ -1,8 +1,8 @@
-# Comprehensive Signup & Authentication Workflow Documentation
+# Signup & Authentication Workflow
 
 ## Overview
 
-This document consolidates all fixes and improvements made to the signup workflow, addressing critical issues including stuck "Creating Account..." buttons, race conditions, timeout handling, and overall user experience improvements. It also reflects the latest authentication flow integration with the signin system.
+The signup flow creates a Firebase account, registers the user in the backend API, sends an email verification, and then routes the user to the signin page after verification. It integrates directly with the same auth context and cookie system as signin.
 
 ## Signup Flow Architecture
 
@@ -12,901 +12,288 @@ This document consolidates all fixes and improvements made to the signup workflo
 graph TD
     A[User Submits Signup Form] --> B{Form Validation}
     B -->|Invalid| C[Show Form Errors]
-    B -->|Valid| D[Set Loading State]
+    B -->|Valid| D[Set Loading State + 60s Safety Timeout]
     D --> E[Create Firebase Account]
-    E -->|Success| F[Update User Profile]
-    E -->|Error| G[Handle Firebase Error]
-    F --> H[Backend API Registration]
-    H -->|Success| I[Send Email Verification]
-    H -->|Timeout/Error| J[Continue with Email Verification]
+    E -->|Error| G[Parse Firebase Error → Show Message]
+    E -->|Success| F[Update Profile: displayName]
+    F --> H[Step 1: Backend API Registration — 15s timeout]
+    H -->|Success + UAT env| UAT[5s delay for claims propagation → Redirect to /signin]
+    H -->|Success + non-UAT| I[Step 2: Send Email Verification — 20s timeout]
+    H -->|Timeout/Error| I
     I -->|Success| K[Show Verification Step]
-    I -->|Error| L[Show Verification Step with Error]
-    J --> K
+    I -->|Error| L[Show Verification Step + error toast]
     K --> M[User Clicks Email Link]
-    M --> N[EmailActionHandler Processing]
-    N --> O[Redirect to Signin]
-    O --> P[Signin with Success Message]
-    P --> Q[FirebaseAuthContext Authentication]
-    Q --> R[JWT Token & Cookie Setup]
-    R --> S[Access Protected Routes]
+    M --> N[EmailActionHandler]
+    N --> O[Redirect to /signin with success message]
+    O --> P[User Signs In]
+    P --> Q[FirebaseAuthContext: transitionToSignedIn]
+    Q --> R[JOSE JWT Cookie Set + API Login]
+    R --> S[Access /main]
 
     G --> T[Reset Loading State]
-    L --> T
-    T --> U[Show Error Message]
 
     style A fill:#e1f5fe
     style K fill:#c8e6c9
     style S fill:#4caf50
-    style U fill:#ffcdd2
+    style G fill:#ffcdd2
+    style UAT fill:#fff3e0
 ```
 
-### Component Architecture
-
-```mermaid
-graph LR
-    A[SignUpPage] --> B[CertificationSelector]
-    A --> C[Form Validation]
-    A --> D[Loading Management]
-    A --> E[Error Handling]
-
-    F[FirebaseAuthContext] --> G[JWT Token Management]
-    F --> H[Cookie Setting]
-    F --> I[Auth State Management]
-
-    J[EmailActionHandler] --> K[Email Verification]
-    J --> L[Redirect Logic]
-
-    M[signin-helpers.ts] --> N[Error Parsing]
-    M --> O[Auth State Clearing]
-
-    P[signup-debug.ts] --> Q[Debug Logging]
-    P --> R[Environment Validation]
-
-    style A fill:#bbdefb
-    style F fill:#c8e6c9
-    style J fill:#fff3e0
-    style M fill:#f3e5f5
-    style P fill:#e0f2f1
-```
-
-### Detailed Implementation Flow
+### Detailed Sequence
 
 ```mermaid
 sequenceDiagram
     participant U as User
     participant SF as SignupForm
     participant FB as Firebase Auth
-    participant API as Backend API
-    participant EV as Email Verification
-    participant EH as EmailHandler
+    participant API as /api/auth/register
+    participant BAPI as Backend API (functions)
+    participant EH as EmailActionHandler
     participant SI as Signin Page
-    participant FC as FirebaseContext
+    participant FC as FirebaseAuthContext
 
     U->>SF: Submit form
-    SF->>SF: Validate form data
-    SF->>SF: Set loading state
-
-    Note over SF: Safety timeout (60s) starts
+    SF->>SF: Validate (email, password, name, cert)
+    SF->>SF: flushSync setLoading(true)
+    SF->>SF: Start 60s safety timeout
 
     SF->>FB: createUserWithEmailAndPassword()
-    FB-->>SF: User created
-    SF->>FB: updateProfile() with displayName
+    FB-->>SF: userCredential
+    SF->>FB: updateProfile({ displayName })
 
-    SF->>API: Register user (15s timeout)
-    alt API Success
-        API-->>SF: Return api_user_id
-    else API Timeout/Error
-        API-->>SF: Continue with verification
+    SF->>API: POST /api/auth/register [Bearer token, 15s AbortController]
+    API->>BAPI: Forward registration [12s AbortController]
+    alt BAPI responds
+        BAPI-->>API: { api_user_id }
+        API-->>SF: { api_user_id }
+        Note over SF: UAT: 5s delay + redirect to /signin
+    else Timeout / Error
+        API-->>SF: Error (registration continues without blocking verification)
     end
 
-    SF->>EV: sendEmailVerificationWithRetry()
-    Note over EV: Progressive retry: 2s, 4s, 6s
-    EV->>EV: Wait 500ms for propagation
-    EV->>FB: sendEmailVerification()
-    FB-->>EV: Email sent
-    EV-->>SF: Success
+    alt Not UAT
+        SF->>FB: sendEmailVerificationWithRetry() [500ms propagation wait + exp backoff, capped 5s]
+        Note over SF: Wrapped in Promise.race with 20s timeout
+        FB-->>SF: Email sent
+        SF->>SF: setLoading(false) → Show VerificationStep
+    end
 
-    SF->>SF: Reset loading state
-    SF->>SF: Show verification step
-
-    U->>U: Check email
-    U->>EH: Click verification link
-    EH->>FB: Process email action
+    U->>U: Check email, click link
+    U->>EH: ?mode=verifyEmail&oobCode=...
+    EH->>FB: applyActionCode(oobCode)
+    alt Fails with auth/user-not-found
+        EH->>EH: Retry with progressive delay (2s, 4s, 6s)
+    end
     FB-->>EH: Email verified
-    EH->>SI: Redirect to signin
+    EH->>SI: router.push('/signin?verification=success')
 
-    SI->>SI: Show success message
+    SI->>SI: Show "Email verified successfully!"
     U->>SI: Enter credentials
-    SI->>FC: performSignin()
-    FC->>FB: signInWithEmailAndPassword()
-    FB-->>FC: Authenticated user
-    FC->>FC: Create JWT token
-    FC->>FC: Set secure cookie
-    FC-->>SI: Authentication complete
-    SI->>SI: Redirect to /main
+    SI->>FC: signInWithEmailAndPassword → onAuthStateChanged
+    FC->>FC: transitionToSignedIn (withAuthOperationLock)
+    FC->>FC: getIdToken(true) + setAuthCookie + performApiLogin [parallel]
+    FC-->>SI: apiUserId resolved → redirect /main
 ```
 
-## Primary Issues Addressed
+## Timeout Architecture
 
-### Critical Button Stuck Issue
+Three independent timeouts protect each stage:
 
-The signup page was getting stuck with "Creating account..." button disabled and not redirecting to the email verification page or sign-in page after successful account creation.
+| Stage                                    | Timeout | Mechanism                          | On Expiry                                   |
+| ---------------------------------------- | ------- | ---------------------------------- | ------------------------------------------- |
+| Entire signup process                    | 60s     | `setTimeout` safety net            | Force `setLoading(false)`, show error       |
+| Frontend → `/api/auth/register`          | 15s     | `AbortController`                  | Log warning, continue to email verification |
+| `/api/auth/register` → backend functions | 12s     | `AbortController`                  | Return error to frontend                    |
+| Email verification send                  | 20s     | `Promise.race`                     | Show verification step with error           |
+| Claims propagation (UAT)                 | 5s      | `await new Promise(resolve, 5000)` | Proceed to redirect                         |
 
-**Root Causes**:
+## UAT vs Production Differences
 
-1. **Loading state not reset early enough**: The loading state was only reset in the `finally` block, which meant that even successful operations kept the button disabled until all async operations completed.
-2. **Potential hanging operations**: Email verification and backend registration could potentially hang without proper timeouts.
-3. **Race conditions**: Multiple async operations running without proper state management.
+| Behaviour            | UAT                                                             | Production                                      |
+| -------------------- | --------------------------------------------------------------- | ----------------------------------------------- |
+| Email verification   | **Skipped** — backend auto-verifies via `autoVerify: true` flag | Required                                        |
+| Post-registration    | 5s delay for claims propagation, then redirect to `/signin`     | Show verification step and wait for email click |
+| `secure` cookie flag | `true` (HTTPS host)                                             | `true`                                          |
+| Cookie domain        | undefined (no restriction)                                      | `.certestic.com`                                |
 
-### Timeout Management Architecture
+---
+
+## UAT Tester Workflow
+
+In UAT, email verification is completely skipped. After a successful signup you are redirected straight to `/signin` and can sign in immediately with the credentials you just created.
+
+### UAT Flow Diagram
 
 ```mermaid
 graph TD
-    A[Signup Process Start] --> B[Safety Timeout: 60s]
-    A --> C[API Registration: 15s]
-    A --> D[Email Verification: 20s]
+    A[Open /signup] --> B[Fill in: First Name, Last Name, Email, Password, Certification]
+    B --> C[Click Sign Up]
+    C --> D[Firebase account created]
+    D --> E[Profile updated with displayName]
+    E --> F[POST /api/auth/register  autoVerify: true]
+    F -->|Success| G[Backend marks email as verified in Firebase]
+    G --> H[5s wait — claims propagation to Firebase custom claims]
+    H --> I[Redirect to /signin]
+    I --> J[Sign in with the same email + password]
+    J --> K[Access /main — fully authenticated]
 
-    B --> E{Process Complete?}
-    C --> F{Registration Success?}
-    D --> G{Verification Success?}
-
-    E -->|No| H[Force Reset Loading State]
-    E -->|Yes| I[Clear Timeout]
-
-    F -->|Success| J[Continue to Verification]
-    F -->|Timeout/Error| K[Log Error & Continue]
-
-    G -->|Success| L[Show Verification Step]
-    G -->|Error| M[Show Error & Verification Step]
-
-    H --> N[Show Timeout Error]
-    I --> O[Process Complete]
-    J --> D
-    K --> D
-    L --> O
-    M --> O
-    N --> O
+    F -->|Timeout / Error| ERR[Error toast shown, stay on signup page]
 
     style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#fff3e0
-    style D fill:#fff3e0
-    style H fill:#ffebee
-    style N fill:#ffebee
-    style O fill:#e8f5e8
+    style I fill:#fff3e0
+    style K fill:#c8e6c9
+    style ERR fill:#ffcdd2
 ```
 
-### Error Handling Flow
+### Step-by-Step for Testers
 
-```mermaid
-graph LR
-    A[Error Occurs] --> B{Error Type}
+1. **Navigate to `/signup`**
 
-    B -->|Firebase Auth| C[Parse Firebase Error]
-    B -->|API Timeout| D[Handle API Error]
-    B -->|Email Verification| E[Handle Email Error]
-    B -->|Network Error| F[Handle Network Error]
+2. **Fill in the form**
+   - First Name, Last Name
+   - Email (use a unique address per test run, or reuse one if the account was deleted)
+   - Password (min 6 chars)
+   - Select a certification from the dropdown
 
-    C --> G[Reset Loading State]
-    D --> H[Continue with Verification]
-    E --> I[Show Verification with Error]
-    F --> J[Show Network Error]
+3. **Click "Sign Up"**
+   - The button shows a spinner immediately
+   - Firebase account is created and the profile is updated
+   - The backend registers the user and **automatically marks the email as verified** (`autoVerify: true`)
+   - A 5-second wait allows Firebase custom claims (`api_user_id`) to propagate
+   - You are redirected to `/signin` — **no email check needed**
 
-    G --> K[Show User-Friendly Message]
-    H --> L[Log Warning & Proceed]
-    I --> M[Allow Manual Resend]
-    J --> N[Suggest Retry]
+4. **Sign in at `/signin`** with the same email and password
 
-    K --> O[Toast Notification]
-    L --> P[Continue Flow]
-    M --> Q[Verification Step]
-    N --> R[Error Display]
+5. **You land on `/main`** — fully authenticated with `api_user_id` set
 
-    style A fill:#ffebee
-    style B fill:#fff3e0
-    style O fill:#e8f5e8
-    style P fill:#e8f5e8
-    style Q fill:#e8f5e8
+### What `autoVerify` Does
+
+When `autoVerify: true` is passed to the backend registration endpoint, the Firebase Admin SDK calls `auth.updateUser(uid, { emailVerified: true })` immediately after creating the database record. This removes the email-verification gate so testers can complete the full signup→signin loop without a real email inbox.
+
+> **Important**: `autoVerify` is only set to `true` when `isUATEnv()` returns `true`. It is `false` in production — the email verification step is always enforced for real users.
+
+### Troubleshooting
+
+| Symptom | Likely Cause | Fix |
+|---|---|---|
+| Stays on spinner for > 20s | Backend registration timed out (12s) | Check backend functions are running; retry |
+| Redirected to `/signin` but signin fails | Custom claims not yet propagated | Wait 10s after redirect, then try signin again |
+| "Email already in use" | Account exists from a previous test run | Use a different email or delete the account via Firebase Console |
+| Stuck button after 60s | Safety timeout fired — backend unreachable | Check network / backend logs |
+
+## Key Fixes Implemented
+
+### 1. Loading State Management
+
+`setLoading(false)` is called explicitly in success, error, and finally paths. `flushSync` forces the spinner to appear immediately on submit. The `isMountedRef` guard prevents state updates after component unmount.
+
+### 2. Email Verification Race Condition
+
+- 500ms propagation delay before first send attempt
+- Exponential backoff retry: delay = `min(2^attempt × 1000ms, 5000ms)` (up to 3 retries)
+- `EmailActionHandler` retries `applyActionCode` with progressive delays if `auth/user-not-found`
+
+### 3. Sequential Execution
+
+API registration runs first (Step 1), email verification second (Step 2). If registration fails or times out, email verification still proceeds — the user is never blocked from verifying their account.
+
+### 4. Graceful Degradation
+
+If API registration fails, a toast informs the user that some features may be temporarily limited, but the signup flow completes and email verification is sent.
+
+### 5. Safety Timeout
+
+A 60s `setTimeout` acts as a last-resort guard — even if all inner operations hang, the button is re-enabled and an error is shown. Cleared in `finally`.
+
+### 6. CSRF Protection on Cookie Endpoints
+
+`/api/auth-cookie/set` and `/api/auth-cookie/clear` validate the `Origin` header against an allowlist (`certestic.com`, UAT host, localhost). Requests without an `Origin` (server-to-server) are allowed through.
+
+## File Structure
+
+```
+app/signup/
+└── page.tsx                     ← Main signup form, all state and flow logic
+
+app/api/auth/
+├── register/route.ts            ← Next.js → backend proxy; rate-limited (3/hr); 12s AbortController timeout
+
+functions/src/endpoints/api/auth/
+└── register.ts                  ← Backend: create user in DB, set custom claims, return api_user_id
+
+src/components/auth/
+└── EmailActionHandler.tsx       ← Processes Firebase email action links (verifyEmail); retry logic
+
+src/utils/
+└── signup-debug.ts              ← SignupDebugger class, validateSignupForm, getFirebaseErrorMessage
+
+src/hooks/
+└── useSigninHooks.ts            ← Shared auth hooks used by both signup and signin
+
+src/lib/
+└── signin-helpers.ts            ← Shared error parsing, URL param handling, legacy state clearing
+
+src/context/
+└── FirebaseAuthContext.tsx      ← Auth state; handles post-verification signin via transitionToSignedIn
 ```
 
-## Comprehensive Fixes Implemented
+## Error Handling
 
-### 1. **Early Loading State Reset (CRITICAL FIX)**
+### Firebase Account Creation Errors
 
-**File**: `app/signup/page.tsx`
+| Firebase Error Code         | User Message                                            |
+| --------------------------- | ------------------------------------------------------- |
+| `auth/email-already-in-use` | Email in use; offers "Go to Sign In" CTA with 10s toast |
+| `auth/weak-password`        | Password too weak; suggests 6+ chars with mix           |
+| `auth/invalid-email`        | Invalid email format                                    |
+| Network / unknown           | Generic "Signup failed" with error detail               |
 
-- **Problem**: Loading state was only reset in the `finally` block, causing the button to remain disabled even after successful operations.
-- **Solution**: Added explicit `setLoading(false)` calls in both success and error cases before showing the verification step.
+### Registration / Verification Partial Failures
 
-```typescript
-// Success case
-setLoading(false);
-setShowVerificationStep(true);
-setSuccess('Account created successfully! Please check your email to verify your account.');
+| Scenario                         | Behaviour                                                                                |
+| -------------------------------- | ---------------------------------------------------------------------------------------- |
+| API registration timeout         | Log warning, continue to email verification; show info toast after verification succeeds |
+| Email verification timeout (20s) | Show verification step with error message, user can manually resend                      |
+| Both fail                        | Show error, allow retry from verification step                                           |
 
-// Error case
-setLoading(false);
-setShowVerificationStep(true);
-setError(`Account created but verification email failed: ${verificationError.message}`);
-```
+## Security
 
-### 2. **Email Verification Race Condition (FIXED)**
+✅ **Input Validation**: Email regex, password length min/max (6–128 chars), required fields
+✅ **Firebase Token Verification**: `/api/auth/register` verifies the Bearer token via Firebase Admin before processing
+✅ **Rate Limiting**: `/api/auth/register` — 3 requests / hour per IP
+✅ **CSRF Protection**: Cookie endpoints (`/api/auth-cookie/set`, `/api/auth-cookie/clear`) reject unknown origins
+✅ **AbortController Timeouts**: Prevents hanging fetch requests at both Next.js route and Firebase functions layers
+✅ **isMountedRef Guard**: Prevents state mutations after component unmount (memory leak prevention)
 
-**Issue**: Email verification could fail due to Firebase user account not being fully propagated across all Firebase services immediately after creation.
+## Testing Checklist
 
-**Fix**:
+### Normal Path
 
-- Added 500ms delay before sending verification email to allow account propagation
-- Enhanced retry logic with progressive delays (2s, 4s, 6s)
-- Added user account reload before retry attempts
-- Improved error messages for different verification failure scenarios
-- Added 20-second timeout to the email verification process using `Promise.race()`
+- [ ] Successful signup → verification step shown immediately (button not stuck)
+- [ ] UAT signup → 5s delay → redirect to `/signin` (no email required)
+- [ ] Email verification link → `EmailActionHandler` → `/signin?verification=success`
+- [ ] Signin after verification → `/main`
 
-```typescript
-// Add timeout to email verification to prevent hanging
-const emailVerificationPromise = sendEmailVerificationWithRetry(user);
-const timeoutPromise = new Promise((_, reject) =>
-  setTimeout(() => reject(new Error('Email verification timed out')), 20000),
-);
+### Error Paths
 
-await Promise.race([emailVerificationPromise, timeoutPromise]);
-```
+- [ ] Duplicate email → toast with "Go to Sign In" button
+- [ ] Weak password → toast with guidance
+- [ ] Backend API timeout → warning toast; verification step still shown
+- [ ] Email send failure → verification step shown with error; resend button works
+- [ ] 60s safety timeout fires → button re-enabled, error shown
 
-**Files Changed**:
+### Edge Cases
 
-- `app/signup/page.tsx` - Enhanced `sendEmailVerificationWithRetry` function with progressive delays
-- `src/components/auth/EmailActionHandler.tsx` - Improved retry logic for newly created accounts
-- Integration with latest signin flow for post-verification authentication
+- [ ] Navigate away during signup (component unmount) → no state errors in console
+- [ ] Resend verification email → success / error toast
+- [ ] Email verification link for newly created account → retry logic handles `auth/user-not-found`
+- [ ] Rapid form submits → loading state prevents double-submit
 
-### 3. **API Registration Timeout Issues (FIXED)**
+## Monitoring
 
-**Issue**: Backend API registration had insufficient timeout handling and poor error reporting.
+Consider adding analytics events for:
 
-**Fix**:
-
-- Increased timeout from 10s to 12s for external API calls
-- Added AbortController for proper timeout management
-- Enhanced error handling with specific error types (connection refused, host not found, etc.)
-- Better error logging and user feedback
-- Added timeout handling for frontend registration requests (15s)
-- Added specific timeout detection and better error messaging
-
-```typescript
-if (registrationError.message?.includes('timeout')) {
-  console.warn('Registration API timed out, continuing with email verification');
-}
-```
-
-**Files Changed**:
-
-- `app/api/auth/register/route.ts` - Enhanced timeout and error handling
-- `app/signup/page.tsx` - Added timeout management to registration requests
-
-### 4. **Safety Timeout for Entire Signup Process (NEW)**
-
-**File**: `app/signup/page.tsx`
-
-- **Problem**: The entire signup process could hang if any operation failed silently.
-- **Solution**: Added a 1-minute safety timeout that automatically resets the loading state and shows an error message.
-
-```typescript
-// Safety timeout to prevent hanging forever
-const safetyTimeout = setTimeout(() => {
-  if (isMountedRef.current) {
-    console.warn('Signup process timed out, resetting loading state');
-    setLoading(false);
-    setError('Signup process timed out. Please try again.');
-  }
-}, 60000); // 1 minute timeout
-```
-
-### 5. **Cleanup and Resource Management (NEW)**
-
-**File**: `app/signup/page.tsx`
-
-- **Problem**: Safety timeout wasn't cleared, potentially causing memory leaks.
-- **Solution**: Added proper cleanup in the `finally` block.
-
-```typescript
-} finally {
-  // Clear the safety timeout
-  clearTimeout(safetyTimeout);
-
-  // Check if component is still mounted before updating loading state
-  if (isMountedRef.current) {
-    setLoading(false);
-  }
-}
-```
-
-### 6. **Enhanced Error Handling (FIXED)**
-
-**Issue**: Generic error messages and missing validation for edge cases.
-
-**Fix**:
-
-- Created comprehensive error message utility (`getFirebaseErrorMessage`)
-- Enhanced form validation with email regex and password length limits
-- Added specific handling for Firebase error codes
-- Improved user-friendly error messages
-- Added validation for backend API responses
-
-**Files Changed**:
-
-- `src/utils/signup-debug.ts` - New utility file with error handling helpers
-- `app/signup/page.tsx` - Integrated comprehensive error handling
-- `functions/src/endpoints/api/auth/register.ts` - Added input validation
-
-### 7. **Sequential vs Parallel Execution (FIXED)**
-
-**Issue**: Parallel execution of registration and email verification could cause race conditions.
-
-**Fix**:
-
-- Changed to sequential execution: API registration first, then email verification
-- Better error isolation - email verification proceeds even if API registration fails
-- Improved user feedback for partial failures
-- Added debug logging for better troubleshooting
-
-**Files Changed**:
-
-- `app/signup/page.tsx` - Refactored signup flow to be sequential
-
-### 8. **Enhanced Validation and Edge Cases (FIXED)**
-
-**Issue**: Insufficient form validation and missing edge case handling.
-
-**Fix**:
-
-- Enhanced email format validation with regex
-- Added password length upper limit (128 characters)
-- Better handling of component unmounting during async operations
-- Added fallback messages for unknown errors
-- Validation utility for form data
-
-**Files Changed**:
-
-- `app/signup/page.tsx` - Enhanced form validation
-- `src/utils/signup-debug.ts` - Validation utilities
-
-### 9. **Debugging and Monitoring (ADDED)**
-
-**Issue**: Difficult to debug signup issues in production.
-
-**Fix**:
-
-- Created comprehensive debug utility for development
-- Added step-by-step logging throughout signup process
-- Environment validation on component mount
-- Exportable debug logs for troubleshooting
-- Color-coded console logging
-
-**Files Changed**:
-
-- `src/utils/signup-debug.ts` - New debug utility
-- `app/signup/page.tsx` - Integrated debug logging
-
-### 10. **Email Action Handler Improvements (FIXED)**
-
-**Issue**: Email verification links could fail for newly created accounts due to timing issues.
-
-**Fix**:
-
-- Enhanced retry logic with progressive delays
-- Better error messages for expired/invalid action codes
-- Improved handling of user-not-found errors
-- Added auth state clearing before retries
-
-**Files Changed**:
-
-- `src/components/auth/EmailActionHandler.tsx` - Enhanced email action handling
-
-### 11. **User ID Naming Refactoring (NEW)**
-
-**Issue**: Inconsistent and confusing naming between `user_id`, `api_user_id`, and `firebase_user_id` across endpoints.
-
-**Fix**:
-
-- Explicitly differentiated between `firebase_user_id` (Firebase UID) and `api_user_id` (our internal UUID)
-- Updated all authentication endpoints to use consistent naming
-- Added comprehensive comments explaining the difference
-- Maintained backward compatibility with deprecated fields
-- Enhanced response objects to include both IDs for clarity
-
-**Files Changed**:
-
-- `functions/src/endpoints/api/auth/register.ts` - Clarified naming and response structure
-- `functions/src/endpoints/api/auth/login.ts` - Updated naming consistency
-- `app/api/auth/register/route.ts` - Explicit ID differentiation
-- `app/api/auth/login/route.ts` - Consistent naming patterns
-
-### 12. **Signin Flow Integration (NEW)**
-
-**Issue**: Inconsistent authentication flow between signup and signin processes, leading to user confusion and redundant authentication steps.
-
-**Fix**:
-
-- Integrated with the modernized signin system using `src/lib/signin-helpers.ts`
-- Implemented centralized authentication state management through `FirebaseAuthContext`
-- Added seamless transition from email verification to signin process
-- Enhanced error handling with consistent messaging across both flows
-- Streamlined post-verification authentication using the same mechanisms as signin
-
-**Key Integration Features**:
-
-- **Unified Error Handling**: Both signup and signin now use consistent error parsing and user-friendly messages
-- **Centralized State Management**: Authentication state is managed consistently across both flows
-- **Seamless Verification Flow**: Email verification links redirect users to a unified signin process
-- **Cookie Management**: JWT token creation and cookie setting handled automatically by the auth context
-- **URL Parameter Handling**: Consistent handling of verification success/failure states in URLs
-
-**Files Changed**:
-
-- `app/signup/page.tsx` - Enhanced post-verification flow integration
-- `src/lib/signin-helpers.ts` - Reusable authentication utilities
-- `src/hooks/useSigninHooks.ts` - Shared authentication hooks
-- `src/context/FirebaseAuthContext.tsx` - Centralized auth state management
-- `src/components/auth/EmailActionHandler.tsx` - Unified email action handling
-
-**Enhanced Verification Flow**:
-
-```typescript
-// After successful signup, users are guided to verify email
-// Email verification link redirects to: /?mode=verifyEmail&...
-// EmailActionHandler processes verification and redirects to signin
-// Signin page shows success message: "Email verified successfully! You can now sign in."
-// FirebaseAuthContext automatically handles JWT token creation and cookie setting
-```
-
-### State Management Flow
-
-```mermaid
-stateDiagram-v2
-    [*] --> FormEntry
-    FormEntry --> FormValidation: Submit Form
-    FormValidation --> FormError: Validation Failed
-    FormValidation --> LoadingState: Validation Passed
-
-    LoadingState --> FirebaseAuth: Create Account
-    FirebaseAuth --> ProfileUpdate: Account Created
-    FirebaseAuth --> AuthError: Firebase Error
-
-    ProfileUpdate --> APIRegistration: Profile Updated
-    APIRegistration --> EmailVerification: API Success
-    APIRegistration --> EmailVerification: API Timeout/Error
-
-    EmailVerification --> VerificationStep: Email Sent
-    EmailVerification --> VerificationStepError: Email Failed
-
-    VerificationStep --> EmailClick: User Checks Email
-    VerificationStepError --> EmailClick: User Checks Email
-
-    EmailClick --> EmailHandler: Click Verification Link
-    EmailHandler --> SigninRedirect: Email Verified
-    EmailHandler --> VerificationError: Verification Failed
-
-    SigninRedirect --> SigninPage: Redirect with Message
-    SigninPage --> AuthContext: User Signs In
-    AuthContext --> ProtectedRoutes: JWT & Cookie Set
-
-    FormError --> FormEntry: Fix Errors
-    AuthError --> FormEntry: Retry Signup
-    VerificationError --> VerificationStep: Retry Verification
-
-    state LoadingState {
-        [*] --> ButtonDisabled
-        ButtonDisabled --> SafetyTimeout: 60s Timer
-        SafetyTimeout --> ForceReset: Timeout Reached
-        ForceReset --> ErrorDisplay
-    }
-
-    state EmailVerification {
-        [*] --> PropagationDelay
-        PropagationDelay --> SendAttempt1: 500ms Wait
-        SendAttempt1 --> SendAttempt2: Retry 2s
-        SendAttempt2 --> SendAttempt3: Retry 4s
-        SendAttempt3 --> FinalAttempt: Retry 6s
-        FinalAttempt --> EmailTimeout: 20s Timeout
-    }
-```
-
-### Implementation Architecture
-
-```mermaid
-graph TB
-    subgraph "Frontend Components"
-        A[SignUpPage.tsx]
-        B[CertificationSelector]
-        C[Form Validation]
-        D[Loading States]
-    end
-
-    subgraph "Authentication Layer"
-        E[Firebase Auth]
-        F[EmailActionHandler]
-        G[FirebaseAuthContext]
-    end
-
-    subgraph "Backend Integration"
-        H[API Registration]
-        I[User Management]
-        J[Database Storage]
-    end
-
-    subgraph "Utilities & Helpers"
-        K[signup-debug.ts]
-        L[signin-helpers.ts]
-        M[auth-utils.ts]
-    end
-
-    subgraph "State Management"
-        N[Loading States]
-        O[Error States]
-        P[Success States]
-        Q[Verification States]
-    end
-
-    A --> E
-    A --> H
-    A --> N
-    A --> K
-
-    E --> F
-    E --> G
-
-    F --> L
-    G --> M
-
-    H --> I
-    I --> J
-
-    L --> O
-    M --> P
-
-    N --> D
-    O --> D
-    P --> Q
-    Q --> D
-
-    style A fill:#e3f2fd
-    style E fill:#fff3e0
-    style H fill:#f3e5f5
-    style K fill:#e0f2f1
-    style N fill:#fce4ec
-```
-
-## User Experience Improvements
-
-### Immediate Feedback
-
-- ✅ **No More Stuck Buttons**: Loading state is properly managed and reset
-- ✅ **Better User Feedback**: Immediate transition to verification step
-- ✅ Users now see the verification step immediately after successful account creation
-- ✅ Loading state is reset as soon as the account is created, providing immediate feedback
-- ✅ Better error messages that guide users on next steps
-- ✅ Progressive retry with user feedback
-- ✅ Clear indication of signup progress and status
-
-### Better Error Handling
-
-- ✅ Specific error messages for different timeout scenarios
-- ✅ Non-blocking registration failures (email verification still proceeds)
-- ✅ Clear indication when operations time out
-- ✅ Graceful degradation when backend services fail
-
-### Timeout Protection
-
-- ✅ **Multiple Layers of Protection**:
-  - 15-second timeout for backend registration API
-  - 20-second timeout for email verification
-  - 60-second safety timeout for the entire signup process
-- ✅ **Graceful Degradation**: Continues with email verification even if backend registration fails
-- ✅ **Resource Management**: Proper cleanup prevents memory leaks
-
-### Seamless Authentication Flow
-
-- ✅ **Unified Verification Process**: Email verification links redirect to centralized signin flow
-- ✅ **Automatic Authentication**: FirebaseAuthContext handles JWT token creation and cookie setting
-- ✅ **Consistent Error Messages**: Both signup and signin use the same error parsing system
-- ✅ **URL Parameter Handling**: Clean handling of verification success/failure states
-- ✅ **Smart Redirects**: Users are automatically redirected to appropriate pages after verification
-
-### Data Flow & API Integration
-
-```mermaid
-flowchart TD
-    subgraph "Client Side"
-        A[User Form Input] --> B[Form Validation]
-        B --> C[Firebase Account Creation]
-        C --> D[Profile Update]
-        D --> E[API Registration Call]
-        E --> F[Email Verification]
-        F --> G[Verification UI]
-    end
-
-    subgraph "Firebase Services"
-        H[Firebase Auth]
-        I[Email Service]
-        J[Custom Claims]
-    end
-
-    subgraph "Backend API"
-        K[Registration Endpoint]
-        L[User Database]
-        M[Certification Assignment]
-    end
-
-    subgraph "Email Verification Flow"
-        N[Email Link Click]
-        O[EmailActionHandler]
-        P[Verification Processing]
-        Q[Signin Redirect]
-    end
-
-    C --> H
-    F --> I
-    E --> K
-    K --> L
-    K --> M
-
-    N --> O
-    O --> P
-    P --> H
-    P --> Q
-    Q --> R[Signin Page]
-
-    H --> S[JWT Token]
-    S --> T[Secure Cookie]
-    T --> U[Protected Routes]
-
-    style A fill:#e3f2fd
-    style H fill:#fff3e0
-    style K fill:#f3e5f5
-    style N fill:#e8f5e8
-```
-
-### Error Recovery Patterns
-
-```mermaid
-graph TD
-    A[Error Detected] --> B{Error Category}
-
-    B -->|Form Validation| C[Client-Side Recovery]
-    B -->|Firebase Auth| D[Auth Error Recovery]
-    B -->|API Timeout| E[Graceful Degradation]
-    B -->|Email Verification| F[Retry Mechanism]
-    B -->|Network Issues| G[Connection Recovery]
-
-    C --> C1[Show Field Errors]
-    C --> C2[Highlight Issues]
-    C --> C3[Guide User Correction]
-
-    D --> D1[Parse Firebase Code]
-    D --> D2[Show User-Friendly Message]
-    D --> D3[Clear Auth State]
-    D --> D4[Enable Retry]
-
-    E --> E1[Log API Failure]
-    E --> E2[Continue with Email]
-    E --> E3[Show Partial Success]
-    E --> E4[Background Retry]
-
-    F --> F1[Progressive Backoff]
-    F --> F2[Manual Resend Option]
-    F --> F3[Alternative Contact]
-    F --> F4[Support Guidance]
-
-    G --> G1[Connection Check]
-    G --> G2[Offline Indicator]
-    G --> G3[Retry Suggestions]
-    G --> G4[Cache Strategy]
-
-    C1 --> H[User Continues]
-    D4 --> H
-    E3 --> I[Proceed to Verification]
-    F2 --> I
-    G3 --> H
-
-    style A fill:#ffebee
-    style B fill:#fff3e0
-    style H fill:#e8f5e8
-    style I fill:#e8f5e8
-```
-
-## Reliability Improvements
-
-- ✅ Reduced race conditions between Firebase and backend API
-- ✅ Better timeout handling and request management
-- ✅ Enhanced retry logic for transient failures
-- ✅ Proper component cleanup to prevent memory leaks
-
-## Developer Experience
-
-- ✅ Comprehensive debug utilities for troubleshooting
-- ✅ Better error logging and monitoring
-- ✅ Environment validation on startup
-- ✅ Type-safe error handling
-
-## Security Enhancements
-
-- ✅ Enhanced input validation
-- ✅ Proper timeout management to prevent hanging requests
-- ✅ Better error message sanitization
-- ✅ Validation on both frontend and backend
-
-## Testing Recommendations
-
-### Critical Path Testing
-
-1. **Normal Flow**: Test successful signup with all operations completing normally
-2. **Button State**: Verify button is never stuck in loading state
-3. **Immediate Feedback**: Confirm users see verification step immediately
-
-### Edge Case Testing
-
-4. **Slow Backend**: Test with slow backend API responses to verify timeout handling
-5. **Email Service Issues**: Test when Firebase email verification is slow or fails
-6. **Network Issues**: Test with poor network conditions
-7. **Component Unmounting**: Test navigating away during signup process
-8. **Test email verification with newly created accounts**
-9. **Test form validation edge cases**
-
-### Reliability Testing
-
-10. **Test with poor network conditions (timeouts)**
-11. **Test when backend API is unavailable**
-12. **Test timeout scenarios and recovery**
-
-## Monitoring and Analytics
-
-The debug utility will help identify issues in development. For production monitoring, consider:
-
-1. **Adding analytics events for signup step completion**
-2. **Monitoring timeout rates and retry attempts**
-3. **Tracking email verification success rates**
-4. **Alerting on backend API registration failures**
-5. **Monitoring button stuck incidents (should be zero)**
-6. **User abandonment rates during signup process**
-
-## Key Benefits Summary
-
-- ✅ **Critical Fix**: No more stuck "Creating Account..." buttons
-- ✅ **Reliability**: Multiple layers of timeout protection prevent hanging
-- ✅ **User Experience**: Immediate feedback and better error handling
-- ✅ **Developer Experience**: Comprehensive debugging and monitoring tools
-- ✅ **Security**: Enhanced validation and error handling
-- ✅ **Performance**: Optimized sequential execution and proper resource management
-
-## Backward Compatibility
-
-All changes are backward compatible and maintain the existing user flow while significantly improving reliability and user experience. The fixes address the most critical user-facing issue (stuck button) while also improving the overall robustness of the signup system.
-
-## Next Steps
-
-1. **Deploy and monitor** the fixes in production
-2. **Track metrics** on signup completion rates and error rates
-3. **Gather user feedback** on the improved signup experience
-4. **Consider adding** additional analytics for better visibility into signup funnel performance
-5. **Monitor integration** between signup and signin flows for seamless user experience
-6. **Evaluate performance** of centralized authentication state management
-
-## Integration with Signin System
-
-The signup workflow now seamlessly integrates with the modernized signin system:
-
-### Shared Components
-
-- **Authentication Helpers**: Both flows use `src/lib/signin-helpers.ts` for consistent error handling
-- **Context Management**: `FirebaseAuthContext` provides centralized authentication state
-- **URL Parameter Processing**: Unified handling of verification success/failure states
-- **Error Parsing**: Consistent Firebase error parsing across both flows
-
-### Verification Flow
-
-1. **Signup Completion**: User completes signup and receives verification email
-2. **Email Verification**: User clicks verification link, redirected to `/?mode=verifyEmail&...`
-3. **Verification Processing**: `EmailActionHandler` processes verification using Firebase
-4. **Signin Redirect**: After verification, user is redirected to signin page with success message
-5. **Automatic Authentication**: FirebaseAuthContext handles JWT token creation and cookie setting
-6. **Protected Route Access**: User gains access to protected routes seamlessly
-
-### Benefits of Integration
-
-- **Consistent User Experience**: Unified authentication flow across signup and signin
-- **Reduced Code Duplication**: Shared utilities and error handling
-- **Better Error Handling**: Consistent error messages and user feedback
-- **Simplified Maintenance**: Single source of truth for authentication logic
-- **Enhanced Security**: Centralized token management and validation
-
-### Debug & Monitoring Flow
-
-```mermaid
-graph TB
-    subgraph "Development Debugging"
-        A[signup-debug.ts] --> B[Step Logging]
-        A --> C[Environment Check]
-        A --> D[Error Tracking]
-        B --> E[Console Output]
-        C --> F[Config Validation]
-        D --> G[Error Analysis]
-    end
-
-    subgraph "Production Monitoring"
-        H[Analytics Events] --> I[Signup Funnel]
-        H --> J[Error Rates]
-        H --> K[Timeout Tracking]
-        I --> L[Conversion Metrics]
-        J --> M[Alert Triggers]
-        K --> N[Performance Insights]
-    end
-
-    subgraph "Real-time Feedback"
-        O[Toast Notifications] --> P[Success Messages]
-        O --> Q[Error Guidance]
-        O --> R[Progress Updates]
-        P --> S[User Confidence]
-        Q --> T[Problem Resolution]
-        R --> U[Status Clarity]
-    end
-
-    subgraph "Error Recovery"
-        V[Error Detection] --> W[Automatic Retry]
-        V --> X[Manual Intervention]
-        V --> Y[Support Escalation]
-        W --> Z[Background Processing]
-        X --> AA[User Action Required]
-        Y --> BB[Human Assistance]
-    end
-
-    E --> H
-    G --> M
-    S --> L
-    T --> M
-    Z --> I
-    AA --> J
-    BB --> CC[Resolution Tracking]
-
-    style A fill:#e0f2f1
-    style H fill:#fff3e0
-    style O fill:#e3f2fd
-    style V fill:#ffebee
-```
-
-### Performance Optimization Flow
-
-```mermaid
-graph LR
-    A[Form Submission] --> B[Client Validation]
-    B --> C[Early Error Detection]
-    C --> D{Valid?}
-
-    D -->|No| E[Immediate Feedback]
-    D -->|Yes| F[Async Operations]
-
-    F --> G[Parallel Processing]
-    G --> H[Firebase Auth]
-    G --> I[Form State Update]
-
-    H --> J[Sequential Operations]
-    J --> K[API Registration]
-    K --> L[Email Verification]
-
-    L --> M[Loading State Reset]
-    M --> N[UI State Update]
-    N --> O[User Feedback]
-
-    E --> P[Form Correction]
-    O --> Q[Next Step Guidance]
-
-    P --> A
-    Q --> R[Email Verification UI]
-    R --> S[Verification Complete]
-    S --> T[Signin Integration]
-
-    style A fill:#e3f2fd
-    style F fill:#fff3e0
-    style M fill:#e8f5e8
-    style S fill:#c8e6c9
-```
-
-This comprehensive fix ensures that users will never experience the stuck "Creating Account..." button issue while also making the entire signup process more reliable and user-friendly. The integration with the signin system provides a seamless authentication experience from initial registration through full account access.
+1. Signup funnel step completion (firebase-signup, api-registration, email-verification)
+2. Timeout rates (registration timeout, email verification timeout, safety timeout)
+3. Email verification success rates
+4. UAT vs production flow divergence
