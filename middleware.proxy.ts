@@ -11,6 +11,9 @@ import { COOKIE_AUTH_NAME } from './src/config/constants';
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // Log environment at middleware entry
+  console.log(`[ENV] NODE_ENV=${process.env.NODE_ENV}`);
+
   // Skip middleware for static assets
   const staticExtensions = [
     '.svg',
@@ -41,19 +44,25 @@ export async function middleware(request: NextRequest) {
 
   try {
     const joseToken = request.cookies.get(COOKIE_AUTH_NAME)?.value;
+    console.log(
+      `[COOKIE-MIDDLEWARE] Checking token for path: ${pathname}, HasToken: ${!!joseToken}`,
+    );
 
     // Handle signin page - redirect authenticated users to main
     if (pathname === '/signin') {
       if (!joseToken) {
         // No token, allow access to signin page
+        console.log('[COOKIE-MIDDLEWARE] /signin: No token, allowing access');
         return NextResponse.next();
       }
 
       // Validate token and redirect to main if valid
       if (await isValidToken(joseToken)) {
+        console.log('[COOKIE-MIDDLEWARE] /signin: Valid token found, redirecting to /main');
         return NextResponse.redirect(new URL('/main', request.url));
       } else {
         // Invalid token, clear it and allow signin page access
+        console.log('[COOKIE-MIDDLEWARE] /signin: Invalid token, clearing and allowing access');
         const response = NextResponse.next();
         response.cookies.delete(COOKIE_AUTH_NAME);
         response.cookies.set(COOKIE_AUTH_NAME, '', { maxAge: 0, path: '/' });
@@ -65,14 +74,17 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/main')) {
       // No token found - redirect to signin
       if (!joseToken) {
+        console.log('[COOKIE-MIDDLEWARE] /main: No token found, redirecting to /signin');
         return redirectToSignin(request);
       }
 
       // Validate token for protected routes
       const tokenValidation = await isValidToken(joseToken);
       if (tokenValidation) {
+        console.log('[COOKIE-MIDDLEWARE] /main: Token valid, allowing access');
         return NextResponse.next();
       } else {
+        console.log('[COOKIE-MIDDLEWARE] /main: Token invalid');
         // Check if this might be during an auth transition
         // by checking for recent authentication activity indicators
         const referer = request.headers.get('referer');
@@ -87,9 +99,11 @@ export async function middleware(request: NextRequest) {
 
         if (hasAuthTransition) {
           // User auth state verified successfully - proceeding to protected route
+          console.log('[COOKIE-MIDDLEWARE] /main: Auth transition detected, proceeding');
           const response = NextResponse.next();
           return response;
         } else {
+          console.log('[COOKIE-MIDDLEWARE] /main: Session expired, redirecting to /signin');
           return redirectToSignin(request, 'session_expired');
         }
       }

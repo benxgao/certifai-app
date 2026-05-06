@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { COOKIE_AUTH_NAME } from '../../../../src/config/constants';
+import { getClearCookieOptions, logCookieOptions } from '../../../../src/lib/cookie-options';
 
 export async function POST() {
   const response = NextResponse.json({ success: true });
@@ -10,25 +11,20 @@ export async function POST() {
   // Add additional cookie clearing options to handle browser caching
   // Set all possible cookie variations to empty with immediate expiration
   const cookiesToClear = [COOKIE_AUTH_NAME];
+  const clearCookieOptions = getClearCookieOptions();
 
   cookiesToClear.forEach((cookieName) => {
-    response.cookies.set(cookieName, '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-      maxAge: 0, // Expire immediately
-    });
+    response.cookies.set(cookieName, '', clearCookieOptions);
+    logCookieOptions('CLEAR', clearCookieOptions);
 
-    // Also set for root domain to handle subdomain cases
-    response.cookies.set(cookieName, '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-      domain: process.env.NODE_ENV === 'production' ? '.certestic.com' : undefined,
-      maxAge: 0, // Expire immediately
-    });
+    // Also set for root domain to handle subdomain cases in production
+    if (process.env.NODE_ENV === 'production') {
+      response.cookies.set(cookieName, '', {
+        ...clearCookieOptions,
+        domain: '.certestic.com',
+      });
+      console.log('[COOKIE-CLEAR] Also clearing with domain: .certestic.com');
+    }
   });
 
   // Add cache control headers to prevent caching of this response
@@ -36,7 +32,7 @@ export async function POST() {
   response.headers.set('Pragma', 'no-cache');
   response.headers.set('Expires', '0');
 
-  console.log('Auth cookies cleared with enhanced compatibility');
+  console.log('[COOKIE-CLEAR] Auth cookies cleared with enhanced compatibility');
 
   return response;
 }

@@ -31,6 +31,7 @@ const LOGIN_CACHE_DURATION = 30000; // 30 seconds cache for login results
  */
 export const setAuthCookie = async (token: string): Promise<AuthCookieResult> => {
   try {
+    console.log('[AUTH-SETUP] Setting auth cookie with token');
     const response = await optimizedFetch(
       '/api/auth-cookie/set',
       {
@@ -42,12 +43,16 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
     );
 
     if (response && response.ok) {
+      console.log('[AUTH-SETUP] Auth cookie set successfully');
       return { success: true };
     } else {
+      console.error('[AUTH-SETUP] Cookie request failed with status:', response?.status);
       return { success: false, error: 'Cookie request failed' };
     }
   } catch (error) {
-    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[AUTH-SETUP] Auth cookie error:', errorMsg);
+    return { success: false, error: errorMsg };
   }
 };
 
@@ -56,11 +61,13 @@ export const setAuthCookie = async (token: string): Promise<AuthCookieResult> =>
  */
 export const clearAuthCookie = async (): Promise<void> => {
   try {
+    console.log('[AUTH-SETUP] Clearing auth cookie');
     await fetch('/api/auth-cookie/clear', {
       method: 'POST',
     });
+    console.log('[AUTH-SETUP] Auth cookie cleared successfully');
   } catch (error) {
-    console.error('Failed to clear auth cookie:', error);
+    console.error('[AUTH-SETUP] Failed to clear auth cookie:', error);
   }
 };
 

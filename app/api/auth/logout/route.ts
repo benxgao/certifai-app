@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { COOKIE_AUTH_NAME } from '@/src/config/constants';
 import { emergencyResetTokenCache } from '@/src/lib/service-only';
+import { getLogoutClearCookieOptions } from '@/src/lib/cookie-options';
 
 /**
  * Comprehensive logout endpoint that clears all authentication state
@@ -16,6 +17,7 @@ export async function POST() {
   const failedPhases: string[] = [];
 
   try {
+    console.log(`[ENV] NODE_ENV=${process.env.NODE_ENV}`);
     console.log('[API:Logout] Comprehensive logout requested');
 
     // Phase 1: Clear auth cookie
@@ -43,9 +45,10 @@ export async function POST() {
       const response = NextResponse.json(
         {
           success: failedPhases.length === 0,
-          message: failedPhases.length === 0
-            ? 'Logout completed successfully'
-            : `Logout completed with warnings (${failedPhases.join(', ')} had issues)`,
+          message:
+            failedPhases.length === 0
+              ? 'Logout completed successfully'
+              : `Logout completed with warnings (${failedPhases.join(', ')} had issues)`,
           ...(failedPhases.length > 0 && { phasesFailed: failedPhases.join(', ') }),
         },
         { status: 200 },
@@ -53,34 +56,27 @@ export async function POST() {
 
       // Clear all possible authentication cookies
       const cookiesToClear = [COOKIE_AUTH_NAME, 'authToken', 'firebaseToken', 'apiUserId'];
+      const logoutClearOptions = getLogoutClearCookieOptions();
 
       cookiesToClear.forEach((cookieName) => {
         try {
           // Delete the cookie
           response.cookies.delete(cookieName);
 
-          // Explicitly set cookies to expire immediately with multiple domain variations
-          response.cookies.set(cookieName, '', {
-            maxAge: 0,
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-          });
+          // Explicitly set cookies to expire immediately
+          response.cookies.set(cookieName, '', logoutClearOptions);
+          console.log(`[COOKIE-LOGOUT] Clearing ${cookieName}`, logoutClearOptions);
 
           // Also set for domain variations in production
           if (process.env.NODE_ENV === 'production') {
             response.cookies.set(cookieName, '', {
-              maxAge: 0,
-              path: '/',
+              ...logoutClearOptions,
               domain: '.certestic.com',
-              httpOnly: true,
-              secure: true,
-              sameSite: 'lax',
             });
+            console.log(`[COOKIE-LOGOUT] Also clearing ${cookieName} with domain: .certestic.com`);
           }
         } catch (cookieError) {
-          console.warn(`[API:Logout] Failed to clear cookie ${cookieName}:`, cookieError);
+          console.warn(`[COOKIE-LOGOUT] Failed to clear cookie ${cookieName}:`, cookieError);
           if (!failedPhases.includes('cookie-clearing')) {
             failedPhases.push('cookie-clearing');
           }
@@ -95,6 +91,7 @@ export async function POST() {
       console.log('[API:Logout] Phase 3: Response prepared', {
         success: failedPhases.length === 0,
         failedPhases: failedPhases.length > 0 ? failedPhases.join(', ') : 'none',
+        NODE_ENV: process.env.NODE_ENV,
       });
 
       return response;

@@ -1,6 +1,7 @@
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
 import { COOKIE_AUTH_NAME } from '../../../../src/config/constants';
+import { getAuthCookieOptions, logCookieOptions } from '../../../../src/lib/cookie-options';
 
 const secretKey = process.env.JOSE_JWT_SECRET;
 
@@ -9,8 +10,9 @@ export async function POST(request: Request) {
     return new Response('JWT secret not configured', { status: 500 });
   }
 
-  const body = await request.json() as { firebaseToken?: string };
+  const body = (await request.json()) as { firebaseToken?: string };
 
+  console.log(`[ENV] NODE_ENV=${process.env.NODE_ENV}`);
   console.log(`auth-cookie/set:0
     | req_body: ${JSON.stringify(body)}`);
 
@@ -42,19 +44,11 @@ export async function POST(request: Request) {
       .sign(new TextEncoder().encode(secretKey));
 
     // Set secure cookie with enhanced security options
-    cookieStore.set(COOKIE_AUTH_NAME, joseToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-      maxAge: 60 * 60, // 1 hour
-      // Add domain restriction in production
-      ...(process.env.NODE_ENV === 'production' && {
-        domain: '.certestic.com',
-      }),
-    });
+    const cookieOptions = getAuthCookieOptions();
+    cookieStore.set(COOKIE_AUTH_NAME, joseToken, cookieOptions);
 
-    console.log('auth-cookie/set: Successfully set new auth cookie');
+    logCookieOptions('SET', cookieOptions);
+    console.log('[COOKIE-SET] Successfully set new auth cookie');
 
     return Response.json({ success: true });
   } catch (error) {
