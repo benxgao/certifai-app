@@ -1,5 +1,6 @@
 import 'server-only';
 import { generatePublicJWTToken, makePublicAPIRequest } from '@/src/lib/jwt-utils';
+import type { CertificationListItem } from '@/src/types/swr-data/certifications';
 import { createSlug } from '@/src/utils/slug';
 
 interface Certification {
@@ -73,9 +74,9 @@ export async function fetchCertificationsData(): Promise<{
     }
 
     // Helper to recursively fetch all paginated data
-    async function fetchAllPages(endpoint: string, token: string, pageSize: number) {
+    async function fetchAllPages<T>(endpoint: string, token: string, pageSize: number): Promise<T[]> {
       let page = 1;
-      let allData: any[] = [];
+      let allData: T[] = [];
       let hasMore = true;
       while (hasMore) {
         /**
@@ -90,9 +91,13 @@ export async function fetchCertificationsData(): Promise<{
           next: { revalidate: 3600 },
         });
         if (!response.ok) break;
-        const result = await response.json();
+        const result = (await response.json()) as {
+          data?: unknown;
+          nextPage?: number;
+          total?: number;
+        };
         if (result.data && Array.isArray(result.data)) {
-          allData = allData.concat(result.data);
+          allData = allData.concat(result.data as T[]);
           // If API provides pagination info, use it; else, infer from data length
           if (result.nextPage) {
             page = result.nextPage;
@@ -117,8 +122,8 @@ export async function fetchCertificationsData(): Promise<{
         // Recursively fetch all firms and certifications
         // Use includeCount=true for consistency with client-side calls
         const [allFirms, allCerts] = await Promise.all([
-          fetchAllPages('/firms?includeCount=true', token, 50),
-          fetchAllPages('/certifications', token, 100),
+          fetchAllPages<Firm>('/firms?includeCount=true', token, 50),
+          fetchAllPages<Certification>('/certifications', token, 100),
         ]);
 
         if (allFirms.length && allCerts.length) {
@@ -709,22 +714,44 @@ function getMockFirmsData(): FirmWithCertifications[] {
 /**
  * Validate firm data structure
  */
-function validateFirmData(firm: any): firm is FirmWithCertifications {
+type CertificationCandidate = Partial<CertificationListItem> & {
+  description?: string;
+  exam_guide_url?: string;
+};
+
+function isCertificationCandidate(cert: unknown): cert is CertificationCandidate {
+  if (typeof cert !== 'object' || cert === null) {
+    return false;
+  }
+
+  const candidate = cert as Record<string, unknown>;
   return (
-    firm &&
-    typeof firm.id === 'number' &&
-    typeof firm.code === 'string' &&
-    typeof firm.name === 'string' &&
-    typeof firm.description === 'string' &&
-    typeof firm.certification_count === 'number' &&
-    Array.isArray(firm.certifications)
+    typeof candidate.cert_id === 'number' &&
+    typeof candidate.name === 'string' &&
+    (typeof candidate.description === 'string' || typeof candidate.exam_guide_url === 'string')
+  );
+}
+
+function validateFirmData(firm: unknown): firm is FirmWithCertifications {
+  if (typeof firm !== 'object' || firm === null) {
+    return false;
+  }
+
+  const candidate = firm as Record<string, unknown>;
+  return (
+    typeof candidate.id === 'number' &&
+    typeof candidate.code === 'string' &&
+    typeof candidate.name === 'string' &&
+    typeof candidate.description === 'string' &&
+    typeof candidate.certification_count === 'number' &&
+    Array.isArray(candidate.certifications)
   );
 }
 
 /**
  * Validate and clean firm data
  */
-function validateAndCleanFirmsData(firms: any[]): FirmWithCertifications[] {
+function validateAndCleanFirmsData(firms: unknown[]): FirmWithCertifications[] {
   console.log(`validateAndCleanFirmsData called with ${firms.length} firms`);
 
   const validFirms = firms.filter(validateFirmData);
@@ -734,13 +761,7 @@ function validateAndCleanFirmsData(firms: any[]): FirmWithCertifications[] {
   }
 
   const result = validFirms.map((firm) => {
-    const validCertifications = firm.certifications.filter(
-      (cert: any) =>
-        cert &&
-        typeof cert.cert_id === 'number' &&
-        typeof cert.name === 'string' &&
-        (cert.description || cert.exam_guide_url),
-    );
+    const validCertifications = firm.certifications.filter(isCertificationCandidate);
 
     console.log(
       `Firm ${firm.name}: ${firm.certifications.length} -> ${validCertifications.length} valid certs`,

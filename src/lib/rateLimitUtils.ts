@@ -12,6 +12,38 @@ export interface RateLimitInfo {
   error?: string;
 }
 
+interface RateLimitInput {
+  maxExamsAllowed?: number;
+  currentCount?: number;
+  remainingCount?: number;
+  canCreateExam?: boolean;
+  resetTime?: string;
+  nextAvailableTime?: string;
+  hoursUntilNextExam?: number;
+  error?: string;
+}
+
+function toRateLimitInput(rateLimit: unknown): RateLimitInput | null {
+  if (!rateLimit || typeof rateLimit !== 'object') {
+    return null;
+  }
+
+  const data = rateLimit as Record<string, unknown>;
+  return {
+    maxExamsAllowed:
+      typeof data.maxExamsAllowed === 'number' ? data.maxExamsAllowed : undefined,
+    currentCount: typeof data.currentCount === 'number' ? data.currentCount : undefined,
+    remainingCount: typeof data.remainingCount === 'number' ? data.remainingCount : undefined,
+    canCreateExam: typeof data.canCreateExam === 'boolean' ? data.canCreateExam : undefined,
+    resetTime: typeof data.resetTime === 'string' ? data.resetTime : undefined,
+    nextAvailableTime:
+      typeof data.nextAvailableTime === 'string' ? data.nextAvailableTime : undefined,
+    hoursUntilNextExam:
+      typeof data.hoursUntilNextExam === 'number' ? data.hoursUntilNextExam : undefined,
+    error: typeof data.error === 'string' ? data.error : undefined,
+  };
+}
+
 /**
  * Extract rate limit information from enhanced exam response
  * This allows us to reuse data that's already fetched instead of making separate API calls
@@ -19,25 +51,27 @@ export interface RateLimitInfo {
  * @param rateLimit - Rate limit data from exam API response
  * @returns Normalized rate limit information
  */
-export function extractRateLimitFromResponse(rateLimit: any): RateLimitInfo | null {
-  if (!rateLimit) return null;
+export function extractRateLimitFromResponse(rateLimit: unknown): RateLimitInfo | null {
+  const parsedRateLimit = toRateLimitInput(rateLimit);
+  if (!parsedRateLimit) return null;
 
   const rateLimitInfo: RateLimitInfo = {
-    maxExamsAllowed: rateLimit.maxExamsAllowed || 3,
-    currentCount: rateLimit.currentCount || 0,
-    remainingCount: rateLimit.remainingCount || 3,
-    canCreateExam: rateLimit.canCreateExam ?? true,
-    resetTime: rateLimit.resetTime || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    error: rateLimit.error,
+    maxExamsAllowed: parsedRateLimit.maxExamsAllowed || 3,
+    currentCount: parsedRateLimit.currentCount || 0,
+    remainingCount: parsedRateLimit.remainingCount || 3,
+    canCreateExam: parsedRateLimit.canCreateExam ?? true,
+    resetTime:
+      parsedRateLimit.resetTime || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    error: parsedRateLimit.error,
   };
 
   // Add detailed time information if available
-  if (rateLimit.nextAvailableTime) {
-    rateLimitInfo.nextAvailableTime = rateLimit.nextAvailableTime;
+  if (parsedRateLimit.nextAvailableTime) {
+    rateLimitInfo.nextAvailableTime = parsedRateLimit.nextAvailableTime;
   }
 
-  if (rateLimit.hoursUntilNextExam) {
-    rateLimitInfo.hoursUntilNextExam = rateLimit.hoursUntilNextExam;
+  if (parsedRateLimit.hoursUntilNextExam) {
+    rateLimitInfo.hoursUntilNextExam = parsedRateLimit.hoursUntilNextExam;
   }
 
   return rateLimitInfo;
@@ -121,7 +155,7 @@ export function calculateRateLimitFromExams(exams: ExamListItem[]): RateLimitInf
  * @param exams - Array of exam data for fallback calculation
  * @returns Rate limit information
  */
-export function getRateLimitInfo(rateLimit?: any, exams?: ExamListItem[]): RateLimitInfo | null {
+export function getRateLimitInfo(rateLimit?: unknown, exams?: ExamListItem[]): RateLimitInfo | null {
   // Try to extract from API response first
   const extractedRateLimit = extractRateLimitFromResponse(rateLimit);
   if (extractedRateLimit) {

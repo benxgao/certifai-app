@@ -8,7 +8,7 @@ export interface GAEvent {
   category: string;
   label?: string;
   value?: number;
-  custom_parameters?: Record<string, any>;
+  custom_parameters?: Record<string, string | number | boolean>;
 }
 
 // Predefined event types for better tracking

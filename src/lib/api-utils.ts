@@ -16,7 +16,7 @@ export interface ApiResponse<T = any> {
  * API Error with status code
  */
 export class ApiError extends Error {
-  constructor(public message: string, public statusCode: number = 500, public details?: any) {
+  constructor(public message: string, public statusCode: number = 500, public details?: unknown) {
     super(message);
     this.name = 'ApiError';
   }
@@ -25,7 +25,7 @@ export class ApiError extends Error {
 /**
  * Validate request parameters
  */
-export function validateRequiredParams(params: Record<string, any>, required: string[]): void {
+export function validateRequiredParams(params: Record<string, unknown>, required: string[]): void {
   for (const param of required) {
     if (!params[param]) {
       throw new ApiError(`Missing required parameter: ${param}`, 400);
@@ -127,7 +127,7 @@ export async function handleApiResponse(
   operation: string,
 ): Promise<NextResponse> {
   if (!response.ok) {
-    let errorData: any;
+    let errorData: unknown;
     try {
       errorData = await response.json();
     } catch {

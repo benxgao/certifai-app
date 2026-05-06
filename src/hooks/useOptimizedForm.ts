@@ -12,7 +12,7 @@ export interface UseOptimizedFormOptions<T> {
   onSubmit?: (values: T) => Promise<void> | void;
 }
 
-export function useOptimizedForm<T extends Record<string, any>>({
+export function useOptimizedForm<T extends Record<string, unknown>>({
   initialValues,
   validators = {},
   onSubmit,
@@ -28,9 +28,10 @@ export function useOptimizedForm<T extends Record<string, any>>({
     let isFormValid = true;
 
     Object.keys(values).forEach((key) => {
-      const validator = validators[key];
+      const typedKey = key as keyof T;
+      const validator = validators[typedKey];
       if (validator) {
-        result[key] = validator(values[key]);
+        result[key] = validator(values[typedKey]);
         if (!result[key]) {
           isFormValid = false;
         }

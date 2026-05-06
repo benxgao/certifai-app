@@ -77,13 +77,22 @@ export const handleAuthenticationFailure = async (
 /**
  * Check if an error indicates authentication failure that requires re-authentication
  */
-export const isAuthenticationError = (error: any): boolean => {
+export const isAuthenticationError = (error: unknown): boolean => {
+  const typedError =
+    typeof error === 'object' && error !== null
+      ? (error as { status?: unknown; name?: unknown; message?: unknown })
+      : undefined;
+
+  const status = typeof typedError?.status === 'number' ? typedError.status : undefined;
+  const name = typeof typedError?.name === 'string' ? typedError.name : undefined;
+  const message = typeof typedError?.message === 'string' ? typedError.message : undefined;
+
   return (
     error instanceof AuthenticationError ||
-    error?.status === 401 ||
-    error?.name === 'AuthenticationError' ||
-    error?.message?.includes('Authentication failed') ||
-    error?.message?.includes('Session expired')
+    status === 401 ||
+    name === 'AuthenticationError' ||
+    !!message?.includes('Authentication failed') ||
+    !!message?.includes('Session expired')
   );
 };
 
@@ -145,7 +154,7 @@ export const fetchWithAuthRetry = async (
 /**
  * Simplified auth-aware fetch that handles JSON responses
  */
-export const fetchAuthJSON = async <T = any>(
+export const fetchAuthJSON = async <T = unknown>(
   url: string,
   options: RequestInit = {},
   refreshTokenFn?: () => Promise<string | null>,
