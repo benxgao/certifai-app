@@ -12,6 +12,9 @@ runConfig:
 
 env:
   - variable: NODE_ENV
+    value: production
+
+  - variable: APP_ENV
     value: uat
 
   - variable: MARKETING_API_URL

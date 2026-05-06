@@ -14,9 +14,9 @@ import { allowedOrigins } from '@/src/config/serverOnlyConfig';
  * domain: .certestic.com only for production
  */
 export function getAuthCookieOptions() {
-  const nodeEnv = (process.env.NODE_ENV || '') as string;
-  const isSecureEnv = nodeEnv === 'production' || nodeEnv === 'uat';
-  const isProduction = nodeEnv === 'production';
+  const appEnv = (process.env.APP_ENV || process.env.NODE_ENV || '') as string;
+  const isSecureEnv = appEnv === 'production' || appEnv === 'uat';
+  const isProduction = appEnv === 'production';
 
   return {
     httpOnly: true,
@@ -35,9 +35,9 @@ export function getAuthCookieOptions() {
  * Uses strict sameSite for security
  */
 export function getClearCookieOptions() {
-  const nodeEnv = (process.env.NODE_ENV || '') as string;
-  const isSecureEnv = nodeEnv === 'production' || nodeEnv === 'uat';
-  const isProduction = nodeEnv === 'production';
+  const appEnv = (process.env.APP_ENV || process.env.NODE_ENV || '') as string;
+  const isSecureEnv = appEnv === 'production' || appEnv === 'uat';
+  const isProduction = appEnv === 'production';
 
   return {
     httpOnly: true,
@@ -56,9 +56,9 @@ export function getClearCookieOptions() {
  * Uses lax sameSite to allow logout from cross-origin links
  */
 export function getLogoutClearCookieOptions() {
-  const nodeEnv = (process.env.NODE_ENV || '') as string;
-  const isSecureEnv = nodeEnv === 'production' || nodeEnv === 'uat';
-  const isProduction = nodeEnv === 'production';
+  const appEnv = (process.env.APP_ENV || process.env.NODE_ENV || '') as string;
+  const isSecureEnv = appEnv === 'production' || appEnv === 'uat';
+  const isProduction = appEnv === 'production';
 
   return {
     httpOnly: true,
@@ -76,7 +76,7 @@ export function getLogoutClearCookieOptions() {
  * Log cookie options for debugging
  */
 export function logCookieOptions(operation: 'SET' | 'CLEAR' | 'LOGOUT', options: any) {
-  const nodeEnv = process.env.NODE_ENV as string;
+  const nodeEnv = (process.env.APP_ENV || process.env.NODE_ENV) as string;
   const warnings: string[] = [];
 
   // [DEBUG] Detect common misconfiguration that causes cookies to be silently dropped
