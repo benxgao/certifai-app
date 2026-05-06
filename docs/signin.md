@@ -461,20 +461,39 @@ const typedError = parseFirebaseErrorToTypedError(code, message);
 
 ```
 src/lib/
-├── auth-state-manager.ts              ← Unified token clearing
+├── auth-state-manager.ts              ← Unified token clearing (clearAuthTokens, resetAuthenticationState)
 ├── auth-state-transitions.ts          ← Explicit signin/logout transitions
 ├── auth-operation-guard.ts            ← Race condition prevention
-├── auth-state-types.ts                ← Type-safe definitions
+├── auth-state-types.ts                ← Type-safe definitions (AuthState enum, AuthErrorType enum)
 ├── auth-verification-state.ts         ← Centralized verification state
-├── signin-helpers.ts                  ← Signin utilities
-└── auth-setup.ts                      ← Auth setup coordination
+├── auth-setup.ts                      ← Auth setup: setAuthCookie, performApiLogin, clearAuthCookie
+├── auth-error-handler.ts              ← Firebase error parsing
+├── auth-utils.ts                      ← Shared auth utilities
+├── auth-claims.ts                     ← Custom claims helpers
+├── auth-claims-client.ts              ← Client-side claims access
+├── auth-claims-server.ts              ← Server-side claims access
+├── cookie-options.ts                  ← Centralized cookie config (httpOnly, secure, sameSite, maxAge)
+├── jwt-utils.ts                       ← JWT decode/verify helpers
+├── signin-helpers.ts                  ← Signin utilities (parseAuthURLParams, clearLegacyAuthState)
+├── logout-utils.ts                    ← Logout utilities (performLogout, emergencyLogout)
+└── client-auth-utils.ts               ← Client-side auth helpers
 
 src/context/
 └── FirebaseAuthContext.tsx            ← Auth state management
 
 app/api/auth/
-├── login/route.ts                     ← Backend API login
-└── logout/route.ts                    ← Logout with phase tracking
+├── login/route.ts                     ← Backend API login (returns api_user_id)
+├── logout/route.ts                    ← Logout with phase tracking
+├── register/route.ts                  ← New user registration
+└── set-claims/route.ts                ← Set Firebase custom claims
+
+app/api/auth-cookie/
+├── set/route.ts                       ← Create JOSE JWT cookie wrapping Firebase token
+├── clear/route.ts                     ← Delete auth cookie
+├── clear-cache/route.ts               ← Clear server-side token cache
+├── refresh/route.ts                   ← Refresh existing cookie (rate-limited)
+├── server-refresh/route.ts            ← Server-to-server token refresh
+└── verify/route.ts                    ← Verify cookie JWT and Firebase token
 ```
 
 ---
@@ -577,6 +596,82 @@ clearVerificationState();
 
 ---
 
+## How Cookies Work
+
+### Cookie Structure
+
+The auth cookie is **not** the raw Firebase token. It is a JOSE JWT that **wraps** the Firebase ID token:
+
+```json
+// JOSE JWT payload (stored as httpOnly cookie named by COOKIE_AUTH_NAME)
+{
+  "token": "<firebase_id_token>",
+  "iat": 1234567890,
+  "exp": 1234571490,
+  "jti": "1234567890-abc123xyz" // unique id to prevent replay
+}
+```
+
+The JOSE JWT is signed with `JOSE_JWT_SECRET` (HS256) and expires in **1 hour**.
+
+### Cookie Security Settings
+
+| Setting    | Development | UAT       | Production       |
+| ---------- | ----------- | --------- | ---------------- |
+| `httpOnly` | ✅ true     | ✅ true   | ✅ true          |
+| `secure`   | ❌ false    | ✅ true   | ✅ true          |
+| `sameSite` | `strict`    | `strict`  | `strict`         |
+| `path`     | `/`         | `/`       | `/`              |
+| `maxAge`   | 3600s (1h)  | 3600s     | 3600s            |
+| `domain`   | undefined   | undefined | `.certestic.com` |
+
+> **Note**: `secure: false` in development allows the cookie to work over HTTP (localhost). UAT and production require HTTPS.
+
+### Cookie Lifecycle — Step by Step
+
+```
+1. SIGNIN
+   Client calls /api/auth-cookie/set with { firebaseToken }
+   Server signs a JOSE JWT wrapping the firebase token
+   Server sets httpOnly cookie via Next.js cookies() API
+   Browser stores cookie — JS cannot access it (httpOnly)
+
+2. EVERY AUTHENTICATED REQUEST
+   Browser sends cookie automatically (sameSite=strict, same origin only)
+   Next.js middleware reads cookie server-side
+   Middleware decodes JOSE JWT → extracts firebase token
+   Middleware verifies firebase token via Firebase Admin SDK
+   Request proceeds if valid, redirects to /signin if not
+
+3. AUTO-REFRESH (every 45 min, skipped on auth pages)
+   Client calls /api/auth-cookie/refresh (no body needed)
+   Server reads existing cookie, extracts + re-verifies firebase token
+   Server issues fresh firebase token via Firebase Admin
+   Server writes new JOSE JWT cookie with updated expiry
+   Rate-limited to prevent abuse
+
+4. LOGOUT
+   Client calls /api/auth-cookie/clear
+   Server sets cookie with maxAge=0 (immediate expiry)
+   Browser removes cookie automatically
+   Client also clears localStorage/sessionStorage via clearAuthTokens('all')
+
+5. VERIFICATION
+   Client (or server) calls /api/auth-cookie/verify with Bearer <joseToken>
+   Server decodes JOSE JWT → checks exp, jti, age (max 24h)
+   Server verifies inner firebase token with Firebase Admin
+   Returns user claims if valid
+```
+
+### Why Wrap Firebase Token in a JOSE JWT?
+
+1. **Expiry control**: Firebase tokens expire in 1 hour by Firebase's rules; the JOSE wrapper enforces our own 1-hour window independently and adds a `jti` to prevent replay.
+2. **Signature verification**: Middleware can verify the JOSE JWT locally using `JOSE_JWT_SECRET` before calling Firebase Admin — faster for every-request checks.
+3. **Legacy token detection**: The `jti` field distinguishes new tokens from older tokens without unique IDs, allowing a grace period for users in transit.
+4. **httpOnly isolation**: Wrapping ensures the Firebase token never touches client JavaScript — it stays inside a server-only cookie.
+
+---
+
 ## Security Features
 
 ✅ **Email Verification**: Required before signin
@@ -610,12 +705,16 @@ clearVerificationState();
 - [ ] Emergency logout (hangs)
 - [ ] Logout → immediate signin different account
 
-### Token Tests
+### Token / Cookie Tests
 
 - [ ] Token auto-refresh every 45 minutes
 - [ ] Token refresh skipped on auth pages
 - [ ] Expired token forces signin
 - [ ] Token in cookie is httpOnly and Secure
+- [ ] JOSE JWT wraps firebase token (cookie payload has `token`, `iat`, `exp`, `jti`)
+- [ ] Cookie `secure: false` in development, `secure: true` in UAT/production
+- [ ] Cookie domain restricted to `.certestic.com` in production only
+- [ ] Rate limiting on `/api/auth-cookie/refresh` (429 on abuse)
 
 ### Race Condition Tests
 
@@ -647,7 +746,17 @@ clearVerificationState();
 
 **Check**: DevTools → Application → Cookies
 **Cause**: `/api/auth-cookie/set` failed
-**Solution**: Check network tab, verify JWT structure
+**Solution**: Check network tab → look for `[COOKIE-SET][DEBUG]` logs in server console; common causes:
+
+- `secure: true` on HTTP (dev only) → cookie silently dropped by browser
+- `JOSE_JWT_SECRET` not set → 500 from `/api/auth-cookie/set`
+- Next.js `cookies()` write rejected → check `[COOKIE-SET][DEBUG] Cookie NOT found` log
+
+### Cookie present but requests fail auth
+
+**Check**: `/api/auth-cookie/verify` response, server logs for `[authOperationGuard]`
+**Cause**: JOSE JWT expired (1h), or inner Firebase token revoked
+**Solution**: Auto-refresh should catch this; if not, the `/api/auth-cookie/refresh` endpoint re-issues the cookie. Force-logout and re-signin if stuck.
 
 ### Logout not clearing state
 
