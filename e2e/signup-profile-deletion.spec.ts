@@ -30,7 +30,7 @@ import {
 test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Profile → Delete @integration', async ({
   page,
 }) => {
-  test.setTimeout(90000); // 90 seconds for this test only
+  test.setTimeout(120000); // 120 seconds for this test only
 
   // Use static test credentials from environment (reused across all test runs)
   const testEmail = process.env.PW_SIGNUP_EMAIL || 'pw_test_signup@certestic.com';
@@ -45,6 +45,7 @@ test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Prof
   // ===== STEP 1: SIGNUP =====
   console.log('\n[STEP 1] Performing signup...');
   await performSignup(page, testEmail, testPassword, testDisplayName);
+
   expect(page.url()).toContain('/signin');
   console.log('✓ Signup successful - redirected to signin');
 

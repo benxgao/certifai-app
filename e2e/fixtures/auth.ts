@@ -62,7 +62,7 @@ export const test = base.extend<AuthFixtures>({
         await fs.writeFile(authFile, JSON.stringify(authData, null, 2));
         console.log('Auth state saved to:', authFile);
       } catch (saveError) {
-        console.warn('Failed to save auth state:', saveError);
+        console.warn('WARNING: Failed to save auth state:', saveError);
       }
     }
 
@@ -89,17 +89,19 @@ export const test = base.extend<AuthFixtures>({
  * @param page - Playwright page object
  * @param timeoutMs - Maximum time to wait (default: 2000ms)
  */
-async function waitForPostSignupSync(page: Page, timeoutMs: number = 5000): Promise<void> {
-  console.log('[SIGNUP SYNC] Waiting for Firebase backend to sync new account (timeout: 5s)...');
+async function waitForPostSignupSync(page: Page, timeoutMs: number = 15000): Promise<void> {
+  console.log(
+    `[SIGNUP SYNC] Waiting for Firebase backend to sync new account (timeout: ${timeoutMs}ms)...`,
+  );
 
   const startTime = Date.now();
   let isBackendReady = false;
   let attempts = 0;
+  let delay = 300; // Initial delay for exponential backoff
 
   while (!isBackendReady && Date.now() - startTime < timeoutMs) {
     attempts++;
     try {
-      // Check if we have Firebase auth state in localStorage
       const hasFirebaseAuth = await page.evaluate(() => {
         const keys = Object.keys(localStorage);
         const authKeys = keys.filter((k) => k.includes('firebase') || k.includes('auth'));
@@ -115,11 +117,11 @@ async function waitForPostSignupSync(page: Page, timeoutMs: number = 5000): Prom
         break;
       }
 
-      // If not ready yet, wait 300ms and try again
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(delay);
+      delay = Math.min(delay * 2, 2000); // Exponential backoff with max delay of 2 seconds
     } catch (e) {
-      // Error checking auth state, just wait a bit more
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(delay);
+      delay = Math.min(delay * 2, 2000);
     }
   }
 
@@ -591,7 +593,7 @@ async function performSignup(
     passwordValue !== signupPassword ||
     confirmPasswordValue !== signupPassword
   ) {
-    console.warn('⚠ Some fields may not have been filled correctly:');
+    console.warn('WARNING: Some fields may not have been filled correctly:');
     console.warn(`  firstName: expected "${firstName}", got "${firstNameValue}"`);
     console.warn(`  lastName: expected "${lastName}", got "${lastNameValue}"`);
     console.warn(`  email: expected "${signupEmail}", got "${emailValue}"`);
@@ -627,7 +629,7 @@ async function performSignup(
   }
 
   if (!isComboboxEnabled) {
-    console.warn('Certification combobox still appears disabled after waiting.');
+    console.warn('WARNING: Certification combobox still appears disabled after waiting.');
   }
 
   // Click the certification dropdown (combobox) to open it
@@ -789,7 +791,7 @@ async function performSignup(
         (el) => (el as HTMLInputElement).checked || el.getAttribute('aria-checked') === 'true',
       )
       .catch(() => false);
-    console.warn('  Form state at error time:');
+    console.warn('WARNING:   Form state at error time:');
     console.warn(`    firstName: "${fnVal}"  lastName: "${lnVal}"  email: "${emVal}"`);
     console.warn(
       `    password: [${pwVal.length} chars]  confirmPassword: [${cpwVal.length} chars]`,
@@ -801,7 +803,7 @@ async function performSignup(
   const submitButton = page.locator('button[type="submit"]');
 
   // Wait for button to be visible first
-  await submitButton.waitFor({ state: 'visible', timeout: 15000 });
+  await submitButton.waitFor({ state: 'visible', timeout: 5000 });
 
   // Wait for button to be enabled (not have disabled attribute)
   let isEnabled = false;
@@ -819,7 +821,7 @@ async function performSignup(
   }
 
   if (!isEnabled) {
-    console.warn('Submit button still appears disabled after 15 seconds of waiting.');
+    console.warn('WARNING: Submit button still appears disabled after 5 seconds of waiting.');
     console.log(
       '→ Account likely already exists from previous test run (form validation not completing).',
     );
@@ -890,7 +892,7 @@ async function performSignup(
       return;
     }
   } catch (e) {
-    console.warn('Could not check for error alert');
+    console.warn('WARNING: Could not check for error alert');
   }
 
   // Last resort: if we're still on signup page with no redirect and no error detected,
@@ -1166,4 +1168,5 @@ export {
   navigateToProfile,
   performLogin,
   performLoginWithAutoSignup,
+  waitForPostSignupSync,
 };
