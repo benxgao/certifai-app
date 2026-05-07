@@ -14,7 +14,7 @@ import { useExamState } from '@/src/swr/exams';
 import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
 import { toastHelpers } from '@/src/lib/toast';
-import { BackendExamStatus, ExamGenerationStage } from '@/src/types/exam-status';
+import { ExamGenerationStage, isExamGeneratingStatus } from '@/src/types/exam-status';
 import { ExamSubmitData, ExamGenerationProgressUI } from '@/src/types/swr-data/exams';
 import { ApiResponse } from '@/src/types/api';
 
@@ -67,18 +67,18 @@ export const useExamPageLogic = () => {
   const { liveStatus, isLoading: isLoadingProgress, isReady: isExamReady } = useExamLiveStatus(
     apiUserId || null,
     examId || null,
-    examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING // Only poll while generating
+    isExamGeneratingStatus(examState?.exam_status) // Only poll while generating
   );
 
   // Simple force status check function
   const forceStatusCheck = () => mutateExamState();
 
   // Show check button for generating exams
-  const shouldShowCheckButton = examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING;
+  const shouldShowCheckButton = isExamGeneratingStatus(examState?.exam_status);
 
   // Transform the live status to match the expected UI structure
   const generationProgress: ExamGenerationProgressUI | null =
-    liveStatus && examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING
+    liveStatus && isExamGeneratingStatus(examState?.exam_status)
       ? {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000, // Convert to milliseconds

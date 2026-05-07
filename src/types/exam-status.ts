@@ -18,6 +18,37 @@ export enum BackendExamStatus {
   QUESTION_GENERATION_FAILED = 'QUESTION_GENERATION_FAILED',
 }
 
+export const isExamGeneratingStatus = (
+  status?: BackendExamStatus | null,
+): status is BackendExamStatus.QUESTIONS_GENERATING =>
+  status === BackendExamStatus.QUESTIONS_GENERATING;
+
+export const isExamReadyStatus = (
+  status?: BackendExamStatus | null,
+): status is BackendExamStatus.READY => status === BackendExamStatus.READY;
+
+export const isExamGenerationFailedStatus = (
+  status?: BackendExamStatus | null,
+): status is BackendExamStatus.QUESTION_GENERATION_FAILED =>
+  status === BackendExamStatus.QUESTION_GENERATION_FAILED;
+
+export const isExamPendingQuestionsStatus = (
+  status?: BackendExamStatus | null,
+): status is BackendExamStatus.PENDING_QUESTIONS =>
+  status === BackendExamStatus.PENDING_QUESTIONS;
+
+export const isGenerationCompletedTransition = (
+  previousStatus?: BackendExamStatus | null,
+  currentStatus?: BackendExamStatus | null,
+): boolean =>
+  isExamGeneratingStatus(previousStatus) && isExamReadyStatus(currentStatus);
+
+export const isGenerationFailedTransition = (
+  previousStatus?: BackendExamStatus | null,
+  currentStatus?: BackendExamStatus | null,
+): boolean =>
+  isExamGeneratingStatus(previousStatus) && isExamGenerationFailedStatus(currentStatus);
+
 // Derived exam status for UI display
 export enum DerivedExamStatus {
   not_started = 'not_started',
@@ -37,6 +68,16 @@ export interface ExamStatusInfo {
   bgColor: string;
   borderColor: string;
 }
+
+export type ExamProgressBadgeStatus =
+  | 'completed'
+  | 'passed'
+  | 'failed'
+  | 'generating'
+  | 'generation_failed'
+  | 'ready'
+  | 'pending'
+  | 'in_progress';
 
 // Helper function to determine derived exam status from exam data
 export const getDerivedExamStatus = (exam: {
@@ -135,4 +176,41 @@ export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => 
   };
 
   return statusConfig[status];
+};
+
+// Helper function to determine ExamStatusCard badge status for exam progress header
+export const getExamProgressBadgeStatus = (exam: {
+  submitted_at: number | null;
+  status?: string;
+  exam_status?: BackendExamStatus;
+}): ExamProgressBadgeStatus => {
+  if (exam.submitted_at !== null) {
+    if (exam.status === 'PASSED') {
+      return 'passed';
+    }
+
+    if (exam.status === 'FAILED') {
+      return 'failed';
+    }
+
+    return 'completed';
+  }
+
+  if (exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING) {
+    return 'generating';
+  }
+
+  if (exam.exam_status === BackendExamStatus.QUESTION_GENERATION_FAILED) {
+    return 'generation_failed';
+  }
+
+  if (exam.exam_status === BackendExamStatus.READY) {
+    return 'ready';
+  }
+
+  if (exam.exam_status === BackendExamStatus.PENDING_QUESTIONS) {
+    return 'pending';
+  }
+
+  return 'in_progress';
 };

@@ -28,7 +28,7 @@ export function useExamInfo(apiUserId: string | null, examId: string | null) {
     errorRetryInterval: 3000,
     // Only refresh if exam is in generating state
     refreshInterval: (data) => {
-      const examStatus = data?.data?.exam_status || data?.data?.status;
+      const examStatus = data?.data?.exam_status;
       if (examStatus === BackendExamStatus.QUESTIONS_GENERATING) {
         return 10000; // Poll every 10 seconds for generating exams
       }

@@ -1,5 +1,7 @@
 // === Exam Info API Response Types ===
 
+import type { BackendExamStatus } from '@/src/types/exam-status';
+
 /**
  * Exam answer progress info within exam info response
  */
@@ -18,7 +20,7 @@ export interface ExamInfoData {
   exam_id: string;
   api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
-  exam_status: string;
+  exam_status: BackendExamStatus;
   total_questions: number;
   score: number | null;
   token_cost: number;

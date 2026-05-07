@@ -12,7 +12,7 @@ import {
 import { StatusBadge } from '@/src/components/ui/status-badge';
 import { ExamState } from '@/src/swr/exams';
 import { PaginationInfo } from '@/src/swr/utils';
-import { BackendExamStatus } from '@/src/types/exam-status';
+import { getExamProgressBadgeStatus } from '@/src/types/exam-status';
 
 interface ExamStatusCardProps {
   examState: ExamState | undefined;
@@ -29,6 +29,12 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
   pagination,
   examId,
 }) => {
+  const progressBadgeStatus = getExamProgressBadgeStatus({
+    submitted_at: submittedAt,
+    status: examState?.status,
+    exam_status: examState?.exam_status,
+  });
+
   return (
     <DashboardCard className="rounded-3xl">
       <DashboardCardHeader>
@@ -42,27 +48,7 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
 
           {/* Status Badge */}
           <div className="shrink-0">
-            {submittedAt !== null ? (
-              <StatusBadge
-                status={
-                  examState?.status === 'PASSED'
-                    ? 'passed'
-                    : examState?.status === 'FAILED'
-                    ? 'failed'
-                    : 'completed'
-                }
-              />
-            ) : examState?.exam_status === BackendExamStatus.QUESTIONS_GENERATING ? (
-              <StatusBadge status="generating" />
-            ) : examState?.exam_status === BackendExamStatus.QUESTION_GENERATION_FAILED ? (
-              <StatusBadge status="generation_failed" />
-            ) : examState?.exam_status === BackendExamStatus.READY ? (
-              <StatusBadge status="ready" />
-            ) : examState?.exam_status === BackendExamStatus.PENDING_QUESTIONS ? (
-              <StatusBadge status="pending" />
-            ) : (
-              <StatusBadge status="in_progress" />
-            )}
+            <StatusBadge status={progressBadgeStatus} />
           </div>
         </div>
       </DashboardCardHeader>

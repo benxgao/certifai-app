@@ -40,9 +40,9 @@ const STRIPE_KEYS = {
 } as const;
 
 // Fetcher functions following Certifai patterns
-const stripeFetcher = async (url: string) => {
+const stripeFetcher = async <T = unknown>(url: string): Promise<T> => {
   try {
-    const response = await fetchAuthJSON(url);
+    const response = await fetchAuthJSON<T>(url);
     return response;
   } catch (error) {
     // Add context to errors for better debugging
@@ -54,14 +54,14 @@ const stripeFetcher = async (url: string) => {
   }
 };
 
-const stripePostFetcher = async (url: string, { arg }: { arg: any }) => {
+const stripePostFetcher = async <T = unknown>(url: string, { arg }: { arg: any }): Promise<T> => {
   try {
     // Validate payload before sending
     if (arg && typeof arg !== 'object') {
       throw new Error('Invalid payload: must be an object');
     }
 
-    const response = await fetchAuthJSON(url, {
+    const response = await fetchAuthJSON<T>(url, {
       method: 'POST',
       body: JSON.stringify(arg),
     });
@@ -79,12 +79,16 @@ const stripePostFetcher = async (url: string, { arg }: { arg: any }) => {
  * Get available pricing plans
  */
 export function usePricingPlans() {
-  return useSWR<ApiResponse<PricingPlan[]>>(STRIPE_KEYS.pricingPlans, stripeFetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    // Cache for 5 minutes
-    dedupingInterval: 300000,
-  });
+  return useSWR<ApiResponse<PricingPlan[]>>(
+    STRIPE_KEYS.pricingPlans,
+    (url: string) => stripeFetcher<ApiResponse<PricingPlan[]>>(url),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      // Cache for 5 minutes
+      dedupingInterval: 300000,
+    },
+  );
 }
 
 /**
@@ -101,16 +105,21 @@ export function useCreateCheckoutSession() {
       cancel_url?: string;
       trial_days?: number;
     }
-  >('/api/stripe/checkout/create-session', stripePostFetcher, {
-    onError: (error) => {
-      // Handle authentication errors gracefully
-      if (error.message?.includes('Authentication required') || error.message?.includes('401')) {
-        console.warn('Authentication required for checkout session');
-      } else {
-        console.error('Checkout session creation error:', error);
-      }
+  >(
+    '/api/stripe/checkout/create-session',
+    (url: string, options: { arg: any }) =>
+      stripePostFetcher<ApiResponse<CheckoutSessionResponse>>(url, options),
+    {
+      onError: (error) => {
+        // Handle authentication errors gracefully
+        if (error.message?.includes('Authentication required') || error.message?.includes('401')) {
+          console.warn('Authentication required for checkout session');
+        } else {
+          console.error('Checkout session creation error:', error);
+        }
+      },
     },
-  });
+  );
 }
 
 /**
@@ -124,16 +133,21 @@ export function useCreatePortalSession() {
     {
       return_url?: string;
     }
-  >('/api/stripe/portal/create-session', stripePostFetcher, {
-    onError: (error) => {
-      // Handle authentication errors gracefully
-      if (error.message?.includes('Authentication required') || error.message?.includes('401')) {
-        console.warn('Authentication required for portal session');
-      } else {
-        console.error('Portal session creation error:', error);
-      }
+  >(
+    '/api/stripe/portal/create-session',
+    (url: string, options: { arg: any }) =>
+      stripePostFetcher<ApiResponse<PortalSessionResponse>>(url, options),
+    {
+      onError: (error) => {
+        // Handle authentication errors gracefully
+        if (error.message?.includes('Authentication required') || error.message?.includes('401')) {
+          console.warn('Authentication required for portal session');
+        } else {
+          console.error('Portal session creation error:', error);
+        }
+      },
     },
-  });
+  );
 }
 
 /**
@@ -147,7 +161,13 @@ export function useCancelSubscription() {
     {
       cancel_at_period_end?: boolean;
     }
-  >('/api/stripe/subscription/cancel', stripePostFetcher);
+  >(
+    '/api/stripe/subscription/cancel',
+    (url: string, options: { arg: any }) =>
+      stripePostFetcher<
+        ApiResponse<{ subscription_id: string; status: string; cancel_at_period_end: boolean }>
+      >(url, options),
+  );
 }
 
 /**
@@ -159,7 +179,13 @@ export function useResumeSubscription() {
     Error,
     '/api/stripe/subscription/resume',
     Record<string, never>
-  >('/api/stripe/subscription/resume', stripePostFetcher);
+  >(
+    '/api/stripe/subscription/resume',
+    (url: string, options: { arg: any }) =>
+      stripePostFetcher<
+        ApiResponse<{ subscription_id: string; status: string; cancel_at_period_end: boolean }>
+      >(url, options),
+  );
 }
 
 /**
@@ -171,7 +197,13 @@ export function useReactivateSubscription() {
     Error,
     '/api/stripe/subscription/reactivate',
     Record<string, never>
-  >('/api/stripe/subscription/reactivate', stripePostFetcher);
+  >(
+    '/api/stripe/subscription/reactivate',
+    (url: string, options: { arg: any }) =>
+      stripePostFetcher<
+        ApiResponse<{ subscription_id: string; status: string; cancel_at_period_end: boolean }>
+      >(url, options),
+  );
 }
 
 /**
@@ -185,5 +217,11 @@ export function useUpdateSubscriptionPlan() {
     {
       new_price_id: string;
     }
-  >('/api/stripe/subscription/update-plan', stripePostFetcher);
+  >(
+    '/api/stripe/subscription/update-plan',
+    (url: string, options: { arg: any }) =>
+      stripePostFetcher<
+        ApiResponse<{ subscription_id: string; status: string; new_price_id: string }>
+      >(url, options),
+  );
 }

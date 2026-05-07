@@ -1,7 +1,11 @@
 import { useAuthSWR } from './useAuthSWR';
 import { useEffect } from 'react';
 import { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
-import { BackendExamStatus } from '../types/exam-status';
+import {
+  isExamGeneratingStatus,
+  isExamReadyStatus,
+  isExamGenerationFailedStatus,
+} from '../types/exam-status';
 import { isApiError } from '@/src/types/api';
 
 export type { ExamLiveStatusData } from '@/src/types/swr-data/useExamLiveStatus';
@@ -22,7 +26,7 @@ interface ExamLiveStatusResponse {
 export function useExamLiveStatus(
   apiUserId: string | null,
   examId: string | null,
-  pollingEnabled: boolean = true
+  pollingEnabled: boolean = true,
 ) {
   // Enable polling while exam is generating
   const shouldFetch = Boolean(apiUserId && examId && pollingEnabled);
@@ -73,9 +77,9 @@ export function useExamLiveStatus(
     /**
      * Convenience methods for common status checks
      */
-    isGenerating: data?.data?.exam_status === BackendExamStatus.QUESTIONS_GENERATING,
-    isReady: data?.data?.exam_status === BackendExamStatus.READY,
-    isFailed: data?.data?.exam_status === BackendExamStatus.QUESTION_GENERATION_FAILED,
+    isGenerating: isExamGeneratingStatus(data?.data?.exam_status),
+    isReady: isExamReadyStatus(data?.data?.exam_status),
+    isFailed: isExamGenerationFailedStatus(data?.data?.exam_status),
     progressPercent: data?.data?.progress_percentage ?? 0,
   };
 }

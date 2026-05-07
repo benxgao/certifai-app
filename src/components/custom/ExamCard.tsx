@@ -11,11 +11,11 @@ import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGeneratio
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
 import {
-  BackendExamStatus,
   DerivedExamStatus,
   getDerivedExamStatus,
   getExamStatusInfo,
   ExamGenerationStage,
+  isExamGeneratingStatus,
 } from '@/src/types/exam-status';
 import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
@@ -58,7 +58,7 @@ export const ExamCard = memo(function ExamCard({
   const { liveStatus } = useExamLiveStatus(
     apiUserId || null,
     exam.exam_id || null,
-    exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING, // Poll only during active generation
+    isExamGeneratingStatus(exam.exam_status), // Poll only during active generation
   );
 
   // Get typed exam status and info
@@ -70,7 +70,10 @@ export const ExamCard = memo(function ExamCard({
   const isGenerationComplete =
     liveStatus?.is_complete === true && liveStatus?.progress_percentage === 100;
 
-  if (isGenerationComplete && (examStatus === 'generating' || examStatus === 'in_progress')) {
+  if (
+    isGenerationComplete &&
+    (examStatus === DerivedExamStatus.generating || examStatus === DerivedExamStatus.in_progress)
+  ) {
     examStatus = DerivedExamStatus.ready;
   }
 
@@ -94,7 +97,7 @@ export const ExamCard = memo(function ExamCard({
     return statusMap[status] || status;
   };
   const generationEstimate =
-    liveStatus && examStatus === 'generating'
+    liveStatus && examStatus === DerivedExamStatus.generating
       ? {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000,

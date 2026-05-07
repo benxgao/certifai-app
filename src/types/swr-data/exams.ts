@@ -37,7 +37,7 @@ export interface ExamListItemData {
   exam_id: string; // @guaranteed
   api_user_id: string; // Our internal UUID for API operations @guaranteed
   cert_id: number; // @guaranteed
-  exam_status?: BackendExamStatus; // Database exam status @guaranteed
+  exam_status: BackendExamStatus; // Database exam status @guaranteed
   score: number | null; // @optional
   token_cost: number; // @guaranteed
   total_questions: number; // @guaranteed
@@ -45,7 +45,7 @@ export interface ExamListItemData {
   started_at: string | null; // ISO 8601 datetime string or null @guaranteed
   submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
   certification: ExamCertificationData; // @guaranteed
-  status: string; // Computed status from API @guaranteed
+  status: string; // Computed status from API @guaranteed @deprecated non-authoritative for branching
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
 }
@@ -136,7 +136,7 @@ export interface ExamDetailData {
   custom_prompt_text?: string | null; // @optional
   started_at: string | null; // ISO 8601 datetime string or null @guaranteed
   submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
-  status: string; // Computed status from API @guaranteed
+  status: string; // Computed status from API @guaranteed @deprecated non-authoritative for branching
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
   progress: ExamProgressData; // Always present @guaranteed
@@ -211,7 +211,7 @@ export interface ExamDeleteData {
   api_user_id: string; // Our internal UUID for API operations
   cert_id: number;
   certification_name: string;
-  exam_status: string;
+  exam_status: BackendExamStatus;
   total_questions: number;
   token_cost: number;
   // Deprecated: keeping for backward compatibility only

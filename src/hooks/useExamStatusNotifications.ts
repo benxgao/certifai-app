@@ -1,7 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { toastHelpers } from '@/src/lib/toast';
 import { ExamState } from '@/src/swr/exams';
-import { BackendExamStatus } from '@/src/types/exam-status';
+import {
+  BackendExamStatus,
+  isExamGeneratingStatus,
+  isGenerationCompletedTransition,
+  isGenerationFailedTransition,
+} from '@/src/types/exam-status';
 
 /**
  * Hook to detect exam status changes and provide user feedback
@@ -17,8 +22,7 @@ export function useExamStatusNotifications(examState: ExamState | null | undefin
 
     // Detect when exam generation completes
     if (
-      previousStatus === BackendExamStatus.QUESTIONS_GENERATING &&
-      currentStatus === BackendExamStatus.READY &&
+      isGenerationCompletedTransition(previousStatus, currentStatus) &&
       !notificationShownRef.current
     ) {
       // Show success notification
@@ -46,20 +50,14 @@ export function useExamStatusNotifications(examState: ExamState | null | undefin
     }
 
     // Detect generation failure
-    if (
-      previousStatus === BackendExamStatus.QUESTIONS_GENERATING &&
-      currentStatus === BackendExamStatus.QUESTION_GENERATION_FAILED
-    ) {
+    if (isGenerationFailedTransition(previousStatus, currentStatus)) {
       toastHelpers.error.examCreationFailed(
         'Exam generation failed. Please try creating a new exam.',
       );
     }
 
     // Reset notification flag if user starts a new generation
-    if (
-      currentStatus === BackendExamStatus.QUESTIONS_GENERATING &&
-      previousStatus !== BackendExamStatus.QUESTIONS_GENERATING
-    ) {
+    if (isExamGeneratingStatus(currentStatus) && !isExamGeneratingStatus(previousStatus)) {
       notificationShownRef.current = false;
     }
 
