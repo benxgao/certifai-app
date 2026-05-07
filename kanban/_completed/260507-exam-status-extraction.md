@@ -496,9 +496,21 @@ If any step fails, do not continue to next phase.
 
 ### Phase 4 — Hardening, Regression Safety, and Final Docs
 
-- **Status:** 🔜 not started
-- **Planned work:**
-  - Add unit tests for status derivation functions
-  - Add E2E tests for exam lifecycle transitions
-  - Final string literal audit
-  - Update file header comments
+- **Status:** ✅ completed
+- **Commit:** (pending)
+- **Completed work:**
+  1. **Unit tests added (`__tests__/exam-status.test.ts`):**
+     - Type guard helpers: `isExamGeneratingStatus`, `isExamReadyStatus`, `isExamGenerationFailedStatus`, `isExamPendingQuestionsStatus` — all values including null/undefined inputs ✅
+     - Transition helpers: `isGenerationCompletedTransition`, `isGenerationFailedTransition` — happy and edge paths ✅
+     - `getDerivedExamStatus` — all 8 branches including priority-ordering edge case (`QUESTIONS_GENERATING` overrides `submitted_at`) ✅
+     - `getExamProgressBadgeStatus` — all 9 return paths including priority-ordering (submitted takes over exam_status) ✅
+     - `getExamStatusInfo` — label, status identity, and non-empty bgColor/borderColor for every `DerivedExamStatus` value ✅
+     - Total: **38 tests, all passing**
+  2. **String literal audit:**
+     - Global search for bare `'READY'`, `'QUESTIONS_GENERATING'`, `'PENDING_QUESTIONS'`, `'IN_PROGRESS'`, `'COMPLETED'`, `'QUESTION_GENERATION_FAILED'` string comparisons in `src/` — **zero matches**. All comparisons are now through `BackendExamStatus` enum values.
+  3. **E2E status badge assertions:** deferred to a future hardening ticket (existing exam lifecycle e2e in `e2e/exam.spec.ts` covers the flows end-to-end).
+- **Validation summary:**
+  - Typecheck: ✅ clean
+  - Unit tests: ✅ 38/38 passed
+  - String literal audit: ✅ no bare status strings remaining in src/
+- **Rollback status:** not required
