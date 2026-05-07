@@ -181,16 +181,18 @@ export const getExamStatusInfo = (status: DerivedExamStatus): ExamStatusInfo => 
 // Helper function to determine ExamStatusCard badge status for exam progress header
 export const getExamProgressBadgeStatus = (exam: {
   submitted_at: number | null;
-  status?: string;
+  score?: number | null;
+  pass_score?: number | null;
   exam_status?: BackendExamStatus;
 }): ExamProgressBadgeStatus => {
   if (exam.submitted_at !== null) {
-    if (exam.status === 'PASSED') {
-      return 'passed';
-    }
-
-    if (exam.status === 'FAILED') {
-      return 'failed';
+    if (
+      exam.score !== null &&
+      exam.score !== undefined &&
+      exam.pass_score !== null &&
+      exam.pass_score !== undefined
+    ) {
+      return exam.score >= exam.pass_score ? 'passed' : 'failed';
     }
 
     return 'completed';

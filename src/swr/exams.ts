@@ -34,9 +34,7 @@ export function useAllUserExams(apiUserId: string | null) {
       // Enable more conservative polling if there are exams in generating status
       refreshInterval: (data) => {
         const hasGeneratingExams = data?.data?.some(
-          (exam) =>
-            exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING ||
-            exam.status === BackendExamStatus.QUESTIONS_GENERATING,
+          (exam) => exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING,
         );
         return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating (more conservative)
       },
@@ -95,9 +93,7 @@ export function useExamsForCertification(apiUserId: string | null, certId: numbe
       // Enable more conservative polling if there are exams in generating status
       refreshInterval: (data) => {
         const hasGeneratingExams = data?.data?.some(
-          (exam) =>
-            exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING ||
-            exam.status === BackendExamStatus.QUESTIONS_GENERATING,
+          (exam) => exam.exam_status === BackendExamStatus.QUESTIONS_GENERATING,
         );
         return hasGeneratingExams ? 5000 : 0; // Poll every 5 seconds if generating (more conservative)
       },
@@ -336,7 +332,7 @@ export function useExamState(
   >(cacheKey, {
     // Enable simple polling for generating exams
     refreshInterval: (data) => {
-      const examStatus = data?.data?.exam_status || data?.data?.status;
+      const examStatus = data?.data?.exam_status;
       if (examStatus === BackendExamStatus.QUESTIONS_GENERATING) {
         return 2000; // Poll every 2 seconds for generating exams (aligned with liveStatus)
       }
@@ -354,7 +350,7 @@ export function useExamState(
     // Prevent retries for stable states
     shouldRetryOnError: (error) => {
       // Don't retry if we have a successful response with stable status
-      const examStatus = data?.data?.exam_status || data?.data?.status;
+      const examStatus = data?.data?.exam_status;
       if (examStatus && examStatus !== BackendExamStatus.QUESTIONS_GENERATING) {
         return false;
       }

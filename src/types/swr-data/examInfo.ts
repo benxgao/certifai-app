@@ -27,7 +27,6 @@ export interface ExamInfoData {
   custom_prompt_text: string | null;
   started_at: string | null;
   submitted_at: string | null;
-  status: string; // Computed status from API
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
   progress?: ExamInfoProgressData;

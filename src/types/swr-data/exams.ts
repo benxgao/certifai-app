@@ -45,7 +45,6 @@ export interface ExamListItemData {
   started_at: string | null; // ISO 8601 datetime string or null @guaranteed
   submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
   certification: ExamCertificationData; // @guaranteed
-  status: string; // Computed status from API @guaranteed @deprecated non-authoritative for branching
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
 }
@@ -136,7 +135,6 @@ export interface ExamDetailData {
   custom_prompt_text?: string | null; // @optional
   started_at: string | null; // ISO 8601 datetime string or null @guaranteed
   submitted_at: string | null; // ISO 8601 datetime string or null (DateTime from Prisma) @optional
-  status: string; // Computed status from API @guaranteed @deprecated non-authoritative for branching
   // Deprecated: keeping for backward compatibility only
   user_id?: string; // @deprecated Use api_user_id instead
   progress: ExamProgressData; // Always present @guaranteed

@@ -472,16 +472,27 @@ If any step fails, do not continue to next phase.
 
 ### Phase 3 — Enforce BackendExamStatus as Single Source of Truth
 
-- **Status:** 🔜 ready to begin
-- **Remaining work:**
-  1. Remove deprecated `status: string` field from:
-     - `ExamListItemData` interface
-     - `ExamDetailData` interface
-     - `ExamInfoData` interface
-  2. Remove `status` parameter from `getExamProgressBadgeStatus()` signature
-  3. Update `ExamStatusCard.tsx` to pass `score` and `pass_score` instead of `status`
-  4. Search for any remaining fallback reads (`exam_status || status`)
-  5. Add exhaustive switch checks in `getDerivedExamStatus()`
+- **Status:** ✅ completed
+- **Commit:** (pending)
+- **Completed work:**
+  1. **Removed deprecated `status: string` fields:**
+     - `src/types/swr-data/examInfo.ts`: removed `status: string` from `ExamInfoData` ✅
+     - `src/types/swr-data/exams.ts`: removed `status: string` from `ExamListItemData` and `ExamDetailData` ✅
+  2. **Removed all fallback reads (`exam_status || status`) in SWR hooks:**
+     - `src/swr/exams.ts` `useAllUserExams`: polling `refreshInterval` uses `exam.exam_status` only ✅
+     - `src/swr/exams.ts` `useExamsForCertification`: polling `refreshInterval` uses `exam.exam_status` only ✅
+     - `src/swr/exams.ts` `useExamState`: `refreshInterval` and `shouldRetryOnError` use `exam_status` only ✅
+  3. **Refactored `getExamProgressBadgeStatus` helper:**
+     - Removed `status?: string` parameter ✅
+     - Added `score?: number | null` and `pass_score?: number | null` parameters ✅
+     - Replaced `status === 'PASSED'/'FAILED'` logic with numeric score comparison ✅
+  4. **Updated consumers:**
+     - `src/components/custom/ExamStatusCard.tsx`: passes `score` and `pass_score` instead of `status` ✅
+     - `src/hooks/useUserExamStats.ts`: replaced `exam.status === 'COMPLETED'` with `exam.submitted_at !== null` ✅
+- **Validation summary:**
+  - Typecheck: ✅ clean (no errors in app/ or src/)
+  - All runtime branching on exam status now driven by `BackendExamStatus` only
+- **Rollback status:** not required
 
 ### Phase 4 — Hardening, Regression Safety, and Final Docs
 

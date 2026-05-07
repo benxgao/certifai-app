@@ -73,7 +73,7 @@ export function useShouldShowBuyMeACoffee() {
   // Calculate engagement metrics directly from getUserExams API response
   const certificationCount = userCertifications?.length || 0;
   const completedExamsCount =
-    allExams?.filter((exam) => exam.status === 'COMPLETED' || exam.submitted_at !== null).length ||
+    allExams?.filter((exam) => exam.submitted_at !== null).length ||
     0;
 
   // Calculate additional engagement metrics from getUserExams API data

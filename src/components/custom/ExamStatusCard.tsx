@@ -31,7 +31,8 @@ export const ExamStatusCard: React.FC<ExamStatusCardProps> = ({
 }) => {
   const progressBadgeStatus = getExamProgressBadgeStatus({
     submitted_at: submittedAt,
-    status: examState?.status,
+    score: score,
+    pass_score: examState?.certification?.pass_score,
     exam_status: examState?.exam_status,
   });
 
