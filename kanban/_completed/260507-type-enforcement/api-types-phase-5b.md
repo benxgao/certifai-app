@@ -21,7 +21,7 @@ Align certifai-app frontend with certifai-api exam endpoint type enforcement cha
    - Frontend `CreateExamResponse`: Already matches ✅
 
 2. **GET /api/users/:user_id/exams/:exam_id/live-status** (Live Status)
-   - Backend returns: `exam_id`, `exam_status`, `progress_percentage`, `topics_with_questions`, `total_topics`, `total_questions`, `estimated_seconds_remaining`, `is_complete`, etc.
+   - Backend returns: `exam_id`, `exam_status`, `progress_percentage`, `topics_with_questions`, `total_topics`, `total_questions`, `estimated_seconds_remaining`, `is_generating_completed`, etc.
    - Frontend `ExamLiveStatusData`: Already matches ✅
 
 3. **POST /api/users/:user_id/certifications/:cert_id/exams/:exam_id/submit** (Submit Exam)
