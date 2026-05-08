@@ -13,7 +13,7 @@ export interface ExamLiveStatusData {
   total_topics: number;
   total_questions: number;
   estimated_seconds_remaining: number;
-  is_complete: boolean;
+  is_generating_completed: boolean;
   query_duration_ms: number;
   timestamp_ms: number;
 }

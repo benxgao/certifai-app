@@ -64,11 +64,11 @@ export const ExamCard = memo(function ExamCard({
   // Get typed exam status and info
   let examStatus = getDerivedExamStatus(exam);
 
-  // OVERRIDE: If live-status shows generation is complete (100%, is_complete=true),
+  // OVERRIDE: If live-status shows generation is complete (100%, is_generating_completed=true),
   // override the derived status to 'ready' to prevent UI flashing when the database
   // is still catching up with the backend exam_status field transition
   const isGenerationComplete =
-    liveStatus?.is_complete === true && liveStatus?.progress_percentage === 100;
+    liveStatus?.is_generating_completed === true && liveStatus?.progress_percentage === 100;
 
   if (
     isGenerationComplete &&
@@ -101,8 +101,8 @@ export const ExamCard = memo(function ExamCard({
       ? {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000,
-          isLikelyComplete: liveStatus.is_complete,
-          stage: liveStatus.is_complete
+          isLikelyComplete: liveStatus.is_generating_completed,
+          stage: liveStatus.is_generating_completed
             ? ExamGenerationStage.Complete
             : ExamGenerationStage.Generating,
           realProgress: {

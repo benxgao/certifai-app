@@ -82,8 +82,8 @@ export const useExamPageLogic = () => {
       ? {
           completionPercentage: liveStatus.progress_percentage,
           estimatedTimeRemaining: liveStatus.estimated_seconds_remaining * 1000, // Convert to milliseconds
-          isLikelyComplete: liveStatus.is_complete, // True when fully complete
-          stage: liveStatus.is_complete ? ExamGenerationStage.Complete : ExamGenerationStage.Generating,
+          isLikelyComplete: liveStatus.is_generating_completed, // True when fully complete
+          stage: liveStatus.is_generating_completed ? ExamGenerationStage.Complete : ExamGenerationStage.Generating,
           realProgress: {
             currentBatch: Math.ceil(
               (liveStatus.topics_with_questions / liveStatus.total_topics) * 5,
