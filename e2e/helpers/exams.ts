@@ -1,5 +1,9 @@
 import { Page } from '@playwright/test';
-import { findButtonByText, findButtonByTestId } from './selectors';
+import { FlowTimingTracker } from './performance';
+
+type ExamTimingOptions = {
+  tracker?: FlowTimingTracker;
+};
 
 /**
  * Delete the first exam in the list
@@ -7,8 +11,11 @@ import { findButtonByText, findButtonByTestId } from './selectors';
  */
 export async function deleteFirstExam(
   page: Page,
-  testName: string = 'test',
+  options: ExamTimingOptions = {},
 ): Promise<{ success: boolean; error?: string }> {
+  const { tracker } = options;
+  const deleteStartedAt = Date.now();
+
   try {
     console.log('  - Deleting first exam...');
 
@@ -64,9 +71,23 @@ export async function deleteFirstExam(
     console.log('✓ Exam deleted successfully');
     await page.waitForTimeout(500);
 
+    tracker?.recordDuration('Delete existing exam for quota recovery', Date.now() - deleteStartedAt, {
+      category: 'system',
+      details: 'Removed the first exam card to free daily exam quota',
+      startedAt: deleteStartedAt,
+    });
+
     return { success: true };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
+
+    tracker?.recordDuration('Delete existing exam for quota recovery', Date.now() - deleteStartedAt, {
+      category: 'system',
+      details: errorMsg,
+      status: 'failed',
+      startedAt: deleteStartedAt,
+    });
+
     return { success: false, error: errorMsg };
   }
 }
@@ -77,9 +98,9 @@ export async function deleteFirstExam(
  */
 export async function waitForNewExamToAppear(
   page: Page,
-  options: { maxWaitTime?: number; pollInterval?: number; testName?: string } = {},
+  options: { maxWaitTime?: number; pollInterval?: number; tracker?: FlowTimingTracker } = {},
 ): Promise<boolean> {
-  const { maxWaitTime = 180000, pollInterval = 2000 } = options;
+  const { maxWaitTime = 180000, pollInterval = 2000, tracker } = options;
 
   console.log(`  - Waiting for new exam to appear in list (up to ${maxWaitTime / 1000}s)...`);
 
@@ -91,11 +112,23 @@ export async function waitForNewExamToAppear(
 
     if (cardCount > 0) {
       console.log(`✓ Exam appeared in list! Found ${cardCount} exam card(s)`);
+      tracker?.recordDuration('Wait for exam card to appear after creation', Date.now() - startTime, {
+        category: 'polling',
+        details: `Exam list returned ${cardCount} card(s)`,
+        startedAt: startTime,
+      });
       return true;
     }
 
     await page.waitForTimeout(pollInterval);
   }
+
+  tracker?.recordDuration('Wait for exam card to appear after creation', Date.now() - startTime, {
+    category: 'polling',
+    details: `Timed out after ${maxWaitTime / 1000}s of polling`,
+    status: 'failed',
+    startedAt: startTime,
+  });
 
   return false;
 }
@@ -103,7 +136,7 @@ export async function waitForNewExamToAppear(
 /**
  * Verify we're on the exams page (URL check)
  */
-export function verifyOnExamsPage(page: Page, testName: string = 'test'): boolean {
+export function verifyOnExamsPage(page: Page): boolean {
   const currentUrl = page.url();
   const isOnExamsPage = /\/main\/certifications\/\d+\/exams/.test(currentUrl);
 
@@ -121,7 +154,13 @@ export function verifyOnExamsPage(page: Page, testName: string = 'test'): boolea
  * Handle complete exam creation flow
  * Opens create modal, fills form, submits, and waits for exam to appear
  */
-export async function handleExamCreation(page: Page, testName: string = 'test'): Promise<void> {
+export async function handleExamCreation(
+  page: Page,
+  options: ExamTimingOptions = {},
+): Promise<void> {
+  const { tracker } = options;
+  const creationStartedAt = Date.now();
+
   console.log('  - Finding "New Exam" button...');
 
   const newExamButton = page.locator('button:has-text("New Exam")').first();
@@ -148,7 +187,7 @@ export async function handleExamCreation(page: Page, testName: string = 'test'):
     }
 
     console.log('  - Attempting to delete an exam to free up quota...');
-    const deleteResult = await deleteFirstExam(page);
+    const deleteResult = await deleteFirstExam(page, { tracker });
 
     if (deleteResult.success) {
       console.log('✓ Exam deleted, quota freed');
@@ -159,6 +198,7 @@ export async function handleExamCreation(page: Page, testName: string = 'test'):
   }
 
   console.log('  - Attempting to click "New Exam" button...');
+  const modalOpenStartedAt = Date.now();
 
   try {
     await newExamButton.waitFor({ state: 'visible', timeout: 10000 });
@@ -228,8 +268,14 @@ export async function handleExamCreation(page: Page, testName: string = 'test'):
   }
 
   console.log('✓ Create Exam modal opened');
+  tracker?.recordDuration('Open create exam modal', Date.now() - modalOpenStartedAt, {
+    category: 'action',
+    details: 'From clicking the New Exam button until the create modal became visible',
+    startedAt: modalOpenStartedAt,
+  });
 
   console.log('  - Clicking "Create" button in modal...');
+  const submitStartedAt = Date.now();
 
   let createButton = createExamModal.locator('button:has-text("Create Exam")').first();
   let isCreateButtonVisible = await createButton.isVisible({ timeout: 3000 }).catch(() => false);
@@ -289,12 +335,23 @@ export async function handleExamCreation(page: Page, testName: string = 'test'):
 
   if (!isModalClosed) {
     console.log('  ⚠ Modal did not close within 30s, proceeding to check list...');
+    tracker?.recordDuration('Submit exam creation request', Date.now() - submitStartedAt, {
+      category: 'system',
+      details: 'Create request sent but modal close was not observed within 30 seconds',
+      startedAt: submitStartedAt,
+    });
   } else {
     console.log('✓ Modal closed');
+    tracker?.recordDuration('Submit exam creation request', Date.now() - submitStartedAt, {
+      category: 'system',
+      details: 'From clicking Create until the modal closed',
+      startedAt: submitStartedAt,
+    });
   }
 
   const examAppeared = await waitForNewExamToAppear(page, {
     maxWaitTime: 180000,
+    tracker,
   });
 
   if (!examAppeared) {
@@ -302,6 +359,12 @@ export async function handleExamCreation(page: Page, testName: string = 'test'):
   }
 
   verifyOnExamsPage(page);
+
+  tracker?.recordDuration('Complete exam creation helper', Date.now() - creationStartedAt, {
+    category: 'system',
+    details: 'Covers modal open, submit, backend processing, and exam card appearance',
+    startedAt: creationStartedAt,
+  });
 
   console.log('\n✅ EXAM CREATION COMPLETE — Successfully created new exam and verified it appears in list');
 }

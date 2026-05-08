@@ -1,6 +1,7 @@
 import { test, expect } from './fixtures/auth';
-import type { Page } from '@playwright/test';
+import type { Page, TestInfo } from '@playwright/test';
 import { deleteFirstExam, handleExamCreation } from './helpers/exams';
+import { FlowTimingTracker } from './helpers/performance';
 
 type TestFixtures = {
   authenticatedPage: Page;
@@ -12,50 +13,79 @@ test.describe('Exam Flows', () => {
     testInfo.setTimeout(360000);
   });
 
-  test('[Dashboard → Cert → Exams]', async ({ authenticatedPage }: TestFixtures) => {
+  test('[Dashboard → Cert → Exams]', async ({ authenticatedPage }: TestFixtures, testInfo: TestInfo) => {
+    const timingTracker = new FlowTimingTracker('Exam flow baseline');
+
     console.log('\n================== EXAM FLOW TEST ==================');
 
-    // ===== STEP 1: Navigate to dashboard and check for registered certs =====
-    console.log('\n[STEP 1] Navigating to dashboard...');
-    console.log('  - Navigating to /main...');
-    await authenticatedPage.goto('/main', { waitUntil: 'domcontentloaded' });
-    console.log('✓ Navigated to dashboard (/main)');
-
-    await authenticatedPage.waitForLoadState('domcontentloaded', { timeout: 10000 });
-    console.log('✓ Dashboard DOM loaded');
-
-    console.log('  - Waiting for Dashboard breadcrumb to appear...');
-    const dashboardBreadcrumb = authenticatedPage.locator('text=Dashboard').first();
-    await dashboardBreadcrumb.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {
-      console.log('  ⚠ Dashboard breadcrumb not found, continuing...');
-    });
-    console.log('✓ Dashboard page confirmed');
-
-    console.log('  - Waiting for dashboard content to fully load...');
-    const registerCertButtonWait = authenticatedPage
-      .locator('button:has-text("Register for Certification")')
-      .first();
     try {
-      await registerCertButtonWait.waitFor({ state: 'visible', timeout: 10000 });
-      console.log('✓ Dashboard content fully loaded');
-    } catch (e) {
-      console.log('  ⚠ Register button not immediately visible, proceeding with cert check...');
-    }
+      // ===== STEP 1: Navigate to dashboard and check for registered certs =====
+      console.log('\n[STEP 1] Navigating to dashboard...');
+      console.log('  - Navigating to /main...');
+      await timingTracker.trackStep(
+        'Navigate to dashboard route',
+        async () => {
+          await authenticatedPage.goto('/main', { waitUntil: 'domcontentloaded' });
+        },
+        { category: 'page', details: 'Initial route change to /main' },
+      );
+      console.log('✓ Navigated to dashboard (/main)');
 
-    const registeredCertLinks = authenticatedPage.locator('a[href*="/main/certifications/"]');
-    let registeredCertCount = await registeredCertLinks.count();
-    console.log(
-      `${registeredCertCount > 0 ? '✓' : '  ⚠'} Found ${registeredCertCount} registered certification(s) on dashboard`,
-    );
+      await timingTracker.trackStep(
+        'Dashboard DOM content loaded',
+        async () => {
+          await authenticatedPage.waitForLoadState('domcontentloaded', { timeout: 10000 });
+        },
+        { category: 'page' },
+      );
+      console.log('✓ Dashboard DOM loaded');
+      await timingTracker.capturePageMetrics(authenticatedPage, 'Dashboard /main');
 
-    // ===== STEP 2: If no certs, register one =====
-    if (registeredCertCount === 0) {
-      console.log('\n[STEP 2] No registered certs found — registering a certification...');
-      console.log('  - Looking for "Register for Certification" button...');
+      console.log('  - Waiting for Dashboard breadcrumb to appear...');
+      const dashboardBreadcrumb = authenticatedPage.locator('text=Dashboard').first();
+      await dashboardBreadcrumb.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {
+        console.log('  ⚠ Dashboard breadcrumb not found, continuing...');
+      });
+      console.log('✓ Dashboard page confirmed');
 
-      const registerCertButton = authenticatedPage
+      console.log('  - Waiting for dashboard content to fully load...');
+      const registerCertButtonWait = authenticatedPage
         .locator('button:has-text("Register for Certification")')
         .first();
+      const dashboardContentStartedAt = Date.now();
+      try {
+        await registerCertButtonWait.waitFor({ state: 'visible', timeout: 10000 });
+        console.log('✓ Dashboard content fully loaded');
+        timingTracker.recordDuration('Dashboard content visible', Date.now() - dashboardContentStartedAt, {
+          category: 'content',
+          details: 'Primary certification CTA became visible',
+          startedAt: dashboardContentStartedAt,
+        });
+      } catch (e) {
+        console.log('  ⚠ Register button not immediately visible, proceeding with cert check...');
+        timingTracker.recordDuration('Dashboard content wait fallback', Date.now() - dashboardContentStartedAt, {
+          category: 'content',
+          details: 'Primary CTA was not visible within 10 seconds; continuing with certification list probe',
+          status: 'failed',
+          startedAt: dashboardContentStartedAt,
+        });
+      }
+
+      const registeredCertLinks = authenticatedPage.locator('a[href*="/main/certifications/"]');
+      let registeredCertCount = await registeredCertLinks.count();
+      console.log(
+        `${registeredCertCount > 0 ? '✓' : '  ⚠'} Found ${registeredCertCount} registered certification(s) on dashboard`,
+      );
+
+      // ===== STEP 2: If no certs, register one =====
+      if (registeredCertCount === 0) {
+        console.log('\n[STEP 2] No registered certs found — registering a certification...');
+        console.log('  - Looking for "Register for Certification" button...');
+
+        const registerFlowStartedAt = Date.now();
+        const registerCertButton = authenticatedPage
+          .locator('button:has-text("Register for Certification")')
+          .first();
 
       const isRegisterButtonVisible = await registerCertButton
         .isVisible({ timeout: 5000 })
@@ -67,19 +97,32 @@ test.describe('Exam Flows', () => {
         );
       }
 
-      console.log('✓ Found "Register for Certification" button, clicking...');
-      await registerCertButton.click();
+        console.log('✓ Found "Register for Certification" button, clicking...');
+        await registerCertButton.click();
 
-      await authenticatedPage.waitForLoadState('domcontentloaded', { timeout: 10000 });
-      console.log('✓ Navigated to certifications browse page');
+        await timingTracker.trackStep(
+          'Navigate to certification browse page',
+          async () => {
+            await authenticatedPage.waitForLoadState('domcontentloaded', { timeout: 10000 });
+          },
+          { category: 'page' },
+        );
+        console.log('✓ Navigated to certifications browse page');
 
-      await authenticatedPage.waitForTimeout(500);
-      console.log('✓ Certifications page DOM loaded');
+        await authenticatedPage.waitForTimeout(500);
+        console.log('✓ Certifications page DOM loaded');
+        await timingTracker.capturePageMetrics(authenticatedPage, 'Certification browse page');
 
-      console.log('  - Waiting for certification data to load...');
-      await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
-        console.log('  ⚠ networkidle timeout, continuing...');
-      });
+        console.log('  - Waiting for certification data to load...');
+        const certificationDataStartedAt = Date.now();
+        await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
+          console.log('  ⚠ networkidle timeout, continuing...');
+        });
+        timingTracker.recordDuration('Certification data load wait', Date.now() - certificationDataStartedAt, {
+          category: 'content',
+          details: 'Waited for certification browse page network activity to settle',
+          startedAt: certificationDataStartedAt,
+        });
 
       console.log('  - Checking for "View Exams" button (already registered cert)...');
       const viewExamsCardButton = authenticatedPage
@@ -111,6 +154,11 @@ test.describe('Exam Flows', () => {
         }
 
         console.log(`✓ Successfully navigated to exams page (${currentUrl})`);
+        timingTracker.recordDuration('Existing certification to exams page', Date.now() - registerFlowStartedAt, {
+          category: 'system',
+          details: 'Used already-registered certification card and opened exams page',
+          startedAt: registerFlowStartedAt,
+        });
       } else {
         console.log('  ⚠ No "View Exams" button found — proceeding with new cert registration...');
 
@@ -251,16 +299,30 @@ test.describe('Exam Flows', () => {
         }
 
         console.log(`✓ Successfully navigated to exams page (${currentUrl})`);
+        timingTracker.recordDuration('Register certification and reach exams page', Date.now() - registerFlowStartedAt, {
+          category: 'system',
+          details: 'Completed certification registration flow and opened exams page',
+          startedAt: registerFlowStartedAt,
+        });
       }
+
+      await timingTracker.capturePageMetrics(authenticatedPage, 'Certification exams page');
 
       // ===== STEP 3: Verify "Create New Exam" button exists on exam list page =====
       console.log('\n[STEP 3] Verifying "Create New Exam" button on exams page...');
       console.log('  - Waiting for page content to fully load...');
+      const examPageContentStartedAt = Date.now();
       await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
         console.log('  ⚠ networkidle timeout, continuing...');
       });
+      timingTracker.recordDuration('Exam list content load wait', Date.now() - examPageContentStartedAt, {
+        category: 'content',
+        details: 'Waited for exams page network activity to settle before looking for Create Exam CTA',
+        startedAt: examPageContentStartedAt,
+      });
 
       console.log('  - Waiting for "Create Exam" button to appear...');
+      const createCtaStartedAt = Date.now();
       let createExamButton = authenticatedPage.locator('button:has-text("New Exam")').first();
 
       let isCreateButtonVisible = await createExamButton
@@ -282,14 +344,20 @@ test.describe('Exam Flows', () => {
       }
 
       console.log('✓ "Create New Exam" button found and visible');
+      timingTracker.recordDuration('Create exam CTA visible on exams page', Date.now() - createCtaStartedAt, {
+        category: 'content',
+        details: 'Exam list page was ready for exam creation',
+        startedAt: createCtaStartedAt,
+      });
 
       // ===== STEP 4: Create a new exam (no-certs path) =====
       console.log('\n[STEP 4] Creating a new exam...');
-      await handleExamCreation(authenticatedPage);
+      await handleExamCreation(authenticatedPage, { tracker: timingTracker });
     } else {
       // If user already has registered certs, use the first one
       console.log('\n[STEP 2] User has registered certs — navigating to exams page...');
       console.log('  - Clicking on first registered certification card...');
+      const existingCertStartedAt = Date.now();
 
       const firstCertCard = authenticatedPage.locator('a[href*="/main/certifications/"]').first();
       const isCertCardVisible = await firstCertCard.isVisible({ timeout: 5000 }).catch(() => false);
@@ -311,15 +379,28 @@ test.describe('Exam Flows', () => {
       }
 
       console.log(`✓ Successfully navigated to exams page (${existingCertUrl})`);
+      timingTracker.recordDuration('Dashboard certification to exams page', Date.now() - existingCertStartedAt, {
+        category: 'system',
+        details: 'Used an already-registered certification card from the dashboard',
+        startedAt: existingCertStartedAt,
+      });
+      await timingTracker.capturePageMetrics(authenticatedPage, 'Certification exams page');
 
       // ===== STEP 3: Verify "Create New Exam" button exists =====
       console.log('\n[STEP 3] Verifying "Create New Exam" button on exams page...');
       console.log('  - Waiting for page content to fully load...');
+      const existingExamContentStartedAt = Date.now();
       await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
         console.log('  ⚠ networkidle timeout, continuing...');
       });
+      timingTracker.recordDuration('Exam list content load wait', Date.now() - existingExamContentStartedAt, {
+        category: 'content',
+        details: 'Waited for exams page network activity to settle before locating Create Exam CTA',
+        startedAt: existingExamContentStartedAt,
+      });
 
       console.log('  - Waiting for "Create Exam" button to appear...');
+      const existingCreateCtaStartedAt = Date.now();
       let existingCreateExamButton = authenticatedPage
         .locator('button:has-text("Create Exam")')
         .first();
@@ -365,19 +446,31 @@ test.describe('Exam Flows', () => {
       }
 
       console.log('✓ "Create New Exam" button found and visible');
+      timingTracker.recordDuration('Create exam CTA visible on exams page', Date.now() - existingCreateCtaStartedAt, {
+        category: 'content',
+        details: 'Exam list page was ready for exam creation',
+        startedAt: existingCreateCtaStartedAt,
+      });
 
       // ===== STEP 4: Create a new exam (existing-certs path) =====
       console.log('\n[STEP 4] Creating a new exam...');
-      await handleExamCreation(authenticatedPage);
+      await handleExamCreation(authenticatedPage, { tracker: timingTracker });
     }
 
-    console.log('\n================== TEST COMPLETE ==================');
-    console.log('✓ All steps completed successfully:');
-    console.log('  1. Navigate to dashboard');
-    console.log('  2. Find/register a certification');
-    console.log('  3. Verify exam creation button');
-    console.log('  4. Create a new exam and verify it appears');
-    console.log('====================================================');
+      console.log('\n================== TEST COMPLETE ==================');
+      console.log('✓ All steps completed successfully:');
+      console.log('  1. Navigate to dashboard');
+      console.log('  2. Find/register a certification');
+      console.log('  3. Verify exam creation button');
+      console.log('  4. Create a new exam and verify it appears');
+      console.log('====================================================');
+    } finally {
+      timingTracker.logSummary();
+      await testInfo.attach('exam-flow-timing-baseline', {
+        body: JSON.stringify(timingTracker.buildReport(), null, 2),
+        contentType: 'application/json',
+      });
+    }
   });
 
   test.skip('should delete an exam', async ({ authenticatedPage }) => {
