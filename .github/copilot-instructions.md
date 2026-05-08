@@ -1,24 +1,46 @@
 # certifai AI Coding Instructions
 
 ## Architecture
-- `certifai-app`: Next.js 15 frontend with shadcn/ui, Tailwind CSS, Firebase Auth
-- `certifai-api`: Firebase Functions backend with Express.js, Prisma, PostgreSQL, Redis
+
+- `certifai-app`: Next.js 15 frontend — shadcn/ui, Tailwind CSS, Firebase Auth
+- `certifai-api`: Firebase Functions backend — Express.js, Prisma ORM, PostgreSQL, Redis
 
 ## Frontend Patterns
-- Use shadcn/ui components from `src/components/ui/`, custom components in `src/components/custom/`
-- Use `STYLE_GUIDE.md` for styling conventions
-- Use existing reusable components from `src/components/` if possible
-- Always include dark mode variants
-- Use SWR hooks from `src/swr/` for API calls
-- API format: `{success: boolean, data: T, meta?: PaginationMeta}`
+
+- Components: shadcn/ui from `src/components/ui/`, custom in `src/components/custom/`
+- Follow `STYLE_GUIDE.md` for styling; always include dark mode variants
+- Use existing components before creating new ones
+- Data fetching: SWR hooks from `src/swr/` — never call API directly from components
+- API response shape: `{ success: boolean; data: T; meta?: PaginationMeta }`
+- Absolute imports only: `@/src/components/ui/button`
+
+## Type Safety
+
+- No `any` — use Prisma-generated types on the backend, explicit interfaces on the frontend
+- All SWR hooks must have explicit generic parameters: `useSWR<ResponseType, Error>(...)`
+- Prefer enums over string literals for fixed value sets (e.g., `ExamStatus.READY` not `'READY'`)
+- Mark interface fields as optional (`field?: T`) only when the API genuinely omits them
 
 ## Backend Patterns
-- Entry: `functions/src/index.ts`, routes in `src/endpoints/api/`
-- Prisma client in `src/services/prisma/index.ts`
-- Auth middleware: `src/middlewares/authCheck.ts`
-- Use `req.user` for authenticated user data
 
-## Development Workflows
+- Entry: `functions/src/index.ts`, routes in `src/endpoints/api/`
+- Prisma client via `src/services/prisma/index.ts` — never use Prisma directly outside the service layer
+- Auth middleware: `src/middlewares/authCheck.ts` — use `req.user` for authenticated user data
+- Do not use Firebase's default JWT verification for public endpoints; implement custom verification
+
+## Database Migrations
+
+```bash
+cd certifai-api/functions
+npx prisma migrate dev --name "description"
+npx prisma generate
+```
+
+- Always add `@default(...)` or make columns nullable when adding new fields to existing tables
+- Never run `prisma migrate reset` or drop tables in production
+
+## Development Commands
+
 ```bash
 # Frontend
 cd certifai-app && npm run dev
@@ -26,58 +48,24 @@ cd certifai-app && npm run dev
 # Backend
 cd certifai-api/functions && npm run serve
 
-# Database migrations
-cd certifai-api/functions
-npx prisma migrate dev --name "description"
-npx prisma generate
+# TypeScript check (run after significant type changes)
+cd certifai-api/functions && npx tsc --noEmit 2>&1 | grep "^src/"
+cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(app|src)/"
 ```
 
-## Key Rules
-- Use absolute imports: `@/src/components/ui/button`
-- Never reset database or run `npm run build` during interaction
-- Use Prisma generated types, avoid `any`
-- Conservative, clean solutions following best practices
-- Leverage existing libraries over custom implementations
+## E2E Tests (Playwright)
 
-## Anti-Patterns to Avoid
+- See `e2e/instructions.md` for the full authoring guide
+- Use `authenticatedPage` fixture (from `e2e/fixtures/auth`) for all authenticated tests
+- Use step-style console logging: `[STEP N]`, `  - sub-action`, `✓ success`, `  ⚠ warning`
+- Extract reusable multi-step flows into `e2e/helpers/`
+- Throw `Error` on failure — never swallow errors silently
 
-- Avoid running `npm run build` during the interaction
-- Don't bypass the `cn()` utility for className merging
-- Avoid direct Prisma client usage outside service layer
-- Don't hardcode API endpoints - use environment variables
-- Never commit Firebase config or credentials
-- Don't use `any` types - leverage Prisma's generated types
-- Never reset the databse
-- Avoid introducing unnecessary complexity
-- When migrating, always update columns with default values or constraints to avoid breaking changes
-- Avoid using Firebase's default JWT verification for public endpoints; implement custom verification logic
-- Cconservative solutions with a focus on clean and simple and follows best practices
-- Use existing libraries and tools rather than reinventing the wheel
-- Value type safety and want to ensure that the code is easy to understand and maintain
-- Ensure no fancy features are used that could complicate the codebase
-- Ensure that the code is easy to test and debug
+## Hard Rules
 
-## Emergency Memory Recovery:
-
-If VS Code becomes unresponsive:
-```bash
-# Kill VS Code processes
-pkill -f "Visual Studio Code"
-
-# Clear VS Code cache
-rm -rf ~/Library/Caches/com.microsoft.VSCode*
-
-# Restart with minimal extensions
-code --disable-extensions
-```
-
-## Monitoring Memory Usage:
-
-You can check VS Code's memory usage with:
-```bash
-# Check VS Code memory usage
-ps aux | grep -i "visual studio code" | head -5
-```
-
-## Efficient LLM Token Usage
-- Minimize output token consumption in AI API calls by keeping responses concise and simplifying summaries.
+- **Never** run `npm run build` or reset the database during a session
+- **Never** commit Firebase config, service account keys, or credentials
+- **Never** hardcode API endpoints — use environment variables
+- **Never** use `cn()` bypass for className merging
+- Scope all changes to what is explicitly requested — no unsolicited refactors or feature additions
+- Prefer the minimum code change that solves the problem correctly

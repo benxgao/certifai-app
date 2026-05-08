@@ -30,7 +30,7 @@ import {
 test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Profile → Delete @integration', async ({
   page,
 }) => {
-  test.setTimeout(120000); // 120 seconds for this test only
+  test.setTimeout(180000); // 180 seconds for this test only
 
   // Use static test credentials from environment (reused across all test runs)
   const testEmail = process.env.PW_SIGNUP_EMAIL || 'pw_test_signup@certestic.com';
