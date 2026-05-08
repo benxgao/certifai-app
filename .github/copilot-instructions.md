@@ -61,6 +61,33 @@ cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(app|src)/"
 - Extract reusable multi-step flows into `e2e/helpers/`
 - Throw `Error` on failure — never swallow errors silently
 
+## Skill: AI-Oriented Kanban Workflow
+
+- Treat phase execution as plan-first delivery.
+- If user asks `implement phase <n>`, first create:
+  - `kanban/backlogs/public-trial-rag-phase-0<n>-rollout.md`
+- Do this before any code implementation.
+
+### Rollout file checklist
+
+Each rollout file should include:
+
+- Objective
+- In scope / out of scope
+- Dependencies
+- Step checklist
+- Acceptance checklist
+- Rollback note
+- Open questions
+- Handoff notes for next phase
+
+### Workflow usage
+
+- Use `kanban/backlogs/` for planning artifacts.
+- Keep one rollout file per phase.
+- Update progress status and decisions in the same file as work continues.
+- Use evidence-based completion (tests/checks/validation notes), not opinion-based completion.
+
 ## Hard Rules
 
 - **Never** run `npm run build` or reset the database during a session
