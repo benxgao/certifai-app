@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import ConditionalFirebaseAuthProvider from '@/src/components/auth/ConditionalFirebaseAuthProvider';
 import ConditionalFooter from '@/src/components/custom/ConditionalFooter';
+import ConsentBanner from '@/src/components/custom/ConsentBanner';
 import GoogleAnalytics from '@/src/components/analytics/GoogleAnalytics';
 import PageViewTracker from '@/src/components/analytics/PageViewTracker';
 import './globals.css';
@@ -322,6 +323,7 @@ export default function RootLayout({
             </Suspense>
           </div>
           <ConditionalFooter />
+          <ConsentBanner />
         </ConditionalFirebaseAuthProvider>
       </body>
     </html>

@@ -57,30 +57,34 @@ Out of scope (defer to v2):
 
 ## Phased Plan (Fast-Track for Production)
 
-### Phase 1: Setup & Banner Integration
+### Phase 1: Setup & Banner Integration ✅ COMPLETED
 
-**Goal**: Install `react-cookie-consent` and integrate banner into marketing layout.
+**Goal**: Install `react-cookie-consent` and integrate banner into app layout.
 
 **Tasks**:
 
-- Install `react-cookie-consent` package.
-- Create a wrapper component `ConsentBanner` (shadcn-styled, dark mode support).
-- Add banner to marketing layout with simple messaging:
-  - "We use Google Analytics to understand how you use our site."
-  - Accept / Decline buttons.
-  - Link to privacy policy.
-- Export consent state helper (`getConsent()`).
+- [x] Install `react-cookie-consent` package.
+- [x] Create consent utility `src/lib/consent.ts` — `getConsent()`, `setConsent()`, `CONSENT_KEY`.
+- [x] Create `ConsentBanner` component (`src/components/custom/ConsentBanner.tsx`) — shadcn-styled, dark mode support, Accept / Decline buttons, privacy policy link.
+- [x] Add `<ConsentBanner />` to `app/layout.tsx`.
 
 **Deliverables**:
 
-- `src/components/custom/ConsentBanner.tsx`
-- Consent utility hook/fn for reading localStorage state.
+- `src/lib/consent.ts` — consent read/write helpers
+- `src/components/custom/ConsentBanner.tsx` — standalone banner component
 
-**Est. Time**: 1–2 hours
+**Independent Test Checklist**:
 
-**Exit criteria**:
+1. **Banner visibility** — Clear localStorage, visit any page → banner should appear at the bottom.
+2. **Accept flow** — Click "Accept" → banner disappears; `localStorage.getItem('certestic_cookie_consent')` returns `'accepted'`.
+3. **Decline flow** — Clear localStorage, visit page, click "Decline" → banner disappears; localStorage value is `'declined'`.
+4. **Return visit (accepted)** — With `'accepted'` in localStorage, refresh page → banner must NOT appear.
+5. **Return visit (declined)** — With `'declined'` in localStorage, refresh page → banner must NOT appear.
+6. **Privacy link** — "Privacy Policy" link in banner navigates to `/privacy`.
+7. **Dark mode** — Toggle dark mode; verify banner background and text contrast are correct.
+8. **Mobile** — On viewport < 640px, banner layout should be readable and buttons accessible.
 
-- Banner renders on first visit, saves choice to localStorage, respects saved state on return.
+> **Note**: GA gating is NOT part of this phase. GA may still load regardless of consent state — that is addressed in Phase 2.
 
 ---
 
@@ -90,21 +94,25 @@ Out of scope (defer to v2):
 
 **Tasks**:
 
-- Remove GA script from global `_app.tsx` or layout.
-- Create lazy GA initializer (`initializeGA()`) that checks consent before loading gtag.
-- On `ConsentBanner` accept, call `initializeGA()`.
-- Defer to marketing layout or parent context to invoke initializer.
+- Remove GA `<script>` tags from `<head>` in `app/layout.tsx`.
+- Gate `<GoogleAnalytics />` component render in `<body>` on consent state.
+- On `ConsentBanner` accept callback, call `initializeGA()` to dynamically load gtag.
+- Ensure `PageViewTracker` only fires events when GA is initialized.
 
 **Deliverables**:
 
-- GA initialization wrapped in consent check.
-- No GA request fires before consent.
+- `app/layout.tsx` — GA only rendered when consent is `'accepted'`.
+- `src/components/analytics/GoogleAnalytics.tsx` — updated to lazily initialize.
 
-**Est. Time**: 30 min–1 hour
+**Independent Test Checklist**:
 
-**Exit criteria**:
-
-- Manual browser check: first visit shows no `_ga` cookies; after accept, GA loads and tracks.
+1. **No GA on first visit** — Clear localStorage, open DevTools → Network tab, visit page → confirm no request to `googletagmanager.com`.
+2. **No `_ga` cookie before consent** — Clear cookies/localStorage, visit page → Application tab shows no `_ga` cookie.
+3. **GA loads on accept** — Click "Accept" in banner → Network tab shows gtag.js request fires immediately.
+4. **`_ga` cookie set after accept** — After accepting, Application tab shows `_ga` cookie created.
+5. **Return visit (accepted)** — With stored `'accepted'`, reload → GA loads without banner.
+6. **Return visit (declined)** — With stored `'declined'`, reload → no gtag.js request fires.
+7. **PageViewTracker no-op before consent** — Verify no `gtag('event')` calls appear in console before accept.
 
 ---
 
@@ -114,36 +122,34 @@ Out of scope (defer to v2):
 
 **Tasks**:
 
-- Update existing privacy policy footnote to mention analytics consent.
-- Add "Cookie Preferences" link in footer pointing to a simple modal/accordion that:
-  - Shows current consent state.
-  - Allows re-accept/re-decline.
-  - Persists choice.
+- Update existing privacy policy page to mention analytics consent and the consent banner.
+- Add "Cookie Preferences" link in `MarketingFooter` (and app footer if separate).
+- Clicking "Cookie Preferences" clears consent from localStorage and reloads the page to re-show the banner (simple approach, no modal required).
 - Keep text minimal (2–3 sentences).
 
 **Deliverables**:
 
-- Updated privacy policy section.
-- Simple cookie preferences UI (modal or dialog).
+- `src/components/custom/MarketingFooter.tsx` — "Cookie Preferences" link added.
+- `app/privacy/page.tsx` — analytics consent section updated.
 
-**Est. Time**: 1–2 hours
+**Independent Test Checklist**:
 
-**Exit criteria**:
-
-- Footer link visible and functional; users can toggle consent preference.
+1. **Footer link visible** — On any marketing page, footer includes "Cookie Preferences" text link.
+2. **Re-show banner** — With `'accepted'` in localStorage, click "Cookie Preferences" → banner reappears.
+3. **Can change from accept to decline** — After banner reappears, click "Decline" → GA no longer loads on next navigation.
+4. **Privacy page updated** — `/privacy` mentions cookie consent and GA usage clearly.
+5. **No broken links** — Privacy link from banner and footer "Privacy Policy" link both resolve correctly.
 
 ---
 
 ### Phase 4: QA & Production Rollout
 
-**Goal**: Validate and ship to production.
+**Goal**: Validate full flow end-to-end and ship to production.
 
 **Tasks**:
 
-- Test critical paths (fresh visit → accept/decline, return visit with saved state).
-- Check mobile and two major browsers (Chrome, Safari).
-- Verify: no GA before consent, GA fires after accept.
-- Deploy to staging, then production (no feature flag required).
+- Run full QA matrix below across Chrome + Safari, desktop + mobile.
+- Deploy to staging, validate, then production.
 
 **Deliverables**:
 
@@ -152,9 +158,25 @@ Out of scope (defer to v2):
 
 **Est. Time**: 2–3 hours (including QA + deploy)
 
+**Independent Test Checklist (Full Matrix)**:
+
+| #   | Scenario                        | Expected                                | Pass? |
+| --- | ------------------------------- | --------------------------------------- | ----- |
+| 1   | Fresh visit, no consent         | Banner shown, no GA request             |       |
+| 2   | Click Accept                    | Banner gone, GA loads, `_ga` cookie set |       |
+| 3   | Click Decline                   | Banner gone, no GA, no cookie           |       |
+| 4   | Return with `accepted`          | No banner, GA loads                     |       |
+| 5   | Return with `declined`          | No banner, no GA                        |       |
+| 6   | Cookie Preferences → re-accept  | GA re-activates                         |       |
+| 7   | Cookie Preferences → re-decline | GA stays blocked                        |       |
+| 8   | Mobile Chrome (375px)           | Banner readable, buttons tappable       |       |
+| 9   | Mobile Safari (375px)           | Same as above                           |       |
+| 10  | Dark mode                       | Banner contrast correct                 |       |
+| 11  | Privacy link                    | Navigates to `/privacy`                 |       |
+
 **Exit criteria**:
 
-- All critical tests pass; production live.
+- All 11 scenarios pass on Chrome + Safari (desktop + mobile).
 
 ## Recommended Timeline
 
