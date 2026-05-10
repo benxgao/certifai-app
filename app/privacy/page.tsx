@@ -35,34 +35,29 @@ export default function PrivacyPolicy() {
                   Introduction
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Certestic (&quot;this project,&quot; &quot;the platform,&quot; or &quot;I&quot;)
-                  is a personal side project operated by an individual developer. This Privacy
-                  Policy explains how I collect, use, and protect your personal information when you
-                  use this AI-powered IT certification training platform. As a personal project with
-                  limited resources, this policy reflects the practical realities of operating a
-                  small-scale educational platform.
+                  Certestic (&quot;the platform&quot;) is an AI-powered IT certification training
+                  platform. This Privacy Policy explains how we collect, use, and protect your
+                  personal information when you use our services.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   <strong>Your Rights:</strong> You have rights regarding your personal information,
                   including the right to access, correct, and request deletion of your information.
-                  I will honor these rights to the best of my ability as a solo developer.
+                  We comply with these rights as required by law.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  By using Certestic, you acknowledge that this is a personal project and agree to
-                  the collection, use, and disclosure of your personal information as described in
-                  this policy. If you do not agree with this policy, please do not use this
-                  platform.
+                  By using Certestic, you agree to the collection, use, and disclosure of your
+                  personal information as described in this policy. If you do not agree, please do
+                  not use this platform.
                 </p>
               </section>
 
               {/* Legal Basis and Purpose */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Why I Collect Your Information
+                  Why We Collect Your Information
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  As a personal project, I collect and process your personal information for these
-                  essential purposes:
+                  We collect and process your personal information for these purposes:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
                   <li>
@@ -75,7 +70,7 @@ export default function PrivacyPolicy() {
                   </li>
                   <li>
                     <strong>Platform Improvement:</strong> To understand how the platform is used
-                    and improve its functionality (as time and resources permit)
+                    and improve its functionality
                   </li>
                   <li>
                     <strong>Communication:</strong> To send you essential service-related
@@ -87,18 +82,17 @@ export default function PrivacyPolicy() {
                   </li>
                 </ul>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  I aim to collect only information that is necessary for these purposes, though as
-                  a solo developer, data minimization practices may evolve over time.
+                  We aim to collect only information that is necessary for these purposes.
                 </p>
               </section>
 
               {/* Information We Collect */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Information I Collect
+                  Information We Collect
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  I collect the following types of personal information to operate this platform:
+                  We collect the following types of personal information to operate this platform:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
@@ -130,6 +124,25 @@ export default function PrivacyPolicy() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Public Free Trials and Marketing Pages
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  When you access a public free trial, promotional landing page, or other marketing
+                  page that offers a trial experience, we may collect the information you choose to
+                  provide in order to deliver that experience, communicate with you about the trial,
+                  and prevent abuse or misuse of the service. Depending on the specific trial flow,
+                  we may ask for an email address, or allow access without requiring one if the
+                  trial is designed to be anonymous or low-friction.
+                </p>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  If an email address is requested, we will clearly indicate whether it is required
+                  or optional at the point of collection. Even when no email address is provided, we
+                  may still collect limited technical information such as IP address, browser type,
+                  and device information to operate the trial, protect our services, and improve our
+                  products.
+                </p>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Information Collected Automatically
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
@@ -157,6 +170,12 @@ export default function PrivacyPolicy() {
                     (country/city level only)
                   </li>
                 </ul>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  This automatic collection also applies when you visit our marketing pages or use a
+                  public trial experience, where we may use the information to measure traffic,
+                  improve product quality, detect suspicious activity, and maintain service
+                  reliability.
+                </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   AI Training and Analytics Data
@@ -183,7 +202,7 @@ export default function PrivacyPolicy() {
                   Information We Do NOT Collect
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  In compliance with Privacy Principle 2 (collection from individual), we do not:
+                  We do not:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
                   <li>
@@ -199,12 +218,11 @@ export default function PrivacyPolicy() {
               {/* How We Use Your Information */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  How We Use Your Personal Information (Privacy Principle 3)
+                  How We Use Your Personal Information
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under Privacy Principle 3, we will only use your personal information for the
-                  purposes for which it was collected, or for a directly related purpose you would
-                  reasonably expect. We use your information for:
+                  We use your personal information only for the purposes for which it was collected,
+                  or for directly related purposes you would reasonably expect. Specifically:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
@@ -214,6 +232,10 @@ export default function PrivacyPolicy() {
                   <li>
                     <strong>Platform Operation:</strong> Providing access to our certification
                     training platform and maintaining your account
+                  </li>
+                  <li>
+                    <strong>Public Trials and Marketing Pages:</strong> Operating free trials,
+                    promotional experiences, and lead-capture flows where applicable
                   </li>
                   <li>
                     <strong>AI-Powered Features:</strong> Generating personalized practice exams,
@@ -262,11 +284,10 @@ export default function PrivacyPolicy() {
 
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-6">
                   <h4 className="text-amber-900 dark:text-amber-100 font-semibold mb-2">
-                    📬 Essential Platform Communications
+                    📬 Platform Update Emails
                   </h4>
                   <p className="text-amber-800 dark:text-amber-200 text-sm mb-3">
-                    By creating an account, you automatically consent to receiving platform update
-                    emails through our marketing email services. These communications include:
+                    We'll send you essential platform communications including:
                   </p>
                   <ul className="list-disc pl-6 text-amber-800 dark:text-amber-200 text-sm space-y-1">
                     <li>Critical security updates and notifications</li>
@@ -277,9 +298,9 @@ export default function PrivacyPolicy() {
                     <li>Important certification and study-related announcements</li>
                   </ul>
                   <p className="text-amber-700 dark:text-amber-300 text-xs mt-3">
-                    <strong>Note:</strong> While you can unsubscribe from promotional content,
-                    essential service communications are required for platform operation and cannot
-                    be opted out of.
+                    <strong>Note:</strong> You can unsubscribe from optional marketing content in
+                    your account settings, but we cannot omit service-critical communications while
+                    you maintain an active account.
                   </p>
                 </div>
 
@@ -323,11 +344,11 @@ export default function PrivacyPolicy() {
               {/* Information Sharing and Disclosure */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Information Sharing and Disclosure (Privacy Principles 10 & 11)
+                  Information Sharing and Disclosure
                 </h2>
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-6">
                   <p className="text-green-800 dark:text-green-200 font-semibold mb-2">
-                    ✅ Privacy Protection Commitment
+                    Privacy Protection Commitment
                   </p>
                   <p className="text-green-700 dark:text-green-300 text-sm">
                     We do not sell, rent, or trade your personal information to third parties for
@@ -335,9 +356,8 @@ export default function PrivacyPolicy() {
                   </p>
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under Privacy Principles 10 and 11, we have strict limits on when and how we can
-                  disclose your personal information. We may only share your information in the
-                  following circumstances:
+                  We have strict limits on when and how we can disclose your personal information.
+                  We may only share your information in the following circumstances:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
@@ -402,38 +422,22 @@ export default function PrivacyPolicy() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Legal Requirements (Limited Capacity)
+                  Legal Requirements
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  As a personal project, I may disclose your information only when legally required:
+                  We may disclose your information when legally required:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Legal Orders:</strong> To comply with valid court orders or legal
-                    processes (though I may lack resources for complex legal responses)
+                    <strong>Court Orders:</strong> To comply with valid court orders or legal
+                    processes
                   </li>
                   <li>
                     <strong>Safety Concerns:</strong> To prevent serious harm or illegal activity
-                    when I become aware of it
                   </li>
                   <li>
-                    <strong>Platform Protection:</strong> To protect the basic operation and
-                    security of the platform
-                  </li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Project Discontinuation
-                </h3>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  If I decide to discontinue this personal project:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>I will attempt to provide 30 days&apos; notice (resources permitting)</li>
-                  <li>I will make reasonable efforts to delete or anonymize user data</li>
-                  <li>No guarantee of data preservation or transfer to another service</li>
-                  <li>
-                    Users are responsible for backing up their own data before discontinuation
+                    <strong>Platform Security:</strong> To protect the security and operation of the
+                    platform
                   </li>
                 </ul>
 
@@ -449,94 +453,56 @@ export default function PrivacyPolicy() {
               {/* Data Security */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Data Security (Privacy Principle 5)
+                  Data Security
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under Privacy Principle 5, we are required to protect your personal information
-                  with appropriate security safeguards. We implement comprehensive technical and
-                  organizational security measures:
+                  We implement technical and organizational security measures to protect your
+                  personal information:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Basic Security Measures (Personal Project)
+                  Security Measures
                 </h3>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Platform Security:</strong> Basic security measures provided by hosting
-                    platforms (Firebase/Google Cloud)
+                    <strong>Encryption:</strong> HTTPS encryption for data transmission and
+                    encryption for sensitive data at rest
                   </li>
                   <li>
-                    <strong>Standard Encryption:</strong> Standard HTTPS encryption for data
-                    transmission
+                    <strong>Access Control:</strong> Authentication and authorization controls to
+                    restrict access
                   </li>
                   <li>
-                    <strong>Access Control:</strong> Basic authentication and authorization controls
+                    <strong>Infrastructure Security:</strong> Security provided by Google Cloud
+                    Platform and Firebase
                   </li>
                   <li>
-                    <strong>Updates:</strong> Security updates applied when time and knowledge
-                    permit
-                  </li>
-                  <li>
-                    <strong>Limited Monitoring:</strong> Basic automated monitoring where available
+                    <strong>Updates:</strong> Regular application of security patches and updates
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Personal Project Limitations
-                </h3>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>Solo Operation:</strong> No dedicated security team or 24/7 monitoring
-                  </li>
-                  <li>
-                    <strong>Limited Expertise:</strong> Security measures depend on my personal
-                    knowledge and available time
-                  </li>
-                  <li>
-                    <strong>Best Effort Response:</strong> Security incidents will be addressed on a
-                    best-effort basis
-                  </li>
-                  <li>
-                    <strong>No Formal Procedures:</strong> No enterprise-level incident response
-                    procedures or security audits
-                  </li>
-                  <li>
-                    <strong>Dependency on Providers:</strong> Security heavily relies on third-party
-                    service providers
-                  </li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Breach Notification (Best Effort)
+                  Breach Notification
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  If I become aware of a privacy breach, I will make reasonable efforts to:
+                  If we become aware of a privacy breach, we will:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
-                  <li>Notify affected users via email when reasonably possible</li>
-                  <li>
-                    Notify relevant authorities if required and I&apos;m aware of the requirements
-                  </li>
-                  <li>Take basic steps to secure the platform and prevent further breaches</li>
+                  <li>Notify affected users via email</li>
+                  <li>Notify relevant authorities as required by law</li>
+                  <li>Take steps to secure the platform and prevent further breaches</li>
                   <li>Provide available information about the incident</li>
                 </ul>
-
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  <strong>Important Security Notice:</strong> As a personal project, security
-                  measures are basic and you should not store any sensitive, confidential, or
-                  critical information on this platform. Use this service at your own risk and
-                  maintain your own backups.
-                </p>
               </section>
 
               {/* Data Retention */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Data Retention (Privacy Principle 9)
+                  Data Retention
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under Privacy Principle 9, we must not keep your personal information for longer
-                  than necessary. Our retention practices are:
+                  We do not keep your personal information longer than necessary. Our retention
+                  practices are:
                 </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
@@ -756,7 +722,7 @@ export default function PrivacyPolicy() {
               {/* International Data Transfers */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  International Data Transfers (Privacy Principle 12)
+                  International Data Transfers
                 </h2>
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-6">
                   <p className="text-amber-800 dark:text-amber-200 font-semibold mb-2">
@@ -767,11 +733,6 @@ export default function PrivacyPolicy() {
                     Zealand.
                   </p>
                 </div>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Under Privacy Principle 12, we can only transfer your personal information outside
-                  New Zealand in specific circumstances. Here&apos;s how we handle international
-                  transfers:
-                </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Where Your Data May Be Transferred
@@ -1045,136 +1006,31 @@ export default function PrivacyPolicy() {
                       to exercise, and verification details
                     </li>
                     <li>
-                      <strong>Response Time:</strong> Please allow up to 30 days for response as
-                      this is managed by a solo developer
+                      <strong>Response Time:</strong> We will respond within 30 days
                     </li>
                   </ul>
                 </div>
               </section>
 
-              {/* Limitation of Liability for Privacy Matters */}
+              {/* Responsible Use */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Limitation of Liability - Personal Project Disclaimers
+                  Your Responsibilities
                 </h2>
-
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
-                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    ⚠️ Important Notice - Personal Project Limitations
-                  </p>
-                  <p className="text-red-700 dark:text-red-300 text-sm">
-                    This platform is operated as a personal side project by an individual developer
-                    with limited resources, time, and expertise. Your use of this platform is at
-                    your own risk.
-                  </p>
-                </div>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  Personal Project Disclaimers
-                </h3>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY LAW, AS A PERSONAL PROJECT:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>Best Effort Basis:</strong> I operate this platform on a best-effort
-                    basis in my spare time with no guarantee of continuous availability or support
-                  </li>
-                  <li>
-                    <strong>Limited Resources:</strong> I have limited time, technical resources,
-                    and expertise to implement comprehensive data protection measures
-                  </li>
-                  <li>
-                    <strong>No Service Level Guarantees:</strong> I make no warranties about uptime,
-                    data backup, recovery capabilities, or response times
-                  </li>
-                  <li>
-                    <strong>Volunteer Effort:</strong> Privacy request processing depends on my
-                    availability and may experience significant delays
-                  </li>
-                  <li>
-                    <strong>Platform Evolution:</strong> Features, security measures, and data
-                    practices may change as the project develops
-                  </li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  Maximum Liability Limitation
-                </h3>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE FULLEST EXTENT PERMITTED BY LAW:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>No Monetary Liability:</strong> My total liability for any
-                    privacy-related claims is limited to $0 (zero dollars), as this is provided as a
-                    free personal project
-                  </li>
-                  <li>
-                    <strong>No Damages:</strong> I exclude all liability for direct, indirect,
-                    consequential, punitive, or any other damages arising from privacy issues
-                  </li>
-                  <li>
-                    <strong>Use At Your Own Risk:</strong> You acknowledge that you use this
-                    platform entirely at your own risk
-                  </li>
-                  <li>
-                    <strong>No Professional Standards:</strong> This platform is not held to
-                    commercial or professional data protection standards
-                  </li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  Technical Limitations
-                </h3>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  As a solo developer, I cannot guarantee:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>Enterprise-level security implementations</li>
-                  <li>24/7 monitoring or incident response</li>
-                  <li>Professional data backup and recovery procedures</li>
-                  <li>Immediate response to security vulnerabilities</li>
-                  <li>Compliance with all international privacy regulations</li>
-                  <li>Continuous platform availability or data access</li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  User Responsibility and Indemnification
-                </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   By using this platform, you agree to:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+                  <li>Use the platform only for lawful purposes</li>
                   <li>
-                    <strong>Assume All Risk:</strong> Accept full responsibility for any
-                    consequences of using this personal project
+                    Not store sensitive or confidential information without understanding our
+                    security model
                   </li>
+                  <li>Maintain your own backups of important information</li>
                   <li>
-                    <strong>No Sensitive Data:</strong> Not upload or store any sensitive,
-                    confidential, or critical personal information
-                  </li>
-                  <li>
-                    <strong>Backup Your Data:</strong> Maintain your own backups of any important
-                    information
-                  </li>
-                  <li>
-                    <strong>Indemnify Developer:</strong> Hold harmless and indemnify the developer
-                    from any claims, damages, or losses arising from your use of the platform
+                    Notify us immediately of any security concerns or potential unauthorized access
                   </li>
                 </ul>
-
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
-                    Consumer Rights Notice
-                  </h3>
-                  <p className="text-yellow-800 dark:text-yellow-200 text-sm">
-                    <strong>Important:</strong> While I limit liability to the maximum extent
-                    permitted, nothing in this policy excludes rights that cannot be excluded under
-                    applicable consumer protection laws. This is provided as a free personal project
-                    with no commercial warranties or guarantees.
-                  </p>
-                </div>
               </section>
 
               {/* Effective Date */}
@@ -1183,13 +1039,12 @@ export default function PrivacyPolicy() {
                   Privacy Policy Effective Date
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 text-sm mb-2">
-                  This Privacy Policy is effective as of July 9, 2025, and applies to all users of
+                  This Privacy Policy is effective as of May 12, 2026, and applies to all users of
                   the Certestic platform.
                 </p>
                 <p className="text-slate-600 dark:text-slate-400 text-xs">
-                  This policy reflects the operational realities of a personal side project and
-                  complies with applicable privacy laws to the extent reasonably practicable for an
-                  individual developer.
+                  We regularly review and update this policy to ensure compliance with applicable
+                  privacy laws. Last updated: May 12, 2026.
                 </p>
               </div>
             </div>

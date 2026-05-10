@@ -27,14 +27,6 @@ export default function TermsOfService() {
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
               Last updated: July 17, 2025
             </p>
-            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 max-w-2xl mx-auto">
-              <p className="text-blue-800 dark:text-blue-200 text-sm">
-                🚀 <strong>Personal Project:</strong> Certestic is developed and operated by an
-                individual developer as a personal project with limited resources and capacity.
-                These terms reflect the personal, non-commercial nature of this service and
-                associated liability limitations.
-              </p>
-            </div>
           </div>
 
           {/* Content */}
@@ -47,10 +39,10 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement
-                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and the
-                  creator and operator of Certestic (&quot;I,&quot; &quot;me,&quot; or
-                  &quot;my&quot;). By accessing or using the Certestic platform, you acknowledge
-                  that you have read, understood, and agree to be bound by these Terms.
+                  between you (&quot;User,&quot; &quot;you,&quot; or &quot;your&quot;) and Certestic
+                  (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;). By accessing or using the
+                  Certestic platform, you acknowledge that you have read, understood, and agree to
+                  be bound by these Terms.
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   <strong>
@@ -104,12 +96,12 @@ export default function TermsOfService() {
                 </h2>
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-4">
                   <p className="text-amber-800 dark:text-amber-200 font-semibold mb-2">
-                    ⚠️ Important Beta Notice - Personal Project
+                    ⚠️ Beta Platform Notice
                   </p>
                   <p className="text-amber-700 dark:text-amber-300 text-sm">
-                    Certestic is currently in beta testing as a personal project operated by a
-                    single individual with limited resources. The Platform may contain bugs, errors,
-                    or incomplete features. Use is entirely at your own risk.
+                    Certestic is currently in beta. The Platform may contain bugs, errors, or
+                    incomplete features. Please use your own judgment and supplement with official
+                    materials.
                   </p>
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
@@ -118,29 +110,22 @@ export default function TermsOfService() {
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
                   <li>
                     The Platform is provided on an &quot;as-is&quot; basis for testing and feedback
-                    purposes with no warranties or guarantees
+                    purposes
                   </li>
                   <li>Features may be incomplete, unstable, or subject to change without notice</li>
-                  <li>You use the beta Platform entirely at your own risk and discretion</li>
+                  <li>You use the beta Platform at your own risk and discretion</li>
                   <li>
-                    As a personal project, I have limited capacity to provide support, maintenance,
-                    or troubleshooting
+                    We may suspend, modify, or discontinue any aspect of the Platform during beta
+                    testing with reasonable notice where practicable
                   </li>
-                  <li>
-                    I may suspend, modify, or discontinue any aspect of the Platform during beta
-                    testing without prior notice or liability
-                  </li>
-                  <li>
-                    The Platform may experience downtime, data loss, or technical issues beyond my
-                    control or ability to resolve
-                  </li>
+                  <li>The Platform may experience downtime or technical issues</li>
                   <li>
                     Your feedback and usage data may be used to improve the Platform and train the
                     AI systems (see Privacy section for details)
                   </li>
                   <li>
-                    <strong>No Professional Service:</strong> This is not a professional educational
-                    service and should not be relied upon as your sole preparation method
+                    <strong>Study Aid Only:</strong> This platform is not a substitute for official
+                    study materials and should not be your sole preparation method
                   </li>
                 </ul>
               </section>
@@ -152,10 +137,10 @@ export default function TermsOfService() {
                 </h2>
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
                   <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    🚨 Important: Practice and Preparation Tool Only
+                    🚨 Practice and Preparation Tool Only
                   </p>
                   <p className="text-red-700 dark:text-red-300 text-sm">
-                    Certestic is designed exclusively for practice and preparation purposes. I do
+                    Certestic is designed exclusively for practice and preparation purposes. We do
                     not guarantee or take responsibility for your actual certification exam results.
                   </p>
                 </div>
@@ -164,8 +149,8 @@ export default function TermsOfService() {
                   Platform Purpose
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Certestic is a practice and preparation platform I&apos;ve created to help you
-                  study for IT certification exams. You acknowledge and agree that:
+                  Certestic is a practice and preparation platform to help you study for IT
+                  certification exams. You acknowledge and agree that:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
@@ -187,11 +172,29 @@ export default function TermsOfService() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Public Free Trials and Promotional Access
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  From time to time, we may offer public free trials, demo experiences, or other
+                  promotional access through our marketing pages or landing pages. These offers are
+                  provided in good faith to help users evaluate the Platform and related services.
+                  Depending on the campaign or trial design, we may ask you to provide an email
+                  address, or we may allow access without requiring one.
+                </p>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  If an email address is requested, we will indicate at the point of collection
+                  whether it is required or optional. For public trial and marketing page access, we
+                  may also collect IP address, browser, device, and similar technical information to
+                  operate the experience, prevent abuse, analyze usage, and improve our products and
+                  services.
+                </p>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   No Responsibility for Actual Exam Results
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>IMPORTANT DISCLAIMER:</strong> I explicitly disclaim any responsibility
-                  for your actual certification exam results. You understand and agree that:
+                  We disclaim any responsibility for your actual certification exam results. You
+                  understand and agree that:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
@@ -427,7 +430,7 @@ export default function TermsOfService() {
                   Human Oversight and Quality Control
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  While I implement human oversight in the content creation process, you understand
+                  While we implement human oversight in the content creation process, you understand
                   that:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
@@ -1108,84 +1111,43 @@ export default function TermsOfService() {
                   </li>
                 </ul>
 
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
-                  <h4 className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    🚨 Important Privacy Limitations
+                <div className="bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg p-6 mb-6">
+                  <h4 className="text-slate-800 dark:text-slate-200 font-semibold mb-2">
+                    Security Limitations
                   </h4>
-                  <p className="text-red-700 dark:text-red-300 text-sm mb-3">
-                    By using our Platform, you acknowledge and accept the following privacy
-                    limitations and disclaimers:
+                  <p className="text-slate-700 dark:text-slate-300 text-sm mb-3">
+                    By using our Platform, you acknowledge:
                   </p>
-                  <ul className="list-disc pl-6 text-red-700 dark:text-red-300 text-sm space-y-2">
-                    <li>
-                      <strong>No Guarantee of Privacy:</strong> While we implement reasonable
-                      security measures, we cannot guarantee complete privacy or security of your
-                      data
-                    </li>
-                    <li>
-                      <strong>Evolving Technology:</strong> Privacy protection methods may become
-                      inadequate as technology advances, and we are not liable for future
-                      vulnerabilities
-                    </li>
-                    <li>
-                      <strong>Force Majeure Events:</strong> We are not responsible for data
-                      exposure due to events beyond our reasonable control, including cyber attacks,
-                      system failures, or natural disasters
-                    </li>
-                    <li>
-                      <strong>Anonymization Limitations:</strong> Anonymized data may still be
-                      subject to re-identification through advanced techniques we cannot control or
-                      predict
-                    </li>
-                    <li>
-                      <strong>Regulatory Changes:</strong> Changes in privacy laws may require us to
-                      modify our data handling practices, potentially affecting your data
-                      retroactively
-                    </li>
+                  <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 text-sm space-y-2">
+                    <li>No online service can guarantee complete data security</li>
+                    <li>We are not responsible for data exposure due to force majeure events</li>
+                    <li>Regulatory changes may require us to modify data handling practices</li>
                   </ul>
                 </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Data Protection Limitations and Disclaimers
+                  Data Protection Limitations
                 </h3>
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-4">
-                  <p className="text-orange-800 dark:text-orange-200 font-semibold mb-2">
-                    ⚠️ Data Protection Limitations
-                  </p>
-                  <p className="text-orange-700 dark:text-orange-300 text-sm">
-                    While we implement reasonable security measures, you acknowledge that no online
-                    service can guarantee absolute data security.
-                  </p>
-                </div>
-
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>You acknowledge and agree that:</strong>
+                  You acknowledge that:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>No Absolute Security:</strong> No internet-based service can provide
-                    100% security, and you assume the inherent risks of online data transmission and
+                    <strong>No Absolute Security:</strong> No online service can provide 100%
+                    security, and you assume the inherent risks of online data transmission and
                     storage
                   </li>
                   <li>
-                    <strong>Best Efforts Standard:</strong> We implement industry-standard security
-                    measures on a &quot;best efforts&quot; basis but do not guarantee protection
-                    against all security threats
-                  </li>
-                  <li>
                     <strong>Third-Party Risks:</strong> We are not responsible for security breaches
-                    caused by third-party services, infrastructure providers, or circumstances
-                    beyond our reasonable control
+                    caused by third-party services or circumstances beyond our reasonable control
                   </li>
                   <li>
-                    <strong>User Responsibility:</strong> You are responsible for maintaining the
-                    security of your account credentials and for any activities that occur under
-                    your account
+                    <strong>Account Security:</strong> You are responsible for maintaining the
+                    security of your account credentials
                   </li>
                   <li>
-                    <strong>Data Breach Limitations:</strong> Our liability for data breaches is
-                    limited to notification as required by applicable law and reasonable remedial
-                    actions, subject to the limitation of liability provisions in these Terms
+                    <strong>Breach Notification:</strong> In the event of a breach, we will notify
+                    as required by applicable law and take reasonable remedial action
                   </li>
                 </ul>
 
@@ -1220,247 +1182,46 @@ export default function TermsOfService() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  System-Initiated Data Deletion Rights
+                  System-Initiated Data Deletion
                 </h3>
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-6">
-                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    🗑️ Data Deletion Authority
-                  </p>
-                  <p className="text-red-700 dark:text-red-300 text-sm">
-                    The platform reserves the right to delete user historical data at any time for
-                    operational, legal, technical, or business reasons without prior notice.
-                  </p>
-                </div>
-
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Platform&apos;s Right to Delete User Data
-                </h4>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT:</strong>
+                  We may delete or archive user data as required for operational, legal, or
+                  technical reasons, including:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    <strong>Unrestricted Deletion Rights:</strong> Certestic may delete, remove, or
-                    permanently erase any or all of your historical data, including but not limited
-                    to:
-                    <ul className="list-disc pl-6 mt-2 space-y-1">
-                      <li>Exam scores and performance history</li>
-                      <li>Study progress and learning analytics</li>
-                      <li>Account activity logs and usage patterns</li>
-                      <li>User-generated content and feedback</li>
-                      <li>Personal preferences and customization settings</li>
-                      <li>Certification progress and achievements</li>
-                      <li>Communication history and support interactions</li>
-                    </ul>
+                    <strong>Legal Compliance:</strong> Requirements under applicable laws, court
+                    orders, or government requests
                   </li>
                   <li>
-                    <strong>No Prior Notice Required:</strong> Data deletion may occur without
-                    advance warning, notification, or opportunity for you to backup or retrieve your
-                    information
+                    <strong>Security Measures:</strong> Response to security breaches or data
+                    corruption
                   </li>
                   <li>
-                    <strong>Immediate and Permanent:</strong> Once data is deleted by our systems,
-                    it may be permanently unrecoverable and cannot be restored
+                    <strong>Account Inactivity:</strong> Extended periods of non-use, with
+                    reasonable notice where practicable
                   </li>
                   <li>
-                    <strong>No Compensation:</strong> You are not entitled to any compensation,
-                    refund, or damages for data deletion, regardless of the reason or timing
+                    <strong>Terms Violations:</strong> Breach of these Terms of Service
+                  </li>
+                  <li>
+                    <strong>Service Discontinuation:</strong> Where we wind down or significantly
+                    change a service feature
                   </li>
                 </ul>
 
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Circumstances for Data Deletion
-                </h4>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  The platform may delete your historical data in the following circumstances,
-                  without limitation:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>Operational Requirements:</strong> Database maintenance, storage
-                    optimization, system upgrades, or technical infrastructure changes
-                  </li>
-                  <li>
-                    <strong>Storage Limitations:</strong> Reaching storage capacity limits or
-                    cost-management requirements
-                  </li>
-                  <li>
-                    <strong>Legal Compliance:</strong> Requirements under applicable laws,
-                    regulations, court orders, or government requests
-                  </li>
-                  <li>
-                    <strong>Security Measures:</strong> Response to security breaches, data
-                    corruption, or potential threats to system integrity
-                  </li>
-                  <li>
-                    <strong>Account Inactivity:</strong> Extended periods of non-use as determined
-                    by platform usage algorithms and business policies
-                  </li>
-                  <li>
-                    <strong>Terms Violations:</strong> Breach of these Terms of Service or platform
-                    policies
-                  </li>
-                  <li>
-                    <strong>Platform Evolution:</strong> Feature updates, service changes, or
-                    business model transitions
-                  </li>
-                  <li>
-                    <strong>Resource Management:</strong> Server capacity management, cost
-                    optimization, or technical performance improvements
-                  </li>
-                  <li>
-                    <strong>Data Quality Control:</strong> Removal of corrupted, incomplete, or
-                    inconsistent data
-                  </li>
-                  <li>
-                    <strong>Business Decisions:</strong> Strategic platform changes, service
-                    discontinuation, or operational restructuring
-                  </li>
-                </ul>
-
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Data Deletion Process and Scope
-                </h4>
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-4">
-                  <p className="text-orange-800 dark:text-orange-200 font-semibold mb-2">
-                    ⚠️ Comprehensive Deletion Authority
-                  </p>
-                  <p className="text-orange-700 dark:text-orange-300 text-sm">
-                    Data deletion may be partial or complete, selective or comprehensive, and may
-                    affect individual users or groups of users based on system-determined criteria.
-                  </p>
-                </div>
-
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>Data deletion may include:</strong>
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>Selective Deletion:</strong> Removal of specific data types, date
-                    ranges, or categories while preserving other information
-                  </li>
-                  <li>
-                    <strong>Complete Deletion:</strong> Total erasure of all user historical data
-                    and account information
-                  </li>
-                  <li>
-                    <strong>Automated Deletion:</strong> System-triggered deletion based on
-                    predefined algorithms, rules, or criteria
-                  </li>
-                  <li>
-                    <strong>Manual Deletion:</strong> Human-initiated deletion for specific
-                    operational, legal, or business reasons
-                  </li>
-                  <li>
-                    <strong>Batch Deletion:</strong> Mass deletion affecting multiple users based on
-                    shared characteristics or criteria
-                  </li>
-                  <li>
-                    <strong>Rolling Deletion:</strong> Ongoing deletion of data older than specified
-                    time periods or meeting certain conditions
-                  </li>
-                </ul>
-
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  User Responsibilities and Acknowledgments
-                </h4>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  By using the platform, you acknowledge and agree to the following
-                  responsibilities:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>No Backup Obligation:</strong> The platform has no obligation to backup,
-                    preserve, or maintain copies of your historical data
-                  </li>
-                  <li>
-                    <strong>User Backup Responsibility:</strong> You are solely responsible for
-                    maintaining your own backups of any data you consider important
-                  </li>
-                  <li>
-                    <strong>Acceptance of Data Loss:</strong> You accept the risk of complete and
-                    permanent data loss at any time
-                  </li>
-                  <li>
-                    <strong>No Recovery Guarantee:</strong> Deleted data may not be recoverable
-                    through technical support, customer service, or any other means
-                  </li>
-                  <li>
-                    <strong>Continued Service Access:</strong> Data deletion does not necessarily
-                    affect your ongoing ability to use the platform with new data generation
-                  </li>
-                </ul>
-
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 mb-6">
-                  <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-2">
-                    ⚠️ Important Data Protection Notice
-                  </h4>
-                  <p className="text-yellow-800 dark:text-yellow-200 text-sm mb-3">
-                    <strong>Beta Platform Consideration:</strong> As a beta platform with limited
-                    resources, data retention capabilities may be especially limited, and data
-                    deletion may occur more frequently than in established production systems.
-                  </p>
-                  <ul className="list-disc pl-6 text-yellow-800 dark:text-yellow-200 text-sm space-y-1">
-                    <li>System instability may result in unintended data loss</li>
-                    <li>Storage limitations may require frequent data cleanup</li>
-                    <li>Development and testing activities may affect production data</li>
-                    <li>Migration processes may not preserve all historical information</li>
-                    <li>Resource constraints may limit data backup and recovery options</li>
-                  </ul>
-                </div>
-
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Legal and Liability Limitations
-                </h4>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  <strong>IMPORTANT LIABILITY LIMITATIONS:</strong>
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>
-                    <strong>No Liability for Data Loss:</strong> Certestic shall not be liable for
-                    any damages, losses, or consequences resulting from data deletion, regardless of
-                    cause
-                  </li>
-                  <li>
-                    <strong>No Business Interruption Claims:</strong> You waive any claims for
-                    business interruption, lost profits, or consequential damages related to data
-                    deletion
-                  </li>
-                  <li>
-                    <strong>No Professional Loss Claims:</strong> The platform is not liable for any
-                    professional or educational setbacks resulting from loss of historical progress
-                    data
-                  </li>
-                  <li>
-                    <strong>Force Majeure Application:</strong> Data deletion due to circumstances
-                    beyond our control (natural disasters, cyber attacks, technical failures) is
-                    specifically excluded from liability
-                  </li>
-                  <li>
-                    <strong>Maximum Liability Cap:</strong> Any liability related to data deletion
-                    is subject to the overall liability limitations set forth elsewhere in these
-                    Terms
-                  </li>
-                </ul>
-
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
                   <h4 className="text-blue-900 dark:text-blue-100 font-semibold mb-2">
-                    📋 Data Management Best Practices
+                    📋 Data Management Recommendation
                   </h4>
                   <p className="text-blue-800 dark:text-blue-200 text-sm mb-3">
-                    To minimize the impact of potential data deletion, we recommend:
+                    As with any online platform, we recommend:
                   </p>
                   <ul className="list-disc pl-6 text-blue-800 dark:text-blue-200 text-sm space-y-1">
                     <li>Regularly documenting your study progress externally</li>
                     <li>Maintaining personal records of important achievements</li>
                     <li>
                       Not relying solely on platform data for professional or academic purposes
-                    </li>
-                    <li>
-                      Understanding that platform data is supplementary to your learning process
-                    </li>
-                    <li>
-                      Preparing for the possibility of starting fresh with new data at any time
                     </li>
                   </ul>
                 </div>
@@ -1632,8 +1393,8 @@ export default function TermsOfService() {
                   Beta Pricing
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  During the beta period, I may offer free or discounted access to the Platform.
-                  These promotional terms may change as the project transitions from beta to full
+                  During the beta period, we may offer free or discounted access to the Platform.
+                  These promotional terms may change as the platform transitions from beta to full
                   release.
                 </p>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
@@ -1655,8 +1416,8 @@ export default function TermsOfService() {
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   You may cancel your subscription at any time. Refunds are provided in accordance
-                  with applicable consumer protection laws in your jurisdiction or at my sole
-                  discretion. During the beta period, I may offer more flexible refund terms.
+                  with applicable consumer protection laws in your jurisdiction or at our
+                  discretion. During the beta period, we may offer more flexible refund terms.
                 </p>
               </section>
 
@@ -1665,133 +1426,58 @@ export default function TermsOfService() {
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   13. Disclaimers and Limitation of Liability
                 </h2>
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-4">
-                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    ⚠️ Important Legal Notice - Personal Project Limitations
-                  </p>
-                  <p className="text-red-700 dark:text-red-300 text-sm">
-                    This section limits my liability to the maximum extent permitted under
-                    applicable law. As a personal project, my liability is severely limited compared
-                    to commercial services.
-                  </p>
-                </div>
-
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-6">
-                  <h4 className="text-orange-900 dark:text-orange-100 font-semibold mb-2">
-                    🏠 Personal Project - Enhanced Liability Protections
-                  </h4>
-                  <p className="text-orange-800 dark:text-orange-200 text-sm mb-3">
-                    You acknowledge that Certestic is operated as a personal project by an
-                    individual with limited resources, not as a commercial enterprise. This affects
-                    the scope of services and liability protections available.
-                  </p>
-                  <ul className="list-disc pl-6 text-orange-800 dark:text-orange-200 text-sm space-y-1">
-                    <li>
-                      <strong>Limited Resources:</strong> Personal capacity for support and
-                      maintenance
-                    </li>
-                    <li>
-                      <strong>Best Effort Basis:</strong> All services provided on a best-effort
-                      basis only
-                    </li>
-                    <li>
-                      <strong>No Business Guarantees:</strong> No service level agreements or uptime
-                      guarantees
-                    </li>
-                    <li>
-                      <strong>Volunteer Nature:</strong> Platform operation is subject to personal
-                      availability
-                    </li>
-                  </ul>
-                </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Platform Disclaimers - Personal Project
+                  Platform Disclaimers
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, AND ACKNOWLEDGING THE PERSONAL
-                  PROJECT NATURE OF THIS SERVICE:
+                  To the maximum extent permitted by applicable law:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
                   <li>
-                    THE PLATFORM IS PROVIDED &quot;AS IS&quot; AND &quot;AS AVAILABLE&quot; WITHOUT
-                    ANY WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED
+                    The Platform is provided &quot;as is&quot; and &quot;as available&quot; without
+                    any warranties of any kind, express or implied
                   </li>
                   <li>
-                    I DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY,
-                    FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND RELIABILITY
+                    We disclaim all warranties, including merchantability, fitness for a particular
+                    purpose, and non-infringement
                   </li>
                   <li>
-                    I DO NOT WARRANT THAT THE PLATFORM WILL BE UNINTERRUPTED, ERROR-FREE, SECURE, OR
-                    AVAILABLE AT ANY PARTICULAR TIME
+                    We do not warrant that the Platform will be uninterrupted, error-free, or fully
+                    secure
                   </li>
                   <li>
-                    I DO NOT GUARANTEE THE ACCURACY, COMPLETENESS, OR RELIABILITY OF ANY CONTENT
+                    We do not guarantee the accuracy, completeness, or reliability of any content
                   </li>
                   <li>
-                    I DO NOT WARRANT THAT USE OF THE PLATFORM WILL RESULT IN CERTIFICATION SUCCESS,
-                    PASSING GRADES, OR ANY SPECIFIC EXAM OUTCOMES
-                  </li>
-                  <li>
-                    I DO NOT GUARANTEE THAT PRACTICE SCORES WILL CORRELATE WITH ACTUAL EXAM
-                    PERFORMANCE
-                  </li>
-                  <li>
-                    AS A PERSONAL PROJECT, I PROVIDE NO GUARANTEES REGARDING PLATFORM AVAILABILITY,
-                    MAINTENANCE, OR CONTINUED OPERATION
-                  </li>
-                  <li>
-                    I DO NOT WARRANT THAT THE PLATFORM WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS
-                  </li>
-                  <li>
-                    ALL CONTENT, INCLUDING AI-GENERATED CONTENT, IS PROVIDED WITHOUT WARRANTIES OF
-                    ACCURACY OR SUITABILITY FOR YOUR PURPOSES
+                    We do not warrant that use of the Platform will result in certification success
+                    or any specific exam outcomes
                   </li>
                 </ul>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Limitation of Liability - Personal Project Protections
+                  Limitation of Liability
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, AND IN RECOGNITION OF THE
-                  PERSONAL PROJECT NATURE OF THIS SERVICE, IN NO EVENT SHALL I BE LIABLE FOR:
+                  To the maximum extent permitted by applicable law, we shall not be liable for:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES</li>
-                  <li>ANY LOSS OF PROFITS, REVENUE, DATA, OR BUSINESS OPPORTUNITIES</li>
-                  <li>ANY FAILURE TO PASS CERTIFICATION EXAMS OR ACHIEVE DESIRED EXAM SCORES</li>
-                  <li>ANY COSTS ASSOCIATED WITH RETAKING CERTIFICATION EXAMS</li>
-                  <li>ANY LOST TIME, PREPARATION COSTS, OR STUDY EXPENSES</li>
-                  <li>ANY CAREER OPPORTUNITIES LOST DUE TO CERTIFICATION EXAM FAILURES</li>
-                  <li>ANY RELIANCE ON PRACTICE SCORES OR PERFORMANCE PREDICTIONS</li>
-                  <li>ANY ERRORS OR INACCURACIES IN AI-GENERATED CONTENT</li>
-                  <li>ANY COPYRIGHT CLAIMS RELATED TO AI-GENERATED CONTENT</li>
-                  <li>ANY UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR DATA</li>
-                  <li>ANY DAMAGES RESULTING FROM YOUR USE OR INABILITY TO USE THE PLATFORM</li>
-                  <li>ANY PLATFORM DOWNTIME, TECHNICAL FAILURES, OR SERVICE INTERRUPTIONS</li>
-                  <li>ANY DATA LOSS, CORRUPTION, OR SECURITY BREACHES</li>
-                  <li>ANY THIRD-PARTY CLAIMS OR ACTIONS RELATED TO YOUR USE OF THE PLATFORM</li>
-                  <li>ANY COSTS OF SUBSTITUTE SERVICES OR ALTERNATIVE PREPARATION METHODS</li>
-                  <li>ANY EMOTIONAL DISTRESS, ANXIETY, OR PSYCHOLOGICAL HARM</li>
-                  <li>ANY CONSEQUENCES OF PLATFORM DISCONTINUATION OR SERVICE CHANGES</li>
+                  <li>Any indirect, incidental, special, consequential, or punitive damages</li>
+                  <li>Any loss of data, profits, or business opportunities</li>
+                  <li>
+                    Any failure to pass certification exams or achieve desired exam scores from use
+                    of this platform
+                  </li>
+                  <li>Any errors or inaccuracies in AI-generated content</li>
+                  <li>Any unauthorized access to or alteration of your data</li>
+                  <li>Any third-party claims related to your use of the Platform</li>
+                  <li>Any platform downtime, technical failures, or service interruptions</li>
                 </ul>
 
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-4">
-                  <h4 className="text-red-900 dark:text-red-100 font-semibold mb-2">
-                    💰 Maximum Liability Cap - Personal Project
-                  </h4>
-                  <p className="text-red-800 dark:text-red-200 text-sm mb-3">
-                    As a personal project with limited resources, my total liability is strictly
-                    capped:
-                  </p>
-                  <p className="text-red-700 dark:text-red-300 font-semibold text-sm">
-                    MY TOTAL LIABILITY TO YOU FOR ALL CLAIMS ARISING FROM OR RELATING TO THESE TERMS
-                    OR THE PLATFORM SHALL NOT EXCEED THE LESSER OF:
-                  </p>
-                  <ul className="list-disc pl-6 text-red-700 dark:text-red-300 text-sm space-y-1 mt-2">
-                    <li>THE TOTAL AMOUNT YOU PAID IN THE 6 MONTHS PRECEDING THE CLAIM</li>
-                  </ul>
-                </div>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  Our total liability to you for all claims arising from these Terms or the Platform
+                  shall not exceed the total amount you paid us in the 6 months preceding the claim.
+                </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Consumer Protection Rights
@@ -1807,88 +1493,30 @@ export default function TermsOfService() {
               {/* Indemnification */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  14. Indemnification - Personal Project Protection
+                  14. Indemnification
                 </h2>
 
-                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6 mb-6">
-                  <h3 className="text-lg font-semibold text-purple-900 dark:text-purple-100 mb-2">
-                    🛡️ Enhanced Personal Project Protection
-                  </h3>
-                  <p className="text-purple-800 dark:text-purple-200 text-sm">
-                    As a personal project operator, I require comprehensive indemnification
-                    protection to safeguard my personal assets and wellbeing from claims related to
-                    your use of this free/low-cost service.
-                  </p>
-                </div>
-
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Comprehensive Indemnification
+                  Your Indemnification Obligations
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  You agree to indemnify, defend, and hold harmless me, my heirs, assigns, and the
-                  Certestic platform from and against any and all claims, demands, actions, damages,
-                  obligations, losses, liabilities, costs, or debt, and expenses (including
-                  reasonable legal fees and court costs) arising from or related to:
+                  You agree to indemnify, defend, and hold harmless Certestic and its operators from
+                  and against any claims, damages, obligations, losses, liabilities, costs, or
+                  expenses (including reasonable legal fees) arising from:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>Your use or misuse of the Platform in any manner</li>
-                  <li>Your violation of these Terms or any applicable laws</li>
-                  <li>
-                    Your violation of any third-party rights, including intellectual property rights
-                  </li>
+                  <li>Your use or misuse of the Platform in violation of these Terms</li>
+                  <li>Your violation of any applicable laws or third-party rights</li>
                   <li>Any User Content you submit, post, or transmit through the Platform</li>
-                  <li>Your negligent, reckless, or wrongful conduct</li>
-                  <li>Any claims that your use of the Platform caused harm to you or others</li>
-                  <li>Any reliance you place on Platform content or AI-generated materials</li>
-                  <li>Any exam failures or certification outcomes related to Platform use</li>
-                  <li>Any data breaches or security incidents involving your account</li>
-                  <li>Any disputes with other Platform users</li>
-                  <li>Any failure to achieve desired educational or professional outcomes</li>
-                  <li>Any technical issues, downtime, or service interruptions you experience</li>
+                  <li>Your negligent or wrongful conduct in connection with the Platform</li>
                 </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Defense and Settlement Rights
-                </h3>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  Your indemnification obligations include the duty to defend me against any covered
-                  claims. I retain the right to:
-                </p>
-                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-6">
-                  <li>Choose my own legal counsel at your expense</li>
-                  <li>Participate in the defense of any claim</li>
-                  <li>Approve any settlement or compromise of covered claims</li>
-                  <li>Take control of the defense if I deem necessary</li>
-                </ul>
-
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Personal Asset Protection
-                </h3>
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-4">
-                  <p className="text-red-800 dark:text-red-200 font-semibold mb-2">
-                    🏠 Personal Asset Protection Notice
-                  </p>
-                  <p className="text-red-700 dark:text-red-300 text-sm">
-                    This indemnification specifically protects my personal assets, including my
-                    home, personal savings, and other non-business assets from any claims arising
-                    from your use of this personal project.
-                  </p>
-                </div>
-
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  You specifically acknowledge that this personal project may affect my personal
-                  financial wellbeing, and you agree that your indemnification obligations extend to
-                  protecting my personal assets and financial security from any claims, regardless
-                  of the theory of liability.
-                </p>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Survival of Obligations
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  Your indemnification obligations survive termination of these Terms,
-                  discontinuation of the Platform, and any other end to our relationship. These
-                  obligations remain in effect for the maximum period allowed by applicable law.
+                  Your indemnification obligations survive termination of these Terms and any
+                  discontinuation of the Platform, for the maximum period allowed by applicable law.
                 </p>
               </section>
 
@@ -1905,45 +1533,41 @@ export default function TermsOfService() {
                   in your account settings or contacting our support team.
                 </p>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
-                  Termination by Me
+                  Termination by Us
                 </h3>
                 <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-4">
                   <p className="text-orange-800 dark:text-orange-200 font-semibold mb-2">
-                    ⚠️ Account Deletion Notice
+                    ⚠️ Account Suspension Notice
                   </p>
                   <p className="text-orange-700 dark:text-orange-300 text-sm">
-                    User accounts may be deleted without prior notice at my discretion, including
-                    for violations of these Terms, inactivity, or operational requirements.
+                    Accounts may be suspended or terminated for violations of these Terms,
+                    inactivity, or other legitimate operational reasons.
                   </p>
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  I may suspend or terminate your access to the Platform immediately, without prior
+                  We may suspend or terminate your access to the Platform immediately, without prior
                   notice, if:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
                   <li>You breach these Terms</li>
                   <li>
-                    I reasonably believe termination is necessary to protect me or other users
+                    We reasonably believe termination is necessary to protect the platform or other
+                    users
                   </li>
                   <li>Required by law or at the request of law enforcement</li>
-                  <li>The Platform is discontinued (with reasonable notice during beta)</li>
+                  <li>The Platform is discontinued (with reasonable notice where practicable)</li>
                   <li>
-                    <strong>Account inactivity</strong> for extended periods (as determined by
-                    platform usage patterns and operational needs)
-                  </li>
-                  <li>
-                    <strong>Operational requirements</strong> including database maintenance,
-                    storage limitations, or technical constraints
+                    <strong>Account inactivity</strong> for extended periods
                   </li>
                 </ul>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Effect of Termination
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  Upon termination, your right to use the Platform will cease immediately. I may
-                  delete your account and all associated data. Provisions that by their nature
-                  should survive termination shall survive, including ownership provisions, warranty
-                  disclaimers, and limitations of liability.
+                  Upon termination, your right to use the Platform will cease immediately. We may
+                  delete your account and associated data where appropriate. Provisions that by
+                  their nature should survive termination shall survive, including ownership
+                  provisions, warranty disclaimers, and limitations of liability.
                 </p>
               </section>
 
@@ -1969,7 +1593,7 @@ export default function TermsOfService() {
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   Before initiating formal legal proceedings, you agree to attempt to resolve any
-                  dispute through good faith negotiations with me for at least 30 days. This does
+                  dispute through good faith negotiations with us for at least 30 days. This does
                   not affect your rights under applicable consumer protection laws in your
                   jurisdiction.
                 </p>
@@ -1992,11 +1616,10 @@ export default function TermsOfService() {
                   17. Force Majeure
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  I shall not be liable for any failure or delay in performance under these Terms
-                  which is due to circumstances beyond my reasonable control, including but not
-                  limited to acts of God, natural disasters, war, terrorism, pandemic, government
-                  actions, internet service provider failures, power outages, or personal health
-                  issues.
+                  We shall not be liable for any failure or delay in performance under these Terms
+                  due to circumstances beyond our reasonable control, including acts of God, natural
+                  disasters, war, terrorism, pandemic, government actions, internet service provider
+                  failures, or power outages.
                 </p>
               </section>
 
@@ -2006,7 +1629,7 @@ export default function TermsOfService() {
                   18. Changes to Terms
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  I reserve the right to modify these Terms at any time. I will notify you of
+                  We reserve the right to modify these Terms at any time. We will notify you of
                   material changes by:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
@@ -2193,36 +1816,25 @@ export default function TermsOfService() {
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   These Terms, together with the Privacy Policy and any other legal notices
-                  published on this platform, constitute the entire agreement between you and me
-                  regarding the Platform and supersede all prior agreements and understandings.
+                  published on this platform, constitute the entire agreement between you and
+                  Certestic regarding the Platform and supersede all prior agreements and
+                  understandings.
                 </p>
               </section>
 
               {/* Contact Information */}
               <section className="mb-8">
                 <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  22. Contact Information - Personal Project Support
+                  22. Contact Information
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  If you have any questions about these Terms, please contact me. Please note the
-                  personal project limitations on support and response times:
+                  If you have any questions about these Terms, please contact us:
                 </p>
-
-                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6 mb-4">
-                  <h3 className="text-amber-900 dark:text-amber-100 font-semibold mb-2">
-                    ⏰ Personal Project Support Limitations
-                  </h3>
-                  <p className="text-amber-800 dark:text-amber-200 text-sm">
-                    As a personal project, I provide support on a best-effort basis in my spare
-                    time. Response times may vary significantly based on personal availability and
-                    circumstances.
-                  </p>
-                </div>
 
                 <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600">
                   <div className="space-y-3 text-slate-700 dark:text-slate-300">
                     <p>
-                      <strong>Certestic Platform - Personal Project</strong>
+                      <strong>Certestic</strong>
                     </p>
                     <p>
                       <strong>Email:</strong> info@certestic.com
@@ -2234,19 +1846,7 @@ export default function TermsOfService() {
                       </Link>
                     </p>
                     <p>
-                      <strong>Response Time:</strong> I aim to respond within 3-10 business days,
-                      but may take longer during busy periods or personal circumstances
-                    </p>
-                    <p>
-                      <strong>Support Scope:</strong> Limited to basic questions about Terms and
-                      platform functionality only
-                    </p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 p-3 rounded">
-                      <strong>Important:</strong> This is a personal project operated by a single
-                      individual developer. I do not have customer service teams, legal departments,
-                      or 24/7 support. All support is provided voluntarily in my spare time and
-                      subject to personal availability. Complex legal or technical issues may not
-                      receive detailed responses due to resource limitations.
+                      <strong>Response Time:</strong> We aim to respond within 3-10 business days
                     </p>
                   </div>
                 </div>
@@ -2254,22 +1854,10 @@ export default function TermsOfService() {
 
               {/* Effective Date */}
               <div className="bg-slate-100 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600 text-center">
-                <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">
+                <p className="text-slate-600 dark:text-slate-400 text-sm">
                   These Terms of Service are effective as of July 17, 2025, and apply to all users
                   of the Certestic platform worldwide.
                 </p>
-                <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded p-4">
-                  <p className="text-blue-800 dark:text-blue-200 text-sm font-semibold mb-2">
-                    🏠 Personal Project Declaration
-                  </p>
-                  <p className="text-blue-700 dark:text-blue-300 text-xs">
-                    Certestic is a personal project created and maintained by an individual
-                    developer with limited resources and capacity. These Terms include enhanced
-                    liability protections appropriate for personal projects and reflect the
-                    non-commercial, best-effort nature of this service. By using the platform, you
-                    acknowledge and accept the inherent limitations of a personal project.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
