@@ -14,257 +14,182 @@ Marketing pages currently load Google Analytics before explicit visitor consent,
 
 ## Scope
 
-- Estimated files to modify: 8–14
-- Estimated files to create: 2–5
-- Risk level: **Medium** (privacy/compliance and analytics signal quality)
+- Estimated files to modify: 5–7
+- Estimated files to create: 1–2
+- Risk level: **Low** (simple GA gating, no complex logic)
 
 In scope:
 
-- Marketing page analytics gating and consent UX.
-- Consent-aware script injection strategy.
-- Policy and consent copy updates.
-- QA, telemetry validation, and rollout guardrails.
+- Add `react-cookie-consent` banner to marketing layout.
+- Gate GA script initialization on banner acceptance.
+- Minimal policy callout and cookie preferences link.
 
-Out of scope (for this specific rollout):
+Out of scope (defer to v2):
 
 - CMP vendor migration beyond `react-cookie-consent`.
-- Server-side legal determination for each jurisdiction.
+- Geo-detection or region-specific logic.
+- Google Consent Mode configuration.
+- Post-launch monitoring dashboard.
 - Broader data-retention redesign in GA property.
 
 ## Current-State Risks
 
-- GA cookies may be set before user action on first paint.
-- No clear deny path or persistent preference center entry point.
-- Possible mismatch between actual script behavior and privacy policy claims.
-- Auditability gaps (no internal event trail for consent actions).
+- GA cookies are set before user consent (primary compliance issue).
+- No visible user control or transparency.
 
 ## Target Behavior Contract
 
-1. **Default state (no consent yet)**
-   - No GA script execution on marketing pages.
-   - No analytics cookies created.
+1. **First visit (no consent yet)**
+   - Banner visible with Accept / Decline buttons.
+   - GA script remains inactive (not loaded).
 
-2. **Accept analytics**
-   - GA loads only after accept.
-   - Consent state persists with timestamp/version.
+2. **Accept**
+   - Consent saved to localStorage (simple text flag).
+   - GA script loads immediately.
 
-3. **Decline analytics**
-   - GA remains blocked.
-   - Existing non-essential analytics cookies are removed where feasible.
+3. **Decline**
+   - Consent saved; GA stays blocked.
+   - User can retry by clearing cookies or visiting again.
 
-4. **Change mind later**
-   - User can re-open preferences from footer/privacy area.
-   - Updated preference immediately affects script behavior.
+4. **Return visit**
+   - If prior consent exists, respect it (no banner shown).
+   - GA loads if previously accepted.
 
-## Phased Plan
+## Phased Plan (Fast-Track for Production)
 
-### Phase 0: Compliance Baseline & Decision Record
+### Phase 1: Setup & Banner Integration
 
-**Goal**: Lock legal/product decisions before engineering implementation.
+**Goal**: Install `react-cookie-consent` and integrate banner into marketing layout.
 
 **Tasks**:
 
-- Define what counts as essential vs non-essential cookies on marketing pages.
-- Confirm regional policy baseline (strict opt-in by default vs geo-conditional).
-- Finalize consent copy and CTA labels with legal/product sign-off.
-- Decide consent TTL and policy-version strategy.
+- Install `react-cookie-consent` package.
+- Create a wrapper component `ConsentBanner` (shadcn-styled, dark mode support).
+- Add banner to marketing layout with simple messaging:
+  - "We use Google Analytics to understand how you use our site."
+  - Accept / Decline buttons.
+  - Link to privacy policy.
+- Export consent state helper (`getConsent()`).
 
 **Deliverables**:
 
-- Privacy decision record in docs/kanban.
-- Approved banner text and preference wording.
+- `src/components/custom/ConsentBanner.tsx`
+- Consent utility hook/fn for reading localStorage state.
+
+**Est. Time**: 1–2 hours
 
 **Exit criteria**:
 
-- Written approval from product + legal stakeholders.
+- Banner renders on first visit, saves choice to localStorage, respects saved state on return.
 
 ---
 
-### Phase 1: Cookie & Script Inventory (Technical Audit)
+### Phase 2: GA Script Gating
 
-**Goal**: Identify exactly what gets loaded, when, and why.
+**Goal**: Prevent GA initialization until consent accepted.
 
 **Tasks**:
 
-- Inventory all marketing-page scripts that set/read cookies/local storage.
-- Identify GA initialization points and any indirect loaders (tag wrappers, custom hooks).
-- Classify each script as Essential / Analytics / Functional / Marketing.
-- Define which scripts must be gated behind consent.
+- Remove GA script from global `_app.tsx` or layout.
+- Create lazy GA initializer (`initializeGA()`) that checks consent before loading gtag.
+- On `ConsentBanner` accept, call `initializeGA()`.
+- Defer to marketing layout or parent context to invoke initializer.
 
 **Deliverables**:
 
-- Script inventory table (script, owner, purpose, category, gating rule).
-- Consent category mapping used by implementation.
+- GA initialization wrapped in consent check.
+- No GA request fires before consent.
+
+**Est. Time**: 30 min–1 hour
 
 **Exit criteria**:
 
-- No unidentified analytics/tracking script remains in marketing routes.
+- Manual browser check: first visit shows no `_ga` cookies; after accept, GA loads and tracks.
 
 ---
 
-### Phase 2: Consent Architecture & UX Spec
+### Phase 3: Policy & Preference Link
 
-**Goal**: Design a single, reusable consent model before coding.
+**Goal**: Add minimal policy callout and cookie settings access.
 
 **Tasks**:
 
-- Adopt `react-cookie-consent` as the banner entry point.
-- Define consent state schema:
-  - `status`: `accepted | declined | unset`
-  - `categories`: initially `analytics` (extensible)
-  - `consentVersion`
-  - `updatedAt`
-- Specify banner behavior:
-  - first-visit show conditions
-  - accept/decline actions
-  - policy links
-- Specify preference re-open entry (footer “Cookie Settings”).
-- Define accessibility requirements (keyboard, focus trap, contrast, screen reader labels).
+- Update existing privacy policy footnote to mention analytics consent.
+- Add "Cookie Preferences" link in footer pointing to a simple modal/accordion that:
+  - Shows current consent state.
+  - Allows re-accept/re-decline.
+  - Persists choice.
+- Keep text minimal (2–3 sentences).
 
 **Deliverables**:
 
-- UX acceptance criteria and state diagram.
-- Event contract for consent changes.
+- Updated privacy policy section.
+- Simple cookie preferences UI (modal or dialog).
+
+**Est. Time**: 1–2 hours
 
 **Exit criteria**:
 
-- Product/design sign-off on banner + preference behavior.
+- Footer link visible and functional; users can toggle consent preference.
 
 ---
 
-### Phase 3: Controlled GA Loading Strategy
+### Phase 4: QA & Production Rollout
 
-**Goal**: Ensure GA only loads after valid consent signal.
-
-**Tasks**:
-
-- Move GA bootstrap behind consent check (no eager load in global layout for marketing pages).
-- Implement lazy analytics initializer triggered by consent acceptance.
-- Ensure decline path does not initialize GA.
-- Add revocation flow:
-  - disable future GA calls
-  - remove analytics cookies where technically possible
-- Add safe fallback behavior for malformed consent state (default block).
-
-**Deliverables**:
-
-- Consent-gated analytics initialization flow.
-- Revocation behavior checklist.
-
-**Exit criteria**:
-
-- Manual verification: first load sets no GA cookies until accept.
-
----
-
-### Phase 4: Policy, Transparency & Visitor Controls
-
-**Goal**: Align visible policy language with actual runtime behavior.
+**Goal**: Validate and ship to production.
 
 **Tasks**:
 
-- Update privacy/cookie policy to describe analytics consent behavior.
-- Add “Cookie Settings” link in footer and relevant legal pages.
-- Document what data analytics receives post-consent.
-- Include effective date and consent version references.
+- Test critical paths (fresh visit → accept/decline, return visit with saved state).
+- Check mobile and two major browsers (Chrome, Safari).
+- Verify: no GA before consent, GA fires after accept.
+- Deploy to staging, then production (no feature flag required).
 
 **Deliverables**:
 
-- Updated privacy/cookie content.
-- Visible, persistent preference entry point.
+- QA checklist (pass/fail matrix).
+- Release notes.
+
+**Est. Time**: 2–3 hours (including QA + deploy)
 
 **Exit criteria**:
 
-- Policy text and app behavior are consistent in QA checklist.
+- All critical tests pass; production live.
 
----
+## Recommended Timeline
 
-### Phase 5: QA, Telemetry Validation & Rollout
+- **Day 1 (4–5 hours)**: Phases 1–3 (banner + GA gating + policy)
+- **Day 2 (2–3 hours)**: Phase 4 (QA + production deploy)
 
-**Goal**: Prove compliance behavior before full release.
+## Key Risks & Mitigations
 
-**Tasks**:
-
-- Test matrix:
-  - first visit (unset)
-  - accept path
-  - decline path
-  - withdraw consent path
-  - clear cookies and revisit
-  - mobile/desktop + major browsers
-- Verify network behavior:
-  - no GA hits before consent
-  - GA events appear only after accept
-- Verify cookie behavior:
-  - GA cookies absent pre-consent
-  - consistent persistence post-consent
-- Run accessibility checks for banner/modal interactions.
-- Roll out behind feature flag if possible (staged deployment).
-
-**Deliverables**:
-
-- QA evidence log (screenshots + network captures).
-- Rollout checklist with go/no-go criteria.
-
-**Exit criteria**:
-
-- All critical checks pass; no pre-consent analytics traffic observed.
-
----
-
-### Phase 6: Post-Launch Monitoring & Governance
-
-**Goal**: Keep compliance healthy as pages evolve.
-
-**Tasks**:
-
-- Add recurring script-audit cadence (e.g., monthly or per release train).
-- Track consent acceptance/decline rates for UX tuning.
-- Alert on accidental early GA load regressions (synthetic check).
-- Define ownership for banner copy/version updates.
-
-**Deliverables**:
-
-- Operational runbook for consent governance.
-- Regression checklist integrated into release QA.
-
-**Exit criteria**:
-
-- Ownership assigned and recurring checks scheduled.
-
-## Recommended Timeline (Suggested)
-
-- Week 1: Phases 0–2 (decisions + audit + UX spec)
-- Week 2: Phase 3 (implementation)
-- Week 3: Phases 4–5 (policy alignment + QA + staged rollout)
-- Week 4+: Phase 6 (monitoring and governance)
-
-## Risks & Mitigations
-
-- **Risk**: Analytics volume drops after enforcing consent.
-  - **Mitigation**: Set stakeholder expectation early; measure with before/after dashboard.
-
-- **Risk**: Hidden script path still initializes GA.
-  - **Mitigation**: Complete script inventory + automated smoke checks.
-
-- **Risk**: Poor banner UX leads to confusion/abandonment.
-  - **Mitigation**: Keep copy concise, avoid dark patterns, test on mobile.
-
-- **Risk**: Policy text drifts from actual implementation.
-  - **Mitigation**: Add policy-behavior parity check to release checklist.
+| Risk                               | Mitigation                                                  |
+| ---------------------------------- | ----------------------------------------------------------- |
+| GA volume drops post-launch        | Expected & acceptable; alert stakeholders beforehand.       |
+| Hidden GA loader still fires       | Keep audit tight to layout + Next.js config only.           |
+| Banner UX confusion                | Use clear language, honor browser preferences if available. |
+| Consent state lost on hard refresh | localStorage is standard; edge case acceptable.             |
 
 ## Rollback Plan
 
-If rollout causes severe regressions (e.g., broken page behavior), temporarily disable consent-gated analytics initialization while preserving banner visibility, then:
+If issues arise post-deploy:
 
-1. Revert latest consent-gating deployment.
-2. Keep visitor controls visible (do not remove transparency UI).
-3. Triage root cause (script loading order, hydration timing, route-specific behavior).
-4. Re-release with targeted fixes and repeat QA matrix.
+1. Revert banner component + GA gating code.
+2. Restore GA to original initialization (1 commit).
+3. Assess user impact and re-evaluate.
 
-## Open Questions
+## Simplifications Made
 
-1. Do we want strict global opt-in for all visitors or geo-specific behavior by region?
-2. Should we support category granularity now (Analytics vs Marketing) or start with Analytics-only?
-3. What consent retention period should be used before re-prompting?
-4. Is Google Consent Mode configuration required in this phase, or deferred to later hardening?
+- **No geo-detection**: Global opt-in for all visitors (simple & compliant).
+- **Analytics-only**: Not planning Marketing or other cookie categories yet.
+- **No Consent Mode**: Full script blocking is easier and sufficient for v1.
+- **No preference center modal**: Simple footer link + re-accept in banner (low friction).
+- **No monitoring dashboard**: Ship with QA checklist, add observability later if needed.
+
+## Future Enhancements (v2+)
+
+- Geo-aware opt-in/opt-out by region (if legal mandates it).
+- Category-based consent (Marketing cookies, Functional, etc.).
+- Google Consent Mode integration for nuanced signal handling.
+- Consent analytics dashboard (acceptance rates, UX tuning).
+- Expiration prompt (6–12 month re-consent).
