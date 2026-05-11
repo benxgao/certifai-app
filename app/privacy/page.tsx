@@ -1,6 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import LandingHeader from '@/src/components/custom/LandingHeader';
+import { MarketingPageShell } from '@/src/components/marketing';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Certestic',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <MarketingPageShell className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Header */}
       <LandingHeader />
 
@@ -27,7 +28,7 @@ export default function PrivacyPolicy() {
           </div>
 
           {/* Content */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-8 lg:p-12">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-8 lg:p-12">
             <div className="prose prose-slate dark:prose-invert max-w-none">
               {/* Introduction */}
               <section className="mb-8">
@@ -1060,6 +1061,6 @@ export default function PrivacyPolicy() {
           </div>
         </div>
       </main>
-    </div>
+    </MarketingPageShell>
   );
 }

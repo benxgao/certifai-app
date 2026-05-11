@@ -275,7 +275,7 @@ export default function CloudCertificationsPage() {
               Certifications
             </MarketingHeading>
 
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
               Launch your cloud career with industry-leading certifications from AWS, Microsoft
               Azure, and Google Cloud Platform. Our AI-powered practice exams help you master cloud
               architecture, administration, and development skills that employers demand.
@@ -322,7 +322,7 @@ export default function CloudCertificationsPage() {
             {featuredCertifications.map((cert) => (
               <Card
                 key={cert.slug}
-                className={`group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 ${cert.color} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 rounded-xl overflow-hidden`}
+                className={`group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 ${cert.color} shadow-lg hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden`}
               >
                 <CardContent className="p-6">
                   {/* Header */}
@@ -367,7 +367,7 @@ export default function CloudCertificationsPage() {
 
                   <Link
                     href={`/certifications/${cert.firmCode}/${cert.slug}`}
-                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white font-semibold rounded-xl transition-all duration-200 transform group-hover:scale-105"
+                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white font-semibold rounded-lg transition-colors duration-200"
                   >
                     <span>Start Practice Exam</span>
                     <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />

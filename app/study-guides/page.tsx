@@ -58,7 +58,7 @@ export default function StudyGuidesPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <Card className="text-center p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                   <CardHeader className="pb-4">
-                    <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-12 w-12 rounded-lg bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                       <Sparkles className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-lg">AI-Powered Adaptation</CardTitle>
@@ -73,7 +73,7 @@ export default function StudyGuidesPage() {
 
                 <Card className="text-center p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                   <CardHeader className="pb-4">
-                    <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-12 w-12 rounded-lg bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                       <Target className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-lg">Focused Learning</CardTitle>
@@ -88,7 +88,7 @@ export default function StudyGuidesPage() {
 
                 <Card className="text-center p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
                   <CardHeader className="pb-4">
-                    <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                    <div className="h-12 w-12 rounded-lg bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                       <TrendingUp className="h-6 w-6 text-white" />
                     </div>
                     <CardTitle className="text-lg">Progress Tracking</CardTitle>
@@ -211,7 +211,7 @@ export default function StudyGuidesPage() {
                 <Link href="/signup">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                    className="w-full sm:w-auto rounded-lg px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-colors duration-200 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                   >
                     Start Free Beta Now
                   </Button>
@@ -221,7 +221,7 @@ export default function StudyGuidesPage() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                    className="w-full sm:w-auto rounded-lg px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200"
                   >
                     View All Coming Features
                   </Button>

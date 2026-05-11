@@ -244,9 +244,9 @@ export default function ComingSoonPage() {
             <div className="max-w-2xl mx-auto">
               <div className="relative">
                 {/* Decorative background */}
-                <div className="absolute inset-0 bg-linear-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-3xl transform rotate-1 scale-105"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-violet-100 to-blue-100 dark:from-violet-900/20 dark:to-blue-900/20 rounded-lg"></div>
 
-                <Card className="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-2xl">
+                <Card className="relative bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-lg">
                   <CardHeader className="text-center pb-4">
                     <CardTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                       Get Early Access
@@ -284,7 +284,7 @@ export default function ComingSoonPage() {
                             type="submit"
                             disabled={isSubmitting}
                             size="lg"
-                            className="h-12 px-6 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                            className="h-12 px-6 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-colors duration-200"
                           >
                             {isSubmitting ? (
                               <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
@@ -335,7 +335,7 @@ export default function ComingSoonPage() {
                 <Link href="/signup">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
+                    className="w-full sm:w-auto rounded-lg px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-colors duration-200 bg-linear-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700"
                   >
                     Start Learning Now!
                   </Button>
@@ -344,7 +344,7 @@ export default function ComingSoonPage() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="w-full sm:w-auto rounded-xl px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+                    className="w-full sm:w-auto rounded-lg px-8 py-4 text-lg font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200"
                   >
                     Contact Us
                   </Button>
@@ -353,8 +353,8 @@ export default function ComingSoonPage() {
 
               {/* Feature highlights */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-                <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-                  <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                <div className="text-center p-6 rounded-lg bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
+                    <div className="h-12 w-12 rounded-lg bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                     <Sparkles className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
@@ -365,8 +365,8 @@ export default function ComingSoonPage() {
                   </p>
                 </div>
 
-                <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-                  <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                <div className="text-center p-6 rounded-lg bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
+                  <div className="h-12 w-12 rounded-lg bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                     <BookOpen className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
@@ -377,8 +377,8 @@ export default function ComingSoonPage() {
                   </p>
                 </div>
 
-                <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
-                  <div className="h-12 w-12 rounded-xl bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
+                <div className="text-center p-6 rounded-lg bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60">
+                  <div className="h-12 w-12 rounded-lg bg-linear-to-br from-violet-500 to-blue-500 flex items-center justify-center mx-auto mb-4">
                     <Users className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">

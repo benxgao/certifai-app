@@ -253,7 +253,7 @@ export default function SecurityCertificationsPage() {
               Career
             </MarketingHeading>
 
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
               Protect organizations from cyber threats with industry-leading security
               certifications. From CompTIA Security+ to CISSP, master the skills that make you
               indispensable in today&apos;s threat landscape with our AI-powered practice exams.
@@ -300,7 +300,7 @@ export default function SecurityCertificationsPage() {
             {featuredCertifications.map((cert) => (
               <Card
                 key={cert.slug}
-                className={`group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 ${cert.color} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 rounded-xl overflow-hidden`}
+                className={`group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 ${cert.color} shadow-lg hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden`}
               >
                 <CardContent className="p-6">
                   {/* Header */}
@@ -362,7 +362,7 @@ export default function SecurityCertificationsPage() {
 
                   <Link
                     href={`/certifications/${cert.firmCode}/${cert.slug}`}
-                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-200 transform group-hover:scale-105"
+                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-colors duration-200"
                   >
                     <span>Start Practice Exam</span>
                     <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />

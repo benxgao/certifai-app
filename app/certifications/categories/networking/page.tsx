@@ -260,7 +260,7 @@ export default function NetworkingCertificationsPage() {
               of Tomorrow
             </MarketingHeading>
 
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
               Master networking fundamentals and advanced technologies with industry-leading
               certifications from Cisco, CompTIA, and other top vendors. From CCNA to expert-level
               credentials, build the skills that power global connectivity.
@@ -307,7 +307,7 @@ export default function NetworkingCertificationsPage() {
             {featuredCertifications.map((cert) => (
               <Card
                 key={cert.slug}
-                className={`group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 ${cert.color} shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 rounded-xl overflow-hidden`}
+                className={`group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 ${cert.color} shadow-lg hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden`}
               >
                 <CardContent className="p-6">
                   {/* Header */}
@@ -369,7 +369,7 @@ export default function NetworkingCertificationsPage() {
 
                   <Link
                     href={`/certifications/${cert.firmCode}/${cert.slug}`}
-                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-200 transform group-hover:scale-105"
+                    className="w-full inline-flex items-center justify-between px-4 py-3 bg-linear-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold rounded-lg transition-colors duration-200"
                   >
                     <span>Start Practice Exam</span>
                     <FaArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />

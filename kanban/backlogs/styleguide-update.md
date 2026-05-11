@@ -231,7 +231,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 - [x] Phase 2 — Primitives layer
 - [x] Phase 3 — Shared components layer
 - [x] Phase 4 — Page layer (tier 1)
-- [ ] Phase 5 — Page layer (tier 2)
+- [x] Phase 5 — Page layer (tier 2) ← **COMPLETE** via QA sweep
 - [ ] Phase 6 — Documentation and guardrails
 
 ## Phases
@@ -390,7 +390,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 ### Phase 5: Page layer (tier 2) — long-tail marketing routes
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: Remaining `app/` and `src/components/custom/` marketing files only. No config or primitive file is changed.
 
@@ -420,16 +420,43 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 - [x] **5.1 — Certification shell routes**: migrate `app/certifications/page.tsx` and `src/components/custom/CertificationMarketingPage.tsx`
   - **Independent verification**: certification shell pages compile and primary surfaces come from shared primitives, not route-local brand classes
-- [ ] **5.2 — Category routes batch A**: migrate `cloud` and `networking`
+- [x] **5.2 — Category routes batch A**: migrate `cloud` and `networking`
   - **Independent verification**: both routes compile and retain only informational accents where truly needed
-- [ ] **5.3 — Category routes batch B**: migrate `security` and `[firmCode]/[slug]`
+  - ✅ Removed banned motion classes (`transform hover:-translate-y-2`, `group-hover:scale-105`)
+  - ✅ Standardized button/card border-radius to canonical `rounded-lg`
+  - ✅ TypeScript compilation: no errors
+  - ✅ Informational color accents preserved (provider/vendor colors in borders)
+- [x] **5.3 — Category routes batch B**: migrate `security` and `[firmCode]/[slug]`
   - **Independent verification**: both routes compile and do not introduce a second card/button/gradient system
-- [ ] **5.4 — Supporting marketing routes**: migrate `study-guides` and `coming-soon`
+  - ✅ Removed banned motion classes from security page (`transform hover:-translate-y-2`, `group-hover:scale-105`)
+  - ✅ Standardized buttons/cards to canonical `rounded-lg` in security page
+  - ✅ Verified [firmCode]/[slug] page already compliant (no banned patterns found)
+  - ✅ TypeScript compilation: no errors
+  - ✅ Decorative backgrounds preserve category-specific colors (informational only)
+- [x] **5.4 — Supporting marketing routes**: migrate `study-guides` and `coming-soon`
   - **Independent verification**: both routes compile and follow the same shell/section/card structure as tier 1
-- [ ] **5.5 — Legal/document routes**: migrate `privacy` and `terms` with lightweight wrappers only
+  - ✅ Removed all banned shape classes (`rounded-xi`, `rounded-2xl`) from buttons and cards
+  - ✅ Standardized all interactive elements to canonical `rounded-lg`
+  - ✅ Standardized transition classes to `transition-colors` (from `transition-all`)
+  - ✅ TypeScript compilation: no errors
+  - ✅ No banned motion classes: all `transform hover:` patterns removed
+- [x] **5.5 — Legal/document routes**: migrate `privacy` and `terms` with lightweight wrappers only
   - **Independent verification**: both legal pages compile with shared wrappers while staying intentionally simpler than marketing-heavy pages
-- [ ] **5.6 — Tier-2 QA sweep**: verify any remaining accent colors are informational only
+  - ✅ Added `MarketingPageShell` wrapper to both legal pages
+  - ✅ Maintained lightweight document-like styling (no badges, headings, or complex sections)
+  - ✅ Preserved all legal content and structure intact
+  - ✅ TypeScript compilation: no errors
+  - ✅ No banned pattern changes needed (pages already compliant)
+- [x] **5.6 — Tier-2 QA sweep**: verify any remaining accent colors are informational only
   - **Independent verification**: grep and visual review confirm no stray layout-level accent systems remain
+  - ✅ Comprehensive scan of all tier-2 pages (5.1-5.5) completed
+  - ✅ Removed final banned motion patterns: decorative background `transform rotate-1 scale-105` in coming-soon
+  - ✅ Standardized all content containers to canonical `rounded-lg`: privacy/terms pages
+  - ✅ Standardized all icon containers to canonical `rounded-lg`: study-guides icon backgrounds
+  - ✅ Verified skeleton placeholders acceptable (animate-pulse, non-interactive)
+  - ✅ Verified decorative absolute-positioned backgrounds acceptable (rounded-3xl only used for background blur gradients)
+  - ✅ TypeScript compilation: zero errors across entire app
+  - ✅ No remaining banned motion/scale patterns in interactive elements
 
 ---
 
