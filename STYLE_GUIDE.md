@@ -2,6 +2,73 @@
 
 Essential patterns and reusable components for consistent development.
 
+## Marketing Theme Architecture (Authoritative)
+
+The marketing design system is now code-backed and centralized.
+
+### Source of truth
+
+- Visual tokens and branding live in `src/config/marketing-theme.ts`
+- Marketing primitives live in `src/components/marketing/`
+  - `MarketingPageShell`
+  - `MarketingSection`
+  - `MarketingCard`
+  - `MarketingBadge`
+  - `MarketingHeading`
+
+When editing marketing visuals (accent, gradient usage, hover behavior, radius, card/button styles), update the token contract in `src/config/marketing-theme.ts` first.
+
+### Required composition for new marketing routes
+
+All new public marketing pages must:
+
+1. Use `MarketingPageShell` as the outer page wrapper
+2. Use `MarketingSection` for section spacing/container behavior
+3. Use semantic primitives/tokens instead of route-local class constants for hero/card/button surfaces
+
+### Guardrails (must-follow)
+
+- Do not define local route-level constants for card/button/hero class systems in marketing pages
+- Do not introduce a second branding system (alternate gradients, alternate accent color families) for layout surfaces
+- Keep hover motion minimal (`transition-colors`, subtle shadow/border changes; no scale/translate for interactive surfaces)
+- Keep marketing radius decisions centralized in `src/config/marketing-theme.ts`
+
+### Banned patterns for marketing pages
+
+- `hover:scale-*`
+- `hover:-translate-y-*`
+- route-local button/card systems that bypass theme tokens
+- local hardcoded replacements for canonical marketing shell/section wrappers
+
+### PR review checklist for marketing routes
+
+If a PR adds or significantly edits a marketing route, include verification that:
+
+- It uses `MarketingPageShell` + `MarketingSection`
+- No banned motion patterns were introduced
+- No new local branding system was introduced
+- The change compiles with `npx tsc --noEmit`
+
+Suggested grep checks:
+
+- `grep -rn "hover:scale-|hover:-translate-y-" app src/components`
+- `grep -rn "const .*\(card\|button\|hero\).*class" app src/components`
+
+### Maintainability expectation
+
+A global branding tweak (for example, changing canonical button radius from `rounded-lg` to `rounded-xl`) should require edits only in:
+
+- `src/config/marketing-theme.ts`
+- this guide (`STYLE_GUIDE.md`)
+
+If a proposed branding tweak requires touching many route files, treat it as architecture drift and refactor back toward tokens/primitives before shipping.
+
+### Precedence rule (important)
+
+If any class snippet in this guide conflicts with `src/config/marketing-theme.ts`, the config file wins.
+
+Many snippets below are retained as visual reference, but **new or refactored marketing routes should consume primitives/tokens instead of copying raw class strings**.
+
 ## Core Design Principles
 
 - **Minimal & Clean**: Focus on content, whitespace, and readable typography
@@ -9,7 +76,7 @@ Essential patterns and reusable components for consistent development.
 - **Glass-morphism**: Semi-transparent elements with `backdrop-blur-sm`
 - **Mobile-first**: Responsive with `sm:`, `md:`, `lg:` breakpoints
 - **Dark mode**: All components support `dark:` variants
-- **No visual noise**: Remove colored icons, badges, and excessive styling
+- **No visual noise**: Avoid excessive styling and keep decorative accents token-driven
 
 ## Layout Structure
 
@@ -234,7 +301,7 @@ text-sm font-semibold text-slate-500 dark:text-slate-400
 ```tsx
 <Button
   variant="outline"
-  className="rounded-lg px-8 py-4 text-base font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200"
+  className="rounded-lg px-8 py-4 text-base font-semibold border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-200"
 >
   Sign In
 </Button>
@@ -274,18 +341,21 @@ hover:shadow-sm transition-colors duration-200
 
 - [ ] **Color palette**: Use whites, grays, and violet accent only (NO colored badges/indicators)
 - [ ] **Typography**: Headings `font-bold`, body `font-light` with `leading-relaxed`
-- [ ] **Cards**: Use `rounded-2xl` or `rounded-3xl`, `p-8`, `gap-8` in grids
-- [ ] **Buttons**: Use `rounded-lg` (NOT `rounded-xl`), `transition-colors` only
+- [ ] **Cards**: Use `MarketingCard` variants and theme tokens (avoid route-local radius/surface systems)
+- [ ] **Buttons**: Use themed button tokens (`ActionButton`/config-backed variants), `transition-colors` only
 - [ ] **Spacing**: Sections use `py-16 sm:py-20 lg:py-24`, containers use `px-4 sm:px-6 lg:px-8`
 - [ ] **Step indicators**: Use numbered badges, violet accent for first step only
 - [ ] **Hover states**: Minimal (shadow + border color shift, NO scale/translate)
 - [ ] **Dark mode**: All components have `dark:` variants
 - [ ] **Responsive**: Test at `sm:`, `md:`, `lg:` breakpoints
-- [ ] **No visual noise**: Remove icons, gradients, and excessive effects
+- [ ] **No visual noise**: Keep decorative effects restrained and centralized via tokens
 
 ---
 
-## Quick Reference: Landing Page CSS Patterns
+## Quick Reference: Landing Page CSS Patterns (Reference Only)
+
+Use this section for reading/debugging existing pages.
+For new/refactored marketing routes, prefer primitives and token imports over direct class-copying.
 
 ### Most Common Classes
 
@@ -372,50 +442,26 @@ hover:shadow-sm transition-colors duration-200
 | **Visual Effects** | Multiple hover effects (scale, translate, shadows) | Minimal (shadow + border shift)                        |
 | **Typography**     | Bold headers with colored spans                    | Clean bold headers, `font-light` body                 |
 
-## Refactoring Other Pages
+## Refactoring / New Marketing Route Playbook
 
-When refactoring marketing pages to match this style:
+When implementing or refactoring a marketing page, follow this order:
 
-1. **Typography Consistency**
-   - Use `text-xl font-bold tracking-tight` for all card/feature headings
-   - Use `text-base leading-relaxed` for all card body text
-   - Use `text-base font-semibold` for ALL buttons (unified across page)
-   - Use `text-sm font-semibold` for provider/meta text
+1. **Compose with primitives first**
+  - Start with `MarketingPageShell` and `MarketingSection`
+  - Use `MarketingCard`, `MarketingBadge`, and `MarketingHeading` where applicable
 
-2. **Grid & Layout**
-   - Use 2-column grids on large screens (`lg:grid-cols-2`), not 3
-   - Apply `min-h-18` to card titles for consistent card heights
-   - Use `line-clamp-3` for multiline descriptions
-   - Maintain `gap-8` for consistent spacing
+2. **Use token-backed CTA styles**
+  - Prefer `ActionButton` or other config-backed button variants
+  - Keep interaction behavior to token-defined minimal transitions
 
-3. **Card Styling**
-   - Remove all colored badges/icons - Replace with neutral styling
-   - Use fixed title heights: `min-h-18 flex items-start`
-   - Apply `rounded-2xl` for certification cards, `rounded-3xl` for feature cards
-   - No colored backgrounds - stick to `bg-white/90 dark:bg-slate-800/90`
+3. **Keep branding centralized**
+  - Edit accent, gradients, radii, motion, and major surfaces in `src/config/marketing-theme.ts`
+  - Do not add route-local branding systems for card/button/hero surfaces
 
-4. **Buttons**
-   - Change all buttons to `rounded-lg` with `transition-colors` only
-   - Use `text-base font-semibold` (not `text-lg`)
-   - Padding: `px-8 py-4` for full-size buttons
-   - Primary: `bg-violet-600 hover:bg-violet-700`
-   - Secondary: `bg-white/80 dark:bg-slate-800/80 hover:bg-slate-50/90`
+4. **Allow only narrow informational accents**
+  - Non-brand colors are allowed only for informational context (for example provider indicators), not page-level layout surfaces
 
-5. **Spacing & Responsive**
-   - Standardize section padding: `py-16 sm:py-20 lg:py-24`
-   - Use responsive containers: `px-4 sm:px-6 lg:px-8`
-   - Add proper spacing between sections with `mt-8 sm:mt-12 lg:mt-16`
-   - Mobile-first grid: `grid-cols-1 md:grid-cols-2 lg:grid-cols-2`
-
-6. **Colors & Effects**
-   - Minimize hover effects - Keep to shadow and border color changes only
-   - Use single accent color (violet) only for highlights and CTAs
-   - Apply dark mode variants to all elements
-   - No scale/translate transforms - minimal interactions only
-
-7. **Typography Rules**
-   - Use `font-light` for body text and hero content
-   - Use `font-bold` for headings only
-   - Use `font-semibold` for provider/meta data
-   - Use `leading-relaxed` for all body text
-   - Use `tracking-tight` on all headings
+5. **Run review checks before merge**
+  - Confirm no banned motion patterns (`hover:scale-*`, `hover:-translate-y-*`)
+  - Confirm no route-local class systems replacing canonical primitives/tokens
+  - Confirm compile health with `npx tsc --noEmit`
