@@ -1,17 +1,18 @@
 import Link from 'next/link';
+import { marketingTheme } from '@/src/config/marketing-theme';
 import CookiePreferencesLink from './CookiePreferencesLink';
 
 export default function MarketingFooter() {
   return (
-    <footer className="mt-auto bg-linear-to-br from-slate-900 to-slate-800 border-t border-slate-700">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <footer className={marketingTheme.footer.shell}>
+      <div className={marketingTheme.footer.container}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
           {/* Brand Section */}
           <div className="space-y-3 sm:space-y-4">
             <div className="flex items-center space-x-2">
               <span className="font-bold text-lg sm:text-xl text-white">Certestic</span>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+            <p className={`${marketingTheme.footer.body} max-w-sm`}>
               Master IT certifications with AI-powered practice exams, real-time performance
               analysis, and personalized study recommendations.
             </p>
@@ -54,14 +55,14 @@ export default function MarketingFooter() {
 
           {/* Popular Certifications Section */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-white font-semibold text-sm uppercase tracking-wider">
+            <h3 className={marketingTheme.footer.heading}>
               Popular Certifications
             </h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/certifications/AWS/aws-certified-solutions-architect"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   AWS Solutions Architect
                 </Link>
@@ -69,7 +70,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/certifications/AZURE/microsoft-certified-azure-administrator-associate"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Azure Administrator
                 </Link>
@@ -77,7 +78,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/certifications/GCP/google-cloud-professional-cloud-architect"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   GCP Cloud Architect
                 </Link>
@@ -85,7 +86,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/certifications/COMPTIA/comptia-security"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   CompTIA Security+
                 </Link>
@@ -93,7 +94,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/certifications/CISCO/cisco-certified-network-associate-ccna"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Cisco CCNA
                 </Link>
@@ -103,12 +104,12 @@ export default function MarketingFooter() {
 
           {/* Platform Section */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-white font-semibold text-sm uppercase tracking-wider">Platform</h3>
+            <h3 className={marketingTheme.footer.heading}>Platform</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/main"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Dashboard
                 </Link>
@@ -116,7 +117,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/main/certifications"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Certifications
                 </Link>
@@ -124,7 +125,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/main/ai"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   AI Practice
                 </Link>
@@ -132,7 +133,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/main/profile"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Profile
                 </Link>
@@ -140,7 +141,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/pricing"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Pricing
                 </Link>
@@ -150,12 +151,12 @@ export default function MarketingFooter() {
 
           {/* Resources Section */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-white font-semibold text-sm uppercase tracking-wider">Resources</h3>
+            <h3 className={marketingTheme.footer.heading}>Resources</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/documentation"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Documentation
                 </Link>
@@ -163,7 +164,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Blog
                 </Link>
@@ -171,7 +172,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/study-guides"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Study Guides
                 </Link>
@@ -179,7 +180,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/community"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Discussion Forum
                 </Link>
@@ -187,7 +188,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/support"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Support Center
                 </Link>
@@ -197,12 +198,12 @@ export default function MarketingFooter() {
 
           {/* Company Section */}
           <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-white font-semibold text-sm uppercase tracking-wider">Company</h3>
+            <h3 className={marketingTheme.footer.heading}>Company</h3>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/about"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   About
                 </Link>
@@ -210,7 +211,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Contact
                 </Link>
@@ -218,7 +219,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Privacy Policy
                 </Link>
@@ -229,7 +230,7 @@ export default function MarketingFooter() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-slate-400 hover:text-white transition-colors duration-200 text-sm"
+                  className={marketingTheme.footer.link}
                 >
                   Terms of Service
                 </Link>
@@ -239,15 +240,15 @@ export default function MarketingFooter() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-700">
+        <div className={`mt-8 sm:mt-12 pt-6 sm:pt-8 ${marketingTheme.footer.bottomBorder}`}>
           <div className="flex flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0">
-            <div className="text-slate-400 text-sm">© 2025-2026 Certestic. All rights reserved.</div>
+            <div className={marketingTheme.footer.body}>© 2025-2026 Certestic. All rights reserved.</div>
             <div className="flex items-center space-x-4 sm:space-x-6">
-              <div className="flex items-center space-x-2 text-slate-400 text-sm">
+              <div className={`flex items-center space-x-2 ${marketingTheme.footer.body}`}>
                 <span>🚀</span>
                 <span>Live Platform</span>
               </div>
-              <div className="flex items-center space-x-2 text-slate-400 text-sm">
+              <div className={`flex items-center space-x-2 ${marketingTheme.footer.body}`}>
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span>All Systems Operational</span>
               </div>

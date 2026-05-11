@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
+import { marketingTheme } from '@/src/config/marketing-theme';
 
 export default function LandingHeader() {
   const [navOpen, setNavOpen] = React.useState(false);
@@ -31,16 +32,16 @@ export default function LandingHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm">
+    <header className={marketingTheme.header.shell}>
       <div className="container mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-8 h-8 bg-violet-600 rounded-xl flex items-center justify-center shadow-sm hover:shadow-sm transition-colors duration-200">
+              <div className={marketingTheme.header.logoBadge}>
                 <span className="text-white font-normal text-sm">C</span>
               </div>
-              <span className="font-bold text-xl text-violet-700 dark:text-violet-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors md:hidden lg:inline">
+              <span className={`${marketingTheme.header.brandWordmark} md:hidden lg:inline`}>
                 Certestic
               </span>
             </Link>
@@ -54,10 +55,10 @@ export default function LandingHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-normal transition-all duration-200 relative group px-2 md:px-3 py-2 rounded-lg ${
+                  className={`${marketingTheme.header.navLink} ${
                     isActive
-                      ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                      ? marketingTheme.header.navActive
+                      : marketingTheme.header.navInactive
                   }`}
                 >
                   {item.label}
@@ -66,10 +67,10 @@ export default function LandingHeader() {
             })}
             <Link
               href="/signin"
-              className={`text-sm font-normal transition-all duration-200 relative group px-2 md:px-3 py-2 rounded-lg ${
+              className={`${marketingTheme.header.navLink} ${
                 pathname === '/signin'
-                  ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                  ? marketingTheme.header.navActive
+                  : marketingTheme.header.navInactive
               }`}
             >
               Sign In
@@ -79,7 +80,7 @@ export default function LandingHeader() {
                 <Button
                   variant="default"
                   size="sm"
-                  className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200 px-3 md:px-4 lg:px-6"
+                  className={marketingTheme.header.ctaButton}
                 >
                   Start Practicing
                 </Button>
@@ -120,10 +121,10 @@ export default function LandingHeader() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`block px-4 py-3 text-sm font-normal rounded-xl transition-all duration-200 ${
+                      className={`block px-4 py-3 text-sm font-normal rounded-lg transition-all duration-200 ${
                         isActive
-                          ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                          : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                          ? marketingTheme.header.navActive
+                          : marketingTheme.header.navInactive
                       }`}
                       onClick={() => setNavOpen(false)}
                     >
@@ -133,10 +134,10 @@ export default function LandingHeader() {
                 })}
                 <Link
                   href="/signin"
-                  className={`block px-4 py-3 text-sm font-normal rounded-xl transition-all duration-200 ${
+                  className={`block px-4 py-3 text-sm font-normal rounded-lg transition-all duration-200 ${
                     pathname === '/signin'
-                      ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                      ? marketingTheme.header.navActive
+                      : marketingTheme.header.navInactive
                   }`}
                   onClick={() => setNavOpen(false)}
                 >
@@ -146,7 +147,7 @@ export default function LandingHeader() {
                   <div className="pt-2">
                     <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
                       <Button
-                        className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-normal shadow-sm hover:shadow-sm transition-colors duration-200"
+                        className={`w-full ${marketingTheme.header.ctaButton}`}
                         size="sm"
                       >
                         Get Started

@@ -229,7 +229,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 - [x] Phase 1 — Config layer
 - [x] Phase 2 — Primitives layer
-- [ ] Phase 3 — Shared components layer
+- [x] Phase 3 — Shared components layer
 - [ ] Phase 4 — Page layer (tier 1)
 - [ ] Phase 5 — Page layer (tier 2)
 - [ ] Phase 6 — Documentation and guardrails
@@ -321,7 +321,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 ### Phase 3: Shared components layer — consume config and primitives
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: `src/components/custom/` existing files only. No page-level route files under `app/` or `src/components/landing/` are touched.
 
@@ -341,13 +341,13 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Button mapping**: update `ActionButton.tsx` first so shared CTA styling is centralized
+- [x] **3.1 — Button mapping**: update `ActionButton.tsx` first so shared CTA styling is centralized
   - **Independent verification**: primary/secondary variants resolve from `marketingTheme.button.*` and compile cleanly
-- [ ] **3.2 — Header migration**: update `LandingHeader.tsx` to consume `header` and `button` tokens
+- [x] **3.2 — Header migration**: update `LandingHeader.tsx` to consume `header` and `button` tokens
   - **Independent verification**: header renders with centralized classes and no banned radius/motion classes remain
-- [ ] **3.3 — Footer migration**: update `MarketingFooter.tsx` to consume `footer` tokens
+- [x] **3.3 — Footer migration**: update `MarketingFooter.tsx` to consume `footer` tokens
   - **Independent verification**: footer renders from centralized classes and no page imports are touched
-- [ ] **3.4 — Shared-shell QA**: verify header/footer/button consistency before any page uses them transitively
+- [x] **3.4 — Shared-shell QA**: verify header/footer/button consistency before any page uses them transitively
   - **Independent verification**: visual QA passes for header/footer/button alignment and phase-level grep checks stay green
 
 ---

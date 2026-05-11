@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
+import { marketingTheme } from '@/src/config/marketing-theme';
 
 interface ActionButtonProps {
   onClick: () => void;
@@ -32,15 +33,15 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   const getVariantClasses = () => {
     switch (variant) {
       case 'primary':
-        return 'bg-violet-600 hover:bg-violet-700 text-white border-0';
+        return marketingTheme.button.primary;
       case 'secondary':
-        return 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/90 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200';
+        return marketingTheme.button.secondary;
       case 'success':
         return 'bg-emerald-500 hover:bg-emerald-600 text-white border-0';
       case 'outline':
         return 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-slate-200/60 dark:border-slate-700/60 hover:bg-slate-50/90 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200';
       default:
-        return 'bg-violet-600 hover:bg-violet-700 text-white border-0';
+        return marketingTheme.button.primary;
     }
   };
 
