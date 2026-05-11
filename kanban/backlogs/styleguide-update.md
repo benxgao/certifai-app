@@ -228,7 +228,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 ## Progress Dashboard
 
 - [x] Phase 1 — Config layer
-- [ ] Phase 2 — Primitives layer
+- [x] Phase 2 — Primitives layer
 - [ ] Phase 3 — Shared components layer
 - [ ] Phase 4 — Page layer (tier 1)
 - [ ] Phase 5 — Page layer (tier 2)
@@ -285,7 +285,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 ### Phase 2: Primitives layer — create marketing UI components
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: `src/components/marketing/` only. No existing component file is modified.
 
@@ -308,13 +308,13 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Layout primitives**: create `MarketingPageShell` and `MarketingSection`
+- [x] **2.1 — Layout primitives**: create `MarketingPageShell` and `MarketingSection`
   - **Independent verification**: both components compile and import only React plus `src/config/marketing-theme.ts`
-- [ ] **2.2 — Surface primitives**: create `MarketingCard` with `default`, `interactive`, and `cta` variants
+- [x] **2.2 — Surface primitives**: create `MarketingCard` with `default`, `interactive`, and `cta` variants
   - **Independent verification**: each variant renders from centralized tokens with no local accent system introduced
-- [ ] **2.3 — Typography primitives**: create `MarketingBadge` and `MarketingHeading`
+- [x] **2.3 — Typography primitives**: create `MarketingBadge` and `MarketingHeading`
   - **Independent verification**: hero/section typography and badge styling compile and resolve from config only
-- [ ] **2.4 — Export boundary**: add `src/components/marketing/index.ts` and verify imports stay one-way
+- [x] **2.4 — Export boundary**: add `src/components/marketing/index.ts` and verify imports stay one-way
   - **Independent verification**: barrel export works and grep confirms no imports from `custom/` or `landing/`
 
 ---
