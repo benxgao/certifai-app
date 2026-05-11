@@ -1,6 +1,10 @@
-# Certifai Design System & Style Guide
+# Certifai Marketing Style Guide
 
-Essential patterns and reusable components for consistent development.
+Styles and components for public-facing **marketing and landing pages**.
+
+> Shared design tokens (colors, spacing, typography, interactive states) live in [shared.md](shared.md).
+
+---
 
 ## Marketing Theme Architecture (Authoritative)
 
@@ -69,15 +73,6 @@ If any class snippet in this guide conflicts with `src/config/marketing-theme.ts
 
 Many snippets below are retained as visual reference, but **new or refactored marketing routes should consume primitives/tokens instead of copying raw class strings**.
 
-## Core Design Principles
-
-- **Minimal & Clean**: Focus on content, whitespace, and readable typography
-- **Unified Color**: Single accent color (violet) with neutral grays
-- **Glass-morphism**: Semi-transparent elements with `backdrop-blur-sm`
-- **Mobile-first**: Responsive with `sm:`, `md:`, `lg:` breakpoints
-- **Dark mode**: All components support `dark:` variants
-- **No visual noise**: Avoid excessive styling and keep decorative accents token-driven
-
 ## Layout Structure
 
 ### Standard Page Container (Landing/Marketing Pages)
@@ -102,47 +97,6 @@ Many snippets below are retained as visual reference, but **new or refactored ma
 - Vertical: `py-16 sm:py-20 lg:py-24` (consistent section spacing)
 - Content max-width: `max-w-3xl mx-auto` or `max-w-4xl mx-auto`
 - Grid gaps: `gap-8` with `md:grid-cols-2` or `md:grid-cols-3`
-
-## Essential Colors (Landing/Marketing Pages)
-
-### Backgrounds
-
-```css
-/* Page backgrounds */
-bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br
-
-/* Section backgrounds (subtle) */
-bg-slate-50/50 dark:bg-slate-800/30
-
-/* Card backgrounds */
-bg-white/90 dark:bg-slate-800/90           /* Primary cards */
-```
-
-### Text Colors
-
-```css
-/* Headings */
-text-slate-900 dark:text-slate-100         /* Primary headings (h1, h2) */
-
-/* Body text */
-text-slate-600 dark:text-slate-400         /* Primary body copy */
-text-slate-500 dark:text-slate-400         /* Secondary text */
-
-/* Accent only */
-text-violet-600 dark:text-violet-400       /* Links, highlights */
-text-violet-700 dark:text-violet-300       /* Hover states */
-```
-
-### Borders
-
-```css
-border-slate-200/60 dark:border-slate-700/60
-border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
-```
-
-### Key Principle
-
-**Use neutral palette (grays/whites) + violet accent only. No colors for AWS/Azure/GCP/etc.**
 
 ## Reusable Components & Patterns
 
@@ -237,55 +191,6 @@ border-slate-300/60 dark:border-slate-600/60       /* Hover state borders */
 - Others: neutral slate
 - Never use colored icons or graphics
 
-## Spacing Scale
-
-```css
-space-y-10    /* Between major sections */
-space-y-6     /* Between content blocks */
-space-y-4     /* Between form elements */
-space-y-2     /* Between related items */
-```
-
-## Typography (Landing/Marketing Pages)
-
-### Headings
-
-```css
-/* Hero Title (H1) */
-text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-slate-100 leading-tight
-
-/* Section Title (H2) */
-text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-50 tracking-tight
-
-/* Card/Feature Titles (H3) - Unified across sections */
-text-xl font-bold text-slate-900 dark:text-slate-50 tracking-tight
-```
-
-### Body Text
-
-```css
-/* Hero/Primary body */
-text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-light
-
-/* Secondary body text */
-text-sm sm:text-base lg:text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-light
-
-/* Card/Feature body text (Unified across sections) */
-text-base text-slate-600 dark:text-slate-400 leading-relaxed
-
-/* Provider/Meta text */
-text-sm font-semibold text-slate-500 dark:text-slate-400
-```
-
-### Key Typography Rules
-
-- Use `font-light` for body (lighter weight, more minimal)
-- Use `font-bold` for headings only
-- Use `font-semibold` for provider/provider names
-- Use `leading-relaxed` for readability
-- Use `tracking-tight` on all headings
-- **Across all sections**: headings `text-xl`, body `text-base` for consistency
-
 ## Buttons (Landing/Marketing Pages)
 
 ### Primary Button (CTA)
@@ -324,18 +229,6 @@ text-sm font-semibold text-slate-500 dark:text-slate-400
 - Hover shadow: minimal `hover:shadow-sm`
 - Primary color: `bg-violet-600 hover:bg-violet-700`
 - Secondary variant: `bg-white/80 dark:bg-slate-800/80 hover:bg-slate-50/90 dark:hover:bg-slate-700/90`
-
-## Interactive States
-
-```css
-/* Card hover - Landing pages (MINIMAL approach) */
-hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300
-
-/* Button hover - Landing pages */
-hover:shadow-sm transition-colors duration-200
-
-/* NO scale/translate transforms on landing pages - keep minimal */
-```
 
 ## Implementation Checklist (Landing/Marketing Pages)
 
@@ -410,17 +303,20 @@ For new/refactored marketing routes, prefer primitives and token imports over di
 ## Landing Page Refinements (Current Implementation)
 
 ### Typography Unification
+
 - **Feature & Certification Card Headings**: Both use `text-xl font-bold tracking-tight`
 - **Card Body Text**: Unified to `text-base leading-relaxed`
 - **Button Text**: Unified to `text-base font-semibold` (was `text-lg`)
 - **Result**: Consistent, minimal aesthetic across all sections
 
 ### Grid Layouts
+
 - **How It Works**: `grid-cols-1 md:grid-cols-2` (2 columns on tablet+)
 - **Available Topics**: `grid-cols-1 md:grid-cols-2 lg:grid-cols-2` (2 columns on desktop, not 3)
 - **Benefit**: Better card visibility and spacing on all screen sizes
 
 ### Card Title Height
+
 - **Certification Cards**: `min-h-18` fixed 3-line title height for perfect alignment
 - **Ensures**: All cards maintain same height regardless of title length variations
 - **Improves**: Visual consistency and layout predictability
@@ -437,9 +333,9 @@ For new/refactored marketing routes, prefer primitives and token imports over di
 | **Headings (H3)**  | `text-2xl` (feature cards)                         | `text-xl` (unified across sections)                   |
 | **Body Text**      | `text-lg` (mixed across cards)                     | `text-base` (unified)                                 |
 | **Grid Columns**   | 3 columns on large screens                         | 2 columns on large screens                            |
-| **Title Height**   | Variable by content                                | Fixed 3-line (`min-h-18`)                       |
+| **Title Height**   | Variable by content                                | Fixed 3-line (`min-h-18`)                             |
 | **Spacing**        | Various padding sizes                              | Standardized `py-16 sm:py-20 lg:py-24`                |
-| **Visual Effects** | Multiple hover effects (scale, translate, shadows) | Minimal (shadow + border shift)                        |
+| **Visual Effects** | Multiple hover effects (scale, translate, shadows) | Minimal (shadow + border shift)                       |
 | **Typography**     | Bold headers with colored spans                    | Clean bold headers, `font-light` body                 |
 
 ## Refactoring / New Marketing Route Playbook
@@ -447,21 +343,26 @@ For new/refactored marketing routes, prefer primitives and token imports over di
 When implementing or refactoring a marketing page, follow this order:
 
 1. **Compose with primitives first**
-  - Start with `MarketingPageShell` and `MarketingSection`
-  - Use `MarketingCard`, `MarketingBadge`, and `MarketingHeading` where applicable
+
+- Start with `MarketingPageShell` and `MarketingSection`
+- Use `MarketingCard`, `MarketingBadge`, and `MarketingHeading` where applicable
 
 2. **Use token-backed CTA styles**
-  - Prefer `ActionButton` or other config-backed button variants
-  - Keep interaction behavior to token-defined minimal transitions
+
+- Prefer `ActionButton` or other config-backed button variants
+- Keep interaction behavior to token-defined minimal transitions
 
 3. **Keep branding centralized**
-  - Edit accent, gradients, radii, motion, and major surfaces in `src/config/marketing-theme.ts`
-  - Do not add route-local branding systems for card/button/hero surfaces
+
+- Edit accent, gradients, radii, motion, and major surfaces in `src/config/marketing-theme.ts`
+- Do not add route-local branding systems for card/button/hero surfaces
 
 4. **Allow only narrow informational accents**
-  - Non-brand colors are allowed only for informational context (for example provider indicators), not page-level layout surfaces
+
+- Non-brand colors are allowed only for informational context (for example provider indicators), not page-level layout surfaces
 
 5. **Run review checks before merge**
-  - Confirm no banned motion patterns (`hover:scale-*`, `hover:-translate-y-*`)
-  - Confirm no route-local class systems replacing canonical primitives/tokens
-  - Confirm compile health with `npx tsc --noEmit`
+
+- Confirm no banned motion patterns (`hover:scale-*`, `hover:-translate-y-*`)
+- Confirm no route-local class systems replacing canonical primitives/tokens
+- Confirm compile health with `npx tsc --noEmit`
