@@ -227,7 +227,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Config layer
+- [x] Phase 1 — Config layer
 - [ ] Phase 2 — Primitives layer
 - [ ] Phase 3 — Shared components layer
 - [ ] Phase 4 — Page layer (tier 1)
@@ -238,7 +238,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 ### Phase 1: Config layer — define the marketing theme contract
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: `src/config/` only. No component file is touched.
 
@@ -272,13 +272,13 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Define token groups**: scaffold `brand`, `pageShell`, `section`, `badge`, `heading`, `surface`, `button`
+- [x] **1.1 — Define token groups**: scaffold `brand`, `pageShell`, `section`, `badge`, `heading`, `surface`, `button`
   - **Independent verification**: file exports these groups without type errors and uses only static class strings
-- [ ] **1.2 — Normalize motion and shape**: add `motion` and `shape` tokens to lock hover behavior and radius rules
+- [x] **1.2 — Normalize motion and shape**: add `motion` and `shape` tokens to lock hover behavior and radius rules
   - **Independent verification**: the config exposes one canonical hover set and one canonical radius token with no duplicate alternatives
-- [ ] **1.3 — Add shell-specific tokens**: add `header` and `footer` token groups
+- [x] **1.3 — Add shell-specific tokens**: add `header` and `footer` token groups
   - **Independent verification**: header/footer token groups exist and are descriptive enough to replace component-local class decisions later
-- [ ] **1.4 — Freeze contract**: review naming, remove overlap, confirm no missing semantic buckets before any consumer exists
+- [x] **1.4 — Freeze contract**: review naming, remove overlap, confirm no missing semantic buckets before any consumer exists
   - **Independent verification**: naming audit completed; no downstream component requires inventing a new token during initial adoption
 
 ---
