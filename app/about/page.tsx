@@ -12,6 +12,7 @@ import {
 import { faqSchema } from '@/src/lib/schemas/faqSchema';
 import { breadcrumbSchemas } from '@/src/lib/schemas/breadcrumbSchema';
 import { Target, Heart, Users, Brain, Rocket } from 'lucide-react';
+import { MarketingPageShell, MarketingSection, MarketingCard, MarketingBadge } from '@/src/components/marketing';
 
 // Enhanced WebPage Schema for About page
 const aboutPageSchema = {
@@ -66,7 +67,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
+      <MarketingPageShell>
         <LandingHeader />
 
         <main className="relative" role="main">
@@ -277,7 +278,7 @@ export default function AboutPage() {
             </div>
           </section>
         </main>
-      </div>
+      </MarketingPageShell>
     </>
   );
 }

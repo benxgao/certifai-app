@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import PopularCertifications from '@/src/components/landing/PopularCertifications';
+import { MarketingPageShell, MarketingSection, MarketingCard, MarketingBadge, MarketingHeading } from '@/src/components/marketing';
 
 export default function LandingPageContent() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
+    <MarketingPageShell>
       {/* Header with Navigation */}
       <LandingHeader />
 
@@ -16,16 +17,16 @@ export default function LandingPageContent() {
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Content - Centered */}
           <div className="text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
+            <MarketingBadge>
               <Star className="w-4 h-4" />
               <span>Adaptive Learning Powered by AI</span>
-            </div>
+            </MarketingBadge>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+            <MarketingHeading level="hero" as="h1">
               <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                 Certification practice that adapts to you
               </span>
-            </h1>
+            </MarketingHeading>
 
             <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
               Practice questions adjust as understanding deepens. The app learns what helps, then builds on it.
@@ -125,6 +126,6 @@ export default function LandingPageContent() {
 
       {/* Popular Certifications Section */}
       <PopularCertifications />
-    </div>
+    </MarketingPageShell>
   );
 }

@@ -6,6 +6,7 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import { ActionButton } from '@/src/components/custom/ActionButton';
 import { Mail, BookOpen, MessageCircle, HelpCircle, Users } from 'lucide-react';
+import { MarketingPageShell, MarketingSection, MarketingCard, MarketingBadge, MarketingHeading } from '@/src/components/marketing';
 
 export default function ContactPage() {
   // Simplified FAQ data
@@ -49,7 +50,7 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-800 overflow-x-hidden">
+    <MarketingPageShell>
       <LandingHeader />
 
       <main className="relative" role="main">
@@ -66,16 +67,16 @@ export default function ContactPage() {
 
             {/* Hero Content - Centered */}
             <div className="text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
-              <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
+              <MarketingBadge>
                 <MessageCircle className="w-4 h-4" />
                 <span>We&apos;d love to hear from you</span>
-              </div>
+              </MarketingBadge>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+              <MarketingHeading level="hero" as="h1">
                 <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                   Get in Touch
                 </span>
-              </h1>
+              </MarketingHeading>
 
               <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
                 Have questions, feedback, or ideas? Every message helps us improve and build a better learning experience.
@@ -242,6 +243,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-    </div>
+    </MarketingPageShell>
   );
 }

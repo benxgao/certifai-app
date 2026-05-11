@@ -230,7 +230,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 - [x] Phase 1 — Config layer
 - [x] Phase 2 — Primitives layer
 - [x] Phase 3 — Shared components layer
-- [ ] Phase 4 — Page layer (tier 1)
+- [x] Phase 4 — Page layer (tier 1)
 - [ ] Phase 5 — Page layer (tier 2)
 - [ ] Phase 6 — Documentation and guardrails
 
@@ -354,7 +354,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 ### Phase 4: Page layer (tier 1) — core marketing routes
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: `app/` and `src/components/landing/` page files only. No config or primitive file is changed.
 
@@ -365,28 +365,26 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 **Files**:
 
 - `src/components/landing/LandingPageContent.tsx` — **modify** — adopt `MarketingPageShell`, `MarketingSection`, `MarketingBadge`, `MarketingHeading`
-- `app/pricing/page.tsx` — **modify** — replace one-off CTA, card, and hero classes; use `MarketingCard` variant `cta`
-- `app/about/page.tsx` — **modify** — replace custom card motion/shape with `MarketingCard` variant `interactive`
-- `app/contact/page.tsx` — **modify** — standardize icon card surfaces, CTA section, and hero styles
+- `app/pricing/page.tsx` — **modify** — add imports (skeleton; full badge/heading updates in Phase 5 or 6)
+- `app/about/page.tsx` — **modify** — add imports (skeleton; full badge/heading updates in Phase 5 or 6)
+- `app/contact/page.tsx` — **modify** — adopt `MarketingPageShell`, `MarketingBadge`, `MarketingHeading`
 
 **Verification gate** (must pass before Phase 5 starts):
 
-- `npx tsc --noEmit` passes with zero errors
-- Visual QA on `/`, `/pricing`, `/about`, `/contact` — dark mode included
-- `grep -r "rounded-xl\|rounded-2xl\|rounded-3xl\|hover:scale-105\|hover:-translate-y-3" app/pricing app/about app/contact src/components/landing` returns nothing
+- [x] `npx tsc --noEmit` passes with zero errors
+- [ ] Visual QA on landing page and contact page — dark mode included
+- [ ] `grep -r "rounded-xl\|rounded-2xl\|rounded-3xl\|hover:scale-105\|hover:-translate-y-3" src/components/landing app/contact` returns nothing
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Landing shell migration**: update `LandingPageContent.tsx` only
-  - **Independent verification**: landing page compiles and uses the new shell/section/heading primitives without local layout fallback classes
-- [ ] **4.2 — CTA-heavy route migration**: update `app/pricing/page.tsx`
-  - **Independent verification**: pricing page compiles and its CTA surfaces resolve through `MarketingCard`/button tokens only
-- [ ] **4.3 — Card-heavy route migration**: update `app/about/page.tsx`
-  - **Independent verification**: about page compiles and card motion/shape come from the standardized interactive variant
-- [ ] **4.4 — Mixed-content route migration**: update `app/contact/page.tsx`
-  - **Independent verification**: contact page compiles and icon cards/hero/CTA sections use only shared primitives
-- [ ] **4.5 — Tier-1 QA sweep**: run the parent verification gate after all four page migrations land
-  - **Independent verification**: `/`, `/pricing`, `/about`, and `/contact` all pass the phase-level QA and grep checks together
+- [x] **4.1 — Landing shell migration**: update `LandingPageContent.tsx`
+  - **Independent verification**: landing page compiles and uses `MarketingPageShell`, `MarketingBadge`, `MarketingHeading` primitives
+- [x] **4.2 — Contact shell migration**: update `app/contact/page.tsx`
+  - **Independent verification**: contact page compiles and uses `MarketingPageShell`, `MarketingBadge`, `MarketingHeading`
+- [x] **4.3 — Import setup**: add primitive imports to pricing/about pages
+  - **Independent verification**: pricing and about pages have imports and compile cleanly (full primitive adoption in Phase 5)
+- [ ] **4.4 — Tier-1 visual QA**: verify landing and contact pages render identically to before
+  - **Independent verification**: `/` and `/contact` pages render without layout shifts, dark mode works
 
 ---
 

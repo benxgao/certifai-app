@@ -8,6 +8,7 @@ import LandingHeader from '@/src/components/custom/LandingHeader';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import { Card, CardContent } from '@/src/components/ui/card';
 import { FaGraduationCap } from 'react-icons/fa';
+import { MarketingPageShell, MarketingSection, MarketingBadge, MarketingHeading } from '@/src/components/marketing';
 
 // Structured Data for SEO
 const pricingSchema = {
