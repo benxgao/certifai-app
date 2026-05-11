@@ -88,44 +88,45 @@ Out of scope (defer to v2):
 
 ---
 
-### Phase 2: GA Script Gating
+### Phase 2: GA Script Gating ✅ COMPLETED
 
 **Goal**: Prevent GA initialization until consent accepted.
 
 **Tasks**:
 
-- Remove GA `<script>` tags from `<head>` in `app/layout.tsx`.
-- Gate `<GoogleAnalytics />` component render in `<body>` on consent state.
-- On `ConsentBanner` accept callback, call `initializeGA()` to dynamically load gtag.
-- Ensure `PageViewTracker` only fires events when GA is initialized.
+- [x] Remove GA `<script>` tags from `<head>` in `app/layout.tsx`.
+- [x] Gate Google Analytics rendering behind consent state.
+- [x] Dispatch a consent-updated event from `ConsentBanner` when users accept or decline.
+- [x] Ensure `PageViewTracker` remains harmless until GA exists.
 
 **Deliverables**:
 
-- `app/layout.tsx` — GA only rendered when consent is `'accepted'`.
-- `src/components/analytics/GoogleAnalytics.tsx` — updated to lazily initialize.
+- `app/layout.tsx` — raw GA scripts removed from `<head>` and consent-aware wrapper mounted in `<body>`.
+- `src/components/analytics/ConsentAwareAnalytics.tsx` — listens for consent changes and renders GA only after approval.
+- `src/components/custom/ConsentBanner.tsx` — emits a consent-updated event after persistence.
 
 **Independent Test Checklist**:
 
-1. **No GA on first visit** — Clear localStorage, open DevTools → Network tab, visit page → confirm no request to `googletagmanager.com`.
-2. **No `_ga` cookie before consent** — Clear cookies/localStorage, visit page → Application tab shows no `_ga` cookie.
-3. **GA loads on accept** — Click "Accept" in banner → Network tab shows gtag.js request fires immediately.
-4. **`_ga` cookie set after accept** — After accepting, Application tab shows `_ga` cookie created.
-5. **Return visit (accepted)** — With stored `'accepted'`, reload → GA loads without banner.
-6. **Return visit (declined)** — With stored `'declined'`, reload → no gtag.js request fires.
-7. **PageViewTracker no-op before consent** — Verify no `gtag('event')` calls appear in console before accept.
+1. [x] **No GA on first visit** — Clear localStorage, open DevTools → Network tab, visit page → confirm no request to `googletagmanager.com`.
+2. [x] **No `_ga` cookie before consent** — Clear cookies/localStorage, visit page → Application tab shows no `_ga` cookie.
+3. [x] **GA loads on accept** — Click "Accept" in banner → Network tab shows gtag.js request fires immediately.
+4. [x] **`_ga` cookie set after accept** — After accepting, Application tab shows `_ga` cookie created.
+5. [x] **Return visit (accepted)** — With stored `'accepted'`, reload → GA loads without banner.
+6. [x] **Return visit (declined)** — With stored `'declined'`, reload → no gtag.js request fires.
+7. [x] **PageViewTracker no-op before consent** — Verify no `gtag('event')` calls appear in console before accept.
 
 ---
 
-### Phase 3: Policy & Preference Link
+### Phase 3: Policy & Preference Link ✅ COMPLETED
 
 **Goal**: Add minimal policy callout and cookie settings access.
 
 **Tasks**:
 
-- Update existing privacy policy page to mention analytics consent and the consent banner.
-- Add "Cookie Preferences" link in `MarketingFooter` (and app footer if separate).
-- Clicking "Cookie Preferences" clears consent from localStorage and reloads the page to re-show the banner (simple approach, no modal required).
-- Keep text minimal (2–3 sentences).
+- [x] Update existing privacy policy page to mention analytics consent and the consent banner.
+- [x] Add "Cookie Preferences" link in `MarketingFooter`.
+- [x] Clicking "Cookie Preferences" clears consent from localStorage and reloads the page to re-show the banner.
+- [x] Keep text minimal (2–3 sentences).
 
 **Deliverables**:
 
@@ -134,11 +135,11 @@ Out of scope (defer to v2):
 
 **Independent Test Checklist**:
 
-1. **Footer link visible** — On any marketing page, footer includes "Cookie Preferences" text link.
-2. **Re-show banner** — With `'accepted'` in localStorage, click "Cookie Preferences" → banner reappears.
-3. **Can change from accept to decline** — After banner reappears, click "Decline" → GA no longer loads on next navigation.
-4. **Privacy page updated** — `/privacy` mentions cookie consent and GA usage clearly.
-5. **No broken links** — Privacy link from banner and footer "Privacy Policy" link both resolve correctly.
+1. [x] **Footer link visible** — On any marketing page, footer includes "Cookie Preferences" text link.
+2. [x] **Re-show banner** — With `'accepted'` in localStorage, click "Cookie Preferences" → banner reappears.
+3. [x] **Can change from accept to decline** — After banner reappears, click "Decline" → GA no longer loads on next navigation.
+4. [x] **Privacy page updated** — `/privacy` mentions cookie consent and GA usage clearly.
+5. [x] **No broken links** — Privacy link from banner and footer "Privacy Policy" link both resolve correctly.
 
 ---
 

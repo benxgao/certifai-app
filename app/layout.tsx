@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import ConditionalFirebaseAuthProvider from '@/src/components/auth/ConditionalFirebaseAuthProvider';
 import ConditionalFooter from '@/src/components/custom/ConditionalFooter';
 import ConsentBanner from '@/src/components/custom/ConsentBanner';
-import GoogleAnalytics from '@/src/components/analytics/GoogleAnalytics';
+import ConsentAwareAnalytics from '@/src/components/analytics/ConsentAwareAnalytics';
 import PageViewTracker from '@/src/components/analytics/PageViewTracker';
 import './globals.css';
 
@@ -169,25 +169,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Google Analytics (gtag) */}
-        {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_TRACKING_ID}');
-                `,
-              }}
-            />
-          </>
-        )}
+        {/* Google Analytics loaded via ConsentAwareAnalytics in body (consent-gated) */}
 
         {/* Schema.org structured data for Organization */}
         <script
@@ -299,9 +281,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {/* Google Analytics */}
+        {/* Google Analytics — only loaded after user accepts cookie consent */}
         {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
-          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_TRACKING_ID} />
+          <ConsentAwareAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_TRACKING_ID} />
         )}
 
         <ConditionalFirebaseAuthProvider>

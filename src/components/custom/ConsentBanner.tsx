@@ -22,12 +22,14 @@ export default function ConsentBanner({ onAccept, onDecline }: ConsentBannerProp
 
   const handleAccept = () => {
     setConsent('accepted');
+    window.dispatchEvent(new Event('certestic:consent-updated'));
     setVisible(false);
     onAccept?.();
   };
 
   const handleDecline = () => {
     setConsent('declined');
+    window.dispatchEvent(new Event('certestic:consent-updated'));
     setVisible(false);
     onDecline?.();
   };

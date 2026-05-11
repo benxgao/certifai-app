@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import CookiePreferencesLink from './CookiePreferencesLink';
 
 export default function MarketingFooter() {
   return (
@@ -221,6 +222,9 @@ export default function MarketingFooter() {
                 >
                   Privacy Policy
                 </Link>
+              </li>
+              <li>
+                <CookiePreferencesLink />
               </li>
               <li>
                 <Link

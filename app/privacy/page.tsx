@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
             <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
               Privacy Policy
             </h1>
-            <p className="text-lg text-slate-600 dark:text-slate-400">Last updated: July 9, 2025</p>
+            <p className="text-lg text-slate-600 dark:text-slate-400">Last updated: May 11, 2026</p>
           </div>
 
           {/* Content */}
@@ -447,6 +447,15 @@ export default function PrivacyPolicy() {
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
                   We may share your information for other purposes only with your explicit, informed
                   consent. You can withdraw this consent at any time by contacting us.
+                </p>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3 mt-6">
+                  Cookie and Analytics Preferences
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                  We use a cookie consent banner to ask for permission before loading Google
+                  Analytics on marketing pages. Your choice is stored locally in your browser, and
+                  you can update it at any time using the Cookie Preferences link in the footer.
                 </p>
               </section>
 
@@ -1039,12 +1048,12 @@ export default function PrivacyPolicy() {
                   Privacy Policy Effective Date
                 </p>
                 <p className="text-slate-700 dark:text-slate-300 text-sm mb-2">
-                  This Privacy Policy is effective as of May 12, 2026, and applies to all users of
+                  This Privacy Policy is effective as of May 11, 2026, and applies to all users of
                   the Certestic platform.
                 </p>
                 <p className="text-slate-600 dark:text-slate-400 text-xs">
                   We regularly review and update this policy to ensure compliance with applicable
-                  privacy laws. Last updated: May 12, 2026.
+                  privacy laws. Last updated: May 11, 2026.
                 </p>
               </div>
             </div>
