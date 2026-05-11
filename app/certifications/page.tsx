@@ -4,6 +4,14 @@ import CertificationsOverviewClient from '@/src/components/custom/Certifications
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import { Card, CardContent } from '@/src/components/ui/card';
+import {
+  MarketingBadge,
+  MarketingCard,
+  MarketingHeading,
+  MarketingPageShell,
+  MarketingSection,
+} from '@/src/components/marketing';
+import { marketingTheme } from '@/src/config/marketing-theme';
 
 import { fetchCertificationsData } from '@/src/lib/server-actions/certifications';
 
@@ -24,41 +32,41 @@ export default async function CertificationsPage({
     typeof resolvedSearchParams.firm === 'string' ? resolvedSearchParams.firm : undefined;
 
   return (
-    <div className="certifications-page min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden">
+    <MarketingPageShell className="certifications-page">
       {/* Header with Navigation */}
       <LandingHeader />
 
       {/* Hero Section with decorative background */}
-      <section className="certifications-hero relative py-8 sm:py-12 lg:py-16 overflow-hidden" role="banner">
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+      <MarketingSection className="certifications-hero py-8 sm:py-12 lg:py-16">
+        <div className="relative">
           <Breadcrumb items={breadcrumbItems} className="mb-8 sm:mb-12" />
 
           <div className="certifications-hero-content text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
-            <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
+            <MarketingBadge>
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
               <span>100+ Certifications Available</span>
-            </div>
+            </MarketingBadge>
 
-            <h1 className="certifications-hero-title text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+            <MarketingHeading level="hero" as="h1" className="certifications-hero-title">
               <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
                 IT Certifications Catalog
               </span>
-            </h1>
+            </MarketingHeading>
 
             <p className="certifications-hero-description text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
               Explore certification programs from leading technology companies. Create personalized practice exams with AI-powered simulation and advance your career.
             </p>
           </div>
         </div>
-      </section>
+      </MarketingSection>
 
       {/* Category Navigation Section */}
-      <section className="certifications-category-section relative py-16 sm:py-20 lg:py-24 bg-white/60 dark:bg-slate-800/60">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <MarketingSection className="certifications-category-section bg-white/60 dark:bg-slate-800/60">
+        <div>
           <div className="certifications-category-header text-center mb-16">
-            <h2 className="certifications-category-title text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4 leading-tight">
+            <MarketingHeading level="section" as="h2" className="certifications-category-title mb-4">
               Browse by Category
-            </h2>
+            </MarketingHeading>
             <p className="certifications-category-description text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
               Explore certifications organized by technology focus areas and career paths
             </p>
@@ -67,7 +75,7 @@ export default async function CertificationsPage({
           <div className="certifications-category-grid grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {/* Cloud Computing */}
             <Link href="/certifications/categories/cloud">
-              <Card className="category-card category-card-cloud group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 shadow-md rounded-2xl transition-colors duration-300">
+              <MarketingCard variant="interactive" className="category-card category-card-cloud group rounded-2xl">
                 <CardContent className="p-8 text-center flex flex-col h-full">
                   <h3 className="category-card-title text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                     Cloud Computing
@@ -79,12 +87,12 @@ export default async function CertificationsPage({
                     Explore
                   </button>
                 </CardContent>
-              </Card>
+              </MarketingCard>
             </Link>
 
             {/* Cybersecurity */}
             <Link href="/certifications/categories/security">
-              <Card className="category-card category-card-security group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 shadow-md rounded-2xl transition-colors duration-300">
+              <MarketingCard variant="interactive" className="category-card category-card-security group rounded-2xl">
                 <CardContent className="p-8 text-center flex flex-col h-full">
                   <h3 className="category-card-title text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                     Cybersecurity
@@ -96,12 +104,12 @@ export default async function CertificationsPage({
                     Explore
                   </button>
                 </CardContent>
-              </Card>
+              </MarketingCard>
             </Link>
 
             {/* Networking */}
             <Link href="/certifications/categories/networking">
-              <Card className="category-card category-card-networking group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 shadow-md rounded-2xl transition-colors duration-300">
+              <MarketingCard variant="interactive" className="category-card category-card-networking group rounded-2xl">
                 <CardContent className="p-8 text-center flex flex-col h-full">
                   <h3 className="category-card-title text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 tracking-tight line-clamp-3 leading-tight min-h-18 flex items-start">
                     Networking
@@ -113,15 +121,15 @@ export default async function CertificationsPage({
                     Explore
                   </button>
                 </CardContent>
-              </Card>
+              </MarketingCard>
             </Link>
           </div>
         </div>
-      </section>
+      </MarketingSection>
 
       {/* Content Section */}
-      <section className="certifications-content-section relative py-16 sm:py-20 lg:py-24 bg-slate-50/50 dark:bg-slate-800/30 overflow-hidden">
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+      <MarketingSection className="certifications-content-section bg-slate-50/50 dark:bg-slate-800/30">
+        <div className="relative">
           <Suspense fallback={<CertificationsOverviewSkeleton />}>
             <CertificationsOverviewClient
               initialFirms={firms}
@@ -130,8 +138,8 @@ export default async function CertificationsPage({
             />
           </Suspense>
         </div>
-      </section>
-    </div>
+      </MarketingSection>
+    </MarketingPageShell>
   );
 }
 
@@ -139,7 +147,7 @@ function CertificationsOverviewSkeleton() {
   return (
     <div className="certifications-skeleton space-y-8">
       {/* Stats skeleton */}
-      <div className="skeleton-stats-card bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-md border border-slate-200/60 dark:border-slate-700/60 p-8">
+      <div className={`skeleton-stats-card ${marketingTheme.surface.card} rounded-2xl p-8`}>
         <div className="skeleton-stats-grid grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {[1, 2, 3].map((i) => (
             <div key={i} className="skeleton-stat-item text-center">
@@ -158,7 +166,7 @@ function CertificationsOverviewSkeleton() {
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="skeleton-firm-card bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-md border border-slate-200/60 dark:border-slate-700/60 p-8"
+          className={`skeleton-firm-card ${marketingTheme.surface.card} rounded-2xl p-8`}
         >
           <div className="skeleton-firm-header flex items-center gap-4 mb-6">
             <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />

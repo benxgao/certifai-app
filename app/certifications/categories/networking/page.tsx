@@ -3,6 +3,7 @@ import Link from 'next/link';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import MarketingFooter from '@/src/components/custom/MarketingFooter';
 import Breadcrumbs from '@/src/components/navigation/Breadcrumbs';
+import { MarketingBadge, MarketingHeading, MarketingPageShell } from '@/src/components/marketing';
 import { Badge } from '@/src/components/ui/badge';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -231,7 +232,7 @@ export default function NetworkingCertificationsPage() {
   const allCertifications = networkingCertifications;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-green-50/30 dark:from-slate-900 dark:to-slate-800">
+    <MarketingPageShell className="bg-linear-to-br from-slate-50 to-green-50/30 dark:from-slate-900 dark:to-slate-800">
       <LandingHeader />
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -245,21 +246,19 @@ export default function NetworkingCertificationsPage() {
           <div className="absolute bottom-10 left-10 w-80 h-80 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
 
           <div className="relative z-10 py-16">
-            <div className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800/50 rounded-full px-4 py-2 mb-6">
+            <MarketingBadge className="mb-6 bg-green-100 dark:bg-green-900/30 border-green-200 dark:border-green-800/50 text-green-700 dark:text-green-300">
               <FaNetworkWired className="text-green-600 dark:text-green-400" />
-              <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Networking Certifications
-              </span>
-            </div>
+              <span>Networking Certifications</span>
+            </MarketingBadge>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+            <MarketingHeading level="hero" as="h1" className="mb-6">
               Build the
               <span className="bg-linear-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
                 {' '}
                 Network Backbone{' '}
               </span>
               of Tomorrow
-            </h1>
+            </MarketingHeading>
 
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
               Master networking fundamentals and advanced technologies with industry-leading
@@ -509,6 +508,6 @@ export default function NetworkingCertificationsPage() {
       </main>
 
       <MarketingFooter />
-    </div>
+    </MarketingPageShell>
   );
 }

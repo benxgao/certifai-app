@@ -418,7 +418,7 @@ Only mark a sub-subphase as `[x]` after its **independent verification** passes.
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Certification shell routes**: migrate `app/certifications/page.tsx` and `src/components/custom/CertificationMarketingPage.tsx`
+- [x] **5.1 — Certification shell routes**: migrate `app/certifications/page.tsx` and `src/components/custom/CertificationMarketingPage.tsx`
   - **Independent verification**: certification shell pages compile and primary surfaces come from shared primitives, not route-local brand classes
 - [ ] **5.2 — Category routes batch A**: migrate `cloud` and `networking`
   - **Independent verification**: both routes compile and retain only informational accents where truly needed

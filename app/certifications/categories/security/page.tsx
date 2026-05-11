@@ -3,6 +3,7 @@ import Link from 'next/link';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import MarketingFooter from '@/src/components/custom/MarketingFooter';
 import Breadcrumbs from '@/src/components/navigation/Breadcrumbs';
+import { MarketingBadge, MarketingHeading, MarketingPageShell } from '@/src/components/marketing';
 import { Badge } from '@/src/components/ui/badge';
 import { Card, CardContent } from '@/src/components/ui/card';
 import {
@@ -224,7 +225,7 @@ export default function SecurityCertificationsPage() {
   const allCertifications = securityCertifications;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-red-50/30 dark:from-slate-900 dark:to-slate-800">
+    <MarketingPageShell className="bg-linear-to-br from-slate-50 to-red-50/30 dark:from-slate-900 dark:to-slate-800">
       <LandingHeader />
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -238,21 +239,19 @@ export default function SecurityCertificationsPage() {
           <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-200/20 dark:bg-purple-600/10 rounded-full blur-3xl"></div>
 
           <div className="relative z-10 py-16">
-            <div className="inline-flex items-center gap-2 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 rounded-full px-4 py-2 mb-6">
+            <MarketingBadge className="mb-6 bg-red-100 dark:bg-red-900/30 border-red-200 dark:border-red-800/50 text-red-700 dark:text-red-300">
               <FaShieldAlt className="text-red-600 dark:text-red-400" />
-              <span className="text-sm font-medium text-red-700 dark:text-red-300">
-                Cybersecurity Certifications
-              </span>
-            </div>
+              <span>Cybersecurity Certifications</span>
+            </MarketingBadge>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+            <MarketingHeading level="hero" as="h1" className="mb-6">
               Launch Your
               <span className="bg-linear-to-r from-red-600 to-purple-600 bg-clip-text text-transparent">
                 {' '}
                 Cybersecurity{' '}
               </span>
               Career
-            </h1>
+            </MarketingHeading>
 
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed mb-8">
               Protect organizations from cyber threats with industry-leading security
@@ -504,6 +503,6 @@ export default function SecurityCertificationsPage() {
       </main>
 
       <MarketingFooter />
-    </div>
+    </MarketingPageShell>
   );
 }

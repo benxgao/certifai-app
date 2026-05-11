@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import CertificationDetail from '@/src/components/custom/CertificationDetail';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
 import LandingHeader from '@/src/components/custom/LandingHeader';
+import { MarketingPageShell } from '@/src/components/marketing';
 import { fetchCertificationDataBySlug } from '@/src/lib/server-actions/certifications';
 
 interface Props {
@@ -104,7 +105,7 @@ export default async function CertificationSlugPage({ params }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+    <MarketingPageShell className="bg-slate-50 dark:bg-slate-950 dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-800 relative">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -121,13 +122,13 @@ export default async function CertificationSlugPage({ params }: Props) {
           <CertificationDetail certId={certification.cert_id.toString()} />
         </Suspense>
       </div>
-    </div>
+    </MarketingPageShell>
   );
 }
 
 function CertificationDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+    <MarketingPageShell className="bg-slate-50 dark:bg-slate-950 dark:bg-linear-to-br dark:from-slate-900 dark:to-slate-800 relative">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -202,6 +203,6 @@ function CertificationDetailSkeleton() {
           </div>
         </div>
       </div>
-    </div>
+    </MarketingPageShell>
   );
 }

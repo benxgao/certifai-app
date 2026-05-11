@@ -17,6 +17,8 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import CertificationJsonLd from '@/src/components/seo/JsonLd';
+import { MarketingPageShell } from '@/src/components/marketing';
+import { marketingTheme } from '@/src/config/marketing-theme';
 import { linkifyText } from '@/src/lib/text-utils';
 import { createSlug } from '@/src/utils/slug';
 
@@ -150,7 +152,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
   if (error || !certification) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+      <MarketingPageShell className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -193,7 +195,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
             </Link>
           </div>
         </div>
-      </div>
+      </MarketingPageShell>
     );
   }
 
@@ -201,7 +203,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
     <>
       <CertificationJsonLd certification={certification} />
 
-      <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+      <MarketingPageShell className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -269,7 +271,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
 
           {/* Key Features */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-4 sm:px-0">
-            <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
+            <Card className={`${marketingTheme.surface.cardInteractive} p-8 text-center`}>
               <CardHeader className="pb-4">
                 <div className="w-16 h-16 bg-linear-to-br from-blue-100 via-blue-200 to-blue-300 dark:from-blue-900/40 dark:via-blue-800/40 dark:to-blue-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <FaBullseye className="w-8 h-8 text-blue-600 dark:text-blue-400" />
@@ -287,7 +289,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
               </CardContent>
             </Card>
 
-            <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-green-300/60 dark:hover:border-green-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
+            <Card className={`${marketingTheme.surface.cardInteractive} p-8 text-center`}>
               <CardHeader className="pb-4">
                 <div className="w-16 h-16 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <FaChartLine className="w-8 h-8 text-green-600 dark:text-green-400" />
@@ -305,7 +307,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
               </CardContent>
             </Card>
 
-            <Card className="group bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-purple-300/60 dark:hover:border-purple-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 text-center">
+            <Card className={`${marketingTheme.surface.cardInteractive} p-8 text-center`}>
               <CardHeader className="pb-4">
                 <div className="w-16 h-16 bg-linear-to-br from-purple-100 via-purple-200 to-purple-300 dark:from-purple-900/40 dark:via-purple-800/40 dark:to-purple-700/40 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
                   <FaUsers className="w-8 h-8 text-purple-600 dark:text-purple-400" />
@@ -325,7 +327,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           </div>
 
           {/* Stats Section */}
-          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
+          <Card className={`${marketingTheme.surface.card} mx-4 sm:mx-0`}>
             <CardContent className="p-8 sm:p-12">
               <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-slate-900 dark:text-slate-100">
                 Why Choose AI-Powered {certification.name} Training?
@@ -394,7 +396,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           </Card>
 
           {/* What You'll Learn */}
-          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
+          <Card className={`${marketingTheme.surface.card} mx-4 sm:mx-0`}>
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
                 <div className="w-12 h-12 bg-linear-to-br from-green-100 via-green-200 to-green-300 dark:from-green-900/40 dark:via-green-800/40 dark:to-green-700/40 rounded-2xl flex items-center justify-center shadow-lg">
@@ -452,7 +454,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           </Card>
 
           {/* AI-Powered Features Section */}
-          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
+          <Card className={`${marketingTheme.surface.card} mx-4 sm:mx-0`}>
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
                 <div className="w-12 h-12 bg-linear-to-br from-violet-100 via-violet-200 to-violet-300 dark:from-violet-900/40 dark:via-violet-800/40 dark:to-violet-700/40 rounded-2xl flex items-center justify-center shadow-lg">
@@ -590,7 +592,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           </Card>
 
           {/* Exam Preparation Strategy */}
-          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
+          <Card className={`${marketingTheme.surface.card} mx-4 sm:mx-0`}>
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
                 <div className="w-12 h-12 bg-linear-to-br from-amber-100 via-amber-200 to-amber-300 dark:from-amber-900/40 dark:via-amber-800/40 dark:to-amber-700/40 rounded-2xl flex items-center justify-center shadow-lg">
@@ -814,7 +816,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
           {/* Related Certifications */}
           {certification.related_certifications &&
             certification.related_certifications.length > 0 && (
-              <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
+              <Card className={`${marketingTheme.surface.card} mx-4 sm:mx-0`}>
                 <CardHeader className="p-8 sm:p-12 pb-6">
                   <CardTitle className="text-2xl sm:text-3xl text-slate-900 dark:text-slate-100">
                     Related Certifications
@@ -861,7 +863,7 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
             )}
 
           {/* Frequently Asked Questions */}
-          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl mx-4 sm:mx-0">
+          <Card className={`${marketingTheme.surface.card} mx-4 sm:mx-0`}>
             <CardHeader className="p-8 sm:p-12 pb-6">
               <CardTitle className="text-2xl sm:text-3xl flex items-center gap-3">
                 <div className="w-12 h-12 bg-linear-to-br from-indigo-100 via-indigo-200 to-indigo-300 dark:from-indigo-900/40 dark:via-indigo-800/40 dark:to-indigo-700/40 rounded-2xl flex items-center justify-center shadow-lg">
@@ -997,14 +999,14 @@ export default function CertificationMarketingPage({ certId, firmCode, slug, ini
             </CardContent>
           </Card>
         </div>
-      </div>
+      </MarketingPageShell>
     </>
   );
 }
 
 function MarketingPageSkeleton() {
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+    <MarketingPageShell className="bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 relative">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
@@ -1054,6 +1056,6 @@ function MarketingPageSkeleton() {
           </div>
         </div>
       </div>
-    </div>
+    </MarketingPageShell>
   );
 }
