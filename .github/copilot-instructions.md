@@ -64,22 +64,26 @@ cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(app|src)/"
 ## Skill: AI-Oriented Kanban Workflow
 
 - Treat phase execution as plan-first delivery.
+- If user asks for a rollout plan, implementation plan, or phased migration plan, use the isolated template at `.github/templates/rollout-plan-template.md` as the default house style.
 - If user asks `implement phase <n>`, first create:
   - `kanban/backlogs/public-trial-rag-phase-0<n>-rollout.md`
 - Do this before any code implementation.
 
 ### Rollout file checklist
 
-Each rollout file should include:
+Each rollout file should follow `.github/templates/rollout-plan-template.md` by default.
 
-- Objective
-- In scope / out of scope
-- Dependencies
-- Step checklist
-- Acceptance checklist
-- Rollback note
-- Open questions
-- Handoff notes for next phase
+### Rollout style rules
+
+- Write rollout plans as decision-quality engineering documents, not short task notes.
+- Prefer explicit reasoning over vague bullets; explain why each phase exists.
+- Make phases independently testable.
+- If a phase is heavy, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
+- Use the progress markers, dashboard, phase structure, and verification style defined in `.github/templates/rollout-plan-template.md`.
+- Keep dependency boundaries strict: do not mix config creation with consumer updates in the same phase unless the user explicitly asks for a looser plan.
+- When relevant, include concrete grep/TypeScript/manual QA checks instead of generic “test this” wording.
+- Prefer wording that makes the plan easy to execute incrementally in separate commits.
+- Default to this structured style whenever the user says “rollout plan”, “phased plan”, “migration plan”, or similar planning language.
 
 ### Workflow usage
 
@@ -87,6 +91,8 @@ Each rollout file should include:
 - Keep one rollout file per phase.
 - Update progress status and decisions in the same file as work continues.
 - Use evidence-based completion (tests/checks/validation notes), not opinion-based completion.
+- When a user says they like the style of an existing rollout plan, mirror that structure in future rollout docs for this repo unless they ask for a lighter format.
+- If the template evolves, update `.github/templates/rollout-plan-template.md` rather than expanding this instructions file.
 
 ## Hard Rules
 
