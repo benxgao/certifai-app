@@ -673,6 +673,7 @@ export default function SignUpPage() {
         variant="promo"
         showIcon={true}
         requireConsent={shouldRequireDemoConsent}
+        consentButtonText="Show demo login details"
         onConsentAccept={revealCredentials}
         privacyLink="/privacy"
         termsLink="/terms"

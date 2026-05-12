@@ -8,6 +8,43 @@ async function dismissCookieConsentIfVisible(page: Page) {
   }
 }
 
+async function revealCredentialsViaConsentModal(page: Page) {
+  const displayButton = page.getByRole('button', {
+    name: 'Show demo login details',
+  });
+
+  await expect(displayButton).toBeVisible();
+  await expect(displayButton).toBeEnabled();
+  await displayButton.click();
+
+  const consentDialog = page.getByRole('dialog', {
+    name: 'Before we display demo credentials',
+  });
+  await expect(consentDialog).toBeVisible();
+
+  await expect(consentDialog.getByRole('link', { name: 'Privacy Policy' })).toBeVisible();
+  await expect(consentDialog.getByRole('link', { name: 'Terms & Conditions' })).toBeVisible();
+
+  const agreeButton = consentDialog.getByRole('button', { name: 'Agree' });
+  await expect(agreeButton).toBeDisabled();
+
+  const consentCheckbox = consentDialog.getByLabel(
+    'I have read and agree to the Privacy Policy and Terms & Conditions for demo account use.',
+  );
+  await consentCheckbox.click();
+
+  await expect(agreeButton).toBeEnabled();
+
+  const revealResponse = page.waitForResponse(
+    (response) =>
+      response.url().includes('/api/demo-credentials') && response.request().method() === 'GET',
+  );
+  await agreeButton.click();
+  await revealResponse;
+
+  await expect(consentDialog).toBeHidden();
+}
+
 test.describe('Demo credentials reveal consent flow', () => {
   test.beforeEach(async ({ page }) => {
     await page.route('**/api/demo-credentials', async (route) => {
@@ -27,76 +64,45 @@ test.describe('Demo credentials reveal consent flow', () => {
   });
 
   test('requires click to reveal and hides again after refresh', async ({ page }) => {
-    await page.goto('/signin', { waitUntil: 'networkidle' });
+    await page.goto('/signin', { waitUntil: 'domcontentloaded' });
     await dismissCookieConsentIfVisible(page);
 
-    const agreeButton = page.getByRole('button', {
-      name: 'Agree and display demo account credentials',
-    });
-
-    await expect(agreeButton).toBeVisible();
-    await expect(agreeButton).toBeEnabled();
     await expect(page.locator('body')).not.toContainText(
       'username/password: demo@certestic.com',
     );
 
-    const firstRevealResponse = page.waitForResponse(
-      (response) =>
-        response.url().includes('/api/demo-credentials') && response.request().method() === 'GET',
-    );
-    await agreeButton.click();
-    await firstRevealResponse;
+    await revealCredentialsViaConsentModal(page);
 
     await expect(page.locator('body')).toContainText('username/password: demo@certestic.com');
 
-    await page.reload({ waitUntil: 'networkidle' });
+    await page.reload({ waitUntil: 'domcontentloaded' });
     await dismissCookieConsentIfVisible(page);
 
-    await expect(
-      page.getByRole('button', { name: 'Agree and display demo account credentials' }),
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Show demo login details' })).toBeVisible();
     await expect(page.locator('body')).not.toContainText(
       'username/password: demo@certestic.com',
     );
 
-    const secondRevealResponse = page.waitForResponse(
-      (response) =>
-        response.url().includes('/api/demo-credentials') && response.request().method() === 'GET',
-    );
-    await page.getByRole('button', { name: 'Agree and display demo account credentials' }).click();
-    await secondRevealResponse;
+    await revealCredentialsViaConsentModal(page);
     await expect(page.locator('body')).toContainText('username/password: demo@certestic.com');
   });
 
   test('applies the same reveal-on-click behavior on signup', async ({ page }) => {
-    await page.goto('/signup', { waitUntil: 'networkidle' });
+    await page.goto('/signup', { waitUntil: 'domcontentloaded' });
     await dismissCookieConsentIfVisible(page);
 
-    const agreeButton = page.getByRole('button', {
-      name: 'Agree and display demo account credentials',
-    });
-
-    await expect(agreeButton).toBeVisible();
-    await expect(agreeButton).toBeEnabled();
     await expect(page.locator('body')).not.toContainText(
       'username/password: demo@certestic.com',
     );
 
-    const revealResponse = page.waitForResponse(
-      (response) =>
-        response.url().includes('/api/demo-credentials') && response.request().method() === 'GET',
-    );
-    await agreeButton.click();
-    await revealResponse;
+    await revealCredentialsViaConsentModal(page);
 
     await expect(page.locator('body')).toContainText('username/password: demo@certestic.com');
 
-    await page.reload({ waitUntil: 'networkidle' });
+    await page.reload({ waitUntil: 'domcontentloaded' });
     await dismissCookieConsentIfVisible(page);
 
-    await expect(
-      page.getByRole('button', { name: 'Agree and display demo account credentials' }),
-    ).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Show demo login details' })).toBeVisible();
     await expect(page.locator('body')).not.toContainText(
       'username/password: demo@certestic.com',
     );
