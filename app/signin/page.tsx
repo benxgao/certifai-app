@@ -13,6 +13,12 @@ import { AlertMessage } from '@/src/components/custom/AlertMessage';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import PageLoader from '@/src/components/custom/PageLoader';
+import { FeatureFlags } from '@/src/config/featureFlags';
+import { useDemoCredentialsReveal } from '@/src/hooks/useDemoCredentialsReveal';
+import {
+  DEFAULT_DEMO_CREDENTIALS_DISPLAY,
+  formatDemoCredentialsForDisplay,
+} from '@/src/lib/demoCredentialsProvider';
 import {
   performSignin,
   resendVerificationEmail,
@@ -32,6 +38,13 @@ const LoginPage = () => {
   const [showVerificationPrompt, setShowVerificationPrompt] = useState(false);
   const [verificationLoading, setVerificationLoading] = useState(false);
   const { firebaseUser, loading, apiUserId } = useFirebaseAuth();
+  const {
+    isRevealed: isDemoCredentialsRevealed,
+    isLoading: isDemoCredentialsLoading,
+    error: demoCredentialsError,
+    credentials: demoCredentials,
+    revealCredentials,
+  } = useDemoCredentialsReveal();
 
   // Initialize signin page - handle URL params and display messages
   useSigninInitialization(setError);
@@ -101,6 +114,14 @@ const LoginPage = () => {
 
   // Don't show signin form if user is already authenticated and will be redirected
   const isAuthError = isAuthenticationError(error);
+  const isDemoConsentEnabled = FeatureFlags.DEMO_CREDENTIALS_CONSENT_ENABLED;
+  const shouldRequireDemoConsent = isDemoConsentEnabled && !isDemoCredentialsRevealed;
+  const demoCredentialsDisplay = demoCredentials
+    ? formatDemoCredentialsForDisplay(demoCredentials)
+    : DEFAULT_DEMO_CREDENTIALS_DISPLAY;
+  const demoMessage = shouldRequireDemoConsent
+    ? 'Try our platform instantly with demo account credentials'
+    : `Try our platform instantly with demo account - username/password: ${demoCredentialsDisplay}`;
 
   if (!loading && firebaseUser && apiUserId && !isAuthError) {
     return (
@@ -121,11 +142,17 @@ const LoginPage = () => {
 
       {/* Notification Bar */}
       <EnhancedNotificationBar
-        message="Try our platform instantly with demo account - username/password: demo@certestic.com"
+        message={demoMessage}
         ctaText=""
         ctaLink="/signin"
         variant="promo"
         showIcon={true}
+        requireConsent={shouldRequireDemoConsent}
+        onConsentAccept={revealCredentials}
+        privacyLink="/privacy"
+        termsLink="/terms"
+        isConsentLoading={isDemoCredentialsLoading}
+        consentError={demoCredentialsError}
       />
 
       {/* Main Container with same width as header */}

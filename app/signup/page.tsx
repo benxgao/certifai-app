@@ -30,6 +30,12 @@ import {
   getFirebaseErrorMessage,
 } from '@/src/utils/signup-debug';
 import { isUATEnv } from '@/src/utils/env';
+import { FeatureFlags } from '@/src/config/featureFlags';
+import { useDemoCredentialsReveal } from '@/src/hooks/useDemoCredentialsReveal';
+import {
+  DEFAULT_DEMO_CREDENTIALS_DISPLAY,
+  formatDemoCredentialsForDisplay,
+} from '@/src/lib/demoCredentialsProvider';
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -48,6 +54,21 @@ export default function SignUpPage() {
   const router = useRouter();
   const { firebaseUser } = useFirebaseAuth();
   const isMountedRef = useRef(true);
+  const {
+    isRevealed: isDemoCredentialsRevealed,
+    isLoading: isDemoCredentialsLoading,
+    error: demoCredentialsError,
+    credentials: demoCredentials,
+    revealCredentials,
+  } = useDemoCredentialsReveal();
+  const isDemoConsentEnabled = FeatureFlags.DEMO_CREDENTIALS_CONSENT_ENABLED;
+  const shouldRequireDemoConsent = isDemoConsentEnabled && !isDemoCredentialsRevealed;
+  const demoCredentialsDisplay = demoCredentials
+    ? formatDemoCredentialsForDisplay(demoCredentials)
+    : DEFAULT_DEMO_CREDENTIALS_DISPLAY;
+  const demoMessage = shouldRequireDemoConsent
+    ? 'Try our platform instantly with demo account credentials'
+    : `Try our platform instantly with demo account - username/password: ${demoCredentialsDisplay}`;
 
   // Memoized onChange handlers to prevent unnecessary re-renders
   const handleFirstNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -646,11 +667,17 @@ export default function SignUpPage() {
 
       {/* Notification Bar */}
       <EnhancedNotificationBar
-        message="Try our platform instantly with demo account - username/password: demo@certestic.com"
+        message={demoMessage}
         ctaText=""
         ctaLink="/signin"
         variant="promo"
         showIcon={true}
+        requireConsent={shouldRequireDemoConsent}
+        onConsentAccept={revealCredentials}
+        privacyLink="/privacy"
+        termsLink="/terms"
+        isConsentLoading={isDemoCredentialsLoading}
+        consentError={demoCredentialsError}
       />
 
       {/* Main Container with same width as header */}

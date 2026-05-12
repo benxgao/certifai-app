@@ -28,6 +28,18 @@ interface EnhancedNotificationBarProps {
   customIcon?: React.ReactNode;
   /** Whether to enable enhanced glass-morphism styling - defaults to true */
   enhanced?: boolean;
+  /** If true, hide credentials and require explicit agreement click */
+  requireConsent?: boolean;
+  /** Callback fired when user clicks agree */
+  onConsentAccept?: () => void | Promise<void>;
+  /** Privacy policy link */
+  privacyLink?: string;
+  /** Terms and conditions link */
+  termsLink?: string;
+  /** Loading state while fetching latest credentials */
+  isConsentLoading?: boolean;
+  /** Optional consent action error message */
+  consentError?: string | null;
 }
 
 /**
@@ -47,6 +59,12 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
   showIcon = true,
   customIcon,
   enhanced = true, // Default to enhanced styling
+  requireConsent = false,
+  onConsentAccept,
+  privacyLink,
+  termsLink,
+  isConsentLoading = false,
+  consentError,
 }) => {
   if (!show) return null;
 
@@ -170,11 +188,66 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
 
             {/* Message */}
             <div className="text-sm sm:text-base font-medium leading-relaxed min-w-0 flex-1">
-              {message}
+              <div>{message}</div>
+
+              {requireConsent && (
+                <div className="mt-2 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isConsentLoading && onConsentAccept) {
+                        void onConsentAccept();
+                      }
+                    }}
+                    disabled={isConsentLoading}
+                    aria-label="Agree and display demo account credentials"
+                    className={cn(
+                      'inline-flex min-h-11 items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold',
+                      'bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-70 disabled:cursor-not-allowed',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/40 focus-visible:ring-offset-2',
+                      'transition-colors duration-200',
+                    )}
+                  >
+                    {isConsentLoading
+                      ? 'Loading latest credentials...'
+                      : 'Agree and display demo account credentials'}
+                  </button>
+
+                  {privacyLink && (
+                    <Link
+                      href={privacyLink}
+                      title="Privacy Policy"
+                      className={cn(
+                        'text-sm font-semibold underline decoration-2 underline-offset-2',
+                        config.ctaColor,
+                      )}
+                    >
+                      Privacy Policy
+                    </Link>
+                  )}
+
+                  {termsLink && (
+                    <Link
+                      href={termsLink}
+                      title="Terms & Conditions"
+                      className={cn(
+                        'text-sm font-semibold underline decoration-2 underline-offset-2',
+                        config.ctaColor,
+                      )}
+                    >
+                      Terms & Conditions
+                    </Link>
+                  )}
+                </div>
+              )}
+
+              {requireConsent && consentError && (
+                <div className="mt-2 text-xs sm:text-sm text-red-700 dark:text-red-300">{consentError}</div>
+              )}
             </div>
 
             {/* Call-to-action link */}
-            {ctaText && ctaLink && (
+            {!requireConsent && ctaText && ctaLink && (
               <Link
                 href={ctaLink}
                 className={cn(
