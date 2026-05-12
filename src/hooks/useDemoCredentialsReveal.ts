@@ -1,10 +1,8 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import {
-  createDemoCredentialsProvider,
-  type DemoCredentials,
-} from '@/src/lib/demoCredentialsProvider';
+import { type DemoCredentials } from '@/src/lib/demoCredentialsProvider';
+import { useRevealDemoCredentials } from '@/src/swr/demoCredentials';
 
 interface UseDemoCredentialsRevealResult {
   isRevealed: boolean;
@@ -16,42 +14,32 @@ interface UseDemoCredentialsRevealResult {
 }
 
 export function useDemoCredentialsReveal(): UseDemoCredentialsRevealResult {
-  const provider = useMemo(() => createDemoCredentialsProvider(), []);
+  const { reveal, data, error: swrError, isLoading, reset } = useRevealDemoCredentials();
   const [isRevealed, setIsRevealed] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [credentials, setCredentials] = useState<DemoCredentials | null>(null);
+
+  const credentials = useMemo(() => data?.data ?? null, [data]);
+  const error = useMemo(() => swrError?.message ?? null, [swrError]);
 
   const revealCredentials = useCallback(async () => {
     if (isLoading) {
       return;
     }
 
-    setError(null);
-    setIsLoading(true);
-
     try {
-      const latestCredentials = await provider.getLatestCredentials();
-      setCredentials(latestCredentials);
+      const result = await reveal();
+      if (!result?.data) {
+        throw new Error('Unable to display demo credentials at the moment.');
+      }
       setIsRevealed(true);
     } catch (fetchError) {
-      const message =
-        fetchError instanceof Error
-          ? fetchError.message
-          : 'Unable to display demo credentials at the moment.';
-      setError(message);
       setIsRevealed(false);
-    } finally {
-      setIsLoading(false);
     }
-  }, [isLoading, provider]);
+  }, [isLoading, reveal]);
 
   const resetReveal = useCallback(() => {
     setIsRevealed(false);
-    setCredentials(null);
-    setError(null);
-    setIsLoading(false);
-  }, []);
+    reset();
+  }, [reset]);
 
   return {
     isRevealed,
