@@ -5,6 +5,7 @@
 
 export const FeatureFlags = {
   STRIPE_INTEGRATION: false,
+  DEMO_CREDENTIALS_CONSENT_ENABLED: true,
 } as const;
 
 // Type for feature flags
