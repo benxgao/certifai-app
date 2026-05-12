@@ -1,6 +1,10 @@
 // Jest setup file
 // Add global test configuration here
 
+// Required by React 19 for act(...) in jsdom test environments
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
   useRouter: () => ({

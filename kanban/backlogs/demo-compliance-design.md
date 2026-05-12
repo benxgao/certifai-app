@@ -43,7 +43,7 @@ To see demo credentials, visitors must click the agree button each visit. Do not
 - ✅ Phase 2 complete (API fetch path implemented; backend values currently hardcoded)
 - ✅ Phase 3 complete
 - ✅ Phase 4 complete
-- ⏳ Phase 5 pending (tests hardening)
+- ✅ Phase 5 complete (tests hardening)
 
 ---
 
@@ -247,6 +247,18 @@ Lock behavior so future refactors cannot reintroduce auto-show.
 2. Click agree: credentials shown.
 3. Reload: hidden again.
 4. Repeat click: shown again.
+
+### Phase 5 Completion Notes
+
+- Added unit tests for reveal hook lifecycle (`useDemoCredentialsReveal`):
+   - defaults hidden
+   - click triggers fetch
+   - success reveals
+   - failure remains hidden
+   - remount resets to hidden (fresh visit behavior)
+- Hardened E2E coverage for consent flow:
+   - `signin`: reveal, reload hidden, re-click reveal again
+   - `signup`: same reveal/reload/re-click parity
 
 ---
 
