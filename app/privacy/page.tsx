@@ -495,13 +495,34 @@ export default function PrivacyPolicy() {
                   Breach Notification
                 </h3>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
-                  If we become aware of a privacy breach, we will:
+                  If we become aware of a privacy breach affecting your personal information, we
+                  will act promptly in accordance with applicable law:
                 </p>
                 <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
-                  <li>Notify affected users via email</li>
-                  <li>Notify relevant authorities as required by law</li>
-                  <li>Take steps to secure the platform and prevent further breaches</li>
-                  <li>Provide available information about the incident</li>
+                  <li>
+                    <strong>EU/GDPR users:</strong> We will notify the relevant supervisory
+                    authority within <strong>72 hours</strong> of becoming aware of the breach
+                    where it is likely to result in a risk to your rights and freedoms. We will
+                    notify affected users without undue delay where the breach is likely to result
+                    in a high risk to your rights and freedoms.
+                  </li>
+                  <li>
+                    <strong>US users (CCPA and applicable state laws):</strong> We will notify
+                    affected users without unreasonable delay and no later than{" "}
+                    <strong>30 days</strong> after discovery of the breach.
+                  </li>
+                  <li>
+                    <strong>New Zealand users (Privacy Act 2020):</strong> We will notify affected
+                    users and the Privacy Commissioner <strong>as soon as practicable</strong>{" "}
+                    after becoming aware of a notifiable privacy breach.
+                  </li>
+                  <li>
+                    <strong>All users:</strong> Breach notifications will include the nature of
+                    the breach, the likely consequences, the measures taken or proposed to address
+                    it, and the contact details of our Privacy Officer.
+                  </li>
+                  <li>Notify relevant authorities as required by applicable law</li>
+                  <li>Take immediate steps to secure the platform and prevent further breaches</li>
                 </ul>
               </section>
 
@@ -865,7 +886,7 @@ export default function PrivacyPolicy() {
                     If you are located in the European Union, European Economic Area, or the United
                     Kingdom, you have the following additional rights:
                   </p>
-                  <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
+                  <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
                     <li>
                       <strong>Right to Data Portability:</strong> Request your data in a structured,
                       machine-readable format
@@ -888,13 +909,46 @@ export default function PrivacyPolicy() {
                     </li>
                     <li>
                       <strong>Right to Lodge Complaints:</strong> File complaints with your local
-                      Data Protection Authority
+                      Data Protection Authority (DPA). A directory of EU DPAs is available at{" "}
+                      edpb.europa.eu.
                     </li>
                     <li>
                       <strong>Automated Decision-Making:</strong> Request human review of automated
                       decisions that significantly affect you
                     </li>
                   </ul>
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-3">
+                    <strong>Legal Basis for Processing.</strong> We process your personal data on
+                    the following legal bases under GDPR Article 6:
+                  </p>
+                  <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
+                    <li>
+                      <strong>Contract (Art. 6(1)(b)):</strong> Processing necessary to provide the
+                      Platform and perform our agreement with you (account creation, exam delivery,
+                      certification tracking)
+                    </li>
+                    <li>
+                      <strong>Legitimate Interests (Art. 6(1)(f)):</strong> Analytics and platform
+                      improvement, fraud prevention, and security — where our interests do not
+                      override your fundamental rights
+                    </li>
+                    <li>
+                      <strong>Consent (Art. 6(1)(a)):</strong> Marketing communications and
+                      analytics cookies — you may withdraw consent at any time
+                    </li>
+                    <li>
+                      <strong>Legal Obligation (Art. 6(1)(c)):</strong> Retention of financial
+                      records and compliance with applicable law
+                    </li>
+                  </ul>
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <strong>International Data Transfers.</strong> Certestic is headquartered in New
+                    Zealand and uses infrastructure providers (Google Cloud, Firebase) whose servers
+                    may be located outside the EU/EEA. Where we transfer your personal data outside
+                    the EEA, we rely on the European Commission&apos;s Standard Contractual Clauses
+                    (SCCs) as the appropriate safeguard. You may request a copy of the applicable
+                    SCCs by contacting privacy@certestic.com.
+                  </p>
                 </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
@@ -950,34 +1004,49 @@ export default function PrivacyPolicy() {
                 </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                  United States Users (State Privacy Laws)
+                  United States Users (CCPA and State Privacy Laws)
                 </h3>
                 <div className="mb-6">
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-3">
-                    Users in states with comprehensive privacy laws (California, Virginia, Colorado,
-                    Connecticut, Utah, etc.) may have additional rights:
+                    <strong>We do not sell your personal information</strong> to third parties, nor
+                    do we share it for cross-context behavioral advertising purposes. Users in states
+                    with comprehensive privacy laws (California, Virginia, Colorado, Connecticut,
+                    Utah, etc.) have the following additional rights:
                   </p>
-                  <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
+                  <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
                     <li>
                       <strong>Right to Know:</strong> Know what personal information is collected
-                      and how it is used
+                      and how it is used or disclosed
                     </li>
                     <li>
-                      <strong>Right to Delete:</strong> Request deletion of personal information
+                      <strong>Right to Delete:</strong> Request deletion of personal information we
+                      hold about you, subject to certain exceptions
                     </li>
                     <li>
-                      <strong>Right to Opt-Out:</strong> Opt-out of sale/sharing of personal
-                      information and targeted advertising
+                      <strong>Right to Opt-Out of Sale/Sharing:</strong> Although we do not sell
+                      personal information, you may direct us to cease any sharing for targeted
+                      advertising by contacting privacy@certestic.com
                     </li>
                     <li>
-                      <strong>Right to Non-Discrimination:</strong> Not be discriminated against for
-                      exercising privacy rights
+                      <strong>Right to Non-Discrimination:</strong> We will not deny service,
+                      charge different prices, or provide a different quality of service because you
+                      exercised a privacy right
                     </li>
                     <li>
                       <strong>Right to Correction:</strong> Request correction of inaccurate
                       personal information
                     </li>
+                    <li>
+                      <strong>Right to Limit Use of Sensitive Information:</strong> Limit our use of
+                      sensitive personal information to purposes necessary to provide the Platform
+                    </li>
                   </ul>
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                    California residents may submit requests under the CCPA by emailing
+                    privacy@certestic.com with the subject line &quot;CCPA Privacy Request&quot;. We
+                    will respond within 45 calendar days as required by law, with a possible
+                    extension of an additional 45 days where reasonably necessary.
+                  </p>
                 </div>
 
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">

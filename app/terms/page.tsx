@@ -26,7 +26,7 @@ export default function TermsOfService() {
               Terms of Service
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
-              Last updated: July 17, 2025
+              Last updated: May 11, 2026
             </p>
           </div>
 
@@ -1856,7 +1856,7 @@ export default function TermsOfService() {
               {/* Effective Date */}
               <div className="bg-slate-100 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600 text-center">
                 <p className="text-slate-600 dark:text-slate-400 text-sm">
-                  These Terms of Service are effective as of July 17, 2025, and apply to all users
+                  These Terms of Service are effective as of May 11, 2026, and apply to all users
                   of the Certestic platform worldwide.
                 </p>
               </div>
