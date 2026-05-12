@@ -6,8 +6,8 @@ Visitors must explicitly click an **Agree and display credentials** button every
 
 This plan is intentionally designed for future scale:
 
-- **Now**: credentials come from a hardcoded provider (acceptable temporary behavior).
-- **Later**: the same click action calls an API to fetch the latest credentials.
+- **Now**: click action fetches credentials through API (`SWR -> /api/demo-credentials -> backend /api/public/demo-credentials`), with hardcoded credentials currently served by backend.
+- **Later**: backend credential storage can move to secret manager/database without changing the UI contract.
 
 The UI contract stays stable while the data source switches from local hardcoded to server-managed.
 
@@ -35,6 +35,15 @@ To see demo credentials, visitors must click the agree button each visit. Do not
 - Changing authentication flow semantics
 - Managing demo account lifecycle in this rollout
 - Persistent consent records in backend database
+
+## Implementation Status (2026-05-12)
+
+- ✅ Phase 0 complete
+- ✅ Phase 1 complete
+- ✅ Phase 2 complete (API fetch path implemented; backend values currently hardcoded)
+- ✅ Phase 3 complete
+- ✅ Phase 4 complete
+- ⏳ Phase 5 pending (tests hardening)
 
 ---
 
@@ -155,13 +164,21 @@ Make the click action provider-driven so we can swap hardcoded credentials to AP
 2. API mode (mock): click fetches and renders returned credentials.
 3. API failure: error message shown, credentials remain hidden.
 
+### Phase 2 Completion Notes
+
+- Implemented chain:
+   - frontend mutation hook: `src/swr/demoCredentials.ts`
+   - Next API route: `app/api/demo-credentials/route.ts`
+   - backend public route: `GET /api/public/demo-credentials`
+- Backend route is protected by public JWT middleware and currently returns hardcoded credentials.
+
 ---
 
 ## Phase 3 — Notification Bar UX Update
 
 ### Goal
 
-Ensure UI consistently enforces explicit action and remains clear/accessibile.
+Ensure UI consistently enforces explicit action and remains clear/accessible.
 
 ### Implementation
 
@@ -178,6 +195,16 @@ Ensure UI consistently enforces explicit action and remains clear/accessibile.
 1. Credentials absent before click in visible text and DOM.
 2. CTA + policy links keyboard reachable in logical order.
 3. Loading state prevents duplicate fetch spam.
+
+### Phase 3 Completion Notes
+
+- CTA copy implemented: **Agree and display demo account credentials**.
+- Privacy/Terms links are adjacent to CTA and keyboard-focusable.
+- Loading/disabled state implemented for credential retrieval.
+- Accessibility polish added:
+   - focus ring styling for consent button and links
+   - `aria-busy` during loading
+   - error message announced via `role="alert"` + `aria-live="assertive"`
 
 ---
 

@@ -201,6 +201,7 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
                     }}
                     disabled={isConsentLoading}
                     aria-label="Agree and display demo account credentials"
+                    aria-busy={isConsentLoading}
                     className={cn(
                       'inline-flex min-h-11 items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold',
                       'bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-70 disabled:cursor-not-allowed',
@@ -216,9 +217,11 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
                   {privacyLink && (
                     <Link
                       href={privacyLink}
+                      aria-label="Read Privacy Policy"
                       title="Privacy Policy"
                       className={cn(
                         'text-sm font-semibold underline decoration-2 underline-offset-2',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30 focus-visible:ring-offset-2 rounded-sm',
                         config.ctaColor,
                       )}
                     >
@@ -229,9 +232,11 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
                   {termsLink && (
                     <Link
                       href={termsLink}
+                      aria-label="Read Terms & Conditions"
                       title="Terms & Conditions"
                       className={cn(
                         'text-sm font-semibold underline decoration-2 underline-offset-2',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30 focus-visible:ring-offset-2 rounded-sm',
                         config.ctaColor,
                       )}
                     >
@@ -242,7 +247,13 @@ const EnhancedNotificationBar: React.FC<EnhancedNotificationBarProps> = ({
               )}
 
               {requireConsent && consentError && (
-                <div className="mt-2 text-xs sm:text-sm text-red-700 dark:text-red-300">{consentError}</div>
+                <div
+                  className="mt-2 text-xs sm:text-sm text-red-700 dark:text-red-300"
+                  role="alert"
+                  aria-live="assertive"
+                >
+                  {consentError}
+                </div>
               )}
             </div>
 
