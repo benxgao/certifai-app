@@ -2,9 +2,9 @@
 
 ## Summary
 
-Users are hitting a blocking failure after completing exams: the AI Exam Report endpoint returns 500, and the AI Learning Journey summary then incorrectly reports insufficient completed exam reports. Investigation confirms a generation-path schema failure (`difficulty_adjustments` missing in AI output), compounded by retry semantics that allow failures to be dropped without recovery.
+Users are hitting a blocking failure after completing exams: the AI Exam Report endpoint returns 500, and the AI Learning Journey summary then incorrectly reports insufficient completed exam reports. Root cause is a one-line schema mismatch: `generateWithValidation` is called with `ExamReportSchema` which requires both `report` **and** `difficulty_adjustments` from the LLM, but `difficulty_adjustments` is computed locally from performance data and never included in LLM output. Genkit's schema validator rejects the response, generation fails, no Firestore document is written, and the cert summary count stays at zero.
 
-This rollout enforces strict correctness first: report generation must either persist valid data or fail in a retriable way. We then align backend/frontend error contracts so UI states are accurate, actionable, and resumable across long-running implementation and rollout windows.
+This rollout fixes the bugs first with minimum code change, then backfills affected data, then progressively hardens error contracts and messaging. Retry-mechanism work is deferred and scoped only to what the existing infrastructure already supports.
 
 ## Current Evaluation
 
@@ -17,40 +17,39 @@ This rollout enforces strict correctness first: report generation must either pe
 
 ### What is not centralized / stable / complete yet
 
-#### 1. Report generation contract is fragile
+#### 1. LLM output schema requires a field the LLM never produces
 
-- AI output sometimes fails schema validation due to missing `difficulty_adjustments`.
-- Failure path does not provide a stable error code contract for downstream handling.
-
-Representative files:
-
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/genkit/examReportGenerator.ts`
-- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/ai/examReportGenerator.ts`
-
-#### 2. Task failure semantics are not retry-friendly
-
-- Background handler currently returns HTTP 200 even on generation failure.
-- Retries are therefore skipped, creating missing Firestore reports for completed exams.
+- `ExamReportSchema` (used in both `ai.defineFlow` `outputSchema` and `generateWithValidation`) requires `report` **and** `difficulty_adjustments`.
+- `difficulty_adjustments` is computed locally from `performanceData` before the LLM call; the LLM prompt only asks for the `report` narrative text.
+- Genkit validates LLM output against the schema and rejects responses missing `difficulty_adjustments`, throwing `INVALID_ARGUMENT: Schema validation failed`.
+- No Firestore document is ever written for the failing exam, so the cert summary count stays at zero.
 
 Representative files:
 
-- `/Users/benxgao/workspace/certifai-api/functions/src/delegators/tasks/examReport.ts`
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/cloudTasks/examReportTaskService.ts`
+- `/Users/benxgao/workspace/certifai-api/functions/src/services/genkit/examReportGenerator.ts` — `ExamReportSchema` (lines 19–34), `generateWithValidation` call (line 182–185)
 
-#### 3. Cert summary prerequisite errors are accurate but not diagnosable enough
+#### 2. Cert summary prerequisite errors are inaccurate when report generation silently fails
 
-- Summary requires >=2 exam reports from Firestore, but error output is not granular enough for UX/actions.
-- Auto-generation path can mask upstream generation cause as generic failure.
+- `generateCertSummary` counts only Firestore report documents; no fallback to Prisma `COMPLETED` exams.
+- With 3 completed exams but 0 Firestore reports (all failed silently), the count check `examReports.length < 2` always throws, regardless of how many exams the user has finished.
 
 Representative files:
 
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/firebase/certSummaryFirestore.ts`
-- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/users/certifications/getCertSummary.ts`
+- `/Users/benxgao/workspace/certifai-api/functions/src/services/firebase/certSummaryFirestore.ts` — prerequisite check (line ~106)
+
+#### 3. Task failure semantics swallow errors
+
+- Background Cloud Task handler returns HTTP 200 even when report generation throws. Cloud Tasks sees 200 and does not retry.
+- Error path was added as a "don't retry forever" safety measure, but the real fix is correct LLM output validation (Phase 1), not permanent 200 swallowing.
+
+Representative files:
+
+- `/Users/benxgao/workspace/certifai-api/functions/src/delegators/tasks/examReport.ts` — inner catch block (line ~127)
 
 #### 4. Frontend error contract is inconsistent across routes/hooks
 
 - Exam report and cert summary proxy routes shape errors differently.
-- SWR fetchers parse and display failures differently, causing duplicate/unclear messages.
+- SWR fetchers parse and display failures differently, causing duplicate/unclear messages (e.g. `Failed to fetch exam report: Failed to fetch exam report`).
 
 Representative files:
 
@@ -61,8 +60,8 @@ Representative files:
 
 ### Risks in the current state
 
-- [ ] Completed exams can remain permanently missing reports if generation fails once.
-- [ ] Cert summary can continue failing despite enough completed exams in Prisma.
+- [ ] Completed exams can remain permanently missing reports if generation fails (no retry, no notification).
+- [ ] Cert summary can continue failing despite enough completed exams because Firestore reports are never written.
 - [ ] Users receive low-actionability errors, increasing support load.
 
 ## Scope
@@ -73,11 +72,12 @@ Representative files:
 
 ### In scope
 
-- Enforce retriable task failure semantics for report generation.
-- Harden AI generation output handling and error classification.
+- Fix LLM output schema mismatch with minimum code change (Phase 1).
+- Backfill completed exams that have no Firestore reports (Phase 2).
 - Improve cert summary prerequisite diagnostics while preserving business rule (>=2 reports).
 - Normalize frontend route/SWR error contracts and UI messages.
-- Add backend/frontend tests for regressions and resume-safe validation.
+- Add backend/frontend regression tests.
+- Assess and add retry mechanism only if existing infrastructure already supports it.
 
 ### Out of scope
 
@@ -89,11 +89,11 @@ Representative files:
 
 ### Files to modify first
 
-| File                                                                                          | Purpose                       | Why it matters                                          |
-| --------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------- |
-| `/Users/benxgao/workspace/certifai-api/functions/src/delegators/tasks/examReport.ts`          | Task result semantics         | Controls retry/no-retry behavior for failed generations |
-| `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/ai/examReportGenerator.ts` | Core generation + persistence | Central choke point for valid report creation           |
-| `/Users/benxgao/workspace/certifai-api/functions/src/services/genkit/examReportGenerator.ts`  | Genkit output contract        | Source of schema mismatch failures                      |
+| File                                                                                          | Purpose                       | Why it matters                                                                                                                    |
+| --------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `/Users/benxgao/workspace/certifai-api/functions/src/services/genkit/examReportGenerator.ts`  | Genkit output contract        | **Root bug**: `ExamReportSchema` passed to `generateWithValidation` includes `difficulty_adjustments` which the LLM never outputs |
+| `/Users/benxgao/workspace/certifai-api/functions/src/delegators/tasks/examReport.ts`          | Task result semantics         | Controls retry/no-retry behavior for failed generations                                                                           |
+| `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/ai/examReportGenerator.ts` | Core generation + persistence | Central choke point for valid report creation                                                                                     |
 
 ### Likely files to create
 
@@ -119,13 +119,21 @@ Representative files:
 
 ## Recommended Architecture
 
-### Principle 1: Valid-or-retriable generation
+### Principle 1: Minimal surface area first
 
-Report generation must end in exactly one of two states: persisted valid report, or explicit retriable failure (5xx + retriable metadata). No silent success and no ambiguous partial persistence.
+Fix the root cause with the smallest possible code change before touching any surrounding infrastructure. The schema narrowing in Phase 1 is a targeted, low-risk change that immediately unblocks report generation and, by extension, the cert summary count.
 
-### Principle 2: Stable cross-layer error contract
+### Principle 2: Backfill before hardening
 
-All layers should exchange the same core shape (`success`, `error`, `error_code`, `retriable`, optional `details`) so route proxies, SWR hooks, and UI can render deterministic states.
+Backfill affected historical data (Phase 2) before refining error messaging or adding retry mechanisms. Users with completed exams see relief immediately after Phase 1+2; the remaining phases are safety nets and polish.
+
+### Principle 3: Retry mechanism only if infrastructure supports it
+
+Do not add retry logic that requires new infrastructure (queue policy changes, dead-letter topics, etc.) unless the existing Cloud Task queue configuration already enables it. Inspect before adding; skip Phase 4 if it does not apply.
+
+### Principle 4: Stable cross-layer error contract
+
+Once the root bug is fixed, align all layers to the same error envelope (`success`, `error`, `error_code`, `retriable`, optional `details`) so route proxies, SWR hooks, and UI render deterministic, non-duplicative states.
 
 ## Dependency Rule
 
@@ -155,210 +163,222 @@ Mixed-layer edits in a single phase are risky because they hide root-cause regre
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Error Contract Baseline
-- [ ] Phase 2 — Task Retry Correctness
-- [ ] Phase 3 — Report Generator Hardening
-- [ ] Phase 4 — Cert Summary Prerequisite Diagnostics
-- [ ] Phase 5 — Frontend Contract Normalization
-- [ ] Phase 6 — Test Coverage and Regression Gates
-- [ ] Phase 7 — Backfill + Rollout Monitoring
+- [x] Phase 1 — Root Bug Fix (Schema Mismatch)
+- [x] Phase 2 — Backfill Missing Reports
+- [x] Phase 3 — Error Contract Baseline
+- [x] Phase 4 — Task Retry Correctness _(skip if infrastructure not in place)_
+- [x] Phase 5 — Cert Summary Prerequisite Diagnostics
+- [ ] Phase 6 — Frontend Contract Normalization
+- [ ] Phase 7 — Test Coverage and Regression Gates
 
 ## Phases
 
-### Phase 1: Error Contract Baseline
+### Phase 1: Root Bug Fix (Schema Mismatch)
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
-**Layer**: `certifai-api core error contract`
+**Layer**: `certifai-api Genkit generation schema`
 
-**Goal**: Define and apply a stable error payload contract across generation-related backend paths.
+**Goal**: Fix the report with minimum code change. `ExamReportSchema` is currently passed to both `ai.defineFlow` `outputSchema` and `generateWithValidation`. This means Genkit validates the LLM response against a schema requiring `difficulty_adjustments`, a field that is computed locally from `performanceData` and never emitted by the LLM. Splitting the schema into two — one for LLM output, one for the full flow return — immediately fixes generation for all new exams, which in turn fixes the cert summary threshold.
 
 **Files**:
 
-- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/ai/examReportGenerator.ts` — modify — normalize thrown error typing and mapping details.
-- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/users/exams/getExamReport.ts` — modify — map to stable response shape.
+- `/Users/benxgao/workspace/certifai-api/functions/src/services/genkit/examReportGenerator.ts` — modify — introduce `LLMReportOutputSchema = z.object({ report: z.string() })` for `generateWithValidation`; keep `ExamReportSchema` (with `difficulty_adjustments`) only on `ai.defineFlow` `outputSchema` and the final return shape.
 
 **Verification gate** (must pass before Phase 2 starts):
 
-- `npx tsc --noEmit 2>&1 | grep "^(src|functions/src)/"` (from `certifai-api/functions`) has no new errors.
-- Manual request of known failing exam returns structured error with `error_code` + `retriable`.
+- `cd certifai-api/functions && npx tsc --noEmit 2>&1 | grep "^src/"` — no new errors.
+- Manually trigger `GET /api/users/:uid/exams/:eid/exam-report` for a previously failing exam — expect `200` with a valid report instead of `500`.
+- Confirm Firestore document appears under `users/{uid}/certs/{cid}/exam_reports/{eid}`.
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Define canonical error map**: introduce central mapping table for generation path (`GENKIT_SCHEMA_INVALID`, `EXAM_NOT_FOUND`, `ACCESS_DENIED`, `REPORT_PERSISTENCE_FAILED`, `REPORT_GENERATION_TRANSIENT`).
-  - **Independent verification**: unit-level assertion (or temporary debug log) confirms mapping outputs expected status + retriable flag.
-- [ ] **1.2 — Apply map to exam report endpoint errors**: ensure GET/POST exam-report routes always emit canonical shape.
-  - **Independent verification**: simulated failures return expected JSON shape; no duplicated nested JSON string in `error`.
+- [x] **1.1 — Narrow LLM output schema**: define `LLMReportOutputSchema` with only `report: z.string()`. Pass this to `generateWithValidation` instead of `ExamReportSchema`.
+  - **Independent verification**: `npx tsc --noEmit` passes; grep confirms `ExamReportSchema` is no longer used inside `generateWithValidation` call.
+- [x] **1.2 — Verify full flow return shape unchanged**: ensure the flow still returns `{ report, difficulty_adjustments }` using locally computed `difficultyAdjustments` as before, satisfying the existing `ExamReportSchema` on `outputSchema`.
+  - **Independent verification**: call generation function in isolation with a test exam; confirm returned object includes both `report` and `difficulty_adjustments` with correct array keys.
 
 ---
 
-### Phase 2: Task Retry Correctness
+### Phase 2: Backfill Missing Reports
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
-**Layer**: `certifai-api task execution semantics`
+**Layer**: `certifai-api operations — data recovery`
 
-**Goal**: Ensure failed report generation is retried by Cloud Tasks instead of being swallowed as success.
+**Goal**: Re-trigger report generation for all `COMPLETED` exams in Prisma that lack a Firestore report document. Once Phase 1 is deployed, these runs will succeed and populate Firestore, which unblocks cert summary generation for affected users.
 
 **Files**:
 
-- `/Users/benxgao/workspace/certifai-api/functions/src/delegators/tasks/examReport.ts` — modify — return 5xx for retriable generation/storage failures.
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/cloudTasks/examReportTaskService.ts` — modify — verify/enforce retry settings and headers.
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/cloudTasks/cloudTaskQueueManager.ts` — modify (if needed) — bounded retry/backoff defaults.
+- `/Users/benxgao/workspace/certifai-api/functions/src/scripts/testAutomaticExamReports.ts` — modify or derive — add a dry-run / execute mode that lists completed exams missing Firestore reports and re-enqueues them via the `examReportTaskService`.
 
 **Verification gate** (must pass before Phase 3 starts):
 
-- Failed generation attempt returns 5xx from task handler.
-- Same payload retried by queue (local emulator logs or staging logs confirm retry count increments).
+- Dry-run output lists correct number of affected exams (cross-check against Prisma `COMPLETED` count vs Firestore report count).
+- After execute run, sample users' Firestore report collections are populated.
+- Cert summary for a previously blocked user now generates successfully on the next request.
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Task failure classification**: split permanent 4xx vs retriable 5xx in task handler.
-  - **Independent verification**: invalid payload returns 400; schema-generation error returns 500.
-- [ ] **2.2 — Retry policy safety check**: confirm retry cap/backoff and idempotency assumptions.
-  - **Independent verification**: repeated retries do not create duplicate report docs for same `exam_id`.
+- [x] **2.1 — Missing-report discovery**: write a query that returns `exam_id` + `user_id` + `cert_id` for all `COMPLETED` exams where no matching Firestore document exists.
+  - **Independent verification**: dry-run log count matches manual sampling.
+- [x] **2.2 — Controlled re-enqueue**: batch-re-enqueue found exams, with a small delay between batches to avoid queue saturation.
+  - **Independent verification**: Cloud Task queue shows new tasks; Firestore report docs appear for sample exams within expected generation time.
 
 ---
 
-### Phase 3: Report Generator Hardening
+### Phase 3: Error Contract Baseline
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
-**Layer**: `certifai-api AI generation contract`
+**Layer**: `certifai-api core error contract`
 
-**Goal**: Guarantee report write only happens for schema-valid output; attach precise cause on failure.
+**Goal**: Establish a consistent error payload shape across generation-related backend paths so that downstream layers (task handler, proxy routes, SWR hooks) can classify errors without string-parsing.
 
 **Files**:
 
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/genkit/examReportGenerator.ts` — modify — explicit guards around required output keys.
-- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/ai/examReportGenerator.ts` — modify — persist only after full validation.
+- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/ai/examReportGenerator.ts` — modify — normalize thrown errors; attach stable classification (`error_code`, `retriable`).
+- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/users/exams/getExamReport.ts` — modify — map all error paths to canonical response shape.
 
 **Verification gate** (must pass before Phase 4 starts):
 
-- Forced missing `difficulty_adjustments` path returns canonical schema error (not generic 500 text).
-- No Firestore report persisted on invalid output.
+- `npx tsc --noEmit` passes in `certifai-api/functions`.
+- Known error paths (not-found, access-denied, generation failure) each produce a distinct `error_code` in the response JSON; no plain-text or HTML error bodies.
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Genkit output validator hardening**: assert required fields and throw typed schema error.
-  - **Independent verification**: mocked/truncated model output fails with `GENKIT_SCHEMA_INVALID`.
-- [ ] **3.2 — Persistence guardrails**: write report only from validated payload.
-  - **Independent verification**: Firestore read for failed exam id returns null.
+- [x] **3.1 — Define canonical error map**: centralize mapping of known throw conditions to `{ status, error_code, retriable }` (e.g. `GENKIT_SCHEMA_INVALID`, `EXAM_NOT_FOUND`, `ACCESS_DENIED`, `REPORT_PERSISTENCE_FAILED`, `REPORT_GENERATION_TRANSIENT`).
+  - **Independent verification**: grep confirms all throw sites use the map; no inline string literals for status codes.
+- [x] **3.2 — Apply map to exam report endpoints**: GET and POST exam-report routes output canonical shape for all error branches.
+  - **Independent verification**: curl against each known error path returns JSON with `error_code` and no double-wrapped message string.
 
 ---
 
-### Phase 4: Cert Summary Prerequisite Diagnostics
+### Phase 4: Task Retry Correctness _(skip if infrastructure not in place)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
+
+**Layer**: `certifai-api task execution semantics`
+
+**Goal**: Verify whether the existing Cloud Task queue is configured for retries. If yes, change the task handler to return 5xx on retriable failures so Cloud Tasks automatically re-attempts. If no retry infrastructure exists, document the gap for a future sprint and skip this phase.
+
+**Pre-condition check** (do this before writing any code):
+
+- Read `/Users/benxgao/workspace/certifai-api/functions/src/services/cloudTasks/examReportTaskService.ts` and `/Users/benxgao/workspace/certifai-api/queue.yaml` to confirm whether `maxAttempts`, `minBackoff`, or equivalent retry settings are present.
+- If retry config is absent → mark this phase `[!]`, add a note, and move to Phase 5.
+
+**Files** _(only if retry infrastructure is confirmed)_:
+
+- `/Users/benxgao/workspace/certifai-api/functions/src/delegators/tasks/examReport.ts` — modify — return 5xx for retriable generation/storage failures; keep 4xx for permanent input/auth errors.
+- `/Users/benxgao/workspace/certifai-api/functions/src/services/cloudTasks/examReportTaskService.ts` — modify (if needed) — enforce bounded retry/backoff defaults.
+
+**Verification gate** _(if phase is executed)_:
+
+- Simulated generation failure returns 5xx from task handler.
+- Replaying same payload does not create duplicate Firestore report for same `exam_id`.
+
+**Sub-subphase checklist**:
+
+- [x] **4.0 — Infrastructure audit**: confirm retry config exists in queue settings.
+  - **Independent verification**: `src/services/gcp/cloudTasks/index.ts` queue creation uses retryConfig (`maxRetryDuration`, `minBackoff`, `maxBackoff`, `maxDoublings`) for `exam-reports-queue`; queue creation logs confirm queue exists.
+- [x] **4.1 — Task failure classification**: permanent 4xx vs retriable 5xx in task handler.
+  - **Independent verification**: `src/delegators/tasks/examReport.ts` now maps generation failures to `400` for permanent errors (`exam not found`, `completed exams`, etc.) and `500` for retriable errors, with `retriable` flag in response.
+- [x] **4.2 — Idempotency safety check**: repeated task delivery does not create duplicate reports.
+  - **Independent verification**: targeted test `__tests__/exam-report-task-idempotency.test.ts` passes; repeated handler delivery returns `200` with `already_existed: true` payload shape.
+
+---
+
+### Phase 5: Cert Summary Prerequisite Diagnostics
+
+**Progress**: `[x]`
 
 **Layer**: `certifai-api summary domain logic`
 
-**Goal**: Keep the >=2 reports rule while making failure reasons explicit and actionable.
+**Goal**: Keep the >=2 reports rule. Add structured failure detail so the API response tells clients exactly how many reports are available, making the error actionable rather than opaque.
 
 **Files**:
 
-- `/Users/benxgao/workspace/certifai-api/functions/src/services/firebase/certSummaryFirestore.ts` — modify — include report count context in prerequisite failures.
-- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/users/certifications/getCertSummary.ts` — modify — deterministic status + `error_code` mapping for prerequisite/pending states.
+- `/Users/benxgao/workspace/certifai-api/functions/src/services/firebase/certSummaryFirestore.ts` — modify — include `{ required_reports: 2, available_reports: n, cert_id }` in prerequisite error details.
+- `/Users/benxgao/workspace/certifai-api/functions/src/endpoints/api/users/certifications/getCertSummary.ts` — modify — map prerequisite failure to deterministic `error_code: INSUFFICIENT_EXAM_REPORTS` with stable HTTP status (400); stop masking upstream generation failures as generic not-found.
 
-**Verification gate** (must pass before Phase 5 starts):
+**Verification gate** (must pass before Phase 6 starts):
 
-- User with <2 reports gets domain error with available count and clear action.
-- User with >=2 valid reports can auto-generate summary successfully.
+- User with 1 Firestore report gets `400` with `error_code: INSUFFICIENT_EXAM_REPORTS` and `details.available_reports: 1`.
+- User with >=2 valid Firestore reports reaches summary generation step without error.
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Structured prerequisite errors**: include `{ required_reports, available_reports, cert_id }` in details.
-  - **Independent verification**: response payload includes details and stable `error_code`.
-- [ ] **4.2 — Auto-generation error propagation cleanup**: stop masking upstream cause as generic not-found.
-  - **Independent verification**: schema failure upstream appears as generation failure, not 404-not-found messaging.
+- [x] **5.1 — Structured prerequisite errors**: throw with `details` payload from `certSummaryFirestore.generateCertSummary`.
+  - **Independent verification**: response JSON includes `details.required_reports` and `details.available_reports`.
+- [x] **5.2 — Auto-generation error propagation**: `getCertSummary` GET handler preserves original error cause instead of re-wrapping as not-found.
+  - **Independent verification**: a generation failure surfaces `error_code: REPORT_GENERATION_TRANSIENT`, not a 404.
 
 ---
 
-### Phase 5: Frontend Contract Normalization
+### Phase 6: Frontend Contract Normalization
 
 **Progress**: `[ ]`
 
 **Layer**: `certifai-app proxy + SWR + UI messaging`
 
-**Goal**: Ensure frontend parses one consistent contract and renders clear, non-duplicative error messaging.
+**Goal**: Align Next.js proxy routes, SWR fetchers, and UI components to one consistent error contract so messages are clear, non-duplicative, and actionable by error class.
 
 **Files**:
 
-- `/Users/benxgao/workspace/certifai-app/app/api/users/[api_user_id]/exams/[exam_id]/exam-report/route.ts` — modify — stable passthrough JSON error normalization.
-- `/Users/benxgao/workspace/certifai-app/app/api/users/[api_user_id]/certifications/[cert_id]/cert-summary/route.ts` — modify — same contract as exam-report route.
-- `/Users/benxgao/workspace/certifai-app/src/swr/examReport.ts` — modify — parse canonical contract + map `error_code`.
-- `/Users/benxgao/workspace/certifai-app/src/swr/certSummary.ts` — modify — parse canonical contract + consistent retry policy.
-- `/Users/benxgao/workspace/certifai-app/src/components/custom/ExamReport.tsx` — modify — message mapping for retriable vs terminal.
-- `/Users/benxgao/workspace/certifai-app/src/components/custom/CertSummary.tsx` — modify — aligned message semantics.
+- `/Users/benxgao/workspace/certifai-app/app/api/users/[api_user_id]/exams/[exam_id]/exam-report/route.ts` — modify — pass through canonical error envelope; do not concat nested error strings.
+- `/Users/benxgao/workspace/certifai-app/app/api/users/[api_user_id]/certifications/[cert_id]/cert-summary/route.ts` — modify — same normalisation as exam-report route.
+- `/Users/benxgao/workspace/certifai-app/src/swr/examReport.ts` — modify — parse `error_code` from response; map to user message instead of using raw string.
+- `/Users/benxgao/workspace/certifai-app/src/swr/certSummary.ts` — modify — parse `error_code`; align retry policy with exam-report hook.
+- `/Users/benxgao/workspace/certifai-app/src/components/custom/ExamReport.tsx` — modify — render message by error class (retriable vs terminal).
+- `/Users/benxgao/workspace/certifai-app/src/components/custom/CertSummary.tsx` — modify — show actionable state from `details.available_reports` when `INSUFFICIENT_EXAM_REPORTS`.
 
-**Verification gate** (must pass before Phase 6 starts):
+**Verification gate** (must pass before Phase 7 starts):
 
-- UI no longer shows duplicated message pattern like `Failed to fetch exam report: Failed to fetch exam report`.
-- Retryable backend failures display “generation in progress / retrying” style guidance.
+- `cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(src|app)/"` — no new errors.
+- UI no longer shows duplicated message like `Failed to fetch exam report: Failed to fetch exam report`.
+- Cert card shows remaining report count needed when prerequisite is unmet.
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Route normalization**: both proxy routes return canonical error envelope.
-  - **Independent verification**: network panel shows identical key set for both endpoints on error.
-- [ ] **5.2 — SWR fetcher alignment**: shared parser for `error_code` and `retriable` handling.
-  - **Independent verification**: mocked responses produce expected typed errors in both hooks.
-- [ ] **5.3 — UI state copy cleanup**: remove duplicate phrasing; render actionable status by error class.
-  - **Independent verification**: visual QA on exam card/cert card error states.
+- [ ] **6.1 — Route normalization**: both proxy routes return canonical envelope `{ success, error, error_code, retriable, details? }`.
+  - **Independent verification**: network panel shows same key structure for both endpoints on error responses.
+- [ ] **6.2 — SWR fetcher alignment**: both fetchers parse `error_code`; retry policy: no retry on 4xx, retry up to 3× on 5xx retriable.
+  - **Independent verification**: mocked 500 retriable response retries; mocked 400 does not retry.
+- [ ] **6.3 — UI state copy cleanup**: exam report card maps `REPORT_GENERATION_TRANSIENT` → "Report is being generated, please check back shortly". Cert summary card maps `INSUFFICIENT_EXAM_REPORTS` → "Complete {n} more exam(s) to unlock your AI Learning Journey".
+  - **Independent verification**: visual QA on both card error states.
 
 ---
 
-### Phase 6: Test Coverage and Regression Gates
+### Phase 7: Test Coverage and Regression Gates
 
 **Progress**: `[ ]`
 
 **Layer**: `tests`
 
-**Goal**: Lock in behavior so failures do not regress after rollout.
+**Goal**: Lock in corrected behavior so the schema mismatch, silent task failure, and duplicated error messages cannot regress silently.
 
 **Files**:
 
-- `/Users/benxgao/workspace/certifai-api/functions/__tests__/exam-report-hotfix.test.ts` — create — backend failure/retry/contract tests.
+- `/Users/benxgao/workspace/certifai-api/functions/__tests__/exam-report-hotfix.test.ts` — create — backend regression tests.
 - `/Users/benxgao/workspace/certifai-app/__tests__/exam-cert-error-contract.test.ts` — create — frontend route/SWR contract tests.
 
-**Verification gate** (must pass before Phase 7 starts):
+**Verification gate**:
 
-- Targeted backend test file passes.
-- Targeted frontend test file passes.
+- Both test files pass: `npm test` in each repo.
 - TypeScript checks pass in both repos.
 
 **Sub-subphase checklist**:
 
-- [ ] **6.1 — Backend contract tests**: validate status + error_code + retriable semantics.
-  - **Independent verification**: failing model-output fixture yields expected retriable response path.
-- [ ] **6.2 — Frontend contract tests**: validate parser/message behavior for both endpoints.
-  - **Independent verification**: fixtures cover 400/403/404/500 and retriable flags.
-
----
-
-### Phase 7: Backfill + Rollout Monitoring
-
-**Progress**: `[ ]`
-
-**Layer**: `operations`
-
-**Goal**: Recover affected historical data and safely monitor rollout quality.
-
-**Files**:
-
-- `/Users/benxgao/workspace/certifai-api/functions/src/scripts/testAutomaticExamReports.ts` — modify (or derive ops script) — re-enqueue missing reports for completed exams.
-- `/Users/benxgao/workspace/certifai-api/functions/docs/operations/` (new or existing markdown) — create/modify — rollout runbook and metrics checklist.
-
-**Verification gate**:
-
-- Backfill identifies completed exams without reports and re-queues successfully.
-- Monitoring confirms report-generation failures trend down and cert-summary success trend up.
-
-**Sub-subphase checklist**:
-
-- [ ] **7.1 — Missing report discovery query/script**: list completed exams lacking Firestore report docs.
-  - **Independent verification**: dry-run output matches sampled manual records.
-- [ ] **7.2 — Controlled backfill execution**: re-enqueue in batches with retry monitoring.
-  - **Independent verification**: sample users regain report + summary functionality.
+- [ ] **7.1 — Backend contract tests**:
+  - Fixture: LLM output missing `difficulty_adjustments` → generation succeeds (schema narrowed in Phase 1).
+  - Fixture: LLM output missing `report` → generation fails with typed error.
+  - Fixture: task handler with generation error → correct HTTP status (4xx or 5xx per Phase 4 outcome).
+  - **Independent verification**: `npm test -- --testPathPattern=exam-report-hotfix` passes.
+- [ ] **7.2 — Frontend contract tests**:
+  - Mock 400 `INSUFFICIENT_EXAM_REPORTS` → cert summary fetcher does not retry; renders correct message.
+  - Mock 500 retriable exam report error → fetcher retries up to 3×.
+  - Mock successful response → data extracted without double-unwrapping.
+  - **Independent verification**: `npm test -- --testPathPattern=exam-cert-error-contract` passes.
 
 ## Dependency Graph
 
@@ -385,9 +405,9 @@ Each arrow means "depends on". Do not finalize downstream layers before upstream
 1. Phase 1.1 → 1.2
 2. Phase 2.1 → 2.2
 3. Phase 3.1 → 3.2
-4. Phase 4.1 → 4.2
-5. Phase 5.1 → 5.2 → 5.3
-6. Phase 6.1 → 6.2
+4. Phase 4.0 → (4.1 → 4.2 if infrastructure confirmed; else mark `[!]` and skip)
+5. Phase 5.1 → 5.2
+6. Phase 6.1 → 6.2 → 6.3
 7. Phase 7.1 → 7.2
 
 If a downstream gap appears, add/fix an isolated earlier-layer sub-subphase and resume.
@@ -438,17 +458,75 @@ At the end of each working session:
 
 ## Rollback Plan
 
-1. Revert Phase 5 (frontend contract/UI) first if messaging regressions appear.
-2. Revert Phase 4 then 3 if summary/generation logic introduces instability.
-3. Revert Phase 2 only if queue behavior becomes unsafe; keep Phase 1 error contract intact for diagnostics.
-4. Suspend Phase 7 backfill execution if elevated failure rate is detected.
+1. Revert Phase 6 (frontend contract/UI) first if messaging regressions appear.
+2. Revert Phases 5 then 3 if summary/generation logic introduces instability.
+3. Revert Phase 4 (task retry) if unexpected duplicate-report or queue-overflow behavior is detected.
+4. **Do not revert Phase 1** (schema fix) — it is strictly additive and safe to keep.
+5. Suspend Phase 2 backfill execution if elevated failure rates are detected during the batch run.
 
 ## Open Questions
 
 1. Final status code for prerequisite-not-met with pending retries: `400` or `409`?
+
+- 400 is technically correct for "bad request" but 409 could signal "conflict with current state, retry later" which may be more actionable for frontend. Need to check existing contract and frontend handling to avoid breaking changes.
+
 2. Do we expose retry-attempt count in API `details` for UI transparency?
+
+- Keep it simple for now.
+
 3. Do we gate frontend messaging changes behind a feature flag for staged rollout?
+
+- Not necessary if we maintain the same error contract shape; UI can just render new messages based on `error_code` without risk of breaking existing paths.
 
 ## Recommendation
 
-Execute Phases 1→7 in order, with strict gate checks between phases. This gives the safest path: first make failures diagnosable, then make them recoverable, then align frontend semantics, then lock with tests and controlled backfill.
+Execute Phases 1→7 in order, with strict gate checks between phases. **Phases 1+2 are the minimum-viable hotfix**: once deployed, exam report generation works and the cert summary count unblocks. Phases 3–7 are progressive hardening that can be shipped independently without risk of disrupting the already-fixed behavior.
+
+### Session Note — 2026-05-23 local
+
+- Completed: 1.1
+- Verified by: `npx tsc --noEmit 2>&1 | grep "^src/"` (no matching errors), and grep confirmation that `generateWithValidation` now uses `LLMReportOutputSchema`
+- Next: 1.2
+- Blockers: none
+
+### Session Note — 2026-05-23 local
+
+- Completed: 1.2
+- Verified by: `npm test -- --runTestsByPath __tests__/exam-report-phase1-flow-shape.test.ts` (pass)
+- Next: 2.1
+- Blockers: none
+
+### Session Note — 2026-05-23 local
+
+- Completed: 2.1 and 2.2 implementation + 2.2 execute run
+- Verified by: `GOOGLE_APPLICATION_CREDENTIALS=./gcp_credentials.json npx ts-node src/scripts/testAutomaticExamReports.ts --dry-run --limit=10` (9 missing, 0 lookup failures) and `... --execute --limit=10 --batch-size=3 --batch-delay=3` (9/9 tasks enqueued, 0 failures)
+- Next: inspect task-handler execution path / deployment state before further re-enqueue attempts
+- Blockers: repeated dry-run after enqueue still reports `missing_report_count: 9`, so Firestore materialization is not yet observed
+
+### Session Note — 2026-05-23 local
+
+- Completed: 4.0, 4.1 (local code)
+- Verified by: code audit of retry config in `src/services/gcp/cloudTasks/index.ts`; local compile check `npx tsc --noEmit 2>&1 | grep "^src/"`; updated `src/delegators/tasks/examReport.ts` to return 5xx for retriable generation failures
+- Next: 4.2 + re-verify Phase 2 materialization after deployment/runtime stabilization
+- Blockers: cloud logs show `delegators`/Genkit initialization timeouts with container exits (`Process exited with code 16`), and current deployed runtime appears not yet reflecting local task-handler fix
+
+### Session Note — 2026-05-23 local
+
+- Completed: Phase 2 materialization verification + Phase 3.1/3.2 implementation
+- Verified by: UAT confirmation that both hotfix errors are resolved; backend endpoints now use shared canonical map in `src/endpoints/api/examReportErrorMap.ts` and consume it from `src/endpoints/api/ai/examReportGenerator.ts` + `src/endpoints/api/users/exams/getExamReport.ts`; `npx tsc --noEmit` passes
+- Next: 4.2 idempotency safety check, then Phase 5.1
+- Blockers: none
+
+### Session Note — 2026-05-23 local
+
+- Completed: 4.2
+- Verified by: `npm test -- --runTestsByPath __tests__/exam-report-task-idempotency.test.ts` (pass)
+- Next: 5.1
+- Blockers: none
+
+### Session Note — 2026-05-23 local
+
+- Completed: 5.1, 5.2
+- Verified by: `npm test -- --runTestsByPath __tests__/exam-report-task-idempotency.test.ts __tests__/cert-summary-phase5-error-contract.test.ts` (pass); added regression coverage for `INSUFFICIENT_EXAM_REPORTS` details payload and `REPORT_GENERATION_TRANSIENT` 500 propagation; `npx tsc --noEmit` completed with no displayed errors in verification run
+- Next: Phase 6.1
+- Blockers: none
