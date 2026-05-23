@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import { useCertSummary, useGenerateCertSummary } from '@/src/swr/certSummary';
-import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { LoadingComponents } from '@/components/custom';
 import { ActionButton } from '@/src/components/custom/ActionButton';
 import { FaRedo, FaPlay } from 'react-icons/fa';
-import { parseErrorMessage } from '@/src/utils/parseError';
+import { SWRFetchError } from '@/src/swr/utils';
+import { isCanonicalApiErrorResponse } from '@/src/types/api';
 
 interface CertSummaryProps {
   userId: string;
@@ -16,10 +16,58 @@ interface CertSummaryProps {
 }
 
 export function CertSummary({ userId, certId, examCount = 0, className = '' }: CertSummaryProps) {
-  const { apiUserId } = useFirebaseAuth();
   const { certSummary, isLoading, error, hasSummary, mutate } = useCertSummary(userId, certId);
   const { generateCertSummary } = useGenerateCertSummary();
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const getErrorDetails = (inputError: Error) => {
+    if (inputError instanceof SWRFetchError && isCanonicalApiErrorResponse(inputError.info)) {
+      if (inputError.info.error_code === 'INSUFFICIENT_EXAM_REPORTS') {
+        const details =
+          inputError.info.details && typeof inputError.info.details === 'object'
+            ? (inputError.info.details as {
+                required_reports?: number;
+                available_reports?: number;
+              })
+            : undefined;
+
+        const required = details?.required_reports ?? 2;
+        const available = details?.available_reports ?? 0;
+        const remaining = Math.max(required - available, 0);
+
+        return {
+          title: 'More Exam Reports Needed',
+          message: `Complete ${remaining} more exam report${remaining === 1 ? '' : 's'} to unlock your AI Learning Journey.`,
+          canGenerate: false,
+        };
+      }
+
+      if (inputError.info.error_code === 'REPORT_GENERATION_TRANSIENT') {
+        return {
+          title: 'Summary Generation In Progress',
+          message: 'Your latest report is still being generated. Please check back shortly.',
+          canGenerate: false,
+        };
+      }
+
+      if (inputError.status >= 500 && inputError.info.retriable) {
+        return {
+          title: 'Temporary Summary Delay',
+          message: 'We hit a temporary issue while loading your summary. Please try again shortly.',
+          canGenerate: true,
+        };
+      }
+    }
+
+    return {
+      title: 'Failed to load certification summary',
+      message: inputError.message || 'An unknown error occurred',
+      canGenerate: examCount >= 2,
+    };
+  };
+
+  const is404Error = error instanceof SWRFetchError && error.status === 404;
+  const errorDetails = error ? getErrorDetails(error) : null;
 
   const handleGenerateSummary = async () => {
     if (!userId || !certId) return;
@@ -48,7 +96,7 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
     );
   }
 
-  if (error && (error as any).status !== 404) {
+  if (error && !is404Error) {
     return (
       <div
         className={`p-4 border border-red-200 dark:border-red-800 rounded-lg bg-red-50 dark:bg-red-900/20 ${className}`}
@@ -56,13 +104,15 @@ export function CertSummary({ userId, certId, examCount = 0, className = '' }: C
         <div className="flex items-center space-x-2 mb-3">
           <div className="w-2 h-2 rounded-full bg-red-500"></div>
           <p className="text-sm text-red-700 dark:text-red-300 font-medium">
-            Failed to load certification summary
+            {errorDetails?.title || 'Failed to load certification summary'}
           </p>
         </div>
-        <p className="text-xs text-red-600 dark:text-red-400 mb-4">{parseErrorMessage(error)}</p>
+        <p className="text-xs text-red-600 dark:text-red-400 mb-4">
+          {errorDetails?.message || 'An unknown error occurred'}
+        </p>
 
         {/* Show regenerate button only if user has enough exams */}
-        {examCount >= 2 && (
+        {errorDetails?.canGenerate && (
           <ActionButton
             onClick={handleGenerateSummary}
             disabled={isGenerating}

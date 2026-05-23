@@ -6,8 +6,9 @@ import {
   useExamReport,
   useGenerateExamReport,
   useAutoGenerateExamReport,
-  ExamReportData,
 } from '@/src/swr/examReport';
+import { SWRFetchError } from '@/src/swr/utils';
+import { isCanonicalApiErrorResponse } from '@/src/types/api';
 
 interface ExamReportProps {
   examId: string;
@@ -30,6 +31,42 @@ export function ExamReport({ examId, isCompleted, className }: ExamReportProps) 
   const hasReport = examReport && !reportError;
   const { hasTriggeredGeneration } = useAutoGenerateExamReport(examId, isCompleted, !!hasReport);
 
+  const getReportErrorDetails = (error: Error) => {
+    if (error instanceof SWRFetchError && isCanonicalApiErrorResponse(error.info)) {
+      const code = error.info.error_code;
+
+      if (code === 'REPORT_GENERATION_TRANSIENT') {
+        return {
+          title: 'Report In Progress',
+          message: 'Report is being generated, please check back shortly.',
+          allowGenerate: false,
+        };
+      }
+
+      if (code === 'EXAM_REPORT_NOT_FOUND') {
+        return {
+          title: 'Report Not Available Yet',
+          message: 'Your exam report is not available yet. Try generating it now.',
+          allowGenerate: true,
+        };
+      }
+
+      if (error.info.retriable && error.status >= 500) {
+        return {
+          title: 'Temporary Report Delay',
+          message: 'We hit a temporary issue while loading your report. Please try again shortly.',
+          allowGenerate: true,
+        };
+      }
+    }
+
+    return {
+      title: 'Report Not Available',
+      message: error.message || 'Unable to load exam report.',
+      allowGenerate: true,
+    };
+  };
+
   const handleGenerateReport = async () => {
     if (!isCompleted) return;
 
@@ -44,6 +81,7 @@ export function ExamReport({ examId, isCompleted, className }: ExamReportProps) 
   };
 
   const canGenerateReport = isCompleted && !hasReport && !isLoadingReport;
+  const reportErrorDetails = reportError ? getReportErrorDetails(reportError) : null;
 
   // Don't render anything if exam is not completed
   if (!isCompleted) {
@@ -96,12 +134,12 @@ export function ExamReport({ examId, isCompleted, className }: ExamReportProps) 
           {reportError && !isLoadingReport && (
             <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60 rounded-xl">
               <p className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-1">
-                Report Not Available
+                {reportErrorDetails?.title || 'Report Not Available'}
               </p>
               <p className="text-xs text-amber-700 dark:text-amber-300">
-                {reportError.message || 'Unable to load exam report.'}
+                {reportErrorDetails?.message || 'Unable to load exam report.'}
               </p>
-              {canGenerateReport && (
+              {canGenerateReport && reportErrorDetails?.allowGenerate && (
                 <Button
                   onClick={handleGenerateReport}
                   disabled={isGenerating}

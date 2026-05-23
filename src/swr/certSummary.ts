@@ -1,14 +1,78 @@
 import useSWR from 'swr';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
-import {
-  CertSummaryData,
-  SwrDataCertSummaryFetchResponse,
-  SwrDataCertSummaryGenerateResponse,
-} from '@/src/types/swr-data/certSummary';
+import { CertSummaryData } from '@/src/types/swr-data/certSummary';
 import { SWRFetchError } from './utils';
-import { isApiError } from '@/src/types/api';
+import { CanonicalApiErrorResponse, isCanonicalApiErrorResponse } from '@/src/types/api';
 
 export type { CertSummaryData } from '@/src/types/swr-data/certSummary';
+
+type CertSummaryErrorInfo = Partial<CanonicalApiErrorResponse> & {
+  raw?: unknown;
+};
+
+function getFallbackErrorCode(status: number): string {
+  if (status === 400) return 'BAD_REQUEST';
+  if (status === 401) return 'UNAUTHENTICATED';
+  if (status === 403) return 'ACCESS_DENIED';
+  if (status === 404) return 'CERT_SUMMARY_NOT_FOUND';
+  if (status >= 500) return 'UPSTREAM_ERROR';
+  return 'UPSTREAM_REQUEST_FAILED';
+}
+
+async function parseErrorResponse(
+  response: Response,
+  fallbackMessage: string,
+): Promise<{ message: string; info: CertSummaryErrorInfo }> {
+  const responseText = await response.text();
+  let parsedBody: unknown;
+
+  try {
+    parsedBody = JSON.parse(responseText);
+  } catch {
+    parsedBody = responseText;
+  }
+
+  if (isCanonicalApiErrorResponse(parsedBody)) {
+    return {
+      message: parsedBody.error || fallbackMessage,
+      info: parsedBody,
+    };
+  }
+
+  if (parsedBody && typeof parsedBody === 'object') {
+    const body = parsedBody as Record<string, unknown>;
+    const message =
+      (typeof body.error === 'string' && body.error) ||
+      (typeof body.message === 'string' && body.message) ||
+      fallbackMessage;
+
+    return {
+      message,
+      info: {
+        error: message,
+        error_code: getFallbackErrorCode(response.status),
+        retriable: response.status >= 500,
+        details: body.details,
+        raw: body,
+      },
+    };
+  }
+
+  const plainMessage =
+    typeof parsedBody === 'string' && parsedBody.length > 0
+      ? parsedBody
+      : fallbackMessage || response.statusText;
+
+  return {
+    message: plainMessage,
+    info: {
+      error: plainMessage,
+      error_code: getFallbackErrorCode(response.status),
+      retriable: response.status >= 500,
+      raw: parsedBody,
+    },
+  };
+}
 
 // Fetcher function for cert summaries
 async function certSummaryFetcher(url: string): Promise<CertSummaryData | null> {
@@ -25,23 +89,8 @@ async function certSummaryFetcher(url: string): Promise<CertSummaryData | null> 
       return null;
     }
 
-    // Try to parse error response as JSON, fallback to text
-    let errorMessage = response.statusText;
-    let info: unknown = response.statusText;
-    try {
-      const errorData = await response.json();
-      errorMessage = errorData.error || errorData.message || errorMessage;
-      info = errorData;
-    } catch {
-      try {
-        const text = await response.text();
-        errorMessage = text || errorMessage;
-        info = text;
-      } catch {
-        // Use statusText fallback already set above
-      }
-    }
-    throw new SWRFetchError(errorMessage, response.status, info);
+    const { message, info } = await parseErrorResponse(response, 'Failed to fetch certification summary');
+    throw new SWRFetchError(message, response.status, info);
   }
 
   const result = await response.json();
@@ -63,22 +112,11 @@ async function generateCertSummary(userId: string, certId: string): Promise<Cert
   });
 
   if (!response.ok) {
-    let errorMessage = response.statusText;
-    let info: unknown = response.statusText;
-    try {
-      const errorData = await response.json();
-      errorMessage = errorData.error || errorData.message || errorMessage;
-      info = errorData;
-    } catch {
-      try {
-        const text = await response.text();
-        errorMessage = text || errorMessage;
-        info = text;
-      } catch {
-        // Use statusText fallback already set above
-      }
-    }
-    throw new SWRFetchError(errorMessage, response.status, info);
+    const { message, info } = await parseErrorResponse(
+      response,
+      'Failed to generate certification summary',
+    );
+    throw new SWRFetchError(message, response.status, info);
   }
 
   const result = await response.json();
@@ -99,20 +137,36 @@ export function useCertSummary(userId: string, certId: string) {
   const shouldFetch = firebaseUser && userId && certId;
   const key = shouldFetch ? `/api/users/${userId}/certifications/${certId}/cert-summary` : null;
 
-  const { data, error, isLoading, mutate } = useSWR<CertSummaryData | null, Error>(key, certSummaryFetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: true,
-    errorRetryCount: 3,
-    errorRetryInterval: 1000,
-    shouldRetryOnError: (err) => {
-      const status = isApiError(err) ? err.status : undefined;
-      // Don't retry on 404 (summary doesn't exist)
-      if (status === 404) return false;
-      // Don't retry on client errors (400-499)
-      if (status !== undefined && status >= 400 && status < 500) return false;
-      return true;
+  const { data, error, isLoading, mutate } = useSWR<CertSummaryData | null, Error>(
+    key,
+    certSummaryFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      errorRetryCount: 3,
+      errorRetryInterval: 1000,
+      shouldRetryOnError: (err) => {
+        if (!(err instanceof SWRFetchError)) {
+          return false;
+        }
+
+        if (err.status === 404) {
+          return false;
+        }
+
+        if (err.status >= 400 && err.status < 500) {
+          return false;
+        }
+
+        const info = err.info;
+        if (isCanonicalApiErrorResponse(info)) {
+          return err.status >= 500 && info.retriable;
+        }
+
+        return err.status >= 500;
+      },
     },
-  });
+  );
 
   return {
     certSummary: data, // SwrDataCertSummaryFetchResponse

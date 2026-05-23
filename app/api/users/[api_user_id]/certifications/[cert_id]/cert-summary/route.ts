@@ -2,6 +2,76 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getFirebaseTokenFromCookie } from '@/src/lib/service-only';
 import { getApiUserIdFromToken } from '@/src/lib/auth-claims-server';
 
+type CanonicalErrorEnvelope = {
+  success: false;
+  error: string;
+  error_code: string;
+  retriable: boolean;
+  details?: unknown;
+};
+
+function buildErrorEnvelope(
+  error: string,
+  errorCode: string,
+  retriable: boolean,
+  details?: unknown,
+): CanonicalErrorEnvelope {
+  return {
+    success: false,
+    error,
+    error_code: errorCode,
+    retriable,
+    ...(details === undefined ? {} : { details }),
+  };
+}
+
+function parseUpstreamErrorBody(bodyText: string): Partial<CanonicalErrorEnvelope> {
+  try {
+    const parsed = JSON.parse(bodyText) as Partial<CanonicalErrorEnvelope> & {
+      message?: string;
+    };
+    return {
+      error: parsed.error ?? parsed.message,
+      error_code: parsed.error_code,
+      retriable: parsed.retriable,
+      details: parsed.details,
+    };
+  } catch {
+    return {
+      error: bodyText || undefined,
+    };
+  }
+}
+
+function normalizeUpstreamError(status: number, bodyText: string, fallbackMessage: string) {
+  const parsed = parseUpstreamErrorBody(bodyText);
+  const isRetriableByStatus = status >= 500;
+
+  return {
+    status,
+    payload: buildErrorEnvelope(
+      parsed.error || fallbackMessage,
+      parsed.error_code || (isRetriableByStatus ? 'UPSTREAM_ERROR' : 'UPSTREAM_REQUEST_FAILED'),
+      parsed.retriable ?? isRetriableByStatus,
+      parsed.details,
+    ),
+  };
+}
+
+function buildProxyPathError() {
+  return NextResponse.json(
+    buildErrorEnvelope('User ID or Certification ID is missing from the request path', 'BAD_REQUEST', false),
+    { status: 400 },
+  );
+}
+
+function buildProxyAuthError() {
+  return NextResponse.json(
+    buildErrorEnvelope('Authentication failed: Invalid or missing token', 'UNAUTHENTICATED', false),
+    { status: 401 },
+  );
+}
+
 export async function GET(
   request: NextRequest,
   {
@@ -14,19 +84,13 @@ export async function GET(
     const { api_user_id, cert_id } = await params;
 
     if (!api_user_id || !cert_id) {
-      return NextResponse.json(
-        { message: 'User ID or Certification ID is missing from the request path' },
-        { status: 400 },
-      );
+      return buildProxyPathError();
     }
 
     const firebaseToken = await getFirebaseTokenFromCookie();
 
     if (!firebaseToken) {
-      return NextResponse.json(
-        { message: 'Authentication failed: Invalid or missing token' },
-        { status: 401 },
-      );
+      return buildProxyAuthError();
     }
 
     // Check if api_user_id is actually a Firebase UID and convert if needed
@@ -58,27 +122,38 @@ export async function GET(
       },
     });
 
+    const responseText = await response.text();
+
     if (!response.ok) {
-      const errorData = await response.text();
       console.error(
         `Failed to fetch cert summary for user ${api_user_id} and cert ${cert_id}:`,
         response.status,
-        errorData,
+        responseText,
       );
-      return NextResponse.json(
-        { message: `Failed to fetch cert summary`, error: errorData },
-        { status: response.status },
+      const normalized = normalizeUpstreamError(
+        response.status,
+        responseText,
+        'Failed to fetch cert summary',
       );
+      return NextResponse.json(normalized.payload, { status: normalized.status });
     }
 
-    const data = await response.json();
-    return NextResponse.json(data, { status: 200 });
+    try {
+      return NextResponse.json(JSON.parse(responseText), { status: 200 });
+    } catch {
+      return NextResponse.json(
+        buildErrorEnvelope(
+          'Invalid response format from server',
+          'PROXY_UPSTREAM_INVALID_RESPONSE',
+          true,
+        ),
+        { status: 502 },
+      );
+    }
   } catch (error) {
     console.error('Error fetching cert summary:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-
     return NextResponse.json(
-      { message: 'Error fetching cert summary', error: errorMessage },
+      buildErrorEnvelope('Error fetching cert summary', 'INTERNAL_SERVER_ERROR', true),
       { status: 500 },
     );
   }
@@ -96,19 +171,13 @@ export async function POST(
     const { api_user_id, cert_id } = await params;
 
     if (!api_user_id || !cert_id) {
-      return NextResponse.json(
-        { message: 'User ID or Certification ID is missing from the request path' },
-        { status: 400 },
-      );
+      return buildProxyPathError();
     }
 
     const firebaseToken = await getFirebaseTokenFromCookie();
 
     if (!firebaseToken) {
-      return NextResponse.json(
-        { message: 'Authentication failed: Invalid or missing token' },
-        { status: 401 },
-      );
+      return buildProxyAuthError();
     }
 
     // Check if api_user_id is actually a Firebase UID and convert if needed
@@ -140,27 +209,38 @@ export async function POST(
       },
     });
 
+    const responseText = await response.text();
+
     if (!response.ok) {
-      const errorData = await response.text();
       console.error(
         `Failed to generate cert summary for user ${api_user_id} and cert ${cert_id}:`,
         response.status,
-        errorData,
+        responseText,
       );
-      return NextResponse.json(
-        { message: `Failed to generate cert summary`, error: errorData },
-        { status: response.status },
+      const normalized = normalizeUpstreamError(
+        response.status,
+        responseText,
+        'Failed to generate cert summary',
       );
+      return NextResponse.json(normalized.payload, { status: normalized.status });
     }
 
-    const data = await response.json();
-    return NextResponse.json(data, { status: 200 });
+    try {
+      return NextResponse.json(JSON.parse(responseText), { status: 200 });
+    } catch {
+      return NextResponse.json(
+        buildErrorEnvelope(
+          'Invalid response format from server',
+          'PROXY_UPSTREAM_INVALID_RESPONSE',
+          true,
+        ),
+        { status: 502 },
+      );
+    }
   } catch (error) {
     console.error('Error generating cert summary:', error);
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-
     return NextResponse.json(
-      { message: 'Error generating cert summary', error: errorMessage },
+      buildErrorEnvelope('Error generating cert summary', 'INTERNAL_SERVER_ERROR', true),
       { status: 500 },
     );
   }

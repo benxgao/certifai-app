@@ -2,8 +2,78 @@ import useSWR from 'swr';
 import React from 'react';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
 import { ExamReportData } from '@/src/types/swr-data/examReport';
+import { CanonicalApiErrorResponse, isCanonicalApiErrorResponse } from '@/src/types/api';
+import { SWRFetchError } from './utils';
 
 export type { ExamReportData } from '@/src/types/swr-data/examReport';
+
+type ExamReportErrorInfo = Partial<CanonicalApiErrorResponse> & {
+  raw?: unknown;
+};
+
+function getFallbackErrorCode(status: number): string {
+  if (status === 400) return 'BAD_REQUEST';
+  if (status === 401) return 'UNAUTHENTICATED';
+  if (status === 403) return 'ACCESS_DENIED';
+  if (status === 404) return 'EXAM_REPORT_NOT_FOUND';
+  if (status >= 500) return 'UPSTREAM_ERROR';
+  return 'UPSTREAM_REQUEST_FAILED';
+}
+
+async function parseErrorResponse(
+  response: Response,
+  fallbackMessage: string,
+): Promise<{ message: string; info: ExamReportErrorInfo }> {
+  const responseText = await response.text();
+  let parsedBody: unknown;
+
+  try {
+    parsedBody = JSON.parse(responseText);
+  } catch {
+    parsedBody = responseText;
+  }
+
+  if (isCanonicalApiErrorResponse(parsedBody)) {
+    return {
+      message: parsedBody.error || fallbackMessage,
+      info: parsedBody,
+    };
+  }
+
+  if (parsedBody && typeof parsedBody === 'object') {
+    const body = parsedBody as Record<string, unknown>;
+    const message =
+      (typeof body.error === 'string' && body.error) ||
+      (typeof body.message === 'string' && body.message) ||
+      fallbackMessage;
+
+    return {
+      message,
+      info: {
+        error: message,
+        error_code: getFallbackErrorCode(response.status),
+        retriable: response.status >= 500,
+        details: body.details,
+        raw: body,
+      },
+    };
+  }
+
+  const plainMessage =
+    typeof parsedBody === 'string' && parsedBody.length > 0
+      ? parsedBody
+      : fallbackMessage || response.statusText;
+
+  return {
+    message: plainMessage,
+    info: {
+      error: plainMessage,
+      error_code: getFallbackErrorCode(response.status),
+      retriable: response.status >= 500,
+      raw: parsedBody,
+    },
+  };
+}
 
 // Fetcher function for exam reports
 async function examReportFetcher(url: string): Promise<ExamReportData> {
@@ -15,31 +85,8 @@ async function examReportFetcher(url: string): Promise<ExamReportData> {
   });
 
   if (!response.ok) {
-    // Try to parse error response as JSON, fallback to text
-    let errorMessage = response.statusText;
-    try {
-      const errorData = await response.json();
-      errorMessage = errorData.error || errorData.message || errorMessage;
-    } catch {
-      // If JSON parsing fails, try to read as text
-      try {
-        const errorText = await response.text();
-        errorMessage = errorText || errorMessage;
-      } catch {
-        // If both fail, use default error message
-      }
-    }
-
-    if (response.status === 404) {
-      throw new Error('Exam report not found');
-    }
-    if (response.status === 403) {
-      throw new Error('Access denied to this exam report');
-    }
-    if (response.status === 400) {
-      throw new Error('Report can only be generated for completed exams');
-    }
-    throw new Error(`Failed to fetch exam report: ${errorMessage}`);
+    const { message, info } = await parseErrorResponse(response, 'Failed to fetch exam report');
+    throw new SWRFetchError(message, response.status, info);
   }
 
   const data = await response.json();
@@ -56,21 +103,8 @@ async function generateExamReportFetcher(url: string): Promise<ExamReportData> {
   });
 
   if (!response.ok) {
-    // Try to parse error response as JSON, fallback to text
-    let errorMessage = response.statusText;
-    try {
-      const errorData = await response.json();
-      errorMessage = errorData.error || errorData.message || errorMessage;
-    } catch {
-      // If JSON parsing fails, try to read as text
-      try {
-        const errorText = await response.text();
-        errorMessage = errorText || errorMessage;
-      } catch {
-        // If both fail, use default error message
-      }
-    }
-    throw new Error(errorMessage);
+    const { message, info } = await parseErrorResponse(response, 'Failed to generate exam report');
+    throw new SWRFetchError(message, response.status, info);
   }
 
   const data = await response.json();
@@ -89,20 +123,23 @@ export function useExamReport(examId: string | null, shouldFetch: boolean = true
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      shouldRetryOnError: false,
-      // Enhanced error handling for better user experience
-      onError: (error) => {
-        // Don't retry if it's a 404 (report doesn't exist) or 403 (access denied)
-        if (error.message.includes('not found') || error.message.includes('Access denied')) {
+      errorRetryCount: 3,
+      errorRetryInterval: 1000,
+      shouldRetryOnError: (error) => {
+        if (!(error instanceof SWRFetchError)) {
           return false;
         }
-        // Don't retry authentication errors
-        if (
-          error.message.includes('Authentication') ||
-          error.message.includes('Invalid authentication')
-        ) {
+
+        if (error.status >= 400 && error.status < 500) {
           return false;
         }
+
+        const info = error.info;
+        if (isCanonicalApiErrorResponse(info)) {
+          return error.status >= 500 && info.retriable;
+        }
+
+        return error.status >= 500;
       },
     },
   );

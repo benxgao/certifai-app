@@ -30,6 +30,12 @@ export interface ApiErrorResponse {
   error: string;
 }
 
+export interface CanonicalApiErrorResponse extends ApiErrorResponse {
+  error_code: string;
+  retriable: boolean;
+  details?: unknown;
+}
+
 /**
  * Extended Error type for HTTP/API errors returned by SWR hooks
  * Includes additional properties commonly present on fetch-based errors
@@ -51,6 +57,18 @@ export function isApiError(err: unknown): err is ApiError {
   return (
     err instanceof Error &&
     ('status' in err || 'code' in err || 'info' in err || 'response' in err)
+  );
+}
+
+export function isCanonicalApiErrorResponse(value: unknown): value is CanonicalApiErrorResponse {
+  if (!value || typeof value !== 'object') return false;
+
+  const envelope = value as Partial<CanonicalApiErrorResponse>;
+  return (
+    envelope.success === false &&
+    typeof envelope.error === 'string' &&
+    typeof envelope.error_code === 'string' &&
+    typeof envelope.retriable === 'boolean'
   );
 }
 

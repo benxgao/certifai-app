@@ -168,7 +168,7 @@ Mixed-layer edits in a single phase are risky because they hide root-cause regre
 - [x] Phase 3 — Error Contract Baseline
 - [x] Phase 4 — Task Retry Correctness _(skip if infrastructure not in place)_
 - [x] Phase 5 — Cert Summary Prerequisite Diagnostics
-- [ ] Phase 6 — Frontend Contract Normalization
+- [x] Phase 6 — Frontend Contract Normalization
 - [ ] Phase 7 — Test Coverage and Regression Gates
 
 ## Phases
@@ -317,7 +317,7 @@ Mixed-layer edits in a single phase are risky because they hide root-cause regre
 
 ### Phase 6: Frontend Contract Normalization
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: `certifai-app proxy + SWR + UI messaging`
 
@@ -341,10 +341,11 @@ Mixed-layer edits in a single phase are risky because they hide root-cause regre
 **Sub-subphase checklist**:
 
 - [ ] **6.1 — Route normalization**: both proxy routes return canonical envelope `{ success, error, error_code, retriable, details? }`.
+- [x] **6.1 — Route normalization**: both proxy routes return canonical envelope `{ success, error, error_code, retriable, details? }`.
   - **Independent verification**: network panel shows same key structure for both endpoints on error responses.
-- [ ] **6.2 — SWR fetcher alignment**: both fetchers parse `error_code`; retry policy: no retry on 4xx, retry up to 3× on 5xx retriable.
+- [x] **6.2 — SWR fetcher alignment**: both fetchers parse `error_code`; retry policy: no retry on 4xx, retry up to 3× on 5xx retriable.
   - **Independent verification**: mocked 500 retriable response retries; mocked 400 does not retry.
-- [ ] **6.3 — UI state copy cleanup**: exam report card maps `REPORT_GENERATION_TRANSIENT` → "Report is being generated, please check back shortly". Cert summary card maps `INSUFFICIENT_EXAM_REPORTS` → "Complete {n} more exam(s) to unlock your AI Learning Journey".
+- [x] **6.3 — UI state copy cleanup**: exam report card maps `REPORT_GENERATION_TRANSIENT` → "Report is being generated, please check back shortly". Cert summary card maps `INSUFFICIENT_EXAM_REPORTS` → "Complete {n} more exam(s) to unlock your AI Learning Journey".
   - **Independent verification**: visual QA on both card error states.
 
 ---
@@ -529,4 +530,11 @@ Execute Phases 1→7 in order, with strict gate checks between phases. **Phases 
 - Completed: 5.1, 5.2
 - Verified by: `npm test -- --runTestsByPath __tests__/exam-report-task-idempotency.test.ts __tests__/cert-summary-phase5-error-contract.test.ts` (pass); added regression coverage for `INSUFFICIENT_EXAM_REPORTS` details payload and `REPORT_GENERATION_TRANSIENT` 500 propagation; `npx tsc --noEmit` completed with no displayed errors in verification run
 - Next: Phase 6.1
+- Blockers: none
+
+### Session Note — 2026-05-23 local
+
+- Completed: 6.1, 6.2, 6.3
+- Verified by: frontend TypeScript check `npx tsc --noEmit 2>&1 | grep "^(src|app)/"` (no matching errors); diagnostics check reports no new issues in changed route/SWR/component files; implemented canonical proxy envelope pass-through, SWR retry policy parity, and UI error-code mapping copy
+- Next: Phase 7.1
 - Blockers: none
