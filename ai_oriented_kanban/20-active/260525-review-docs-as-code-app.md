@@ -201,7 +201,7 @@ For docs migration, this maps to:
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Content decomposition design (source mapping)
+- [x] Phase 1 — Content decomposition design (source mapping)
 - [ ] Phase 2 — Security workflow docs migration
 - [ ] Phase 3 — API marketing workflow migration
 - [ ] Phase 4 — AI navigation and index alignment
@@ -213,7 +213,7 @@ For docs migration, this maps to:
 
 ### Phase 1: Content decomposition design (source mapping)
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: planning / source-analysis layer
 
@@ -228,15 +228,114 @@ For docs migration, this maps to:
 
 **Verification gate** (must pass before Phase 2 starts):
 
-- Every major section in `doc_archived/*.md` has a destination file assignment.
-- A “drop or merge” decision is documented for duplicate/redundant sections.
+- Every major section in `doc_archived/*.md` has a destination file assignment. ✅
+- A "drop or merge" decision is documented for duplicate/redundant sections. ✅
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Build section-to-file mapping**: enumerate archived headings and target destinations.
+- [x] **1.1 — Build section-to-file mapping**: enumerate archived headings and target destinations.
   - **Independent verification**: mapping table reviewed; no unassigned headings remain.
-- [ ] **1.2 — Define duplication policy**: decide what stays in parent docs vs new workflow docs.
+- [x] **1.2 — Define duplication policy**: decide what stays in parent docs vs new workflow docs.
   - **Independent verification**: explicit rules added (e.g., invariants stay in `auth-patterns`, flows move to dedicated files).
+
+### Phase 1 Deliverables
+
+#### 1.1 Section-to-File Mapping
+
+##### `doc_archived/signin.md` → `docs/security/signin-workflow.md`
+
+| Source Section | Destination File | Action |
+| --- | --- | --- |
+| Overview | `docs/security/signin-workflow.md` | Port summary paragraph |
+| Core Architecture — Key Components | `docs/security/auth-patterns.md` | Keep as invariant reference (already partially present); link to workflow doc |
+| Signin Flow — Complete Signin Process (diagram) | `docs/security/signin-workflow.md` | Port Mermaid diagram |
+| Signin Flow — Step-by-Step Explanation | `docs/security/signin-workflow.md` | Port full step-by-step walkthrough |
+| Signin Flow — Error Handling | `docs/security/signin-workflow.md` | Port error handling section |
+| Logout Flow — Complete Logout Process | `docs/security/signin-workflow.md` | Port under "Logout Flow" heading |
+| Logout Flow — Step-by-Step Explanation | `docs/security/signin-workflow.md` | Port full logout steps |
+| Logout Flow — Error Recovery | `docs/security/signin-workflow.md` | Port; cross-link to auth-patterns for invariants |
+| Logout Flow — Emergency Logout | `docs/security/signin-workflow.md` | Port |
+| Token Management — Token Structure | `docs/security/auth-patterns.md` | Invariant — keep in parent doc; add link to workflow doc |
+| Token Management — Token Lifecycle | `docs/security/signin-workflow.md` | Port detailed lifecycle steps |
+| Token Management — Why Skip Refresh During Auth Pages? | `docs/security/signin-workflow.md` | Port as design rationale note |
+| State Management — Type-Safe State Machine | `docs/security/signin-workflow.md` | Port; reference type files |
+| State Management — Unified Token Clearing | `docs/security/signin-workflow.md` | Port |
+| State Management — Verification State | `docs/security/signin-workflow.md` | Port; cross-link to signup-workflow for verification context |
+| Race Condition Prevention | `docs/security/signin-workflow.md` | Port entirely (high-value operational detail) |
+| Route Protection — Signin Page & Protected Routes | `docs/security/signin-workflow.md` | Port |
+| Error Types & Handling | `docs/security/signin-workflow.md` | Port full table and recovery notes |
+| File Structure — Key Auth Files | `docs/security/signin-workflow.md` | Port as quick-reference; keep canonical list trimmed |
+| Usage Examples | `docs/security/signin-workflow.md` | Port code snippets |
+| How Cookies Work | `docs/security/signin-workflow.md` | Port full section (cookie lifecycle, JOSE wrapping rationale) |
+| Security Features | `docs/security/auth-patterns.md` | Merge into parent invariants section; remove duplication |
+| Testing Checklist | `docs/security/signin-workflow.md` | Port as operational checklist |
+| Troubleshooting — "User can't signin after signup" | `docs/security/signin-workflow.md` | Port under Troubleshooting heading |
+
+##### `doc_archived/signup.md` → `docs/security/signup-workflow.md`
+
+| Source Section | Destination File | Action |
+| --- | --- | --- |
+| Overview | `docs/security/signup-workflow.md` | Port summary |
+| Signup Flow Architecture — High-Level Flow Diagram | `docs/security/signup-workflow.md` | Port Mermaid diagram |
+| Signup Flow Architecture — Detailed Sequence | `docs/security/signup-workflow.md` | Port |
+| Timeout Architecture | `docs/security/signup-workflow.md` | Port entirely (high-value edge-case detail) |
+| UAT vs Production Differences | `docs/security/signup-workflow.md` | Port under a dedicated "Environment Differences" heading |
+| UAT Tester Workflow — Flow Diagram | `docs/security/signup-workflow.md` | Port Mermaid diagram |
+| UAT Tester Workflow — Step-by-Step for Testers | `docs/security/signup-workflow.md` | Port |
+| UAT Tester Workflow — What `autoVerify` Does | `docs/security/signup-workflow.md` | Port |
+| UAT Tester Workflow — Troubleshooting | `docs/security/signup-workflow.md` | Port |
+| Key Fixes Implemented (1–6) | `docs/security/signup-workflow.md` | Port as "Implementation Safeguards" section |
+| File Structure | `docs/security/signup-workflow.md` | Port as quick-reference |
+| Error Handling — Firebase Account Creation Errors | `docs/security/signup-workflow.md` | Port |
+| Error Handling — Registration/Verification Partial Failures | `docs/security/signup-workflow.md` | Port |
+| Security | `docs/security/auth-patterns.md` | Merge security invariants into parent; remove duplication |
+| Testing Checklist — Normal Path / Error Paths / Edge Cases | `docs/security/signup-workflow.md` | Port |
+| Monitoring | `docs/security/signup-workflow.md` | Port under "Monitoring & Observability" heading |
+
+##### `doc_archived/marketing.md` → `docs/api/marketing-subscription-workflow.md`
+
+| Source Section | Destination File | Action |
+| --- | --- | --- |
+| Overview | `docs/api/marketing-subscription-workflow.md` | Port |
+| Complete Registration Workflow — Steps 1–6 (Firebase/API/verification) | `docs/api/marketing-subscription-workflow.md` | Port as context/prerequisite steps; cross-link to `signup-workflow.md` for deep detail |
+| Complete Registration Workflow — Steps 7–12 (MailerLite/Lambda/storage) | `docs/api/marketing-subscription-workflow.md` | Port in full as core workflow content |
+| Key Features — Non-Blocking Marketing Subscription | `docs/api/marketing-subscription-workflow.md` | Port as design principle note |
+| Key Features — Data Collection | `docs/api/marketing-subscription-workflow.md` | Port |
+| Key Features — MailerLite Groups | `docs/api/marketing-subscription-workflow.md` | Port |
+| Key Features — Subscriber Status | `docs/api/marketing-subscription-workflow.md` | Port |
+| Environment Variables Required | `docs/api/marketing-subscription-workflow.md` | Port as configuration reference |
+| Error Handling & Fallbacks | `docs/api/marketing-subscription-workflow.md` | Port |
+| Monitoring & Debugging — Console Logs | `docs/api/marketing-subscription-workflow.md` | Port |
+| Monitoring & Debugging — Debug Utility | `docs/api/marketing-subscription-workflow.md` | Port |
+| Flow Diagram | `docs/api/marketing-subscription-workflow.md` | Port Mermaid/ASCII diagram |
+| Related Files | `docs/api/marketing-subscription-workflow.md` | Port as file-reference table |
+| Testing the Flow | `docs/api/marketing-subscription-workflow.md` | Port as testing checklist |
+
+#### 1.2 Duplication Policy
+
+**Rule 1 — Invariants stay in parent docs; procedures move to workflow docs.**
+
+- `docs/security/auth-patterns.md` retains: key components list, token structure, security features summary, and "why" rationale for design decisions.
+- `docs/security/signin-workflow.md` owns: state transitions, step-by-step flows, race condition mechanics, cookie lifecycle, error tables, troubleshooting steps, testing checklists.
+- `docs/security/signup-workflow.md` owns: signup/verification lifecycle, timeout architecture, UAT differences, implementation safeguards, error recovery paths, monitoring notes.
+- `docs/api/api-connection.md` retains: envelope conventions, fetch patterns, auth header patterns.
+- `docs/api/marketing-subscription-workflow.md` owns: full MailerLite integration steps, environment config, non-blocking subscription design, debug patterns.
+
+**Rule 2 — Cross-link instead of duplicate.**
+
+When content from a workflow doc is relevant in a parent doc, add a one-line reference link rather than repeating the content. Example: `auth-patterns.md` gets `→ See [Signin Workflow](signin-workflow.md) for full state-transition sequences.`
+
+**Rule 3 — "Security" sections from archived docs merge into `auth-patterns.md`.**
+
+Both `signin.md` and `signup.md` have a "Security" section. These contain security guardrails (invariants) that belong in the parent. Merge the non-duplicated points into `auth-patterns.md` and do not copy them into workflow docs.
+
+**Rule 4 — File structure tables go in workflow docs, not parent docs.**
+
+File path references are operational detail, not invariants. They belong in workflow docs as quick-reference tables.
+
+**Rule 5 — Steps 1–6 of `marketing.md` are context, not content.**
+
+The Firebase/API/verification preamble in `marketing.md` duplicates material in `signup-workflow.md`. Port it as a short "Prerequisites" callout with a cross-link to `signup-workflow.md` rather than a full copy.
 
 ---
 
@@ -590,3 +689,14 @@ This section is intentionally opinionated and review-oriented. It records concer
 ## Recommendation
 
 Execute the default order with **Phase 1 + Phase 2 as immediate priority**. That yields the biggest assistant-context improvement quickly by canonicalizing auth workflow knowledge first, then fold in marketing flow and AI navigation updates before retiring the archive sources.
+
+---
+
+## Session Notes
+
+### Session Note — 2026-05-24 23:40 UTC
+
+- Completed: Phase 1 (1.1 + 1.2)
+- Verified by: all `doc_archived/*.md` headings enumerated; every heading assigned to a target file in mapping table; duplication policy rules 1–5 defined
+- Next: Phase 2 — Security workflow docs migration (`docs/security/signin-workflow.md`, `docs/security/signup-workflow.md`, update `docs/security/auth-patterns.md`)
+- Blockers: none
