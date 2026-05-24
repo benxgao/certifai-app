@@ -10,11 +10,23 @@ This rollout starts with an MVP that prioritizes fast usefulness over full docs-
 
 ### What already exists
 
-- Root-level onboarding and project docs in `README.md` and `docs/`.
-- Existing style and implementation conventions in `styleguide/` and `.github/copilot-instructions.md`.
-- Next.js 15 app structure under `app/` (App Router pages and layouts).
-- SWR data-fetching hooks with typed generics in `src/swr/`.
-- API connection layer with typed responses in `src/services/` and `src/types/swr-data/`.
+- Root-level onboarding in `README.md` and docs in `docs/` (flat, topic-named files).
+- Style and UI conventions in `styleguide/app.md`, `styleguide/shared.md`, `styleguide/marketing.md`.
+- Copilot behavior rules in `.github/copilot-instructions.md`.
+- Next.js 15 App Router pages under `app/` with layouts, loading states, and templates.
+- Authenticated section at `app/main/` (certifications, exams, billing, profile, stripe callback).
+- Next.js API routes for auth, auth-cookie, demo, marketing, and public certifications under `app/api/`.
+- JWT middleware protecting `/main/*` in `middleware.proxy.ts` using `src/lib/auth-*.ts` and `src/lib/jwt-utils.ts`.
+- SWR data-fetching layer: 18 hook files in `src/swr/` (certifications, exams, questions, profile, firms, etc.).
+- Matching typed response interfaces in `src/types/swr-data/` (one type file per hook file).
+- Base `ApiResponse<T>` type in `src/types/api.ts`; exam status enum in `src/types/exam-status.ts`.
+- Client fetch utilities in `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts`, `src/lib/api-utils.ts`.
+- React Context providers in `src/context/` (FirebaseAuthContext, UserProfileContext, UserCertificationsContext, ExamStatsContext).
+- Local custom hooks in `src/hooks/` (useExamPageLogic, useProfileData, useSigninHooks, useOptimizedForm, etc.).
+- Firebase setup in `src/firebase/` (firebaseWebConfig, firebaseAdminConfig, verifyTokenByAdmin).
+- shadcn/ui primitives in `src/components/ui/`; domain components in `src/components/custom/`, `/auth/`, `/billing/`, `/analytics/`.
+- Utility helpers in `src/lib/` (input-validation, pagination-utils, rate-limiting, consent, etc.).
+- Unit tests in `__tests__/` (6 files); E2E tests in `e2e/` (Playwright).
 
 ### What is not centralized / stable / complete yet
 
@@ -99,28 +111,69 @@ Also in scope:
 
 ### Likely files to create
 
-| File                                      | Purpose                                                                      |
-| ----------------------------------------- | ---------------------------------------------------------------------------- |
-| `docs/ai/repo-map.md`                     | Canonical system boundary, critical invariants, and dangerous areas          |
-| `docs/ai/assistant-context-index.md`      | Fast index of where to find architecture, style, testing, and workflows      |
-| `docs/architecture/system-context.md`     | Human/AI readable high-level architecture for `certifai-app`                 |
-| `docs/architecture/nextjs-conventions.md` | App Router structure, layout hierarchy, page routing rules, loading patterns |
-| `docs/api/swr-patterns.md`                | SWR hook contracts, generic parameter rules, `ApiResponse<T>` shape, enums   |
-| `docs/api/api-connection.md`              | API base URL config, auth headers, error envelope, SWR → service boundaries  |
-| `docs/adr/0001-docs-architecture-mvp.md`  | Record why this docs structure was adopted                                   |
-| `docs/operations/docs-maintenance.md`     | Ownership, update cadence, and freshness checklist                           |
-| `.github/pull_request_template.md`        | Add docs impact assessment checkboxes                                        |
-| `docs/product/glossary.md`                | Shared terminology for product + engineering + AI retrieval                  |
+Full directory tree of all files this rollout will produce:
+
+```
+docs/
+├── product/
+│   ├── _template.md
+│   └── glossary.md
+├── architecture/
+│   ├── _template.md
+│   └── nextjs-conventions.md       # app/ layout, routing, loading, template.tsx, middleware
+├── adr/
+│   ├── _template.md
+│   └── 0001-docs-architecture-mvp.md
+├── api/
+│   ├── _template.md
+│   ├── api-connection.md           # src/types/api.ts, src/lib/client-fetch.ts, fetch-config.ts, api-utils.ts
+│   └── swr-patterns.md             # src/swr/useAuthSWR.ts, useAuthMutation.ts, utils.ts + 14 domain hooks
+├── state/
+│   ├── _template.md
+│   └── client-state.md             # src/context/ (FirebaseAuthContext, UserProfileContext, UserCertificationsContext, ExamStatsContext)
+├── data/
+│   ├── _template.md
+│   └── data-models.md              # src/types/swr-data/ (16 type files), src/types/exam-status.ts
+├── style/
+│   ├── _template.md
+│   └── conventions.md              # styleguide/app.md, styleguide/shared.md, src/components/ui/, cn() usage
+├── security/
+│   ├── _template.md
+│   └── auth-patterns.md            # middleware.proxy.ts, src/lib/auth-*.ts, src/lib/jwt-utils.ts, app/api/auth*/
+├── performance/
+│   ├── _template.md
+│   └── patterns.md                 # SWR caching, src/lib/rate-limiting.ts, src/hooks/useOptimized*.ts
+├── testing/
+│   ├── _template.md
+│   └── strategy.md                 # __tests__/ (6 unit files), e2e/ (Playwright), setup.ts
+├── ai/
+│   ├── _template.md
+│   ├── repo-map.md
+│   └── assistant-context-index.md
+└── operations/
+    ├── _template.md
+    └── docs-maintenance.md
+.github/
+└── pull_request_template.md
+```
 
 ### Dependencies / related patterns
 
-| File                    | Relationship                                                                |
-| ----------------------- | --------------------------------------------------------------------------- |
-| `styleguide/`           | Source for coding/UI conventions referenced by assistant index              |
-| `src/swr/`              | Source-of-truth for SWR hook patterns documented in `swr-patterns.md`       |
-| `src/types/swr-data/`   | Source-of-truth for API response types documented in `api-connection.md`    |
-| `app/`                  | Source-of-truth for routing structure documented in `nextjs-conventions.md` |
-| `__tests__/` and `e2e/` | Source-of-truth for testing strategy sections                               |
+| Source path | Feeds into |
+| --- | --- |
+| `styleguide/app.md`, `styleguide/shared.md`, `styleguide/marketing.md` | `docs/style/conventions.md` |
+| `src/types/api.ts` | `docs/api/api-connection.md` |
+| `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts`, `src/lib/api-utils.ts` | `docs/api/api-connection.md` |
+| `src/swr/useAuthSWR.ts`, `src/swr/useAuthMutation.ts`, `src/swr/utils.ts` | `docs/api/swr-patterns.md` |
+| `src/swr/certifications.ts`, `exams.ts`, `questions.ts`, `profile.ts`, `firms.ts`, `examReport.ts`, `examInfo.ts`, `certSummary.ts`, `createExam.ts`, `deleteAccount.ts`, `rateLimitInfo.ts`, `useAllData.ts`, `useExamGeneratingProgress.ts`, `useExamLiveStatus.ts`, `demoCredentials.ts` | `docs/api/swr-patterns.md` |
+| `src/types/swr-data/` (16 type files), `src/types/exam-status.ts` | `docs/data/data-models.md` |
+| `src/context/FirebaseAuthContext.tsx`, `UserProfileContext.tsx`, `UserCertificationsContext.tsx`, `ExamStatsContext.tsx` | `docs/state/client-state.md` |
+| `middleware.proxy.ts`, `src/lib/auth-*.ts`, `src/lib/jwt-utils.ts`, `src/firebase/verifyTokenByAdmin.ts` | `docs/security/auth-patterns.md` |
+| `app/api/auth/`, `app/api/auth-cookie/` | `docs/security/auth-patterns.md` |
+| `app/` (layout.tsx, loading.tsx, template.tsx, page routing) | `docs/architecture/nextjs-conventions.md` |
+| `app/main/` (certifications, exams, billing, profile, stripe) | `docs/architecture/nextjs-conventions.md` |
+| `src/lib/rate-limiting.ts`, `src/hooks/useOptimizedForm.ts`, `useOptimizedRateLimit.ts`, `useOptimizedScroll.ts` | `docs/performance/patterns.md` |
+| `__tests__/` (6 unit test files), `e2e/` (Playwright), `__tests__/setup.ts` | `docs/testing/strategy.md` |
 
 ### Risks
 
@@ -205,7 +258,7 @@ Adapted for documentation rollout:
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Establish AI docs skeleton
+- [x] Phase 1 — Establish AI docs skeleton
 - [ ] Phase 2 — Wire canonical links in instructions and README
 - [ ] Phase 3 — Add governance and freshness checks
 
@@ -213,9 +266,7 @@ Adapted for documentation rollout:
 
 ### Phase 1: Establish AI docs skeleton
 
-**Progress**: `[ ]`
-
-**Layer**: `docs/` content layer
+**Progress**: `[x]`
 
 **Goal**: Create the minimum documentation set that lets assistants quickly understand project overview, boundaries, style sources, and testing strategy.
 
@@ -236,21 +287,21 @@ Adapted for documentation rollout:
 
 **Files** — MVP domain docs (commits 2–8 of Phase 1, one commit per sub-subphase 1.2–1.8):
 
-| Sub-subphase | File                                      | Content                                                           |
-| ------------ | ----------------------------------------- | ----------------------------------------------------------------- |
-| 1.2          | `docs/ai/repo-map.md`                     | System boundary, entrypoints, invariants, dangerous areas         |
-| 1.2          | `docs/ai/assistant-context-index.md`      | Fast retrieval index of all canonical docs                        |
-| 1.3          | `docs/product/glossary.md`                | Shared terminology for product, engineering, and AI               |
-| 1.3          | `docs/adr/0001-docs-architecture-mvp.md`  | Decision record: why this docs structure was adopted              |
-| 1.4          | `docs/architecture/nextjs-conventions.md` | App Router structure, layouts, routing rules, loading patterns    |
-| 1.5          | `docs/api/api-connection.md`              | Base URL config, auth headers, `ApiResponse<T>` envelope, errors  |
-| 1.5          | `docs/api/swr-patterns.md`                | Hook contracts, generic parameters, `useAuthSWR` vs `useSWR`      |
-| 1.6          | `docs/state/client-state.md`              | SWR as server-state, Firebase auth state, local UI state rules    |
-| 1.6          | `docs/data/data-models.md`                | `src/types/swr-data/` layout, Prisma types on client, enums       |
-| 1.7          | `docs/style/conventions.md`               | Tailwind, shadcn/ui, `cn()`, dark mode, spacing/typography        |
-| 1.7          | `docs/security/auth-patterns.md`          | Firebase Auth flow, JWT, protected routes, `authCheck` middleware |
-| 1.8          | `docs/performance/patterns.md`            | SWR/Next.js caching strategy, lazy loading, bundle hints          |
-| 1.8          | `docs/testing/strategy.md`                | Unit (`__tests__/`), E2E (Playwright), fixture patterns, coverage |
+| Sub-subphase | File                                      | Source of truth                                                        |
+| ------------ | ----------------------------------------- | ---------------------------------------------------------------------- |
+| 1.2          | `docs/ai/repo-map.md`                     | `app/`, `middleware.proxy.ts`, `src/swr/`, `src/context/`              |
+| 1.2          | `docs/ai/assistant-context-index.md`      | All `docs/` sections (generated index)                                 |
+| 1.3          | `docs/product/glossary.md`                | Domain terms from `src/types/`, `app/main/`, `src/swr/`                |
+| 1.3          | `docs/adr/0001-docs-architecture-mvp.md`  | This rollout plan                                                      |
+| 1.4          | `docs/architecture/nextjs-conventions.md` | `app/layout.tsx`, `app/main/layout.tsx`, `app/main/certifications/`    |
+| 1.5          | `docs/api/api-connection.md`              | `src/types/api.ts`, `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts` |
+| 1.5          | `docs/api/swr-patterns.md`                | `src/swr/useAuthSWR.ts`, `src/swr/useAuthMutation.ts`, `src/swr/utils.ts` |
+| 1.6          | `docs/state/client-state.md`              | `src/context/FirebaseAuthContext.tsx`, `UserProfileContext.tsx`, `UserCertificationsContext.tsx`, `ExamStatsContext.tsx` |
+| 1.6          | `docs/data/data-models.md`                | `src/types/swr-data/` (16 files), `src/types/exam-status.ts`           |
+| 1.7          | `docs/style/conventions.md`               | `styleguide/app.md`, `styleguide/shared.md`, `src/components/ui/`      |
+| 1.7          | `docs/security/auth-patterns.md`          | `middleware.proxy.ts`, `src/lib/auth-state-manager.ts`, `src/lib/jwt-utils.ts`, `app/api/auth-cookie/` |
+| 1.8          | `docs/performance/patterns.md`            | `src/lib/rate-limiting.ts`, `src/hooks/useOptimized*.ts`, SWR config   |
+| 1.8          | `docs/testing/strategy.md`                | `__tests__/` (6 files), `e2e/`, `__tests__/setup.ts`                  |
 
 **Verification gate** (must pass before Phase 2 starts):
 
@@ -261,37 +312,46 @@ Adapted for documentation rollout:
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — All `_template.md` files**: create 12 section templates with the standard skeleton and domain-specific heading notes. No real content — structure only.
+- [x] **1.1 — All `_template.md` files**: create 12 section templates with the standard skeleton and domain-specific heading notes. No real content — structure only.
   - **Files**: `docs/{product,architecture,adr,api,state,data,style,security,performance,testing,ai,operations}/_template.md`
   - **Independent verification**: `ls docs/*/_template.md | wc -l` outputs `12`; all render in Markdown preview.
 
-- [ ] **1.2 — AI context docs**: author `docs/ai/repo-map.md` and `docs/ai/assistant-context-index.md` from live repo inspection.
+- [x] **1.2 — AI context docs**: author `docs/ai/repo-map.md` and `docs/ai/assistant-context-index.md` from live repo inspection.
   - **Files**: `docs/ai/repo-map.md`, `docs/ai/assistant-context-index.md`
+  - **Key content**: entrypoints (`app/layout.tsx`, `middleware.proxy.ts`), core domains (`app/main/`, `src/swr/`, `src/context/`), critical invariants (no direct API calls from components, always use SWR hooks, never bypass `cn()`), dangerous areas (`src/firebase/firebaseAdminConfig.ts` — server-only, `app/api/auth-cookie/` — sensitive cookie handling).
   - **Independent verification**: manual QA prompt "summarize certifai-app boundaries" yields answer grounded in repo map only; no invented details.
 
-- [ ] **1.3 — Product and ADR docs**: author glossary and first decision record.
+- [x] **1.3 — Product and ADR docs**: author glossary and first decision record.
   - **Files**: `docs/product/glossary.md`, `docs/adr/0001-docs-architecture-mvp.md`
+  - **Key content**: glossary covers terms like Exam, Certification, Firm, Rate Limit, Auth Cookie, SWR hook; ADR records rationale for this docs structure.
   - **Independent verification**: glossary covers all terms used in `docs/ai/`; ADR status is `Accepted`.
 
-- [ ] **1.4 — Architecture docs**: document Next.js App Router conventions from `app/`.
+- [x] **1.4 — Architecture docs**: document Next.js App Router conventions from `app/`.
   - **Files**: `docs/architecture/nextjs-conventions.md`
-  - **Independent verification**: `grep -r "layout\|loading\|page" app/ | head -10` matches at least 3 conventions in the doc.
+  - **Key content**: public pages (`app/`), authenticated section (`app/main/` with nested `certifications/[cert_id]/exams/[exam_id]/`), Next.js API routes (`app/api/`), layout hierarchy (`app/layout.tsx` → `app/main/layout.tsx`), `loading.tsx`/`template.tsx` conventions, `page.tsx` + `client.tsx` server/client split pattern.
+  - **Independent verification**: `grep -r "layout\|loading\|page" app/ | head -10` matches at least 3 conventions documented.
 
-- [ ] **1.5 — API docs**: document `ApiResponse<T>` envelope and SWR hook patterns from `src/swr/` and `src/types/swr-data/`.
+- [x] **1.5 — API docs**: document `ApiResponse<T>` envelope and SWR hook patterns.
   - **Files**: `docs/api/api-connection.md`, `docs/api/swr-patterns.md`
-  - **Independent verification**: `grep -r "ApiResponse\|useSWR\|useAuthSWR" src/swr/ | head -20` matches all patterns documented; nothing invented.
+  - **Key content**: `ApiResponse<T>` shape from `src/types/api.ts`; `client-fetch.ts` + `fetch-config.ts` as the fetch layer; `useAuthSWR` (authenticated read), `useAuthMutation` (authenticated write), `useSWRMutation` 4-generic-param rule; all 15 domain hook files in `src/swr/`.
+  - **Independent verification**: `grep -r "ApiResponse\|useAuthSWR\|useAuthMutation" src/swr/ | head -20` matches all patterns documented.
 
-- [ ] **1.6 — State and Data docs**: document SWR-as-state and frontend data model conventions.
+- [x] **1.6 — State and Data docs**: document context providers and data model conventions.
   - **Files**: `docs/state/client-state.md`, `docs/data/data-models.md`
-  - **Independent verification**: `docs/state/client-state.md` references at least one real hook from `src/swr/`; `docs/data/data-models.md` references at least one type from `src/types/swr-data/`.
+  - **Key content**: `src/context/` providers and when to use Context vs SWR; `src/types/swr-data/` layout (one type file per hook), enum usage (`src/types/exam-status.ts`), `[key: string]: any` prohibition.
+  - **Independent verification**: `docs/state/client-state.md` references all 4 context files; `docs/data/data-models.md` lists all 16 type files in `src/types/swr-data/`.
 
-- [ ] **1.7 — Style and Security docs**: document UI conventions from `styleguide/` and auth patterns from `src/middlewares/`.
+- [x] **1.7 — Style and Security docs**: document UI conventions and auth patterns.
   - **Files**: `docs/style/conventions.md`, `docs/security/auth-patterns.md`
-  - **Independent verification**: `docs/style/conventions.md` links to `styleguide/`; `docs/security/auth-patterns.md` references `authCheck` middleware path.
+  - **Key content style**: Tailwind + shadcn/ui (`src/components/ui/`), `cn()` from `src/lib/utils.ts`, dark mode always required, custom components in `src/components/custom/`, conventions from `styleguide/app.md` and `styleguide/shared.md`.
+  - **Key content security**: `middleware.proxy.ts` (JWT validation for `/main/*`), `src/lib/auth-state-manager.ts` and `auth-state-transitions.ts` (state machine), `src/firebase/verifyTokenByAdmin.ts` (server-side), `app/api/auth-cookie/` routes (cookie lifecycle), `src/lib/input-validation.ts`.
+  - **Independent verification**: `docs/style/conventions.md` links to all 3 styleguide files; `docs/security/auth-patterns.md` references `middleware.proxy.ts` and at least 3 `src/lib/auth-*.ts` files.
 
-- [ ] **1.8 — Performance and Testing docs**: document caching strategy and test patterns from `__tests__/` and `e2e/`.
+- [x] **1.8 — Performance and Testing docs**: document caching and test patterns.
   - **Files**: `docs/performance/patterns.md`, `docs/testing/strategy.md`
-  - **Independent verification**: `docs/testing/strategy.md` cites actual test file patterns matching `grep -r "describe\|it(" __tests__/`.
+  - **Key content performance**: SWR `revalidateOnFocus`/`dedupingInterval` config, `src/lib/rate-limiting.ts`, `src/hooks/useOptimizedForm.ts` + `useOptimizedRateLimit.ts` + `useOptimizedScroll.ts`, Next.js `loading.tsx` skeleton pattern.
+  - **Key content testing**: unit tests in `__tests__/` (exam-status, exam-cert-error-contract, exam-report, demo-credentials — 6 files), Playwright E2E in `e2e/`, `__tests__/setup.ts` for test environment config.
+  - **Independent verification**: `docs/testing/strategy.md` lists all 6 `__tests__/` files by name and explains what each covers.
 
 ---
 
