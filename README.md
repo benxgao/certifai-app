@@ -28,6 +28,24 @@ npm run dev
 
 Visit `http://localhost:3000`
 
+## Documentation Map
+
+| Topic | File |
+| --- | --- |
+| Project overview and system boundaries | [`docs/ai/repo-map.md`](docs/ai/repo-map.md) |
+| AI assistant context index | [`docs/ai/assistant-context-index.md`](docs/ai/assistant-context-index.md) |
+| Next.js App Router conventions | [`docs/architecture/nextjs-conventions.md`](docs/architecture/nextjs-conventions.md) |
+| API envelope and SWR hook patterns | [`docs/api/api-connection.md`](docs/api/api-connection.md), [`docs/api/swr-patterns.md`](docs/api/swr-patterns.md) |
+| State (context providers) | [`docs/state/client-state.md`](docs/state/client-state.md) |
+| Data models and type conventions | [`docs/data/data-models.md`](docs/data/data-models.md) |
+| Styling (Tailwind, shadcn/ui) | [`docs/style/conventions.md`](docs/style/conventions.md) |
+| Auth and security patterns | [`docs/security/auth-patterns.md`](docs/security/auth-patterns.md) |
+| Performance and caching | [`docs/performance/patterns.md`](docs/performance/patterns.md) |
+| Testing strategy | [`docs/testing/strategy.md`](docs/testing/strategy.md) |
+| Domain glossary | [`docs/product/glossary.md`](docs/product/glossary.md) |
+| Architecture decisions | [`docs/adr/`](docs/adr/) |
+
+
 ## Commands
 
 ```bash

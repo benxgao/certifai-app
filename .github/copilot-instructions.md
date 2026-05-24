@@ -94,6 +94,28 @@ Each rollout file should follow `.github/templates/rollout-plan-template.md` by 
 - When a user says they like the style of an existing rollout plan, mirror that structure in future rollout docs for this repo unless they ask for a lighter format.
 - If the template evolves, update `.github/templates/rollout-plan-template.md` rather than expanding this instructions file.
 
+## Canonical Documentation References
+
+> Use these docs for grounded context before generating or reviewing code. They are the authoritative source for architecture, style, API contracts, security rules, and test strategy.
+
+| Purpose | File |
+| --- | --- |
+| Project overview and system boundaries | [`docs/ai/repo-map.md`](../docs/ai/repo-map.md) |
+| Full doc index for AI context retrieval | [`docs/ai/assistant-context-index.md`](../docs/ai/assistant-context-index.md) |
+| Next.js App Router conventions | [`docs/architecture/nextjs-conventions.md`](../docs/architecture/nextjs-conventions.md) |
+| API envelope and fetch layer | [`docs/api/api-connection.md`](../docs/api/api-connection.md) |
+| SWR hook patterns and domain hooks | [`docs/api/swr-patterns.md`](../docs/api/swr-patterns.md) |
+| Context providers and state boundaries | [`docs/state/client-state.md`](../docs/state/client-state.md) |
+| Frontend data models and type conventions | [`docs/data/data-models.md`](../docs/data/data-models.md) |
+| Tailwind, shadcn/ui, and `cn()` rules | [`docs/style/conventions.md`](../docs/style/conventions.md) |
+| Firebase Auth flow and JWT handling | [`docs/security/auth-patterns.md`](../docs/security/auth-patterns.md) |
+| SWR caching and performance patterns | [`docs/performance/patterns.md`](../docs/performance/patterns.md) |
+| Unit and E2E testing strategy | [`docs/testing/strategy.md`](../docs/testing/strategy.md) |
+| Domain glossary | [`docs/product/glossary.md`](../docs/product/glossary.md) |
+| Architecture decision records | [`docs/adr/`](../docs/adr/) |
+
+When answering questions about project structure, style, API behavior, or security, load the relevant doc above before making assumptions.
+
 ## Hard Rules
 
 - **Never** run `npm run build` or reset the database during a session

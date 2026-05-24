@@ -259,7 +259,7 @@ Adapted for documentation rollout:
 ## Progress Dashboard
 
 - [x] Phase 1 — Establish AI docs skeleton
-- [ ] Phase 2 — Wire canonical links in instructions and README
+- [x] Phase 2 — Wire canonical links in instructions and README
 - [ ] Phase 3 — Add governance and freshness checks
 
 ## Phases
@@ -357,7 +357,7 @@ Adapted for documentation rollout:
 
 ### Phase 2: Wire canonical links in instructions and README
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: instruction and onboarding layer
 
@@ -375,9 +375,9 @@ Adapted for documentation rollout:
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Add instruction references**: append deterministic doc pointers for AI assistants.
+- [x] **2.1 — Add instruction references**: append deterministic doc pointers for AI assistants.
   - **Independent verification**: manual read-through confirms no conflicting guidance with existing instruction rules.
-- [ ] **2.2 — Add README map**: provide short map without duplicating full content.
+- [x] **2.2 — Add README map**: provide short map without duplicating full content.
   - **Independent verification**: README remains concise and points to canonical docs.
 
 ---
