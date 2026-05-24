@@ -12,6 +12,7 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 
 | I want to understand... | Go to |
 | --- | --- |
+| **How to navigate docs for a specific task type** | [docs/ai/guide.md](guide.md) |
 | Overall system map, routes, invariants, dangerous areas | [docs/ai/repo-map.md](repo-map.md) |
 | Next.js App Router conventions, page/layout/loading patterns | [docs/architecture/nextjs-conventions.md](../architecture/nextjs-conventions.md) |
 | How to call the backend API, `ApiResponse<T>` shape | [docs/api/api-connection.md](../api/api-connection.md) |

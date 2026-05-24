@@ -85,6 +85,40 @@ Representative files:
 - <Phase(s) that unblock users immediately>
 - <Why these phases are safe/minimal>
 
+## Docs Impact
+
+> Complete this section at planning time — before writing any code.
+> Load [`docs/ai/guide.md`](../../docs/ai/guide.md) and [`docs/ai/assistant-context-index.md`](../../docs/ai/assistant-context-index.md) to identify relevant docs.
+
+### Docs checked during planning
+
+| Doc | Relevant finding |
+| --- | --- |
+| `docs/<section>/<file>.md` | <what you found or confirmed> |
+
+### Docs to create
+
+| File | Reason |
+| --- | --- |
+| `docs/<section>/<file>.md` | <new pattern / new domain / new ADR> |
+
+### Docs to update
+
+| File | What changes |
+| --- | --- |
+| `docs/<section>/<file>.md` | <field, section, or entry that needs updating> |
+
+### Docs to delete or archive
+
+| File | Reason |
+| --- | --- |
+| `docs/<section>/<file>.md` | <superseded by / removed feature> |
+
+### No docs affected
+
+- [ ] Confirmed: this plan introduces no new patterns, changes no existing conventions, and removes no documented features.
+  _(Check this box only if all three conditions above are true.)_
+
 ## Context Map
 
 ### Files to modify first
@@ -237,6 +271,47 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 - [ ] **N.0 — Infrastructure/contract audit**: <audit action>
   - **Independent verification**: <evidence that condition is met; else mark blocked/skip>
+
+---
+
+### Phase N: Docs Sync _(mandatory closing phase)_
+
+**Progress**: `[ ]`
+
+**Layer**: documentation layer
+
+**Goal**: Ensure all docs listed in `## Docs Impact` are created, updated, or archived so the knowledge base stays accurate after this rollout.
+
+**Pre-condition check**:
+- Review `## Docs Impact` section of this plan.
+- If the "No docs affected" checkbox was checked and verified, this phase may be skipped — mark it `[!]` with note "skipped: no docs affected".
+
+**Files** _(from Docs Impact section above)_:
+
+- `<doc to create>` — create — <reason>
+- `<doc to update>` — modify — <what changes>
+- `<doc to delete>` — delete — <reason>
+
+**Verification gate**:
+
+- Every doc listed in `## Docs Impact → Docs to create` exists.
+- Every doc listed in `## Docs Impact → Docs to update` has an updated `Last reviewed:` date.
+- `grep -r "TODO\|FIXME\|TBD" docs/ | grep -v "_template"` returns no unresolved placeholders in updated files.
+- `grep -r "Source of truth" <updated-doc-path>` confirms the field is present and correct.
+- `grep "<new-doc-filename>" docs/ai/assistant-context-index.md` returns a match for any new doc added.
+
+**Sub-subphase checklist**:
+
+- [ ] **N.1 — Create new docs**: author all files listed under "Docs to create".
+  - **Independent verification**: all new files exist; each has `Source of truth:`, `Last reviewed:`, `Owner:` fields filled.
+- [ ] **N.2 — Update existing docs**: apply all changes listed under "Docs to update".
+  - **Independent verification**: `Last reviewed:` date updated; no conflicting guidance with other docs in same section.
+- [ ] **N.3 — Archive or delete stale docs**: remove files listed under "Docs to delete".
+  - **Independent verification**: `grep -r "<deleted-filename>" docs/` returns no live links to the removed file.
+- [ ] **N.4 — Update assistant-context-index.md**: add/remove entries to match new doc set.
+  - **Independent verification**: `docs/ai/assistant-context-index.md` Quick Reference table reflects current state.
+
+---
 
 ## Dependency Graph
 

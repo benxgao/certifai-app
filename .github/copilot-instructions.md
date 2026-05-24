@@ -100,6 +100,7 @@ Each rollout file should follow `.github/templates/rollout-plan-template.md` by 
 
 | Purpose | File |
 | --- | --- |
+| Task-type navigation guide (load this first) | [`docs/ai/guide.md`](../docs/ai/guide.md) |
 | Project overview and system boundaries | [`docs/ai/repo-map.md`](../docs/ai/repo-map.md) |
 | Full doc index for AI context retrieval | [`docs/ai/assistant-context-index.md`](../docs/ai/assistant-context-index.md) |
 | Next.js App Router conventions | [`docs/architecture/nextjs-conventions.md`](../docs/architecture/nextjs-conventions.md) |

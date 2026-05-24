@@ -261,6 +261,7 @@ Adapted for documentation rollout:
 - [x] Phase 1 — Establish AI docs skeleton
 - [x] Phase 2 — Wire canonical links in instructions and README
 - [x] Phase 3 — Add governance and freshness checks
+- [x] Phase 4 — AI assistant guide, docs-aware planning template, and docs-sync enforcement
 
 ## Phases
 
@@ -407,6 +408,45 @@ Adapted for documentation rollout:
 - [x] **3.2 — Define maintenance protocol**: document monthly freshness review process.
   - **Independent verification**: protocol can be executed by any maintainer without additional tribal knowledge.
 
+---
+
+### Phase 4: AI assistant guide, docs-aware planning template, and docs-sync enforcement
+
+**Progress**: `[x]`
+
+**Layer**: assistant-tooling and planning-process layer
+
+**Goal**: Make the docs system actively useful to AI assistants at task time, and enforce docs-sync discipline in every future rollout plan.
+
+This phase operates on three levers:
+1. **`docs/ai/guide.md`** — a task-time navigation guide for AI assistants that explains _how_ to use the existing docs (not what the docs say), with query-pattern → doc mappings so an assistant can orient itself quickly for any task type.
+2. **`rollout-plan-template.md`** — extend the planning template with a mandatory `## Docs Impact` section and a `## Docs Sync` phase so every future plan explicitly lists which docs were checked, which will be created/updated/deleted, and ends with a structured docs-sync step.
+3. **`docs/ai/assistant-context-index.md`** — add `docs/ai/guide.md` to the Quick Reference table and adding a reference to the updated planning template.
+
+**Files**:
+
+- `docs/ai/guide.md` — create — task-type → docs navigation guide for AI assistants
+- `ai_oriented_kanban/templates/rollout-plan-template.md` — modify — add `## Docs Impact` section and `## Docs Sync` mandatory closing phase
+- `docs/ai/assistant-context-index.md` — modify — add `guide.md` to Quick Reference table
+
+**Verification gate** (must pass before plan is considered complete):
+
+- `docs/ai/guide.md` covers at least 8 task types with concrete doc pointers.
+- `rollout-plan-template.md` contains a `## Docs Impact` section and a `### Phase N: Docs Sync` phase template.
+- `grep "guide.md" docs/ai/assistant-context-index.md` returns a match.
+- No content from `guide.md` duplicates content already owned in `repo-map.md` or `assistant-context-index.md` — it navigates, not restates.
+
+**Sub-subphase checklist**:
+
+- [x] **4.1 — Author `docs/ai/guide.md`**: write a task-oriented navigation guide mapping task types (e.g., "adding a SWR hook", "changing auth flow", "adding a route") to the exact doc sequence an assistant should load, with per-task invariants and anti-patterns to check.
+  - **Independent verification**: manual QA — given 3 different task prompts, the guide unambiguously routes to the correct docs without the assistant needing to guess.
+- [x] **4.2 — Extend `rollout-plan-template.md`**: add `## Docs Impact` section (checked docs, planned creates/updates/deletes) and a mandatory `### Phase N: Docs Sync` closing phase template with its own verification gate and sub-subphase checklist.
+  - **Independent verification**: create a minimal stub plan using the updated template and confirm both `## Docs Impact` and the docs-sync phase are present.
+- [x] **4.3 — Update `docs/ai/assistant-context-index.md`**: add `guide.md` row to Quick Reference table under a new "AI Assistant Tooling" group.
+  - **Independent verification**: `grep "guide.md" docs/ai/assistant-context-index.md` returns a match; link is valid in editor preview.
+
+---
+
 ## Dependency Graph
 
 ```text
@@ -415,6 +455,8 @@ docs content skeleton (Phase 1)
 instruction + README linking (Phase 2)
   ↓
 governance and freshness policy (Phase 3)
+  ↓
+assistant guide + planning template enforcement (Phase 4)
 ```
 
 ## Suggested Implementation Order
@@ -422,6 +464,7 @@ governance and freshness policy (Phase 3)
 1. Phase 1.1 → Phase 1.2
 2. Phase 2.1 → Phase 2.2
 3. Phase 3.1 → Phase 3.2
+4. Phase 4.1 → Phase 4.2 → Phase 4.3
 
 If any gap is found in Phase 2/3, add it back to Phase 1 docs content rather than duplicating information in instruction/governance files.
 
