@@ -581,7 +581,11 @@ This section is intentionally opinionated and review-oriented. It records concer
 ## Open Questions
 
 1. Should `doc_archived/` be removed entirely after this migration, or retained as a historical snapshot with a single readme pointer?
+- Totally remove.
+
 2. Do we want a new “workflow docs” naming convention across domains (`*-workflow.md`) for future consistency?
+- Create docs/workflow to centralise all business workflow related domian knowledge 
+
 
 ## Recommendation
 
