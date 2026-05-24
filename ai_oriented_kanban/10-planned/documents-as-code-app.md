@@ -159,21 +159,21 @@ docs/
 
 ### Dependencies / related patterns
 
-| Source path | Feeds into |
-| --- | --- |
-| `styleguide/app.md`, `styleguide/shared.md`, `styleguide/marketing.md` | `docs/style/conventions.md` |
-| `src/types/api.ts` | `docs/api/api-connection.md` |
-| `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts`, `src/lib/api-utils.ts` | `docs/api/api-connection.md` |
-| `src/swr/useAuthSWR.ts`, `src/swr/useAuthMutation.ts`, `src/swr/utils.ts` | `docs/api/swr-patterns.md` |
-| `src/swr/certifications.ts`, `exams.ts`, `questions.ts`, `profile.ts`, `firms.ts`, `examReport.ts`, `examInfo.ts`, `certSummary.ts`, `createExam.ts`, `deleteAccount.ts`, `rateLimitInfo.ts`, `useAllData.ts`, `useExamGeneratingProgress.ts`, `useExamLiveStatus.ts`, `demoCredentials.ts` | `docs/api/swr-patterns.md` |
-| `src/types/swr-data/` (16 type files), `src/types/exam-status.ts` | `docs/data/data-models.md` |
-| `src/context/FirebaseAuthContext.tsx`, `UserProfileContext.tsx`, `UserCertificationsContext.tsx`, `ExamStatsContext.tsx` | `docs/state/client-state.md` |
-| `middleware.proxy.ts`, `src/lib/auth-*.ts`, `src/lib/jwt-utils.ts`, `src/firebase/verifyTokenByAdmin.ts` | `docs/security/auth-patterns.md` |
-| `app/api/auth/`, `app/api/auth-cookie/` | `docs/security/auth-patterns.md` |
-| `app/` (layout.tsx, loading.tsx, template.tsx, page routing) | `docs/architecture/nextjs-conventions.md` |
-| `app/main/` (certifications, exams, billing, profile, stripe) | `docs/architecture/nextjs-conventions.md` |
-| `src/lib/rate-limiting.ts`, `src/hooks/useOptimizedForm.ts`, `useOptimizedRateLimit.ts`, `useOptimizedScroll.ts` | `docs/performance/patterns.md` |
-| `__tests__/` (6 unit test files), `e2e/` (Playwright), `__tests__/setup.ts` | `docs/testing/strategy.md` |
+| Source path                                                                                                                                                                                                                                                                                 | Feeds into                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `styleguide/app.md`, `styleguide/shared.md`, `styleguide/marketing.md`                                                                                                                                                                                                                      | `docs/style/conventions.md`               |
+| `src/types/api.ts`                                                                                                                                                                                                                                                                          | `docs/api/api-connection.md`              |
+| `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts`, `src/lib/api-utils.ts`                                                                                                                                                                                                                | `docs/api/api-connection.md`              |
+| `src/swr/useAuthSWR.ts`, `src/swr/useAuthMutation.ts`, `src/swr/utils.ts`                                                                                                                                                                                                                   | `docs/api/swr-patterns.md`                |
+| `src/swr/certifications.ts`, `exams.ts`, `questions.ts`, `profile.ts`, `firms.ts`, `examReport.ts`, `examInfo.ts`, `certSummary.ts`, `createExam.ts`, `deleteAccount.ts`, `rateLimitInfo.ts`, `useAllData.ts`, `useExamGeneratingProgress.ts`, `useExamLiveStatus.ts`, `demoCredentials.ts` | `docs/api/swr-patterns.md`                |
+| `src/types/swr-data/` (16 type files), `src/types/exam-status.ts`                                                                                                                                                                                                                           | `docs/data/data-models.md`                |
+| `src/context/FirebaseAuthContext.tsx`, `UserProfileContext.tsx`, `UserCertificationsContext.tsx`, `ExamStatsContext.tsx`                                                                                                                                                                    | `docs/state/client-state.md`              |
+| `middleware.proxy.ts`, `src/lib/auth-*.ts`, `src/lib/jwt-utils.ts`, `src/firebase/verifyTokenByAdmin.ts`                                                                                                                                                                                    | `docs/security/auth-patterns.md`          |
+| `app/api/auth/`, `app/api/auth-cookie/`                                                                                                                                                                                                                                                     | `docs/security/auth-patterns.md`          |
+| `app/` (layout.tsx, loading.tsx, template.tsx, page routing)                                                                                                                                                                                                                                | `docs/architecture/nextjs-conventions.md` |
+| `app/main/` (certifications, exams, billing, profile, stripe)                                                                                                                                                                                                                               | `docs/architecture/nextjs-conventions.md` |
+| `src/lib/rate-limiting.ts`, `src/hooks/useOptimizedForm.ts`, `useOptimizedRateLimit.ts`, `useOptimizedScroll.ts`                                                                                                                                                                            | `docs/performance/patterns.md`            |
+| `__tests__/` (6 unit test files), `e2e/` (Playwright), `__tests__/setup.ts`                                                                                                                                                                                                                 | `docs/testing/strategy.md`                |
 
 ### Risks
 
@@ -260,7 +260,7 @@ Adapted for documentation rollout:
 
 - [x] Phase 1 — Establish AI docs skeleton
 - [x] Phase 2 — Wire canonical links in instructions and README
-- [ ] Phase 3 — Add governance and freshness checks
+- [x] Phase 3 — Add governance and freshness checks
 
 ## Phases
 
@@ -287,21 +287,21 @@ Adapted for documentation rollout:
 
 **Files** — MVP domain docs (commits 2–8 of Phase 1, one commit per sub-subphase 1.2–1.8):
 
-| Sub-subphase | File                                      | Source of truth                                                        |
-| ------------ | ----------------------------------------- | ---------------------------------------------------------------------- |
-| 1.2          | `docs/ai/repo-map.md`                     | `app/`, `middleware.proxy.ts`, `src/swr/`, `src/context/`              |
-| 1.2          | `docs/ai/assistant-context-index.md`      | All `docs/` sections (generated index)                                 |
-| 1.3          | `docs/product/glossary.md`                | Domain terms from `src/types/`, `app/main/`, `src/swr/`                |
-| 1.3          | `docs/adr/0001-docs-architecture-mvp.md`  | This rollout plan                                                      |
-| 1.4          | `docs/architecture/nextjs-conventions.md` | `app/layout.tsx`, `app/main/layout.tsx`, `app/main/certifications/`    |
-| 1.5          | `docs/api/api-connection.md`              | `src/types/api.ts`, `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts` |
-| 1.5          | `docs/api/swr-patterns.md`                | `src/swr/useAuthSWR.ts`, `src/swr/useAuthMutation.ts`, `src/swr/utils.ts` |
+| Sub-subphase | File                                      | Source of truth                                                                                                          |
+| ------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| 1.2          | `docs/ai/repo-map.md`                     | `app/`, `middleware.proxy.ts`, `src/swr/`, `src/context/`                                                                |
+| 1.2          | `docs/ai/assistant-context-index.md`      | All `docs/` sections (generated index)                                                                                   |
+| 1.3          | `docs/product/glossary.md`                | Domain terms from `src/types/`, `app/main/`, `src/swr/`                                                                  |
+| 1.3          | `docs/adr/0001-docs-architecture-mvp.md`  | This rollout plan                                                                                                        |
+| 1.4          | `docs/architecture/nextjs-conventions.md` | `app/layout.tsx`, `app/main/layout.tsx`, `app/main/certifications/`                                                      |
+| 1.5          | `docs/api/api-connection.md`              | `src/types/api.ts`, `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts`                                                 |
+| 1.5          | `docs/api/swr-patterns.md`                | `src/swr/useAuthSWR.ts`, `src/swr/useAuthMutation.ts`, `src/swr/utils.ts`                                                |
 | 1.6          | `docs/state/client-state.md`              | `src/context/FirebaseAuthContext.tsx`, `UserProfileContext.tsx`, `UserCertificationsContext.tsx`, `ExamStatsContext.tsx` |
-| 1.6          | `docs/data/data-models.md`                | `src/types/swr-data/` (16 files), `src/types/exam-status.ts`           |
-| 1.7          | `docs/style/conventions.md`               | `styleguide/app.md`, `styleguide/shared.md`, `src/components/ui/`      |
-| 1.7          | `docs/security/auth-patterns.md`          | `middleware.proxy.ts`, `src/lib/auth-state-manager.ts`, `src/lib/jwt-utils.ts`, `app/api/auth-cookie/` |
-| 1.8          | `docs/performance/patterns.md`            | `src/lib/rate-limiting.ts`, `src/hooks/useOptimized*.ts`, SWR config   |
-| 1.8          | `docs/testing/strategy.md`                | `__tests__/` (6 files), `e2e/`, `__tests__/setup.ts`                  |
+| 1.6          | `docs/data/data-models.md`                | `src/types/swr-data/` (16 files), `src/types/exam-status.ts`                                                             |
+| 1.7          | `docs/style/conventions.md`               | `styleguide/app.md`, `styleguide/shared.md`, `src/components/ui/`                                                        |
+| 1.7          | `docs/security/auth-patterns.md`          | `middleware.proxy.ts`, `src/lib/auth-state-manager.ts`, `src/lib/jwt-utils.ts`, `app/api/auth-cookie/`                   |
+| 1.8          | `docs/performance/patterns.md`            | `src/lib/rate-limiting.ts`, `src/hooks/useOptimized*.ts`, SWR config                                                     |
+| 1.8          | `docs/testing/strategy.md`                | `__tests__/` (6 files), `e2e/`, `__tests__/setup.ts`                                                                     |
 
 **Verification gate** (must pass before Phase 2 starts):
 
@@ -384,7 +384,7 @@ Adapted for documentation rollout:
 
 ### Phase 3: Add governance and freshness checks
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: process/governance layer
 
@@ -402,9 +402,9 @@ Adapted for documentation rollout:
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Introduce PR checklist**: codify when docs updates are required.
+- [x] **3.1 — Introduce PR checklist**: codify when docs updates are required.
   - **Independent verification**: open a PR draft and confirm checklist appears.
-- [ ] **3.2 — Define maintenance protocol**: document monthly freshness review process.
+- [x] **3.2 — Define maintenance protocol**: document monthly freshness review process.
   - **Independent verification**: protocol can be executed by any maintainer without additional tribal knowledge.
 
 ## Dependency Graph
