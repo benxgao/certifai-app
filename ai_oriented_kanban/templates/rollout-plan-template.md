@@ -12,6 +12,7 @@ Use this template when a user asks for a rollout plan, phased plan, migration pl
 - Identify a minimum-viable hotfix path (usually first 1–2 phases) before progressive hardening.
 - If a phase is too large for one safe commit, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
 - Prefer wording that makes the plan easy to execute incrementally in separate commits.
+- Always include a mandatory final phase for AI-ready docs reflection and next-plan handoff.
 
 ## Progress markers
 
@@ -192,6 +193,8 @@ If user asks for minimal change first, move architecture refactors and retry red
 - [ ] Phase 1 — <name>
 - [ ] Phase 2 — <name>
 - [ ] Phase 3 — <name>
+- [ ] Phase N — Docs Sync
+- [ ] Phase N+1 — AI-ready docs reflection and next-plan handoff
 
 ## Phases
 
@@ -313,6 +316,43 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
+### Phase N+1: AI-ready docs reflection and next-plan handoff _(mandatory final phase)_
+
+**Progress**: `[ ]`
+
+**Layer**: planning/documentation improvement layer
+
+**Goal**: Capture what was learned while executing this rollout (concerns, rework causes, confirmed improvements, unresolved questions) and convert them into a concrete next rollout plan file.
+
+**Pre-condition check**:
+- Review the plan’s improvement/reflection notes (for example: "what can be improved").
+- Review `## Open Questions` and mark which were resolved vs still pending.
+
+**Files**:
+
+- `<next-rollout-path>.md` — create/modify — phased plan for confirmed follow-up improvements
+- `<current-rollout-path>.md` — modify — add a short handoff note linking to the next rollout
+
+**Verification gate**:
+
+- The next rollout file exists and contains a phased plan (scope, phases, verification gates, rollback).
+- Confirmed actions from the reflection section are explicitly listed in the next rollout scope.
+- Unresolved questions are carried over with clear decision owners or decision criteria.
+- Current rollout contains a handoff note linking to the next rollout plan file.
+
+**Sub-subphase checklist**:
+
+- [ ] **N+1.1 — Summarize confirmed improvements**: extract approved actions from reflection notes.
+  - **Independent verification**: every approved action appears in next rollout plan scope.
+- [ ] **N+1.2 — Convert unresolved questions to decisions**: add owner/criteria/timeline for each pending question.
+  - **Independent verification**: no open question is left without a decision path.
+- [ ] **N+1.3 — Author next rollout plan**: write a complete phased plan in the designated next-plan file.
+  - **Independent verification**: next plan includes phases, verification gates, and rollback plan.
+- [ ] **N+1.4 — Record handoff in current plan**: add session note linking to next rollout path.
+  - **Independent verification**: link/path is present and readable.
+
+---
+
 ## Dependency Graph
 
 ```text
@@ -399,4 +439,5 @@ At the end of each working session:
 - Keep each phase to one dependency layer unless explicitly marked as contract-alignment phase.
 - Use the template as the default structure, but trim sections that truly do not apply.
 - If the user asks for a lighter or shorter plan, compress the structure rather than abandoning it entirely.
+- Docs Sync is mandatory when docs are affected, and the AI-ready docs reflection/handoff phase is always mandatory as the final phase.
 ```
