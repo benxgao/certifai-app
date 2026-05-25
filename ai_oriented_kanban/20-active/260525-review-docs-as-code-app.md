@@ -203,7 +203,7 @@ For docs migration, this maps to:
 
 - [x] Phase 1 — Content decomposition design (source mapping)
 - [x] Phase 2 — Security workflow docs migration
-- [ ] Phase 3 — API marketing workflow migration
+- [x] Phase 3 — API marketing workflow migration
 - [ ] Phase 4 — AI navigation and index alignment
 - [ ] Phase 5 — Archive retirement and consistency verification
 - [ ] Phase 6 — Docs Sync
@@ -397,7 +397,7 @@ When a parent section is mapped to a destination file, all child headings under 
 
 ### Phase 3: API marketing workflow migration
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: api docs layer
 
@@ -410,16 +410,16 @@ When a parent section is mapped to a destination file, all child headings under 
 
 **Verification gate** (must pass before Phase 4 starts):
 
-- `marketing-subscription-workflow.md` metadata and structure are template-compliant.
-- `api-connection.md` references when to use the marketing workflow doc.
-- Critical endpoint/file references from archived marketing doc are preserved or intentionally pruned.
+- `marketing-subscription-workflow.md` metadata and structure are template-compliant. ✅
+- `api-connection.md` references when to use the marketing workflow doc. ✅
+- Critical endpoint/file references from archived marketing doc are preserved or intentionally pruned. ✅
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Create marketing workflow doc**: port flow steps, safety mechanisms, env assumptions, and troubleshooting.
-  - **Independent verification**: source mapping shows no lost critical sections.
-- [ ] **3.2 — Update API connection cross-linking**: add related-doc and usage boundary note.
-  - **Independent verification**: doc-level link check succeeds.
+- [x] **3.1 — Create marketing workflow doc**: port flow steps, safety mechanisms, env assumptions, and troubleshooting.
+  - **Independent verification**: `docs/api/marketing-subscription-workflow.md` created with Step 7–12 coverage, non-blocking design notes, environment config, and error-handling section.
+- [x] **3.2 — Update API connection cross-linking**: add related-doc and usage boundary note.
+  - **Independent verification**: `docs/api/api-connection.md` includes direct reference and related-doc link to `marketing-subscription-workflow.md`.
 
 ---
 
@@ -747,4 +747,15 @@ Execute the default order with **Phase 1 + Phase 2 as immediate priority**. That
   - updated `docs/security/auth-patterns.md` delegation links to `signin-workflow.md` and `signup-workflow.md`
   - `grep "signin-workflow\|signup-workflow" docs/security/auth-patterns.md` returned matches
 - Next: Phase 3 — API marketing workflow migration (`docs/api/marketing-subscription-workflow.md`, update `docs/api/api-connection.md`)
+- Blockers: none
+
+### Session Note — 2026-05-25 01:05 UTC
+
+- Completed: Phase 3 (3.1 + 3.2)
+- Verified by:
+  - created `docs/api/marketing-subscription-workflow.md` with `Source of truth`, `Last reviewed`, `Owner`
+  - confirmed Step 7–12 workflow, non-blocking behavior, environment config, and error handling were documented
+  - updated `docs/api/api-connection.md` with direct usage note and related-doc link to `marketing-subscription-workflow.md`
+  - `grep "marketing-subscription-workflow" docs/api/api-connection.md` returned matches
+- Next: Phase 4 — AI navigation and index alignment (`docs/ai/assistant-context-index.md`, `docs/ai/guide.md`, optional `docs/ai/repo-map.md`)
 - Blockers: none

@@ -1,12 +1,14 @@
 # API Connection
 
 > **Source of truth**: `src/types/api.ts`, `src/lib/client-fetch.ts`, `src/lib/fetch-config.ts`, `src/lib/api-utils.ts`
-> **Last reviewed**: 2026-05-24
+> **Last reviewed**: 2026-05-25
 > **Owner**: engineering
 
 ## Purpose
 
 Documents how `certifai-app` connects to the `certifai-api` backend: the `ApiResponse<T>` envelope, fetch utilities, error types, and the cookie-based auth header flow.
+
+For marketing signup-subscription lifecycle details, use [`marketing-subscription-workflow.md`](marketing-subscription-workflow.md).
 
 ## Key Concepts
 
@@ -108,6 +110,7 @@ isCanonicalApiErrorResponse(value: unknown): value is CanonicalApiErrorResponse
 
 ## Related Docs
 
+- [Marketing Subscription Workflow](marketing-subscription-workflow.md)
 - [SWR Patterns](swr-patterns.md)
 - [Data Models](../data/data-models.md)
 - [Security: Auth Patterns](../security/auth-patterns.md)
