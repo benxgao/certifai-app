@@ -205,9 +205,9 @@ For docs migration, this maps to:
 - [x] Phase 2 — Security workflow docs migration
 - [x] Phase 3 — API marketing workflow migration
 - [x] Phase 4 — AI navigation and index alignment
-- [ ] Phase 5 — Archive retirement and consistency verification
-- [ ] Phase 6 — Docs Sync
-- [ ] Phase 7 — AI-ready docs improvement follow-up rollout (mandatory final phase)
+- [x] Phase 5 — Archive retirement and consistency verification
+- [x] Phase 6 — Docs Sync
+- [x] Phase 7 — AI-ready docs improvement follow-up rollout (mandatory final phase)
 
 ## Phases
 
@@ -456,7 +456,7 @@ When a parent section is mapped to a destination file, all child headings under 
 
 ### Phase 5: Archive retirement and consistency verification
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: archive cleanup layer
 
@@ -480,16 +480,16 @@ When a parent section is mapped to a destination file, all child headings under 
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Archive source removal audit**: verify all references are switched.
-  - **Independent verification**: no dangling links to retired files.
-- [ ] **5.2 — Retire archived files**: delete or archive with explicit superseded note.
-  - **Independent verification**: only canonical files remain as active source.
+- [x] **5.1 — Archive source removal audit**: verify all references are switched.
+  - **Independent verification**: `grep -r "doc_archived/signin.md\|doc_archived/signup.md\|doc_archived/marketing.md" docs/` returned no matches. ✅
+- [x] **5.2 — Retire archived files**: delete or archive with explicit superseded note.
+  - **Independent verification**: `doc_archived/signin.md`, `doc_archived/signup.md`, `doc_archived/marketing.md` deleted; `doc_archived/` directory is now empty. ✅
 
 ---
 
 ### Phase 6: Docs Sync
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation layer
 
@@ -523,20 +523,20 @@ When a parent section is mapped to a destination file, all child headings under 
 
 **Sub-subphase checklist**:
 
-- [ ] **6.1 — Create new docs**: author files listed under “Docs to create”.
+- [x] **6.1 — Create new docs**: author files listed under “Docs to create”.
   - **Independent verification**: all new files exist with metadata fields filled.
-- [ ] **6.2 — Update existing docs**: apply all listed updates.
+- [x] **6.2 — Update existing docs**: apply all listed updates.
   - **Independent verification**: `Last reviewed` updated and no conflicting guidance.
-- [ ] **6.3 — Archive stale docs**: remove/retire `doc_archived` sources.
+- [x] **6.3 — Archive stale docs**: remove/retire `doc_archived` sources.
   - **Independent verification**: no live references to retired files.
-- [ ] **6.4 — Index sync**: ensure assistant index reflects current set.
+- [x] **6.4 — Index sync**: ensure assistant index reflects current set.
   - **Independent verification**: quick reference includes all new workflow docs.
 
 ---
 
 ### Phase 7: AI-ready docs improvement follow-up rollout _(mandatory final phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: planning/documentation improvement layer
 
@@ -563,13 +563,13 @@ When a parent section is mapped to a destination file, all child headings under 
 
 **Sub-subphase checklist**:
 
-- [ ] **7.1 — Select confirmed improvements**: mark which backlog items are approved for execution next.
+- [x] **7.1 — Select confirmed improvements**: mark which backlog items are approved for execution next.
   - **Independent verification**: approved items are explicitly listed in the next rollout file.
-- [ ] **7.2 — Carry open questions with decision paths**: convert unresolved questions into explicit choose/decide actions.
+- [x] **7.2 — Carry open questions with decision paths**: convert unresolved questions into explicit choose/decide actions.
   - **Independent verification**: each open question has a decision owner and trigger criteria.
-- [ ] **7.3 — Author next rollout plan**: write the phased implementation plan in `260525-improve-ai-raedy-docs.md`.
+- [x] **7.3 — Author next rollout plan**: write the phased implementation plan in `260525-improve-ai-raedy-docs.md`.
   - **Independent verification**: plan has phases, verification gates, rollback, and recommendation.
-- [ ] **7.4 — Record handoff link**: update this file with a short “next-plan created” session note.
+- [x] **7.4 — Record handoff link**: update this file with a short “next-plan created” session note.
   - **Independent verification**: link/path to next rollout exists in session note.
 
 ---
@@ -769,4 +769,34 @@ Execute the default order with **Phase 1 + Phase 2 as immediate priority**. That
   - validated no repo-map update needed because discoverability is already explicit through index + guide
   - `grep "signin-workflow\|signup-workflow\|marketing-subscription-workflow" docs/ai/assistant-context-index.md` returned matches
 - Next: Phase 5 — Archive retirement and consistency verification
+- Blockers: none
+
+### Session Note — 2026-05-25 02:00 UTC
+
+- Completed: Phase 6 (6.1 + 6.2 + 6.3 + 6.4)
+- Verified by:
+  - metadata checks confirmed `Source of truth`, `Last reviewed`, `Owner` in:
+    - `docs/security/signin-workflow.md`
+    - `docs/security/signup-workflow.md`
+    - `docs/api/marketing-subscription-workflow.md`
+    - `docs/security/auth-patterns.md`
+    - `docs/api/api-connection.md`
+    - `docs/ai/assistant-context-index.md`
+    - `docs/ai/guide.md`
+  - placeholder scan across Phase 6 files: no `TODO|FIXME|TBD` matches
+  - archive checks confirmed retired files absent:
+    - `doc_archived/signin.md`
+    - `doc_archived/signup.md`
+    - `doc_archived/marketing.md`
+- Next: Phase 7 — AI-ready docs improvement follow-up rollout
+- Blockers: none
+
+### Session Note — 2026-05-25 02:15 UTC
+
+- Completed: Phase 7 (7.1 + 7.2 + 7.3 + 7.4)
+- Verified by:
+  - created follow-up rollout plan: `ai_oriented_kanban/20-active/260525-improve-ai-raedy-docs.md`
+  - confirmed plan includes approved backlog actions, open questions with decision paths, owners, verification gates, rollback plan, and recommendation
+  - handoff link recorded in this session note
+- Next: Rollout complete; execute items from `260525-improve-ai-raedy-docs.md` in follow-up implementation work
 - Blockers: none
