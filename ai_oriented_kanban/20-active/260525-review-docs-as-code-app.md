@@ -204,7 +204,7 @@ For docs migration, this maps to:
 - [x] Phase 1 — Content decomposition design (source mapping)
 - [x] Phase 2 — Security workflow docs migration
 - [x] Phase 3 — API marketing workflow migration
-- [ ] Phase 4 — AI navigation and index alignment
+- [x] Phase 4 — AI navigation and index alignment
 - [ ] Phase 5 — Archive retirement and consistency verification
 - [ ] Phase 6 — Docs Sync
 - [ ] Phase 7 — AI-ready docs improvement follow-up rollout (mandatory final phase)
@@ -425,7 +425,7 @@ When a parent section is mapped to a destination file, all child headings under 
 
 ### Phase 4: AI navigation and index alignment
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: ai docs navigation layer
 
@@ -439,18 +439,18 @@ When a parent section is mapped to a destination file, all child headings under 
 
 **Verification gate** (must pass before Phase 5 starts):
 
-- New doc filenames appear in `assistant-context-index.md` quick-reference table.
-- `guide.md` task-type guidance points to new docs where appropriate.
-- No broken relative links in modified AI docs.
+- New doc filenames appear in `assistant-context-index.md` quick-reference table. ✅
+- `guide.md` task-type guidance points to new docs where appropriate. ✅
+- No broken relative links in modified AI docs. ✅
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Update assistant index**: register all new canonical docs.
-  - **Independent verification**: `grep "signin-workflow\|signup-workflow\|marketing-subscription-workflow" docs/ai/assistant-context-index.md` returns matches.
-- [ ] **4.2 — Update task routing guide**: add retrieval guidance for deep auth/signup/marketing docs.
-  - **Independent verification**: guide section references new docs with correct paths.
-- [ ] **4.3 — Optional repo-map note**: add only if needed for discoverability.
-  - **Independent verification**: either merged with clear rationale or skipped as unnecessary.
+- [x] **4.1 — Update assistant index**: register all new canonical docs.
+  - **Independent verification**: `docs/ai/assistant-context-index.md` includes entries for `signin-workflow`, `signup-workflow`, and `marketing-subscription-workflow`.
+- [x] **4.2 — Update task routing guide**: add retrieval guidance for deep auth/signup/marketing docs.
+  - **Independent verification**: `docs/ai/guide.md` includes new routing guidance for signup verification and marketing subscription debugging.
+- [x] **4.3 — Optional repo-map note**: add only if needed for discoverability.
+  - **Independent verification**: skipped as unnecessary — `assistant-context-index.md` + `guide.md` provide direct retrieval paths, so `repo-map.md` changes are not required for discoverability.
 
 ---
 
@@ -758,4 +758,15 @@ Execute the default order with **Phase 1 + Phase 2 as immediate priority**. That
   - updated `docs/api/api-connection.md` with direct usage note and related-doc link to `marketing-subscription-workflow.md`
   - `grep "marketing-subscription-workflow" docs/api/api-connection.md` returned matches
 - Next: Phase 4 — AI navigation and index alignment (`docs/ai/assistant-context-index.md`, `docs/ai/guide.md`, optional `docs/ai/repo-map.md`)
+- Blockers: none
+
+### Session Note — 2026-05-25 01:25 UTC
+
+- Completed: Phase 4 (4.1 + 4.2 + 4.3)
+- Verified by:
+  - updated `docs/ai/assistant-context-index.md` quick reference entries for `signin-workflow`, `signup-workflow`, and `marketing-subscription-workflow`
+  - updated `docs/ai/guide.md` auth-flow routing plus a dedicated task type for signup verification/marketing subscription debugging
+  - validated no repo-map update needed because discoverability is already explicit through index + guide
+  - `grep "signin-workflow\|signup-workflow\|marketing-subscription-workflow" docs/ai/assistant-context-index.md` returned matches
+- Next: Phase 5 — Archive retirement and consistency verification
 - Blockers: none

@@ -1,7 +1,7 @@
 # Assistant Context Index
 
 > **Source of truth**: All `docs/` sections
-> **Last reviewed**: 2026-05-24
+> **Last reviewed**: 2026-05-25
 > **Owner**: engineering
 
 ## Purpose
@@ -21,6 +21,9 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | Type files, interface conventions, enums, `any` prohibition | [docs/data/data-models.md](../data/data-models.md) |
 | Tailwind, shadcn/ui, `cn()`, dark mode, component location rules | [docs/style/conventions.md](../style/conventions.md) |
 | Firebase Auth, JWT, protected routes, middleware | [docs/security/auth-patterns.md](../security/auth-patterns.md) |
+| Detailed signin lifecycle, logout behavior, cookie troubleshooting | [docs/security/signin-workflow.md](../security/signin-workflow.md) |
+| Detailed signup + verification lifecycle, UAT differences | [docs/security/signup-workflow.md](../security/signup-workflow.md) |
+| Marketing signup-subscription pipeline (MailerLite/AWS Lambda) | [docs/api/marketing-subscription-workflow.md](../api/marketing-subscription-workflow.md) |
 | SWR caching options, rate limiting, optimization hooks | [docs/performance/patterns.md](../performance/patterns.md) |
 | Unit test patterns, E2E fixtures, coverage targets | [docs/testing/strategy.md](../testing/strategy.md) |
 | Shared product terms (Exam, Certification, Firm, etc.) | [docs/product/glossary.md](../product/glossary.md) |

@@ -100,6 +100,8 @@ Start with [`docs/ai/repo-map.md`](repo-map.md) if you are unfamiliar with the c
 
 1. [`docs/security/auth-patterns.md`](../security/auth-patterns.md) — `middleware.proxy.ts`, auth state machine, cookie lifecycle, Firebase Admin usage
 2. [`docs/state/client-state.md`](../state/client-state.md) — `FirebaseAuthContext`, auth state transitions
+3. [`docs/security/signin-workflow.md`](../security/signin-workflow.md) — signin/logout sequence details, cookie lifecycle troubleshooting
+4. [`docs/security/signup-workflow.md`](../security/signup-workflow.md) — signup verification sequence, timeout behavior, UAT differences
 
 **Invariants**:
 
@@ -115,6 +117,29 @@ Start with [`docs/ai/repo-map.md`](repo-map.md) if you are unfamiliar with the c
 - Storing tokens in `localStorage` — cookies only.
 
 **Docs to update after implementation**: `docs/security/auth-patterns.md`; `docs/state/client-state.md` if context providers change.
+
+---
+
+### 11. Debugging Signup Verification or Marketing Subscription Flow
+
+**Primary docs to load**:
+
+1. [`docs/security/signup-workflow.md`](../security/signup-workflow.md) — signup + verification operational flow
+2. [`docs/security/signin-workflow.md`](../security/signin-workflow.md) — post-verification signin transition behavior
+3. [`docs/api/marketing-subscription-workflow.md`](../api/marketing-subscription-workflow.md) — Step 7–12 marketing pipeline (route → Lambda → MailerLite)
+4. [`docs/api/api-connection.md`](../api/api-connection.md) — API envelope and request/response conventions
+
+**Invariants**:
+
+- Marketing subscription failure must remain non-blocking to signup completion.
+- Verification-triggered marketing calls should be routed through `app/api/marketing/subscribe` and server integration helpers.
+
+**Anti-patterns**:
+
+- Treating marketing failures as auth-blocking failures.
+- Duplicating signup lifecycle details in API docs instead of linking to security workflow docs.
+
+**Docs to update after implementation**: `docs/security/signup-workflow.md`, `docs/api/marketing-subscription-workflow.md`, and `docs/api/api-connection.md` when contracts change.
 
 ---
 
