@@ -1,12 +1,17 @@
 # Auth Patterns
 
 > **Source of truth**: `middleware.proxy.ts`, `src/lib/auth-state-manager.ts`, `src/lib/auth-state-types.ts`, `src/lib/jwt-utils.ts`, `src/firebase/verifyTokenByAdmin.ts`, `app/api/auth-cookie/`
-> **Last reviewed**: 2026-05-24
+> **Last reviewed**: 2026-05-25
 > **Owner**: engineering
 
 ## Purpose
 
-Documents the Firebase Authentication flow, JWT cookie lifecycle, protected route middleware, auth state machine, and security rules for `certifai-app`.
+Documents the invariant security/auth rules for `certifai-app`: middleware protection boundaries, token handling guarantees, state-machine contracts, and non-negotiable safety constraints.
+
+Detailed step-by-step operational sequences have been delegated to workflow docs:
+
+- [`signin-workflow.md`](signin-workflow.md)
+- [`signup-workflow.md`](signup-workflow.md)
 
 ## Key Concepts
 
@@ -40,6 +45,11 @@ On sign-out:
   → Client localStorage/sessionStorage cleared
   → Firebase client signed out
 ```
+
+> For full procedural timelines, retries, troubleshooting trees, and test checklists, use:
+>
+> - [`signin-workflow.md`](signin-workflow.md)
+> - [`signup-workflow.md`](signup-workflow.md)
 
 ## Protected Routes
 
@@ -115,6 +125,8 @@ All user inputs must be validated with `src/lib/input-validation.ts` before proc
 
 ## Related Docs
 
+- [Signin Workflow](signin-workflow.md)
+- [Signup Workflow](signup-workflow.md)
 - [Architecture: Next.js Conventions](../architecture/nextjs-conventions.md)
 - [State: Client State](../state/client-state.md)
 - [API Connection](../api/api-connection.md)
