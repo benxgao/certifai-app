@@ -1,7 +1,7 @@
 # Auth Patterns
 
 > **Source of truth**: `middleware.proxy.ts`, `src/lib/auth-state-manager.ts`, `src/lib/auth-state-types.ts`, `src/lib/jwt-utils.ts`, `src/firebase/verifyTokenByAdmin.ts`, `app/api/auth-cookie/`
-> **Last reviewed**: 2026-05-25
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
@@ -10,8 +10,8 @@ Documents the invariant security/auth rules for `certifai-app`: middleware prote
 
 Detailed step-by-step operational sequences have been delegated to workflow docs:
 
-- [`signin-workflow.md`](signin-workflow.md)
-- [`signup-workflow.md`](signup-workflow.md)
+- [`../workflow/signin-workflow.md`](../workflow/signin-workflow.md)
+- [`../workflow/signup-workflow.md`](../workflow/signup-workflow.md)
 
 ## Key Concepts
 
@@ -48,8 +48,8 @@ On sign-out:
 
 > For full procedural timelines, retries, troubleshooting trees, and test checklists, use:
 >
-> - [`signin-workflow.md`](signin-workflow.md)
-> - [`signup-workflow.md`](signup-workflow.md)
+> - [`../workflow/signin-workflow.md`](../workflow/signin-workflow.md)
+> - [`../workflow/signup-workflow.md`](../workflow/signup-workflow.md)
 
 ## Protected Routes
 
@@ -125,8 +125,8 @@ All user inputs must be validated with `src/lib/input-validation.ts` before proc
 
 ## Related Docs
 
-- [Signin Workflow](signin-workflow.md)
-- [Signup Workflow](signup-workflow.md)
+- [Signin Workflow](../workflow/signin-workflow.md)
+- [Signup Workflow](../workflow/signup-workflow.md)
 - [Architecture: Next.js Conventions](../architecture/nextjs-conventions.md)
 - [State: Client State](../state/client-state.md)
 - [API Connection](../api/api-connection.md)

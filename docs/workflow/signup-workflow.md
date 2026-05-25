@@ -1,12 +1,12 @@
 # Signup Workflow
 
 > **Source of truth**: `app/signup/page.tsx`, `src/components/auth/EmailActionHandler.tsx`, `app/api/auth/register/route.ts`, `src/lib/auth-verification-state.ts`
-> **Last reviewed**: 2026-05-25
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
 
-Documents the operational signup lifecycle, email verification handling, environment differences (UAT vs production), and troubleshooting. This is the procedural companion to [`auth-patterns.md`](auth-patterns.md), which retains invariant/security rules.
+Documents the operational signup lifecycle, email verification handling, environment differences (UAT vs production), and troubleshooting. This is the procedural companion to [`auth-patterns.md`](../security/auth-patterns.md), which retains invariant/security rules.
 
 ## Key Concepts
 
@@ -47,21 +47,21 @@ graph TD
 
 ## Timeout Architecture
 
-| Stage                            | Timeout | Mechanism       | Behavior on expiry                     |
+| Stage | Timeout | Mechanism | Behavior on expiry |
 | -------------------------------- | ------- | --------------- | -------------------------------------- |
-| Entire signup interaction        | 60s     | safety timeout  | clear loading + show error             |
-| Frontend to `/api/auth/register` | 15s     | AbortController | continue flow with warning             |
-| Route to backend registration    | 12s     | AbortController | surface route error                    |
-| Verification email send          | 20s     | Promise race    | show verification state + retry option |
-| UAT claims propagation           | 5s      | fixed wait      | then redirect                          |
+| Entire signup interaction | 60s | safety timeout | clear loading + show error |
+| Frontend to `/api/auth/register` | 15s | AbortController | continue flow with warning |
+| Route to backend registration | 12s | AbortController | surface route error |
+| Verification email send | 20s | Promise race | show verification state + retry option |
+| UAT claims propagation | 5s | fixed wait | then redirect |
 
 ## Environment Differences
 
-| Behavior                       | UAT                            | Production                          |
+| Behavior | UAT | Production |
 | ------------------------------ | ------------------------------ | ----------------------------------- |
-| Email verification requirement | skipped via `autoVerify: true` | required                            |
-| Post-registration user path    | delay then direct `/signin`    | verification-step then email action |
-| Cookie security                | secure on HTTPS hosts          | secure + production domain policy   |
+| Email verification requirement | skipped via `autoVerify: true` | required |
+| Post-registration user path | delay then direct `/signin` | verification-step then email action |
+| Cookie security | secure on HTTPS hosts | secure + production domain policy |
 
 ## UAT Tester Workflow
 
@@ -114,20 +114,20 @@ graph TD
 
 ### Firebase account creation errors
 
-| Firebase error              | User-facing behavior              |
+| Firebase error | User-facing behavior |
 | --------------------------- | --------------------------------- |
-| `auth/email-already-in-use` | prompt sign-in route              |
-| `auth/weak-password`        | prompt stronger password          |
-| `auth/invalid-email`        | prompt valid email                |
-| network/unknown             | generic fallback + retry guidance |
+| `auth/email-already-in-use` | prompt sign-in route |
+| `auth/weak-password` | prompt stronger password |
+| `auth/invalid-email` | prompt valid email |
+| network/unknown | generic fallback + retry guidance |
 
 ### Registration / verification partial failures
 
-| Scenario                  | Expected behavior                          |
+| Scenario | Expected behavior |
 | ------------------------- | ------------------------------------------ |
-| registration timeout      | continue to verification path with warning |
-| verification send timeout | show verification state and retry options  |
-| both unstable             | no deadlock; user can retry from UI        |
+| registration timeout | continue to verification path with warning |
+| verification send timeout | show verification state and retry options |
+| both unstable | no deadlock; user can retry from UI |
 
 ## Monitoring and Observability
 
@@ -176,6 +176,6 @@ Track at minimum:
 
 ## Related Docs
 
-- [Auth Patterns](auth-patterns.md)
+- [Auth Patterns](../security/auth-patterns.md)
 - [Signin Workflow](signin-workflow.md)
 - [API Connection](../api/api-connection.md)

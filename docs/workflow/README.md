@@ -71,9 +71,9 @@ Every workflow doc must include these fields in the header block:
 
 ---
 
-## Compatibility with Existing Workflow Docs
+## Placement Rule
 
-Some workflow docs were written before this convention existed and may live in domain folders (for example, `docs/security/signin-workflow.md`). Those docs are valid and do not need to move unless a major revision is planned. New workflow docs should use `docs/workflow/` from this point forward.
+All business workflow docs must live in `docs/workflow/` using the `*-workflow.md` naming convention. No exceptions.
 
 ---
 

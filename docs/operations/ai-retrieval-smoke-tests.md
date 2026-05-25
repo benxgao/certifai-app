@@ -36,7 +36,7 @@ Use these baseline prompts (or stronger equivalents) and verify expected target 
 | Prompt | Expected target docs (first-pass) |
 | --- | --- |
 | "I need to add a new SWR mutation with extra arguments. What constraints should I follow?" | `docs/api/swr-patterns.md`, `docs/api/api-connection.md`, `docs/data/data-models.md` |
-| "I’m debugging JWT protection for `/main/*` routes. Where are the auth invariants documented?" | `docs/security/auth-patterns.md`, `docs/state/client-state.md`, `docs/security/signin-workflow.md` |
+| "I’m debugging JWT protection for `/main/*` routes. Where are the auth invariants documented?" | `docs/security/auth-patterns.md`, `docs/state/client-state.md`, `docs/workflow/signin-workflow.md` |
 | "I created a new docs file and want to make sure assistants can find it. What must I update?" | `docs/operations/docs-maintenance.md`, `docs/ai/assistant-context-index.md`, `docs/ai/guide.md` |
 
 ## Pass/Fail Recording Template

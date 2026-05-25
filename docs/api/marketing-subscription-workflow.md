@@ -1,7 +1,7 @@
 # Marketing Subscription Workflow
 
 > **Source of truth**: `app/api/marketing/subscribe/route.ts`, `src/lib/marketing-api.ts`, `src/lib/marketing-types.ts`, `src/lib/marketing-claims.ts`, `src/components/auth/EmailActionHandler.tsx`
-> **Last reviewed**: 2026-05-25
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
@@ -19,7 +19,7 @@ This is the canonical procedural workflow doc for marketing subscription behavio
 
 ## Prerequisites in Signup Lifecycle (Context from Steps 1–6)
 
-These steps provide context and are owned in detail by [`../security/signup-workflow.md`](../security/signup-workflow.md):
+These steps provide context and are owned in detail by [`../workflow/signup-workflow.md`](../workflow/signup-workflow.md):
 
 1. User submits signup form.
 2. Firebase account is created.
@@ -163,5 +163,5 @@ Useful debug correlation signals:
 ## Related Docs
 
 - [API Connection](api-connection.md)
-- [Signup Workflow](../security/signup-workflow.md)
+- [Signup Workflow](../workflow/signup-workflow.md)
 - [Auth Patterns](../security/auth-patterns.md)

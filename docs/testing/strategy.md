@@ -1,7 +1,7 @@
 # Testing Strategy
 
-> **Source of truth**: `__tests__/` (6 unit files), `e2e/` (Playwright), `__tests__/setup.ts`
-> **Last reviewed**: 2026-05-24
+> **Source of truth**: `__tests__/`, `e2e/`, `__tests__/setup.ts`, `playwright.config.ts`
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
@@ -40,15 +40,43 @@ Never add network calls or real Firebase initialization in unit tests — all Fi
 
 ## E2E Tests (`e2e/`)
 
-Playwright tests cover full user flows. Run with:
+Playwright tests cover full user flows.
+
+### Spec inventory
+
+| File | What it covers |
+| ---- | -------------- |
+| `demo-credentials-consent.spec.ts` | Demo credential reveal and consent-gated marketing interactions |
+| `exam.spec.ts` | Exam-oriented user flows, including creation and progression |
+| `user.spec.ts` | Core authenticated user flows |
+
+### Fixture and helper inventory
+
+| Path | Purpose |
+| ---- | ------- |
+| `e2e/fixtures/auth.ts` | Shared authenticated-page / auth setup fixture |
+| `e2e/helpers/common.ts` | Common page/test helpers |
+| `e2e/helpers/exams.ts` | Exam-specific helper routines |
+| `e2e/helpers/performance.ts` | Performance-oriented helper utilities |
+| `e2e/helpers/selectors.ts` | Shared selector constants/helpers |
+| `e2e/instructions.md` | Local E2E guidance for test authors |
+
+Run with:
 
 ```bash
 npx playwright test
 ```
 
-Configuration: `playwright.config.ts` at the root.
+### Playwright configuration notes
 
-E2E tests use an `authenticatedPage` fixture for flows that require sign-in. Never hardcode credentials in test files — use environment variables via `.env.test`.
+`playwright.config.ts`:
+
+- loads environment variables from `.env.local`,
+- uses `PLAYWRIGHT_TEST_BASEURL` when targeting a deployed/live environment,
+- otherwise starts a local `npm run dev` server automatically,
+- runs tests sequentially with a single Chromium worker.
+
+E2E tests use an authenticated fixture flow from `e2e/fixtures/auth.ts` for routes that require sign-in. Never hardcode credentials in test files.
 
 ## Test Conventions
 
@@ -81,6 +109,7 @@ npx playwright test --ui
 | Unit — hook contracts | 100% of `src/swr/` error paths |
 | Unit — type/enum | 100% of `src/types/exam-status.ts` |
 | E2E — critical flows | sign-in, exam creation, exam submission, sign-out |
+| E2E — fixture reuse | all authenticated flows should route through `e2e/fixtures/auth.ts` |
 
 ## Dangerous Areas / Anti-patterns
 

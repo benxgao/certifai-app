@@ -110,10 +110,10 @@ ls src/context/
 
 Cross-reference with `docs/api/swr-patterns.md`, `docs/data/data-models.md`, and `docs/state/client-state.md`.
 
-### 4. Check for unresolved TODOs in docs
+### 4. Check for unresolved markers in docs
 
 ```bash
-grep -r "TODO\|FIXME\|TBD" docs/ | grep -v "_template"
+grep -r "[T]ODO\|[F]IXME\|[T]BD" docs/ | grep -v "_template"
 ```
 
 Resolve or turn into tracked kanban items.

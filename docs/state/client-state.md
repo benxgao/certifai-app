@@ -1,12 +1,12 @@
 # Client State
 
-> **Source of truth**: `src/context/FirebaseAuthContext.tsx`, `src/context/UserProfileContext.tsx`, `src/context/UserCertificationsContext.tsx`, `src/context/ExamStatsContext.tsx`
-> **Last reviewed**: 2026-05-24
+> **Source of truth**: `src/context/FirebaseAuthContext.tsx`, `src/context/UserProfileContext.tsx`, `src/context/UserCertificationsContext.tsx`, `src/context/ExamStatsContext.tsx`, `src/context/AccountContext.tsx`
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
 
-Documents the three-layer state architecture: server state (SWR), shared client state (React Context), and local UI state (`useState`). Explains when to use each layer and how the four Context providers are structured.
+Documents the three-layer state architecture: server state (SWR), shared client state (React Context), and local UI state (`useState`). Explains when to use each layer and how the five current Context providers are structured.
 
 ## State Layers
 
@@ -14,7 +14,7 @@ Documents the three-layer state architecture: server state (SWR), shared client 
 | ----- | --------- | -------- | ----------- |
 | Server state | SWR (`useAuthSWR`) | `src/swr/` | API-backed data: exams, certifications, profile, questions |
 | Auth state | React Context | `src/context/FirebaseAuthContext.tsx` | Firebase user session, token refresh, sign-out |
-| Shared client state | React Context | `src/context/UserProfileContext.tsx`, etc. | Data needed by many components but not suited for SWR |
+| Shared client state | React Context | `src/context/UserProfileContext.tsx`, `src/context/AccountContext.tsx`, etc. | Data needed by many components but not suited for repeated direct SWR consumption |
 | Local UI state | `useState` / `useReducer` | Component | Ephemeral: open/close, selected tab, input value |
 
 ## Context Providers
@@ -44,6 +44,20 @@ Provides the list of certifications the user has registered for. Shared across t
 
 Provides aggregated exam counts and stats for the dashboard. Avoids prop-drilling stats down through multiple layout levels.
 
+### `AccountContext`
+`src/context/AccountContext.tsx`
+
+Provides centralized authenticated account and billing state derived from `useAccountStatus()`. Exposes:
+
+- `account` — unified account data object
+- `hasSubscription` / `hasActiveSubscription` / `isTrialing` / `isCanceled`
+- `subscriptionStatus`
+- `planId`, `planName`, `planAmount`, `planCurrency`
+- `currentPeriodStart`, `currentPeriodEnd`, `trialEnd`, `cancelAtPeriodEnd`
+- `refreshAccount()`
+
+Use this context for shared billing/subscription reads across dashboard and billing UI instead of repeatedly wiring raw Stripe/account hooks into sibling components.
+
 ## Decision Guide
 
 | Scenario | Use |
@@ -52,6 +66,7 @@ Provides aggregated exam counts and stats for the dashboard. Avoids prop-drillin
 | Reading auth user, token refresh | `useFirebaseAuth()` from `FirebaseAuthContext` |
 | Reading current user profile | `useUserProfile()` from `UserProfileContext` |
 | Reading user certifications list in multiple sibling components | `useUserCertifications()` from `UserCertificationsContext` |
+| Reading billing/subscription state in multiple dashboard components | `useAccount()` / `useSubscriptionStatus()` / `usePlanInfo()` from `AccountContext` |
 | A modal's open/close toggle | `useState` in the component |
 | Form field value | `useState` or `useOptimizedForm` from `src/hooks/` |
 
@@ -74,3 +89,4 @@ Provides aggregated exam counts and stats for the dashboard. Avoids prop-drillin
 - [API: SWR Patterns](../api/swr-patterns.md)
 - [Security: Auth Patterns](../security/auth-patterns.md)
 - [Data Models](../data/data-models.md)
+- [Stripe Billing](../billing/stripe-billing.md)

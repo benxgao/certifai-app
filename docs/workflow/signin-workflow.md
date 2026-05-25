@@ -1,12 +1,12 @@
 # Signin Workflow
 
 > **Source of truth**: `app/signin/`, `src/context/FirebaseAuthContext.tsx`, `src/lib/auth-state-transitions.ts`, `src/lib/auth-operation-guard.ts`, `app/api/auth-cookie/`
-> **Last reviewed**: 2026-05-25
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
 
-Provides the operational, step-by-step lifecycle for signin, token setup, logout, and troubleshooting. This doc is the procedural companion to [`auth-patterns.md`](auth-patterns.md), which remains the invariant/security rule source.
+Provides the operational, step-by-step lifecycle for signin, token setup, logout, and troubleshooting. This doc is the procedural companion to [`auth-patterns.md`](../security/auth-patterns.md), which remains the invariant/security rule source.
 
 ## Key Concepts
 
@@ -168,13 +168,13 @@ Concurrent signin clicks are serialized via operation lock + queue semantics:
 
 ## Error Types and Recovery
 
-| Error                  | Typical cause          | Recovery                      |
+| Error | Typical cause | Recovery |
 | ---------------------- | ---------------------- | ----------------------------- |
-| Invalid email/password | credential mismatch    | retry signin                  |
-| Too many attempts      | rate limiting          | wait/reset password           |
-| Network failure        | connectivity/API issue | retry with connectivity check |
-| Email not verified     | verification pending   | resend verification           |
-| Session expired        | token refresh failure  | sign in again                 |
+| Invalid email/password | credential mismatch | retry signin |
+| Too many attempts | rate limiting | wait/reset password |
+| Network failure | connectivity/API issue | retry with connectivity check |
+| Email not verified | verification pending | resend verification |
+| Session expired | token refresh failure | sign in again |
 
 ## File Reference
 
@@ -228,7 +228,7 @@ Concurrent signin clicks are serialized via operation lock + queue semantics:
 
 ## Related Docs
 
-- [Auth Patterns](auth-patterns.md)
+- [Auth Patterns](../security/auth-patterns.md)
 - [Signup Workflow](signup-workflow.md)
 - [API Connection](../api/api-connection.md)
 - [Client State](../state/client-state.md)

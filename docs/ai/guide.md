@@ -133,8 +133,8 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 
 1. [`docs/security/auth-patterns.md`](../security/auth-patterns.md) — `middleware.proxy.ts`, auth state machine, cookie lifecycle, Firebase Admin usage
 2. [`docs/state/client-state.md`](../state/client-state.md) — `FirebaseAuthContext`, auth state transitions
-3. [`docs/security/signin-workflow.md`](../security/signin-workflow.md) — signin/logout sequence details, cookie lifecycle troubleshooting
-4. [`docs/security/signup-workflow.md`](../security/signup-workflow.md) — signup verification sequence, timeout behavior, UAT differences
+3. [`docs/workflow/signin-workflow.md`](../workflow/signin-workflow.md) — signin/logout sequence details, cookie lifecycle troubleshooting
+4. [`docs/workflow/signup-workflow.md`](../workflow/signup-workflow.md) — signup verification sequence, timeout behavior, UAT differences
 
 **Invariants**:
 
@@ -153,12 +153,60 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 
 ---
 
+### 4A. Adding or Modifying Billing / Stripe Behavior
+
+**Primary docs to load**:
+
+1. [`docs/billing/stripe-billing.md`](../billing/stripe-billing.md) — account context, checkout flow, callback route, billing page invariants
+2. [`docs/state/client-state.md`](../state/client-state.md) — `AccountContext` role in shared client state
+3. [`docs/architecture/feature-flags.md`](../architecture/feature-flags.md) — `STRIPE_INTEGRATION` gate behavior
+
+**Invariants**:
+
+- Do not call Stripe-related API endpoints directly from presentational components.
+- Prefer `AccountContext` for shared billing reads across dashboard and billing surfaces.
+- Checkout completion does not imply immediate subscription activation — the callback flow must refresh/poll account status.
+- Billing UI must respect the `STRIPE_INTEGRATION` feature flag.
+
+**Anti-patterns**:
+
+- Reading billing state from ad hoc `fetch()` calls instead of `AccountContext` or Stripe hooks.
+- Redirecting users into new Checkout when they already have an active subscription.
+
+**Docs to update after implementation**: `docs/billing/stripe-billing.md`; `docs/state/client-state.md` if context fields change; `docs/architecture/feature-flags.md` if gating changes.
+
+---
+
+### 4B. Changing Exam Lifecycle, Polling, or Report Flow
+
+**Primary docs to load**:
+
+1. [`docs/workflow/exam-lifecycle-workflow.md`](../workflow/exam-lifecycle-workflow.md) — lifecycle sequence and polling boundaries
+2. [`docs/api/swr-patterns.md`](../api/swr-patterns.md) — hook conventions and generic rules
+3. [`docs/data/data-models.md`](../data/data-models.md) — exam response/type shapes
+
+**Invariants**:
+
+- Exam creation and exam readiness are different phases.
+- Generation polling must stop once the exam leaves generating status.
+- Submission must revalidate the current exam state and list views.
+- Report fetching/generation is only valid after completion.
+
+**Anti-patterns**:
+
+- Polling indefinitely after an exam reaches `READY`, `COMPLETED`, or failure.
+- Treating deprecated generation hooks as the preferred new implementation path.
+
+**Docs to update after implementation**: `docs/workflow/exam-lifecycle-workflow.md`; `docs/api/swr-patterns.md`; `docs/data/data-models.md` if response shapes change.
+
+---
+
 ### 11. Debugging Signup Verification or Marketing Subscription Flow
 
 **Primary docs to load**:
 
-1. [`docs/security/signup-workflow.md`](../security/signup-workflow.md) — signup + verification operational flow
-2. [`docs/security/signin-workflow.md`](../security/signin-workflow.md) — post-verification signin transition behavior
+1. [`docs/workflow/signup-workflow.md`](../workflow/signup-workflow.md) — signup + verification operational flow
+2. [`docs/workflow/signin-workflow.md`](../workflow/signin-workflow.md) — post-verification signin transition behavior
 3. [`docs/api/marketing-subscription-workflow.md`](../api/marketing-subscription-workflow.md) — Step 7–12 marketing pipeline (route → Lambda → MailerLite)
 4. [`docs/api/api-connection.md`](../api/api-connection.md) — API envelope and request/response conventions
 
@@ -172,7 +220,53 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 - Treating marketing failures as auth-blocking failures.
 - Duplicating signup lifecycle details in API docs instead of linking to security workflow docs.
 
-**Docs to update after implementation**: `docs/security/signup-workflow.md`, `docs/api/marketing-subscription-workflow.md`, and `docs/api/api-connection.md` when contracts change.
+**Docs to update after implementation**: `docs/workflow/signup-workflow.md`, `docs/api/marketing-subscription-workflow.md`, and `docs/api/api-connection.md` when contracts change.
+
+---
+
+### 11A. Changing SEO, Sitemap, or Structured Data
+
+**Primary docs to load**:
+
+1. [`docs/architecture/seo-patterns.md`](../architecture/seo-patterns.md) — metadata factories, structured data helpers, sitemap and robots rules
+2. [`docs/architecture/server-actions.md`](../architecture/server-actions.md) — server-only public data fetching for sitemap/dynamic public pages
+3. [`docs/architecture/nextjs-conventions.md`](../architecture/nextjs-conventions.md) — route/component placement conventions
+
+**Invariants**:
+
+- Public metadata should be generated through `generateMetadata()` or its specialized wrappers.
+- Protected routes must not leak into sitemap/robots allow-lists.
+- Shared SEO constants belong in `src/config/seo.ts`, not scattered across routes.
+
+**Anti-patterns**:
+
+- Hardcoding canonical URLs or social metadata repeatedly in page files.
+- Pulling authenticated dashboard data into sitemap generation.
+
+**Docs to update after implementation**: `docs/architecture/seo-patterns.md`; `docs/ai/repo-map.md` if public route structure changes.
+
+---
+
+### 11B. Changing Error Contracts or Error UX
+
+**Primary docs to load**:
+
+1. [`docs/architecture/error-handling.md`](../architecture/error-handling.md) — envelope errors, SWR transport errors, custom feature errors, error boundaries
+2. [`docs/api/api-connection.md`](../api/api-connection.md) — API envelope conventions
+3. [`docs/api/swr-patterns.md`](../api/swr-patterns.md) — SWR hook error-handling expectations
+
+**Invariants**:
+
+- Use structured error envelopes when the UI needs retry/classification metadata.
+- Keep render-boundary handling (`ErrorBoundary`) separate from request-state handling.
+- Preserve contextual custom errors when downstream UI needs item-specific failure context.
+
+**Anti-patterns**:
+
+- Throwing plain strings for errors that need status or response-body context.
+- Using `ErrorBoundary` as the only error strategy for fetch-driven UI.
+
+**Docs to update after implementation**: `docs/architecture/error-handling.md`; `docs/api/api-connection.md`; `docs/api/swr-patterns.md` if transport conventions change.
 
 ---
 
