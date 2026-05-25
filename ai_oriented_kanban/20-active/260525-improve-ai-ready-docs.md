@@ -221,3 +221,15 @@ Execute Phases 1–3 first for immediate retrieval quality improvement and revie
 - Verified by: Plan includes approved backlog items, carried-open questions with decision paths, explicit owners, phased gates, rollback, and recommendation
 - Next: Execute rollout phases in implementation PR(s)
 - Blockers: none
+
+### Session Note — 2026-05-26
+
+- Completed: Phases 1–5 fully implemented
+  - Phase 1: Layering contract + archive retirement policy added to `docs/operations/docs-maintenance.md`
+  - Phase 2: New-doc registration checklist (PR gate) added to `docs/operations/docs-maintenance.md`
+  - Phase 3: Created `docs/operations/ai-retrieval-smoke-tests.md`; retrieval QA section added to `docs/ai/guide.md`
+  - Phase 4: Created `docs/workflow/README.md`; registered smoke-tests + workflow README in `docs/ai/assistant-context-index.md`
+  - Phase 5: Quarterly topology review section added to `docs/operations/docs-maintenance.md`
+- Phase 6 (Docs Sync) status: all target files listed in Docs Impact are created/updated; index registration complete
+- Blockers: none
+- Remaining: verify no unresolved placeholders; move kanban item to review when approved

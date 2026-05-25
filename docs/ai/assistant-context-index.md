@@ -1,7 +1,7 @@
 # Assistant Context Index
 
 > **Source of truth**: All `docs/` sections
-> **Last reviewed**: 2026-05-25
+> **Last reviewed**: 2026-05-26
 > **Owner**: engineering
 
 ## Purpose
@@ -29,6 +29,8 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | Shared product terms (Exam, Certification, Firm, etc.) | [docs/product/glossary.md](../product/glossary.md) |
 | Why this docs structure was adopted | [docs/adr/0001-docs-architecture-mvp.md](../adr/0001-docs-architecture-mvp.md) |
 | Docs ownership, update cadence, freshness SLA | [docs/operations/docs-maintenance.md](../operations/docs-maintenance.md) |
+| AI retrieval smoke-test QA protocol | [docs/operations/ai-retrieval-smoke-tests.md](../operations/ai-retrieval-smoke-tests.md) |
+| Workflow docs naming/location convention | [docs/workflow/README.md](../workflow/README.md) |
 
 ## Key Source Paths
 

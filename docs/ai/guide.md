@@ -1,7 +1,7 @@
 # AI Assistant Guide
 
 > **Source of truth**: `docs/` directory structure — this file navigates, not restates.
-> **Last reviewed**: 2026-05-25
+> **Last reviewed**: 2026-05-26
 > **Owner**: Engineering team
 
 ## Purpose
@@ -21,6 +21,16 @@ Do not load all docs. Load only what the current task requires. Use the task-typ
 5. After implementation, confirm the **docs that need updating** as listed per task type.
 
 Start with [`docs/ai/repo-map.md`](repo-map.md) if you are unfamiliar with the codebase or working on something that crosses multiple domains.
+
+### Retrieval QA Requirement (When to Run Smoke Tests)
+
+Run the manual retrieval protocol in [`docs/operations/ai-retrieval-smoke-tests.md`](../operations/ai-retrieval-smoke-tests.md) when:
+
+1. You create, rename, or remove docs under `docs/`.
+2. You modify task routing guidance in this file.
+3. You add governance/workflow docs that assistants should discover during first-pass retrieval.
+
+Record pass/fail results in the PR or rollout note, and fix routing/index docs before merge if any prompt fails.
 
 ---
 
