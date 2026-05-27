@@ -173,7 +173,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 - [x] Phase 1 — Instruction Contract Hardening
 - [x] Phase 2 — AI Guide Fallback Protocol
 - [x] Phase 3 — Governance and Graph-Link Gates
-- [ ] Phase 4 — Kanban Process Remediation
+- [x] Phase 4 — Kanban Process Remediation
 - [ ] Phase 5 — Docs Sync
 - [ ] Phase 6 — AI-ready docs reflection and next-plan handoff
 
@@ -258,7 +258,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ### Phase 4: Kanban Process Remediation
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: process governance layer
 
@@ -276,9 +276,9 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Add active-lane gate criteria**: require evidence of docs-first retrieval and update/link checks before review/archive move.
+- [x] **4.1 — Add active-lane gate criteria**: require evidence of docs-first retrieval and update/link checks before review/archive move.
   - **Independent verification**: criteria appear under workflow/lane guidance.
-- [ ] **4.2 — Tighten rollout template prompts**: force planners to include docs search/update/link validation steps and the reusable docs-first fallback checklist snippet.
+- [x] **4.2 — Tighten rollout template prompts**: force planners to include docs search/update/link validation steps and the reusable docs-first fallback checklist snippet.
   - **Independent verification**: template text explicitly demands these checks.
 
 ---
