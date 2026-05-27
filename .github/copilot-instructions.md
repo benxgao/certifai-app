@@ -94,6 +94,18 @@ Each rollout file should follow `.github/templates/rollout-plan-template.md` by 
 - When a user says they like the style of an existing rollout plan, mirror that structure in future rollout docs for this repo unless they ask for a lighter format.
 - If the template evolves, update `.github/templates/rollout-plan-template.md` rather than expanding this instructions file.
 
+## Spec-First Retrieval Protocol
+
+**Read docs first**: Before reading or writing any code, load the task-relevant spec docs listed under [Canonical Documentation References](#canonical-documentation-references) below. This is a mandatory execution gate, not a recommendation.
+
+**Fallback**: scan codebase only when the relevant docs are:
+
+- Missing for the specific task type
+- Ambiguous or contradictory for the current implementation decision
+- Outdated relative to the current codebase state (e.g., a file was renamed or an API changed since the doc was last updated)
+
+**Fallback record**: If a code scan is required, note which docs were insufficient and update them after implementation so the gap does not recur.
+
 ## Canonical Documentation References
 
 > Use these docs for grounded context before generating or reviewing code. They are the authoritative source for architecture, style, API contracts, security rules, and test strategy.

@@ -170,7 +170,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Instruction Contract Hardening
+- [x] Phase 1 — Instruction Contract Hardening
 - [ ] Phase 2 — AI Guide Fallback Protocol
 - [ ] Phase 3 — Governance and Graph-Link Gates
 - [ ] Phase 4 — Kanban Process Remediation
@@ -181,9 +181,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ### Phase 1: Instruction Contract Hardening
 
-**Progress**: `[ ]`
-
-**Layer**: assistant policy layer
+**Progress**: `[x]`
 
 **Goal**: Force spec-doc-first routing and explicit fallback-to-code conditions.
 
@@ -198,9 +196,9 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Add strict routing clause**: require loading task-relevant docs before code reads.
+- [x] **1.1 — Add strict routing clause**: require loading task-relevant docs before code reads.
   - **Independent verification**: explicit mandatory language exists.
-- [ ] **1.2 — Define fallback trigger**: allow code scan only for missing/unclear/outdated docs.
+- [x] **1.2 — Define fallback trigger**: allow code scan only for missing/unclear/outdated docs.
   - **Independent verification**: fallback conditions are listed in policy text.
 
 ---
