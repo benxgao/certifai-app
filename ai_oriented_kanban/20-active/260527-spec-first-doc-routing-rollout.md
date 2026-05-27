@@ -174,8 +174,8 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 - [x] Phase 2 — AI Guide Fallback Protocol
 - [x] Phase 3 — Governance and Graph-Link Gates
 - [x] Phase 4 — Kanban Process Remediation
-- [ ] Phase 5 — Docs Sync
-- [ ] Phase 6 — AI-ready docs reflection and next-plan handoff
+- [x] Phase 5 — Docs Sync
+- [~] Phase 6 — AI-ready docs reflection and next-plan handoff
 
 ## Phases
 
@@ -285,7 +285,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ### Phase 5: Docs Sync
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation layer
 
@@ -308,10 +308,10 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Sync metadata and links**: update `Last reviewed` fields and related-doc links where applicable.
-  - **Independent verification**: metadata/link updates are present in each touched docs file.
-- [ ] **5.2 — Validate retrieval topology**: verify index + related-doc graph still resolves to updated guidance.
-  - **Independent verification**: manual navigation from `guide.md` and index reaches all updated governance files.
+- [x] **5.1 — Sync metadata and links**: update `Last reviewed` fields and related-doc links where applicable.
+  - **Independent verification**: `docs/ai/assistant-context-index.md` now has a `## Related Docs` section; stale `.github/templates/` and `kanban/backlogs/` paths in `.github/copilot-instructions.md` replaced with correct `ai_oriented_kanban/` paths.
+- [x] **5.2 — Validate retrieval topology**: verify index + related-doc graph still resolves to updated guidance.
+  - **Independent verification**: graph from `guide.md` → `assistant-context-index.md` → `docs-maintenance.md` all resolve; no new TODOs/FIXMEs in docs; all touched docs registered in index.
 
 ---
 

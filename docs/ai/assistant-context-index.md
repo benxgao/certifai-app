@@ -64,3 +64,9 @@ middleware.proxy.ts   ← JWT guard for /main/*
 4. Follow the standard headings defined in the template.
 5. Add an entry to this index.
 6. Link from the nearest related doc's `## Related Docs` section.
+
+## Related Docs
+
+- [`docs/ai/guide.md`](guide.md)
+- [`docs/ai/repo-map.md`](repo-map.md)
+- [`docs/operations/docs-maintenance.md`](../operations/docs-maintenance.md)
