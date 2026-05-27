@@ -172,7 +172,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 - [x] Phase 1 — Instruction Contract Hardening
 - [x] Phase 2 — AI Guide Fallback Protocol
-- [ ] Phase 3 — Governance and Graph-Link Gates
+- [x] Phase 3 — Governance and Graph-Link Gates
 - [ ] Phase 4 — Kanban Process Remediation
 - [ ] Phase 5 — Docs Sync
 - [ ] Phase 6 — AI-ready docs reflection and next-plan handoff
@@ -231,7 +231,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ### Phase 3: Governance and Graph-Link Gates
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation governance layer
 
@@ -249,9 +249,9 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Add graph-link gate**: require each touched doc to maintain valid `## Related Docs` links.
+- [x] **3.1 — Add graph-link gate**: require each touched doc to maintain valid `## Related Docs` links.
   - **Independent verification**: gate language exists in maintenance protocol.
-- [ ] **3.2 — Add index-sync gate**: fail docs review if touched/new docs are missing index coverage.
+- [x] **3.2 — Add index-sync gate**: fail docs review if touched/new docs are missing index coverage.
   - **Independent verification**: pass/fail criteria include index sync.
 
 ---
