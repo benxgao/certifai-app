@@ -152,6 +152,11 @@ Assistants must treat docs as the first execution context. Code scanning is fall
 
 Every docs change must preserve navigability through both the assistant index and local related-doc edges to keep retrieval quality stable.
 
+## Decision Updates (2026-05-27)
+
+- **Resolved**: Docs-first fallback criteria will be standardized as a reusable checklist snippet in every rollout plan.
+- **Resolved**: Link-graph verification will remain manual in rollout execution, enforced through the rollout template and Docs Sync verification gates so it is not skipped during normal kanban flow.
+
 ## Dependency Rule
 
 Each phase must stay in one layer: instruction policy, AI docs routing, governance enforcement, then kanban process hardening.
@@ -275,7 +280,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 - [ ] **4.1 — Add active-lane gate criteria**: require evidence of docs-first retrieval and update/link checks before review/archive move.
   - **Independent verification**: criteria appear under workflow/lane guidance.
-- [ ] **4.2 — Tighten rollout template prompts**: force planners to include docs search/update/link validation steps.
+- [ ] **4.2 — Tighten rollout template prompts**: force planners to include docs search/update/link validation steps and the reusable docs-first fallback checklist snippet.
   - **Independent verification**: template text explicitly demands these checks.
 
 ---
@@ -364,6 +369,7 @@ Kanban process gates
 - Code-scan fallback is explicit, justified, and documented.
 - Docs updates remain graph-linked through index + related-doc references.
 - Active kanban plans include enforceable docs search/update/link gates.
+- Every new rollout plan includes the standardized docs-first fallback checklist snippet.
 
 ## Rollback Plan
 
@@ -373,8 +379,8 @@ Kanban process gates
 
 ## Open Questions
 
-1. Should docs-first fallback criteria be standardized as a reusable checklist snippet in every rollout plan?
-2. Should link-graph verification stay manual or be promoted to an automated check later?
+1. Should we add a lightweight pre-merge grep check that fails when a new rollout plan is missing the standardized docs-first fallback checklist snippet?
+2. Should we add a quarterly audit metric (sample size + pass threshold) for manual link-graph verification quality across recently completed rollout plans?
 
 ## Recommendation
 
