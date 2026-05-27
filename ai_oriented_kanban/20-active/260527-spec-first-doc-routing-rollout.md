@@ -171,7 +171,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 ## Progress Dashboard
 
 - [x] Phase 1 — Instruction Contract Hardening
-- [ ] Phase 2 — AI Guide Fallback Protocol
+- [x] Phase 2 — AI Guide Fallback Protocol
 - [ ] Phase 3 — Governance and Graph-Link Gates
 - [ ] Phase 4 — Kanban Process Remediation
 - [ ] Phase 5 — Docs Sync
@@ -205,7 +205,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ### Phase 2: AI Guide Fallback Protocol
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: retrieval guidance layer
 
@@ -222,9 +222,9 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Add retrieval decision flow**: define ordered decision path docs → fallback code scan.
+- [x] **2.1 — Add retrieval decision flow**: define ordered decision path docs → fallback code scan.
   - **Independent verification**: flow is readable and task-agnostic.
-- [ ] **2.2 — Add post-task docs-update trigger**: require update when code findings invalidate docs.
+- [x] **2.2 — Add post-task docs-update trigger**: require update when code findings invalidate docs.
   - **Independent verification**: trigger language ties implementation findings back to docs updates.
 
 ---

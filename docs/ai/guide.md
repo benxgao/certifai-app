@@ -1,7 +1,7 @@
 # AI Assistant Guide
 
 > **Source of truth**: `docs/` directory structure — this file navigates, not restates.
-> **Last reviewed**: 2026-05-26
+> **Last reviewed**: 2026-05-27
 > **Owner**: Engineering team
 
 ## Purpose
@@ -21,6 +21,29 @@ Do not load all docs. Load only what the current task requires. Use the task-typ
 5. After implementation, confirm the **docs that need updating** as listed per task type.
 
 Start with [`docs/ai/repo-map.md`](repo-map.md) if you are unfamiliar with the codebase or working on something that crosses multiple domains.
+
+### Docs-First Retrieval Decision Flow
+
+Follow this ordered decision path on every task before touching code:
+
+1. **Identify** the task type in the [Task-Type Index](#task-type-index) below.
+2. **Load** all listed primary docs for that task type.
+3. **Assess sufficiency** — can the loaded docs answer the implementation decision fully?
+   - **Yes → proceed** using docs as the primary context. Do not open source files unless the task explicitly requires reading implementation.
+   - **No → fallback**: scan the codebase only when docs are **insufficient** because they are missing, ambiguous, contradictory, or known to be outdated for this specific decision.
+4. **Record the gap**: if a code scan was needed, note which docs were insufficient and add them to the post-task update list.
+
+This flow is docs-first by default. Codebase scanning is a fallback, not a starting point.
+
+### Post-Task Docs-Update Trigger
+
+After implementation, if code findings revealed that any spec doc was missing, incorrect, or incomplete:
+
+1. Update the relevant doc before closing the task.
+2. If the finding is structural (new file, renamed API, changed invariant), also update the applicable entry in [`docs/ai/assistant-context-index.md`](assistant-context-index.md).
+3. Record what changed in the PR or rollout note so the update is traceable.
+
+Skipping this step leaves the next assistant with the same insufficient docs context that required the fallback.
 
 ### Retrieval QA Requirement (When to Run Smoke Tests)
 
