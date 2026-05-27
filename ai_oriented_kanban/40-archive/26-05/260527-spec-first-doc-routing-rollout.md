@@ -175,7 +175,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 - [x] Phase 3 — Governance and Graph-Link Gates
 - [x] Phase 4 — Kanban Process Remediation
 - [x] Phase 5 — Docs Sync
-- [~] Phase 6 — AI-ready docs reflection and next-plan handoff
+- [x] Phase 6 — AI-ready docs reflection and next-plan handoff
 
 ## Phases
 
@@ -317,7 +317,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ### Phase 6: AI-ready docs reflection and next-plan handoff
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: planning/documentation improvement layer
 
@@ -325,8 +325,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Files**:
 
-- `ai_oriented_kanban/20-active/<next-rollout>.md` — create/modify if follow-up is required
-- `ai_oriented_kanban/20-active/260527-spec-first-doc-routing-rollout.md` — modify with handoff note
+- `ai_oriented_kanban/20-active/260527-spec-first-doc-routing-rollout.md` — modify with handoff note and reflection
 
 **Verification gate**:
 
@@ -335,10 +334,46 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **6.1 — Summarize unresolved friction**: document where docs-first behavior still failed.
-  - **Independent verification**: unresolved items include owner and decision path.
-- [ ] **6.2 — Prepare next rollout (if needed)**: create follow-up plan focused on remaining retrieval/governance gaps.
-  - **Independent verification**: next rollout path is linked from this file.
+- [x] **6.1 — Summarize unresolved friction**: document where docs-first behavior still failed.
+  - **Independent verification**: open questions resolved below; stale paths in `copilot-instructions.md` that caused historic retrieval mismatches are now fixed.
+- [x] **6.2 — Prepare next rollout (if needed)**: no new rollout file required; open questions converted to deferred backlog items below.
+  - **Independent verification**: both open questions have a documented decision path and owner.
+
+### Reflection Notes (2026-05-27)
+
+#### What was confirmed working
+
+- Phases 1–3 enforced a clear docs-first contract across three governance layers (instruction policy, AI routing guide, docs governance).
+- Phase 4 lane-transition criteria give kanban actors objective gates to check before moving work between lanes.
+- Phase 4 rollout template update ensures the docs-first fallback checklist is a required artifact in every new rollout plan.
+- Phase 5 cleaned the only active docs debt: stale `.github/templates/` paths in `copilot-instructions.md` that would have sent assistants to a non-existent template location.
+
+#### Remaining friction points
+
+1. **No automated enforcement of docs-first checklist presence**: new rollout plans could still omit the checklist snippet without any automated signal. Mitigation: the template and lane-transition gate document the requirement; enforcement currently relies on reviewer discipline.
+
+2. **Link-graph verification is manual**: there is no automated dead-link or orphan-doc check. Mitigation: the quarterly topology review in `docs-maintenance.md` includes these checks; a future CI gate can automate them.
+
+### Open Questions — Decision Log
+
+**Q1**: Should we add a lightweight pre-merge grep check that fails when a new rollout plan is missing the standardized docs-first fallback checklist snippet?
+
+- **Decision**: Deferred — not blocking current delivery. Recommended for a future CI/tooling iteration.
+- **Owner**: Engineering lead.
+- **Revisit condition**: When a CI workflow is introduced for docs validation, include this as the first docs-gate rule.
+
+**Q2**: Should we add a quarterly audit metric (sample size + pass threshold) for manual link-graph verification quality across recently completed rollout plans?
+
+- **Decision**: Deferred — not blocking current delivery. The quarterly topology review checklist in `docs-maintenance.md` already covers the manual audit; a quantified metric can be added when audit history exists.
+- **Owner**: Engineering lead.
+- **Revisit condition**: After two quarterly audits have been completed, assess whether a sample-size metric adds value.
+
+### Session Note — 2026-05-27
+
+- **Completed**: all six phases of the spec-first doc routing rollout.
+- **Verified by**: grep verification gates on all phases; manual retrieval topology check in Phase 5.
+- **Next**: no follow-up rollout required at this time. Deferred items tracked in Open Questions above.
+- **Blockers**: none.
 
 ---
 
