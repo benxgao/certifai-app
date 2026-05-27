@@ -64,14 +64,12 @@ cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(app|src)/"
 ## Skill: AI-Oriented Kanban Workflow
 
 - Treat phase execution as plan-first delivery.
-- If user asks for a rollout plan, implementation plan, or phased migration plan, use the isolated template at `.github/templates/rollout-plan-template.md` as the default house style.
-- If user asks `implement phase <n>`, first create:
-  - `kanban/backlogs/public-trial-rag-phase-0<n>-rollout.md`
-- Do this before any code implementation.
+- If user asks for a rollout plan, implementation plan, or phased migration plan, use the isolated template at `ai_oriented_kanban/templates/rollout-plan-template.md` as the default house style.
+- If user asks `implement phase <n>`, first create the rollout plan file under `ai_oriented_kanban/20-active/` before any code implementation.
 
 ### Rollout file checklist
 
-Each rollout file should follow `.github/templates/rollout-plan-template.md` by default.
+Each rollout file should follow `ai_oriented_kanban/templates/rollout-plan-template.md` by default.
 
 ### Rollout style rules
 
@@ -79,7 +77,7 @@ Each rollout file should follow `.github/templates/rollout-plan-template.md` by 
 - Prefer explicit reasoning over vague bullets; explain why each phase exists.
 - Make phases independently testable.
 - If a phase is heavy, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
-- Use the progress markers, dashboard, phase structure, and verification style defined in `.github/templates/rollout-plan-template.md`.
+- Use the progress markers, dashboard, phase structure, and verification style defined in `ai_oriented_kanban/templates/rollout-plan-template.md`.
 - Keep dependency boundaries strict: do not mix config creation with consumer updates in the same phase unless the user explicitly asks for a looser plan.
 - When relevant, include concrete grep/TypeScript/manual QA checks instead of generic “test this” wording.
 - Prefer wording that makes the plan easy to execute incrementally in separate commits.
@@ -87,12 +85,24 @@ Each rollout file should follow `.github/templates/rollout-plan-template.md` by 
 
 ### Workflow usage
 
-- Use `kanban/backlogs/` for planning artifacts.
-- Keep one rollout file per phase.
+- Use `ai_oriented_kanban/` for planning artifacts: `00-intake/` for new ideas, `20-active/` for in-progress work, `30-review/` for review, `40-archive/` for completed work.
+- Keep one rollout file per initiative.
 - Update progress status and decisions in the same file as work continues.
 - Use evidence-based completion (tests/checks/validation notes), not opinion-based completion.
 - When a user says they like the style of an existing rollout plan, mirror that structure in future rollout docs for this repo unless they ask for a lighter format.
-- If the template evolves, update `.github/templates/rollout-plan-template.md` rather than expanding this instructions file.
+- If the template evolves, update `ai_oriented_kanban/templates/rollout-plan-template.md` rather than expanding this instructions file.
+
+## Spec-First Retrieval Protocol
+
+**Read docs first**: Before reading or writing any code, load the task-relevant spec docs listed under [Canonical Documentation References](#canonical-documentation-references) below. This is a mandatory execution gate, not a recommendation.
+
+**Fallback**: scan codebase only when the relevant docs are:
+
+- Missing for the specific task type
+- Ambiguous or contradictory for the current implementation decision
+- Outdated relative to the current codebase state (e.g., a file was renamed or an API changed since the doc was last updated)
+
+**Fallback record**: If a code scan is required, note which docs were insufficient and update them after implementation so the gap does not recur.
 
 ## Canonical Documentation References
 

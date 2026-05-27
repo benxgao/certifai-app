@@ -170,20 +170,18 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Instruction Contract Hardening
-- [ ] Phase 2 — AI Guide Fallback Protocol
-- [ ] Phase 3 — Governance and Graph-Link Gates
-- [ ] Phase 4 — Kanban Process Remediation
-- [ ] Phase 5 — Docs Sync
-- [ ] Phase 6 — AI-ready docs reflection and next-plan handoff
+- [x] Phase 1 — Instruction Contract Hardening
+- [x] Phase 2 — AI Guide Fallback Protocol
+- [x] Phase 3 — Governance and Graph-Link Gates
+- [x] Phase 4 — Kanban Process Remediation
+- [x] Phase 5 — Docs Sync
+- [x] Phase 6 — AI-ready docs reflection and next-plan handoff
 
 ## Phases
 
 ### Phase 1: Instruction Contract Hardening
 
-**Progress**: `[ ]`
-
-**Layer**: assistant policy layer
+**Progress**: `[x]`
 
 **Goal**: Force spec-doc-first routing and explicit fallback-to-code conditions.
 
@@ -198,16 +196,16 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Add strict routing clause**: require loading task-relevant docs before code reads.
+- [x] **1.1 — Add strict routing clause**: require loading task-relevant docs before code reads.
   - **Independent verification**: explicit mandatory language exists.
-- [ ] **1.2 — Define fallback trigger**: allow code scan only for missing/unclear/outdated docs.
+- [x] **1.2 — Define fallback trigger**: allow code scan only for missing/unclear/outdated docs.
   - **Independent verification**: fallback conditions are listed in policy text.
 
 ---
 
 ### Phase 2: AI Guide Fallback Protocol
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: retrieval guidance layer
 
@@ -224,16 +222,16 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Add retrieval decision flow**: define ordered decision path docs → fallback code scan.
+- [x] **2.1 — Add retrieval decision flow**: define ordered decision path docs → fallback code scan.
   - **Independent verification**: flow is readable and task-agnostic.
-- [ ] **2.2 — Add post-task docs-update trigger**: require update when code findings invalidate docs.
+- [x] **2.2 — Add post-task docs-update trigger**: require update when code findings invalidate docs.
   - **Independent verification**: trigger language ties implementation findings back to docs updates.
 
 ---
 
 ### Phase 3: Governance and Graph-Link Gates
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation governance layer
 
@@ -251,16 +249,16 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Add graph-link gate**: require each touched doc to maintain valid `## Related Docs` links.
+- [x] **3.1 — Add graph-link gate**: require each touched doc to maintain valid `## Related Docs` links.
   - **Independent verification**: gate language exists in maintenance protocol.
-- [ ] **3.2 — Add index-sync gate**: fail docs review if touched/new docs are missing index coverage.
+- [x] **3.2 — Add index-sync gate**: fail docs review if touched/new docs are missing index coverage.
   - **Independent verification**: pass/fail criteria include index sync.
 
 ---
 
 ### Phase 4: Kanban Process Remediation
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: process governance layer
 
@@ -278,16 +276,16 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Add active-lane gate criteria**: require evidence of docs-first retrieval and update/link checks before review/archive move.
+- [x] **4.1 — Add active-lane gate criteria**: require evidence of docs-first retrieval and update/link checks before review/archive move.
   - **Independent verification**: criteria appear under workflow/lane guidance.
-- [ ] **4.2 — Tighten rollout template prompts**: force planners to include docs search/update/link validation steps and the reusable docs-first fallback checklist snippet.
+- [x] **4.2 — Tighten rollout template prompts**: force planners to include docs search/update/link validation steps and the reusable docs-first fallback checklist snippet.
   - **Independent verification**: template text explicitly demands these checks.
 
 ---
 
 ### Phase 5: Docs Sync
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation layer
 
@@ -310,16 +308,16 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Sync metadata and links**: update `Last reviewed` fields and related-doc links where applicable.
-  - **Independent verification**: metadata/link updates are present in each touched docs file.
-- [ ] **5.2 — Validate retrieval topology**: verify index + related-doc graph still resolves to updated guidance.
-  - **Independent verification**: manual navigation from `guide.md` and index reaches all updated governance files.
+- [x] **5.1 — Sync metadata and links**: update `Last reviewed` fields and related-doc links where applicable.
+  - **Independent verification**: `docs/ai/assistant-context-index.md` now has a `## Related Docs` section; stale `.github/templates/` and `kanban/backlogs/` paths in `.github/copilot-instructions.md` replaced with correct `ai_oriented_kanban/` paths.
+- [x] **5.2 — Validate retrieval topology**: verify index + related-doc graph still resolves to updated guidance.
+  - **Independent verification**: graph from `guide.md` → `assistant-context-index.md` → `docs-maintenance.md` all resolve; no new TODOs/FIXMEs in docs; all touched docs registered in index.
 
 ---
 
 ### Phase 6: AI-ready docs reflection and next-plan handoff
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: planning/documentation improvement layer
 
@@ -327,8 +325,7 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Files**:
 
-- `ai_oriented_kanban/20-active/<next-rollout>.md` — create/modify if follow-up is required
-- `ai_oriented_kanban/20-active/260527-spec-first-doc-routing-rollout.md` — modify with handoff note
+- `ai_oriented_kanban/20-active/260527-spec-first-doc-routing-rollout.md` — modify with handoff note and reflection
 
 **Verification gate**:
 
@@ -337,10 +334,46 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 
 **Sub-subphase checklist**:
 
-- [ ] **6.1 — Summarize unresolved friction**: document where docs-first behavior still failed.
-  - **Independent verification**: unresolved items include owner and decision path.
-- [ ] **6.2 — Prepare next rollout (if needed)**: create follow-up plan focused on remaining retrieval/governance gaps.
-  - **Independent verification**: next rollout path is linked from this file.
+- [x] **6.1 — Summarize unresolved friction**: document where docs-first behavior still failed.
+  - **Independent verification**: open questions resolved below; stale paths in `copilot-instructions.md` that caused historic retrieval mismatches are now fixed.
+- [x] **6.2 — Prepare next rollout (if needed)**: no new rollout file required; open questions converted to deferred backlog items below.
+  - **Independent verification**: both open questions have a documented decision path and owner.
+
+### Reflection Notes (2026-05-27)
+
+#### What was confirmed working
+
+- Phases 1–3 enforced a clear docs-first contract across three governance layers (instruction policy, AI routing guide, docs governance).
+- Phase 4 lane-transition criteria give kanban actors objective gates to check before moving work between lanes.
+- Phase 4 rollout template update ensures the docs-first fallback checklist is a required artifact in every new rollout plan.
+- Phase 5 cleaned the only active docs debt: stale `.github/templates/` paths in `copilot-instructions.md` that would have sent assistants to a non-existent template location.
+
+#### Remaining friction points
+
+1. **No automated enforcement of docs-first checklist presence**: new rollout plans could still omit the checklist snippet without any automated signal. Mitigation: the template and lane-transition gate document the requirement; enforcement currently relies on reviewer discipline.
+
+2. **Link-graph verification is manual**: there is no automated dead-link or orphan-doc check. Mitigation: the quarterly topology review in `docs-maintenance.md` includes these checks; a future CI gate can automate them.
+
+### Open Questions — Decision Log
+
+**Q1**: Should we add a lightweight pre-merge grep check that fails when a new rollout plan is missing the standardized docs-first fallback checklist snippet?
+
+- **Decision**: Deferred — not blocking current delivery. Recommended for a future CI/tooling iteration.
+- **Owner**: Engineering lead.
+- **Revisit condition**: When a CI workflow is introduced for docs validation, include this as the first docs-gate rule.
+
+**Q2**: Should we add a quarterly audit metric (sample size + pass threshold) for manual link-graph verification quality across recently completed rollout plans?
+
+- **Decision**: Deferred — not blocking current delivery. The quarterly topology review checklist in `docs-maintenance.md` already covers the manual audit; a quantified metric can be added when audit history exists.
+- **Owner**: Engineering lead.
+- **Revisit condition**: After two quarterly audits have been completed, assess whether a sample-size metric adds value.
+
+### Session Note — 2026-05-27
+
+- **Completed**: all six phases of the spec-first doc routing rollout.
+- **Verified by**: grep verification gates on all phases; manual retrieval topology check in Phase 5.
+- **Next**: no follow-up rollout required at this time. Deferred items tracked in Open Questions above.
+- **Blockers**: none.
 
 ---
 

@@ -97,6 +97,16 @@ Representative files:
 | --- | --- |
 | `docs/<section>/<file>.md` | <what you found or confirmed> |
 
+### Docs-First Retrieval Checklist
+
+> Complete this section before writing any code. This checklist is **required** in every rollout plan.
+
+- [ ] Loaded all primary docs for this task type from [`docs/ai/guide.md`](../../docs/ai/guide.md).
+- [ ] Assessed sufficiency — docs were **sufficient** / **insufficient** _(strike one)_.
+  - If insufficient: docs that were missing, ambiguous, or outdated: `<list here>`
+  - If insufficient: fallback code scan was used for this specific decision: `<describe here>`
+- [ ] Post-task docs update required: `[ ] Yes` — captured in Docs to update below | `[ ] No` — docs remain accurate after this change.
+
 ### Docs to create
 
 | File | Reason |
@@ -302,9 +312,13 @@ If user asks for minimal change first, move architecture refactors and retry red
 - `grep -r "TODO\|FIXME\|TBD" docs/ | grep -v "_template"` returns no unresolved placeholders in updated files.
 - `grep -r "Source of truth" <updated-doc-path>` confirms the field is present and correct.
 - `grep "<new-doc-filename>" docs/ai/assistant-context-index.md` returns a match for any new doc added.
+- Docs-first retrieval checklist (above) is filled in: sufficiency was assessed and any gap is recorded.
+- All touched docs have a valid `## Related Docs` section with working relative links (docs link integrity gate).
 
 **Sub-subphase checklist**:
 
+- [ ] **N.0 — Confirm docs-first retrieval checklist**: verify the checklist in `## Docs Impact → Docs-First Retrieval Checklist` is completed; any doc update triggered by code findings is listed under "Docs to update".
+  - **Independent verification**: checklist is not blank; post-task update field is marked Yes or No with justification.
 - [ ] **N.1 — Create new docs**: author all files listed under "Docs to create".
   - **Independent verification**: all new files exist; each has `Source of truth:`, `Last reviewed:`, `Owner:` fields filled.
 - [ ] **N.2 — Update existing docs**: apply all changes listed under "Docs to update".
@@ -313,6 +327,8 @@ If user asks for minimal change first, move architecture refactors and retry red
   - **Independent verification**: `grep -r "<deleted-filename>" docs/` returns no live links to the removed file.
 - [ ] **N.4 — Update assistant-context-index.md**: add/remove entries to match new doc set.
   - **Independent verification**: `docs/ai/assistant-context-index.md` Quick Reference table reflects current state.
+- [ ] **N.5 — Verify docs link integrity**: confirm each touched doc has a valid `## Related Docs` section with working relative links.
+  - **Independent verification**: spot-check every new or modified doc — no broken relative paths, no missing `## Related Docs` section.
 
 ---
 

@@ -1,7 +1,7 @@
 # Assistant Context Index
 
 > **Source of truth**: All `docs/` sections
-> **Last reviewed**: 2026-05-26
+> **Last reviewed**: 2026-05-27
 > **Owner**: engineering
 
 ## Purpose
@@ -12,7 +12,7 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 
 | I want to understand... | Go to |
 | --- | --- |
-| **How to navigate docs for a specific task type** | [docs/ai/guide.md](guide.md) |
+| **How to navigate docs for a specific task type, and docs-first retrieval protocol** | [docs/ai/guide.md](guide.md) |
 | Overall system map, routes, invariants, dangerous areas | [docs/ai/repo-map.md](repo-map.md) |
 | Next.js App Router conventions, page/layout/loading patterns | [docs/architecture/nextjs-conventions.md](../architecture/nextjs-conventions.md) |
 | How to call the backend API, `ApiResponse<T>` shape | [docs/api/api-connection.md](../api/api-connection.md) |
@@ -64,3 +64,9 @@ middleware.proxy.ts   ← JWT guard for /main/*
 4. Follow the standard headings defined in the template.
 5. Add an entry to this index.
 6. Link from the nearest related doc's `## Related Docs` section.
+
+## Related Docs
+
+- [`docs/ai/guide.md`](guide.md)
+- [`docs/ai/repo-map.md`](repo-map.md)
+- [`docs/operations/docs-maintenance.md`](../operations/docs-maintenance.md)

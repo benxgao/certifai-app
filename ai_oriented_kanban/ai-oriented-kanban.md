@@ -162,6 +162,52 @@ Finalize a concise summary including:
 
 ---
 
+## Lane Transition Criteria
+
+Lane moves must satisfy objective checks. When a lane item depends on docs-first execution, the following gates apply before each transition.
+
+### Intake → Planned
+
+- [ ] Initiative brief includes at least one rollout phase with an explicit verification gate.
+- [ ] Risk level is assigned.
+- [ ] No phase is planned that mixes multiple dependency layers without an explicit exception note.
+
+### Planned → Active
+
+- [ ] Phase 1 (or minimum viable hotfix path) is scoped with verification gate language.
+- [ ] `## Docs Impact` section is complete: docs checked, docs to create/update/delete identified.
+- [ ] Docs-first retrieval checklist is present in the rollout plan (see template).
+
+### Active → Review
+
+Before moving an item from **20-active** to **30-review**, confirm all three gates:
+
+**Docs search evidence**
+
+- [ ] Relevant spec docs were loaded before any code was read or written.
+- [ ] Record which docs were checked and what each confirmed (or left insufficient).
+
+**Docs update evidence**
+
+- [ ] Any doc found insufficient, missing, or outdated during execution was updated in the same PR, or a follow-up kanban item was created and linked.
+
+**Docs link integrity**
+
+- [ ] Each new or modified doc has a valid `## Related Docs` section with working relative links.
+- [ ] New or renamed docs are registered in `docs/ai/assistant-context-index.md`.
+
+If any gate cannot be confirmed, the item stays in **20-active** until the gap is resolved or explicitly deferred with a tracked follow-up item.
+
+### Review → Archive
+
+Before moving an item from **30-review** to **40-archive**, confirm:
+
+- [ ] All review comments are resolved or explicitly deferred with a tracked follow-up item.
+- [ ] Final docs state is verified: no stale `Last reviewed` dates and no broken links in touched docs.
+- [ ] Executive closeout or final summary artifact is complete.
+
+---
+
 ## Artifact templates (minimum useful set)
 
 ### `phase-XX.md`
@@ -239,7 +285,7 @@ Run periodic audits to detect:
 
 ### 5) Define entry/exit criteria for each Kanban lane
 
-Prevent ambiguous movement by requiring objective checks before transition from planning → active → review → archive.
+Prevent ambiguous movement by requiring objective checks before transition from planning → active → review → archive. See **Lane Transition Criteria** above for the concrete docs search/update/link gate requirements.
 
 ### 6) Separate “implemented” from “released” in trackers
 
