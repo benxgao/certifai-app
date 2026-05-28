@@ -365,7 +365,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 **Invariants**:
 
 - Every rollout plan must include a `## Docs Impact` section listing docs checked, docs to create/update/delete.
-- Every rollout plan must end with a `## Docs Sync` phase as the final step.
+- Every rollout plan must include mandatory closing phases in order: `## Docs Sync` (Phase N), `## AI-ready docs reflection and next-plan handoff` (Phase N+1), and `## Rollout Eval & Health Score` (Phase N+2).
 - Check `docs/ai/assistant-context-index.md` before listing a doc as "to create" — it may already exist.
 
 **Anti-patterns**:

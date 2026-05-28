@@ -227,7 +227,7 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Add eval score gate to archive criteria**: add a bullet requiring Phase N+2 to be marked `[x]` with score ≥ 70 before archiving.
+- [x] **2.1 — Add eval score gate to archive criteria**: add a bullet requiring Phase N+2 to be marked `[x]` with score ≥ 70 before archiving.
   - **Independent verification**: gate text references the score threshold and the eval phase.
 
 ---
@@ -246,8 +246,15 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Add eval phase note to guide**: one to two sentences referencing the Eval Phase requirement and linking to the template.
+- [x] **3.1 — Add eval phase note to guide**: one to two sentences referencing the Eval Phase requirement and linking to the template.
   - **Independent verification**: no duplicated guidance; note links to `rollout-plan-template.md`.
+
+### Session Note — 2026-05-28 06:28 UTC
+
+- Completed: 2.1, 3.1
+- Verified by: `grep -n "eval\\|score\\|70" ai_oriented_kanban/ai-oriented-kanban.md && grep -n "eval\\|score\\|Eval Phase" docs/ai/guide.md`
+- Next: 4.1
+- Blockers: none
 
 ---
 
@@ -415,4 +422,4 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 ## Open Questions
 
-See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. D1 and D4 were applied as A-options for Phase 1 execution (`>= 70` threshold; keep Phase 5/6 separate). D2, D3, and D5 can be decided any time before Phase 2 begins.
+See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. D1 and D4 were applied as A-options for Phase 1 execution (`>= 70` threshold; keep Phase 5/6 separate). D2, D3, and D5 should be decided before Phase 4 begins.

@@ -205,6 +205,7 @@ Before moving an item from **30-review** to **40-archive**, confirm:
 - [ ] All review comments are resolved or explicitly deferred with a tracked follow-up item.
 - [ ] Final docs state is verified: no stale `Last reviewed` dates and no broken links in touched docs.
 - [ ] Executive closeout or final summary artifact is complete.
+- [ ] Rollout eval gate passed: Phase N+2 (Eval & Health Score) is marked `[x]` with score `>= 70`.
 
 ---
 
