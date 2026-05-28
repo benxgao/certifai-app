@@ -198,10 +198,17 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Draft Eval Phase block**: add Phase N+2 with goal, scoring rubric table, verification gate, and sub-subphase checklist to the template's `## Required structure` section.
+- [x] **1.1 — Draft Eval Phase block**: add Phase N+2 with goal, scoring rubric table, verification gate, and sub-subphase checklist to the template's `## Required structure` section.
   - **Independent verification**: template compiles cleanly; phase heading is consistent with Phase N and N+1 style.
-- [ ] **1.2 — Add score field to Progress Dashboard**: extend the Progress Dashboard block in the template to include Phase N+2.
+- [x] **1.2 — Add score field to Progress Dashboard**: extend the Progress Dashboard block in the template to include Phase N+2.
   - **Independent verification**: `grep -n "Phase N+2" rollout-plan-template.md` returns a match in both the Progress Dashboard and the Phases sections.
+
+### Session Note — 2026-05-28 06:13 UTC
+
+- Completed: 1.1, 1.2
+- Verified by: `grep -n "Eval\\|Health Score\\|scorecard\\|Phase N+2" ai_oriented_kanban/templates/rollout-plan-template.md`
+- Next: 2.1
+- Blockers: none (executed with D1=A `>= 70` threshold and D4=A keep Phase 5/6 separate)
 
 ---
 
@@ -408,4 +415,4 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 ## Open Questions
 
-See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. Phase 1 execution is blocked until D1 (threshold) and D4 (phase merge) are decided. D2, D3, and D5 can be decided any time before Phase 2 begins.
+See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. D1 and D4 were applied as A-options for Phase 1 execution (`>= 70` threshold; keep Phase 5/6 separate). D2, D3, and D5 can be decided any time before Phase 2 begins.
