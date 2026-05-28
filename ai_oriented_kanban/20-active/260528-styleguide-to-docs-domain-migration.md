@@ -8,7 +8,7 @@ The goal is to centralize documentation under the docs-domain architecture so bo
 
 ## Current Evaluation
 
-### What already exists
+### Current state
 
 - `docs/style/conventions.md` already references styleguide inputs and central style conventions.
 - AI retrieval index exists in `docs/ai/assistant-context-index.md` and routing rules exist in `docs/ai/guide.md`.
@@ -198,7 +198,7 @@ Representative files:
 
 **Verification gate**:
 
-- `rg -n "Source of truth.*styleguide\/|styleguide\/.*[Ss]ource of truth" docs/` (or equivalent `grep` check) returns no matches.
+- `rg -n "Source of truth.*styleguide\/|styleguide\/.*[Ss]ource of truth" docs/` (or `grep -rEn "Source of truth.*styleguide/|styleguide/.*[Ss]ource of truth" docs/`) returns no matches.
 - Updated docs include valid `## Related Docs` links.
 
 ### Phase 4: Remove `styleguide/` folder
@@ -248,6 +248,7 @@ Representative files:
 
 - Reflection captures at least one confirmed improvement.
 - Any unresolved question includes decision owner or revisit criteria.
+- Reflection converts feedback into explicit follow-up actions for the next rollout cycle.
 - Current rollout has a handoff note to follow-up plan if needed.
 
 ### Phase 7: Rollout Eval & Health Score _(mandatory closing phase)_
@@ -297,6 +298,43 @@ docs sync + reflection + eval
 1. Restore deleted `styleguide/*.md` files from previous commit if migration quality gate fails.
 2. Revert docs-domain updates that introduced conflicting or incomplete guidance.
 3. Re-run docs link and retrieval checks before reattempting removal.
+
+## Spec-First Validation Review (Current Session)
+
+### Self-reflection on this styleguide-migration planning process
+
+#### What worked well
+
+- Docs-first retrieval was followed before proposing implementation steps, keeping the rollout aligned with repository guidance.
+- The plan enforces dependency-safe sequencing (inventory → migration → routing updates → deletion), which reduces accidental breakage.
+- Verification gates were made command-oriented, improving reproducibility during execution.
+
+#### What was weak or incomplete
+
+- Spec coverage is still not fully explicit at section granularity (styleguide section → destination heading mapping table is not yet embedded).
+- Historical-reference handling is underspecified; archived mentions are allowed but not yet governed by a concise acceptance rule.
+- Reflection and evaluation are currently concentrated at the end of the rollout; there is limited mid-phase learning capture before Phase 6.
+
+### Feedback suggestions to improve spec-first development
+
+1. Add a mandatory section-mapping table in Phase 1 (`styleguide source section`, `target docs section`, `migration status`) to prevent silent omissions.
+2. Add a single acceptance rule for historical references: allow only archival/ADR context, never canonical guidance, with a verification command in Phase 4.
+3. Add a mid-rollout checkpoint note after Phase 2 to capture spec gaps early instead of waiting until Phase 6.
+4. Add an explicit owner field for each follow-up action generated during reflection to improve accountability.
+5. Add a lightweight "spec drift check" in Phase 3 to ensure docs updates did not diverge from the original phase goals.
+
+### Plan adjustments from this reflection
+
+- Phase 1 should produce a section-level migration matrix as a required artifact.
+- Phase 3 should include a spec-drift check against Phase 1 mapping output.
+- Phase 6 should require converting reflection findings into assigned follow-up actions.
+
+### Session Note — 2026-05-28 07:28 UTC
+
+- Completed: spec-first validation review and self-reflection update for rollout plan
+- Verified by: doc review against `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, and this rollout's phase gates
+- Next: execute Phase 1 with section-level migration matrix
+- Blockers: none
 
 ## Open Questions
 
