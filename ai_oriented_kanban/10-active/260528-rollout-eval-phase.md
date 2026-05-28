@@ -1,4 +1,4 @@
-# Intake: Rollout Eval Phase — Spec-First Health Scorecard
+# Rollout Plan: Eval Phase — Spec-First Health Scorecard
 
 ## Background
 
