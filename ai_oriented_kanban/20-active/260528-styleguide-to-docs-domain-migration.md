@@ -86,9 +86,9 @@ Representative files:
 
 - [x] Loaded all primary docs for this task type from `docs/ai/guide.md`.
 - [x] Assessed sufficiency — docs were **insufficient** for complete migration mapping.
-  - If insufficient: docs that were missing, ambiguous, or outdated: explicit one-to-one coverage mapping from each `styleguide/*.md` section to domain-doc sections.
-  - If insufficient: fallback code scan was used for this specific decision: scanned repository references to `styleguide/` to identify impacted docs.
-- [x] Post-task docs update required: `[x] Yes` — captured in Docs to update below | `[ ] No` — docs remain accurate after this change.
+  - Missing or ambiguous docs: explicit one-to-one coverage mapping from each `styleguide/*.md` section to domain-doc sections.
+  - Fallback code scan used: scanned repository references to `styleguide/` to identify impacted docs.
+- [x] Post-task docs update required: Yes — captured in Docs to update below.
 
 ### Docs to create
 
@@ -198,7 +198,7 @@ Representative files:
 
 **Verification gate**:
 
-- `rg -n "styleguide/" docs/` returns only historical or explicitly non-canonical mentions.
+- `rg -n "styleguide/" docs/` (or `grep -rn "styleguide/" docs/`) returns only historical or explicitly non-canonical mentions.
 - Updated docs include valid `## Related Docs` links.
 
 ### Phase 4: Remove `styleguide/` folder
@@ -219,7 +219,7 @@ Representative files:
 **Verification gate**:
 
 - No active canonical doc depends on styleguide files.
-- `rg -n "styleguide/" docs/` produces no active source-of-truth dependency.
+- `rg -n "styleguide/" docs/` (or `grep -rn "styleguide/" docs/`) produces no active source-of-truth dependency.
 
 ### Phase 5: Docs Sync _(mandatory closing phase)_
 
