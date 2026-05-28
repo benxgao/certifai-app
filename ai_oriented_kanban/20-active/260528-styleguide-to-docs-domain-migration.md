@@ -198,7 +198,7 @@ Representative files:
 
 **Verification gate**:
 
-- `rg -n "styleguide/" docs/` (recursive by default; or `grep -rn "styleguide/" docs/`) returns only historical or explicitly non-canonical mentions.
+- `rg -n "Source of truth.*styleguide/|styleguide/.*[Ss]ource of truth" docs/` (or equivalent `grep` check) returns no matches.
 - Updated docs include valid `## Related Docs` links.
 
 ### Phase 4: Remove `styleguide/` folder
@@ -219,7 +219,7 @@ Representative files:
 **Verification gate**:
 
 - No active canonical doc depends on styleguide files.
-- `rg -n "styleguide/" docs/` (recursive by default; or `grep -rn "styleguide/" docs/`) produces no active source-of-truth dependency.
+- `rg -n "styleguide/" docs/` (recursive by default; or `grep -rn "styleguide/" docs/`) returns only historical/non-canonical mentions after folder removal.
 
 ### Phase 5: Docs Sync _(mandatory closing phase)_
 
@@ -233,7 +233,7 @@ Representative files:
 
 - All docs in "Docs to update" are completed with current `Last reviewed:` date.
 - All docs in "Docs to delete" are removed or clearly archived.
-- `rg -n "TODO|FIXME|TBD" docs/` shows no unresolved placeholders in touched files.
+- `rg -n "TODO|FIXME|TBD" docs/` shows no unresolved placeholders across `docs/` in scope of this rollout.
 - Docs-first retrieval checklist remains complete and accurate.
 
 ### Phase 6: AI-ready docs reflection and next-plan handoff _(mandatory closing phase)_
