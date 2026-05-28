@@ -273,16 +273,23 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Score the 260527 rollout**: fill in the scoring rubric based on the actual Phase 5 and Phase 6 artifacts already in that plan.
+- [x] **4.1 — Score the 260527 rollout**: fill in the scoring rubric based on the actual Phase 5 and Phase 6 artifacts already in that plan.
   - **Independent verification**: score is justified dimension by dimension; no dimension is left blank.
-- [ ] **4.2 — Assess rubric quality**: if the score produces a surprising result (very high or very low), record the reason and adjust the rubric or threshold in Phase 1 artifacts.
+- [x] **4.2 — Assess rubric quality**: if the score produces a surprising result (very high or very low), record the reason and adjust the rubric or threshold in Phase 1 artifacts.
   - **Independent verification**: rubric adjustment (if any) is reflected back in the template and documented.
+
+### Session Note — 2026-05-28 06:50 UTC
+
+- Completed: 4.1, 4.2
+- Verified by: retrospective eval score table added in `ai_oriented_kanban/40-archive/26-05/260527-spec-first-doc-routing-rollout.md` with all dimensions populated and total `100/100` (`>= 70` pass).
+- Next: 5.1
+- Blockers: none
 
 ---
 
 ### Phase 5: Docs Sync
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation layer
 
@@ -293,6 +300,7 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 - `ai_oriented_kanban/templates/rollout-plan-template.md`
 - `ai_oriented_kanban/ai-oriented-kanban.md`
 - `docs/ai/guide.md`
+- `docs/ai/assistant-context-index.md`
 
 **Verification gate**:
 
@@ -302,10 +310,17 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Sync metadata and links**: update `Last reviewed:` fields and related-doc links.
-  - **Independent verification**: all three modified docs have updated metadata.
-- [ ] **5.2 — Validate retrieval topology**: confirm index + related-doc graph resolves correctly after changes.
-  - **Independent verification**: no broken relative paths in changed sections.
+- [x] **5.1 — Sync metadata and links**: update `Last reviewed:` fields and related-doc links.
+  - **Independent verification**: `docs/ai/guide.md` and `docs/ai/assistant-context-index.md` `Last reviewed:` updated to `2026-05-28`; assistant context index now includes `rollout-plan-template.md` and related-doc reference.
+- [x] **5.2 — Validate retrieval topology**: confirm index + related-doc graph resolves correctly after changes.
+  - **Independent verification**: no broken relative paths in changed sections; template path resolves from both guide and assistant context index.
+
+### Session Note — 2026-05-28 06:55 UTC
+
+- Completed: 5.1, 5.2
+- Verified by: `grep -r "TODO\\|FIXME\\|TBD" docs/ | grep -v "_template"` (no new placeholders) and `grep "rollout-plan-template" docs/ai/assistant-context-index.md` (template indexed).
+- Next: 6.1
+- Blockers: none
 
 ---
 
@@ -398,6 +413,7 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 | `ai_oriented_kanban/templates/rollout-plan-template.md` | Add Phase N+2 (Eval & Health Score) with scoring rubric and verification gate |
 | `ai_oriented_kanban/ai-oriented-kanban.md` | Add eval score ≥ 70 as archive lane-transition criterion |
 | `docs/ai/guide.md` | Add brief reference to eval phase expectation |
+| `docs/ai/assistant-context-index.md` | Index rollout template so retrieval topology includes the canonical planning template |
 
 ### Docs to delete or archive
 
@@ -422,4 +438,4 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 ## Open Questions
 
-See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. D1 and D4 were applied as A-options for Phase 1 execution (`>= 70` threshold; keep Phase 5/6 separate). D2, D3, and D5 should be decided before Phase 4 begins.
+See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. D1 and D4 were applied as A-options for Phase 1 execution (`>= 70` threshold; keep Phase 5/6 separate). D2, D3, and D5 remain open and should be decided before this rollout is archived.

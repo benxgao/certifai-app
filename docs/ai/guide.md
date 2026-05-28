@@ -1,7 +1,7 @@
 # AI Assistant Guide
 
 > **Source of truth**: `docs/` directory structure — this file navigates, not restates.
-> **Last reviewed**: 2026-05-27
+> **Last reviewed**: 2026-05-28
 > **Owner**: Engineering team
 
 ## Purpose
