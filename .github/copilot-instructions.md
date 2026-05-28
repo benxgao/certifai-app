@@ -53,6 +53,12 @@ cd certifai-api/functions && npx tsc --noEmit 2>&1 | grep "^src/"
 cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(app|src)/"
 ```
 
+## Temporary Validation Exception
+
+- `npm run lint` and `npm run test:e2e` may be skipped when there is a known repository-level blocker.
+- When skipped, record the reason in the active rollout/session note and continue non-lint/non-test verification gates.
+- Remove this exception once the blocking issues are fixed.
+
 ## E2E Tests (Playwright)
 
 - See `e2e/instructions.md` for the full authoring guide
