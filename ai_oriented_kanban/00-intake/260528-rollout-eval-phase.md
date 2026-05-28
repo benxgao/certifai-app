@@ -69,6 +69,92 @@ If future rollouts consistently show Phase 5 completes in < 30 minutes with no i
 
 ---
 
+## Spec Health Evaluation — Actionable Suggestions
+
+This section captures concrete improvements that emerged from designing the eval phase. Items are split by whether they require your input or can be applied directly.
+
+### Applied directly in Phase 5 & 6 (no decision needed)
+
+These are small, unambiguous additions that will be woven into the existing Phase 5 (Docs Sync) and Phase 6 (AI-ready reflection) sub-subphase checklists when the rollout executes. No owner decision is required.
+
+| Where | What gets added |
+| --- | --- |
+| Phase 5, sub-subphase 5.1 | Add a one-line **Docs change summary**: count of docs created / updated / archived in this rollout — makes the topology audit faster |
+| Phase 5, verification gate | Add explicit check: Docs-First Retrieval Checklist sufficiency field is not left blank — "assessed" must include the actual verdict (sufficient / insufficient), not just a checkbox |
+| Phase 5, verification gate | Add check: every new doc created in this rollout has an `Owner:` field filled — prevents orphan docs |
+| Phase 6, sub-subphase 6.1 | Add a required **Docs quality delta line**: one sentence on whether docs got better, stayed the same, or degraded during this rollout — feeds the quarterly audit baseline |
+| Phase 6, sub-subphase 6.2 | Add a required **Skipped phase log**: explicitly record any phase that was skipped or marked `[!]` with its justification — prevents silent gaps in the eval score |
+
+These additions are small enough to live as bullet additions inside the existing sub-subphase checklist items in the rollout plan template. They do not change the phase structure.
+
+### Decisions requiring your input
+
+These cannot be applied without an explicit owner choice. Please review and respond with your preference for each item before Phase 1 execution begins.
+
+**D1 — Eval score threshold for archiving**
+
+Proposed: plans must score ≥ 70 / 100 to move from Review → Archive.
+
+Options:
+- A. Accept ≥ 70 as the pass threshold.
+- B. Use a different threshold (e.g., ≥ 60 for early rollouts while rubric is being calibrated, then raise to ≥ 70 after three rollouts).
+- C. No numeric threshold — require score to be recorded but not gated. Gate only on checklist completion.
+
+_Why it matters_: Option A enforces the rubric immediately but risks blocking plans if the rubric is miscalibrated. Option C gives data without gate risk during the calibration period.
+
+---
+
+**D2 — Score visibility in kanban**
+
+Proposed: score is recorded in the plan body (session note) only.
+
+Options:
+- A. Plan body only — no change to kanban item title or label.
+- B. Append score to the archive filename, e.g., `260528-rollout-eval-phase-82.md`, so score is visible in directory listing.
+- C. Add a score badge in the kanban item's front matter / heading line.
+
+_Why it matters_: Option B/C makes trend-spotting faster in future audits but adds a naming convention to enforce.
+
+---
+
+**D3 — Rubric weight distribution**
+
+Proposed: Docs-first adherence 40 / Docs health 40 / Reflection quality 20.
+
+Options:
+- A. Accept 40 / 40 / 20 as-is.
+- B. Shift weight toward reflection: 30 / 30 / 40 — values the learning signal over checklist compliance.
+- C. Equal thirds: 33 / 33 / 34 — simplest to remember.
+
+_Why it matters_: The current 40/40/20 weighting treats docs mechanics as the primary signal. If the goal is to improve learning quality over time, reflection deserves more weight.
+
+---
+
+**D4 — Phase 5 & 6 merge decision**
+
+Current recommendation: keep them structurally separate.
+
+Options:
+- A. Keep separate (recommended) — Phase 5 stays checklist-driven, Phase 6 stays reflection-driven. The Eval Phase (N+2) acts as the shared closing gate.
+- B. Merge into one combined "Docs Sync & Reflection" phase — reduces phase count, acceptable if reflection discipline is already strong.
+
+_Why it matters_: Merging is the simpler template, but historical evidence (260527) shows reflection gets compressed when it shares a phase with a checklist-heavy docs sync step.
+
+---
+
+**D5 — Rubric recalibration cadence**
+
+Proposed: after three completed rollout scores are collected, review the rubric weights and thresholds.
+
+Options:
+- A. Accept three-rollout review cadence.
+- B. Review after every rollout until scores stabilize, then move to quarterly.
+- C. No scheduled recalibration — adjust only if a score produces a visibly wrong signal.
+
+_Who reviews_: Engineering lead (same owner as Q1 and Q2 in the 260527 plan).
+
+---
+
 ## Rollout Plan
 
 ### Summary
@@ -322,6 +408,4 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 
 ## Open Questions
 
-1. Should the score be visible in the `00-intake` / `20-active` kanban item title or only in the plan body?
-2. Should there be a minimum score threshold for archiving (e.g., ≥ 70), or should any completed score be sufficient?
-3. After gathering scores from three or more rollouts, should we adjust the rubric weights based on actual execution patterns?
+See **Decisions D1–D5** in the [Spec Health Evaluation — Actionable Suggestions](#spec-health-evaluation--actionable-suggestions) section above. Phase 1 execution is blocked until D1 (threshold) and D4 (phase merge) are decided. D2, D3, and D5 can be decided any time before Phase 2 begins.
