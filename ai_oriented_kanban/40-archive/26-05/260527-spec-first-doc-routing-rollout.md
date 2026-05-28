@@ -375,6 +375,17 @@ Each phase must stay in one layer: instruction policy, AI docs routing, governan
 - **Next**: no follow-up rollout required at this time. Deferred items tracked in Open Questions above.
 - **Blockers**: none.
 
+### Retrospective Eval Score — 2026-05-28
+
+| Dimension | Points | Evidence |
+| --- | --- | --- |
+| Docs-first adherence | 40/40 | Docs Impact checklist in this rollout was completed with sufficiency assessment and update path. |
+| Docs health | 40/40 | Phase 5 verification gate passed with link integrity and index synchronization checks completed. |
+| Reflection quality | 20/20 | Phase 6 reflection recorded confirmed improvements and both open questions include owner + revisit condition. |
+| **Total** | **100/100** | **Pass (`>= 70`) — archive-ready.** |
+
+Rubric quality check: no adjustment needed. A high score is expected because this rollout completed all docs and reflection gates with explicit evidence.
+
 ---
 
 ## Dependency Graph

@@ -12,7 +12,7 @@ Use this template when a user asks for a rollout plan, phased plan, migration pl
 - Identify a minimum-viable hotfix path (usually first 1–2 phases) before progressive hardening.
 - If a phase is too large for one safe commit, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
 - Prefer wording that makes the plan easy to execute incrementally in separate commits.
-- Always include a mandatory final phase for AI-ready docs reflection and next-plan handoff.
+- Always include mandatory closing phases for Docs Sync, AI-ready docs reflection/next-plan handoff, and Eval & Health Score.
 
 ## Progress markers
 
@@ -205,6 +205,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 - [ ] Phase 3 — <name>
 - [ ] Phase N — Docs Sync
 - [ ] Phase N+1 — AI-ready docs reflection and next-plan handoff
+- [ ] Phase N+2 — Rollout Eval & Health Score
 
 ## Phases
 
@@ -332,7 +333,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
-### Phase N+1: AI-ready docs reflection and next-plan handoff _(mandatory final phase)_
+### Phase N+1: AI-ready docs reflection and next-plan handoff _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -366,6 +367,52 @@ If user asks for minimal change first, move architecture refactors and retry red
   - **Independent verification**: next plan includes phases, verification gates, and rollback plan.
 - [ ] **N+1.4 — Record handoff in current plan**: add session note linking to next rollout path.
   - **Independent verification**: link/path is present and readable.
+
+---
+
+### Phase N+2: Rollout Eval & Health Score _(mandatory closing phase)_
+
+**Progress**: `[ ]`
+
+**Layer**: rollout quality/evaluation layer
+
+**Goal**: Produce a 0–100 rollout health score after Docs Sync and AI-ready reflection complete, and record the score with evidence in a session note.
+
+**Pre-condition check**:
+- Confirm Phase N (Docs Sync) and Phase N+1 (AI-ready reflection/handoff) are both marked `[x]` or have documented `[!]` justifications.
+- Confirm docs-first retrieval checklist and reflection decisions are available as scoring evidence.
+
+**Scoring rubric**:
+
+| Dimension | Max Points | How scored |
+| --- | --- | --- |
+| Docs-first adherence | 40 | Docs-First Retrieval Checklist fully completed, sufficiency explicitly assessed, and fallback decisions documented if used |
+| Docs health | 40 | All Docs Sync verification gates passed: create/update/archive/link-index checks complete |
+| Reflection quality | 20 | Reflection records at least one confirmed improvement and every open question has an owner or revisit condition |
+| **Total** | **100** | Suggested pass threshold: `>= 70` |
+
+**Scoring rules**:
+
+- Gate passed = full points for that gate.
+- Gate skipped without justification = 0 points for that gate.
+- Gate marked `[!]` with documented reason = half points for that gate.
+
+**Verification gate**:
+
+- Score table is populated with evidence for all three dimensions.
+- Total score is calculated and recorded.
+- A session note records the final score, dimension-by-dimension justification, and archive readiness decision.
+
+**Sub-subphase checklist**:
+
+- [ ] **N+2.1 — Evaluate docs-first adherence**: review Docs-First Retrieval Checklist completion and sufficiency verdict.
+  - **Independent verification**: checklist is complete and sufficiency is explicitly marked sufficient/insufficient.
+- [ ] **N+2.2 — Evaluate docs health**: review Docs Sync verification-gate results.
+  - **Independent verification**: every docs gate is pass, justified block, or justified skip.
+- [ ] **N+2.3 — Evaluate reflection quality**: review AI-ready reflection decisions and handoff outputs.
+  - **Independent verification**: at least one confirmed improvement and owner/criteria for all open questions.
+- [ ] **N+2.4 — Record final score session note**: write session note with score breakdown and final recommendation.
+  - **Independent verification**: session note includes total score and archive gate decision (`>= 70` pass / `< 70` hold).
 
 ---
 
@@ -455,5 +502,5 @@ At the end of each working session:
 - Keep each phase to one dependency layer unless explicitly marked as contract-alignment phase.
 - Use the template as the default structure, but trim sections that truly do not apply.
 - If the user asks for a lighter or shorter plan, compress the structure rather than abandoning it entirely.
-- Docs Sync is mandatory when docs are affected, and the AI-ready docs reflection/handoff phase is always mandatory as the final phase.
+- Docs Sync, AI-ready docs reflection/handoff, and Rollout Eval & Health Score are mandatory closing phases.
 ```

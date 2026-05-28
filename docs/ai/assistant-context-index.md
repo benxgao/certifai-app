@@ -1,7 +1,7 @@
 # Assistant Context Index
 
 > **Source of truth**: All `docs/` sections
-> **Last reviewed**: 2026-05-27
+> **Last reviewed**: 2026-05-28
 > **Owner**: engineering
 
 ## Purpose
@@ -40,6 +40,7 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | Docs ownership, update cadence, freshness SLA | [docs/operations/docs-maintenance.md](../operations/docs-maintenance.md) |
 | AI retrieval smoke-test QA protocol | [docs/operations/ai-retrieval-smoke-tests.md](../operations/ai-retrieval-smoke-tests.md) |
 | Workflow docs naming/location convention | [docs/workflow/README.md](../workflow/README.md) |
+| How to author phased rollout plans and mandatory closing phases | [ai_oriented_kanban/templates/rollout-plan-template.md](../../ai_oriented_kanban/templates/rollout-plan-template.md) |
 
 ## Key Source Paths
 
@@ -81,3 +82,4 @@ docs/billing/         ← billing/Stripe domain docs
 - [AI Guide](guide.md)
 - [Repo Map](repo-map.md)
 - [Docs Maintenance](../operations/docs-maintenance.md)
+- [Rollout Plan Template](../../ai_oriented_kanban/templates/rollout-plan-template.md)
