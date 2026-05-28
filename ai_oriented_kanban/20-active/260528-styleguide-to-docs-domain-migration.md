@@ -198,7 +198,7 @@ Representative files:
 
 **Verification gate**:
 
-- `rg -n "styleguide/" docs/` (or `grep -rn "styleguide/" docs/`) returns only historical or explicitly non-canonical mentions.
+- `rg -n "styleguide/" docs/` (recursive by default; or `grep -rn "styleguide/" docs/`) returns only historical or explicitly non-canonical mentions.
 - Updated docs include valid `## Related Docs` links.
 
 ### Phase 4: Remove `styleguide/` folder
@@ -219,7 +219,7 @@ Representative files:
 **Verification gate**:
 
 - No active canonical doc depends on styleguide files.
-- `rg -n "styleguide/" docs/` (or `grep -rn "styleguide/" docs/`) produces no active source-of-truth dependency.
+- `rg -n "styleguide/" docs/` (recursive by default; or `grep -rn "styleguide/" docs/`) produces no active source-of-truth dependency.
 
 ### Phase 5: Docs Sync _(mandatory closing phase)_
 
