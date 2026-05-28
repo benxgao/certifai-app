@@ -370,7 +370,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
-### Phase N+2: Rollout Eval & Health Score _(mandatory final phase)_
+### Phase N+2: Rollout Eval & Health Score _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 

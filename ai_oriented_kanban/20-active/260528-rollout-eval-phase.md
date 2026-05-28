@@ -353,7 +353,7 @@ Update the rollout plan template to enforce a mandatory Eval Phase after Docs Sy
 - Completed: 6.1, 6.2
 - Verified by: reflection outcomes recorded with explicit data points from Phase 4 (`100/100`) and completed Phase 5 docs-sync evidence.
 - Next: 7.1
-- Blockers: lint/test validation intentionally skipped due known repo-level blockers; non-lint/non-test verification gates completed.
+- Blockers: lint/test validation intentionally skipped due to known repo-level blockers; non-lint/non-test verification gates completed.
 
 ---
 
