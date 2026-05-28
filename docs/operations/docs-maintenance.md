@@ -1,7 +1,7 @@
 # Docs Maintenance Protocol
 
 > **Source of truth**: This file — governs all documentation under `docs/`
-> **Last reviewed**: 2026-05-27
+> **Last reviewed**: 2026-05-28
 > **Owner**: Engineering team
 
 ## Purpose
@@ -61,7 +61,7 @@ A doc must be updated in the **same PR** as the code change if:
 | New or changed `src/lib/client-fetch.ts`, `fetch-config.ts`, `api-utils.ts` | `docs/api/api-connection.md` |
 | New or changed `src/context/` provider | `docs/state/client-state.md` |
 | New or changed `src/types/swr-data/` type file | `docs/data/data-models.md` |
-| Style rule change in `styleguide/` or `src/components/ui/` | `docs/style/conventions.md` |
+| Style rule change in `styleguide/` or `src/components/ui/` | `styleguide/README.md`, `docs/style/conventions.md` |
 | Change to `middleware.proxy.ts` or `src/lib/auth-*.ts` | `docs/security/auth-patterns.md` |
 | New or changed rate-limiting or optimized hook | `docs/performance/patterns.md` |
 | Change to `__tests__/setup.ts`, new test file, or E2E fixture | `docs/testing/strategy.md` |

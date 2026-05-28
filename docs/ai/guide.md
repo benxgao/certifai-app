@@ -274,8 +274,9 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 
 **Primary docs to load**:
 
-1. [`docs/style/conventions.md`](../style/conventions.md) — Tailwind, shadcn/ui, `cn()`, dark mode requirement, component location rules
-2. [`docs/ai/repo-map.md`](repo-map.md) — confirm correct `src/components/` subdirectory
+1. [`styleguide/README.md`](../../styleguide/README.md) — styleguide entry point and docs bridge contract
+2. [`docs/style/conventions.md`](../style/conventions.md) — Tailwind, shadcn/ui, `cn()`, dark mode requirement, component location rules
+3. [`docs/ai/repo-map.md`](repo-map.md) — confirm correct `src/components/` subdirectory
 
 **Invariants**:
 
@@ -289,7 +290,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 - Inline `style={{}}` for things achievable with Tailwind.
 - Adding new shadcn/ui components without checking if they already exist in `src/components/ui/`.
 
-**Docs to update after implementation**: `docs/style/conventions.md` (if new pattern introduced).
+**Docs to update after implementation**: `styleguide/README.md` (if styleguide structure or routing contract changes); `docs/style/conventions.md` (if new pattern introduced); `docs/ai/assistant-context-index.md` (if styleguide routing entry changes).
 
 ---
 

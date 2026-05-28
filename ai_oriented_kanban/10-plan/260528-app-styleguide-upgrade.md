@@ -1,7 +1,8 @@
 # App Styleguide Upgrade — Rollout Plan
 
 **Created**: 11 May 2026
-**Status**: Backlog
+**Last scanned**: 28 May 2026
+**Status**: Backlog (revalidated)
 **Reference**: [`styleguide/app.md`](../../styleguide/app.md)
 
 ## Context
@@ -23,7 +24,7 @@ The goal of this rollout is to produce `src/config/app-theme.ts` as the app-laye
 
 **Files to create**: 1 (`src/config/app-theme.ts`)
 
-**Files to modify**: 6
+**Files to modify**: 7
 
 - `src/components/custom/appheader.tsx`
 - `src/components/ui/dashboard-card.tsx`
@@ -32,6 +33,31 @@ The goal of this rollout is to produce `src/config/app-theme.ts` as the app-laye
 - `src/components/custom/ActionButton.tsx`
 - `src/components/custom/QuestionCard.tsx`
 - `src/components/custom/StatsCard.tsx`
+
+## Latest scan snapshot (28 May 2026)
+
+### Codebase findings
+
+- `src/config/app-theme.ts` does **not** exist yet.
+- `AppHeader`, `DashboardCard`, `PageWrapper`, `StatusBadge`, `ActionButton`, `QuestionCard`, and `StatsCard` are still using inline Tailwind classes for the areas targeted by this rollout.
+- `styleguide/app.md` already documents the centralization direction and phased migration checklist, but implementation is still pending.
+
+### Phase status
+
+| Phase                                        | Status         | Notes                                                             |
+| -------------------------------------------- | -------------- | ----------------------------------------------------------------- |
+| Phase 0 — Create `app-theme.ts`              | ⏳ Not started | Config file not present.                                          |
+| Phase 1 — Token-back `AppHeader`             | ⏳ Not started | `appheader.tsx` still hardcodes shell/nav classes.                |
+| Phase 2 — Token-back `DashboardCard`         | ⏳ Not started | `dashboard-card.tsx` still hardcodes card/header/content classes. |
+| Phase 3 — Token-back `PageWrapper`           | ⏳ Not started | Background/container classes still inline in `page-wrapper.tsx`.  |
+| Phase 4 — Centralize `StatusBadge` map       | ⏳ Not started | Per-status color map remains local in `status-badge.tsx`.         |
+| Phase 5 — `ActionButton` token coverage      | ⏳ Not started | `success` + `outline` variants still inline.                      |
+| Phase 6 — Reduce `QuestionCard` inline noise | ⏳ Not started | Heavy gradient/blur chains still present.                         |
+| Phase 7 — `StatsCard` alignment              | ⏳ Not started | Decorative orbs and gradient text remain inline.                  |
+
+### Next execution order (unchanged)
+
+Start with Phase 0, then continue with Phases 1–3 in parallel-safe order, followed by Phases 4/7, then 5, then 6.
 
 **Out of scope**:
 

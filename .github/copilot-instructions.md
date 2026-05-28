@@ -71,7 +71,6 @@ cd certifai-app && npx tsc --noEmit 2>&1 | grep "^(app|src)/"
 
 - Treat phase execution as plan-first delivery.
 - If user asks for a rollout plan, implementation plan, or phased migration plan, use the isolated template at `ai_oriented_kanban/templates/rollout-plan-template.md` as the default house style.
-- If user asks `implement phase <n>`, first create the rollout plan file under `ai_oriented_kanban/20-active/` before any code implementation.
 
 ### Rollout file checklist
 

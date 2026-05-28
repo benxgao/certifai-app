@@ -1,7 +1,7 @@
 # Style Conventions
 
-> **Source of truth**: `styleguide/app.md`, `styleguide/shared.md`, `src/components/ui/`, `src/config/marketing-theme.ts`
-> **Last reviewed**: 2026-05-24
+> **Source of truth**: `styleguide/README.md`, `styleguide/app.md`, `styleguide/shared.md`, `src/components/ui/`, `src/config/marketing-theme.ts`
+> **Last reviewed**: 2026-05-28
 > **Owner**: engineering / design
 
 ## Purpose
@@ -106,6 +106,7 @@ Prefer shadcn/ui primitives before building new custom components.
 
 ## Related Docs
 
+- `styleguide/README.md` — styleguide instruction entry and docs bridge contract
 - `styleguide/app.md` — app surface tokens (dashboard, exam, account pages)
 - `styleguide/shared.md` — shared design principles and color tokens
 - `styleguide/marketing.md` — marketing-specific tokens

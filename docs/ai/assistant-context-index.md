@@ -25,6 +25,7 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | How to write or extend SWR hooks | [docs/api/swr-patterns.md](../api/swr-patterns.md) |
 | When to use Context vs SWR, auth state lifecycle | [docs/state/client-state.md](../state/client-state.md) |
 | Type files, interface conventions, enums, `any` prohibition | [docs/data/data-models.md](../data/data-models.md) |
+| Styleguide entry point and bridge contract between `docs/` and `styleguide/` | [styleguide/README.md](../../styleguide/README.md) |
 | Tailwind, shadcn/ui, `cn()`, dark mode, component location rules | [docs/style/conventions.md](../style/conventions.md) |
 | Billing, Stripe checkout, account context, subscription management | [docs/billing/stripe-billing.md](../billing/stripe-billing.md) |
 | Firebase Auth, JWT, protected routes, middleware | [docs/security/auth-patterns.md](../security/auth-patterns.md) |
