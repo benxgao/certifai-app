@@ -251,6 +251,7 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 ## Progress Dashboard
 
+- [x] Phase 0 — Scenario-hardening integration (completed)
 - [ ] Phase 1 — Spec-first governance contract
 - [ ] Phase 2 — Kanban template + PR gate enforcement
 - [ ] Phase 3 — Graph-link routing hardening
@@ -261,6 +262,47 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 - [ ] Phase 8 — Rollout Eval & Health Score
 
 ## Phases
+
+### Phase 0: Scenario-hardening integration _(completed)_
+
+**Progress**: `[x]`
+
+**Layer**: contract-alignment baseline
+
+**Goal**: Land the initial scenario-hardening changes so docs-first decisioning, evidence capture, remediation rules, and simulation-readiness routing are enforceable across templates and canonical docs.
+
+**Files**:
+
+- `.github/copilot-instructions.md` — modified — enforce pre-implementation `Docs Needed` + decision-evidence gate and fallback-remediation mandate.
+- `.github/pull_request_template.md` — modified — require `Docs Needed` and `Decision Evidence Log` blocks in PR artifacts.
+- `ai_oriented_kanban/templates/rollout-plan-template.md` — modified — enforce mandatory docs-needed/evidence sections and docs-only simulation closing phase.
+- `ai_oriented_kanban/templates/excutive-report-template.md` — modified — add governance evidence summary for closure reporting.
+- `docs/operations/docs-maintenance.md` — modified — add kanban graph-link and insufficiency-remediation pass/fail criteria.
+- `docs/operations/ai-retrieval-smoke-tests.md` — modified — add spec-first, graph-link, insufficiency-remediation, and simulation prompts.
+- `docs/ai/guide.md` — modified — add routing for spec-first rollout governance and docs-only simulation readiness.
+- `docs/ai/assistant-context-index.md` — modified — register new governance and simulation docs.
+- `docs/operations/spec-first-kanban-integration.md` — created — canonical governance policy and reviewer gate contract.
+- `docs/ai/project-simulation-readiness.md` — created — simulation rubric, fallback-ratio rule, and run-log template.
+
+**Verification gate**:
+
+- All Phase 0 files were updated/created as planned.
+- Markdown diagnostics returned no errors for touched files.
+- New docs are discoverable from routing/index docs and included in related-doc backlinks.
+- Docs marker hygiene check (`TODO`/`FIXME`/`TBD`) passed for touched docs.
+
+**Sub-subphase checklist**:
+
+- [x] **0.1 — Enforce assistant + PR evidence gates**: updated Copilot and PR instructions for docs-needed and decision evidence.
+  - **Independent verification**: required sections are present in `.github/copilot-instructions.md` and `.github/pull_request_template.md`.
+- [x] **0.2 — Enforce template-level governance artifacts**: updated rollout and executive templates with spec-first evidence expectations.
+  - **Independent verification**: `rollout-plan-template.md` and `excutive-report-template.md` include governance evidence requirements.
+- [x] **0.3 — Publish + route new canonical docs**: created governance and simulation-readiness docs; linked through guide/index/operations docs.
+  - **Independent verification**: `assistant-context-index.md` and `guide.md` include links to both new docs.
+- [x] **0.4 — Validate baseline integrity**: executed diagnostics and docs hygiene/link discoverability checks.
+  - **Independent verification**: no diagnostics errors and link-discoverability checks passed.
+
+---
 
 ### Phase 1: Spec-first governance contract
 
@@ -541,6 +583,7 @@ Simulation drill + rollout evaluation
 
 ## Suggested Implementation Order
 
+0. Phase 0 — Scenario-hardening integration (**completed**)
 1. Phase 1 — Spec-first governance contract
 2. Phase 2 — Template + PR evidence enforcement
 3. Phase 3 — Graph-link routing hardening
@@ -572,4 +615,4 @@ Simulation drill + rollout evaluation
 
 ## Recommendation
 
-Proceed with Phases 1–4 as the minimum governance hardening set, then complete mandatory closing Phases 5–8 to prove durability and readiness. This sequence keeps risk low while making spec-first behavior enforceable and auditable across future `certifai-app` rollouts, and directly satisfies the target scenario of docs-led decisioning plus docs-only project simulation.
+Phase 0 scenario-hardening integration is complete and establishes the baseline contract/routing needed for docs-first execution. Proceed with Phases 1–4 as the next governance hardening set, then complete mandatory closing Phases 5–8 to prove durability and readiness. This sequence keeps risk low while making spec-first behavior enforceable and auditable across future `certifai-app` rollouts, and directly satisfies the target scenario of docs-led decisioning plus docs-only project simulation.
