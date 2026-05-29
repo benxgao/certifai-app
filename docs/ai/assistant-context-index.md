@@ -1,7 +1,7 @@
 # Assistant Context Index
 
 > **Source of truth**: All `docs/` sections
-> **Last reviewed**: 2026-05-28
+> **Last reviewed**: 2026-05-29
 > **Owner**: engineering
 
 ## Purpose
@@ -39,7 +39,9 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | Shared product terms (Exam, Certification, Firm, etc.) | [docs/product/glossary.md](../product/glossary.md) |
 | Why this docs structure was adopted | [docs/adr/0001-docs-architecture-mvp.md](../adr/0001-docs-architecture-mvp.md) |
 | Docs ownership, update cadence, freshness SLA | [docs/operations/docs-maintenance.md](../operations/docs-maintenance.md) |
+| Spec-first rollout governance contract and reviewer gates | [docs/operations/spec-first-kanban-integration.md](../operations/spec-first-kanban-integration.md) |
 | AI retrieval smoke-test QA protocol | [docs/operations/ai-retrieval-smoke-tests.md](../operations/ai-retrieval-smoke-tests.md) |
+| Docs-only simulation-readiness rubric and run-log template | [docs/ai/project-simulation-readiness.md](project-simulation-readiness.md) |
 | Workflow docs naming/location convention | [docs/workflow/README.md](../workflow/README.md) |
 | How to author phased rollout plans and mandatory closing phases | [ai_oriented_kanban/templates/rollout-plan-template.md](../../ai_oriented_kanban/templates/rollout-plan-template.md) |
 

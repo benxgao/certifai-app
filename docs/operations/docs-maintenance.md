@@ -1,7 +1,7 @@
 # Docs Maintenance Protocol
 
 > **Source of truth**: This file — governs all documentation under `docs/`
-> **Last reviewed**: 2026-05-28
+> **Last reviewed**: 2026-05-29
 > **Owner**: Engineering team
 
 ## Purpose
@@ -148,6 +148,8 @@ For every PR that creates or significantly changes documentation, this checklist
 3. **Required metadata present**: each touched doc includes `Source of truth`, `Last reviewed`, and `Owner`.
 4. **Graph-link integrity**: every touched doc maintains a valid `## Related Docs` section with working relative links. A doc with no related docs must include `## Related Docs` with at least the assistant-context-index entry.
 5. **Index-sync coverage**: if a new or renamed doc is not yet listed in `docs/ai/assistant-context-index.md`, it is treated as undiscoverable and the PR is a docs review failure.
+6. **Kanban graph-link coverage**: for rollout/spec-governance work, planning artifacts must backlink canonical docs (`docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, and relevant operations/governance docs) through `Docs Needed`, `Decision Evidence Log`, and `## Related Docs` references where applicable.
+7. **Insufficiency remediation traceability**: if fallback code scan is used, the same PR/rollout must include doc update actions (or an explicit owner + due date block).
 
 ### Pass/Fail Criteria
 
@@ -158,6 +160,9 @@ For every PR that creates or significantly changes documentation, this checklist
 	- missing required metadata fields in touched docs
 	- touched doc is missing or has broken links in its `## Related Docs` section
 	- new or renamed doc is absent from `docs/ai/assistant-context-index.md`
+	- rollout/spec-governance artifact missing required `Docs Needed` or `Decision Evidence Log` evidence
+	- fallback code scan used without same-rollout doc reconciliation (or owner + due date block)
+	- kanban artifact cannot be traced to routing docs (`guide.md`) and index docs (`assistant-context-index.md`)
 
 ### Example PR Checklist Block
 
@@ -252,6 +257,7 @@ Any item above that does not resolve in the current review must become a tracked
 
 - [`docs/ai/repo-map.md`](../ai/repo-map.md)
 - [`docs/ai/assistant-context-index.md`](../ai/assistant-context-index.md)
+- [`docs/operations/spec-first-kanban-integration.md`](./spec-first-kanban-integration.md)
 - [`docs/operations/ai-retrieval-smoke-tests.md`](./ai-retrieval-smoke-tests.md)
 - [`docs/workflow/README.md`](../workflow/README.md)
 - [`docs/adr/0001-docs-architecture-mvp.md`](../adr/0001-docs-architecture-mvp.md)

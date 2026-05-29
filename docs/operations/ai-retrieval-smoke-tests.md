@@ -1,7 +1,7 @@
 # AI Retrieval Smoke Tests
 
 > **Source of truth**: `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, `docs/operations/docs-maintenance.md`
-> **Last reviewed**: 2026-05-26
+> **Last reviewed**: 2026-05-29
 > **Owner**: Engineering team
 
 ## Purpose
@@ -20,6 +20,8 @@ Define a lightweight manual QA protocol to validate that assistant prompts route
 - A smoke test run must include at least 3 prompts across different domains.
 - A run passes only when expected target docs are selected first (or clearly within the first retrieval step).
 - If a prompt fails, update routing guidance in `docs/ai/guide.md` and/or indexing in `docs/ai/assistant-context-index.md`, then re-run.
+- For rollout/spec-governance prompts, expected output must include `Docs Needed` and `Decision Evidence Log` sections.
+- If docs are insufficient and fallback code scan is used in a test response, the response must include doc update actions (or owner + due date block).
 
 ## When to Run
 
@@ -38,6 +40,19 @@ Use these baseline prompts (or stronger equivalents) and verify expected target 
 | "I need to add a new SWR mutation with extra arguments. What constraints should I follow?" | `docs/api/swr-patterns.md`, `docs/api/api-connection.md`, `docs/data/data-models.md` |
 | "I’m debugging JWT protection for `/main/*` routes. Where are the auth invariants documented?" | `docs/security/auth-patterns.md`, `docs/state/client-state.md`, `docs/workflow/signin-workflow.md` |
 | "I created a new docs file and want to make sure assistants can find it. What must I update?" | `docs/operations/docs-maintenance.md`, `docs/ai/assistant-context-index.md`, `docs/ai/guide.md` |
+| "Create a rollout plan from specs/docs only. What docs do you need first, and what decisions can you make now?" | `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, `ai_oriented_kanban/templates/rollout-plan-template.md`, `docs/operations/spec-first-kanban-integration.md` |
+| "Validate that our new governance doc is fully discoverable in the docs graph." | `docs/ai/assistant-context-index.md`, `docs/ai/guide.md`, `docs/operations/docs-maintenance.md` |
+| "Docs were ambiguous for one rollout decision. Show fallback usage and remediation actions." | `docs/operations/spec-first-kanban-integration.md`, `docs/operations/docs-maintenance.md`, `docs/ai/guide.md` |
+| "Run a docs-only simulation-readiness check for a comparable project task." | `docs/ai/project-simulation-readiness.md`, `docs/operations/ai-retrieval-smoke-tests.md`, `docs/ai/guide.md` |
+
+## Spec-First Prompt Pass Criteria Addendum
+
+For prompts about rollout planning/governance/simulation, mark **Fail** unless the response includes all of:
+
+1. `Docs Needed` list with why each doc is required.
+2. `Decision Evidence Log` with required columns (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`).
+3. Graph-link validation references (guide + assistant index + related docs/governance doc).
+4. If docs are insufficient, explicit doc remediation actions in the same rollout context.
 
 ## Pass/Fail Recording Template
 
@@ -65,6 +80,8 @@ Follow-up required: <none / list>
 - [ ] Compared expected vs actual first-pass docs.
 - [ ] Recorded results in PR or rollout note.
 - [ ] Fixed routing/index docs for any failures and re-ran tests.
+- [ ] For governance prompts, verified `Docs Needed` + `Decision Evidence Log` are present.
+- [ ] For insufficiency prompts, verified fallback actions include same-rollout doc updates or owner + due date.
 
 ## Dangerous Areas / Anti-patterns
 
@@ -77,3 +94,5 @@ Follow-up required: <none / list>
 - [AI Assistant Guide](../ai/guide.md)
 - [AI Assistant Context Index](../ai/assistant-context-index.md)
 - [Docs Maintenance Protocol](./docs-maintenance.md)
+- [Spec-First Kanban Integration Protocol](./spec-first-kanban-integration.md)
+- [Project Simulation Readiness](../ai/project-simulation-readiness.md)

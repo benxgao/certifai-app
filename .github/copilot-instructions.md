@@ -99,7 +99,7 @@ Each rollout file should follow `ai_oriented_kanban/templates/rollout-plan-templ
 
 ## Spec-First Retrieval Protocol
 
-**Read docs first**: Before reading or writing any code, load the task-relevant spec docs listed under [Canonical Documentation References](#canonical-documentation-references) below. This is a mandatory execution gate, not a recommendation.
+**Read docs first**: Before reading or writing any code, load the task-relevant spec docs listed under the **Canonical Documentation References** section below. This is a mandatory execution gate, not a recommendation.
 
 **Fallback**: scan codebase only when the relevant docs are:
 
@@ -108,6 +108,28 @@ Each rollout file should follow `ai_oriented_kanban/templates/rollout-plan-templ
 - Outdated relative to the current codebase state (e.g., a file was renamed or an API changed since the doc was last updated)
 
 **Fallback record**: If a code scan is required, note which docs were insufficient and update them after implementation so the gap does not recur.
+
+### Spec-First Decision Evidence Gate (Mandatory)
+
+Before implementation starts for rollout/planning/governance tasks:
+
+1. Declare a `Docs Needed` list (doc path + why needed).
+2. Record a `Decision Evidence Log` for each major decision with these columns:
+	- `Decision`
+	- `Docs cited`
+	- `Sufficiency verdict`
+	- `Fallback code scan used?`
+	- `Doc update action`
+
+Implementation must not start until both artifacts exist.
+
+### Insufficiency Remediation Rule (Mandatory)
+
+When docs are missing, ambiguous, contradictory, or outdated for a decision:
+
+- Use code scan as a controlled fallback for that decision only.
+- In the same rollout/PR, update the insufficient docs (or mark blocked with owner + due date).
+- Record the remediation in the plan/PR so future assistants can complete comparable work docs-first.
 
 ## Canonical Documentation References
 

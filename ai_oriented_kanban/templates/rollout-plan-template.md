@@ -12,7 +12,7 @@ Use this template when a user asks for a rollout plan, phased plan, migration pl
 - Identify a minimum-viable hotfix path (usually first 1–2 phases) before progressive hardening.
 - If a phase is too large for one safe commit, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
 - Prefer wording that makes the plan easy to execute incrementally in separate commits.
-- Always include mandatory closing phases for Docs Sync, AI-ready docs reflection/next-plan handoff, and Eval & Health Score.
+- Always include mandatory closing phases for Docs Sync, AI-ready docs reflection/next-plan handoff, Docs-only Simulation Drill, and Eval & Health Score.
 
 ## Progress markers
 
@@ -102,10 +102,28 @@ Representative files:
 > Complete this section before writing any code. This checklist is **required** in every rollout plan.
 
 - [ ] Loaded all primary docs for this task type from [`docs/ai/guide.md`](../../docs/ai/guide.md).
+- [ ] Declared initial `Docs Needed` list before implementation planning.
 - [ ] Assessed sufficiency — docs were **sufficient** / **insufficient** _(strike one)_.
   - If insufficient: docs that were missing, ambiguous, or outdated: `<list here>`
   - If insufficient: fallback code scan was used for this specific decision: `<describe here>`
+- [ ] For each major decision, recorded a `Decision Evidence Log` row.
 - [ ] Post-task docs update required: `[ ] Yes` — captured in Docs to update below | `[ ] No` — docs remain accurate after this change.
+
+### Docs Needed (planning + implementation)
+
+> **Mandatory gate**: no implementation work starts until this table is populated.
+
+| Doc | Why needed |
+| --- | --- |
+| `docs/<section>/<file>.md` | <decision dependency / contract this doc provides> |
+
+### Planning Decision Evidence Log
+
+> **Mandatory gate**: each major decision must have one row before phase execution begins.
+
+| Decision | Docs cited | Sufficiency verdict | Fallback code scan used? | Doc update action |
+| --- | --- | --- | --- | --- |
+| <decision statement> | <doc paths> | <Sufficient/Insufficient> | <Yes/No> | <doc path to update, or blocked with owner+date> |
 
 ### Docs to create
 
@@ -205,7 +223,8 @@ If user asks for minimal change first, move architecture refactors and retry red
 - [ ] Phase 3 — <name>
 - [ ] Phase N — Docs Sync
 - [ ] Phase N+1 — AI-ready docs reflection and next-plan handoff
-- [ ] Phase N+2 — Rollout Eval & Health Score
+- [ ] Phase N+2 — Docs-only Simulation Drill
+- [ ] Phase N+3 — Rollout Eval & Health Score
 
 ## Phases
 
@@ -370,16 +389,52 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
-### Phase N+2: Rollout Eval & Health Score _(mandatory closing phase)_
+### Phase N+2: Docs-only Simulation Drill _(mandatory closing phase)_
+
+**Progress**: `[ ]`
+
+**Layer**: validation/reproducibility layer
+
+**Goal**: Prove a comparable task can be completed from docs/specs first, with fallback scans bounded and remediated.
+
+**Pre-condition check**:
+- Confirm the latest docs updates from Phase N are complete.
+- Select one comparable task scenario that should be executable from docs/specs only.
+
+**Files**:
+
+- `docs/operations/ai-retrieval-smoke-tests.md` — modify — include simulation drill prompt and pass criteria
+- `docs/ai/project-simulation-readiness.md` — modify — capture run log, scorecard, and verdict
+- `<current-rollout-path>.md` — modify — record drill verdict and remediation links
+
+**Verification gate**:
+
+- Drill output includes `Docs Needed`, `Decision Evidence Log`, and fallback justification (if any).
+- At least one run passes with no unjustified fallback code scan.
+- Any fallback code scan has same-rollout doc update action (or blocked owner + due date).
+- Evidence shows a comparable rollout/task can be produced from docs/specs only.
+
+**Sub-subphase checklist**:
+
+- [ ] **N+2.1 — Define simulation scenario**: write representative task prompt and expected output schema.
+  - **Independent verification**: scenario references canonical docs and explicit pass/fail criteria.
+- [ ] **N+2.2 — Execute and record drill run**: complete one run and store evidence.
+  - **Independent verification**: run log contains docs-needed list, decision evidence, and fallback rationale.
+- [ ] **N+2.3 — Apply corrective doc updates**: fix doc insufficiencies found during drill.
+  - **Independent verification**: insufficiency list is empty or each item has owner + due date.
+
+---
+
+### Phase N+3: Rollout Eval & Health Score _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
 **Layer**: rollout quality/evaluation layer
 
-**Goal**: Produce a 0–100 rollout health score after Docs Sync and AI-ready reflection complete, and record the score with evidence in a session note.
+**Goal**: Produce a rollout health score after Docs Sync, reflection, and simulation drill complete, then record the score with evidence in a session note.
 
 **Pre-condition check**:
-- Confirm Phase N (Docs Sync) and Phase N+1 (AI-ready reflection/handoff) are both marked `[x]` or have documented `[!]` justifications.
+- Confirm Phase N (Docs Sync), Phase N+1 (AI-ready reflection/handoff), and Phase N+2 (Docs-only Simulation Drill) are marked `[x]` or have documented `[!]` justifications.
 - Confirm docs-first retrieval checklist and reflection decisions are available as scoring evidence.
 
 **Scoring rubric**:
@@ -389,7 +444,8 @@ If user asks for minimal change first, move architecture refactors and retry red
 | Docs-first adherence | 40 | Docs-First Retrieval Checklist fully completed, sufficiency explicitly assessed, and fallback decisions documented if used |
 | Docs health | 40 | All Docs Sync verification gates passed: create/update/archive/link-index checks complete |
 | Reflection quality | 20 | Reflection records at least one confirmed improvement and every open question has an owner or revisit condition |
-| **Total** | **100** | Suggested pass threshold: `>= 70` |
+| Simulation readiness | 20 | Drill evidence exists and fallback-scan ratio meets threshold/justification rules |
+| **Total** | **120** | Suggested pass threshold: `>= 85` |
 
 **Scoring rules**:
 
@@ -405,14 +461,14 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Sub-subphase checklist**:
 
-- [ ] **N+2.1 — Evaluate docs-first adherence**: review Docs-First Retrieval Checklist completion and sufficiency verdict.
+- [ ] **N+3.1 — Evaluate docs-first adherence**: review Docs-First Retrieval Checklist completion and sufficiency verdict.
   - **Independent verification**: checklist is complete and sufficiency is explicitly marked sufficient/insufficient.
-- [ ] **N+2.2 — Evaluate docs health**: review Docs Sync verification-gate results.
+- [ ] **N+3.2 — Evaluate docs health**: review Docs Sync verification-gate results.
   - **Independent verification**: every docs gate is pass, justified block, or justified skip.
-- [ ] **N+2.3 — Evaluate reflection quality**: review AI-ready reflection decisions and handoff outputs.
-  - **Independent verification**: at least one confirmed improvement and owner/criteria for all open questions.
-- [ ] **N+2.4 — Record final score session note**: write session note with score breakdown and final recommendation.
-  - **Independent verification**: session note includes total score and archive gate decision (`>= 70` pass / `< 70` hold).
+- [ ] **N+3.3 — Evaluate reflection + simulation quality**: review handoff outputs and simulation drill evidence.
+  - **Independent verification**: at least one confirmed improvement, owner/criteria for open questions, and simulation run evidence exists.
+- [ ] **N+3.4 — Record final score session note**: write session note with score breakdown and final recommendation.
+  - **Independent verification**: session note includes total score and archive gate decision (`>= 85` pass / `< 85` hold).
 
 ---
 
@@ -502,5 +558,5 @@ At the end of each working session:
 - Keep each phase to one dependency layer unless explicitly marked as contract-alignment phase.
 - Use the template as the default structure, but trim sections that truly do not apply.
 - If the user asks for a lighter or shorter plan, compress the structure rather than abandoning it entirely.
-- Docs Sync, AI-ready docs reflection/handoff, and Rollout Eval & Health Score are mandatory closing phases.
+- Docs Sync, AI-ready docs reflection/handoff, Docs-only Simulation Drill, and Rollout Eval & Health Score are mandatory closing phases.
 ```

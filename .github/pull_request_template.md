@@ -22,11 +22,29 @@
 - [ ] Domain terminology or glossary terms → update [`docs/product/glossary.md`](../docs/product/glossary.md)
 - [ ] None of the above — no doc updates required
 
+## Docs Needed (Required for rollout/spec/governance/docs-impacting work)
+
+<!-- List docs consulted before implementation. Include why each was needed. -->
+
+| Doc | Why needed |
+| --- | --- |
+| `docs/<section>/<file>.md` | <decision or implementation reason> |
+
+## Decision Evidence Log (Required for rollout/spec/governance/docs-impacting work)
+
+<!-- One row per major decision. Use this to prove docs-first decisioning and fallback handling. -->
+
+| Decision | Docs cited | Sufficiency verdict | Fallback code scan used? | Doc update action |
+| --- | --- | --- | --- | --- |
+| <decision> | <doc paths> | <Sufficient/Insufficient> | <Yes/No> | <updated doc path or owner/date block> |
+
 **If docs were updated**, confirm:
 
 - [ ] `Source of truth:` field in the doc still points to the correct source file(s)
 - [ ] `Last reviewed:` date updated to today
 - [ ] No content duplicated across docs (linked instead)
+- [ ] If any decision used fallback code scan, corresponding docs were updated in this PR (or blocked with owner + due date)
+- [ ] For rollout/spec/governance/docs-impacting work, `Docs Needed` and `Decision Evidence Log` are fully populated
 
 ## Architecture Decision (if applicable)
 

@@ -1,7 +1,7 @@
 # AI Assistant Guide
 
 > **Source of truth**: `docs/` directory structure — this file navigates, not restates.
-> **Last reviewed**: 2026-05-28
+> **Last reviewed**: 2026-05-29
 > **Owner**: Engineering team
 
 ## Purpose
@@ -362,17 +362,45 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 1. [`docs/ai/assistant-context-index.md`](assistant-context-index.md) — confirm which docs exist before listing docs to create/update
 2. [`docs/operations/docs-maintenance.md`](../operations/docs-maintenance.md) — update trigger table to identify which docs are affected
 3. Template: `ai_oriented_kanban/templates/rollout-plan-template.md`
+4. [`docs/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md) — spec-first policy contract and reviewer gates
 
 **Invariants**:
 
 - Every rollout plan must include a `## Docs Impact` section listing docs checked, docs to create/update/delete.
-- Every rollout plan must include mandatory closing phases in order: `## Docs Sync` (Phase N), `## AI-ready docs reflection and next-plan handoff` (Phase N+1), and `## Rollout Eval & Health Score` (Phase N+2).
+- Every rollout plan must declare `Docs Needed` before implementation planning starts.
+- Every rollout plan must include a `Planning Decision Evidence Log` for major decisions (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`).
+- Every rollout plan must include mandatory closing phases in order: `## Docs Sync` (Phase N), `## AI-ready docs reflection and next-plan handoff` (Phase N+1), `## Docs-only Simulation Drill` (Phase N+2), and `## Rollout Eval & Health Score` (Phase N+3).
+- Every rollout plan must include a `## Docs-only Simulation Drill` phase before final eval so comparable work can be replayed from docs/specs.
 - Check `docs/ai/assistant-context-index.md` before listing a doc as "to create" — it may already exist.
 
 **Anti-patterns**:
 
 - Omitting the docs-sync phase because the plan "doesn't touch docs" — every code change has potential doc impact.
 - Duplicating documentation content across multiple docs instead of linking.
+- Using fallback code scan without recording which docs were insufficient and what docs were updated.
+
+---
+
+### 12. Running Docs-Only Simulation Readiness
+
+**Primary docs to load**:
+
+1. [`docs/ai/project-simulation-readiness.md`](project-simulation-readiness.md) — rubric, scoring, and run-log format
+2. [`docs/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md) — policy and evidence requirements
+3. [`docs/operations/ai-retrieval-smoke-tests.md`](../operations/ai-retrieval-smoke-tests.md) — simulation-related prompts and pass criteria
+
+**Invariants**:
+
+- Simulation output must include `Docs Needed` and a complete decision-evidence table.
+- Fallback code scans are allowed only when justified and must trigger same-rollout docs remediation.
+- A simulation run is not passable if major decisions cannot be traced to cited docs.
+
+**Anti-patterns**:
+
+- Running simulation as a narrative note without measurable score/verdict.
+- Treating ambiguous docs as acceptable without creating update actions.
+
+**Docs to update after implementation**: `docs/ai/project-simulation-readiness.md`; `docs/operations/ai-retrieval-smoke-tests.md` when prompt quality or criteria change.
 
 ---
 
@@ -406,3 +434,5 @@ Before writing any code, confirm none of these apply:
 - [`docs/ai/repo-map.md`](repo-map.md)
 - [`docs/ai/assistant-context-index.md`](assistant-context-index.md)
 - [`docs/operations/docs-maintenance.md`](../operations/docs-maintenance.md)
+- [`docs/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md)
+- [`docs/ai/project-simulation-readiness.md`](project-simulation-readiness.md)

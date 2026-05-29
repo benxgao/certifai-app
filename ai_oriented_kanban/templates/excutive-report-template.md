@@ -64,6 +64,14 @@ Use this structure:
 - **Result:** [e.g., all pass / 0 critical issues]
 - **Confidence level:** [High / Medium]
 
+### Spec-First Governance Evidence (Required for rollout/governance initiatives)
+
+- **Docs Needed declared before implementation:** [Yes / No]
+- **Decision Evidence Log completed for major decisions:** [Yes / No]
+- **Fallback code scan used:** [No / Yes — include count and reason]
+- **If fallback used, docs remediated in same rollout:** [Yes / No / Blocked with owner+date]
+- **Docs-only simulation drill verdict:** [Pass / Fail / Deferred with reason]
+
 ---
 
 ## 5) Business Impact by Stakeholder
@@ -166,6 +174,7 @@ Use this condensed block for slides, weekly updates, or leadership chat:
 - **ROI:** [Single sentence with payback/time savings]
 - **Risk level:** [Low / Medium / High]
 - **Decision needed:** [Yes/No + what decision]
+- **Docs-first governance status:** [Compliant / Needs follow-up]
 
 ---
 
