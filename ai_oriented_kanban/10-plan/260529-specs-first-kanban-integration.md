@@ -254,7 +254,7 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 - [x] Phase 0 — Scenario-hardening integration (completed)
 - [x] Phase 1 — Spec-first governance contract (completed)
 - [x] Phase 2 — Kanban template + PR gate enforcement (completed)
-- [ ] Phase 3 — Graph-link routing hardening
+- [x] Phase 3 — Graph-link routing hardening (completed)
 - [ ] Phase 4 — Retrieval QA expansion
 - [ ] Phase 5 — Docs Sync
 - [ ] Phase 6 — AI-ready docs reflection and next-plan handoff
@@ -323,6 +323,7 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 - `copilot-instructions` includes explicit requirement to list `Docs Needed` before implementation and update docs when fallback scan is used.
 - New policy doc has valid metadata and `## Related Docs` links.
 - Governance text explicitly states that decisions must be sourced from docs/specs first, with code scan as controlled fallback only.
+- Review note (2026-05-30): verified `docs/operations/spec-first-kanban-integration.md` and `.github/copilot-instructions.md` still satisfy all Phase 1 gate requirements.
 
 **Sub-subphase checklist**:
 
@@ -369,9 +370,9 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 ---
 
-### Phase 3: Graph-link routing hardening
+### Phase 3: Graph-link routing hardening _(completed)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: docs topology layer
 
@@ -390,14 +391,15 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 - `docs-maintenance` includes enforceable kanban-artifact graph-link gate.
 - `project-simulation-readiness` includes measurable pass threshold and fallback-scan ratio rule.
 - Routing docs include a clear entry for “build rollout plan from specs/docs only.”
+- Review note (2026-05-30): re-verified discoverability and clarified rollout-routing language in `docs/ai/guide.md` and `docs/ai/assistant-context-index.md`.
 
 **Sub-subphase checklist**:
 
-- [ ] **3.1 — Harden docs-maintenance policy**: add kanban artifact checks to existing registration gate.
+- [x] **3.1 — Harden docs-maintenance policy**: add kanban artifact checks to existing registration gate.
   - **Independent verification**: explicit kanban references appear under pass/fail criteria.
-- [ ] **3.2 — Register new docs in routing surfaces**: update index + guide entries.
+- [x] **3.2 — Register new docs in routing surfaces**: update index + guide entries.
   - **Independent verification**: all links resolve and are in correct sections.
-- [ ] **3.3 — Publish simulation rubric**: define scorecard, fallback ratio, and run-log template.
+- [x] **3.3 — Publish simulation rubric**: define scorecard, fallback ratio, and run-log template.
   - **Independent verification**: doc includes threshold and pass/fail decision logic.
 
 ---

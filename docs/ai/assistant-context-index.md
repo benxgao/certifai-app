@@ -1,7 +1,7 @@
 # Assistant Context Index
 
 > **Source of truth**: All `docs/` sections
-> **Last reviewed**: 2026-05-29
+> **Last reviewed**: 2026-05-30
 > **Owner**: engineering
 
 ## Purpose
@@ -43,7 +43,7 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | AI retrieval smoke-test QA protocol | [docs/operations/ai-retrieval-smoke-tests.md](../operations/ai-retrieval-smoke-tests.md) |
 | Docs-only simulation-readiness rubric and run-log template | [docs/ai/project-simulation-readiness.md](project-simulation-readiness.md) |
 | Workflow docs naming/location convention | [docs/workflow/README.md](../workflow/README.md) |
-| How to author phased rollout plans and mandatory closing phases | [ai_oriented_kanban/templates/rollout-plan-template.md](../../ai_oriented_kanban/templates/rollout-plan-template.md) |
+| How to build rollout plans from specs/docs first and apply mandatory closing phases | [ai_oriented_kanban/templates/rollout-plan-template.md](../../ai_oriented_kanban/templates/rollout-plan-template.md) |
 
 ## Key Source Paths
 
