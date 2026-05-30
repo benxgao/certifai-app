@@ -1,7 +1,7 @@
 # AI Assistant Guide
 
 > **Source of truth**: `docs/` directory structure — this file navigates, not restates.
-> **Last reviewed**: 2026-05-29
+> **Last reviewed**: 2026-05-30
 > **Owner**: Engineering team
 
 ## Purpose
@@ -355,7 +355,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 
 ---
 
-### 9. Writing or Updating a Rollout Plan
+### 9. Writing or Updating a Rollout Plan from docs/specs First
 
 **Primary docs to load**:
 
@@ -369,6 +369,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 - Every rollout plan must include a `## Docs Impact` section listing docs checked, docs to create/update/delete.
 - Every rollout plan must declare `Docs Needed` before implementation planning starts.
 - Every rollout plan must include a `Planning Decision Evidence Log` for major decisions (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`).
+- Rollout planning must start from canonical docs/specs only; code scanning is a bounded fallback that must be recorded and remediated.
 - Every rollout plan must include mandatory closing phases in order: `## Docs Sync` (Phase N), `## AI-ready docs reflection and next-plan handoff` (Phase N+1), `## Docs-only Simulation Drill` (Phase N+2), and `## Rollout Eval & Health Score` (Phase N+3).
 - Every rollout plan must include a `## Docs-only Simulation Drill` phase before final eval so comparable work can be replayed from docs/specs.
 - Check `docs/ai/assistant-context-index.md` before listing a doc as "to create" — it may already exist.
