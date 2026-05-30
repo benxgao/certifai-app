@@ -44,7 +44,8 @@
 - [ ] `Last reviewed:` date updated to today
 - [ ] No content duplicated across docs (linked instead)
 - [ ] If any decision used fallback code scan, corresponding docs were updated in this PR (or blocked with owner + due date)
-- [ ] For rollout/spec/governance/docs-impacting work, `Docs Needed` and `Decision Evidence Log` are fully populated
+- [ ] For rollout/spec/governance/docs-impacting work, `Docs Needed` is fully populated (doc path + reason per required doc)
+- [ ] For rollout/spec/governance/docs-impacting work, `Decision Evidence Log` is fully populated (one row per major decision)
 
 ## Architecture Decision (if applicable)
 
