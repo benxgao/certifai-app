@@ -19,6 +19,17 @@ For any rollout/spec/governance initiative:
 5. **Same-rollout remediation is mandatory**: fallback usage requires doc updates in the same rollout/PR, or explicit owner + due date block.
 6. **Simulation readiness is mandatory for closure**: at least one docs-only simulation run must exist before rollout final evaluation.
 
+## Spec Format Contract (Mandatory)
+
+Every rollout/spec/governance artifact must define:
+
+- **Scope**: what is in/out for this phase.
+- **Assumptions**: environmental or dependency assumptions that must hold.
+- **Constraints**: boundaries that cannot be violated.
+- **Risks**: key risks and mitigation ownership.
+- **Acceptance criteria**: objective pass conditions for the phase.
+- **Evidence artifacts**: completed `Docs Needed` and `Decision Evidence Log` sections.
+
 ## Required Evidence Schema
 
 ### 1) Docs Needed table
@@ -32,6 +43,17 @@ For any rollout/spec/governance initiative:
 | Decision | Docs cited | Sufficiency verdict | Fallback code scan used? | Doc update action |
 | --- | --- | --- | --- | --- |
 | <major decision> | <doc paths> | <Sufficient/Insufficient> | <Yes/No> | <doc updated, or blocked owner+date> |
+
+## Acceptance Schema (Phase Gate)
+
+The phase is accepted only when all required artifacts below are present and complete:
+
+| Artifact | Required fields |
+| --- | --- |
+| Spec contract | Scope, Assumptions, Constraints, Risks, Acceptance criteria |
+| Docs Needed | Doc path, why needed |
+| Decision Evidence Log | Decision, docs cited, sufficiency verdict, fallback usage, doc update action |
+| Reviewer gate outcome | Explicit pass/fail with reasons for any failure |
 
 ## Reviewer Gate (Pass/Fail)
 

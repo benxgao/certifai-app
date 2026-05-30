@@ -252,7 +252,7 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 ## Progress Dashboard
 
 - [x] Phase 0 — Scenario-hardening integration (completed)
-- [ ] Phase 1 — Spec-first governance contract
+- [x] Phase 1 — Spec-first governance contract
 - [ ] Phase 2 — Kanban template + PR gate enforcement
 - [ ] Phase 3 — Graph-link routing hardening
 - [ ] Phase 4 — Retrieval QA expansion
@@ -306,7 +306,7 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 ### Phase 1: Spec-first governance contract
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: governance policy
 
@@ -314,8 +314,8 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 **Files**:
 
-- `docs/operations/spec-first-kanban-integration.md` — create — canonical policy and checklist.
-- `.github/copilot-instructions.md` — modify — enforce docs-first decision gate and fallback remediation rule.
+- `docs/operations/spec-first-kanban-integration.md` — modified — canonical policy/checklist now includes spec format + acceptance schema contract.
+- `.github/copilot-instructions.md` — modified — enforce docs-first decision gate and fallback remediation rule before any implementation.
 
 **Verification gate**:
 
@@ -326,11 +326,11 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Define spec format contract**: include scope, assumptions, constraints, risks, acceptance criteria, and decision evidence schema.
+- [x] **1.1 — Define spec format contract**: include scope, assumptions, constraints, risks, acceptance criteria, and decision evidence schema.
   - **Independent verification**: policy doc contains all required fields and one minimal example.
-- [ ] **1.2 — Define reviewer gate**: specify pass/fail criteria for docs-needed and evidence completeness.
+- [x] **1.2 — Define reviewer gate**: specify pass/fail criteria for docs-needed and evidence completeness.
   - **Independent verification**: checklist includes mandatory fields and explicit fail conditions.
-- [ ] **1.3 — Update assistant behavior contract**: add docs-first + fallback remediation mandate.
+- [x] **1.3 — Update assistant behavior contract**: add docs-first + fallback remediation mandate.
   - **Independent verification**: `.github/copilot-instructions.md` contains pre-implementation evidence gate text.
 
 ---

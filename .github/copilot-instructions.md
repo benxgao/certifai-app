@@ -111,7 +111,7 @@ Each rollout file should follow `ai_oriented_kanban/templates/rollout-plan-templ
 
 ### Spec-First Decision Evidence Gate (Mandatory)
 
-Before implementation starts for rollout/planning/governance tasks:
+Before implementation starts for any task (including rollout/planning/governance tasks):
 
 1. Declare a `Docs Needed` list (doc path + why needed).
 2. Record a `Decision Evidence Log` for each major decision with these columns:
@@ -121,7 +121,7 @@ Before implementation starts for rollout/planning/governance tasks:
 	- `Fallback code scan used?`
 	- `Doc update action`
 
-Implementation must not start until both artifacts exist.
+Implementation must not start until both artifacts exist, and fallback-driven decisions include a concrete doc update action.
 
 ### Insufficiency Remediation Rule (Mandatory)
 
