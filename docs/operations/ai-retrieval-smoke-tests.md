@@ -1,7 +1,7 @@
 # AI Retrieval Smoke Tests
 
 > **Source of truth**: `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, `docs/operations/docs-maintenance.md`
-> **Last reviewed**: 2026-05-29
+> **Last reviewed**: 2026-05-30
 > **Owner**: Engineering team
 
 ## Purpose
@@ -53,6 +53,17 @@ For prompts about rollout planning/governance/simulation, mark **Fail** unless t
 2. `Decision Evidence Log` with required columns (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`).
 3. Graph-link validation references (guide + assistant index + related docs/governance doc).
 4. If docs are insufficient, explicit doc remediation actions in the same rollout context.
+5. Any insufficiency remediation includes exact target doc path and section to update.
+
+## Phase 4 Governance Prompt Assertions
+
+For these governance prompts, fail the run unless the response includes the listed evidence:
+
+| Prompt focus | Required response evidence |
+| --- | --- |
+| Spec-first planning (`"Create a rollout plan from specs/docs only..."`) | `Docs Needed` list names canonical doc paths and explains why each is needed before implementation work starts. |
+| Graph-link integrity (`"Validate that our new governance doc is fully discoverable in the docs graph."`) | Explicit checks cover all three routing surfaces: `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, and related governance docs. |
+| Insufficiency remediation (`"Docs were ambiguous for one rollout decision..."`) | Includes fallback usage + concrete remediation with exact doc path and section heading to update. |
 
 ## Pass/Fail Recording Template
 

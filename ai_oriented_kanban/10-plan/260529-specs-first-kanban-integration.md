@@ -255,7 +255,7 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 - [x] Phase 1 — Spec-first governance contract (completed)
 - [x] Phase 2 — Kanban template + PR gate enforcement (completed)
 - [x] Phase 3 — Graph-link routing hardening (completed)
-- [ ] Phase 4 — Retrieval QA expansion
+- [x] Phase 4 — Retrieval QA expansion (completed)
 - [ ] Phase 5 — Docs Sync
 - [ ] Phase 6 — AI-ready docs reflection and next-plan handoff
 - [ ] Phase 7 — Docs-only Simulation Drill
@@ -404,9 +404,9 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 ---
 
-### Phase 4: Retrieval QA expansion
+### Phase 4: Retrieval QA expansion _(completed)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: QA protocol
 
@@ -422,14 +422,15 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 - Pass criteria include graph-link validation (guide + index + related docs).
 - At least one prompt verifies insufficiency handling with concrete doc-update targets.
 - At least one prompt tests “docs-only rollout planning” with no pre-emptive code scanning.
+- Review note (2026-05-30): expanded retrieval smoke tests with explicit governance prompt assertions for spec-first planning, graph-link integrity checks, and insufficiency remediation path+section targets.
 
 **Sub-subphase checklist**:
 
-- [ ] **4.1 — Add spec-first planning prompt**: verify docs-needed declaration before implementation.
+- [x] **4.1 — Add spec-first planning prompt**: verify docs-needed declaration before implementation.
   - **Independent verification**: expected docs list references canonical paths.
-- [ ] **4.2 — Add graph-link integrity prompt**: verify index/guide/related-doc discoverability behavior.
+- [x] **4.2 — Add graph-link integrity prompt**: verify index/guide/related-doc discoverability behavior.
   - **Independent verification**: pass criteria require all three link checks.
-- [ ] **4.3 — Add insufficiency remediation prompt**: require exact doc update actions when docs are ambiguous/outdated.
+- [x] **4.3 — Add insufficiency remediation prompt**: require exact doc update actions when docs are ambiguous/outdated.
   - **Independent verification**: expected response format includes doc path + section to update.
 
 ---
