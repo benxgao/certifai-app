@@ -252,8 +252,8 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 ## Progress Dashboard
 
 - [x] Phase 0 — Scenario-hardening integration (completed)
-- [ ] Phase 1 — Spec-first governance contract
-- [ ] Phase 2 — Kanban template + PR gate enforcement
+- [x] Phase 1 — Spec-first governance contract (completed)
+- [x] Phase 2 — Kanban template + PR gate enforcement (completed)
 - [ ] Phase 3 — Graph-link routing hardening
 - [ ] Phase 4 — Retrieval QA expansion
 - [ ] Phase 5 — Docs Sync
@@ -304,9 +304,9 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 ---
 
-### Phase 1: Spec-first governance contract
+### Phase 1: Spec-first governance contract _(completed)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: governance policy
 
@@ -326,18 +326,18 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 **Sub-subphase checklist**:
 
-- [ ] **1.1 — Define spec format contract**: include scope, assumptions, constraints, risks, acceptance criteria, and decision evidence schema.
+- [x] **1.1 — Define spec format contract**: include scope, assumptions, constraints, risks, acceptance criteria, and decision evidence schema.
   - **Independent verification**: policy doc contains all required fields and one minimal example.
-- [ ] **1.2 — Define reviewer gate**: specify pass/fail criteria for docs-needed and evidence completeness.
+- [x] **1.2 — Define reviewer gate**: specify pass/fail criteria for docs-needed and evidence completeness.
   - **Independent verification**: checklist includes mandatory fields and explicit fail conditions.
-- [ ] **1.3 — Update assistant behavior contract**: add docs-first + fallback remediation mandate.
+- [x] **1.3 — Update assistant behavior contract**: add docs-first + fallback remediation mandate.
   - **Independent verification**: `.github/copilot-instructions.md` contains pre-implementation evidence gate text.
 
 ---
 
-### Phase 2: Kanban template + PR gate enforcement
+### Phase 2: Kanban template + PR gate enforcement _(completed)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: workflow artifact layer
 
@@ -358,13 +358,13 @@ Default sequence: contract definition → artifact enforcement → discoverabili
 
 **Sub-subphase checklist**:
 
-- [ ] **2.1 — Add mandatory docs-needed block**: require upfront docs declaration and reason per doc.
+- [x] **2.1 — Add mandatory docs-needed block**: require upfront docs declaration and reason per doc.
   - **Independent verification**: template has non-optional section text and pass/fail language.
-- [ ] **2.2 — Add decision-evidence schema**: require all 5 columns for major decisions.
+- [x] **2.2 — Add decision-evidence schema**: require all 5 columns for major decisions.
   - **Independent verification**: template includes structured table with required headers.
-- [ ] **2.3 — Add insufficiency remediation flow**: define what must happen when docs are insufficient.
+- [x] **2.3 — Add insufficiency remediation flow**: define what must happen when docs are insufficient.
   - **Independent verification**: template includes explicit “update docs or block with owner/date” rule.
-- [ ] **2.4 — Extend PR gate**: align review checklist with rollout evidence requirements.
+- [x] **2.4 — Extend PR gate**: align review checklist with rollout evidence requirements.
   - **Independent verification**: PR template includes mandatory evidence confirmations.
 
 ---
@@ -584,8 +584,8 @@ Simulation drill + rollout evaluation
 ## Suggested Implementation Order
 
 0. Phase 0 — Scenario-hardening integration (**completed**)
-1. Phase 1 — Spec-first governance contract
-2. Phase 2 — Template + PR evidence enforcement
+1. Phase 1 — Spec-first governance contract (**completed**)
+2. Phase 2 — Template + PR evidence enforcement (**completed**)
 3. Phase 3 — Graph-link routing hardening
 4. Phase 4 — Retrieval QA expansion
 5. Phase 5 — Docs Sync
@@ -615,4 +615,4 @@ Simulation drill + rollout evaluation
 
 ## Recommendation
 
-Phase 0 scenario-hardening integration is complete and establishes the baseline contract/routing needed for docs-first execution. Proceed with Phases 1–4 as the next governance hardening set, then complete mandatory closing Phases 5–8 to prove durability and readiness. This sequence keeps risk low while making spec-first behavior enforceable and auditable across future `certifai-app` rollouts, and directly satisfies the target scenario of docs-led decisioning plus docs-only project simulation.
+Phases 0–2 are complete and establish the baseline contract plus enforceable template/PR evidence gates needed for docs-first execution. Proceed with Phases 3–4 as the next governance hardening set, then complete mandatory closing Phases 5–8 to prove durability and readiness. This sequence keeps risk low while making spec-first behavior enforceable and auditable across future `certifai-app` rollouts, and directly satisfies the target scenario of docs-led decisioning plus docs-only project simulation.

@@ -106,6 +106,7 @@ Representative files:
 - [ ] Assessed sufficiency — docs were **sufficient** / **insufficient** _(strike one)_.
   - If insufficient: docs that were missing, ambiguous, or outdated: `<list here>`
   - If insufficient: fallback code scan was used for this specific decision: `<describe here>`
+  - If insufficient: docs were updated in this rollout or explicitly blocked with owner + due date: `<capture action>`
 - [ ] For each major decision, recorded a `Decision Evidence Log` row.
 - [ ] Post-task docs update required: `[ ] Yes` — captured in Docs to update below | `[ ] No` — docs remain accurate after this change.
 
