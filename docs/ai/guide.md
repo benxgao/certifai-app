@@ -355,7 +355,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 
 ---
 
-### 9. Writing or Updating a Rollout Plan from Specs/Docs First
+### 9. Writing or Updating a Rollout Plan from docs/specs First
 
 **Primary docs to load**:
 
