@@ -21,6 +21,8 @@ For any rollout/spec/governance initiative:
 
 ## Spec Format Contract (Mandatory)
 
+Applies to rollout plans, governance docs, and spec artifacts that define phased implementation decisions. For regular implementation tasks, the minimum mandatory contract is the `Docs Needed` + `Decision Evidence Log` evidence gate.
+
 Every rollout/spec/governance artifact must define:
 
 - **Scope**: what is in/out for this phase.
@@ -66,6 +68,11 @@ A rollout/PR **passes** only if all applicable items are true:
 - Graph-link discoverability remains intact (`guide.md`, `assistant-context-index.md`, and related docs references where applicable).
 
 A rollout/PR **fails** if any applicable item above is missing.
+
+Record the reviewer gate outcome in both:
+
+- The rollout plan verification section (or equivalent phase gate section), and
+- The PR description/review checklist with pass/fail plus failure reasons.
 
 ## Minimal Example
 
