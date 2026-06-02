@@ -1,7 +1,7 @@
 # Project Simulation Readiness
 
 > **Source of truth**: rollout evidence artifacts and docs-only simulation runs for `certifai-app`
-> **Last reviewed**: 2026-05-29
+> **Last reviewed**: 2026-06-02
 > **Owner**: Engineering team
 
 ## Purpose
@@ -41,6 +41,12 @@ Use this for each simulation drill run.
 | Date | Scenario | Docs Needed complete? | Decision Evidence complete? | Fallback ratio | Score | Verdict | Follow-up actions |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | YYYY-MM-DD | <scenario summary> | Yes/No | Yes/No | <0.00-1.00> | <0-100> | Pass / Needs Improvement / Fail | <doc updates or owner+due date> |
+
+## Run Log
+
+| Date | Scenario | Docs Needed complete? | Decision Evidence complete? | Fallback ratio | Score | Verdict | Follow-up actions |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-06-02 | Plan a rollout for enforcing per-decision evidence capture in certifai-app rollout artifacts (rollout `260529-specs-first-kanban-integration` Phase 7) | Yes | Yes | 0.00 | 100 | Pass | None — all docs sufficient; no doc gaps discovered. |
 
 ## Decision Evidence Requirement
 
