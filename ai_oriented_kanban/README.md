@@ -114,6 +114,11 @@ kanban/
       lessons-learned.md
       migration-guide.md
       timeline.md
+
+  50-report/
+    <year>/
+      <month>/
+        <initiative-slug>-executive-report.md
 ```
 
 ---
@@ -131,8 +136,9 @@ kanban/
 For each phase, document:
 
 - objective,
+- **Docs Needed list** (canonical docs to consult before implementation),
 - files/systems expected to change,
-- verification method,
+- verification method (including docs-only simulation readiness),
 - rollback method,
 - open questions requiring decisions.
 
@@ -140,12 +146,14 @@ For each phase, document:
 
 - Make small, testable changes.
 - Update tracker and handoff at each meaningful checkpoint.
-- Record key decision rationale while it is fresh.
+- **Record Decision Evidence Log**: document every major decision with `Docs cited`, `Sufficiency verdict`, and `Fallback scan used`.
+- Update docs immediately if they are found insufficient or outdated.
 
 ### Step 4: Validate and review
 
 - Run acceptance checks for the phase.
 - Separate “implemented” from “accepted.”
+- **Docs-only Simulation Drill**: prove the task can be completed using docs alone.
 - Carry unresolved items forward explicitly.
 
 ### Step 5: Archive with executive closeout
@@ -159,6 +167,12 @@ Finalize a concise summary including:
 - key risks and mitigations,
 - decision points,
 - rollback posture.
+
+### Step 6: Publish report and extract insights
+
+- Extract the `final-summary.md` and `lessons-learned.md` into a formal executive report.
+- Store the report in the `50-report` lane for long-term stakeholder visibility and project cross-referencing.
+- Update global lessons-learned index if applicable.
 
 ---
 
@@ -175,21 +189,27 @@ Lane moves must satisfy objective checks. When a lane item depends on docs-first
 ### Planned → Active
 
 - [ ] Phase 1 (or minimum viable hotfix path) is scoped with verification gate language.
+- [ ] **Docs Needed list** is declared and approved (specs identified before code).
 - [ ] `## Docs Impact` section is complete: docs checked, docs to create/update/delete identified.
 - [ ] Docs-first retrieval checklist is present in the rollout plan (see template).
 
 ### Active → Review
 
-Before moving an item from **20-active** to **30-review**, confirm all three gates:
+Before moving an item from **20-active** to **30-review**, confirm all four gates:
+
+**Decision evidence log**
+
+- [ ] Every major architectural or convention decision has a `Decision Evidence Log` row.
+- [ ] Log includes: `Docs cited`, `Sufficiency verdict`, and whether a `Fallback code scan` was used.
 
 **Docs search evidence**
 
 - [ ] Relevant spec docs were loaded before any code was read or written.
-- [ ] Record which docs were checked and what each confirmed (or left insufficient).
+- [ ] Record confirms that implementation matches the documented source of truth.
 
 **Docs update evidence**
 
-- [ ] Any doc found insufficient, missing, or outdated during execution was updated in the same PR, or a follow-up kanban item was created and linked.
+- [ ] Any doc found insufficient, missing, or outdated during execution was updated in the same PR, or a follow-up kanban item was created and linked (Graph-Link reconciliation).
 
 **Docs link integrity**
 
@@ -203,41 +223,18 @@ If any gate cannot be confirmed, the item stays in **20-active** until the gap i
 Before moving an item from **30-review** to **40-archive**, confirm:
 
 - [ ] All review comments are resolved or explicitly deferred with a tracked follow-up item.
+- [ ] **Docs-only Simulation Drill** passed: evidence shows the task is reproducible from docs alone.
 - [ ] Final docs state is verified: no stale `Last reviewed` dates and no broken links in touched docs.
 - [ ] Executive closeout or final summary artifact is complete.
 - [ ] Rollout eval gate passed: Phase N+2 (Eval & Health Score) is marked `[x]` with score `>= 70`.
 
----
+### Archive → Report
 
-## Artifact templates (minimum useful set)
+Before moving/replicating key artifacts from **40-archive** to **50-report**, confirm:
 
-### `phase-XX.md`
-
-- Goal (one sentence)
-- Scope and non-scope
-- Dependencies
-- Risks
-- Step checklist
-- Acceptance checklist
-- Rollback note
-- Notes for next phase
-
-### `handoff.md`
-
-- Current state (max 5 bullets)
-- Open decisions
-- Immediate next step
-- Do-not-change notes
-- Evidence links
-
-### `final-summary.md`
-
-- Executive summary
-- Business impact
-- Delivery status
-- Key risks/mitigations
-- Remaining work (if any)
-- Approval and release posture
+- [ ] Executive summary is polished for non-technical leadership review.
+- [ ] Financial or business impact metrics are verified.
+- [ ] The report is correctly filed in the year/month schema.
 
 ---
 
@@ -245,11 +242,13 @@ Before moving an item from **30-review** to **40-archive**, confirm:
 
 Recent completed initiatives followed repeatable patterns:
 
+- **Spec-First Integration (certifai-app)** introduced hard-gated decision evidence logs and docs-only simulation drills to unify app-level exploration.
+- **AI-Ready Docs MVP (certifai-api)** created the canonical assistant context index and repository map used for all subsequent tasks.
 - **Status semantics rollout** used phased delivery, explicit risks, and decision points before broad release.
 - **Security hardening** emphasized environment-driven policy, observability, staged rollout, and rollback readiness.
 - **Type-enforcement closeout** emphasized completion evidence, phase traceability, and clean executive reporting.
 
-Across all three, the strongest common trait was: **documentation stayed aligned with implementation state**.
+Across all these, the strongest common trait was: **documentation stayed aligned with implementation state**.
 
 ---
 
@@ -267,34 +266,25 @@ Include frontmatter fields such as:
 
 This enables automated dashboards and clearer ownership.
 
-### 2) Formalize evidence links per phase
+### 2) Automate Graph-Link Validation
 
-Require each phase to link explicit artifacts (tests, logs, screenshots, validation notes) instead of generic “verified” statements.
+Build tools or scripts that automatically check if every new doc added to a rollout is registered in `docs/ai/assistant-context-index.md` and has the required `Source of truth` headers.
 
-### 3) Standardize decision logging
+### 3) decision-log-linting
 
-Use a lightweight decision template (`decision`, `alternatives`, `rationale`, `revisit-condition`) to reduce rediscovery work.
+Run periodic audits to detect decision logs that use "fallback code scan" without a corresponding doc-update action.
 
-### 4) Add context linting
+### 4) Cross-Repo Context Sync
 
-Run periodic audits to detect:
+Improve how `certifai-api` and `certifai-app` share common architectural decisions to prevent diverging patterns in the service layer.
 
-- stale handoff notes,
-- orphaned phase files,
-- unresolved items with no owner,
-- archived docs that no longer match current behavior.
+### 5) Define explicit exit criteria for "Ready for Simulation"
 
-### 5) Define entry/exit criteria for each Kanban lane
+Standardize what it means for a set of docs to be "ready" for an assistant to execute without any code-reading fallback.
 
-Prevent ambiguous movement by requiring objective checks before transition from planning → active → review → archive. See **Lane Transition Criteria** above for the concrete docs search/update/link gate requirements.
+### 6) Standardize on the Rollout Plan Template
 
-### 6) Separate “implemented” from “released” in trackers
-
-Many teams close work too early. Track both states explicitly to avoid false completion.
-
-### 7) Build a reusable closeout standard
-
-Use one consistent executive-report format across all completed initiatives so stakeholders can compare outcomes quickly.
+Ensure every initiative, no matter how small, starts with the `rollout-plan-template.md` to guarantee the decision evidence log is present from day zero.
 
 ---
 
@@ -308,3 +298,8 @@ Use one consistent executive-report format across all completed initiatives so s
 6. Archive with executive summary and lessons learned.
 
 If followed consistently, this methodology converts AI-assisted execution from ad hoc chat history into a reliable, auditable delivery system.
+
+
+## Mobile workflow quickstart
+
+(Draft) update relevant instructions for AI assistants to ensure the kanban workflow be like this: When prompts like `generate a plan for xxx`, it would create a plan file in `10-plan` based on the rollout plan template, meanwhile remove the proposaled file from `00-intake`; when prompts like `start the planned task xxx` it would start to implement the first 2 phases of the planned task; when prompts like `complete the task xxx` it would mark the task as done and archive the relevant documents and generate an executive report.
