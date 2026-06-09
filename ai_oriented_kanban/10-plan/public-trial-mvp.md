@@ -13,16 +13,16 @@ This document defines frontend scope plus the required API, data, and architectu
 3. **Conversion support**: Encourage signup after trial completion.
 4. **Performance monitoring**: Track flow reliability and latency.
 5. **Data isolation**: Keep trial-domain data lifecycle isolated from core Prisma domain data.
-6. **Code isolation**: Keep trial generation/services isolated from registered-user generation/services.
+6. **Code isolation**: Keep trial generation/services isolated from registered-user generation/services at the interface level, while allowing strategic reuse of core generation logic.
 
 ## Success Metrics
 
-1. **Trial engagement**: Users who start and complete a trial.
+1. **Trial engagement**: Users who start and complete a trial (target: >30% completion rate).
 2. **Feedback quality**: Quantity/usefulness of events and optional free-text feedback.
-3. **Conversion rate**: Trial users who click signup and complete registration.
-4. **Reliability**: API success rate, p95 latency, and error rate by endpoint.
+3. **Conversion rate**: Trial users who click signup and complete registration (target: >5% click-through).
+4. **Reliability**: API success rate, p95 latency <2s, and error rate by endpoint.
 5. **Data boundary health**: No direct dependency of trial question/answer persistence on Prisma trial tables.
-6. **Code boundary health**: Trial functions/services remain discoverable and isolated via `Trial*` naming + `public_trial` domain folder.
+6. **Code boundary health**: Trial functions/services remain discoverable via `Trial*` naming + `public_trial` domain folder.
 
 ## MVP Requirements (Spec-First)
 
@@ -50,27 +50,28 @@ This document defines frontend scope plus the required API, data, and architectu
 ### Data and persistence requirements
 
 - Firestore question set cache **MUST** be persisted and reusable across visitors (not in-memory/Redis/CDN cache semantics).
-- Cache TTL **MUST** be 90 days, with regeneration triggered on eligible post-expiration requests.
-- Regeneration **MUST** use a Firestore transactional lock to prevent duplicate concurrent generation.
-- MVP persistence **MUST NOT** store raw answers, exact scores, or per-question correctness in durable storage.
+- Cache TTL **MUST** be 90 days, with regeneration triggered asynchronously when expired.
+- Regeneration **SHOULD** use Cloud Tasks queue to prevent duplicate concurrent generation and avoid Firestore transaction timeouts.
+- MVP persistence **MUST NOT** store raw answers, exact scores, or per-question correctness in durable storage beyond 7 days (strict TTL for `public_trial_answers`).
 - Event ingestion **SHOULD** follow the hybrid model (frontend UX events + API milestone events).
-- Trial-domain entities (**questions, options, submissions, answers, scoring snapshots**) **MUST** be represented in a relational-like schema design but persisted in Firestore collections.
+- Trial-domain entities **MUST** use denormalized embedded document design in Firestore to minimize read costs and latency.
 - Prisma and Firestore **MUST NOT** be tightly coupled for trial-domain data; only `certId` and `firmId` references are allowed for cross-system linkage in MVP.
 
-### Code architecture and naming requirements (NEW)
+### Code architecture and naming requirements (REVISED)
 
-- Genkit trial question/option generation **MUST** be isolated from existing generation functions used for registered users.
-- Trial generation flow **MUST NOT** directly call registered-user generation functions.
-- All trial-related function signatures **MUST** use the `Trial` prefix for explicit domain separation.
+- Genkit trial question generation **SHOULD** reuse existing core generation logic through configuration parameters (e.g., `mode: 'trial'`, `questionCount: 10`), but **MUST** expose trial-specific entry points with `Trial*` prefix.
+- Trial generation flow **MUST NOT** duplicate prompt engineering logic; instead, it **SHOULD** call shared generation utilities with trial-specific configurations.
+- All trial-related function signatures **MUST** use the `Trial` prefix for explicit domain separation at the API/service layer.
 - ExpressJS controllers for public trial endpoints **MUST** delegate to Trial-prefixed domain services (thin controller pattern).
 - All trial-related service/repository/generation files **MUST** live under one dedicated domain folder: `public_trial`.
-- Shared helper usage **MAY** be allowed only for domain-agnostic utilities (e.g., tracing, validation helpers, logger wrappers), not domain business logic.
+- Shared helper usage **MAY** be allowed for domain-agnostic utilities and core generation logic (e.g., base prompt templates, output parsers), provided they are pure functions without side effects.
 
 ### Operations and reliability requirements
 
-- If regeneration fails and no valid active set exists, the API **MUST** return a controlled error with `traceId`.
+- If regeneration fails and no valid active set exists, the API **MUST** return a controlled error with `traceId` or fallback to on-demand generation for critical certifications (Top 5).
 - The system **SHOULD** emit backend milestone events (`questions_served`, `submission_processed`, `regeneration_started`, `regeneration_failed`).
 - Dashboards/monitoring **SHOULD** track cache hit ratio, regeneration outcomes, p95 latency, and trial funnel conversion.
+- The system **MUST** implement IP-based rate limiting (e.g., 3 trials per certification per 24h per IP) to prevent abuse.
 
 ## MVP Scope
 
@@ -99,9 +100,9 @@ This document defines frontend scope plus the required API, data, and architectu
 - This does **not** refer to Redis, CDN, or in-memory ephemeral caching.
 - This is intentionally different from **personalized generation**, where questions are generated uniquely for an individual user.
 
-Trial questions are stored as reusable Firestore-persisted sets ("cache") and reused across visitors. Cache TTL is **90 days**. On expiration, next eligible request triggers regeneration.
+Trial questions are stored as reusable Firestore-persisted sets ("cache") and reused across visitors. Cache TTL is **90 days**. On expiration, an asynchronous regeneration job is triggered.
 
-Results are computed server-side for consistency and anti-tampering. Submission payloads are processed transiently; raw answers, exact scores, and per-question correctness are **not persisted** in MVP.
+Results are computed server-side for consistency and anti-tampering. Submission payloads are processed transiently; raw answers, exact scores, and per-question correctness are **not persisted** in MVP (or retained with strict 7-day TTL only).
 
 ## Technical Architecture Plan
 
@@ -110,7 +111,7 @@ Results are computed server-side for consistency and anti-tampering. Submission 
 1. **certifai-app (Next.js frontend)**
    - Public trial pages and UI state
    - API integration
-   - Anonymous client session ID generation (non-authoritative)
+   - Anonymous session management (Firebase Anonymous Auth or localStorage-based session token)
    - Public cert/firm selector driven by Prisma-backed public data
 
 2. **certifai-api (backend service)**
@@ -118,7 +119,7 @@ Results are computed server-side for consistency and anti-tampering. Submission 
    - Reusable question set (Firestore "cache") lifecycle
    - Result computation
    - Event ingestion
-   - Abuse monitoring hooks (extensible for future controls)
+   - Abuse monitoring hooks (IP rate limiting, honeypot fields)
    - Validation against public cert/firm records from Prisma
    - Dedicated trial domain module under `public_trial`
    - Trial-prefixed service entry points consumed by ExpressJS controllers
@@ -129,14 +130,13 @@ Results are computed server-side for consistency and anti-tampering. Submission 
    - No MVP trial question/option/answer persistence in Prisma
 
 4. **Firestore (source of truth for trial domain)**
-   - Reusable pre-generated trial question sets ("cache")
-   - Trial question and option materialization
+   - Reusable pre-generated trial question sets ("cache") using denormalized embedded documents
    - Trial submission metadata
-   - Trial answers (ephemeral/transient handling; no raw answer durability requirement in MVP)
+   - Trial answers (ephemeral/transient handling; 7-day TTL)
    - Analytics events
    - Minimal operational metadata (TTL/version/status)
 
-### Backend domain foldering (NEW)
+### Backend domain foldering
 
 Recommended layout in `certifai-api`:
 
@@ -151,35 +151,44 @@ Rules:
 - ExpressJS controllers in `controllers` remain thin and call services only.
 - Trial business logic lives in `services`.
 - Firestore persistence logic lives in `repositories`.
-- Genkit prompts/chains/tools for trial question generation live in `genkit` and remain isolated from registered-user generation modules.
+- Genkit trial-specific configurations and prompt variations live in `public_trial/genkit`, but may import shared generation utilities from core domains.
 - Trial domain APIs use `Trial*` signatures.
 
-### Trial function signature convention (NEW)
+### Trial function signature convention
 
 Examples of expected naming:
 
 - `TrialGetPublicCatalog(...)`
 - `TrialGetQuestions(...)`
-- `TrialGenerateQuestionSet(...)`
-- `TrialRegenerateQuestionSet(...)`
+- `TrialGenerateQuestionSet(...)` (wraps shared logic with trial config)
 - `TrialSubmitAnswers(...)`
 - `TrialComputeResult(...)`
 - `TrialIngestEvent(...)`
-- `TrialEmitMilestoneEvent(...)`
 
 This naming convention is mandatory for trial-domain entry points in MVP.
 
 ### Request Flow (Happy Path)
 
 1. User opens Public Trial page.
-2. Frontend fetches public cert/firm options (Prisma-backed API).
-3. Frontend calls `GET /public-trial/questions?certId={id}&firmId={id}`.
-4. API validates `certId`/`firmId` against public Prisma data.
-5. API returns Firestore-persisted reusable question set cache (or regenerates if expired/missing).
-6. User submits answers via `POST /public-trial/submissions`.
-7. API computes score/result and returns normalized payload.
-8. Frontend displays results and signup CTA.
-9. Frontend emits analytics events (`page_view`, `trial_start`, `trial_complete`, `signup_click`).
+2. Frontend initializes anonymous session (Firebase Anonymous Auth or session token).
+3. Frontend fetches public cert/firm options (Prisma-backed API).
+4. Frontend calls `GET /public-trial/questions?certId={id}&firmId={id}`.
+5. API validates `certId`/`firmId` against public Prisma data.
+6. API returns Firestore-persisted reusable question set cache (single document fetch).
+7. If cache expired/missing, API returns `status: preparing` and triggers async generation; frontend polls or shows "preparing" state.
+8. User submits answers via `POST /public-trial/submissions`.
+9. API computes score/result and returns normalized payload.
+10. Frontend displays results and signup CTA.
+11. Frontend emits analytics events (`page_view`, `trial_start`, `trial_complete`, `signup_click`).
+
+### Anonymous Session Management (NEW)
+
+To maintain state across page refreshes and prevent abuse while keeping friction low:
+
+- **Primary approach**: Firebase Anonymous Auth ( lightweight, provides persistent UID across sessions).
+- **Fallback**: Cryptographic session token stored in `localStorage` with 24h expiration, validated via HMAC.
+- **Session data stored**: `sessionId`, `trialSetId` (if in progress), `submissionId` (if completed), `createdAt`, `ipHash` (for abuse detection).
+- **Cleanup**: Automatic expiration via Firestore TTL on session documents.
 
 ### Event Ingestion Strategy (MVP)
 
@@ -199,75 +208,72 @@ This naming convention is mandatory for trial-domain entry points in MVP.
 - API emits core system events for backend milestones.
 - This keeps implementation simple while reducing critical event loss.
 
-## Data Modeling Strategy (New/Updated)
+## Data Modeling Strategy (Revised)
 
-### Relational-shape simulation in Firestore
+### Denormalized Document Design (Embedded Structure)
 
-For MVP, trial data is modeled as if it were SQL tables (normalized entities and IDs), but persisted in Firestore collections.
+For MVP, trial data uses denormalized embedded documents optimized for Firestore's pricing model (minimize reads) and query patterns.
 
-Conceptual entities:
+**Key principle**: Optimize for read-heavy operations (serving questions to thousands of users) over write normalization.
 
-- `TrialQuestionSet`
-- `TrialQuestion`
-- `TrialQuestionOption`
-- `TrialSubmission`
-- `TrialAnswer`
-- `TrialEvent`
+**Rationale**:
 
-Implementation rule:
-
-- Use Firestore collections/documents to represent these entities.
-- Keep ID-based relationships (`trialSetId`, `questionId`, `optionId`, `submissionId`) explicit.
-- Avoid embedding large mutable answer payloads into question set docs.
-- Keep coupling to Prisma limited to referencing `certId` and `firmId`.
+- A trial set is immutable after generation (90-day TTL, then replaced).
+- Embedding questions and options into a single document reduces Firestore reads from 3 (set+questions+options) to 1 per trial session.
+- With 10 questions per set, document size stays well under Firestore's 1MB limit (~50-100KB estimated).
 
 ### Coupling boundary
 
 - Allowed Prisma dependency:
-  - validation + lookup of public/active `certId` and `firmId`
+  - Validation + lookup of public/active `certId` and `firmId`
+  - Read-only access to certification metadata (name, passing score thresholds)
 - Disallowed in MVP:
-  - storing trial question/option/answer entities in Prisma
-  - requiring Prisma joins for trial execution
-  - bidirectional sync between Firestore trial collections and Prisma trial tables
+  - Storing trial question/option/answer entities in Prisma
+  - Requiring Prisma joins for trial execution
+  - Bidirectional sync between Firestore trial collections and Prisma trial tables
 
-### Generation boundary (NEW)
+### Generation boundary (Revised)
 
-- Trial Genkit generation artifacts (prompt templates, output schema adapters, mapping logic) must remain inside `public_trial/genkit`.
-- Registered-user generation artifacts must remain outside `public_trial`.
-- Cross-calls between trial-generation and registered-user generation modules are disallowed in MVP.
+- Trial generation **SHOULD** reuse core generation utilities (prompt builders, output parsers, LLM client wrappers) from existing domains.
+- Trial-specific logic (prompt variations, question count, difficulty targeting) lives in `public_trial/genkit`.
+- Configuration-driven isolation: Use `GenerationMode.TRIAL` enum to trigger trial-specific behaviors (e.g., no personalization, fixed 10 questions) rather than code duplication.
 
-## Cache and Regeneration Strategy
+## Cache and Regeneration Strategy (Revised)
 
-- Cache key: `certId + firmId + version`.
-- **Cache meaning here:** pre-generated, persisted, reusable trial question sets in Firestore (not Redis/in-memory cache).
-- Document includes:
-  - `questions`
-  - `createdAt`
-  - `expiresAt`
-  - `status` (`active`, `regenerating`, `failed`)
-  - `version`
-- Each question item includes its own `version` field.
-- Regeneration uses a Firestore transactional lock to prevent duplicate concurrent regeneration.
-- If regeneration fails and no valid active cache is available, return an error response and log incident details with trace IDs.
+- Cache key: `public_trial_sets/{certId}_{firmId}_v{version}`.
+- **Cache structure**: Single Firestore document containing embedded questions array.
+- **Document includes**:
+  - `questions[]` (embedded with options and correct flags)
+  - `createdAt`, `expiresAt`
+  - `status` (`active`, `generating`, `failed`)
+  - `version`, `generationMeta`
+- **Warm-up strategy (NEW)**: On deployment or certification update, pre-generate trial sets for Top 5 certifications to prevent cold-start latency.
+- **Regeneration flow**:
+  1. On cache miss or expiry, return immediate response with `status: generating` (or fallback to real-time generation for critical certs).
+  2. Enqueue regeneration job to Cloud Tasks queue (avoids Firestore transaction timeouts).
+  3. Worker generates questions and writes single document with `status: active`.
+  4. If generation fails, mark `status: failed` and alert ops; subsequent requests may trigger retry with exponential backoff.
+- **No transaction locks**: Cloud Tasks provides natural deduplication via task IDempotency keys.
 
 ## API Contract (MVP Draft)
 
 - `GET /public-trial/questions`
   - Query: `certId`, `firmId`
   - Controller delegates to: `TrialGetQuestions(...)`
-  - Response: `{ trialSetId, certId, firmId, questions[], expiresAt, traceId }`
+  - Response: `{ trialSetId, certId, firmId, status: 'active' | 'generating', questions[], expiresAt, traceId }`
+  - Note: If `status: generating`, frontend should poll or show waiting state.
 
 - `POST /public-trial/submissions`
-  - Body: `{ trialSetId, answers[] }`
+  - Body: `{ trialSetId, answers[], sessionToken }`
   - Controller delegates to: `TrialSubmitAnswers(...)`
   - Response: `{ score, passed, traceId }`
 
 - `POST /public-trial/events`
-  - Body: `{ eventType, clientSessionId?, trialSetId?, certId?, firmId?, properties? }`
+  - Body: `{ eventType, sessionToken?, trialSetId?, certId?, firmId?, properties? }`
   - Controller delegates to: `TrialIngestEvent(...)`
   - Response: `{ accepted: true, traceId }`
 
-## Database Collection Design (Updated)
+## Database Collection Design (Revised)
 
 ### 1) Prisma-backed primary DB (read/validate source only)
 
@@ -279,6 +285,7 @@ Used for public catalog lookup and request validation only in MVP.
   - `name` (string)
   - `isPublic` (boolean)
   - `isActive` (boolean)
+  - `passingScore` (int, optional - for trial scoring context)
   - `updatedAt` (datetime)
 
 - `Firm`
@@ -293,145 +300,117 @@ Validation rule: only `isPublic && isActive` records are eligible for public tri
 
 ### 2) Firestore collections (trial-domain source of truth)
 
-#### `public_trial_question_sets` (reusable cache)
+#### `public_trial_sets` (Denormalized Cache - Single Collection)
 
-Document ID: `{certId}_{firmId}_v{version}`
+Document ID: `{certId}_{firmId}_v{version}` (e.g., `aws-saa-001_v1`)
 
-- `trialSetId`
-- `certId` (Prisma reference only)
-- `firmId` (Prisma reference only)
-- `version`
-- `status` (`active` | `regenerating` | `failed`)
-- `questionIds` (array of IDs)
-- `questionCount`
-- `createdAt`
-- `expiresAt`
-- `lastServedAt` (optional)
-- `generationMeta` (optional)
-- `traceId` (optional)
+- `trialSetId` (string, same as document ID)
+- `certId` (string, Prisma reference)
+- `firmId` (string, Prisma reference)
+- `version` (number)
+- `status` (`active` | `generating` | `failed`)
+- `questions` (array of embedded objects):
+  ```typescript
+  {
+    questionId: string,
+    order: number,
+    prompt: string,
+    options: [{
+      optionId: string,
+      text: string,
+      order: number,
+      isCorrect: boolean  // Server-only, filtered in API response
+    }],
+    explanation: string  // Optional in MVP, can be added later
+  }
+  ```
+- `questionCount` (number, default 10)
+- `createdAt` (timestamp)
+- `expiresAt` (timestamp, TTL index)
+- `lastServedAt` (timestamp)
 
-#### `public_trial_questions` (relational-like entity)
+## Evaluation and Open Questions
 
-Document ID: `{questionId}`
+### Evaluation Summary
 
-- `questionId`
-- `trialSetId`
-- `certId`
-- `firmId`
-- `prompt`
-- `version`
-- `order`
-- `correctOptionId` (server-only handling)
-- `createdAt`
+The MVP plan is well-structured and implementation-ready. It has strong qualities:
 
-#### `public_trial_question_options` (relational-like entity)
+- Clear **domain separation** (`public_trial` folder + `Trial*` signatures).
+- Correct **data boundary** between Prisma (catalog validation only) and Firestore (trial-domain source of truth).
+- Good **operational posture** (`traceId`, status lifecycle, regeneration events, rate limiting).
+- Practical **UX fallback model** (`active` vs `generating`, polling/retry states).
+- Sensible **generation strategy** (reuse shared generation logic without duplicating prompts).
 
-Document ID: `{optionId}`
+Primary concerns to resolve before implementation:
 
-- `optionId`
-- `questionId`
-- `trialSetId`
-- `text`
-- `order`
-- `createdAt`
+1. **Sensitive correctness data in Firestore docs**
+   `isCorrect` is stored in embedded options. This is acceptable only if strictly never returned by API and access is service-account only. Confirm Firestore security rules and response serializers enforce this.
 
-#### `public_trial_submissions` (minimal metadata)
+2. **Regeneration concurrency/idempotency details**
+   Cloud Tasks is proposed, but task key strategy and duplicate suppression rules are not fully specified. Define deterministic task IDs per `{certId}_{firmId}_v{version}` and retry/backoff behavior.
 
-Document ID: auto-id
+3. **Rate limit trust model**
+   IP-only limiting may be weak behind NAT/proxies and can penalize shared networks. Confirm whether limiter uses `ip + certId + firmId + sessionId` and trusted proxy configuration.
 
-- `submissionId`
-- `trialSetId`
-- `certId`
-- `firmId`
-- `questionCount`
-- `answeredCount`
-- `clientSessionId` (optional/non-authoritative)
-- `submittedAt`
-- `resultSummary` (e.g., band or passed boolean)
-- `traceId`
+4. **Submission retention policy precision**
+   Document says “MUST NOT store raw answers... beyond 7 days (strict TTL).” Clarify whether default is no persistence, with 7-day retention as exception for abuse/debug only.
 
-#### `public_trial_answers` (optional, ephemeral/minimal)
+5. **Result contract completeness**
+   Current response is `{ score, passed, traceId }`. Consider adding `totalQuestions` and `passingScore` for stable frontend rendering and analytics consistency.
 
-Document ID: auto-id
+### Open Questions (Decision Log Needed)
 
-- `submissionId`
-- `questionId`
-- `selectedOptionId`
-- `receivedAt`
-- `traceId`
+1. **Anonymous identity choice**
+   - Is Firebase Anonymous Auth mandatory, or optional with local token as first-class fallback?
+   - What is the canonical `sessionId` format used across frontend, API, and events?
 
-MVP rule: if retained at all, apply strict short retention and do not store correctness/exact score derivations.
+2. **Versioning ownership**
+   - Who increments `version` for trial sets (manual release step vs auto on cert content changes)?
+   - Should old versions remain readable until TTL expiry, or be hard-invalidated?
 
-#### `public_trial_events`
+3. **Critical-cert fallback behavior**
+   - For Top 5 certs, does API do synchronous on-demand generation when cache is missing, or always return `generating`?
+   - What is the max wait budget before returning controlled error?
 
-Document ID: auto-id
+## Evaluation and Open Questions
 
-- `eventId`
-- `eventType`
-- `source` (`frontend` | `api`)
-- `clientSessionId` (optional)
-- `trialSetId` (optional)
-- `certId` (optional)
-- `firmId` (optional)
-- `submissionId` (optional)
-- `eventAt`
-- `traceId`
-- `properties` (sanitized)
+### Evaluation Summary
 
-## Data Flow (Updated)
+The MVP plan is well-structured and implementation-ready. It has strong qualities:
 
-### A) Question retrieval and regeneration flow
+- Clear **domain separation** (`public_trial` folder + `Trial*` signatures).
+- Correct **data boundary** between Prisma (catalog validation only) and Firestore (trial-domain source of truth).
+- Good **operational posture** (`traceId`, status lifecycle, regeneration events, rate limiting).
+- Practical **UX fallback model** (`active` vs `generating`, polling/retry states).
+- Sensible **generation strategy** (reuse shared generation logic without duplicating prompts).
 
-1. Frontend calls `GET /public-trial/questions?certId={id}&firmId={id}`.
-2. API validates `certId`/`firmId` via Prisma public active entities.
-3. API checks Firestore cache key `{certId}_{firmId}_v{version}`.
-4. If active and not expired, return question set + question/options materialization.
-5. If missing/expired:
-   - Acquire transactional lock.
-   - Generate set via isolated `public_trial/genkit` pipeline.
-   - Write `question_sets`, `questions`, `question_options`.
-   - Mark set `active`.
-6. On failure:
-   - Return controlled error with `traceId` if no valid fallback exists.
-   - Emit failure event.
+Primary concerns to resolve before implementation:
 
-### B) Submission and scoring flow
+1. **Sensitive correctness data in Firestore docs**
+   `isCorrect` is stored in embedded options. This is acceptable only if strictly never returned by API and access is service-account only. Confirm Firestore security rules and response serializers enforce this.
 
-1. Frontend sends `POST /public-trial/submissions` with `{ trialSetId, answers[] }`.
-2. API loads trial questions/options from Firestore by `trialSetId`.
-3. API computes score/pass server-side.
-4. API writes minimal submission metadata.
-5. API returns `{ score, passed, traceId }`.
-6. API emits `submission_processed`.
+2. **Regeneration concurrency/idempotency details**
+   Cloud Tasks is proposed, but task key strategy and duplicate suppression rules are not fully specified. Define deterministic task IDs per `{certId}_{firmId}_v{version}` and retry/backoff behavior.
 
-### C) Isolation guarantee
+3. **Rate limit trust model**
+   IP-only limiting may be weak behind NAT/proxies and can penalize shared networks. Confirm whether limiter uses `ip + certId + firmId + sessionId` and trusted proxy configuration.
 
-- Trial runtime does not depend on Prisma trial tables.
-- Firestore remains the operational store for trial entities.
-- Prisma is used only for cert/firm eligibility and display metadata.
-- Trial business/generation logic remains isolated in `public_trial` domain modules.
-- Trial entry-point function naming remains prefixed with `Trial`.
+4. **Submission retention policy precision**
+   Document says “MUST NOT store raw answers... beyond 7 days (strict TTL).” Clarify whether default is no persistence, with 7-day retention as exception for abuse/debug only.
 
-## Operational lifecycle flow
+5. **Result contract completeness**
+   Current response is `{ score, passed, traceId }`. Consider adding `totalQuestions` and `passingScore` for stable frontend rendering and analytics consistency.
 
-1. Scheduled job (or on-read policy) scans expired question sets.
-2. Expired sets are marked for regeneration on next request (lazy refresh).
-3. Optional cleanup:
-   - prune old events beyond retention window,
-   - prune `public_trial_answers` aggressively if enabled,
-   - retain submission metadata per compliance window.
-4. Dashboards track:
-   - cache hit ratio,
-   - regeneration success/failure,
-   - endpoint latency p95,
-   - trial funnel conversion.
+### Open Questions (Decision Log Needed)
 
-## MVP Acceptance Checklist (NEW)
+1. **Anonymous identity choice**
+   - Is Firebase Anonymous Auth mandatory, or optional with local token as first-class fallback?
+   - What is the canonical `sessionId` format used across frontend, API, and events?
 
-- [ ] Trial generation is isolated from registered-user generation modules.
-- [ ] All trial service entry points follow `Trial*` naming.
-- [ ] `public_trial` domain folder contains controllers/services/repositories/genkit/types.
-- [ ] Express controllers are thin and call Trial-prefixed services.
-- [ ] No Prisma trial-domain persistence is introduced.
-- [ ] Firestore cache + TTL + lock regeneration behavior works per spec.
-- [ ] Controlled errors include `traceId`.
+2. **Versioning ownership**
+   - Who increments `version` for trial sets (manual release step vs auto on cert content changes)?
+   - Should old versions remain readable until TTL expiry, or be hard-invalidated?
+
+3. **Critical-cert fallback behavior**
+   - For Top 5 certs, does API do synchronous on-demand generation when cache is missing, or always return `generating`?
+   - What is the max wait budget before returning controlled error?
