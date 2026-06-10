@@ -1,8 +1,5 @@
 # Copilot Instructions (`certifai-app`)
 
-> Last reviewed: 2026-06-03
-> Canonical knowledge lives in `docs/`; this file is the fast-start map.
-
 ## Start of every task (mandatory)
 
 1. Read `docs/ai/guide.md`, then `docs/ai/repo-map.md`.
