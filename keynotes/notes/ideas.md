@@ -1,0 +1,17 @@
+Core features to be updated
+- Topics + Tokens
+- Distributed topics
+- Predefined per sect (based on community data)
+- can be customised
+- Shared questions
+- attached to topics
+- shared and rewarded
+- graphic reports
+- attached to topics
+- Pro-tips
+- attached to topics
+- Tokenized bills
+- Public free trial
+- tokens rewarded on completion and signup
+- Rewarded feedback
+- Share sects on social media → reward tokens
