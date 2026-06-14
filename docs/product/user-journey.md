@@ -142,11 +142,13 @@ This document maps **how users navigate between Next.js routes**, what they can 
   - "Focus on IAM and access control scenarios"
   - "Prioritize troubleshooting questions"
   - "Emphasize networking fundamentals"
+- Behind the scenes, the exam generator turns the selected certification, the user’s instructions, and the requested question count into a topic plan.
+- Topics are then distributed across the exam so coverage stays balanced instead of clustering around one area, which helps users get a clearer picture of strengths and gaps.
 - After creation, users monitor generation progress and open the exam when ready.
 - During the exam at `/main/certifications/[cert_id]/exams/[exam_id]`, users:
   - answer questions with autosave behavior,
   - move page-by-page,
-  - review topic grouping shown in the exam view,
+  - review topic grouping shown in the exam view, which reflects the generated topic distribution,
   - submit when complete.
 - After submission, users review:
   - score and completion status,
@@ -250,6 +252,7 @@ This document maps **how users navigate between Next.js routes**, what they can 
 - Dashboard with personalized stats and registered certifications.
 - Certification registration and catalog management.
 - AI exam creation with topic/prompt controls.
+- AI-driven topic planning and balanced topic distribution across exams.
 - Exam generation monitoring and status refresh.
 - Exam attempt UI (pagination, answer selection, submission, result states).
 - Topic-aware exam experience (topic grouping visibility while taking exams).
