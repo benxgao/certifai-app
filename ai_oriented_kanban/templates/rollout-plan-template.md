@@ -93,8 +93,8 @@ Representative files:
 
 ### Docs checked during planning
 
-| Doc | Relevant finding |
-| --- | --- |
+| Doc                        | Relevant finding              |
+| -------------------------- | ----------------------------- |
 | `docs/<section>/<file>.md` | <what you found or confirmed> |
 
 ### Docs-First Retrieval Checklist
@@ -114,40 +114,40 @@ Representative files:
 
 > **Mandatory gate**: no implementation work starts until this table is populated.
 
-| Doc | Why needed |
-| --- | --- |
+| Doc                        | Why needed                                         |
+| -------------------------- | -------------------------------------------------- |
 | `docs/<section>/<file>.md` | <decision dependency / contract this doc provides> |
 
 ### Planning Decision Evidence Log
 
 > **Mandatory gate**: each major decision must have one row before phase execution begins.
 
-| Decision | Docs cited | Sufficiency verdict | Fallback code scan used? | Doc update action |
-| --- | --- | --- | --- | --- |
-| <decision statement> | <doc paths> | <Sufficient/Insufficient> | <Yes/No> | <doc path to update, or blocked with owner+date> |
+| Decision             | Docs cited  | Sufficiency verdict       | Fallback code scan used? | Doc update action                                |
+| -------------------- | ----------- | ------------------------- | ------------------------ | ------------------------------------------------ |
+| <decision statement> | <doc paths> | <Sufficient/Insufficient> | <Yes/No>                 | <doc path to update, or blocked with owner+date> |
 
 ### Docs to create
 
-| File | Reason |
-| --- | --- |
+| File                       | Reason                               |
+| -------------------------- | ------------------------------------ |
 | `docs/<section>/<file>.md` | <new pattern / new domain / new ADR> |
 
 ### Docs to update
 
-| File | What changes |
-| --- | --- |
+| File                       | What changes                                   |
+| -------------------------- | ---------------------------------------------- |
 | `docs/<section>/<file>.md` | <field, section, or entry that needs updating> |
 
 ### Docs to delete or archive
 
-| File | Reason |
-| --- | --- |
+| File                       | Reason                            |
+| -------------------------- | --------------------------------- |
 | `docs/<section>/<file>.md` | <superseded by / removed feature> |
 
 ### No docs affected
 
 - [ ] Confirmed: this plan introduces no new patterns, changes no existing conventions, and removes no documented features.
-  _(Check this box only if all three conditions above are true.)_
+      _(Check this box only if all three conditions above are true.)_
 
 ## Context Map
 
@@ -222,10 +222,14 @@ If user asks for minimal change first, move architecture refactors and retry red
 - [ ] Phase 1 — <name>
 - [ ] Phase 2 — <name>
 - [ ] Phase 3 — <name>
-- [ ] Phase N — Docs Sync
-- [ ] Phase N+1 — AI-ready docs reflection and next-plan handoff
-- [ ] Phase N+2 — Docs-only Simulation Drill
-- [ ] Phase N+3 — Rollout Eval & Health Score
+
+## Post-task phases
+
+- [ ] Phase N — User-journey sync
+- [ ] Phase N+1 — Docs Sync
+- [ ] Phase N+2 — AI-ready docs reflection and next-plan handoff
+- [ ] Phase N+3 — Docs-only Simulation Drill
+- [ ] Phase N+4 — Rollout Eval & Health Score
 
 ## Phases
 
@@ -280,35 +284,41 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
-### Phase N: <name> _(optional conditional phase)_
+## Post-task phases
+
+### Phase N: User-journey sync _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
-**Layer**: `<scope boundary>`
+**Layer**: documentation layer
 
-**Goal**: <what this phase accomplishes>
+**Goal**: Update `docs/product/user-journey.md` with relevant user feature stories, route flows, and journey notes that were delivered or refined by completed kanban item phases.
 
-**Pre-condition check** (do before implementation):
+**Pre-condition check**:
 
-- <file/setting to inspect>
-- <decision rule: execute phase vs skip and mark `[!]`>
+- Review the completed kanban item phases and identify any user-facing feature stories, journey changes, or new route flows that should be reflected in `docs/product/user-journey.md`.
+- If no user journey changes were shipped in this rollout, mark the phase `[!]` with note "skipped: no user-journey updates needed".
 
 **Files** _(only if pre-condition is met)_:
 
-- `<path>` — create/modify — <reason>
+- `docs/product/user-journey.md` — modify — add or refresh relevant user feature stories and journey steps tied to the completed kanban work.
 
 **Verification gate** _(if phase is executed)_:
 
-- <check>
+- `docs/product/user-journey.md` includes the new or updated user feature stories that correspond to the completed kanban phases.
+- Any new journey flow or route-based behavior is represented in the narrative with clear user actions and outcomes.
+- The document remains aligned with the currently delivered product behavior.
 
 **Sub-subphase checklist**:
 
-- [ ] **N.0 — Infrastructure/contract audit**: <audit action>
-  - **Independent verification**: <evidence that condition is met; else mark blocked/skip>
+- [ ] **N.0 — Capture completed user stories**: extract the user-facing features delivered by the completed kanban phases.
+  - **Independent verification**: the extracted stories map back to the completed phase work items.
+- [ ] **N.1 — Update user journey doc**: add the new or revised stories to `docs/product/user-journey.md`.
+  - **Independent verification**: the document reflects the completed user journeys and route flows.
 
 ---
 
-### Phase N: Docs Sync _(mandatory closing phase)_
+### Phase N+1: Docs Sync _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -317,6 +327,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 **Goal**: Ensure all docs listed in `## Docs Impact` are created, updated, or archived so the knowledge base stays accurate after this rollout.
 
 **Pre-condition check**:
+
 - Review `## Docs Impact` section of this plan.
 - If the "No docs affected" checkbox was checked and verified, this phase may be skipped — mark it `[!]` with note "skipped: no docs affected".
 
@@ -338,22 +349,22 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Sub-subphase checklist**:
 
-- [ ] **N.0 — Confirm docs-first retrieval checklist**: verify the checklist in `## Docs Impact → Docs-First Retrieval Checklist` is completed; any doc update triggered by code findings is listed under "Docs to update".
+- [ ] **N+1.0 — Confirm docs-first retrieval checklist**: verify the checklist in `## Docs Impact → Docs-First Retrieval Checklist` is completed; any doc update triggered by code findings is listed under "Docs to update".
   - **Independent verification**: checklist is not blank; post-task update field is marked Yes or No with justification.
-- [ ] **N.1 — Create new docs**: author all files listed under "Docs to create".
+- [ ] **N+1.1 — Create new docs**: author all files listed under "Docs to create".
   - **Independent verification**: all new files exist; each has `Source of truth:`, `Last reviewed:`, `Owner:` fields filled.
-- [ ] **N.2 — Update existing docs**: apply all changes listed under "Docs to update".
+- [ ] **N+1.2 — Update existing docs**: apply all changes listed under "Docs to update".
   - **Independent verification**: `Last reviewed:` date updated; no conflicting guidance with other docs in same section.
-- [ ] **N.3 — Archive or delete stale docs**: remove files listed under "Docs to delete".
+- [ ] **N+1.3 — Archive or delete stale docs**: remove files listed under "Docs to delete".
   - **Independent verification**: `grep -r "<deleted-filename>" docs/` returns no live links to the removed file.
-- [ ] **N.4 — Update assistant-context-index.md**: add/remove entries to match new doc set.
+- [ ] **N+1.4 — Update assistant-context-index.md**: add/remove entries to match new doc set.
   - **Independent verification**: `docs/ai/assistant-context-index.md` Quick Reference table reflects current state.
-- [ ] **N.5 — Verify docs link integrity**: confirm each touched doc has a valid `## Related Docs` section with working relative links.
+- [ ] **N+1.5 — Verify docs link integrity**: confirm each touched doc has a valid `## Related Docs` section with working relative links.
   - **Independent verification**: spot-check every new or modified doc — no broken relative paths, no missing `## Related Docs` section.
 
 ---
 
-### Phase N+1: AI-ready docs reflection and next-plan handoff _(mandatory closing phase)_
+### Phase N+2: AI-ready docs reflection and next-plan handoff _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -362,6 +373,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 **Goal**: Capture what was learned while executing this rollout (concerns, rework causes, confirmed improvements, unresolved questions) and convert them into a concrete next rollout plan file.
 
 **Pre-condition check**:
+
 - Review the plan’s improvement/reflection notes (for example: "what can be improved").
 - Review `## Open Questions` and mark which were resolved vs still pending.
 
@@ -390,7 +402,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
-### Phase N+2: Docs-only Simulation Drill _(mandatory closing phase)_
+### Phase N+3: Docs-only Simulation Drill _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -399,7 +411,8 @@ If user asks for minimal change first, move architecture refactors and retry red
 **Goal**: Prove a comparable task can be completed from docs/specs first, with fallback scans bounded and remediated.
 
 **Pre-condition check**:
-- Confirm the latest docs updates from Phase N are complete.
+
+- Confirm the latest docs updates from Phase N+1 are complete.
 - Select one comparable task scenario that should be executable from docs/specs only.
 
 **Files**:
@@ -426,7 +439,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 ---
 
-### Phase N+3: Rollout Eval & Health Score _(mandatory closing phase)_
+### Phase N+4: Rollout Eval & Health Score _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -435,18 +448,19 @@ If user asks for minimal change first, move architecture refactors and retry red
 **Goal**: Produce a rollout health score after Docs Sync, reflection, and simulation drill complete, then record the score with evidence in a session note.
 
 **Pre-condition check**:
-- Confirm Phase N (Docs Sync), Phase N+1 (AI-ready reflection/handoff), and Phase N+2 (Docs-only Simulation Drill) are marked `[x]` or have documented `[!]` justifications.
+
+- Confirm Phase N (User-journey sync), Phase N+1 (Docs Sync), Phase N+2 (AI-ready reflection/handoff), and Phase N+3 (Docs-only Simulation Drill) are marked `[x]` or have documented `[!]` justifications.
 - Confirm docs-first retrieval checklist and reflection decisions are available as scoring evidence.
 
 **Scoring rubric**:
 
-| Dimension | Max Points | How scored |
-| --- | --- | --- |
-| Docs-first adherence | 40 | Docs-First Retrieval Checklist fully completed, sufficiency explicitly assessed, and fallback decisions documented if used |
-| Docs health | 40 | All Docs Sync verification gates passed: create/update/archive/link-index checks complete |
-| Reflection quality | 20 | Reflection records at least one confirmed improvement and every open question has an owner or revisit condition |
-| Simulation readiness | 20 | Drill evidence exists and fallback-scan ratio meets threshold/justification rules |
-| **Total** | **120** | Suggested pass threshold: `>= 85` |
+| Dimension            | Max Points | How scored                                                                                                                 |
+| -------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Docs-first adherence | 40         | Docs-First Retrieval Checklist fully completed, sufficiency explicitly assessed, and fallback decisions documented if used |
+| Docs health          | 40         | All Docs Sync verification gates passed: create/update/archive/link-index checks complete                                  |
+| Reflection quality   | 20         | Reflection records at least one confirmed improvement and every open question has an owner or revisit condition            |
+| Simulation readiness | 20         | Drill evidence exists and fallback-scan ratio meets threshold/justification rules                                          |
+| **Total**            | **120**    | Suggested pass threshold: `>= 85`                                                                                          |
 
 **Scoring rules**:
 
@@ -462,13 +476,13 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Sub-subphase checklist**:
 
-- [ ] **N+3.1 — Evaluate docs-first adherence**: review Docs-First Retrieval Checklist completion and sufficiency verdict.
+- [ ] **N+4.1 — Evaluate docs-first adherence**: review Docs-First Retrieval Checklist completion and sufficiency verdict.
   - **Independent verification**: checklist is complete and sufficiency is explicitly marked sufficient/insufficient.
-- [ ] **N+3.2 — Evaluate docs health**: review Docs Sync verification-gate results.
+- [ ] **N+4.2 — Evaluate docs health**: review Docs Sync verification-gate results.
   - **Independent verification**: every docs gate is pass, justified block, or justified skip.
-- [ ] **N+3.3 — Evaluate reflection + simulation quality**: review handoff outputs and simulation drill evidence.
+- [ ] **N+4.3 — Evaluate reflection + simulation quality**: review handoff outputs and simulation drill evidence.
   - **Independent verification**: at least one confirmed improvement, owner/criteria for open questions, and simulation run evidence exists.
-- [ ] **N+3.4 — Record final score session note**: write session note with score breakdown and final recommendation.
+- [ ] **N+4.4 — Record final score session note**: write session note with score breakdown and final recommendation.
   - **Independent verification**: session note includes total score and archive gate decision (`>= 85` pass / `< 85` hold).
 
 ---
