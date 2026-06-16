@@ -26,7 +26,7 @@ export default function TermsOfService() {
               Terms of Service
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-4">
-              Last updated: May 11, 2026
+              Last updated: June 16, 2026
             </p>
           </div>
 
@@ -86,6 +86,21 @@ export default function TermsOfService() {
                     <strong>&quot;AI Training Data&quot;</strong> means anonymized and aggregated
                     user interaction data, performance metrics, and usage patterns used to improve
                     the artificial intelligence systems
+                  </li>
+                  <li>
+                    <strong>&quot;Tokens&quot;</strong> means virtual usage credits, allowances,
+                    entitlements, or similar units used within the Platform to access certain
+                    features or Services
+                  </li>
+                  <li>
+                    <strong>&quot;Token Economy&quot;</strong> means the Platform&apos;s rules,
+                    systems, and mechanisms for issuance, accrual, spending, expiration, adjustment,
+                    and revocation of Tokens
+                  </li>
+                  <li>
+                    <strong>&quot;Token Abuse&quot;</strong> means any conduct intended to unfairly
+                    obtain, farm, manipulate, duplicate, transfer, evade limits on, or otherwise
+                    exploit Tokens or the Token Economy in violation of these Terms
                   </li>
                 </ul>
               </section>
@@ -299,6 +314,34 @@ export default function TermsOfService() {
                   content; (c) modify or otherwise make derivative works of the Platform; or (d) use
                   any data mining, robots, or similar data gathering methods.
                 </p>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3 mt-6">
+                  Token Economy Use Conditions
+                </h3>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                  If the Platform offers Tokens, your use is subject to the following conditions:
+                </p>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2">
+                  <li>
+                    <strong>Limited License:</strong> Tokens are licensed, not sold, and are
+                    provided solely for use within the Platform
+                  </li>
+                  <li>
+                    <strong>No Monetary Value:</strong> Tokens are not money, stored value,
+                    securities, or personal property, and are not redeemable for cash unless
+                    explicitly required by applicable law
+                  </li>
+                  <li>
+                    <strong>Non-Transferable:</strong> You may not transfer, sell, gift, barter,
+                    lease, or otherwise move Tokens between accounts except where we explicitly
+                    permit it in writing
+                  </li>
+                  <li>
+                    <strong>Subject to Change:</strong> We may modify Token rules, earning rates,
+                    spending mechanics, expiration windows, and feature pricing at our reasonable
+                    discretion
+                  </li>
+                </ul>
               </section>
 
               {/* Prohibited Conduct */}
@@ -325,6 +368,24 @@ export default function TermsOfService() {
                   <li>
                     Use the Platform to prepare for exams in violation of certification body
                     policies
+                  </li>
+                  <li>
+                    Engage in Token Abuse, including creating or coordinating multiple accounts to
+                    farm, transfer, or manipulate Tokens
+                  </li>
+                  <li>
+                    Use bots, scripts, emulators, VPN/proxy rotation, device spoofing, fake
+                    identities, or other technical methods to bypass Token limits or eligibility
+                    rules
+                  </li>
+                  <li>
+                    Attempt to exploit bugs, race conditions, referral systems, payment flows,
+                    promotional campaigns, or cancellation/refund mechanics to gain unearned Tokens
+                    or benefits
+                  </li>
+                  <li>
+                    Buy, sell, trade, broker, or advertise Tokens or Token-enabled account access
+                    outside authorized Platform channels
                   </li>
                 </ul>
               </section>
@@ -1412,6 +1473,30 @@ export default function TermsOfService() {
                   <li>Price changes will be communicated at least 30 days in advance</li>
                   <li>All prices include applicable taxes unless otherwise stated</li>
                 </ul>
+
+                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
+                  Token Grants, Promotions, and Corrections
+                </h3>
+                <ul className="list-disc pl-6 text-slate-700 dark:text-slate-300 space-y-2 mb-4">
+                  <li>
+                    Tokens granted through subscriptions, trials, promotions, referrals, support
+                    actions, or goodwill credits may be subject to additional eligibility terms,
+                    limits, and expiration
+                  </li>
+                  <li>
+                    We may withhold, reverse, expire, or reclaim Tokens where we reasonably detect
+                    abuse, fraud, payment reversal/chargeback, policy violations, technical errors,
+                    or duplicate grants
+                  </li>
+                  <li>
+                    We may correct Token balances to address accounting mistakes, synchronization
+                    issues, or obvious system errors, including after prior display or use
+                  </li>
+                  <li>
+                    Unless required by law, reclaimed or expired Tokens are not refundable and do
+                    not create monetary compensation rights
+                  </li>
+                </ul>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Refunds and Cancellation
                 </h3>
@@ -1560,6 +1645,10 @@ export default function TermsOfService() {
                   <li>
                     <strong>Account inactivity</strong> for extended periods
                   </li>
+                  <li>
+                    We reasonably suspect Token Abuse, manipulation of the Token Economy, or
+                    coordinated behavior intended to obtain unearned token-based access or benefits
+                  </li>
                 </ul>
                 <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3">
                   Effect of Termination
@@ -1569,6 +1658,11 @@ export default function TermsOfService() {
                   delete your account and associated data where appropriate. Provisions that by
                   their nature should survive termination shall survive, including ownership
                   provisions, warranty disclaimers, and limitations of liability.
+                </p>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mt-4">
+                  Upon suspension or termination for Token Abuse or related policy violations, we
+                  may freeze, revoke, or permanently remove some or all Tokens and associated
+                  entitlements linked to your account, to the extent permitted by law.
                 </p>
               </section>
 
@@ -1856,7 +1950,7 @@ export default function TermsOfService() {
               {/* Effective Date */}
               <div className="bg-slate-100 dark:bg-slate-700 rounded-lg p-6 border border-slate-200 dark:border-slate-600 text-center">
                 <p className="text-slate-600 dark:text-slate-400 text-sm">
-                  These Terms of Service are effective as of May 11, 2026, and apply to all users
+                  These Terms of Service are effective as of June 16, 2026, and apply to all users
                   of the Certestic platform worldwide.
                 </p>
               </div>
