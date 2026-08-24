@@ -56,6 +56,11 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      // Use system Chrome instead of Chromium for Testing on macOS < 12
+      // Chromium 147+ requires macOS 12+, but system Chrome has better backwards compat
+      ...(process.platform === 'darwin' && !isLiveEnvironment
+        ? { use: { ...devices['Desktop Chrome'], channel: 'chrome' } }
+        : {}),
     },
   ],
 
