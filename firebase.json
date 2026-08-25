@@ -1,1 +1,14 @@
-{}
+{
+  "apphosting": [
+    {
+      "backendId": "app",
+      "rootDir": ".",
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "e2e", "__tests__"]
+    },
+     {
+      "backendId": "uat",
+      "rootDir": ".",
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "e2e", "__tests__"]
+    }
+  ]
+}

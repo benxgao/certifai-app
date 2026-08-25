@@ -13,7 +13,7 @@ test.describe('Exam Flows', () => {
     testInfo.setTimeout(360000);
   });
 
-  test('[Dashboard → Cert → Exams]', async ({
+  test('[Dashboard → Cert → Exams] @smoke', async ({
     authenticatedPage,
   }: TestFixtures, testInfo: TestInfo) => {
     const timingTracker = new FlowTimingTracker('Exam flow baseline');

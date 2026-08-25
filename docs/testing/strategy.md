@@ -1,7 +1,7 @@
 # Testing Strategy
 
 > **Source of truth**: `__tests__/`, `e2e/`, `__tests__/setup.ts`, `playwright.config.ts`
-> **Last reviewed**: 2026-05-26
+> **Last reviewed**: 2026-08-24
 > **Owner**: engineering
 
 ## Purpose
@@ -10,22 +10,22 @@ Documents the two-layer testing strategy (unit + E2E), the test file inventory, 
 
 ## Test Layers
 
-| Layer | Location | Runner | When to use |
-| ----- | -------- | ------ | ----------- |
-| Unit | `__tests__/` | Jest + jsdom | Logic, hook contracts, error-contract shapes, pure functions |
-| E2E | `e2e/` | Playwright | Full user flows, auth, navigation, rendering |
+| Layer | Location     | Runner       | When to use                                                  |
+| ----- | ------------ | ------------ | ------------------------------------------------------------ |
+| Unit  | `__tests__/` | Jest + jsdom | Logic, hook contracts, error-contract shapes, pure functions |
+| E2E   | `e2e/`       | Playwright   | Full user flows, auth, navigation, rendering                 |
 
 ## Unit Test Inventory (`__tests__/`)
 
-| File | What it covers |
-| ---- | -------------- |
-| `exam-status.test.ts` | `ExamStatus` enum values and status transition logic |
-| `exam-cert-error-contract.test.tsx` | Error response contract shape for exam/cert API calls |
-| `exam-report-phase1-flow-shape.test.ts` | Phase 1 exam report data shape validation |
-| `exam-report-task-idempotency.test.ts` | Idempotency of exam report task generation |
-| `demo-credentials-provider.test.ts` | `DemoCredentialsProvider` hook and display logic |
-| `use-demo-credentials-reveal.test.tsx` | `useDemoCredentialsReveal` hook behaviour |
-| `example.test.ts` | Sanity-check template — can be removed |
+| File                                    | What it covers                                        |
+| --------------------------------------- | ----------------------------------------------------- |
+| `exam-status.test.ts`                   | `ExamStatus` enum values and status transition logic  |
+| `exam-cert-error-contract.test.tsx`     | Error response contract shape for exam/cert API calls |
+| `exam-report-phase1-flow-shape.test.ts` | Phase 1 exam report data shape validation             |
+| `exam-report-task-idempotency.test.ts`  | Idempotency of exam report task generation            |
+| `demo-credentials-provider.test.ts`     | `DemoCredentialsProvider` hook and display logic      |
+| `use-demo-credentials-reveal.test.tsx`  | `useDemoCredentialsReveal` hook behaviour             |
+| `example.test.ts`                       | Sanity-check template — can be removed                |
 
 ## Environment Setup (`__tests__/setup.ts`)
 
@@ -44,22 +44,22 @@ Playwright tests cover full user flows.
 
 ### Spec inventory
 
-| File | What it covers |
-| ---- | -------------- |
+| File                               | What it covers                                                  |
+| ---------------------------------- | --------------------------------------------------------------- |
 | `demo-credentials-consent.spec.ts` | Demo credential reveal and consent-gated marketing interactions |
-| `exam.spec.ts` | Exam-oriented user flows, including creation and progression |
-| `user.spec.ts` | Core authenticated user flows |
+| `exam.spec.ts`                     | Exam-oriented user flows, including creation and progression    |
+| `user.spec.ts`                     | Core authenticated user flows                                   |
 
 ### Fixture and helper inventory
 
-| Path | Purpose |
-| ---- | ------- |
-| `e2e/fixtures/auth.ts` | Shared authenticated-page / auth setup fixture |
-| `e2e/helpers/common.ts` | Common page/test helpers |
-| `e2e/helpers/exams.ts` | Exam-specific helper routines |
-| `e2e/helpers/performance.ts` | Performance-oriented helper utilities |
-| `e2e/helpers/selectors.ts` | Shared selector constants/helpers |
-| `e2e/instructions.md` | Local E2E guidance for test authors |
+| Path                         | Purpose                                        |
+| ---------------------------- | ---------------------------------------------- |
+| `e2e/fixtures/auth.ts`       | Shared authenticated-page / auth setup fixture |
+| `e2e/helpers/common.ts`      | Common page/test helpers                       |
+| `e2e/helpers/exams.ts`       | Exam-specific helper routines                  |
+| `e2e/helpers/performance.ts` | Performance-oriented helper utilities          |
+| `e2e/helpers/selectors.ts`   | Shared selector constants/helpers              |
+| `e2e/instructions.md`        | Local E2E guidance for test authors            |
 
 Run with:
 
@@ -77,6 +77,34 @@ npx playwright test
 - runs tests sequentially with a single Chromium worker.
 
 E2E tests use an authenticated fixture flow from `e2e/fixtures/auth.ts` for routes that require sign-in. Never hardcode credentials in test files.
+
+## CI Pipeline (GitHub Actions)
+
+The CI workflow (`.github/workflows/ci.yml`) is a standalone test gate that runs **in parallel** with the Firebase App Hosting deploy pipeline. Both are triggered by the same push to the `uat` branch. App Hosting owns deploys; GitHub Actions owns tests — the two never coordinate, and CI does not wait for or poll the deployment.
+
+**Jobs**:
+
+| Job          | Runs                            | Purpose                                             |
+| ------------ | ------------------------------- | --------------------------------------------------- |
+| `unit-tests` | `npm run test` (Jest)           | Fast gate on push to `uat`                          |
+| `e2e-tests`  | `npm run test:e2e` (Playwright) | Full E2E suite against a locally-started dev server |
+
+**Key facts**:
+
+- Triggered only on `push` to `uat` (no PR trigger, no `main` trigger).
+- E2E runs against a local `npm run dev` server started by Playwright's `webServer` config — not against the live UAT URL. No post-deploy smoke step exists.
+- The workflow generates `.env.local` from GitHub Secrets plus UAT defaults (see below) — a fresh checkout has no `.env.local`.
+
+**`.env.local` generation in CI** — the following are written by the workflow; values come from GitHub Secrets where noted:
+
+| Variable                                                                                                            | Source in CI                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`                                                                                 | GitHub Secrets                                                                                   |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` / `AUTH_DOMAIN` / `PROJECT_ID` / `STORAGE_BUCKET` / `MESSAGING_SENDER_ID` / `APP_ID` | GitHub Secret if set, otherwise UAT defaults mirrored from `apphosting.uat.yaml` (public values) |
+| `NEXT_PUBLIC_FIREBASE_BACKEND_URL`                                                                                  | `http://127.0.0.1:3000` (the local dev server)                                                   |
+| `GOOGLE_APPLICATION_CREDENTIALS`                                                                                    | Path to `/tmp/gcp_cred.json`, written from the `GCP_CREDENTIALS_JSON` GitHub Secret              |
+
+> **Troubleshooting**: `FirebaseError: auth/invalid-api-key` at `src/firebase/firebaseWebConfig.ts` module load means the `NEXT_PUBLIC_FIREBASE_*` web config is missing/empty — the dev server cannot start. Check the "Create .env.local" step output. See also `.env.local.example` for the local setup.
 
 ## Test Conventions
 
@@ -104,12 +132,12 @@ npx playwright test --ui
 
 ## Coverage Targets
 
-| Layer | Target |
-| ----- | ------ |
-| Unit — hook contracts | 100% of `src/swr/` error paths |
-| Unit — type/enum | 100% of `src/types/exam-status.ts` |
-| E2E — critical flows | sign-in, exam creation, exam submission, sign-out |
-| E2E — fixture reuse | all authenticated flows should route through `e2e/fixtures/auth.ts` |
+| Layer                 | Target                                                              |
+| --------------------- | ------------------------------------------------------------------- |
+| Unit — hook contracts | 100% of `src/swr/` error paths                                      |
+| Unit — type/enum      | 100% of `src/types/exam-status.ts`                                  |
+| E2E — critical flows  | sign-in, exam creation, exam submission, sign-out                   |
+| E2E — fixture reuse   | all authenticated flows should route through `e2e/fixtures/auth.ts` |
 
 ## Dangerous Areas / Anti-patterns
 

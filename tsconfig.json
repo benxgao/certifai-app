@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": "./",
     "esModuleInterop": true,
     "incremental": true,
