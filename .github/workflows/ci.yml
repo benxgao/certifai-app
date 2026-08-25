@@ -55,6 +55,10 @@ jobs:
           echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> .env.local
           echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> .env.local
           echo "NEXT_PUBLIC_SERVER_API_URL=${{ secrets.NEXT_PUBLIC_SERVER_API_URL }}" >> .env.local
+          echo "SERVICE_SECRET=${{ secrets.SERVICE_SECRET }}" >> .env.local
+          echo "JOSE_JWT_SECRET=${{ secrets.JOSE_JWT_SECRET }}" >> .env.local
+          echo "NEXT_PUBLIC_HOST_URL=${{ secrets.NEXT_PUBLIC_HOST_URL }}" >> .env.local
+
           # Web app backend calls point at the local dev server Playwright starts
           echo "NEXT_PUBLIC_FIREBASE_BACKEND_URL=http://127.0.0.1:3000" >> .env.local
       - name: Write GCP credentials to temp file
@@ -65,7 +69,7 @@ jobs:
         run: npm run test:e2e -- --grep @smoke
         env:
           CI: true
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report

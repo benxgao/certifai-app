@@ -261,7 +261,7 @@ Each sub-subphase is independently reviewable and revertible. No split creates t
 - [x] Phase 1 — Tag `@smoke` tests + create `smoke.spec.ts` (1.1–1.3 done & verified 2026-08-24)
 - [~] Phase 2 — Enhance CI with `@smoke` filtering + `workflow_dispatch` (2.1–2.2 done & verified 2026-08-25; 2.3 push blocked on SSH passphrase)
 - [~] Phase 3 — Configure App Hosting rollout trigger rules (3.1 done & verified 2026-08-25; 3.2 pending Firebase Console, HITL)
-- [ ] Phase 4 — Provision test credentials in Secret Manager + GitHub Secrets
+- [~] Phase 4 — Provision test credentials in Secret Manager + GitHub Secrets (4.4 local validation done 2026-08-25; 4.1–4.3 HITL pending)
 - [ ] Phase 5 — Update pre-flight script for CI compatibility
 - [ ] Phase 6 — Local dev parity & docs
 - [ ] Phase 7 — Docs Sync
@@ -280,7 +280,7 @@ The following actions **cannot be automated** and require manual access to exter
 | Provision `GCP_CREDENTIALS_JSON` GitHub Secret                                    | 4.3   | GitHub repo Settings           | Phase 0 full E2E | Partially — CI runs but E2E auth-dependent tests will fail without it |
 | Create Firebase test user accounts in UAT                                         | 4.1   | Firebase Console (Auth)        | Phase 4          | No                                                                    |
 | Store credentials in Cloud Secret Manager                                         | 4.2   | Google Cloud Console           | Phase 4          | No                                                                    |
-| Add GitHub Secrets (`PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, `GCP_CREDENTIALS_JSON`)  | 4.3   | GitHub repo Settings           | Phase 4          | No                                                                    |
+| Add GitHub Secrets (all 15 — no fallbacks; `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, `PW_SIGNUP_EMAIL`, `PW_SIGNUP_PASSWORD`, 6× `NEXT_PUBLIC_FIREBASE_*`, `NEXT_PUBLIC_SERVER_API_URL`, `NEXT_PUBLIC_HOST_URL`, `SERVICE_SECRET`, `JOSE_JWT_SECRET`, `GCP_CREDENTIALS_JSON`) | 4.3   | GitHub repo Settings           | Phase 4          | No                                                                    |
 | Verify `GCP_CREDENTIALS_JSON` format locally                                      | 4.4   | Local machine                  | Phase 4          | No                                                                    |
 | Configure Ignored Paths in Firebase Console                                       | 3.2   | Firebase Console (App Hosting) | Phase 3          | No — but Phase 3 repo code can proceed without it                     |
 | Verify App Hosting skipped deploy on test-only commit                             | 3.2   | Firebase Console (App Hosting) | Phase 3          | No — must observe SKIPPED status                                      |
@@ -406,9 +406,9 @@ grep -q 'upload-artifact' .github/workflows/ci.yml && echo "PASS: artifact uploa
   - **Independent verification**: GitHub Actions E2E job output shows test count matching `@smoke` tag count
   - **Isolated**: partially — the push is automatable, but inspecting CI output requires human review.
   - **Blocker**: committed as `c260cac`; push fails with `git@github.com: Permission denied (publickey)` under `BatchMode` — SSH passphrase required (HITL, user action). Also requires GitHub Secrets (Phase 4) for auth-dependent `@smoke` tests to pass; `unit-tests` job should pass regardless.
-  - **Implementation note (deviation)**: commit message records 3 extra fixes beyond the plan's 2 items — (a) `PW_SIGNUP_EMAIL` line used `>` and truncated `.env.local`, silently dropping `PW_TEST_EMAIL`/`PW_TEST_PASSWORD` (would break the `user.spec.ts` login test in the `@smoke` subset); (b) `NEXT_PUBLIC_FIREBASE_*` now have `|| 'UAT-default'` fallbacks so CI is self-sufficient when GitHub Secrets are absent (prevents the `auth/invalid-api-key` regression from Phase 0.5); (c) test-account values single-quoted to protect against shell `$` interpolation (deferred hardening from Phase 0, per Session Note 16:45).
+  - **Implementation note (deviation)**: commit message records 3 extra fixes beyond the plan's 2 items — (a) `PW_SIGNUP_EMAIL` line used `>` and truncated `.env.local`, silently dropping `PW_TEST_EMAIL`/`PW_TEST_PASSWORD` (would break the `user.spec.ts` login test in the `@smoke` subset); (b) `NEXT_PUBLIC_FIREBASE_*` had `|| 'UAT-default'` fallbacks added — **REVERTED on 2026-08-25 by user decision** (repo is public; hardcoding Firebase config in the workflow leaks it). Final state: every env var in the "Create .env.local" step comes **only** from GitHub Secrets, no defaults. See Session Note 2026-08-25 22:10; (c) test-account values single-quoted to protect against shell `$` interpolation (deferred hardening from Phase 0, per Session Note 16:45).
 
-**Updated CI workflow YAML** (reference — synced with committed `.github/workflows/ci.yml` @ `c260cac`, 2026-08-25; canonical source is the repo file):
+**CI workflow reference**: canonical source is the repo file `.github/workflows/ci.yml` (HEAD `d9d9450`). The inline reference YAML previously mirrored here has been removed to avoid drift.
 
 ---
 
@@ -476,11 +476,11 @@ node -e "const f=require('./firebase.json'); const ig=f.apphosting?.[0]?.ignore|
 
 ### Phase 4: Provision test credentials in Secret Manager + GitHub Secrets
 
-**Progress**: `[ ]`
+**Progress**: `[~]` — 4.4 local validation done & verified 2026-08-25; 4.1–4.3 pending (HITL, blocked on console access)
 
 **Layer**: infrastructure / secrets (requires console access — may be blocked)
 
-**Goal**: Ensure `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, and `GCP_CREDENTIALS_JSON` exist and are correctly formatted in all environments.
+**Goal**: Ensure `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, and `GCP_CREDENTIALS_JSON` exist and are correctly formatted in all environments. **No fallback values anywhere in CI** — every env var the workflow needs must come from GitHub Secrets (public repo).
 
 **Files**:
 
@@ -488,24 +488,23 @@ node -e "const f=require('./firebase.json'); const ig=f.apphosting?.[0]?.ignore|
 
 **Verification gate** (must pass before Phase 5 starts):
 
-- `gcloud secrets describe PW_TEST_EMAIL --project=certifai-uat` returns valid
-- `gcloud secrets describe PW_TEST_PASSWORD --project=certifai-uat` returns valid
-- GitHub repo secrets `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, and `GCP_CREDENTIALS_JSON` are set
-- `GCP_CREDENTIALS_JSON` GitHub Secret contains valid JSON (the full service account key JSON, not a file path)
+- `gcloud secrets describe PW_TEST_EMAIL --project=certifai-uat` returns valid — pending (HITL)
+- `gcloud secrets describe PW_TEST_PASSWORD --project=certifai-uat` returns valid — pending (HITL)
+- All 15 GitHub repo secrets (table below) are set — pending (HITL)
+- `GCP_CREDENTIALS_JSON` GitHub Secret contains valid JSON (the full service account key JSON, not a file path) — local half DONE (verified 2026-08-25); CI half pending
 
 **Isolated Test** (run this single command after Phase 4 is complete to verify in isolation):
 
 ```bash
-# Verify Cloud Secret Manager secrets exist (requires gcloud CLI auth)
+# Verify Cloud Secret Manager secrets exist (requires gcloud CLI auth — NOT installed locally as of 2026-08-25)
 gcloud secrets describe PW_TEST_EMAIL --project=certifai-uat > /dev/null 2>&1 && echo "PASS: PW_TEST_EMAIL exists in Secret Manager" || echo "FAIL: PW_TEST_EMAIL missing from Secret Manager"
 gcloud secrets describe PW_TEST_PASSWORD --project=certifai-uat > /dev/null 2>&1 && echo "PASS: PW_TEST_PASSWORD exists in Secret Manager" || echo "FAIL: PW_TEST_PASSWORD missing from Secret Manager"
 
-# Verify GCP_CREDENTIALS_JSON format locally (requires the actual JSON file)
-# Replace /path/to/service-account.json with your actual key file
+# Verify GCP_CREDENTIALS_JSON format locally — DONE 2026-08-25 (see below; use the real local key file)
 python3 -c "
 import json, sys
 try:
-    with open('/path/to/service-account.json') as f:
+    with open('gcp_credentials.json') as f:
         data = json.load(f)
     if data.get('type') == 'service_account' and 'project_id' in data:
         print('PASS: GCP credentials JSON is valid, project_id=' + data['project_id'])
@@ -522,11 +521,30 @@ except Exception as e:
 
 This phase is **entirely HITL** — every sub-subphase requires manual access to an external system.
 
-- `[HITL]` **Create Firebase test user accounts**: sign in to Firebase Console → Authentication → Users. Create a test user `pw_test_uat@certestic.com` with a known password in the UAT project (`certifai-uat`).
-- `[HITL]` **Store credentials in Cloud Secret Manager**: use `gcloud` CLI commands (requires auth) to create `PW_TEST_EMAIL` and `PW_TEST_PASSWORD` secrets in the `certifai-uat` project.
-- `[HITL]` **Add GitHub Secrets**: navigate to GitHub repo → Settings → Secrets and variables → Actions → New repository secret. Add `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, and `GCP_CREDENTIALS_JSON`. The `GCP_CREDENTIALS_JSON` value must be the **full JSON content** of the service account key file (not a file path).
-  - **Optional**: `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID` — if **not** set, the workflow falls back to the UAT values mirrored from `apphosting.uat.yaml` (these are public `NEXT_PUBLIC_*` values, safe as defaults). Add them as secrets only if you need to point CI at a different Firebase project.
+- `[HITL]` **Create Firebase test user accounts**: sign in to Firebase Console → Authentication → Users. Create test users in the UAT project (`certifai-uat`): `pw_test_uat@certestic.com` (used by `PW_TEST_EMAIL` — login/exam tests) and `pw_test_signup@certestic.com` (used by `PW_SIGNUP_EMAIL` — signup lifecycle test), each with a known password.
+- `[HITL]` **Store credentials in Cloud Secret Manager**: use `gcloud` CLI commands (requires auth) to create `PW_TEST_EMAIL` and `PW_TEST_PASSWORD` secrets in the `certifai-uat` project. Note: `gcloud` is **not installed** on the dev machine as of 2026-08-25 — either install the Google Cloud SDK (`brew install google-cloud-sdk`) or create the secrets via the Cloud Console UI (Secret Manager).
+- `[HITL]` **Add GitHub Secrets**: navigate to GitHub repo → Settings → Secrets and variables → Actions → New repository secret. **Every env var referenced by the "Create .env.local" / "Write GCP credentials" steps must be added — the workflow has NO fallback values** (public repo — no Firebase config hardcoded in the workflow). Full required list below.
 - `[HITL]` **Verify `GCP_CREDENTIALS_JSON` format**: after adding the GitHub Secret, trigger a CI run (via `workflow_dispatch` or push to `uat`) and confirm the E2E job's credential-writing step succeeds (no "invalid JSON" error in the logs).
+
+**GitHub Secrets — complete required list** (all 15, sourced from the existing `apphosting.uat.yaml` entries / Firebase Console — values are **not** repeated here to keep the public repo clean):
+
+| Secret | Purpose | Value source |
+| ------ | ------- | ------------ |
+| `PW_TEST_EMAIL` | E2E login/exam test account | Firebase Console → Authentication (created in 4.1) |
+| `PW_TEST_PASSWORD` | E2E login/exam test account password | Set in 4.1 |
+| `PW_SIGNUP_EMAIL` | E2E signup lifecycle test account | Firebase Console → Authentication (created in 4.1) |
+| `PW_SIGNUP_PASSWORD` | E2E signup lifecycle test account password | Set in 4.1 |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase Web SDK config — required or dev server crashes (`auth/invalid-api-key`) | `apphosting.uat.yaml` / Firebase Console → Project settings |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Same | Same |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Same | Same |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Same | Same |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Same | Same |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | Same | Same |
+| `NEXT_PUBLIC_SERVER_API_URL` | Backend API endpoint for the web app | `apphosting.uat.yaml` |
+| `NEXT_PUBLIC_HOST_URL` | UAT site URL | `apphosting.uat.yaml` |
+| `SERVICE_SECRET` | Server-side secret | Cloud Secret Manager / existing UAT env |
+| `JOSE_JWT_SECRET` | JWT signing secret | Cloud Secret Manager / existing UAT env |
+| `GCP_CREDENTIALS_JSON` | **Full JSON content** of `gcp_credentials.json` (service account key, not a file path) — written to `/tmp/gcp_cred.json` in CI | `gcp_credentials.json` (gitignored, local) |
 
 **Sub-subphase checklist**:
 
@@ -543,13 +561,14 @@ This phase is **entirely HITL** — every sub-subphase requires manual access to
   - **Independent verification**: `gcloud secrets describe PW_TEST_EMAIL --project=certifai-uat` succeeds
   - **Isolated**: no — requires `gcloud` CLI auth and Cloud Console access.
 
-- [ ] **4.3 — Add GitHub Secrets** `[HITL]`: `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, and `GCP_CREDENTIALS_JSON`
+- [ ] **4.3 — Add GitHub Secrets** `[HITL]`: all 15 secrets from the table above (no fallbacks — every var must be provided)
   - `GCP_CREDENTIALS_JSON` must contain the **full JSON content** of the service account key file (not the file path). This JSON is written to `/tmp/gcp_cred.json` in the CI workflow, and `GOOGLE_APPLICATION_CREDENTIALS` is set to that file path.
   - **Independent verification**: GitHub repo settings → Secrets shows all keys
   - **Isolated**: no — requires GitHub repo Settings access.
-- [ ] **4.4 — Verify `GCP_CREDENTIALS_JSON` format** `[HITL]`: ensure the GitHub Secret contains valid JSON that can be written to a file and parsed by `firebaseAdminConfig.ts`
-  - **Independent verification**: locally, write the JSON to a file, set `GOOGLE_APPLICATION_CREDENTIALS` to the file path, and verify `firebaseAdminConfig.ts` loads without `SyntaxError`
-  - **Isolated**: no — requires the actual service account JSON file and local verification.
+- [x] **4.4 — Verify `GCP_CREDENTIALS_JSON` format** `[AUTO→HITL]`: local validation completed 2026-08-25 — `gcp_credentials.json` parses as valid JSON, `type: service_account`, `project_id: certifai-uat`, all required keys present (`private_key`, `client_email`, `client_id`, ...). Remaining HITL half: confirm the GitHub Secret (added in 4.3) writes cleanly to `/tmp/gcp_cred.json` and `firebaseAdminConfig.ts` loads without `SyntaxError` in a CI run.
+  - **Independent verification (local, done)**: python JSON validation of `gcp_credentials.json` — PASS (service_account, project_id=certifai-uat)
+  - **Independent verification (CI, pending)**: trigger CI and confirm no "invalid JSON" error in the credential-writing step
+  - **Isolated**: local part yes (file exists + parses); CI part requires a push/`workflow_dispatch`.
 
 ---
 
@@ -985,7 +1004,7 @@ At the end of each working session:
 - Blockers: none for the fix itself; `PW_TEST_EMAIL` / `PW_TEST_PASSWORD` / `GCP_CREDENTIALS_JSON` GitHub Secrets still unverified (Phase 4) — e2e auth-dependent tests may fail after this fix until provisioned
 - HITL actions pending: push to `uat`; (optional) add 6 `NEXT_PUBLIC_FIREBASE_*` GitHub Secrets only if CI must target a non-UAT project
 
-**Root cause (fixed)**: `FirebaseError: auth/invalid-api-key` at `firebaseWebConfig.ts:16` — the CI-generated `.env.local` contained only `PW_TEST_EMAIL` / `PW_TEST_PASSWORD`, so `initializeApp({ apiKey: undefined })` crashed the dev server at startup. Fix in `.github/workflows/ci.yml` "Create .env.local": write the 6 web-config vars with UAT defaults from `apphosting.uat.yaml` (public `NEXT_PUBLIC_*` values), overridable via GitHub Secrets, plus `NEXT_PUBLIC_FIREBASE_BACKEND_URL=http://127.0.0.1:3000` (local dev server). Also created `.env.local.example`, added "CI Pipeline" section to `docs/testing/strategy.md`, added "CI Environment & Required Variables" section to `e2e/instructions.md`, and synced Phase 0/Phase 2 reference YAMLs in this doc.
+**Root cause (fixed)**: `FirebaseError: auth/invalid-api-key` at `firebaseWebConfig.ts:16` — the CI-generated `.env.local` contained only `PW_TEST_EMAIL` / `PW_TEST_PASSWORD`, so `initializeApp({ apiKey: undefined })` crashed the dev server at startup. Fix in `.github/workflows/ci.yml` "Create .env.local": write the 6 web-config vars from GitHub Secrets, plus `NEXT_PUBLIC_FIREBASE_BACKEND_URL=http://127.0.0.1:3000` (local dev server). **(Note: an intermediate version of this fix used UAT defaults copied from `apphosting.uat.yaml` as fallbacks — those were REVERTED on 2026-08-25 because the repo is public and hardcoding Firebase config leaks it. The workflow now reads GitHub Secrets only; see Session Note 2026-08-25 22:10.)** Also created `.env.local.example`, added "CI Pipeline" section to `docs/testing/strategy.md`, added "CI Environment & Required Variables" section to `e2e/instructions.md`, and synced Phase 0/Phase 2 reference YAMLs in this doc.
 
 **User decision**: hold — do not proceed to Phase 1 for now.
 
@@ -1019,7 +1038,7 @@ At the end of each working session:
 
 **Bugs fixed this session (beyond plan's 2.1/2.2)**:
 1. `PW_SIGNUP_EMAIL` line used `>` instead of `>>` — it truncated `.env.local`, silently dropping `PW_TEST_EMAIL`/`PW_TEST_PASSWORD` written earlier. Under `--grep @smoke` the `user.spec.ts` login test would have had no credentials. Fixed to `>>`.
-2. `NEXT_PUBLIC_FIREBASE_*` had no fallback — with GitHub Secrets absent, values wrote empty and the dev server would crash with `auth/invalid-api-key` (the exact Phase 0.5 regression). Added `|| 'UAT-default'` fallbacks mirrored from `apphosting.uat.yaml` (public values), per the plan's Phase 2 reference YAML.
+2. `NEXT_PUBLIC_FIREBASE_*` had no fallback — with GitHub Secrets absent, values wrote empty and the dev server would crash with `auth/invalid-api-key` (the exact Phase 0.5 regression). Initially "fixed" by adding `|| 'UAT-default'` fallbacks mirrored from `apphosting.uat.yaml` (public values). **REVERTED on 2026-08-25 by user decision** — the repo is public, so hardcoding Firebase config in the workflow leaks it. Final state: all values come **only** from GitHub Secrets (see Session Note 2026-08-25 22:10).
 3. Deferred hardening from Session Note 16:45: test-account values are now single-quoted in the `echo` so secrets containing `$` cannot be interpolated by the shell (`$$` = PID).
 
 **Commit**: `c260cac` "Phase 2: CI runs @smoke subset + workflow_dispatch, fix .env.local overwrite bug" (branch `playwright-github-actions` → `uat`). Reference YAML in this doc synced to the committed file.
@@ -1031,6 +1050,22 @@ At the end of each working session:
 - Next: Phase 3.2 (HITL — Firebase Console Ignored Paths), then Phase 4 (secrets, HITL)
 - Blockers: 3.2 requires Firebase Console access (HITL) — set Ignored Paths to `e2e/**, __tests__/**, docs/**, *.md, .github/**, scripts/**, spec_kanban/**, ai_oriented_kanban/**`, then push a test-only commit and confirm rollout status `SKIPPED`. Phase 2.3 push still pending (SSH passphrase, HITL).
 - HITL actions pending: (1) Phase 3.2 console config + SKIPPED verification; (2) push `uat` + observe CI (Phases 0.5/2.3); (3) Phase 4 — GitHub Secrets + Cloud Secret Manager
+
+### Session Note — 2026-08-25 22:10 local
+
+- Completed: Phase 4 partial (4.4 local validation) + **fallback removal from docs** (user-directed)
+- Verified by:
+  - `gcp_credentials.json` — python JSON validation: parses, `type: service_account`, `project_id: certifai-uat`, `client_email: firebase-adminsdk-fbsvc@certifai-uat.iam.gserviceaccount.com`, all required keys present — PASS (4.4 local half)
+  - CI workflow `.github/workflows/ci.yml` @ HEAD `d9d9450` — confirmed **no** `UAT-default` fallbacks remain (grep `UAT-default` → 0 matches); "Create .env.local" reads GitHub Secrets only; `GCP_CREDENTIALS_JSON` written to `/tmp/gcp_cred.json` — PASS
+  - `.env.local` (local, gitignored) has all required vars incl. `GOOGLE_APPLICATION_CREDENTIALS` — present
+  - Env probe: `gcloud` and `gh` CLIs **not installed** on this machine — 4.2/4.3 must go through Cloud Console / GitHub web UI (or install the CLIs)
+- Next: 4.1–4.3 (HITL) — create Firebase test users, store secrets, add 15 GitHub Secrets. Then re-push `uat` (2.3/0.5) and observe CI E2E with secrets in place.
+- Blockers: none new. All Phase 4 HITL items require console access (Firebase Console, Cloud Console / gcloud, GitHub Settings). Phase 2.3 push still pending (SSH passphrase).
+- HITL actions pending: (1) Phase 4.1 Firebase test users; (2) Phase 4.2 Secret Manager; (3) Phase 4.3 all 15 GitHub Secrets; (4) push `uat` + observe CI; (5) Phase 3.2 ignored paths.
+
+**User decision (fallback removal)**: the repo is **public** — the `|| 'UAT-default'` fallbacks previously added to the CI workflow hardcoded Firebase web config into a committed file, which leaks project configuration. User removed them from `ci.yml`; this session cleaned up all remaining references in this plan doc (Phase 2.3 implementation note, Phase 4 "Optional secrets" paragraph, Session Notes 21:55 & 14:10) and in `.env.local.example`. **New rule for this project: CI env vars come exclusively from GitHub Secrets — never hardcode values in committed files, even "public" `NEXT_PUBLIC_*` ones.** Consequence: all 15 secrets in the Phase 4 table are REQUIRED (no graceful degradation); the E2E job will fail until they are provisioned.
+
+**Also discovered (not changed)**: `apphosting.uat.yaml` / `apphosting.yaml` still declare `NEXT_PUBLIC_FIREBASE_*` as plain `value:` entries — these are needed at deploy time by App Hosting and are pre-existing; out of scope for Phase 4. Flag for a future decision if desired.
 
 ## Success Criteria
 
