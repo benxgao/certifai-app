@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [uat]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '24'
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    environment: uat
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run test
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    environment: uat
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npx playwright install --with-deps chromium
+      - name: Create .env.local
+        run: |
+          # Test account credentials — single quotes protect values from shell `$` interpolation
+          echo "PW_TEST_EMAIL='${{ secrets.PW_TEST_EMAIL }}'" > .env.local
+          echo "PW_TEST_PASSWORD='${{ secrets.PW_TEST_PASSWORD }}'" >> .env.local
+          echo "PW_SIGNUP_EMAIL='${{ secrets.PW_SIGNUP_EMAIL }}'" >> .env.local
+          echo "PW_SIGNUP_PASSWORD='${{ secrets.PW_SIGNUP_PASSWORD }}'" >> .env.local
+          # Firebase Web SDK config — required or the dev server crashes at startup with
+          # auth/invalid-api-key. UAT defaults mirror apphosting.uat.yaml (public values);
+          # override by adding GitHub Secrets with the same names.
+          echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> .env.local
+          echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> .env.local
+          echo "NEXT_PUBLIC_SERVER_API_URL=${{ secrets.NEXT_PUBLIC_SERVER_API_URL }}" >> .env.local
+          # Web app backend calls point at the local dev server Playwright starts
+          echo "NEXT_PUBLIC_FIREBASE_BACKEND_URL=http://127.0.0.1:3000" >> .env.local
+      - name: Write GCP credentials to temp file
+        run: |
+          echo '${{ secrets.GCP_CREDENTIALS_JSON }}' > /tmp/gcp_cred.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp_cred.json" >> .env.local
+      - name: Run E2E smoke tests (@smoke subset)
+        run: npm run test:e2e -- --grep @smoke
+        env:
+          CI: true
+      - uses: actions/upload-artifact@v5
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/

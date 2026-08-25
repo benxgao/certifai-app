@@ -178,3 +178,23 @@ test.skip('should delete an exam', async ({ authenticatedPage }) => {
   ...
 });
 ```
+
+---
+
+## 10. CI Environment & Required Variables
+
+The CI workflow (`.github/workflows/ci.yml`) generates `.env.local` from GitHub Secrets + UAT defaults on a fresh checkout. When running E2E **locally**, you must have a complete `.env.local` (copy `.env.local.example` and fill in values).
+
+### Required variables
+
+- `NEXT_PUBLIC_FIREBASE_*` (6 vars: API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID) — **required**, the web SDK (`src/firebase/firebaseWebConfig.ts`) crashes the dev server at startup if missing.
+- `GOOGLE_APPLICATION_CREDENTIALS` — a **file path** locally (e.g. `./gcp_credentials.json`); in CI the workflow writes the `GCP_CREDENTIALS_JSON` secret to `/tmp/gcp_cred.json` and sets the var to that path. `firebaseAdminConfig.ts` supports both file paths and inline JSON strings.
+- `PW_TEST_EMAIL` / `PW_TEST_PASSWORD` — login fixture credentials.
+- `PW_SIGNUP_EMAIL` / `PW_SIGNUP_PASSWORD` — signup fixture credentials (fall back to defaults in `e2e/fixtures/auth.ts` if unset).
+
+### Troubleshooting
+
+| Error                                                              | Cause                                                                | Fix                                                                            |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `FirebaseError: auth/invalid-api-key` at `firebaseWebConfig.ts:16` | `NEXT_PUBLIC_FIREBASE_*` missing/empty in `.env.local`               | Add the 6 web config vars (see `.env.local.example`)                           |
+| `SyntaxError: Unexpected token '.'` from `firebaseAdminConfig.ts`  | `GOOGLE_APPLICATION_CREDENTIALS` is a path to a missing/invalid file | Point it at a real service account JSON file, or set it to a valid JSON string |

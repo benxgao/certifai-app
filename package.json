@@ -18,6 +18,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
+    "test:e2e:smoke": "playwright test --grep @smoke",
     "test:e2e:ci-preflight": "bash scripts/e2e-pre-flight.sh",
     "test:e2e:ci-postdeploy": "bash scripts/e2e-post-deployment.sh"
   },

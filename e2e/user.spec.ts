@@ -29,7 +29,7 @@ import { FlowTimingTracker } from './helpers/performance';
  * - PW_SIGNUP_PASSWORD (default: pw_test_signup@certestic.com)
  */
 
-test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Profile → Delete @integration', async ({
+test('Complete User Lifecycle: Signup → Login → Logout → Re-login → Profile → Delete @integration @smoke', async ({
   page,
 }, testInfo: TestInfo) => {
   test.setTimeout(180000); // 180 seconds for this test only
