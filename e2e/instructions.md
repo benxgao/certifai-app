@@ -183,7 +183,7 @@ test.skip('should delete an exam', async ({ authenticatedPage }) => {
 
 ## 10. CI Environment & Required Variables
 
-The CI workflow (`.github/workflows/ci.yml`) generates `.env.local` from GitHub Secrets + UAT defaults on a fresh checkout. When running E2E **locally**, you must have a complete `.env.local` (copy `.env.local.example` and fill in values).
+The CI workflow (`.github/workflows/ci.yml`) generates `.env.local` **exclusively from GitHub Secrets — no default values** (public repo, nothing hardcoded in the workflow). When running E2E **locally**, you must have a complete `.env.local` (copy `.env.local.example` and fill in values).
 
 ### Required variables
 

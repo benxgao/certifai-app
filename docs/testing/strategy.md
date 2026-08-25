@@ -93,16 +93,18 @@ The CI workflow (`.github/workflows/ci.yml`) is a standalone test gate that runs
 
 - Triggered only on `push` to `uat` (no PR trigger, no `main` trigger).
 - E2E runs against a local `npm run dev` server started by Playwright's `webServer` config — not against the live UAT URL. No post-deploy smoke step exists.
-- The workflow generates `.env.local` from GitHub Secrets plus UAT defaults (see below) — a fresh checkout has no `.env.local`.
+- The workflow generates `.env.local` **exclusively from GitHub Secrets — no default values** (public repo, nothing hardcoded). A fresh checkout has no `.env.local`.
 
-**`.env.local` generation in CI** — the following are written by the workflow; values come from GitHub Secrets where noted:
+**`.env.local` generation in CI** — the following are written by the workflow; **all values come from GitHub Secrets with no fallbacks**:
 
-| Variable                                                                                                            | Source in CI                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`                                                                                 | GitHub Secrets                                                                                   |
-| `NEXT_PUBLIC_FIREBASE_API_KEY` / `AUTH_DOMAIN` / `PROJECT_ID` / `STORAGE_BUCKET` / `MESSAGING_SENDER_ID` / `APP_ID` | GitHub Secret if set, otherwise UAT defaults mirrored from `apphosting.uat.yaml` (public values) |
-| `NEXT_PUBLIC_FIREBASE_BACKEND_URL`                                                                                  | `http://127.0.0.1:3000` (the local dev server)                                                   |
-| `GOOGLE_APPLICATION_CREDENTIALS`                                                                                    | Path to `/tmp/gcp_cred.json`, written from the `GCP_CREDENTIALS_JSON` GitHub Secret              |
+| Variable                                                                                                            | Source in CI               |
+| ------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `PW_TEST_EMAIL`, `PW_TEST_PASSWORD`, `PW_SIGNUP_EMAIL`, `PW_SIGNUP_PASSWORD`                                        | GitHub Secrets             |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` / `AUTH_DOMAIN` / `PROJECT_ID` / `STORAGE_BUCKET` / `MESSAGING_SENDER_ID` / `APP_ID` | GitHub Secrets             |
+| `NEXT_PUBLIC_SERVER_API_URL`, `NEXT_PUBLIC_HOST_URL`                                                                | GitHub Secrets             |
+| `SERVICE_SECRET`, `JOSE_JWT_SECRET`                                                                                 | GitHub Secrets             |
+| `NEXT_PUBLIC_FIREBASE_BACKEND_URL`                                                                                  | `http://127.0.0.1:3000` (the local dev server) |
+| `GOOGLE_APPLICATION_CREDENTIALS`                                                                                    | Path to `/tmp/gcp_cred.json`, written from the `GCP_CREDENTIALS_JSON` GitHub Secret |
 
 > **Troubleshooting**: `FirebaseError: auth/invalid-api-key` at `src/firebase/firebaseWebConfig.ts` module load means the `NEXT_PUBLIC_FIREBASE_*` web config is missing/empty — the dev server cannot start. Check the "Create .env.local" step output. See also `.env.local.example` for the local setup.
 
