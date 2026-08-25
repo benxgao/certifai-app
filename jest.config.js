@@ -13,6 +13,7 @@ const config = {
           rootDir: '.',
           skipLibCheck: true,
           isolatedModules: true,
+          ignoreDeprecations: '6.0',
         },
       },
     ],
