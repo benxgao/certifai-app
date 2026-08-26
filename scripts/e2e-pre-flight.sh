@@ -34,32 +34,10 @@ fi
 echo "Ensuring Playwright browsers are installed..."
 npx playwright install --with-deps chromium
 
-# Start the development server in the background
-echo "Starting Next.js development server..."
-npm run dev > /tmp/next-dev.log 2>&1 &
-DEV_PID=$!
-
-# Wait for dev server to be ready
-echo "Waiting for dev server to be ready..."
-max_attempts=30
-attempt=0
-while [ $attempt -lt $max_attempts ]; do
-  if curl -s http://localhost:3000 > /dev/null 2>&1; then
-    echo "✓ Dev server is ready"
-    break
-  fi
-  attempt=$((attempt + 1))
-  sleep 2
-done
-
-if [ $attempt -ge $max_attempts ]; then
-  echo "ERROR: Dev server did not start within expected time"
-  kill $DEV_PID || true
-  cat /tmp/next-dev.log
-  exit 1
-fi
-
 # Run Playwright tests
+# Note: the dev server is started automatically by Playwright's `webServer`
+# config in playwright.config.ts (non-live environments only) — no manual
+# server startup or URL polling needed here.
 echo "Running Playwright tests..."
 if npm run test:e2e; then
   echo ""
@@ -74,10 +52,5 @@ else
   echo "=========================================="
   TEST_STATUS=1
 fi
-
-# Cleanup: stop the dev server
-echo "Cleaning up..."
-kill $DEV_PID || true
-wait $DEV_PID 2>/dev/null || true
 
 exit $TEST_STATUS

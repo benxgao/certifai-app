@@ -262,7 +262,7 @@ Each sub-subphase is independently reviewable and revertible. No split creates t
 - [~] Phase 2 — Enhance CI with `@smoke` filtering + `workflow_dispatch` (2.1–2.2 done & verified 2026-08-25; 2.3 push blocked on SSH passphrase)
 - [~] Phase 3 — Configure App Hosting rollout trigger rules (3.1 done & verified 2026-08-25; 3.2 pending Firebase Console, HITL)
 - [~] Phase 4 — Provision test credentials in Secret Manager + GitHub Secrets (4.4 local validation done 2026-08-25; 4.1–4.3 HITL pending)
-- [ ] Phase 5 — Update pre-flight script for CI compatibility
+- [x] Phase 5 — Update pre-flight script for CI compatibility (5.1–5.3 done & verified 2026-08-26)
 - [ ] Phase 6 — Local dev parity & docs
 - [ ] Phase 7 — Docs Sync
 - [ ] Phase 8 — AI-ready docs reflection and next-plan handoff
@@ -574,7 +574,7 @@ This phase is **entirely HITL** — every sub-subphase requires manual access to
 
 ### Phase 5: Update pre-flight script for CI compatibility
 
-**Progress**: `[ ]`
+**Progress**: `[x]` — completed & verified 2026-08-26
 
 **Layer**: scripts
 
@@ -616,14 +616,14 @@ bash -n scripts/e2e-pre-flight.sh && echo "PASS: e2e-pre-flight.sh syntax valid"
 
 **Sub-subphase checklist**:
 
-- [ ] **5.1 — Update `e2e-pre-flight.sh`** `[AUTO]`: remove the `npm run dev > /tmp/next-dev.log 2>&1 &` block and the wait loop — Playwright config's `webServer` handles this. Also remove the `kill $DEV_PID` cleanup block.
-  - **Independent verification**: `grep "npm run dev" scripts/e2e-pre-flight.sh` returns no match
+- [x] **5.1 — Update `e2e-pre-flight.sh`** `[AUTO]`: remove the `npm run dev > /tmp/next-dev.log 2>&1 &` block and the wait loop — Playwright config's `webServer` handles this. Also remove the `kill $DEV_PID` cleanup block.
+  - **Independent verification**: `grep "npm run dev" scripts/e2e-pre-flight.sh` returns no match — PASS
   - **Isolated**: yes — grep verification only.
-- [ ] **5.2 — Make scripts executable** `[AUTO]`: `chmod +x scripts/*.sh`
-  - **Independent verification**: `ls -la scripts/*.sh` shows `+x` permission
+- [x] **5.2 — Make scripts executable** `[AUTO]`: `chmod +x scripts/*.sh`
+  - **Independent verification**: `ls -la scripts/*.sh` shows `+x` permission — PASS (all 3 scripts `-rwxr-xr-x`)
   - **Isolated**: yes — filesystem check only.
-- [ ] **5.3 — Verify deprecated scripts are not referenced** `[AUTO]`: confirm `e2e-post-deployment.sh` and `wait-for-service.sh` are not called in the CI workflow
-  - **Independent verification**: `grep -E "e2e-post-deployment|wait-for-service" .github/workflows/ci.yml` returns no match
+- [x] **5.3 — Verify deprecated scripts are not referenced** `[AUTO]`: confirm `e2e-post-deployment.sh` and `wait-for-service.sh` are not called in the CI workflow
+  - **Independent verification**: `grep -E "e2e-post-deployment|wait-for-service" .github/workflows/ci.yml` returns no match — PASS
   - **Isolated**: yes — grep verification only.
 
 ---
@@ -1066,6 +1066,20 @@ At the end of each working session:
 **User decision (fallback removal)**: the repo is **public** — the `|| 'UAT-default'` fallbacks previously added to the CI workflow hardcoded Firebase web config into a committed file, which leaks project configuration. User removed them from `ci.yml`; this session cleaned up all remaining references in this plan doc (Phase 2.3 implementation note, Phase 4 "Optional secrets" paragraph, Session Notes 21:55 & 14:10) and in `.env.local.example`. **New rule for this project: CI env vars come exclusively from GitHub Secrets — never hardcode values in committed files, even "public" `NEXT_PUBLIC_*` ones.** Consequence: all 15 secrets in the Phase 4 table are REQUIRED (no graceful degradation); the E2E job will fail until they are provisioned.
 
 **Also discovered (not changed)**: `apphosting.uat.yaml` / `apphosting.yaml` still declare `NEXT_PUBLIC_FIREBASE_*` as plain `value:` entries — these are needed at deploy time by App Hosting and are pre-existing; out of scope for Phase 4. Flag for a future decision if desired.
+
+### Session Note — 2026-08-26 17:00 local
+
+- Completed: Phase 5 (5.1–5.3) — all AUTO steps done & verified
+- Verified by (Phase 5 Isolated Test suite, all PASS):
+  - `grep "npm run dev" scripts/e2e-pre-flight.sh` → no match (manual dev server startup removed)
+  - `ls -la scripts/*.sh` → all 3 scripts `-rwxr-xr-x` (executable)
+  - `grep -E "e2e-post-deployment|wait-for-service" .github/workflows/ci.yml` → no match (deprecated scripts not referenced in CI)
+  - `bash -n scripts/e2e-pre-flight.sh` → syntax valid
+  - Precondition re-confirmed: `playwright.config.ts` `webServer` (`command: 'npm run dev'`, non-live only) handles dev server startup — manual startup removal is safe
+- Next: Phase 6 — local dev parity & docs (`.env.local.example` exists already from Phase 0.5 follow-up; 6.2 `e2e/instructions.md` macOS 11 + gcp_cred sections; 6.3 `docs/testing/strategy.md` CI Pipeline section — note: "CI Pipeline" section already added 2026-08-24, verify gate alignment)
+- Blockers: none for Phase 5. Phase 2.3 push still pending (SSH passphrase, HITL); Phase 3.2 (Firebase Console ignored paths) and Phase 4.1–4.3 (test users, Secret Manager, 15 GitHub Secrets) pending HITL.
+- HITL actions pending: (1) push `uat` + observe CI (Phases 0.5/2.3); (2) Phase 3.2 console ignored paths; (3) Phase 4.1–4.3 secrets provisioning
+- **Implementation note**: commit for this phase is a single-file change (`scripts/e2e-pre-flight.sh`); the script retains its credential check, `npm ci`, and `npx playwright install` steps — only the dev-server startup/polling/cleanup blocks were removed, since `webServer` in `playwright.config.ts` owns that lifecycle.
 
 ## Success Criteria
 
