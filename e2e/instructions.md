@@ -198,3 +198,47 @@ The CI workflow (`.github/workflows/ci.yml`) generates `.env.local` **exclusivel
 | ------------------------------------------------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | `FirebaseError: auth/invalid-api-key` at `firebaseWebConfig.ts:16` | `NEXT_PUBLIC_FIREBASE_*` missing/empty in `.env.local`               | Add the 6 web config vars (see `.env.local.example`)                           |
 | `SyntaxError: Unexpected token '.'` from `firebaseAdminConfig.ts`  | `GOOGLE_APPLICATION_CREDENTIALS` is a path to a missing/invalid file | Point it at a real service account JSON file, or set it to a valid JSON string |
+
+---
+
+## 11. macOS 11 (Big Sur) — Chromium workaround
+
+Playwright's bundled Chromium (147+) requires macOS 12+, so `playwright.config.ts` swaps in your **system Google Chrome** on older macOS via the `channel: 'chrome'` guard:
+
+```ts
+// playwright.config.ts (Chromium project)
+...(process.platform === 'darwin' && !isLiveEnvironment
+  ? { use: { ...devices['Desktop Chrome'], channel: 'chrome' } }
+  : {}),
+```
+
+- The guard activates automatically when running locally on macOS < 12; it is a no-op on macOS 12+, Linux CI, and live/`PLAYWRIGHT_TEST_BASEURL` environments.
+- **Requirement**: Google Chrome must be installed on the machine for this path to work.
+- Do not remove or hand-tune this logic — it exists so Big Sur machines can run the suite at all.
+
+---
+
+## 12. Local GCP credentials setup
+
+Server-side API routes use Firebase Admin SDK and need a service account key:
+
+1. Download the service account key JSON from Firebase Console → Project settings → Service accounts (project `certifai-uat`).
+2. Place it at the repo root as `gcp_credentials.json` — this file is **gitignored**, never commit it.
+3. In `.env.local`, set `GOOGLE_APPLICATION_CREDENTIALS=./gcp_credentials.json` (a file path, not the JSON content).
+
+`src/firebase/firebaseAdminConfig.ts` resolves the variable in this order:
+
+| Value shape                          | Handling                                                       |
+| ------------------------------------ | -------------------------------------------------------------- |
+| Starts with `/` (absolute path)      | Reads the file; must exist                                     |
+| Starts with `.` (relative path)      | Resolves against `process.cwd()`, checks existence, reads file |
+| Contains `{` (JSON string)           | Parses inline as JSON                                          |
+| Anything else                        | Tries file first, then JSON; error if neither works            |
+
+Common failure: `SyntaxError: Unexpected token '.'` — the path points at a file that does not exist or is not valid JSON. Validate locally with:
+
+```bash
+python3 -c "import json; json.load(open('gcp_credentials.json')); print('valid JSON')"
+```
+
+**CI does not read this local file.** The `GCP_CREDENTIALS_JSON` GitHub Secret (full JSON content) is written to `/tmp/gcp_cred.json` by the workflow, and `GOOGLE_APPLICATION_CREDENTIALS` is set to that path — the same file-path code branch as local.
