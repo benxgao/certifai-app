@@ -13,6 +13,7 @@ Use this template when a user asks for a rollout plan, phased plan, migration pl
 - If a phase is too large for one safe commit, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
 - Prefer wording that makes the plan easy to execute incrementally in separate commits.
 - Always include mandatory closing phases for Docs Sync, AI-ready docs reflection/next-plan handoff, Docs-only Simulation Drill, and Eval & Health Score.
+- At plan-creation time, check planned tasks/implementations against existing ADRs (`docs/adr/YYYY-MM.md`); never plan execution against an accepted ADR unless the plan explicitly addresses the conflict and the corresponding open question is confirmed.
 
 ## Progress markers
 
@@ -89,7 +90,7 @@ Representative files:
 ## Docs Impact
 
 > Complete this section at planning time — before writing any code.
-> Load [`docs/ai/guide.md`](../../docs/ai/guide.md) and [`docs/ai/assistant-context-index.md`](../../docs/ai/assistant-context-index.md) to identify relevant docs.
+> Load [`docs/ai/guide.md`](../../docs/ai/guide.md) and [`docs/ai/assistant-context-index.md`](../../docs/ai/assistant-context-index.md) to identify relevant docs, and scan the ADR logs in `docs/adr/` (`YYYY-MM.md`) for accepted decisions that constrain the planned work.
 
 ### Docs checked during planning
 
@@ -102,6 +103,7 @@ Representative files:
 > Complete this section before writing any code. This checklist is **required** in every rollout plan.
 
 - [ ] Loaded all primary docs for this task type from [`docs/ai/guide.md`](../../docs/ai/guide.md).
+- [ ] Reviewed existing ADRs in `docs/adr/` (month logs `YYYY-MM.md`) — every planned action that touches an accepted decision is compliant, or the deviation is explicitly addressed in this plan.
 - [ ] Declared initial `Docs Needed` list before implementation planning.
 - [ ] Assessed sufficiency — docs were **sufficient** / **insufficient** _(strike one)_.
   - If insufficient: docs that were missing, ambiguous, or outdated: `<list here>`
@@ -126,11 +128,26 @@ Representative files:
 | -------------------- | ----------- | ------------------------- | ------------------------ | ------------------------------------------------ |
 | <decision statement> | <doc paths> | <Sufficient/Insufficient> | <Yes/No>                 | <doc path to update, or blocked with owner+date> |
 
+### ADR Conflict Check
+
+> **Mandatory gate**: no implementation work starts until this table is populated.
+> Scan `docs/adr/` (month logs `YYYY-MM.md`) and check every planned phase/action against accepted decisions.
+
+| ADR entry (`YYYY-MM-DD: title`) | Planned action that touches it  | Conflict?             | Explicitly addressed in plan? | Open question raised?   |
+| ------------------------------- | ------------------------------- | --------------------- | ----------------------------- | ----------------------- |
+| `<date: title>`                 | `<phase / sub-subphase action>` | <No / Yes — describe> | <Yes — where / No>            | <No / Yes — question #> |
+
+**Rules**:
+
+- A planned action "explicitly addresses" a conflicting ADR only when the plan states the deviation, names the affected ADR, and schedules the superseding/refining entry (e.g. a new dated entry in `docs/adr/YYYY-MM.md`, recorded via Phase N+1.6).
+- If a conflict is found and is **not** explicitly addressed, the AI **must** generate an open question in `## Open Questions` asking the user to confirm the conflict resolution before any execution begins.
+- Execution must never proceed against an accepted ADR while an unresolved ADR-conflict open question is open.
+
 ### Docs to create
 
-| File                       | Reason                               |
-| -------------------------- | ------------------------------------ |
-| `docs/<section>/<file>.md` | <new pattern / new domain / new ADR> |
+| File                       | Reason                                                              |
+| -------------------------- | ------------------------------------------------------------------- |
+| `docs/<section>/<file>.md` | <new pattern / new domain / new ADR entry in `docs/adr/YYYY-MM.md`> |
 
 ### Docs to update
 
@@ -330,12 +347,14 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 - Review `## Docs Impact` section of this plan.
 - If the "No docs affected" checkbox was checked and verified, this phase may be skipped — mark it `[!]` with note "skipped: no docs affected".
+- Review whether this rollout made any **significant decisions** (architecture, API contracts, process conventions, tooling). If yes, each one must be recorded as a dated ADR entry in `docs/adr/YYYY-MM.md` before this phase completes — see sub-subphase N+1.6.
 
 **Files** _(from Docs Impact section above)_:
 
 - `<doc to create>` — create — <reason>
 - `<doc to update>` — modify — <what changes>
 - `<doc to delete>` — delete — <reason>
+- `docs/adr/<YYYY-MM>.md` — create/modify — record significant ADRs decided during this rollout (skip with a note if none)
 
 **Verification gate**:
 
@@ -346,6 +365,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 - `grep "<new-doc-filename>" docs/ai/assistant-context-index.md` returns a match for any new doc added.
 - Docs-first retrieval checklist (above) is filled in: sufficiency was assessed and any gap is recorded.
 - All touched docs have a valid `## Related Docs` section with working relative links (docs link integrity gate).
+- For every significant decision recorded in this rollout (plan, reflection notes, or PR threads): `grep "## <YYYY-MM-DD>:" docs/adr/<YYYY-MM>.md` returns the dated entry, and the month file's `## Index` table lists it.
 
 **Sub-subphase checklist**:
 
@@ -361,6 +381,8 @@ If user asks for minimal change first, move architecture refactors and retry red
   - **Independent verification**: `docs/ai/assistant-context-index.md` Quick Reference table reflects current state.
 - [ ] **N+1.5 — Verify docs link integrity**: confirm each touched doc has a valid `## Related Docs` section with working relative links.
   - **Independent verification**: spot-check every new or modified doc — no broken relative paths, no missing `## Related Docs` section.
+- [ ] **N+1.6 — Record significant ADRs**: for every significant decision made during this rollout (architecture, API contract, process convention, tooling) that is not already captured by an existing ADR, append one `## YYYY-MM-DD: <short title>` entry to `docs/adr/YYYY-MM.md` (create the month file if missing) following `docs/adr/_template.md`, and keep the month's `## Index` table in sync. If the rollout made no significant decisions, mark this item `[x]` with note "skipped: no significant ADRs".
+  - **Independent verification**: each significant decision maps to a dated entry; `## Index` matches entries; any superseded earlier entry has its `Status` updated to `Superseded` with a `Supersedes` pointer.
 
 ---
 
@@ -391,13 +413,13 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Sub-subphase checklist**:
 
-- [ ] **N+1.1 — Summarize confirmed improvements**: extract approved actions from reflection notes.
+- [ ] **N+2.1 — Summarize confirmed improvements**: extract approved actions from reflection notes.
   - **Independent verification**: every approved action appears in next rollout plan scope.
-- [ ] **N+1.2 — Convert unresolved questions to decisions**: add owner/criteria/timeline for each pending question.
+- [ ] **N+2.2 — Convert unresolved questions to decisions**: add owner/criteria/timeline for each pending question.
   - **Independent verification**: no open question is left without a decision path.
-- [ ] **N+1.3 — Author next rollout plan**: write a complete phased plan in the designated next-plan file.
+- [ ] **N+2.3 — Author next rollout plan**: write a complete phased plan in the designated next-plan file.
   - **Independent verification**: next plan includes phases, verification gates, and rollback plan.
-- [ ] **N+1.4 — Record handoff in current plan**: add session note linking to next rollout path.
+- [ ] **N+2.4 — Record handoff in current plan**: add session note linking to next rollout path.
   - **Independent verification**: link/path is present and readable.
 
 ---
@@ -430,11 +452,11 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Sub-subphase checklist**:
 
-- [ ] **N+2.1 — Define simulation scenario**: write representative task prompt and expected output schema.
+- [ ] **N+3.1 — Define simulation scenario**: write representative task prompt and expected output schema.
   - **Independent verification**: scenario references canonical docs and explicit pass/fail criteria.
-- [ ] **N+2.2 — Execute and record drill run**: complete one run and store evidence.
+- [ ] **N+3.2 — Execute and record drill run**: complete one run and store evidence.
   - **Independent verification**: run log contains docs-needed list, decision evidence, and fallback rationale.
-- [ ] **N+2.3 — Apply corrective doc updates**: fix doc insufficiencies found during drill.
+- [ ] **N+3.3 — Apply corrective doc updates**: fix doc insufficiencies found during drill.
   - **Independent verification**: insufficiency list is empty or each item has owner + due date.
 
 ---
@@ -535,6 +557,7 @@ At the end of each working session:
 - Document idempotency assumptions for retries/backfills.
 - Keep business-rule changes explicit; if unchanged, state that clearly.
 - Include at least one data-recovery/backfill note when users may already be affected.
+- Never execute planned actions that contradict an existing accepted ADR unless the plan explicitly addresses the conflict and the corresponding open question is confirmed.
 
 ## Success Criteria
 
@@ -549,6 +572,8 @@ At the end of each working session:
 3. <rollback step>
 
 ## Open Questions
+
+> **AI behavior at plan-creation time**: every ADR conflict found by the `### ADR Conflict Check` gate that is not explicitly resolved in the plan MUST be surfaced here as an open question for user confirmation. Do not start implementation while an ADR-conflict open question is unresolved.
 
 1. <question>
 2. <question>
