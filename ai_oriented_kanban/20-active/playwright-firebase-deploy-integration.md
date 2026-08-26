@@ -263,7 +263,7 @@ Each sub-subphase is independently reviewable and revertible. No split creates t
 - [~] Phase 3 — Configure App Hosting rollout trigger rules (3.1 done & verified 2026-08-25; 3.2 pending Firebase Console, HITL)
 - [~] Phase 4 — Provision test credentials in Secret Manager + GitHub Secrets (4.4 local validation done 2026-08-25; 4.1–4.3 HITL pending)
 - [x] Phase 5 — Update pre-flight script for CI compatibility (5.1–5.3 done & verified 2026-08-26)
-- [ ] Phase 6 — Local dev parity & docs
+- [x] Phase 6 — Local dev parity & docs (6.1–6.3 done & verified 2026-08-26)
 - [ ] Phase 7 — Docs Sync
 - [ ] Phase 8 — AI-ready docs reflection and next-plan handoff
 - [ ] Phase 9 — Docs-only Simulation Drill
@@ -630,7 +630,7 @@ bash -n scripts/e2e-pre-flight.sh && echo "PASS: e2e-pre-flight.sh syntax valid"
 
 ### Phase 6: Local dev parity & docs
 
-**Progress**: `[ ]`
+**Progress**: `[x]` — completed & verified 2026-08-26
 
 **Layer**: documentation + local config
 
@@ -673,15 +673,18 @@ grep -q "Last reviewed" docs/testing/strategy.md && echo "PASS: Last reviewed da
 
 **Sub-subphase checklist**:
 
-- [ ] **6.1 — Create `.env.local.example`** `[AUTO]`: list all env vars from `apphosting.yaml`; for `GOOGLE_APPLICATION_CREDENTIALS`, note it should be a file path locally (e.g., `./gcp_cred.json`) and a JSON string in Secret Manager / GitHub Secrets
-  - **Independent verification**: file exists and mentions `GOOGLE_APPLICATION_CREDENTIALS`
+- [x] **6.1 — Create `.env.local.example`** `[AUTO]`: list all env vars from `apphosting.yaml`; for `GOOGLE_APPLICATION_CREDENTIALS`, note it should be a file path locally (e.g., `./gcp_cred.json`) and a JSON string in Secret Manager / GitHub Secrets
+  - **Independent verification**: file exists and mentions `GOOGLE_APPLICATION_CREDENTIALS` — PASS; also mentions `PW_TEST_EMAIL` — PASS
   - **Isolated**: yes — file existence and grep check only.
-- [ ] **6.2 — Update `e2e/instructions.md`** `[AUTO]`: add macOS 11 workaround, document `channel: 'chrome'` guard, add section on local `gcp_credentials.json` setup (place the service account JSON file at the path specified in `GOOGLE_APPLICATION_CREDENTIALS`)
-  - **Independent verification**: `grep "channel.*chrome" e2e/instructions.md` returns a match; `grep "gcp_cred" e2e/instructions.md` returns a match
+  - **Implementation note (deviation)**: `.env.local.example` already existed from the Phase 0.5 follow-up (2026-08-24) — 6.1 became a gap-fill: added the `GCP_CREDENTIALS_JSON` format note (GitHub Secret / Secret Manager only, holds full service account JSON; never an env var locally) under the `GOOGLE_APPLICATION_CREDENTIALS` section. Full `apphosting.uat.yaml` variable list verified against the example — coverage complete (6× `NEXT_PUBLIC_FIREBASE_*`, `BACKEND_URL`, `SERVER_API_URL`, `HOST_URL`, `GA_TRACKING_ID`, `STRIPE_PUBLISHABLE_KEY`, `SERVICE_SECRET`, `JOSE_JWT_SECRET`, `MARKETING_API_*`, `PW_*`).
+- [x] **6.2 — Update `e2e/instructions.md`** `[AUTO]`: add macOS 11 workaround, document `channel: 'chrome'` guard, add section on local `gcp_credentials.json` setup (place the service account JSON file at the path specified in `GOOGLE_APPLICATION_CREDENTIALS`)
+  - **Independent verification**: `grep "channel.*chrome" e2e/instructions.md` returns a match — PASS; `grep "gcp_cred" e2e/instructions.md` returns a match — PASS; `grep "macOS 11" e2e/instructions.md` returns a match — PASS (Phase 8 precheck)
   - **Isolated**: yes — grep verification only.
-- [ ] **6.3 — Update `docs/testing/strategy.md`** `[AUTO]`: add CI pipeline section covering parallel App Hosting + GitHub Actions model, `@smoke` convention, `uat`-branch trigger, no post-deploy step
-  - **Independent verification**: `grep "CI Pipeline" docs/testing/strategy.md` returns a match; `Last reviewed:` date updated
+  - **Implementation note**: added sections 11 (macOS 11/Big Sur Chromium workaround — `channel: 'chrome'` guard in `playwright.config.ts`, no-op on Linux CI/live) and 12 (local GCP credentials setup — file path resolution table from `firebaseAdminConfig.ts` + validation command + CI temp-file behavior). Existing section 10 (CI env vars + troubleshooting) was already present from the Phase 0.5 follow-up.
+- [x] **6.3 — Update `docs/testing/strategy.md`** `[AUTO]`: add CI pipeline section covering parallel App Hosting + GitHub Actions model, `@smoke` convention, `uat`-branch trigger, no post-deploy step
+  - **Independent verification**: `grep "CI Pipeline" docs/testing/strategy.md` returns a match — PASS; `Last reviewed:` date updated to 2026-08-26 — PASS; no TODO/FIXME/TBD placeholders — PASS (Phase 8 precheck)
   - **Isolated**: yes — grep verification only.
+  - **Implementation note**: the "CI Pipeline" section existed since 2026-08-24 but stated the E2E job ran the **full suite** — corrected to the actual behavior (`npm run test:e2e -- --grep @smoke`), added the `@smoke` tag convention callout, added `smoke.spec.ts` to the spec inventory (missing since Phase 1), and refreshed `Last reviewed`.
 
 ## Post-task phases
 
@@ -1080,6 +1083,22 @@ At the end of each working session:
 - Blockers: none for Phase 5. Phase 2.3 push still pending (SSH passphrase, HITL); Phase 3.2 (Firebase Console ignored paths) and Phase 4.1–4.3 (test users, Secret Manager, 15 GitHub Secrets) pending HITL.
 - HITL actions pending: (1) push `uat` + observe CI (Phases 0.5/2.3); (2) Phase 3.2 console ignored paths; (3) Phase 4.1–4.3 secrets provisioning
 - **Implementation note**: commit for this phase is a single-file change (`scripts/e2e-pre-flight.sh`); the script retains its credential check, `npm ci`, and `npx playwright install` steps — only the dev-server startup/polling/cleanup blocks were removed, since `webServer` in `playwright.config.ts` owns that lifecycle.
+
+### Session Note — 2026-08-26 17:05 local
+
+- Completed: Phase 6 (6.1–6.3) — all AUTO doc steps done & verified
+- Verified by (Phase 6 Isolated Test suite + Phase 8 prechecks, 9/9 PASS):
+  - `.env.local.example` exists; documents `GOOGLE_APPLICATION_CREDENTIALS` and `PW_TEST_EMAIL` — PASS
+  - `e2e/instructions.md` has `channel.*chrome` (macOS 11 workaround), `gcp_cred`, and "macOS 11" section headers — PASS
+  - `docs/testing/strategy.md` has "CI Pipeline" section and fresh `Last reviewed` (2026-08-26) — PASS
+  - `grep -rE "TODO|FIXME|TBD" docs/testing/strategy.md` → no matches — PASS
+- Next: Phase 7 (user-journey sync — expected skip, CI infra rollout) → Phase 8 (docs sync gate) → Phase 9–11 (closing phases, HITL-heavy)
+- Blockers: none for Phase 6. Phase 2.3 push pending (SSH passphrase, HITL); Phase 3.2 (Firebase Console ignored paths) and Phase 4.1–4.3 (test users, Secret Manager, 15 GitHub Secrets) pending HITL.
+- HITL actions pending: (1) push `uat` + observe CI (Phases 0.5/2.3); (2) Phase 3.2 console ignored paths; (3) Phase 4.1–4.3 secrets provisioning
+- **Implementation notes (deviations vs. plan)**:
+  1. 6.1 `.env.local.example` already existed (Phase 0.5, 2026-08-24) — completed as gap-fill: added `GCP_CREDENTIALS_JSON` format note under the `GOOGLE_APPLICATION_CREDENTIALS` section; verified full `apphosting.uat.yaml` variable coverage.
+  2. 6.2 `e2e/instructions.md` section 10 (CI env vars) already existed — added sections 11 (macOS 11 `channel: 'chrome'` guard) and 12 (local GCP credentials setup with `firebaseAdminConfig.ts` resolution table).
+  3. 6.3 `docs/testing/strategy.md` "CI Pipeline" section existed since 2026-08-24 but misstated the E2E job as the full suite — corrected to `npm run test:e2e -- --grep @smoke`, added `@smoke` tag convention callout, added `smoke.spec.ts` to spec inventory (missing since Phase 1), refreshed `Last reviewed`.
 
 ## Success Criteria
 

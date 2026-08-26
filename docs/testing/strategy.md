@@ -1,7 +1,7 @@
 # Testing Strategy
 
 > **Source of truth**: `__tests__/`, `e2e/`, `__tests__/setup.ts`, `playwright.config.ts`
-> **Last reviewed**: 2026-08-24
+> **Last reviewed**: 2026-08-26
 > **Owner**: engineering
 
 ## Purpose
@@ -48,7 +48,10 @@ Playwright tests cover full user flows.
 | ---------------------------------- | --------------------------------------------------------------- |
 | `demo-credentials-consent.spec.ts` | Demo credential reveal and consent-gated marketing interactions |
 | `exam.spec.ts`                     | Exam-oriented user flows, including creation and progression    |
+| `smoke.spec.ts`                    | Minimal health checks: homepage, `/signin`, `/signup` (all `@smoke`-tagged) |
 | `user.spec.ts`                     | Core authenticated user flows                                   |
+
+> **`@smoke` tag convention**: critical tests are tagged `@smoke` in their title (e.g. `test('... @smoke', ...)`) so CI can run the fast, credential-light subset with `--grep @smoke`. Run locally with `npm run test:e2e:smoke` (see `package.json`). Not every spec file has a `@smoke` test — grep the `e2e/` directory for current tags.
 
 ### Fixture and helper inventory
 
@@ -87,12 +90,13 @@ The CI workflow (`.github/workflows/ci.yml`) is a standalone test gate that runs
 | Job          | Runs                            | Purpose                                             |
 | ------------ | ------------------------------- | --------------------------------------------------- |
 | `unit-tests` | `npm run test` (Jest)           | Fast gate on push to `uat`                          |
-| `e2e-tests`  | `npm run test:e2e` (Playwright) | Full E2E suite against a locally-started dev server |
+| `e2e-tests`  | `npm run test:e2e -- --grep @smoke` (Playwright) | `@smoke`-tagged E2E subset against a locally-started dev server |
 
 **Key facts**:
 
-- Triggered only on `push` to `uat` (no PR trigger, no `main` trigger).
+- Triggered only on `push` to `uat` (no PR trigger, no `main` trigger); also supports manual `workflow_dispatch`.
 - E2E runs against a local `npm run dev` server started by Playwright's `webServer` config — not against the live UAT URL. No post-deploy smoke step exists.
+- E2E runs only the `@smoke`-tagged tests (`--grep @smoke`) — a fast, deterministic gate. The full suite (all spec files) is run locally via `npx playwright test`.
 - The workflow generates `.env.local` **exclusively from GitHub Secrets — no default values** (public repo, nothing hardcoded). A fresh checkout has no `.env.local`.
 
 **`.env.local` generation in CI** — the following are written by the workflow; **all values come from GitHub Secrets with no fallbacks**:
