@@ -264,10 +264,11 @@ Each sub-subphase is independently reviewable and revertible. No split creates t
 - [~] Phase 4 — Provision test credentials in Secret Manager + GitHub Secrets (4.4 local validation done 2026-08-25; 4.1–4.3 HITL pending)
 - [x] Phase 5 — Update pre-flight script for CI compatibility (5.1–5.3 done & verified 2026-08-26)
 - [x] Phase 6 — Local dev parity & docs (6.1–6.3 done & verified 2026-08-26)
-- [ ] Phase 7 — Docs Sync
-- [ ] Phase 8 — AI-ready docs reflection and next-plan handoff
-- [ ] Phase 9 — Docs-only Simulation Drill
-- [ ] Phase 10 — Rollout Eval & Health Score
+- [!] Phase 7 — User-journey sync (skipped 2026-08-26: no user-journey changes — CI infra rollout)
+- [ ] Phase 8 — Docs Sync
+- [ ] Phase 9 — AI-ready docs reflection and next-plan handoff
+- [ ] Phase 10 — Docs-only Simulation Drill
+- [ ] Phase 11 — Rollout Eval & Health Score
 
 ## Human-in-the-Loop (HITL) Actions Summary
 
@@ -690,7 +691,7 @@ grep -q "Last reviewed" docs/testing/strategy.md && echo "PASS: Last reviewed da
 
 ### Phase 7: User-journey sync _(mandatory closing phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[!]` — skipped: no user-journey updates needed — CI infrastructure rollout (2026-08-26)
 
 **Layer**: documentation layer
 
@@ -717,8 +718,8 @@ echo "PASS: no user-journey changes — CI infrastructure rollout"
 
 **Sub-subphase checklist**:
 
-- [ ] **7.0 — Skip** `[AUTO]`: mark `[!]` with note "skipped: no user-journey updates needed — CI infrastructure rollout"
-  - **Independent verification**: phase is marked `[!]` with skip justification
+- [!] **7.0 — Skip** `[AUTO]`: mark `[!]` with note "skipped: no user-journey updates needed — CI infrastructure rollout"
+  - **Independent verification**: phase is marked `[!]` with skip justification — PASS; isolated test (`echo "PASS: no user-journey changes — CI infrastructure rollout"`) — PASS (2026-08-26)
   - **Isolated**: yes — documentation check only.
 
 ---
@@ -1099,6 +1100,15 @@ At the end of each working session:
   1. 6.1 `.env.local.example` already existed (Phase 0.5, 2026-08-24) — completed as gap-fill: added `GCP_CREDENTIALS_JSON` format note under the `GOOGLE_APPLICATION_CREDENTIALS` section; verified full `apphosting.uat.yaml` variable coverage.
   2. 6.2 `e2e/instructions.md` section 10 (CI env vars) already existed — added sections 11 (macOS 11 `channel: 'chrome'` guard) and 12 (local GCP credentials setup with `firebaseAdminConfig.ts` resolution table).
   3. 6.3 `docs/testing/strategy.md` "CI Pipeline" section existed since 2026-08-24 but misstated the E2E job as the full suite — corrected to `npm run test:e2e -- --grep @smoke`, added `@smoke` tag convention callout, added `smoke.spec.ts` to spec inventory (missing since Phase 1), refreshed `Last reviewed`.
+
+### Session Note — 2026-08-26 17:06 local
+
+- Completed: Phase 7 (7.0 — skip) — user-journey sync marked `[!]` with skip justification "no user-journey updates needed — CI infrastructure rollout"
+- Verified by: phase Progress marker + sub-subphase 7.0 both updated to `[!]` with justification; isolated test (`echo "PASS: no user-journey changes — CI infrastructure rollout"`) — PASS; Progress Dashboard updated
+- Next: Phase 8 — Docs Sync (8.1–8.4; most verification gates already satisfied by Phase 6 work — 8.2/8.3 re-verify)
+- Blockers: none for Phase 7. Phase 2.3 push pending (SSH passphrase, HITL); Phase 3.2 (Firebase Console ignored paths) and Phase 4.1–4.3 (test users, Secret Manager, 15 GitHub Secrets) pending HITL.
+- HITL actions pending: (1) push `uat` + observe CI (Phases 0.5/2.3); (2) Phase 3.2 console ignored paths; (3) Phase 4.1–4.3 secrets provisioning
+- **Implementation note**: also fixed an off-by-one naming error in the Progress Dashboard — the old dashboard labeled Phase 7 as "Docs Sync" and shifted Phases 8–10's names by one; corrected to the plan's actual phase names (Phase 7 User-journey sync, 8 Docs Sync, 9 AI-ready reflection, 10 Simulation Drill, 11 Rollout Eval) and added the missing Phase 11 line.
 
 ## Success Criteria
 
