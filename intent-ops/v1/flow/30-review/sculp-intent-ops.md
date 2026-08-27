@@ -901,6 +901,15 @@ Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to g
 - Next: Follow-Up Phase 3 (v2 prep or relocation execution) — requires user direction; backport decision resolved 2026-08-27 (relocate `intent-ops` to its own standalone repo).
 - Blockers: none — plan stays in `20-active` until Phase 3 completes; Active → Review gates (decision evidence / docs search / docs update / link integrity) confirmed satisfied.
 
+### Session Note — 2026-08-27 21:2x local (Follow-Up Phase 3 — relocation)
+
+- Completed: Follow-Up Phase 3 (v2 prep **or relocation execution**) — executed the confirmed **relocation**: package copied to standalone repo `~/workspace/intent-ops` (remote `git@github.com:benxgao/intent-ops.git`); reusable surface only (37 files, ADR-0006 included), project flow-lane working docs excluded per ADR-0004; root README merged as GitHub landing + package definition; origin folders (`ai_oriented_kanban/`, `docs/`) stay project-local — no backport flow.
+- Verified by: standalone repo scans — link 204/204 zero missing, version-scope clean, content zero matches; origin package re-scanned — link 201/201, version-scope clean, content zero matches; lane move `20-active/` → `30-review/` with references updated (`project-simulation-readiness.md` ×2, `v1/cli/init.md` ×1).
+- Corrective fixes surfaced by the relocation scan gate: ADR-0006 Related Docs referenced a `flow/README.md` link three levels up (broken/out-of-scope) — corrected to `../../flow/README.md`; package-root README link → prose (version-scope whitelist convention).
+- Eval (final): docs-first adherence 40/40, docs health 40/40, reflection quality 20/20 (follow-up authored + all open questions resolved incl. trial target), simulation readiness 20/20 (genesis regeneration + docs-only planning drill both passed) → **120/120 ≥ 85 pass**; archive-readiness confirmed.
+- Next: task closeout (archive to `40-archive/` + executive report to `50-report/`) available on user request; standalone repo push pending user SSH passphrase.
+- Blockers: none.
+
 ---
 
 ## Follow-Up: First Real Usage of the `intent-ops` Package
@@ -915,7 +924,7 @@ The `intent-ops` package now exists as a self-contained, copy-ready v1: navigato
 
 - [x] Phase 1 — Copy + genesis regeneration (2026-08-27; fresh repo `/tmp/intent-ops-followup-p1/repo/`)
 - [x] Phase 2 — First docs-first planning task (2026-08-27; verified with this plan as the sample task — see [verification record](#follow-up-phase-2-verification-record-2026-08-27))
-- [ ] Phase 3 — v2 prep or relocation execution
+- [x] Phase 3 — v2 prep or relocation execution (2026-08-27; relocated to standalone repo — see [verification record](#follow-up-phase-3-verification-record-2026-08-27))
 
 ### Scope
 
@@ -966,6 +975,23 @@ The `intent-ops` package now exists as a self-contained, copy-ready v1: navigato
 | Package scans             | link scan 199/199 zero missing; version-scope clean; content scan zero matches                                                                                                                                                                                                                     |
 
 **Run log**: recorded in `v1/spec/ai/project-simulation-readiness.md` (2026-08-27 part-B planning-drill row). Corrective fix: that doc's prior row referenced the stale `10-plan/` path — corrected to `20-active/`.
+
+#### Follow-Up Phase 3 verification record (2026-08-27)
+
+> Executed the confirmed next-version action (2026-08-27): **relocation** of `intent-ops` to its own standalone repo. Gate: relocation decision recorded as an ADR entry; package relocated complete + self-contained; source folders stay project-local.
+
+**All gates pass:**
+
+| Gate | Evidence |
+| --- | --- |
+| Relocation decision recorded | ADR-0006 (2026-08-27) appended to `v1/spec/adr/2026-08.md` + Index (relocation to standalone repo; origin folders stay project-local, no backport flow) |
+| Standalone repo | `~/workspace/intent-ops` (remote `git@github.com:benxgao/intent-ops.git`) — package relocated with **reusable surface only**: 37 files (navigator, README, `skills/`, `v1/` flow lane READMEs + templates, spec scaffold incl. ADR history, `cli/init.md`); project flow-lane working docs (this plan) stay in the origin project per ADR-0004 flow-blank |
+| Root README | Merged GitHub landing + package definition (Quick Start, Copy & Promotion, Skills, Versioning, Provenance, Related Docs) |
+| Scans on relocated package | link scan 204/204 zero missing · version-scope clean · content scan zero matches |
+| Scans on origin package (final) | link scan 201/201 zero missing · version-scope clean · content scan zero matches |
+| Lane move | Plan record moved `20-active/` → `30-review/` (Active → Review gates satisfied; refs in `project-simulation-readiness.md` + `v1/cli/init.md` updated) |
+
+**Corrective fixes surfaced by the relocation scan**: ADR-0006 Related Docs initially referenced a `flow/README.md` link three levels up (resolves outside `v1/` and to a non-existent path) — corrected to `../../flow/README.md`; the package-root README link was replaced with prose per the version-scope whitelist convention (package-root docs are not linked from `v1/`-rooted docs).
 
 ### Rollback Plan
 
