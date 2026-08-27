@@ -214,7 +214,7 @@ Before moving an item from **20-active** to **30-review**, confirm all four gate
 **Docs link integrity**
 
 - [ ] Each new or modified doc has a valid `## Related Docs` section with working relative links.
-- [ ] New or renamed docs are registered in `docs/ai/assistant-context-index.md`.
+- [ ] New or renamed docs are registered in `v1/spec/ai/assistant-context-index.md`.
 
 If any gate cannot be confirmed, the item stays in **20-active** until the gap is resolved or explicitly deferred with a tracked follow-up item.
 
@@ -240,13 +240,13 @@ Before moving/replicating key artifacts from **40-archive** to **50-report**, co
 
 ## What this looked like in recent delivery work
 
-Recent completed initiatives followed repeatable patterns:
+Recent completed initiatives followed repeatable patterns. Replace the placeholders with your project's actual initiatives:
 
-- **Spec-First Integration (certifai-app)** introduced hard-gated decision evidence logs and docs-only simulation drills to unify app-level exploration.
-- **AI-Ready Docs MVP (certifai-api)** created the canonical assistant context index and repository map used for all subsequent tasks.
-- **Status semantics rollout** used phased delivery, explicit risks, and decision points before broad release.
-- **Security hardening** emphasized environment-driven policy, observability, staged rollout, and rollback readiness.
-- **Type-enforcement closeout** emphasized completion evidence, phase traceability, and clean executive reporting.
+- **`[project: fill in — e.g., Spec-First Integration]`** introduced hard-gated decision evidence logs and docs-only simulation drills to unify app-level exploration.
+- **`[project: fill in — e.g., Docs MVP]`** created the canonical assistant context index and repository map used for all subsequent tasks.
+- **`[project: fill in — e.g., Status semantics rollout]`** used phased delivery, explicit risks, and decision points before broad release.
+- **`[project: fill in — e.g., Security hardening]`** emphasized environment-driven policy, observability, staged rollout, and rollback readiness.
+- **`[project: fill in — e.g., Type-enforcement closeout]`** emphasized completion evidence, phase traceability, and clean executive reporting.
 
 Across all these, the strongest common trait was: **documentation stayed aligned with implementation state**.
 
@@ -268,7 +268,7 @@ This enables automated dashboards and clearer ownership.
 
 ### 2) Automate Graph-Link Validation
 
-Build tools or scripts that automatically check if every new doc added to a rollout is registered in `docs/ai/assistant-context-index.md` and has the required `Source of truth` headers.
+Build tools or scripts that automatically check if every new doc added to a rollout is registered in `v1/spec/ai/assistant-context-index.md` and has the required `Source of truth` headers.
 
 ### 3) decision-log-linting
 
@@ -276,7 +276,7 @@ Run periodic audits to detect decision logs that use "fallback code scan" withou
 
 ### 4) Cross-Repo Context Sync
 
-Improve how `certifai-api` and `certifai-app` share common architectural decisions to prevent diverging patterns in the service layer.
+Improve how related repositories share common architectural decisions to prevent diverging patterns in the service layer.
 
 ### 5) Define explicit exit criteria for "Ready for Simulation"
 

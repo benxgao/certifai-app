@@ -9,7 +9,7 @@ When working in this lane:
 2. **Final Score**: Execute the `Rollout Eval & Health Score` phase and record the final score.
 3. **Executive Summary**: Create a `final-summary.md` (or similar) using the `executive-report-template.md`.
 4. **Cleanup**: Ensure all temporary files are removed and links between documents are working.
-5. **Link Integrity**: Verify that `docs/ai/assistant-context-index.md` is updated if new docs were added.
+5. **Link Integrity**: Verify that `v1/spec/ai/assistant-context-index.md` is updated if new docs were added.
 
 ## Spec-First Doc Integration
 

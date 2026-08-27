@@ -13,8 +13,8 @@ When working in this lane:
 
 ## Spec-First Doc Integration
 
-1. **Mandatory Docs-First Start**: Before proposing scope, search `docs/` for relevant specifications, ADRs, or domain guides.
-2. **Context Discovery**: Use `docs/ai/assistant-context-index.md` to identify high-level systems and owners related to the request.
+1. **Mandatory Docs-First Start**: Before proposing scope, search `v1/spec/` for relevant specifications, ADRs, or domain guides.
+2. **Context Discovery**: Use `v1/spec/ai/assistant-context-index.md` (link: [`../../spec/ai/assistant-context-index.md`](../../spec/ai/assistant-context-index.md)) to identify high-level systems and owners related to the request.
 3. **Traceability**: If the request references a known system, verify its documentation status early.
 
 ## Templates & Reference

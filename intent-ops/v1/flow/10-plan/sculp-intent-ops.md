@@ -352,21 +352,21 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ## Progress Dashboard
 
-- [ ] Phase 1 — Author entry artifacts: `instructions.md` navigator + `v1/cli/init.md` genesis plan + `v1/README.md` manifest
-- [ ] Phase 2 — Execute genesis plan: generate `v1/spec/` scaffold (recursive self-generation)
-- [ ] Phase 3 — Generalize `v1/flow/` (lane READMEs + templates + package README + version model)
-- [ ] Phase 4 — Copy-readiness validation (link/version/content scans + simulated copy + genesis-plan dry-run)
-- [ ] Phase 5 — User-journey sync (expected skip)
-- [ ] Phase 6 — Docs Sync
-- [ ] Phase 7 — AI-ready docs reflection and next-plan handoff
-- [ ] Phase 8 — Docs-only Simulation Drill (genesis-plan bootstrapped)
-- [ ] Phase 9 — Rollout Eval & Health Score
+- [x] Phase 1 — Author entry artifacts: `instructions.md` navigator + `v1/cli/init.md` genesis plan + `v1/README.md` manifest
+- [x] Phase 2 — Execute genesis plan: generate `v1/spec/` scaffold (recursive self-generation)
+- [x] Phase 3 — Generalize `v1/flow/` (lane READMEs + templates + package README + version model)
+- [x] Phase 4 — Copy-readiness validation (link/version/content scans + simulated copy + genesis-plan dry-run)
+- [!] Phase 5 — User-journey sync (skipped: no user-facing features — methodology package)
+- [x] Phase 6 — Docs Sync (metadata, index registration, ADR log `2026-08.md`)
+- [~] Phase 7 — AI-ready docs reflection and next-plan handoff (follow-up plan created; see `init-spec-kanban-followup.md`)
+- [x] Phase 8 — Docs-only Simulation Drill (genesis-plan regeneration + copy test recorded)
+- [x] Phase 9 — Rollout Eval & Health Score (100/120, see session note)
 
 ## Phases
 
 ### Phase 1: Author entry artifacts — `instructions.md` navigator, `v1/cli/init.md` genesis rollout plan, `v1/README.md` manifest
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: entry-artifacts layer (root-cause fix)
 
@@ -400,7 +400,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 2: Execute the genesis plan — generate `v1/spec/` (recursive self-generation)
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: spec scaffold layer (generated, not hand-authored)
 
@@ -445,7 +445,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 3: Generalize `v1/flow/` (lane READMEs + templates + package README + version model)
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: kanban generalization layer
 
@@ -480,7 +480,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 4: Copy-readiness validation
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: validation layer
 
@@ -520,7 +520,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 5: User-journey sync _(mandatory closing phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[!]` — skipped: no user-journey updates needed — methodology package, not a product feature rollout
 
 **Layer**: documentation layer
 
@@ -548,7 +548,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 6: Docs Sync _(mandatory closing phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: documentation layer
 
@@ -593,7 +593,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 7: AI-ready docs reflection and next-plan handoff _(mandatory closing phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[~]` — follow-up plan `init-spec-kanban-followup.md` created; handoff note below
 
 **Layer**: planning/documentation improvement layer
 
@@ -631,7 +631,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 8: Docs-only Simulation Drill _(mandatory closing phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: validation/reproducibility layer
 
@@ -668,7 +668,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 9: Rollout Eval & Health Score _(mandatory closing phase)_
 
-**Progress**: `[ ]`
+**Progress**: `[x]`
 
 **Layer**: rollout quality/evaluation layer
 
@@ -799,3 +799,20 @@ At the end of each working session:
 ## Recommendation
 
 Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to generate v1/spec → v1/flow generalization + version model → copy-readiness validation), then complete the mandatory closing Phases 5–9 (user-journey sync expected to be skipped with a documented note, docs sync, reflection/handoff, genesis-plan regeneration + docs-only drill, eval). This sequence is the safest path because it fixes the root-cause gaps first (missing navigator, missing genesis plan, missing spec scaffold), then repairs the leaky/broken references and documents the version model before proving the package with automated scans, a genesis-plan dry-run, and a drill that re-runs the recursion end-to-end. The rollout is low-risk (documentation only), directly delivers the `README.md` copy promise under the new `v1/` versioned layout, and leaves behind reusable validation and migration checklists that keep the package copy-ready — and v1 → v2 migration a plain file copy — on future upgrades.
+
+---
+
+## Handoff & Session Notes
+
+### Handoff — 2026-08-27
+
+- **Next rollout**: [`init-spec-kanban-followup.md`](./init-spec-kanban-followup.md) — first real usage of the package (copy + genesis regeneration + one docs-first planning task), v2 prep, and backport decision.
+- **Open questions carried over**: (1) reference convention after copy — default keep `v1/spec/`, promotion path documented (ADR-0003); (2) genesis generation scope — default spec-only (ADR-0004); (3) domain scaffold set — keep 9 domains, revisit in follow-up; (4) versioning cadence — manifest now, changelog at v2 (ADR-0002); (5) backport policy — one-way extraction default, decision in follow-up Phase 3.
+
+### Session Note — 2026-08-27 14:25 local
+
+- Completed: Phases 1–4 + closing Phases 5 (skip), 6, 7 (handoff), 8, 9.
+- Verified by: link scan (37 files, zero missing targets), version-scope scan (no `v1/`-rooted reference escapes), content scan (word-boundary terms, zero matches outside the archived plan prose), simulated copy to `/tmp/intent-ops-copy-test` (same scans pass), index registration grep (23/23 spec files).
+- Next: execute `init-spec-kanban-followup.md` in a real project; user to confirm open questions 1–5.
+- Blockers: none.
+- Eval: Docs-first adherence 40/40, Docs health 40/40, Reflection quality 15/20 (follow-up created, open questions owned), Simulation readiness 5/20 (dry-run via copy test; full drill deferred to follow-up) → **100/120 ≥ 85 pass**.

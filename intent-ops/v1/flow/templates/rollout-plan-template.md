@@ -13,7 +13,7 @@ Use this template when a user asks for a rollout plan, phased plan, migration pl
 - If a phase is too large for one safe commit, split it into sub-subphases that are independently reviewable, revertible, and verifiable.
 - Prefer wording that makes the plan easy to execute incrementally in separate commits.
 - Always include mandatory closing phases for Docs Sync, AI-ready docs reflection/next-plan handoff, Docs-only Simulation Drill, and Eval & Health Score.
-- At plan-creation time, check planned tasks/implementations against existing ADRs (`docs/adr/YYYY-MM.md`); never plan execution against an accepted ADR unless the plan explicitly addresses the conflict and the corresponding open question is confirmed.
+- At plan-creation time, check planned tasks/implementations against existing ADRs (`v1/spec/adr/YYYY-MM.md`); never plan execution against an accepted ADR unless the plan explicitly addresses the conflict and the corresponding open question is confirmed.
 
 ## Progress markers
 
@@ -90,20 +90,20 @@ Representative files:
 ## Docs Impact
 
 > Complete this section at planning time — before writing any code.
-> Load [`docs/ai/guide.md`](../../docs/ai/guide.md) and [`docs/ai/assistant-context-index.md`](../../docs/ai/assistant-context-index.md) to identify relevant docs, and scan the ADR logs in `docs/adr/` (`YYYY-MM.md`) for accepted decisions that constrain the planned work.
+> Load [`v1/spec/ai/guide.md`](../../spec/ai/guide.md) and [`v1/spec/ai/assistant-context-index.md`](../../spec/ai/assistant-context-index.md) to identify relevant docs, and scan the ADR logs in `v1/spec/adr/` (`YYYY-MM.md`) for accepted decisions that constrain the planned work.
 
 ### Docs checked during planning
 
 | Doc                        | Relevant finding              |
 | -------------------------- | ----------------------------- |
-| `docs/<section>/<file>.md` | <what you found or confirmed> |
+| `v1/spec/<section>/<file>.md` | <what you found or confirmed> |
 
 ### Docs-First Retrieval Checklist
 
 > Complete this section before writing any code. This checklist is **required** in every rollout plan.
 
-- [ ] Loaded all primary docs for this task type from [`docs/ai/guide.md`](../../docs/ai/guide.md).
-- [ ] Reviewed existing ADRs in `docs/adr/` (month logs `YYYY-MM.md`) — every planned action that touches an accepted decision is compliant, or the deviation is explicitly addressed in this plan.
+- [ ] Loaded all primary docs for this task type from [`v1/spec/ai/guide.md`](../../spec/ai/guide.md).
+- [ ] Reviewed existing ADRs in `v1/spec/adr/` (month logs `YYYY-MM.md`) — every planned action that touches an accepted decision is compliant, or the deviation is explicitly addressed in this plan.
 - [ ] Declared initial `Docs Needed` list before implementation planning.
 - [ ] Assessed sufficiency — docs were **sufficient** / **insufficient** _(strike one)_.
   - If insufficient: docs that were missing, ambiguous, or outdated: `<list here>`
@@ -118,7 +118,7 @@ Representative files:
 
 | Doc                        | Why needed                                         |
 | -------------------------- | -------------------------------------------------- |
-| `docs/<section>/<file>.md` | <decision dependency / contract this doc provides> |
+| `v1/spec/<section>/<file>.md` | <decision dependency / contract this doc provides> |
 
 ### Planning Decision Evidence Log
 
@@ -131,7 +131,7 @@ Representative files:
 ### ADR Conflict Check
 
 > **Mandatory gate**: no implementation work starts until this table is populated.
-> Scan `docs/adr/` (month logs `YYYY-MM.md`) and check every planned phase/action against accepted decisions.
+> Scan `v1/spec/adr/` (month logs `YYYY-MM.md`) and check every planned phase/action against accepted decisions.
 
 | ADR entry (`YYYY-MM-DD: title`) | Planned action that touches it  | Conflict?             | Explicitly addressed in plan? | Open question raised?   |
 | ------------------------------- | ------------------------------- | --------------------- | ----------------------------- | ----------------------- |
@@ -139,7 +139,7 @@ Representative files:
 
 **Rules**:
 
-- A planned action "explicitly addresses" a conflicting ADR only when the plan states the deviation, names the affected ADR, and schedules the superseding/refining entry (e.g. a new dated entry in `docs/adr/YYYY-MM.md`, recorded via Phase N+1.6).
+- A planned action "explicitly addresses" a conflicting ADR only when the plan states the deviation, names the affected ADR, and schedules the superseding/refining entry (e.g. a new dated entry in `v1/spec/adr/YYYY-MM.md`, recorded via Phase N+1.6).
 - If a conflict is found and is **not** explicitly addressed, the AI **must** generate an open question in `## Open Questions` asking the user to confirm the conflict resolution before any execution begins.
 - Execution must never proceed against an accepted ADR while an unresolved ADR-conflict open question is open.
 
@@ -147,19 +147,19 @@ Representative files:
 
 | File                       | Reason                                                              |
 | -------------------------- | ------------------------------------------------------------------- |
-| `docs/<section>/<file>.md` | <new pattern / new domain / new ADR entry in `docs/adr/YYYY-MM.md`> |
+| `v1/spec/<section>/<file>.md` | <new pattern / new domain / new ADR entry in `v1/spec/adr/YYYY-MM.md`> |
 
 ### Docs to update
 
 | File                       | What changes                                   |
 | -------------------------- | ---------------------------------------------- |
-| `docs/<section>/<file>.md` | <field, section, or entry that needs updating> |
+| `v1/spec/<section>/<file>.md` | <field, section, or entry that needs updating> |
 
 ### Docs to delete or archive
 
 | File                       | Reason                            |
 | -------------------------- | --------------------------------- |
-| `docs/<section>/<file>.md` | <superseded by / removed feature> |
+| `v1/spec/<section>/<file>.md` | <superseded by / removed feature> |
 
 ### No docs affected
 
@@ -309,20 +309,20 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Layer**: documentation layer
 
-**Goal**: Update `docs/product/user-journey.md` with relevant user feature stories, route flows, and journey notes that were delivered or refined by completed kanban item phases.
+**Goal**: Update `v1/spec/product/user-journey.md` with relevant user feature stories, route flows, and journey notes that were delivered or refined by completed kanban item phases.
 
 **Pre-condition check**:
 
-- Review the completed kanban item phases and identify any user-facing feature stories, journey changes, or new route flows that should be reflected in `docs/product/user-journey.md`.
+- Review the completed kanban item phases and identify any user-facing feature stories, journey changes, or new route flows that should be reflected in `v1/spec/product/user-journey.md`.
 - If no user journey changes were shipped in this rollout, mark the phase `[!]` with note "skipped: no user-journey updates needed".
 
 **Files** _(only if pre-condition is met)_:
 
-- `docs/product/user-journey.md` — modify — add or refresh relevant user feature stories and journey steps tied to the completed kanban work.
+- `v1/spec/product/user-journey.md` — modify — add or refresh relevant user feature stories and journey steps tied to the completed kanban work.
 
 **Verification gate** _(if phase is executed)_:
 
-- `docs/product/user-journey.md` includes the new or updated user feature stories that correspond to the completed kanban phases.
+- `v1/spec/product/user-journey.md` includes the new or updated user feature stories that correspond to the completed kanban phases.
 - Any new journey flow or route-based behavior is represented in the narrative with clear user actions and outcomes.
 - The document remains aligned with the currently delivered product behavior.
 
@@ -330,7 +330,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 - [ ] **N.0 — Capture completed user stories**: extract the user-facing features delivered by the completed kanban phases.
   - **Independent verification**: the extracted stories map back to the completed phase work items.
-- [ ] **N.1 — Update user journey doc**: add the new or revised stories to `docs/product/user-journey.md`.
+- [ ] **N.1 — Update user journey doc**: add the new or revised stories to `v1/spec/product/user-journey.md`.
   - **Independent verification**: the document reflects the completed user journeys and route flows.
 
 ---
@@ -347,25 +347,25 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 - Review `## Docs Impact` section of this plan.
 - If the "No docs affected" checkbox was checked and verified, this phase may be skipped — mark it `[!]` with note "skipped: no docs affected".
-- Review whether this rollout made any **significant decisions** (architecture, API contracts, process conventions, tooling). If yes, each one must be recorded as a dated ADR entry in `docs/adr/YYYY-MM.md` before this phase completes — see sub-subphase N+1.6.
+- Review whether this rollout made any **significant decisions** (architecture, API contracts, process conventions, tooling). If yes, each one must be recorded as a dated ADR entry in `v1/spec/adr/YYYY-MM.md` before this phase completes — see sub-subphase N+1.6.
 
 **Files** _(from Docs Impact section above)_:
 
 - `<doc to create>` — create — <reason>
 - `<doc to update>` — modify — <what changes>
 - `<doc to delete>` — delete — <reason>
-- `docs/adr/<YYYY-MM>.md` — create/modify — record significant ADRs decided during this rollout (skip with a note if none)
+- `v1/spec/adr/<YYYY-MM>.md` — create/modify — record significant ADRs decided during this rollout (skip with a note if none)
 
 **Verification gate**:
 
 - Every doc listed in `## Docs Impact → Docs to create` exists.
 - Every doc listed in `## Docs Impact → Docs to update` has an updated `Last reviewed:` date.
-- `grep -r "TODO\|FIXME\|TBD" docs/ | grep -v "_template"` returns no unresolved placeholders in updated files.
+- `grep -r "TODO\|FIXME\|TBD" v1/spec/ | grep -v "_template"` returns no unresolved placeholders in updated files.
 - `grep -r "Source of truth" <updated-doc-path>` confirms the field is present and correct.
-- `grep "<new-doc-filename>" docs/ai/assistant-context-index.md` returns a match for any new doc added.
+- `grep "<new-doc-filename>" v1/spec/ai/assistant-context-index.md` returns a match for any new doc added.
 - Docs-first retrieval checklist (above) is filled in: sufficiency was assessed and any gap is recorded.
 - All touched docs have a valid `## Related Docs` section with working relative links (docs link integrity gate).
-- For every significant decision recorded in this rollout (plan, reflection notes, or PR threads): `grep "## <YYYY-MM-DD>:" docs/adr/<YYYY-MM>.md` returns the dated entry, and the month file's `## Index` table lists it.
+- For every significant decision recorded in this rollout (plan, reflection notes, or PR threads): `grep "## <YYYY-MM-DD>:" v1/spec/adr/<YYYY-MM>.md` returns the dated entry, and the month file's `## Index` table lists it.
 
 **Sub-subphase checklist**:
 
@@ -376,12 +376,12 @@ If user asks for minimal change first, move architecture refactors and retry red
 - [ ] **N+1.2 — Update existing docs**: apply all changes listed under "Docs to update".
   - **Independent verification**: `Last reviewed:` date updated; no conflicting guidance with other docs in same section.
 - [ ] **N+1.3 — Archive or delete stale docs**: remove files listed under "Docs to delete".
-  - **Independent verification**: `grep -r "<deleted-filename>" docs/` returns no live links to the removed file.
+  - **Independent verification**: `grep -r "<deleted-filename>" v1/spec/` returns no live links to the removed file.
 - [ ] **N+1.4 — Update assistant-context-index.md**: add/remove entries to match new doc set.
-  - **Independent verification**: `docs/ai/assistant-context-index.md` Quick Reference table reflects current state.
+  - **Independent verification**: `v1/spec/ai/assistant-context-index.md` Quick Reference table reflects current state.
 - [ ] **N+1.5 — Verify docs link integrity**: confirm each touched doc has a valid `## Related Docs` section with working relative links.
   - **Independent verification**: spot-check every new or modified doc — no broken relative paths, no missing `## Related Docs` section.
-- [ ] **N+1.6 — Record significant ADRs**: for every significant decision made during this rollout (architecture, API contract, process convention, tooling) that is not already captured by an existing ADR, append one `## YYYY-MM-DD: <short title>` entry to `docs/adr/YYYY-MM.md` (create the month file if missing) following `docs/adr/_template.md`, and keep the month's `## Index` table in sync. If the rollout made no significant decisions, mark this item `[x]` with note "skipped: no significant ADRs".
+- [ ] **N+1.6 — Record significant ADRs**: for every significant decision made during this rollout (architecture, API contract, process convention, tooling) that is not already captured by an existing ADR, append one `## YYYY-MM-DD: <short title>` entry to `v1/spec/adr/YYYY-MM.md` (create the month file if missing) following `v1/spec/adr/_template.md`, and keep the month's `## Index` table in sync. If the rollout made no significant decisions, mark this item `[x]` with note "skipped: no significant ADRs".
   - **Independent verification**: each significant decision maps to a dated entry; `## Index` matches entries; any superseded earlier entry has its `Status` updated to `Superseded` with a `Supersedes` pointer.
 
 ---
@@ -430,17 +430,17 @@ If user asks for minimal change first, move architecture refactors and retry red
 
 **Layer**: validation/reproducibility layer
 
-**Goal**: Prove a comparable task can be completed from docs/specs first, with fallback scans bounded and remediated.
+**Goal**: Prove a comparable task can be completed from documentation and specs first, with fallback scans bounded and remediated.
 
 **Pre-condition check**:
 
 - Confirm the latest docs updates from Phase N+1 are complete.
-- Select one comparable task scenario that should be executable from docs/specs only.
+- Select one comparable task scenario that should be executable from documentation and specs only.
 
 **Files**:
 
-- `docs/operations/ai-retrieval-smoke-tests.md` — modify — include simulation drill prompt and pass criteria
-- `docs/ai/project-simulation-readiness.md` — modify — capture run log, scorecard, and verdict
+- `v1/spec/operations/ai-retrieval-smoke-tests.md` — modify — include simulation drill prompt and pass criteria
+- `v1/spec/ai/project-simulation-readiness.md` — modify — capture run log, scorecard, and verdict
 - `<current-rollout-path>.md` — modify — record drill verdict and remediation links
 
 **Verification gate**:
@@ -448,7 +448,7 @@ If user asks for minimal change first, move architecture refactors and retry red
 - Drill output includes `Docs Needed`, `Decision Evidence Log`, and fallback justification (if any).
 - At least one run passes with no unjustified fallback code scan.
 - Any fallback code scan has same-rollout doc update action (or blocked owner + due date).
-- Evidence shows a comparable rollout/task can be produced from docs/specs only.
+- Evidence shows a comparable rollout/task can be produced from documentation and specs only.
 
 **Sub-subphase checklist**:
 
