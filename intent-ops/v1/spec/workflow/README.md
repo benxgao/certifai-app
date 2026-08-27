@@ -32,12 +32,12 @@ v1/spec/workflow/<domain>-<action>-workflow.md
 
 Examples (`[project: fill in]` — replace with your project's flows):
 
-| Use case | File name |
-| --- | --- |
+| Use case                                                       | File name                                  |
+| -------------------------------------------------------------- | ------------------------------------------ |
 | `[project: fill in — e.g., user signup and verification flow]` | `<domain>-signup-verification-workflow.md` |
-| `[project: fill in — e.g., submission and scoring flow]` | `<domain>-submission-workflow.md` |
-| `[project: fill in — e.g., issuance process]` | `<domain>-issuance-workflow.md` |
-| `[project: fill in — e.g., third-party pipeline]` | `<domain>-subscription-workflow.md` |
+| `[project: fill in — e.g., submission and scoring flow]`       | `<domain>-submission-workflow.md`          |
+| `[project: fill in — e.g., issuance process]`                  | `<domain>-issuance-workflow.md`            |
+| `[project: fill in — e.g., third-party pipeline]`              | `<domain>-subscription-workflow.md`        |
 
 ---
 

@@ -5,6 +5,7 @@ This lane is for project-level reporting and health tracking.
 ## AI Assistant Instructions
 
 When working in this lane:
+
 1. **Aggregate**: Summarize outcomes from multiple archived initiatives.
 2. **Health Tracking**: Report on the aggregate "Health Scores" of completed rollouts.
 3. **Strategic Insight**: Provide recommendations based on patterns found in archived reports.

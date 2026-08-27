@@ -5,6 +5,7 @@ This lane is for final verification, documentation sync, and executive reporting
 ## AI Assistant Instructions
 
 When working in this lane:
+
 1. **Mandatory Closing Phases**: Complete the `Docs Sync`, `AI-ready reflection`, and `Docs-only Simulation Drill` phases.
 2. **Final Score**: Execute the `Rollout Eval & Health Score` phase and record the final score.
 3. **Executive Summary**: Create a `final-summary.md` (or similar) using the `executive-report-template.md`.

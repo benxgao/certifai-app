@@ -39,13 +39,13 @@ Every rollout plan must contain these sections in order (from `v1/flow/templates
 
 Every major decision row in the `Planning Decision Evidence Log` must include:
 
-| Column | Requirement |
-| --- | --- |
-| `Decision` | The decision statement — one row per major decision |
-| `Docs cited` | Canonical doc path(s) that support the decision |
-| `Sufficiency verdict` | `Sufficient` or `Insufficient` (explicit, no blank) |
-| `Fallback code scan used?` | `Yes` (with reason) or `No` |
-| `Doc update action` | Exact doc path + section to update, or `blocked with owner+date` |
+| Column                     | Requirement                                                      |
+| -------------------------- | ---------------------------------------------------------------- |
+| `Decision`                 | The decision statement — one row per major decision              |
+| `Docs cited`               | Canonical doc path(s) that support the decision                  |
+| `Sufficiency verdict`      | `Sufficient` or `Insufficient` (explicit, no blank)              |
+| `Fallback code scan used?` | `Yes` (with reason) or `No`                                      |
+| `Doc update action`        | Exact doc path + section to update, or `blocked with owner+date` |
 
 ## Fallback Code Scan Rules
 

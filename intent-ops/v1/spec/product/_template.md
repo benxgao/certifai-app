@@ -14,8 +14,8 @@ What product term, domain language, or user-facing concept this document covers.
 
 ## Glossary
 
-| Term | Definition | Notes |
-| --- | --- | --- |
+| Term                 | Definition           | Notes                |
+| -------------------- | -------------------- | -------------------- |
 | `[project: fill in]` | `[project: fill in]` | `[project: fill in]` |
 
 ## Related Docs

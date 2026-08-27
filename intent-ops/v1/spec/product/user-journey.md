@@ -10,8 +10,8 @@ Narrative record of user feature stories and journey flows delivered by complete
 
 ## Journey Map
 
-| Journey | User actions | Outcomes | Delivered by |
-| --- | --- | --- | --- |
+| Journey                                 | User actions  | Outcomes             | Delivered by                       |
+| --------------------------------------- | ------------- | -------------------- | ---------------------------------- |
 | `[project: fill in — e.g., onboarding]` | 1. ... 2. ... | `[project: fill in]` | `[project: fill in — rollout ref]` |
 
 ## Feature Stories

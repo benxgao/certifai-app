@@ -80,12 +80,12 @@ v1/spec/
 
 ### Docs checked during planning
 
-| Doc | Relevant finding |
-| --- | --- |
-| `v1/flow/templates/rollout-plan-template.md` | Mandates `Docs Needed`, decision evidence, mandatory closing phases — this plan conforms. |
-| `v1/flow/10-plan/README.md` | Links to `../../spec/operations/spec-first-kanban-integration.md` — must exist after this plan runs. |
-| `v1/spec/README.md` (stub or missing) | Entrypoint to author. |
-| Origin `docs/` structure | Structural mirror only; business content excluded by policy. |
+| Doc                                          | Relevant finding                                                                                     |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `v1/flow/templates/rollout-plan-template.md` | Mandates `Docs Needed`, decision evidence, mandatory closing phases — this plan conforms.            |
+| `v1/flow/10-plan/README.md`                  | Links to `../../spec/operations/spec-first-kanban-integration.md` — must exist after this plan runs. |
+| `v1/spec/README.md` (stub or missing)        | Entrypoint to author.                                                                                |
+| Origin `docs/` structure                     | Structural mirror only; business content excluded by policy.                                         |
 
 ### Docs-First Retrieval Checklist
 
@@ -97,24 +97,24 @@ v1/spec/
 
 ### Docs Needed (planning + implementation)
 
-| Doc | Why needed |
-| --- | --- |
+| Doc                                          | Why needed                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------ |
 | `v1/flow/templates/rollout-plan-template.md` | Structure this plan conforms to; the closing-phase language it mandates. |
-| `v1/flow/README.md` | Lane transition criteria that gate this plan's progress. |
-| Origin `docs/` structure (extraction source) | Folder topology to mirror; process/methodology only. |
+| `v1/flow/README.md`                          | Lane transition criteria that gate this plan's progress.                 |
+| Origin `docs/` structure (extraction source) | Folder topology to mirror; process/methodology only.                     |
 
 ### Planning Decision Evidence Log
 
-| Decision | Docs cited | Sufficiency verdict | Fallback code scan used? | Doc update action |
-| --- | --- | --- | --- | --- |
-| `v1/spec/` mirrors the origin `docs/` topology (ai, operations, adr, workflow, domains) | `v1/spec/README.md` purpose, origin docs structure | Sufficient | No | Generate the scaffold per the output contract. |
-| Business content is excluded; `[project: fill in]` placeholders are used | Package policy (navigator, business-free rule) | Sufficient | No | Enforced by the no-business-content verification gate. |
-| The genesis plan is itself a rollout plan (recursive self-generation) | `v1/flow/templates/rollout-plan-template.md` | Sufficient | No | This file; proven by executing it. |
+| Decision                                                                                | Docs cited                                         | Sufficiency verdict | Fallback code scan used? | Doc update action                                      |
+| --------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------- | ------------------------ | ------------------------------------------------------ |
+| `v1/spec/` mirrors the origin `docs/` topology (ai, operations, adr, workflow, domains) | `v1/spec/README.md` purpose, origin docs structure | Sufficient          | No                       | Generate the scaffold per the output contract.         |
+| Business content is excluded; `[project: fill in]` placeholders are used                | Package policy (navigator, business-free rule)     | Sufficient          | No                       | Enforced by the no-business-content verification gate. |
+| The genesis plan is itself a rollout plan (recursive self-generation)                   | `v1/flow/templates/rollout-plan-template.md`       | Sufficient          | No                       | This file; proven by executing it.                     |
 
 ### Docs to create
 
-| File | Reason |
-| --- | --- |
+| File                                                                                                                   | Reason                                                             |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | `v1/spec/README.md` + `ai/` (5) + `operations/` (4) + `adr/` (2) + `workflow/README.md` (1) + domain scaffolds (9 + 1) | The spec-first scaffold this plan generates (see output contract). |
 
 ### No docs affected
@@ -126,14 +126,14 @@ v1/spec/
 
 ### Files to modify first
 
-| File | Purpose | Why it matters |
-| --- | --- | --- |
+| File                | Purpose    | Why it matters                                             |
+| ------------------- | ---------- | ---------------------------------------------------------- |
 | `v1/spec/README.md` | Entrypoint | Anchors the domain map every other spec doc links back to. |
 
 ### Likely files to create
 
-| File | Purpose |
-| --- | --- |
+| File                                                                           | Purpose                           |
+| ------------------------------------------------------------------------------ | --------------------------------- |
 | `v1/spec/ai/*`, `operations/*`, `adr/*`, `workflow/*`, `<domain>/_template.md` | Scaffold per the output contract. |
 
 ### Risks
@@ -362,7 +362,7 @@ At the end of each working session:
 
 - Completed: Phases 1–6 executed against the package to generate `v1/spec/` (23 files, matching the output contract).
 - Verified by: `find v1/spec -type f` matches the file inventory; all files carry metadata + `## Related Docs`; 23/23 registered in `v1/spec/ai/assistant-context-index.md`; link scan zero missing targets; content scan zero business terms.
-- Next: target projects execute this plan the same way (see `../flow/10-plan/init-spec-kanban-followup.md`).
+- Next: target projects execute this plan the same way (see the Follow-Up section of `../flow/10-plan/sculp-intent-ops.md`).
 - Blockers: none.
 
 ## Success Criteria

@@ -181,11 +181,11 @@ If your task does not fit a single category above, load in this order:
 
 Before writing any code, confirm none of these apply (customize for your project):
 
-| Risk | Check |
-| --- | --- |
+| Risk                                                                       | Check                                                           |
+| -------------------------------------------------------------------------- | --------------------------------------------------------------- |
 | [project: fill in — e.g., importing a server-only module in a client file] | [project: fill in — where the server-only boundary is enforced] |
-| [project: fill in] | [project: fill in] |
-| [project: fill in] | [project: fill in] |
+| [project: fill in]                                                         | [project: fill in]                                              |
+| [project: fill in]                                                         | [project: fill in]                                              |
 
 ---
 

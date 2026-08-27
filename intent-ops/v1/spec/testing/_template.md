@@ -14,10 +14,10 @@ What test domain, fixture pattern, or coverage area this document covers.
 
 ## Test Layers
 
-| Layer | Location | Runner | When to use |
-| --- | --- | --- | --- |
-| Unit | `[project: fill in]` | `[project: fill in]` | Logic, hooks, contracts |
-| E2E | `[project: fill in]` | `[project: fill in]` | Full user flows |
+| Layer | Location             | Runner               | When to use             |
+| ----- | -------------------- | -------------------- | ----------------------- |
+| Unit  | `[project: fill in]` | `[project: fill in]` | Logic, hooks, contracts |
+| E2E   | `[project: fill in]` | `[project: fill in]` | Full user flows         |
 
 ## Conventions / Rules
 

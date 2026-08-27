@@ -30,13 +30,13 @@ Define how docs under `v1/spec/` are owned, kept fresh, and registered so the do
 
 Update the relevant docs when the following change:
 
-| Change | Docs to update |
-| --- | --- |
-| New file, renamed API, changed invariant | The affected canonical doc(s) + `v1/spec/ai/assistant-context-index.md` |
-| New workflow or handoff sequence | New `v1/spec/workflow/*-workflow.md` + index registration + related canonical doc link |
-| New governance protocol or reviewer gate | `v1/spec/operations/` doc + index registration + rollout template references |
-| New architectural decision | `v1/spec/adr/YYYY-MM.md` entry + index |
-| Routing or index topology change | `v1/spec/ai/guide.md` + `v1/spec/ai/assistant-context-index.md`; run retrieval smoke tests |
+| Change                                   | Docs to update                                                                             |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| New file, renamed API, changed invariant | The affected canonical doc(s) + `v1/spec/ai/assistant-context-index.md`                    |
+| New workflow or handoff sequence         | New `v1/spec/workflow/*-workflow.md` + index registration + related canonical doc link     |
+| New governance protocol or reviewer gate | `v1/spec/operations/` doc + index registration + rollout template references               |
+| New architectural decision               | `v1/spec/adr/YYYY-MM.md` entry + index                                                     |
+| Routing or index topology change         | `v1/spec/ai/guide.md` + `v1/spec/ai/assistant-context-index.md`; run retrieval smoke tests |
 
 ## New-Doc Registration Checklist
 

@@ -39,23 +39,23 @@ intent-ops/
 
 ## Entry Routing
 
-| When you need to... | Go to |
-| --- | --- |
-| Understand the delivery methodology (principles, lane gates, operating loop) | [`v1/flow/README.md`](v1/flow/README.md) |
-| Write a rollout plan / phased plan / migration plan | [`v1/flow/templates/rollout-plan-template.md`](v1/flow/templates/rollout-plan-template.md) |
-| Find or add canonical docs, decide what to read for a task | [`v1/spec/README.md`](v1/spec/README.md) → [`v1/spec/ai/guide.md`](v1/spec/ai/guide.md) |
-| Initialize a new repo's spec scaffold | [`v1/cli/init.md`](v1/cli/init.md) — execute it as a rollout plan |
-| Understand versions and how to upgrade to v2 | [`v1/README.md`](v1/README.md) |
+| When you need to...                                                          | Go to                                                                                      |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Understand the delivery methodology (principles, lane gates, operating loop) | [`v1/flow/README.md`](v1/flow/README.md)                                                   |
+| Write a rollout plan / phased plan / migration plan                          | [`v1/flow/templates/rollout-plan-template.md`](v1/flow/templates/rollout-plan-template.md) |
+| Find or add canonical docs, decide what to read for a task                   | [`v1/spec/README.md`](v1/spec/README.md) → [`v1/spec/ai/guide.md`](v1/spec/ai/guide.md)    |
+| Initialize a new repo's spec scaffold                                        | [`v1/cli/init.md`](v1/cli/init.md) — execute it as a rollout plan                          |
+| Understand versions and how to upgrade to v2                                 | [`v1/README.md`](v1/README.md)                                                             |
 
 ## Prompt Triggers
 
 The workflow is intent-driven. These trigger phrases map to deterministic behaviors:
 
-| User prompt intent | Behavior |
-| --- | --- |
-| "generate a plan for X" | Create a rollout plan file in `v1/flow/10-plan/` from [`rollout-plan-template.md`](v1/flow/templates/rollout-plan-template.md) (with `Docs Needed`, decision evidence, verification gates). Remove the intake item from `v1/flow/00-intake/`. |
-| "start the planned task X" | Begin implementing the first 2 phases of the planned task, following the plan's verification gates. Update the plan's progress dashboard and session notes. |
-| "complete the task X" | Mark the task done (all gates pass), archive the relevant documents to `v1/flow/40-archive/`, and generate an executive report into `v1/flow/50-report/` from [`excutive-report-template.md`](v1/flow/templates/excutive-report-template.md). |
+| User prompt intent         | Behavior                                                                                                                                                                                                                                      |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "generate a plan for X"    | Create a rollout plan file in `v1/flow/10-plan/` from [`rollout-plan-template.md`](v1/flow/templates/rollout-plan-template.md) (with `Docs Needed`, decision evidence, verification gates). Remove the intake item from `v1/flow/00-intake/`. |
+| "start the planned task X" | Begin implementing the first 2 phases of the planned task, following the plan's verification gates. Update the plan's progress dashboard and session notes.                                                                                   |
+| "complete the task X"      | Mark the task done (all gates pass), archive the relevant documents to `v1/flow/40-archive/`, and generate an executive report into `v1/flow/50-report/` from [`excutive-report-template.md`](v1/flow/templates/excutive-report-template.md). |
 
 For every prompt, the docs-first rule applies first: route via [`v1/spec/ai/guide.md`](v1/spec/ai/guide.md), declare `Docs Needed` before implementation, and record a `Decision Evidence Log` row for every major decision.
 
@@ -89,13 +89,13 @@ grep -riE "cert[i]fai|fireb[a]se|str[i]pe|\be[x]am\b|mailer[l]ite" \
   intent-ops/ --exclude="v1/flow/10-plan/*"   # must return nothing
 ```
 
-| Gate | Pass criterion |
-| --- | --- |
-| Link scan | every relative link target exists |
+| Gate               | Pass criterion                                                                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Link scan          | every relative link target exists                                                                                                     |
 | Version-scope scan | no `v1/`-rooted document references anything outside `intent-ops/v1/` (only documented externals: extraction sources, promotion note) |
-| Content scan | zero matches for origin-project business terms |
-| Simulated copy | `cp -r intent-ops /tmp/intent-ops-copy-test` passes the same three scans |
-| Genesis dry-run | executing `v1/cli/init.md` against a scratch repo regenerates the `v1/spec/` scaffold, which passes the same scans |
+| Content scan       | zero matches for origin-project business terms                                                                                        |
+| Simulated copy     | `cp -r intent-ops /tmp/intent-ops-copy-test` passes the same three scans                                                              |
+| Genesis dry-run    | executing `v1/cli/init.md` against a scratch repo regenerates the `v1/spec/` scaffold, which passes the same scans                    |
 
 ## Maintenance Notes
 

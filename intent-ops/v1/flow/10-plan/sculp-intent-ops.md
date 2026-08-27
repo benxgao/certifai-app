@@ -358,7 +358,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 - [x] Phase 4 — Copy-readiness validation (link/version/content scans + simulated copy + genesis-plan dry-run)
 - [!] Phase 5 — User-journey sync (skipped: no user-facing features — methodology package)
 - [x] Phase 6 — Docs Sync (metadata, index registration, ADR log `2026-08.md`)
-- [~] Phase 7 — AI-ready docs reflection and next-plan handoff (follow-up plan created; see `init-spec-kanban-followup.md`)
+- [~] Phase 7 — AI-ready docs reflection and next-plan handoff (follow-up plan created; consolidated into this file)
 - [x] Phase 8 — Docs-only Simulation Drill (genesis-plan regeneration + copy test recorded)
 - [x] Phase 9 — Rollout Eval & Health Score (100/120, see session note)
 
@@ -593,7 +593,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 ### Phase 7: AI-ready docs reflection and next-plan handoff _(mandatory closing phase)_
 
-**Progress**: `[~]` — follow-up plan `init-spec-kanban-followup.md` created; handoff note below
+**Progress**: `[~]` — follow-up plan authored and consolidated into this file (see the Follow-Up section below); handoff note follows
 
 **Layer**: planning/documentation improvement layer
 
@@ -606,7 +606,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 
 **Files**:
 
-- `intent-ops/v1/flow/10-plan/init-spec-kanban-followup.md` — create/modify — next rollout plan (first copy usage / v2 prep / follow-up hardening)
+- `intent-ops/v1/flow/10-plan/sculp-intent-ops.md` — modify — add the Follow-Up section (next rollout plan: first copy usage / v2 prep / follow-up hardening), consolidated in place; no standalone follow-up file (per "no unexpected extract files" rule)
 - `intent-ops/v1/flow/00-intake/init-spec-kanban.md` — modify — add handoff note linking to the next rollout; then per lane convention move this plan to `v1/flow/10-plan/init-spec-kanban.md` and clear the intake file
 
 **Verification gate**:
@@ -622,7 +622,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
   - **Independent verification**: each improvement appears in the follow-up scope or is marked "already shipped in this rollout".
 - [ ] **7.2 — Convert unresolved questions to decisions**: assign owner/criteria/timeline for each pending question.
   - **Independent verification**: no open question lacks a decision path.
-- [ ] **7.3 — Author next rollout plan**: write `v1/flow/10-plan/init-spec-kanban-followup.md` for the first real package usage (or v2 preparation / source-folder backport).
+- [ ] **7.3 — Author next rollout plan**: write the Follow-Up section of `v1/flow/10-plan/sculp-intent-ops.md` for the first real package usage (or v2 preparation / source-folder backport) — append in place, do not spawn a standalone follow-up file.
   - **Independent verification**: next plan includes phases, gates, rollback.
 - [ ] **7.4 — Record handoff + move lane**: add the handoff note; move the plan file to `v1/flow/10-plan/` and remove the intake copy per lane transition criteria.
   - **Independent verification**: `v1/flow/10-plan/init-spec-kanban.md` exists with handoff note; `v1/flow/00-intake/init-spec-kanban.md` is removed or marked moved.
@@ -796,6 +796,28 @@ At the end of each working session:
 4. **Versioning cadence**: is the version model "v1 current, v2 = file copy of v1 + changes" correct, and should `v1/README.md` also carry a changelog convention for future versions? Default: yes — manifest + migration checklist now, changelog when v2 is created. (Owner: user; decision gate: Phase 6.6 ADR entry / v2 prep in follow-up rollout.)
 5. **Backport policy**: should improvements made to `intent-ops` later be backported to the source folders (`ai_oriented_kanban/`, `docs/` at repo root), and vice versa? Default: one-way for now (extraction), backport is a manual, deliberate act. (Owner: user; decision gate: Phase 7 follow-up scope.)
 
+### Project-purpose alignment — questions from AI review (added 2026-08-27)
+
+> **Purpose statement to align on**: `intent-ops` can be copied into any project; AI scans the project and builds up a spec-first docs/spec folder `intent-ops/v1/spec` following the best practices of spec-first-development methodologies; users then plan and implement phased tasks from `intent-ops/v1/flow`, where the tasks are phased and can be HIIL. The questions below are my (AI reviewer) concerns about how this purpose statement maps onto the plan as written. They do not block this rollout's completion — they gate the follow-up (real-project pilot) and v2 preparation.
+
+6. **What does "HIIL" mean operationally?** I read it as _Human-In-The-Loop_, i.e., each phased task can be executed with a human reviewing/approving between steps. Is that right, and which granularity — human approval after every sub-subphase, after every phase verification gate, or only at lane transitions (Active → Review → Archive)? This determines how the flow lane READMEs and the mobile-workflow prompt triggers should be worded, and how much of the loop is automatable.
+   - Default assumption: HIIL = human reviews each phase's verification gate before the next phase starts (the rollout template's gates already support this); sub-subphases inside a phase run AI-autonomously. (Owner: user; decision gate: follow-up real-project pilot, then `v1/flow` README + `instructions.md` wording.)
+
+7. **Scan → build depth**: when AI scans a target project and "builds up" `v1/spec`, should the output be (a) a scaffold + `[project: fill in]` placeholders (what this plan's Phase 2 ships), or (b) a best-effort populated spec (e.g., `repo-map.md` filled with the project's real routes/entrypoints, architecture/domain docs drafted from the scan)? The stated purpose ("build up spec-first docs/spec folder following best practices") sounds closer to (b) than to what the genesis plan currently contracts. This changes the `v1/cli/init.md` output contract.
+   - Default assumption: scaffold-first with the scan filling the machine-discoverable parts (repo-map entries, route list, entrypoints, stack), while judgment-heavy domain docs stay `[project: fill in]` until a human or a later task confirms them. (Owner: user; decision gate: `v1/cli/init.md` output contract, Phase 1.3.)
+
+8. **Which components make `v1/spec` "spec-first best practices"?** My planned inventory: docs-first retrieval (`ai/guide.md` + `ai/assistant-context-index.md` + `ai/repo-map.md`), ADR system (`adr/` + month-log), simulation readiness + docs-only drill, retrieval smoke tests, docs-maintenance protocol, workflow naming convention, and per-domain scaffolds. Is anything on your mental "best practices" list missing (e.g., docs-as-code/CI linting of spec links, a spec review gate before implementation, `_template.md` for every domain)? (Owner: user; decision gate: Phase 2 scaffold inventory / follow-up.)
+
+9. **Where does HIIL actually live in `v1/flow` today?** The flow has review gates at lane transitions and mandatory closing phases in the rollout template, but nothing yet that says "pause after each phase for human approval." If HIIL is a core selling point of the purpose statement, should the flow methodology (or just the prompt triggers in `instructions.md`) explicitly define the pause-and-confirm loop? Default: define it in `instructions.md` prompt triggers first; only touch the methodology itself if the pilot shows the loop is insufficient. (Owner: user; decision gate: follow-up.)
+
+10. **Applicability of "any project"**: the domain scaffold set (architecture/api/state/data/style/security/performance/testing/product) and the flow's software-delivery language assume software projects. Does "any project" include non-software contexts (data/operations/documentation-heavy teams), and if so, should the genesis plan support a trimmed domain set per project type, or is software the intended scope for now? Default: software projects first; a project-type profile is a v2 idea. (Owner: user; decision gate: Phase 2 domain set / v2 planning.)
+
+11. **`v1/spec` vs a host project's existing `docs/`**: the purpose says the spec folder lives at `intent-ops/v1/spec`. When copied into a project that already has its own `docs/` (like the source project does), do we (a) keep both and treat `v1/spec` as the new canonical source (old `docs/` migrates gradually), (b) promote `v1/spec` → `<project>/docs/`, or (c) something else? Open question 1 defaults to keep-`v1/spec`-with-promotion-documented; please confirm that matches your intent for real projects. (Owner: user; decision gate: Phase 6.6 ADR entry / follow-up pilot.)
+
+12. **AI autonomy boundary under HIIL**: in the scan → build → plan → implement loop, which actions may the AI take autonomously (generating files, fixing links, updating the context index) vs which require human sign-off (scope changes, ADR acceptance, phase acceptance, lane transitions)? A crisp boundary makes HIIL predictable. Default: AI autonomous for generation/link/index fixes; human sign-off for acceptance gates, ADR acceptance, and lane transitions. (Owner: user; decision gate: `instructions.md` + follow-up pilot.)
+
+13. **End-to-end acceptance vehicle**: the purpose's value is only proven when one real project runs the full loop (copy → scan → build `v1/spec` → plan phased tasks → implement with HIIL). Should the Follow-Up section of this plan be explicitly scoped as that pilot (1–2 real projects, with the HIIL loop and the scan-depth question above exercised), so that this plan's Success Criteria are inherited by the follow-up rather than re-derived? Default: yes — the follow-up is the acceptance vehicle; this plan's Phase 8 drill stays the dry-run. (Owner: user; decision gate: Phase 7 follow-up scope.)
+
 ## Recommendation
 
 Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to generate v1/spec → v1/flow generalization + version model → copy-readiness validation), then complete the mandatory closing Phases 5–9 (user-journey sync expected to be skipped with a documented note, docs sync, reflection/handoff, genesis-plan regeneration + docs-only drill, eval). This sequence is the safest path because it fixes the root-cause gaps first (missing navigator, missing genesis plan, missing spec scaffold), then repairs the leaky/broken references and documents the version model before proving the package with automated scans, a genesis-plan dry-run, and a drill that re-runs the recursion end-to-end. The rollout is low-risk (documentation only), directly delivers the `README.md` copy promise under the new `v1/` versioned layout, and leaves behind reusable validation and migration checklists that keep the package copy-ready — and v1 → v2 migration a plain file copy — on future upgrades.
@@ -806,13 +828,65 @@ Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to g
 
 ### Handoff — 2026-08-27
 
-- **Next rollout**: [`init-spec-kanban-followup.md`](./init-spec-kanban-followup.md) — first real usage of the package (copy + genesis regeneration + one docs-first planning task), v2 prep, and backport decision.
-- **Open questions carried over**: (1) reference convention after copy — default keep `v1/spec/`, promotion path documented (ADR-0003); (2) genesis generation scope — default spec-only (ADR-0004); (3) domain scaffold set — keep 9 domains, revisit in follow-up; (4) versioning cadence — manifest now, changelog at v2 (ADR-0002); (5) backport policy — one-way extraction default, decision in follow-up Phase 3.
+- **Next rollout**: [Follow-Up: First Real Usage of the `intent-ops` Package](#follow-up-first-real-usage-of-the-intent-ops-package) — first real usage of the package (copy + genesis regeneration + one docs-first planning task), v2 prep, and backport decision. Consolidated into this file per the "no unexpected extract files in `flow`" rule.
+- **Open questions carried over**: (1) reference convention after copy — default keep `v1/spec/`, promotion path documented (ADR-0003); (2) genesis generation scope — default spec-only (ADR-0004); (3) domain scaffold set — keep 9 domains, revisit in follow-up; (4) versioning cadence — manifest now, changelog at v2 (ADR-0002); (5) backport policy — one-way extraction default, decision in follow-up Phase 3. **New (2026-08-27, purpose alignment)**: (6) operational meaning of "HIIL" — assumed human reviews each phase gate; (7) scan→build depth — scaffold-first with machine-discoverable parts filled; (8) confirm "spec-first best practices" component list; (9) where HIIL lives in the flow — prompt triggers first; (10) "any project" = software scope for now; (11) `v1/spec` vs host `docs/` — keep + promote documented; (12) AI autonomy boundary — autonomous gen/fix, human sign-off on gates/ADRs/lane moves; (13) follow-up pilot as the end-to-end acceptance vehicle.
 
 ### Session Note — 2026-08-27 14:25 local
 
 - Completed: Phases 1–4 + closing Phases 5 (skip), 6, 7 (handoff), 8, 9.
 - Verified by: link scan (37 files, zero missing targets), version-scope scan (no `v1/`-rooted reference escapes), content scan (word-boundary terms, zero matches outside the archived plan prose), simulated copy to `/tmp/intent-ops-copy-test` (same scans pass), index registration grep (23/23 spec files).
-- Next: execute `init-spec-kanban-followup.md` in a real project; user to confirm open questions 1–5.
+- Next: execute the Follow-Up section of this file in a real project; user to confirm open questions 1–5.
 - Blockers: none.
 - Eval: Docs-first adherence 40/40, Docs health 40/40, Reflection quality 15/20 (follow-up created, open questions owned), Simulation readiness 5/20 (dry-run via copy test; full drill deferred to follow-up) → **100/120 ≥ 85 pass**.
+
+---
+
+## Follow-Up: First Real Usage of the `intent-ops` Package
+
+> **Consolidation note**: this section was originally authored as a standalone file `init-spec-kanban-followup.md` (Phase 7 handoff). Per the lane convention "no unexpected extract files in `flow`" (see `10-plan/README.md` rule 6), it is consolidated here in place; the standalone file is deleted and all references point to this section.
+
+### Summary
+
+The `intent-ops` package now exists as a self-contained, copy-ready v1: navigator, genesis rollout plan, spec-first scaffold, and generalized kanban flow, all validated by link/version/content scans and a simulated copy. The natural next step is to exercise the package in a real project — either this repo (promote `v1/spec/` to `docs/` usage patterns) or a target project — to prove the copy promise end-to-end and to prepare v2.
+
+### Scope
+
+#### In scope
+
+1. **First real usage**: copy the package into a target project (or a scratch repo), execute `v1/cli/init.md` as a rollout plan, populate one domain scaffold with real content, and run one docs-first planning task through the flow (`10-plan` → `20-active` → `30-review`).
+2. **v2 preparation (optional)**: when the methodology changes accumulate, execute the v1 → v2 migration checklist in `v1/README.md`.
+3. **Backport decision**: decide whether improvements authored in `intent-ops` should be backported to the origin folders (one-way extraction is the default; backport is deliberate).
+
+#### Out of scope
+
+- Changing the v1 package while a target project depends on it (freeze v1 during the trial).
+- Business content from any project inside the package.
+
+### Phases
+
+#### Phase 1: Copy + genesis regeneration
+
+**Goal**: Prove `v1/cli/init.md` regenerates the `v1/spec/` scaffold in a fresh repo.
+
+**Verification gate**: generated `v1/spec/` tree matches the genesis plan's output contract; link + content scans pass on the copy.
+
+#### Phase 2: First docs-first planning task
+
+**Goal**: Run one representative task through the flow: intake → rollout plan (with `Docs Needed` + decision evidence) → first 2 phases → review.
+
+**Verification gate**: plan file in `10-plan/` conforms to the template; decision evidence log complete; docs-only simulation drill passes with fallback ratio `<= 0.20`.
+
+#### Phase 3: v2 prep or backport decision
+
+**Goal**: Decide the next version action.
+
+**Verification gate**: decision recorded as an ADR entry; migration checklist updated if v2 is created.
+
+### Rollback Plan
+
+- The package is a copy, not a runtime dependency — delete it from the trial repo with no impact.
+- v2 is created by copying v1; keep v1 untouched until v2 is proven.
+
+### Open Questions
+
+1. Trial target: this repo (promote `v1/spec/` ↔ `docs/`), a scratch repo, or a real third project? (Owner: user.)

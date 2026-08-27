@@ -5,6 +5,7 @@ This lane is for execution and implementation.
 ## AI Assistant Instructions
 
 When working in this lane:
+
 1. **Incremental Execution**: Follow the rollout plan phase by phase. Do not skip ahead.
 2. **Update Progress**:
    - Update the `Progress Dashboard` in the plan file as you complete items.

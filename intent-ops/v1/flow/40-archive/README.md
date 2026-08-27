@@ -5,6 +5,7 @@ This lane is for completed and closed initiatives.
 ## AI Assistant Instructions
 
 When working in this lane:
+
 1. **Immutability**: Treat archived items as read-only history.
 2. **Searchability**: Ensure the archived plan has a clear "Executive Summary" at the top for future retrieval.
 3. **Reflect**: When starting a new task, search this folder for similar previous work to learn from past decisions.

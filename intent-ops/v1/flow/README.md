@@ -174,6 +174,14 @@ Finalize a concise summary including:
 - Store the report in the `50-report` lane for long-term stakeholder visibility and project cross-referencing.
 - Update global lessons-learned index if applicable.
 
+### No unexpected extract files
+
+Extraction and consolidation must never create unexpected standalone files inside `v1/flow/`:
+
+- Follow-up, handoff, or extracted content of an existing plan is **appended to the original plan file** (e.g., as a `## Follow-Up` section) — never written to a new one-off file in any lane.
+- If the content is a genuinely new initiative, create a new plan from the template in `10-plan/` and remove the intake copy per the lane convention.
+- After consolidation, update every internal reference that pointed at the removed file.
+
 ---
 
 ## Lane Transition Criteria
@@ -298,7 +306,6 @@ Ensure every initiative, no matter how small, starts with the `rollout-plan-temp
 6. Archive with executive summary and lessons learned.
 
 If followed consistently, this methodology converts AI-assisted execution from ad hoc chat history into a reliable, auditable delivery system.
-
 
 ## Mobile workflow quickstart
 

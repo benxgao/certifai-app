@@ -5,6 +5,7 @@ This lane is for detailed execution planning. No code should be written yet.
 ## AI Assistant Instructions
 
 When working in this lane:
+
 1. **Use Template**: Always use the `rollout-plan-template.md` to create a new rollout plan file.
 2. **Docs-First Retrieval**:
    - Search the `v1/spec/` folder for relevant specifications, ADRs, and guides.
@@ -13,6 +14,7 @@ When working in this lane:
 3. **Verification Gates**: Define clear, machine-verifiable (tests, grep, tsc) gates for every phase.
 4. **Dependency Rule**: Ensure each phase touches only one dependency layer (e.g., DB, then API, then UI).
 5. **Review**: Present the plan to the user for approval.
+6. **No Unexpected Extract Files**: never create a standalone file in this lane (or anywhere in `v1/flow/`) to hold follow-up, handoff, or extracted content of an existing plan — append it to the original plan file in place (e.g., a `## Follow-Up` section) and update internal references. Only a genuinely new initiative gets a new plan file (created from the template, with the intake copy removed per the lane convention).
 
 ## Spec-First Doc Integration
 

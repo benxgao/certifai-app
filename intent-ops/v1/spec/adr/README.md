@@ -33,8 +33,8 @@ Each month log starts with an `## Index` table:
 ```markdown
 ## Index
 
-| Date | ADR | Title | Status |
-| --- | --- | --- | --- |
+| Date       | ADR      | Title   | Status   |
+| ---------- | -------- | ------- | -------- |
 | 2026-08-27 | ADR-0001 | <title> | Accepted |
 ```
 

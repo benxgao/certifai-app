@@ -31,10 +31,10 @@ Establish the system boundary of this project so assistants can identify which d
 
 ## Route Map
 
-| Route | Auth | Purpose |
-| --- | --- | --- |
-| `[project: fill in]` | Public | Landing/marketing pages |
-| `[project: fill in]` | Public | Auth flows |
+| Route                | Auth      | Purpose                    |
+| -------------------- | --------- | -------------------------- |
+| `[project: fill in]` | Public    | Landing/marketing pages    |
+| `[project: fill in]` | Public    | Auth flows                 |
 | `[project: fill in]` | Protected | Authenticated app sections |
 
 ## Critical Invariants

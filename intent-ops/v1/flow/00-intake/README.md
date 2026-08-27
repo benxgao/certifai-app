@@ -5,6 +5,7 @@ This lane is for capturing new initiatives, ideas, and bug reports.
 ## AI Assistant Instructions
 
 When working in this lane:
+
 1. **Explore & Brain-dump**: Help the user articulate their goal. Ask clarifying questions to surface hidden constraints or risks.
 2. **Structure**: Turn the raw input into an **Initiative Brief** (use the template if available, or create a structured summary).
 3. **Assess Risk**: Identify potential blast radius and assign a risk level (Low/Medium/High).

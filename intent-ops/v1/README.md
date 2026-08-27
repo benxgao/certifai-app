@@ -6,11 +6,11 @@
 
 ## What v1 Contains
 
-| Path | Role |
-| --- | --- |
-| `v1/cli/init.md` | **Genesis rollout plan** — executing it as a rollout plan generates all folders and files inside `v1/spec/` (recursive self-generation). |
-| `v1/flow/` | The AI-oriented kanban methodology: lane READMEs (`00-intake` → `50-report`), lane transition gates, and the two mandatory templates (`rollout-plan-template.md`, `excutive-report-template.md`). |
-| `v1/spec/` | The spec-first docs system: AI routing (`ai/`), governance protocols (`operations/`), decision history (`adr/`), workflow conventions (`workflow/`), and per-domain scaffolds (`architecture/`, `api/`, `state/`, `data/`, `style/`, `security/`, `performance/`, `testing/`, `product/`). |
+| Path             | Role                                                                                                                                                                                                                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `v1/cli/init.md` | **Genesis rollout plan** — executing it as a rollout plan generates all folders and files inside `v1/spec/` (recursive self-generation).                                                                                                                                                   |
+| `v1/flow/`       | The AI-oriented kanban methodology: lane READMEs (`00-intake` → `50-report`), lane transition gates, and the two mandatory templates (`rollout-plan-template.md`, `excutive-report-template.md`).                                                                                          |
+| `v1/spec/`       | The spec-first docs system: AI routing (`ai/`), governance protocols (`operations/`), decision history (`adr/`), workflow conventions (`workflow/`), and per-domain scaffolds (`architecture/`, `api/`, `state/`, `data/`, `style/`, `security/`, `performance/`, `testing/`, `product/`). |
 
 ## Version Model
 

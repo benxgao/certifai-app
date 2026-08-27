@@ -94,8 +94,8 @@ Representative files:
 
 ### Docs checked during planning
 
-| Doc                        | Relevant finding              |
-| -------------------------- | ----------------------------- |
+| Doc                           | Relevant finding              |
+| ----------------------------- | ----------------------------- |
 | `v1/spec/<section>/<file>.md` | <what you found or confirmed> |
 
 ### Docs-First Retrieval Checklist
@@ -116,8 +116,8 @@ Representative files:
 
 > **Mandatory gate**: no implementation work starts until this table is populated.
 
-| Doc                        | Why needed                                         |
-| -------------------------- | -------------------------------------------------- |
+| Doc                           | Why needed                                         |
+| ----------------------------- | -------------------------------------------------- |
 | `v1/spec/<section>/<file>.md` | <decision dependency / contract this doc provides> |
 
 ### Planning Decision Evidence Log
@@ -145,20 +145,20 @@ Representative files:
 
 ### Docs to create
 
-| File                       | Reason                                                              |
-| -------------------------- | ------------------------------------------------------------------- |
+| File                          | Reason                                                                 |
+| ----------------------------- | ---------------------------------------------------------------------- |
 | `v1/spec/<section>/<file>.md` | <new pattern / new domain / new ADR entry in `v1/spec/adr/YYYY-MM.md`> |
 
 ### Docs to update
 
-| File                       | What changes                                   |
-| -------------------------- | ---------------------------------------------- |
+| File                          | What changes                                   |
+| ----------------------------- | ---------------------------------------------- |
 | `v1/spec/<section>/<file>.md` | <field, section, or entry that needs updating> |
 
 ### Docs to delete or archive
 
-| File                       | Reason                            |
-| -------------------------- | --------------------------------- |
+| File                          | Reason                            |
+| ----------------------------- | --------------------------------- |
 | `v1/spec/<section>/<file>.md` | <superseded by / removed feature> |
 
 ### No docs affected

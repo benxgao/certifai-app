@@ -14,13 +14,13 @@ A project area is simulation-ready when an assistant can complete a comparable p
 
 ## Scoring Rubric
 
-| Dimension | Max Points | Scoring guidance |
-| --- | --- | --- |
-| Docs-needed quality | 25 | Required docs listed with clear decision rationale |
-| Decision traceability | 35 | Major decisions cite docs + sufficiency + fallback status + remediation action |
-| Fallback discipline | 20 | Fallback scans are justified and bounded; remediation captured |
-| Graph-link discoverability | 20 | Responses use docs reachable via guide + assistant index + related docs |
-| **Total** | **100** | Pass threshold: `>= 80` |
+| Dimension                  | Max Points | Scoring guidance                                                               |
+| -------------------------- | ---------- | ------------------------------------------------------------------------------ |
+| Docs-needed quality        | 25         | Required docs listed with clear decision rationale                             |
+| Decision traceability      | 35         | Major decisions cite docs + sufficiency + fallback status + remediation action |
+| Fallback discipline        | 20         | Fallback scans are justified and bounded; remediation captured                 |
+| Graph-link discoverability | 20         | Responses use docs reachable via guide + assistant index + related docs        |
+| **Total**                  | **100**    | Pass threshold: `>= 80`                                                        |
 
 ## Fallback Ratio Rule
 
@@ -38,15 +38,15 @@ If fallback ratio exceeds `0.20`, run is `Needs Improvement` unless every fallba
 
 Use this for each simulation drill run.
 
-| Date | Scenario | Docs Needed complete? | Decision Evidence complete? | Fallback ratio | Score | Verdict | Follow-up actions |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| YYYY-MM-DD | <scenario summary> | Yes/No | Yes/No | <0.00-1.00> | <0-100> | Pass / Needs Improvement / Fail | <doc updates or owner+due date> |
+| Date       | Scenario           | Docs Needed complete? | Decision Evidence complete? | Fallback ratio | Score   | Verdict                         | Follow-up actions               |
+| ---------- | ------------------ | --------------------- | --------------------------- | -------------- | ------- | ------------------------------- | ------------------------------- |
+| YYYY-MM-DD | <scenario summary> | Yes/No                | Yes/No                      | <0.00-1.00>    | <0-100> | Pass / Needs Improvement / Fail | <doc updates or owner+due date> |
 
 ## Run Log
 
-| Date | Scenario | Docs Needed complete? | Decision Evidence complete? | Fallback ratio | Score | Verdict | Follow-up actions |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-08-27 | Genesis-plan regeneration + copy test: execute `v1/cli/init.md` against a scratch copy of the package; verify generated `v1/spec/` tree matches the output contract and passes link/content/version-scope scans | Yes | Yes | 0.00 | 100 | Pass | Full docs-only planning drill deferred to `init-spec-kanban-followup.md` Phase 2 (owner: user) |
+| Date       | Scenario                                                                                                                                                                                                        | Docs Needed complete? | Decision Evidence complete? | Fallback ratio | Score | Verdict | Follow-up actions                                                                                                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | --------------------------- | -------------- | ----- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-08-27 | Genesis-plan regeneration + copy test: execute `v1/cli/init.md` against a scratch copy of the package; verify generated `v1/spec/` tree matches the output contract and passes link/content/version-scope scans | Yes                   | Yes                         | 0.00           | 100   | Pass    | Full docs-only planning drill deferred to the Follow-Up section of `../flow/10-plan/sculp-intent-ops.md` Phase 2 (owner: user) |
 
 ## Decision Evidence Requirement
 

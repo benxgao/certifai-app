@@ -20,21 +20,21 @@ For detailed retrieval routing, use [`ai/guide.md`](./ai/guide.md). For the full
 
 Start with the domain that matches the decision you need to make.
 
-| Domain | What it defines | Start here |
-| --- | --- | --- |
-| `v1/spec/ai/` | Assistant routing, repo map, simulation-readiness standards | [`v1/spec/ai/guide.md`](./ai/guide.md) |
-| `v1/spec/architecture/` | Framework/routing conventions, component placement, error boundaries | [`architecture/_template.md`](./architecture/_template.md) |
-| `v1/spec/api/` | API envelope contract, client fetch boundary, data-fetching patterns | [`api/_template.md`](./api/_template.md) |
-| `v1/spec/state/` | Client state responsibilities and provider boundaries | [`state/_template.md`](./state/_template.md) |
-| `v1/spec/data/` | Data model and typing conventions | [`data/_template.md`](./data/_template.md) |
-| `v1/spec/style/` | UI conventions and styling rules | [`style/_template.md`](./style/_template.md) |
-| `v1/spec/security/` | Auth/JWT/middleware invariants and server-only boundaries | [`security/_template.md`](./security/_template.md) |
-| `v1/spec/performance/` | Optimization hooks and performance patterns | [`performance/_template.md`](./performance/_template.md) |
-| `v1/spec/testing/` | Unit/E2E strategy, fixtures, and test responsibilities | [`testing/_template.md`](./testing/_template.md) |
-| `v1/spec/product/` | Product glossary and user-domain language | [`product/_template.md`](./product/_template.md) |
-| `v1/spec/workflow/` | Step-by-step operational flows that reference canonical docs | [`workflow/README.md`](./workflow/README.md) |
-| `v1/spec/adr/` | Architectural decisions and rationale history | [`adr/README.md`](./adr/README.md) |
-| `v1/spec/operations/` | Operational review protocols (retrieval smoke tests, governance) | [`operations/ai-retrieval-smoke-tests.md`](./operations/ai-retrieval-smoke-tests.md) |
+| Domain                  | What it defines                                                      | Start here                                                                           |
+| ----------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `v1/spec/ai/`           | Assistant routing, repo map, simulation-readiness standards          | [`v1/spec/ai/guide.md`](./ai/guide.md)                                               |
+| `v1/spec/architecture/` | Framework/routing conventions, component placement, error boundaries | [`architecture/_template.md`](./architecture/_template.md)                           |
+| `v1/spec/api/`          | API envelope contract, client fetch boundary, data-fetching patterns | [`api/_template.md`](./api/_template.md)                                             |
+| `v1/spec/state/`        | Client state responsibilities and provider boundaries                | [`state/_template.md`](./state/_template.md)                                         |
+| `v1/spec/data/`         | Data model and typing conventions                                    | [`data/_template.md`](./data/_template.md)                                           |
+| `v1/spec/style/`        | UI conventions and styling rules                                     | [`style/_template.md`](./style/_template.md)                                         |
+| `v1/spec/security/`     | Auth/JWT/middleware invariants and server-only boundaries            | [`security/_template.md`](./security/_template.md)                                   |
+| `v1/spec/performance/`  | Optimization hooks and performance patterns                          | [`performance/_template.md`](./performance/_template.md)                             |
+| `v1/spec/testing/`      | Unit/E2E strategy, fixtures, and test responsibilities               | [`testing/_template.md`](./testing/_template.md)                                     |
+| `v1/spec/product/`      | Product glossary and user-domain language                            | [`product/_template.md`](./product/_template.md)                                     |
+| `v1/spec/workflow/`     | Step-by-step operational flows that reference canonical docs         | [`workflow/README.md`](./workflow/README.md)                                         |
+| `v1/spec/adr/`          | Architectural decisions and rationale history                        | [`adr/README.md`](./adr/README.md)                                                   |
+| `v1/spec/operations/`   | Operational review protocols (retrieval smoke tests, governance)     | [`operations/ai-retrieval-smoke-tests.md`](./operations/ai-retrieval-smoke-tests.md) |
 
 ---
 

@@ -18,8 +18,8 @@ What routing, rendering, or structural pattern this document covers.
 
 ## Page / Route Map
 
-| Route | File | Notes |
-| --- | --- | --- |
+| Route                | File                 | Notes              |
+| -------------------- | -------------------- | ------------------ |
 | `[project: fill in]` | `[project: fill in]` | Public / Protected |
 
 ## Server vs Client Split
