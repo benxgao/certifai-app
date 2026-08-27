@@ -90,9 +90,20 @@ grep -rn "docs/" intent-ops/v1/flow/ | grep -v "v1/spec" | grep -v "\.\./spec"  
 # 3. No business content (terms from the origin project must be absent;
 #    word boundaries avoid matching inside ordinary words like "example";
 #    bracket trick keeps the command from matching its own literal text;
-#    the archived transfer plan at v1/flow/10-plan/ is a historical record and is excluded)
+#    per-project working docs in the v1/flow lanes — intake items, plans
+#    (00-intake/, 10-plan/, 20-active/, 30-review/), archives (40-archive/),
+#    executive reports (50-report/) — are historical records and are excluded,
+#    while the lane README.md files (reusable) stay scanned; the rest of the
+#    reusable surface (entry artifacts, templates, v1/spec/, skills/, v1/cli/)
+#    must stay business-free)
 grep -riE "cert[i]fai|fireb[a]se|str[i]pe|\be[x]am\b|mailer[l]ite" \
-  intent-ops/ --exclude="v1/flow/10-plan/*"   # must return nothing
+  intent-ops/ \
+  --exclude="*/v1/flow/00-intake/[!R]*" \
+  --exclude="*/v1/flow/10-plan/[!R]*" \
+  --exclude="*/v1/flow/20-active/[!R]*" \
+  --exclude="*/v1/flow/30-review/[!R]*" \
+  --exclude="*/v1/flow/40-archive/[!R]*" \
+  --exclude="*/v1/flow/50-report/[!R]*"   # must return nothing
 ```
 
 | Gate               | Pass criterion                                                                                                                        |

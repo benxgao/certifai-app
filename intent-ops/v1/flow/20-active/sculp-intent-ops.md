@@ -824,7 +824,7 @@ All 14 open questions below were confirmed by the user on 2026-08-27; the questi
 | 13  | AI autonomy boundary under HITL              | AI may autonomously generate files, fix links, and update the context index; scope changes, ADR acceptance, phase acceptance, and lane transitions require human approval. All spec docs must be registered and linked per the instructions in `v1/spec/ai/`.                                                                    | `instructions.md` + follow-up pilot                                                             |
 | 14  | End-to-end acceptance vehicle                | The Follow-Up section is the acceptance vehicle: once `intent-ops` is copied into a real project, the follow-up validates the entire workflow end-to-end.                                                                                                                                                                        | Follow-Up section; Phase 7 handoff                                                              |
 
-**Remaining open question**: the follow-up trial target — this repo, a scratch repo, or a real third project (see [Follow-Up](#follow-up-first-real-usage-of-the-intent-ops-package); Owner: user).
+**Remaining open question — resolved (2026-08-27)**: the follow-up trial target was confirmed as **this repo**, with `sculp-intent-ops.md` used as the sample plan task for the docs-only planning drill (see [Follow-Up](#follow-up-first-real-usage-of-the-intent-ops-package) Phase 2 verification record; user-directed).
 
 ## Recommendation
 
@@ -867,7 +867,7 @@ Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to g
 
 - **Next rollout**: [Follow-Up: First Real Usage of the `intent-ops` Package](#follow-up-first-real-usage-of-the-intent-ops-package) — first real usage of the package (copy + genesis regeneration + one docs-first planning task), v2 prep, and relocation execution (backport decision resolved 2026-08-27). Consolidated into this file per the "no unexpected extract files in `flow`" rule.
 - **Open questions resolved (2026-08-27)**: all 14 design questions were confirmed by the user; the Q&A items were removed and replaced by the [Resolved decisions](#resolved-decisions-user-confirmed-2026-08-27) table. Decisions are also reflected in the Decision Evidence Log, the version-model wording (Summary / Principle 2 / `v1/README.md` contract), the genesis-plan output contract (best-effort populated spec), and the ADR month log `v1/spec/adr/2026-08.md` (ADR-0002 versioning model, ADR-0003 reference convention + host-`docs/` untouched, ADR-0004 genesis scope = spec-only with `v1/flow/` copied as-is, ADR-0005 skills unversioned; plus HITL granularity, scan→build depth, AI autonomy boundary, backport/relocation, and follow-up-as-acceptance-vehicle entries).
-- **Remaining open question**: follow-up trial target — this repo, a scratch repo, or a real third project (see Follow-Up section, Owner: user).
+- **Remaining open question — resolved (2026-08-27)**: the follow-up trial target was confirmed as **this repo**, with `sculp-intent-ops.md` used as the sample plan task for the docs-only planning drill (Follow-Up Phase 2 verification record below).
 
 ### Session Note — 2026-08-27 14:25 local
 
@@ -884,6 +884,23 @@ Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to g
 - Next: execute the Follow-Up section in a real project; decide the follow-up trial target (Owner: user).
 - Blockers: none.
 
+### Session Note — 2026-08-27 21:05 local (Follow-Up Phase 1)
+
+- Completed: Follow-Up Phase 1 (Copy + genesis regeneration) — executed `v1/cli/init.md` as a rollout plan in a fresh repo (`/tmp/intent-ops-followup-p1/repo/`, minimal project skeleton + package copy with `v1/spec/` removed); regenerated all 22 contract files (entrypoint, ai/ ×5, operations/ ×3, adr/ ×2, workflow/ ×1, domain scaffolds ×9, user-journey ×1) and retained `v1/spec/adr/2026-08.md` as package-level ADR history (same class as the flow-lane plan records, per ADR-0004 flow-blank).
+- Verified by: `diff -r` regenerated vs shipped `v1/spec/` — byte-identical 23/23 (only `.DS_Store` differs, excluded from the copy); link scan 199 links zero missing; content scan zero matches; version-scope clean; metadata + `## Related Docs` 22/22; index registration 22/22; placeholder discipline 45 × `[project: fill in]` in `ai/`.
+- Corrective fixes surfaced by the drill: (1) `instructions.md` content-scan exclusion drifted — it excluded `v1/flow/10-plan/*` but the plan record now lives in `20-active/`, so the workspace's own scan was failing; updated to exclude flow-lane working docs (`--exclude="*/v1/flow/<lane>/[!R]*"` — lane READMEs stay scanned; verified on BSD grep); (2) `v1/cli/init.md` Execution Record referenced the stale `10-plan/sculp-intent-ops.md` path — fixed to `20-active/`.
+- Eval: 105/120 ≥ 85 pass (docs-first 40, docs health 40, reflection 20, simulation 5 — full docs-only planning drill is Phase 2).
+- Next: Follow-Up Phase 2 (first docs-first planning task through `10-plan` → `20-active` → `30-review` with the HITL loop) — trial target still an open question (Owner: user).
+- Blockers: none.
+
+### Session Note — 2026-08-27 21:15 local (Follow-Up Phase 2)
+
+- Completed: Follow-Up Phase 2 (First docs-first planning task) — verified with **this plan as the sample plan task** (retrospective docs-first audit, per user direction): template conformance 22/22 required sections; Decision Evidence Log 7/7 rows × 5 columns, all `Sufficient` / no fallback; flow trajectory intake → `10-plan` → `20-active` → review-gated closing phases evidenced; HITL gate exercised (user approved phase acceptance at the verification gate); docs-only simulation drill (part B) scored 100/100, fallback ratio 0/7 = 0.00 ≤ 0.20 → **Pass**.
+- Verified by: link scan (199 links, zero missing), version-scope scan (clean), content scan (zero matches), reachability check (all package-internal cited docs exist and are indexed), template-structure audit against `v1/flow/templates/rollout-plan-template.md`, drill scoring per `v1/spec/ai/project-simulation-readiness.md`.
+- Corrective fix: `v1/spec/ai/project-simulation-readiness.md` run-log row 1 referenced stale `../flow/10-plan/sculp-intent-ops.md` → corrected to `../../flow/20-active/sculp-intent-ops.md`; new part-B drill row appended.
+- Next: Follow-Up Phase 3 (v2 prep or relocation execution) — requires user direction; backport decision resolved 2026-08-27 (relocate `intent-ops` to its own standalone repo).
+- Blockers: none — plan stays in `20-active` until Phase 3 completes; Active → Review gates (decision evidence / docs search / docs update / link integrity) confirmed satisfied.
+
 ---
 
 ## Follow-Up: First Real Usage of the `intent-ops` Package
@@ -893,6 +910,12 @@ Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to g
 ### Summary
 
 The `intent-ops` package now exists as a self-contained, copy-ready v1: navigator, genesis rollout plan, spec-first scaffold, and generalized kanban flow, all validated by link/version/content scans and a simulated copy. The natural next step is to exercise the package in a real project (copy into a target project, keeping `v1/spec/` canonical and leaving any host `docs/` untouched — user-confirmed 2026-08-27) to prove the copy promise end-to-end and to prepare v2.
+
+#### Progress
+
+- [x] Phase 1 — Copy + genesis regeneration (2026-08-27; fresh repo `/tmp/intent-ops-followup-p1/repo/`)
+- [x] Phase 2 — First docs-first planning task (2026-08-27; verified with this plan as the sample task — see [verification record](#follow-up-phase-2-verification-record-2026-08-27))
+- [ ] Phase 3 — v2 prep or relocation execution
 
 ### Scope
 
@@ -927,6 +950,23 @@ The `intent-ops` package now exists as a self-contained, copy-ready v1: navigato
 
 **Verification gate**: relocation (or v2 prep) decision recorded as an ADR entry; if v2 is created, the changelog + migration rollout plan/instruction doc ship with it and `v1/`'s flow/spec folders are emptied after migration.
 
+#### Follow-Up Phase 2 verification record (2026-08-27)
+
+> Sample plan task: this plan (`sculp-intent-ops.md`) used as the representative docs-first planning task, per user direction. Gate: plan file conforms to the rollout-plan template; decision evidence log complete; HITL loop exercised; docs-only simulation drill passes with fallback ratio `<= 0.20`.
+
+**All gates pass:**
+
+| Gate                      | Evidence                                                                                                                                                                                                                                                                                           |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Plan template conformance | 22/22 required sections present (Summary → Recommendation per `v1/flow/templates/rollout-plan-template.md`); Phases 1–9 each carry a verification gate; mandatory closing phases in order (Docs Sync → AI-ready reflection → simulation drill → eval)                                              |
+| Decision evidence log     | 7/7 rows × 5 columns (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`); all `Sufficient` / `No` fallback                                                                                                                                          |
+| Flow trajectory           | intake (`00-intake/init-spec-kanban.md`) → plan (`10-plan/`, approved) → active (`20-active/`): Phases 1–2 executed + verified, closing Phases 5–9 done (Phase 5 skip documented); Active → Review gates satisfied, lane move deferred until Phase 3 completes                                     |
+| HITL loop                 | human approval obtained at the Phase 2 verification gate (2026-08-27); consistent with resolved decisions #7/#10/#13                                                                                                                                                                               |
+| Docs-only drill (part B)  | score 100/100 (`Docs Needed` 12 rows; decision traceability 7/7; fallback discipline 20/20; graph-link discoverability 20/20 — all package-internal cited docs exist and are indexed/reachable; extraction-source citations are documented externals); fallback ratio 0/7 = 0.00 ≤ 0.20 → **Pass** |
+| Package scans             | link scan 199/199 zero missing; version-scope clean; content scan zero matches                                                                                                                                                                                                                     |
+
+**Run log**: recorded in `v1/spec/ai/project-simulation-readiness.md` (2026-08-27 part-B planning-drill row). Corrective fix: that doc's prior row referenced the stale `10-plan/` path — corrected to `20-active/`.
+
 ### Rollback Plan
 
 - The package is a copy, not a runtime dependency — delete it from the trial repo with no impact.
@@ -934,4 +974,4 @@ The `intent-ops` package now exists as a self-contained, copy-ready v1: navigato
 
 ### Open Questions
 
-1. Trial target: this repo (promote `v1/spec/` ↔ `docs/`), a scratch repo, or a real third project? (Owner: user.)
+1. ~~Trial target~~ — **Resolved (2026-08-27)**: per user direction, the docs-only planning drill ran as a retrospective audit of this very plan (`sculp-intent-ops.md` as the sample plan task) in this repo; evidence in the [Phase 2 verification record](#follow-up-phase-2-verification-record-2026-08-27) and `v1/spec/ai/project-simulation-readiness.md` run log.

@@ -394,7 +394,7 @@ At the end of each working session:
 
 - Completed: Phases 1–6 executed against the package to generate `v1/spec/` (23 files, matching the output contract).
 - Verified by: `find v1/spec -type f` matches the file inventory; all files carry metadata + `## Related Docs`; 23/23 registered in `v1/spec/ai/assistant-context-index.md`; link scan zero missing targets; content scan zero business terms.
-- Next: target projects execute this plan the same way (see the Follow-Up section of `../flow/10-plan/sculp-intent-ops.md`).
+- Next: target projects execute this plan the same way (see the Follow-Up section of `../flow/20-active/sculp-intent-ops.md`).
 - Blockers: none.
 
 ### Session Note — 2026-08-27 17:15 local
