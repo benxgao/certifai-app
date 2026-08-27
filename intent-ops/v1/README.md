@@ -12,6 +12,8 @@
 | `v1/flow/`       | The AI-oriented kanban methodology: lane READMEs (`00-intake` → `50-report`), lane transition gates, and the two mandatory templates (`rollout-plan-template.md`, `excutive-report-template.md`).                                                                                          |
 | `v1/spec/`       | The spec-first docs system: AI routing (`ai/`), governance protocols (`operations/`), decision history (`adr/`), workflow conventions (`workflow/`), and per-domain scaffolds (`architecture/`, `api/`, `state/`, `data/`, `style/`, `security/`, `performance/`, `testing/`, `product/`). |
 
+> **Package root, not v1**: `skills/` (community AI-coding skills + `skills/README.md` registry) is package-root user content, the same class as `README.md`/`instructions.md` — it is **not** part of `v1/`. It is copied with the package folder, referenced by `v1/cli/init.md` as a documented package-root external, and unaffected by the v1 → v2 migration.
+
 ## Version Model
 
 - `v1/` is the complete current version of the package.
@@ -37,3 +39,4 @@
 - [`flow/README.md`](flow/README.md) — methodology
 - [`spec/README.md`](spec/README.md) — spec-first docs system
 - [`cli/init.md`](cli/init.md) — genesis rollout plan
+- [`../skills/README.md`](../skills/README.md) — skills registry (package-root user content)

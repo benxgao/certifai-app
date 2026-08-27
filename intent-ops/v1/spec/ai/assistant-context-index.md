@@ -29,6 +29,7 @@ Fast retrieval index for AI assistants and new contributors. Each entry points t
 | ADRs recorded in a given month (`YYYY-MM.md` pattern)                                | [`v1/spec/adr/2026-08.md`](../adr/2026-08.md)                                                                                                                   |
 | Template to copy for a new canonical/ops/ADR doc                                     | [`v1/spec/ai/_template.md`](_template.md) · [`v1/spec/operations/_template.md`](../operations/_template.md) · [`v1/spec/adr/_template.md`](../adr/_template.md) |
 | Docs ownership, update cadence, freshness SLA                                        | [`v1/spec/operations/docs-maintenance.md`](../operations/docs-maintenance.md)                                                                                   |
+| Community AI-coding skills (registry + install/register steps)                       | [`skills/README.md`](../../../skills/README.md)                                                                                                                 |
 | Spec-first rollout governance contract and reviewer gates                            | [`v1/flow/templates/rollout-plan-template.md`](../../flow/templates/rollout-plan-template.md)                                                                   |
 | AI retrieval smoke-test QA protocol                                                  | [`v1/spec/operations/ai-retrieval-smoke-tests.md`](../operations/ai-retrieval-smoke-tests.md)                                                                   |
 | Docs-only simulation-readiness rubric and run-log template                           | [`v1/spec/ai/project-simulation-readiness.md`](project-simulation-readiness.md)                                                                                 |
@@ -59,6 +60,8 @@ middleware                     ← auth guard (if applicable)
 4. Follow the standard headings defined in the template.
 5. Add an entry to this index.
 6. Link from the nearest related doc's `## Related Docs` section.
+
+Skills live outside `v1/spec/`: register them in [`skills/README.md`](../../../skills/README.md) (Skill Index), add a Prompt-Triggers row in `instructions.md` if they map to a user intent, and rely on the Quick Reference row above for docs-first discovery.
 
 ## Related Docs
 

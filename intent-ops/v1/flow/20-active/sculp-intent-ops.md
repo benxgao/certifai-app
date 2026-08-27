@@ -10,6 +10,8 @@ The package is now versioned under `v1/` (flow, spec, cli). This is a deliberate
 
 The package also uses **recursive self-generation**: `v1/cli/init.md` is not an instruction sheet but a full rollout plan (per `v1/flow/templates/rollout-plan-template.md` — summary, phased execution with verification gates, mandatory closing phases). This rollout authors the genesis plan first (Phase 1), then executes it (Phase 2) to generate all folders and files inside `v1/spec/`; any target project does the same to produce its own spec scaffold. The package therefore bootstraps its own spec system through its own methodology.
 
+The package also ships a **`skills/` folder** — a registry for community-downloaded AI-coding instructions (skills) that are **linked** from the package entry points, **navigated** via the registry `skills/README.md`, and **integrated** when a user executes init (the genesis plan's Skills-integration phase). The [Skills integration scope extension](#skills-integration-scope-extension-2026-08-27) below authors the registry and wires skills into navigation and the genesis plan.
+
 That promise is not yet true. Today the package has four structural gaps: (1) `instructions.md` is an empty stub — the navigator every copilot is supposed to start from does not exist; (2) `v1/cli/init.md` is an empty stub — the genesis rollout plan that generates all folders and files inside `v1/spec/` is missing; (3) `v1/spec/` contains only a one-line README — the entire spec-first scaffolding (AI guide, context index, repo-map, ADR system, operations protocols, domain scaffolds) is absent; (4) the `v1/flow/` lane READMEs and templates still point at the source project's `docs/...` paths and carry business-specific examples (Firebase, Stripe, exam flows), which makes the package broken and non-reusable after copy — and `README.md` still documents the old flat `ops-flow`/`ops-spec` naming instead of the versioned layout.
 
 This rollout establishes the foundational components so the package is **self-contained, versioned, generic, and copy-ready**: it authors `instructions.md` and `v1/cli/init.md` (the genesis rollout plan), executes the genesis plan to generate `v1/spec/` as a generalized mirror of the `docs/` structure (process/methodology extracted, business content excluded), normalizes all internal references to resolve inside `v1/`, documents the v1/v2 version model, and proves copy-readiness with link scans, a no-business-content scan, a simulated copy, and a genesis-plan + docs-only drill.
@@ -24,6 +26,7 @@ This rollout establishes the foundational components so the package is **self-co
 - `intent-ops/v1/flow/templates/rollout-plan-template.md` and `excutive-report-template.md` — the two mandatory artifacts (rollout plan, executive report).
 - `intent-ops/v1/cli/init.md` — created but **empty** (1-line stub) — intended as the genesis rollout plan that triggers generation of all folders and files inside `v1/spec/` (recursive self-generation).
 - `intent-ops/v1/spec/README.md` — one-line stub ("Spec Kanban Specification Files").
+- `intent-ops/skills/README.md` — created but **empty** (1-line stub) — intended as the registry/index for community AI-coding skills (linked, navigated, integrated on init); authored by the Skills integration scope extension.
 - Versioned layout `v1/` (flow / spec / cli) — the container for the current version; future `v2/` planned by copying files from `v1`.
 - Source material to extract from (repository root, siblings of `intent-ops/`): `ai_oriented_kanban/` (methodology + archive examples) and `docs/` (spec-first docs system: `README.md`, `ai/guide.md`, `ai/assistant-context-index.md`, `ai/repo-map.md`, `ai/project-simulation-readiness.md`, `ai/_template.md`, `adr/_template.md`, `operations/ai-retrieval-smoke-tests.md`, `workflow/README.md`, per-domain `_template.md`).
 
@@ -89,7 +92,7 @@ Representative files:
 
 ## Scope
 
-- Estimated files to create: ~18 (instructions.md, v1/README.md, v1/cli/init.md + v1/spec scaffold: README, ai/ ×5, operations/ ×4, adr/ ×2, workflow/ ×1, domain scaffolds ×4, incl. `product/user-journey.md`)
+- Estimated files to create: ~19 (instructions.md, v1/README.md, v1/cli/init.md + v1/spec scaffold: README, ai/ ×5, operations/ ×4, adr/ ×2, workflow/ ×1, domain scaffolds ×4, incl. `product/user-journey.md` — plus `skills/README.md` registry from the Skills integration scope extension)
 - Estimated files to modify: ~10 (intent-ops/README.md, v1/flow/README.md, 6 lane READMEs, 2 templates, this plan file)
 - Risk level: Low — documentation-only rollout; no application code, no runtime behavior, no external systems.
 
@@ -102,6 +105,7 @@ Representative files:
 - Normalize all internal references in `v1/flow/` lane READMEs and templates from `docs/...` to package-internal `v1/spec/...`.
 - Generalize examples in `intent-ops/README.md` and `v1/flow/README.md` (remove certifai-specific delivery references) and document the v1/v2 version model.
 - Add a copy-readiness validation layer: relative-link scan, no-business-content scan, version-scope scan, simulated copy test, genesis-plan dry-run (recursion check), and a bootstrap + docs-only drill.
+- **Skills integration scope extension**: author `skills/README.md` as the skills registry (community AI-coding instructions), link it from the package entry points, and integrate it into the genesis plan (`v1/cli/init.md` Skills-integration phase) so any skill dropped into `skills/` is linked, navigated, and registered on init.
 
 ### Out of scope
 
@@ -226,6 +230,7 @@ Representative files:
 | `intent-ops/v1/spec/workflow/README.md`                                                                                                                 | Generalized workflow-doc naming/location convention (`*-workflow.md`).                                                                                                                                                                                                   |
 | `intent-ops/v1/spec/architecture/_template.md` (+ `api/`, `state/`, `data/`, `style/`, `security/`, `performance/`, `testing/`, `product/` — same file) | Domain scaffolds: generic `_template.md` per domain so target projects fill in their own content.                                                                                                                                                                        |
 | `intent-ops/v1/spec/product/user-journey.md`                                                                                                            | Scaffold for the user-journey doc that the rollout template's mandatory Phase N writes to.                                                                                                                                                                               |
+| `intent-ops/skills/README.md`                                                                                                                           | Skills registry/index: makes the `skills/` folder navigable, defines the skill format, and documents how skills are linked and integrated on init.                                                                                                                 |
 
 ### Docs to update
 
@@ -242,6 +247,11 @@ Representative files:
 | `intent-ops/v1/flow/templates/rollout-plan-template.md`    | Repoint all `docs/...` references to `v1/spec/...` (~15 occurrences: guide, index, adr, user-journey, smoke-tests, simulation-readiness); keep relative links valid from `v1/flow/templates/`.                                                                                           |
 | `intent-ops/v1/flow/templates/excutive-report-template.md` | Audit; update any stale internal reference (expected: none — template is already generic).                                                                                                                                                                                               |
 | `intent-ops/v1/flow/00-intake/init-spec-kanban.md`         | This plan — progress markers are advanced as phases complete.                                                                                                                                                                                                                            |
+| `intent-ops/instructions.md`                               | Skills integration scope extension: add `skills/` to the package layout + entry routing + first-copy checklist; whitelist the package-root `skills/` external in the version-scope scan.                                                                                                     |
+| `intent-ops/README.md`                                     | Skills integration scope extension: add `skills/` to the overview + package layout + how-to-use.                                                                                                                                                                                          |
+| `intent-ops/v1/spec/ai/assistant-context-index.md`         | Skills integration scope extension: register the skills registry in the Quick Reference index.                                                                                                                                                                                            |
+| `intent-ops/v1/README.md`                                  | Skills integration scope extension: document `skills/` as package-root unversioned user content (documented external).                                                                                                                                                                    |
+| `intent-ops/v1/spec/adr/2026-08.md`                        | Skills integration scope extension: record ADR-0005 (skills folder integration).                                                                                                                                                                                                          |
 
 ### Docs to delete or archive
 
@@ -274,6 +284,7 @@ Representative files:
 | `intent-ops/v1/spec/operations/*` (smoke-tests, docs-maintenance, \_template) | QA + governance protocol layer.                          |
 | `intent-ops/v1/spec/adr/*` + `workflow/README.md`                                                            | Decision history + workflow naming conventions.          |
 | `intent-ops/v1/spec/<domain>/_template.md` ×9 + `product/user-journey.md`                                    | Per-domain scaffolds.                                    |
+| `intent-ops/skills/README.md`                                                                                 | Skills registry/index (Skills integration scope extension). |
 
 ### Dependencies / related patterns
 
@@ -360,6 +371,7 @@ Root cause: the navigator, the genesis plan, and the spec scaffold are missing (
 - [~] Phase 7 — AI-ready docs reflection and next-plan handoff (follow-up plan created; consolidated into this file)
 - [x] Phase 8 — Docs-only Simulation Drill (genesis-plan regeneration + copy test recorded)
 - [x] Phase 9 — Rollout Eval & Health Score (100/120, see session note)
+- [x] Skills integration scope extension — author `skills/README.md` registry + wire skills into navigation and the genesis plan (2026-08-27, see section below)
 
 ## Phases
 
@@ -774,6 +786,7 @@ At the end of each working session:
 - A simulated copy of `intent-ops/` into a scratch directory passes the same scans and supports docs-first planning.
 - The genesis-plan regeneration + docs-only simulation drill passes with fallback ratio ≤ 0.20, proving the copy promise.
 - `intent-ops/README.md` documents the versioned layout and the v1 → v2 migration model; `v1/README.md` contains the migration checklist.
+- `intent-ops/skills/README.md` exists as the skills registry; skills are linked from the package entry points, navigable from the assistant context index, and integrated by the genesis plan's Skills-integration phase on init.
 - Rollout Eval & Health Score ≥ 85/120.
 - Given only the `intent-ops` package, an assistant can bootstrap a repo and plan a comparable task with `Docs Needed` and decision evidence, without relying on the source project's folders.
 
@@ -794,6 +807,7 @@ At the end of each working session:
 3. **Domain scaffold set**: is the default domain set (ai, operations, adr, workflow, architecture, api, state, data, style, security, performance, testing, product) the right generic set for other projects, or should it be trimmed/renamed (e.g., drop `state`/`data` for non-React projects)? Default: keep as-is, each is a lightweight `_template.md` only. (Owner: user; revisit in follow-up rollout.)
 4. **Versioning cadence**: is the version model "v1 current, v2 = file copy of v1 + changes" correct, and should `v1/README.md` also carry a changelog convention for future versions? Default: yes — manifest + migration checklist now, changelog when v2 is created. (Owner: user; decision gate: Phase 6.6 ADR entry / v2 prep in follow-up rollout.)
 5. **Backport policy**: should improvements made to `intent-ops` later be backported to the source folders (`ai_oriented_kanban/`, `docs/` at repo root), and vice versa? Default: one-way for now (extraction), backport is a manual, deliberate act. (Owner: user; decision gate: Phase 7 follow-up scope.)
+14. **Skills folder versioning**: should `skills/` stay package-root unversioned user content (default — community skills are per-project, copied with the package folder), or be versioned under `v1/` so future versions ship their own skill sets? Default: package-root user content; recorded as ADR-0005. (Owner: user; decision gate: follow-up rollout.)
 
 ### Project-purpose alignment — questions from AI review (added 2026-08-27)
 
@@ -823,12 +837,41 @@ Execute Phases 1–4 in order (entry artifacts → execute the genesis plan to g
 
 ---
 
+## Skills Integration Scope Extension (2026-08-27)
+
+> Executed as a follow-up change on top of the completed rollout: the `skills/` folder is a new package component that the original plan did not anticipate.
+
+### Summary
+
+`intent-ops/skills/` is the folder for a collection of skills — normally instructions for AI on coding tasks — downloaded from the community and integrated with the `intent-ops` workflow. This extension makes any skills files inside `skills/` **linked** (from the package entry points), **navigated** (via the registry), and **integrated** when users init their workflow.
+
+### What was done
+
+| File | Action |
+| ---- | ------ |
+| `intent-ops/skills/README.md` | Authored the skills registry/index: skill format (`<skill-name>/SKILL.md`), add-a-skill steps, Skill Index table, workflow-integration notes. |
+| `intent-ops/v1/cli/init.md` | Added the **Skills integration** phase (Phase 6, before Docs Sync): refresh the registry, register skills for retrieval, validate links; `skills/` documented as a package-root external. |
+| `intent-ops/instructions.md` | Added `skills/` to package layout + entry routing + first-copy checklist; whitelisted the `skills/` external in the version-scope scan. |
+| `intent-ops/README.md` | Added `skills/` to overview + layout + how-to-use. |
+| `intent-ops/v1/spec/ai/assistant-context-index.md` | Registered the skills registry in Quick Reference (docs-first discoverability). |
+| `intent-ops/v1/README.md` | Documented `skills/` as package-root unversioned user content. |
+| `intent-ops/v1/spec/adr/2026-08.md` | Recorded ADR-0005 (skills folder integration: package-root registry, linked/navigated, integrated on init). |
+| Standalone package repo `intent-ops/` (outside this project) | Basic-introduction README rewritten to describe the package incl. the skills folder. |
+
+### Verification
+
+- Link scan: every new relative link resolves (registry ↔ navigator ↔ genesis plan ↔ context index).
+- Version-scope scan: `skills/` references from `v1/`-rooted docs are a **documented package-root external** (same class as `README.md`/`instructions.md`); the scan whitelist in `instructions.md` was updated accordingly — v1 → v2 migration stays a file copy.
+- Content scan: no business terms in `skills/README.md` or the new references.
+
+---
+
 ## Handoff & Session Notes
 
 ### Handoff — 2026-08-27
 
 - **Next rollout**: [Follow-Up: First Real Usage of the `intent-ops` Package](#follow-up-first-real-usage-of-the-intent-ops-package) — first real usage of the package (copy + genesis regeneration + one docs-first planning task), v2 prep, and backport decision. Consolidated into this file per the "no unexpected extract files in `flow`" rule.
-- **Open questions carried over**: (1) reference convention after copy — default keep `v1/spec/`, promotion path documented (ADR-0003); (2) genesis generation scope — default spec-only (ADR-0004); (3) domain scaffold set — keep 9 domains, revisit in follow-up; (4) versioning cadence — manifest now, changelog at v2 (ADR-0002); (5) backport policy — one-way extraction default, decision in follow-up Phase 3. **New (2026-08-27, purpose alignment)**: (6) operational meaning of "HIIL" — assumed human reviews each phase gate; (7) scan→build depth — scaffold-first with machine-discoverable parts filled; (8) confirm "spec-first best practices" component list; (9) where HIIL lives in the flow — prompt triggers first; (10) "any project" = software scope for now; (11) `v1/spec` vs host `docs/` — keep + promote documented; (12) AI autonomy boundary — autonomous gen/fix, human sign-off on gates/ADRs/lane moves; (13) follow-up pilot as the end-to-end acceptance vehicle.
+- **Open questions carried over**: (1) reference convention after copy — default keep `v1/spec/`, promotion path documented (ADR-0003); (2) genesis generation scope — default spec-only (ADR-0004); (3) domain scaffold set — keep 9 domains, revisit in follow-up; (4) versioning cadence — manifest now, changelog at v2 (ADR-0002); (5) backport policy — one-way extraction default, decision in follow-up Phase 3. **New (2026-08-27, purpose alignment)**: (6) operational meaning of "HIIL" — assumed human reviews each phase gate; (7) scan→build depth — scaffold-first with machine-discoverable parts filled; (8) confirm "spec-first best practices" component list; (9) where HIIL lives in the flow — prompt triggers first; (10) "any project" = software scope for now; (11) `v1/spec` vs host `docs/` — keep + promote documented; (12) AI autonomy boundary — autonomous gen/fix, human sign-off on gates/ADRs/lane moves; (13) follow-up pilot as the end-to-end acceptance vehicle; (14) skills folder versioning — package-root unversioned default, ADR-0005.
 
 ### Session Note — 2026-08-27 14:25 local
 

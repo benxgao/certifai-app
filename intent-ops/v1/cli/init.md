@@ -32,6 +32,8 @@ v1/spec/
     └── product/user-journey.md     ← user-journey scaffold (written by rollout Phase N)
 ```
 
+Plus the package-root skills registry — `skills/README.md` (linked + registered by Phase 6; **not** generated inside `v1/spec/`, and not part of the `v1/` version — it is package-root user content for community skills).
+
 ## Current Evaluation
 
 ### What already exists
@@ -55,7 +57,7 @@ v1/spec/
 
 ## Scope
 
-- Files to create: ~22 (`v1/spec/README.md`, 5 × `ai/`, 3 × `operations/`, 2 × `adr/`, 1 × `workflow/`, 9 domain `_template.md`, 1 × `product/user-journey.md`)
+- Files to create: ~23 (`v1/spec/README.md`, 5 × `ai/`, 3 × `operations/`, 2 × `adr/`, 1 × `workflow/`, 9 domain `_template.md`, 1 × `product/user-journey.md`, 1 × package-root `skills/README.md` registry)
 - Risk level: Low — documentation-only generation; no code, no runtime.
 
 ### In scope
@@ -63,6 +65,7 @@ v1/spec/
 - Generate every file listed in the output contract above.
 - Derive `[project: fill in]` placeholder content for the target project (optional repo-scan phase).
 - Register generated docs in `v1/spec/ai/assistant-context-index.md`.
+- Link and register community skills in the package-root `skills/` folder (Skills integration phase).
 
 ### Out of scope
 
@@ -116,6 +119,7 @@ v1/spec/
 | File                                                                                                                   | Reason                                                             |
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | `v1/spec/README.md` + `ai/` (5) + `operations/` (3) + `adr/` (2) + `workflow/README.md` (1) + domain scaffolds (9 + 1) | The spec-first scaffold this plan generates (see output contract). |
+| `skills/README.md` (package root)                                                                                      | The skills registry/index — created if missing, updated if present; makes community skills linkable, navigable, and integrated on init. |
 
 ### No docs affected
 
@@ -175,8 +179,9 @@ Root cause first: the entrypoint (Phase 1) and the AI routing layer (Phase 2) un
 - [x] Phase 3 — Operations layer: `v1/spec/operations/*` (3 files)
 - [x] Phase 4 — ADR + workflow conventions: `v1/spec/adr/*` + `v1/spec/workflow/README.md` (3 files)
 - [x] Phase 5 — Domain scaffolds: 9 × `_template.md` + `product/user-journey.md`
-- [x] Phase 6 — Docs Sync: register generated docs in the context index; verify gates
-- [x] Phase 7 — Rollout Eval & Health Score (100/100 on the generation gate; see session note)
+- [x] Phase 6 — Skills integration: link + register the package-root `skills/` registry (added 2026-08-27)
+- [x] Phase 7 — Docs Sync: register generated docs in the context index; verify gates
+- [x] Phase 8 — Rollout Eval & Health Score (100/100 on the generation gate; see session note)
 
 ## Phases
 
@@ -287,7 +292,32 @@ Root cause first: the entrypoint (Phase 1) and the AI routing layer (Phase 2) un
 
 ---
 
-### Phase 6: Docs Sync _(mandatory closing phase)_
+### Phase 6: Skills integration — link, navigate, register community skills
+
+**Progress**: `[x]`
+
+**Layer**: package-root integration (skills registry)
+
+**Goal**: Make any skills files in the package-root `skills/` folder usable with the workflow: ensure the registry exists, index every installed skill, register the folder for docs-first retrieval, and validate links. Skills are community-downloaded AI-coding instructions; the folder ships with the package and is populated by users.
+
+**Files**:
+
+- `skills/README.md` — create if missing / update — the skills registry (Skill Index table, format, registration steps)
+- `v1/spec/ai/assistant-context-index.md` — modify — add a Quick Reference row for the skills registry
+- `instructions.md` — modify — optional: add Prompt-Triggers rows for skills that map to user intents
+
+**Verification gate**:
+
+- Every non-`README.md` entry under `skills/` is listed in the Skill Index.
+- All relative links in the registry resolve.
+- `v1/spec/ai/assistant-context-index.md` has a Quick Reference row pointing to `skills/README.md`.
+- No business terms in the registry (`grep -riE "cert[i]fai|fireb[a]se|str[i]pe|e[x]am|mailer[l]ite" skills/` returns nothing).
+
+**Version-scope note**: `skills/` is package-root user content (community skills), the same class as `README.md`/`instructions.md` — not versioned under `v1/`. The v1 → v2 migration stays a plain file copy because `skills/` is copied with the package folder, not under `v1/`. References from `v1/`-rooted docs to the registry are a documented package-root external (see the version-scope scan in `../instructions.md`).
+
+---
+
+### Phase 7: Docs Sync _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -303,7 +333,7 @@ Root cause first: the entrypoint (Phase 1) and the AI routing layer (Phase 2) un
 
 ---
 
-### Phase 7: Rollout Eval & Health Score _(mandatory closing phase)_
+### Phase 8: Rollout Eval & Health Score _(mandatory closing phase)_
 
 **Progress**: `[ ]`
 
@@ -323,11 +353,13 @@ v1/spec/operations/* (governance layer)
 v1/spec/adr/* + workflow/ (conventions)
         ↓
 domain scaffolds (9 × _template.md + user-journey.md)
+        ↓
+skills integration (package-root skills/README.md registry + context-index registration)
 ```
 
 ## Suggested Implementation Order
 
-Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 (Docs Sync) → Phase 7 (Eval).
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 (Skills integration) → Phase 7 (Docs Sync) → Phase 8 (Eval).
 
 ## Progress Checks (Resume-at-any-time protocol)
 
@@ -353,6 +385,7 @@ At the end of each working session:
 - All verification gates are markdown/grep/file-existence checks — no build step, no runtime.
 - Business-free rule: any content naming a specific product, provider, or architecture of an origin project stays out; use `[project: fill in]` placeholders.
 - Register every generated doc in the context index; link from each doc's `## Related Docs` section.
+- Skills integration: `skills/` is package-root user content (not under `v1/`); the registry `skills/README.md` is created/updated by Phase 6 and referenced from this plan via `../../skills/README.md` (documented package-root external).
 - The generated `v1/spec/` may be renamed to `<project>/docs/` after copy — all internal links are relative and survive the rename.
 
 ## Execution Record
@@ -364,9 +397,17 @@ At the end of each working session:
 - Next: target projects execute this plan the same way (see the Follow-Up section of `../flow/10-plan/sculp-intent-ops.md`).
 - Blockers: none.
 
+### Session Note — 2026-08-27 17:15 local
+
+- Completed: Phase 6 (Skills integration) added and executed — authored the package-root `skills/README.md` registry, added a Quick Reference row in the context index, validated links and content.
+- Verified by: link scan on new references; `grep -riE "cert[i]fai|fireb[a]se|str[i]pe|e[x]am|mailer[l]ite" skills/` returns nothing.
+- Next: target projects run the full plan (Phases 1–8) to generate `v1/spec/` + the skills registry.
+- Blockers: none.
+
 ## Success Criteria
 
 - The `v1/spec/` tree matches the output contract exactly.
+- The package-root `skills/` registry exists (created or updated), indexes every installed skill, and is registered in the context index.
 - All files have metadata and `## Related Docs`; all are registered in the context index.
 - Zero business terms remain; every relative link resolves.
 - The plan itself is repeatable: any project can execute it to produce the same scaffold.
@@ -379,6 +420,7 @@ At the end of each working session:
 ## Open Questions
 
 1. Should the scaffold include domain folders beyond the default set? Default: keep the 9 domains; a target project may add/remove folders after generation. (Owner: user; revisit in follow-up.)
+2. Should Phase 6 also generate Prompt-Triggers rows in `instructions.md` for each installed skill, or is the registry (Skill Index) sufficient? Default: registry is sufficient; trigger rows are added when a skill maps to a concrete user intent. (Owner: user; revisit in follow-up.)
 
 ## Recommendation
 

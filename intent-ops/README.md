@@ -7,6 +7,7 @@
 - **`v1/flow/`** — the AI-oriented kanban: an intent-driven delivery method (lane-based: intake → plan → active → review → archive → report) with evidence-based completion.
 - **`v1/spec/`** — the spec-first docs system: a canonical, retrievable documentation structure (AI routing, governance protocols, ADR decision history, per-domain scaffolds).
 - **`v1/cli/init.md`** — the genesis rollout plan: executed as a rollout plan to generate all folders and files inside `v1/spec/` (recursive self-generation).
+- **`skills/`** — registry of community AI-coding instructions (skills): linked from the package entry points, navigated via `skills/README.md`, and integrated on init.
 - **`instructions.md`** — the navigator: entry routing, prompt triggers, first-copy checklist, and copy-readiness validation gates for AI coding copilots.
 
 The whole folder can be copied into any project and benefit immediately.
@@ -17,6 +18,7 @@ The whole folder can be copied into any project and benefit immediately.
 intent-ops/
 ├── instructions.md              ← navigator for AI copilots (start here)
 ├── README.md                    ← this file
+├── skills/                      ← community AI-coding skills (registry + installed skills)
 ├── v1/
 │   ├── README.md                ← version manifest + v1 → v2 migration checklist
 │   ├── cli/init.md              ← genesis rollout plan (generates v1/spec/)
@@ -33,8 +35,9 @@ intent-ops/
 ## How to Use
 
 1. **Start** with [`instructions.md`](instructions.md) — it routes copilots into `v1/flow/` (delivery), `v1/spec/` (docs), and `v1/cli/` (initialization).
-2. **Initialize a new project**: copy the folder, then execute [`v1/cli/init.md`](v1/cli/init.md) as a rollout plan to generate the `v1/spec/` scaffold.
-3. **Deliver**: route prompts through the prompt triggers in `instructions.md`; plans live in `v1/flow/10-plan/`, evidence in `v1/flow/20-active/`, archives in `v1/flow/40-archive/`, reports in `v1/flow/50-report/`.
+2. **Initialize a new project**: copy the folder, then execute [`v1/cli/init.md`](v1/cli/init.md) as a rollout plan to generate the `v1/spec/` scaffold; its Skills-integration phase links and registers the `skills/` folder.
+3. **Integrate skills**: drop community AI-coding instructions into `skills/` and register them in [`skills/README.md`](skills/README.md) (Skill Index).
+4. **Deliver**: route prompts through the prompt triggers in `instructions.md`; plans live in `v1/flow/10-plan/`, evidence in `v1/flow/20-active/`, archives in `v1/flow/40-archive/`, reports in `v1/flow/50-report/`.
 
 ## Copy & Promotion
 
@@ -52,3 +55,4 @@ The methodology and doc structure were extracted and generalized from the AI-ori
 - [`v1/README.md`](v1/README.md) — version manifest + migration checklist
 - [`v1/flow/README.md`](v1/flow/README.md) — methodology
 - [`v1/spec/README.md`](v1/spec/README.md) — spec-first docs system
+- [`skills/README.md`](skills/README.md) — skills registry
