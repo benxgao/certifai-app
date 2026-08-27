@@ -40,9 +40,9 @@ Use these baseline prompts (or stronger equivalents) and verify expected target 
 | "I need to add a new SWR mutation with extra arguments. What constraints should I follow?" | `docs/api/swr-patterns.md`, `docs/api/api-connection.md`, `docs/data/data-models.md` |
 | "I’m debugging JWT protection for `/main/*` routes. Where are the auth invariants documented?" | `docs/security/auth-patterns.md`, `docs/state/client-state.md`, `docs/workflow/signin-workflow.md` |
 | "I created a new docs file and want to make sure assistants can find it. What must I update?" | `docs/operations/docs-maintenance.md`, `docs/ai/assistant-context-index.md`, `docs/ai/guide.md` |
-| "Create a rollout plan from specs/docs only. What docs do you need first, and what decisions can you make now?" | `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, `ai_oriented_kanban/templates/rollout-plan-template.md`, `docs/operations/spec-first-kanban-integration.md` |
+| "Create a rollout plan from specs/docs only. What docs do you need first, and what decisions can you make now?" | `docs/ai/guide.md`, `docs/ai/assistant-context-index.md`, `ai_oriented_kanban/templates/rollout-plan-template.md` |
 | "Validate that our new governance doc is fully discoverable in the docs graph." | `docs/ai/assistant-context-index.md`, `docs/ai/guide.md`, `docs/operations/docs-maintenance.md` |
-| "Docs were ambiguous for one rollout decision. Show fallback usage and remediation actions." | `docs/operations/spec-first-kanban-integration.md`, `docs/operations/docs-maintenance.md`, `docs/ai/guide.md` |
+| "Docs were ambiguous for one rollout decision. Show fallback usage and remediation actions." | `ai_oriented_kanban/templates/rollout-plan-template.md`, `docs/operations/docs-maintenance.md`, `docs/ai/guide.md` |
 | "Run a docs-only simulation-readiness check for a comparable project task." | `docs/ai/project-simulation-readiness.md`, `docs/operations/ai-retrieval-smoke-tests.md`, `docs/ai/guide.md` |
 
 ## Spec-First Prompt Pass Criteria Addendum
@@ -105,5 +105,5 @@ Follow-up required: <none / list>
 - [AI Assistant Guide](../ai/guide.md)
 - [AI Assistant Context Index](../ai/assistant-context-index.md)
 - [Docs Maintenance Protocol](./docs-maintenance.md)
-- [Spec-First Kanban Integration Protocol](./spec-first-kanban-integration.md)
+- [Rollout Plan Template — Spec-First Contract Gates](../../ai_oriented_kanban/templates/rollout-plan-template.md)
 - [Project Simulation Readiness](../ai/project-simulation-readiness.md)

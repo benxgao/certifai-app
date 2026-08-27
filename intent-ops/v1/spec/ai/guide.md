@@ -124,8 +124,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 
 1. [`v1/spec/ai/assistant-context-index.md`](assistant-context-index.md) — confirm which docs exist before listing docs to create/update
 2. [`v1/spec/operations/docs-maintenance.md`](../operations/docs-maintenance.md) — update trigger table to identify which docs are affected
-3. Template: [`v1/flow/templates/rollout-plan-template.md`](../../flow/templates/rollout-plan-template.md)
-4. [`v1/spec/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md) — spec-first policy contract and reviewer gates
+3. Template: [`v1/flow/templates/rollout-plan-template.md`](../../flow/templates/rollout-plan-template.md) — includes the spec-first governance contract (Docs Needed gate, 5-column decision evidence schema, reviewer gates)
 
 **Invariants**:
 
@@ -149,7 +148,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 **Primary docs to load**:
 
 1. [`v1/spec/ai/project-simulation-readiness.md`](project-simulation-readiness.md) — rubric, scoring, and run-log format
-2. [`v1/spec/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md) — policy and evidence requirements
+2. [`v1/flow/templates/rollout-plan-template.md`](../../flow/templates/rollout-plan-template.md) — policy and evidence requirements (Docs Needed, decision evidence schema)
 3. [`v1/spec/operations/ai-retrieval-smoke-tests.md`](../operations/ai-retrieval-smoke-tests.md) — simulation-related prompts and pass criteria
 
 **Invariants**:
@@ -194,5 +193,5 @@ Before writing any code, confirm none of these apply (customize for your project
 - [`v1/spec/ai/repo-map.md`](repo-map.md)
 - [`v1/spec/ai/assistant-context-index.md`](assistant-context-index.md)
 - [`v1/spec/operations/docs-maintenance.md`](../operations/docs-maintenance.md)
-- [`v1/spec/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md)
+- [Rollout Plan Template — Spec-First Contract Gates](../../flow/templates/rollout-plan-template.md)
 - [`v1/spec/ai/project-simulation-readiness.md`](project-simulation-readiness.md)

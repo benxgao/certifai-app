@@ -362,7 +362,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 1. [`docs/ai/assistant-context-index.md`](assistant-context-index.md) — confirm which docs exist before listing docs to create/update
 2. [`docs/operations/docs-maintenance.md`](../operations/docs-maintenance.md) — update trigger table to identify which docs are affected
 3. Template: `ai_oriented_kanban/templates/rollout-plan-template.md`
-4. [`docs/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md) — spec-first policy contract and reviewer gates
+4. [`ai_oriented_kanban/templates/rollout-plan-template.md`](../../ai_oriented_kanban/templates/rollout-plan-template.md) — spec-first policy contract and reviewer gates (Docs Needed gate, decision evidence schema)
 
 **Invariants**:
 
@@ -387,7 +387,7 @@ Record pass/fail results in the PR or rollout note, and fix routing/index docs b
 **Primary docs to load**:
 
 1. [`docs/ai/project-simulation-readiness.md`](project-simulation-readiness.md) — rubric, scoring, and run-log format
-2. [`docs/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md) — policy and evidence requirements
+2. [`ai_oriented_kanban/templates/rollout-plan-template.md`](../../ai_oriented_kanban/templates/rollout-plan-template.md) — policy and evidence requirements
 3. [`docs/operations/ai-retrieval-smoke-tests.md`](../operations/ai-retrieval-smoke-tests.md) — simulation-related prompts and pass criteria
 
 **Invariants**:
@@ -435,5 +435,5 @@ Before writing any code, confirm none of these apply:
 - [`docs/ai/repo-map.md`](repo-map.md)
 - [`docs/ai/assistant-context-index.md`](assistant-context-index.md)
 - [`docs/operations/docs-maintenance.md`](../operations/docs-maintenance.md)
-- [`docs/operations/spec-first-kanban-integration.md`](../operations/spec-first-kanban-integration.md)
+- [Rollout Plan Template — Spec-First Contract Gates](../../ai_oriented_kanban/templates/rollout-plan-template.md)
 - [`docs/ai/project-simulation-readiness.md`](project-simulation-readiness.md)

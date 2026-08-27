@@ -40,9 +40,9 @@ Use these baseline prompts (or stronger equivalents) and verify expected target 
 | `[project: fill in — e.g., "I need to add a new data-fetching hook. What constraints should I follow?"]`                                                | `[project: fill in — e.g., v1/spec/api/_template.md, v1/spec/data/_template.md]`                                                                                    |
 | `[project: fill in — e.g., "I'm debugging auth protection for protected routes. Where are the invariants documented?"]`                                 | `[project: fill in — e.g., v1/spec/security/_template.md, v1/spec/state/_template.md]`                                                                              |
 | "I created a new docs file and want to make sure assistants can find it. What must I update?"                                                           | `v1/spec/operations/docs-maintenance.md`, `v1/spec/ai/assistant-context-index.md`, `v1/spec/ai/guide.md`                                                            |
-| "Create a rollout plan from specs/docs only. What docs do you need first, and what decisions can you make now?"                                         | `v1/spec/ai/guide.md`, `v1/spec/ai/assistant-context-index.md`, `v1/flow/templates/rollout-plan-template.md`, `v1/spec/operations/spec-first-kanban-integration.md` |
+| "Create a rollout plan from specs/docs only. What docs do you need first, and what decisions can you make now?"                                         | `v1/spec/ai/guide.md`, `v1/spec/ai/assistant-context-index.md`, `v1/flow/templates/rollout-plan-template.md`                                                       |
 | "Validate that our new governance doc is fully discoverable in the docs graph."                                                                         | `v1/spec/ai/assistant-context-index.md`, `v1/spec/ai/guide.md`, `v1/spec/operations/docs-maintenance.md`                                                            |
-| "Docs were ambiguous for one rollout decision. Show fallback usage and remediation actions."                                                            | `v1/spec/operations/spec-first-kanban-integration.md`, `v1/spec/operations/docs-maintenance.md`, `v1/spec/ai/guide.md`                                              |
+| "Docs were ambiguous for one rollout decision. Show fallback usage and remediation actions."                                                            | `v1/flow/templates/rollout-plan-template.md`, `v1/spec/operations/docs-maintenance.md`, `v1/spec/ai/guide.md`                                                      |
 | "Given only the intent-ops package and a scratch repo, execute `v1/cli/init.md` as a rollout plan to generate all folders and files inside `v1/spec/`." | `v1/cli/init.md`, `v1/flow/templates/rollout-plan-template.md`, `v1/spec/README.md`                                                                                 |
 | "Run a docs-only simulation-readiness check for a comparable project task."                                                                             | `v1/spec/ai/project-simulation-readiness.md`, `v1/spec/operations/ai-retrieval-smoke-tests.md`, `v1/spec/ai/guide.md`                                               |
 
@@ -96,5 +96,5 @@ Follow-up required: <none / list>
 - [AI Assistant Guide](../ai/guide.md)
 - [AI Assistant Context Index](../ai/assistant-context-index.md)
 - [Docs Maintenance Protocol](./docs-maintenance.md)
-- [Spec-First Kanban Integration Protocol](./spec-first-kanban-integration.md)
+- [Rollout Plan Template — Spec-First Contract Gates](../../flow/templates/rollout-plan-template.md)
 - [Project Simulation Readiness](../ai/project-simulation-readiness.md)

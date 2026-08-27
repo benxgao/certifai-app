@@ -20,8 +20,8 @@ v1/spec/
 ├── operations/
 │   ├── ai-retrieval-smoke-tests.md ← retrieval QA protocol
 │   ├── docs-maintenance.md         ← docs ownership / freshness / registration protocol
-│   ├── spec-first-kanban-integration.md ← spec-first governance contract + reviewer gates
 │   └── _template.md                ← operations-doc template
+│   (the spec-first governance contract ships in `v1/flow/templates/rollout-plan-template.md`)
 ├── adr/
 │   ├── README.md                   ← ADR process + month-log convention (YYYY-MM.md + Index)
 │   └── _template.md                ← ADR template
@@ -55,7 +55,7 @@ v1/spec/
 
 ## Scope
 
-- Files to create: ~25 (`v1/spec/README.md`, 5 × `ai/`, 4 × `operations/`, 2 × `adr/`, 1 × `workflow/`, 9 domain `_template.md`, 1 × `product/user-journey.md`)
+- Files to create: ~22 (`v1/spec/README.md`, 5 × `ai/`, 3 × `operations/`, 2 × `adr/`, 1 × `workflow/`, 9 domain `_template.md`, 1 × `product/user-journey.md`)
 - Risk level: Low — documentation-only generation; no code, no runtime.
 
 ### In scope
@@ -83,7 +83,7 @@ v1/spec/
 | Doc                                          | Relevant finding                                                                                     |
 | -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `v1/flow/templates/rollout-plan-template.md` | Mandates `Docs Needed`, decision evidence, mandatory closing phases — this plan conforms.            |
-| `v1/flow/10-plan/README.md`                  | Links to `../../spec/operations/spec-first-kanban-integration.md` — must exist after this plan runs. |
+| `v1/flow/10-plan/README.md`                  | Points to the rollout plan template (spec-first governance contract) — ships with the package, not generated here. |
 | `v1/spec/README.md` (stub or missing)        | Entrypoint to author.                                                                                |
 | Origin `docs/` structure                     | Structural mirror only; business content excluded by policy.                                         |
 
@@ -115,7 +115,7 @@ v1/spec/
 
 | File                                                                                                                   | Reason                                                             |
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `v1/spec/README.md` + `ai/` (5) + `operations/` (4) + `adr/` (2) + `workflow/README.md` (1) + domain scaffolds (9 + 1) | The spec-first scaffold this plan generates (see output contract). |
+| `v1/spec/README.md` + `ai/` (5) + `operations/` (3) + `adr/` (2) + `workflow/README.md` (1) + domain scaffolds (9 + 1) | The spec-first scaffold this plan generates (see output contract). |
 
 ### No docs affected
 
@@ -172,7 +172,7 @@ Root cause first: the entrypoint (Phase 1) and the AI routing layer (Phase 2) un
 
 - [x] Phase 1 — Entrypoint: `v1/spec/README.md`
 - [x] Phase 2 — AI layer: `v1/spec/ai/*` (5 files)
-- [x] Phase 3 — Operations layer: `v1/spec/operations/*` (4 files)
+- [x] Phase 3 — Operations layer: `v1/spec/operations/*` (3 files)
 - [x] Phase 4 — ADR + workflow conventions: `v1/spec/adr/*` + `v1/spec/workflow/README.md` (3 files)
 - [x] Phase 5 — Domain scaffolds: 9 × `_template.md` + `product/user-journey.md`
 - [x] Phase 6 — Docs Sync: register generated docs in the context index; verify gates
@@ -229,19 +229,18 @@ Root cause first: the entrypoint (Phase 1) and the AI routing layer (Phase 2) un
 
 **Layer**: spec governance layer
 
-**Goal**: Author the four operations files: `ai-retrieval-smoke-tests.md` (QA protocol + placeholder prompts referencing `v1/spec/` paths), `docs-maintenance.md` (ownership, freshness SLA, new-doc registration, graph-link rules), `spec-first-kanban-integration.md` (spec format contract, 5-column decision evidence schema, reviewer gates — the governance contract the flow templates link to), `_template.md`.
+**Goal**: Author the three operations files: `ai-retrieval-smoke-tests.md` (QA protocol + placeholder prompts referencing `v1/spec/` paths), `docs-maintenance.md` (ownership, freshness SLA, new-doc registration, graph-link rules), `_template.md`. The spec-first governance contract (Docs Needed gate, 5-column decision evidence schema, reviewer gates) ships in `v1/flow/templates/rollout-plan-template.md`, not as a standalone spec doc.
 
 **Files**:
 
 - `v1/spec/operations/ai-retrieval-smoke-tests.md` — create
 - `v1/spec/operations/docs-maintenance.md` — create
-- `v1/spec/operations/spec-first-kanban-integration.md` — create
 - `v1/spec/operations/_template.md` — create
 
 **Verification gate**:
 
-- All four files exist with metadata and `## Related Docs`.
-- `spec-first-kanban-integration.md` contains the 5-column decision evidence schema (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`).
+- All three files exist with metadata and `## Related Docs`.
+- The 5-column decision evidence schema (`Decision`, `Docs cited`, `Sufficiency verdict`, `Fallback code scan used?`, `Doc update action`) ships in `v1/flow/templates/rollout-plan-template.md`.
 - Smoke-test prompts reference only `v1/spec/...` and `v1/flow/...` paths.
 
 ---

@@ -77,6 +77,6 @@ For every new doc under `v1/spec/`:
 
 - [AI Assistant Guide](../ai/guide.md)
 - [AI Assistant Context Index](../ai/assistant-context-index.md)
-- [Spec-First Kanban Integration Protocol](./spec-first-kanban-integration.md)
+- [Rollout Plan Template — Spec-First Contract Gates](../../flow/templates/rollout-plan-template.md)
 - [AI Retrieval Smoke Tests](./ai-retrieval-smoke-tests.md)
 - [Workflow Docs Convention](../workflow/README.md)

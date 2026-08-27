@@ -68,5 +68,5 @@ A simulation run is incomplete unless every major decision includes:
 
 - [AI Assistant Guide](./guide.md)
 - [Assistant Context Index](./assistant-context-index.md)
-- [Spec-First Kanban Integration Protocol](../operations/spec-first-kanban-integration.md)
+- [Rollout Plan Template — Spec-First Contract Gates](../../ai_oriented_kanban/templates/rollout-plan-template.md)
 - [AI Retrieval Smoke Tests](../operations/ai-retrieval-smoke-tests.md)

@@ -22,5 +22,4 @@ When working in this lane:
 
 ## Templates & Reference
 
-- **[Rollout Plan Template](../templates/rollout-plan-template.md)**: The mandatory starting point for all implementation planning. Copy this to a new file in this directory to begin.
-- **[Spec-First Kanban Integration Protocol](../../docs/operations/spec-first-kanban-integration.md)**: The enforceable contract for docs-first delivery.
+- **[Rollout Plan Template](../templates/rollout-plan-template.md)**: The mandatory starting point for all implementation planning — encodes the spec-first governance contract (Docs Needed gate, 5-column decision evidence schema, ADR conflict check, mandatory closing phases). Copy this to a new file in this directory to begin.
