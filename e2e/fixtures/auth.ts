@@ -1,69 +1,36 @@
 import { test as base, expect, Page } from '@playwright/test';
-import path from 'path';
 
 type AuthFixtures = {
   authenticatedPage: Page;
 };
 
 /**
- * Authentication fixture that logs in once and reuses the session across tests.
- * This significantly speeds up test execution by avoiding redundant Firebase auth calls.
+ * Authentication fixture that guarantees a logged-in page for every test.
+ *
+ * Firebase Auth v9+ keeps its session in IndexedDB, which Playwright cannot
+ * persist across runs (addInitScript / localStorage-only caches restore a
+ * partial, stale session and the app bounces to /signin). So each test does a
+ * real login (with auto-signup fallback) instead of reusing a cached file.
  *
  * Usage:
  *   test('my test', async ({ authenticatedPage }) => {
- *     await authenticatedPage.goto('/dashboard');
+ *     await authenticatedPage.goto('/main');
  *     // Page is already authenticated
  *   });
  */
 export const test = base.extend<AuthFixtures>({
   authenticatedPage: async ({ page, context }, use) => {
-    const authFile = path.join(__dirname, '../../.auth/user.json');
-    const fs = await import('fs').then((m) => m.promises);
-
+    // NOTE: File-based auth caching is disabled because Firebase Auth v9+ stores
+    // session data in IndexedDB, which Playwright cannot reliably persist across
+    // test runs. The old cache saved localStorage only, so subsequent runs loaded
+    // stale/empty auth state and were redirected to /signin, causing the test to
+    // hang waiting for dashboard elements like "Register for Certification".
+    // Always performing a fresh login keeps auth reliable.
     try {
-      // Try to load existing auth state
-      const authData = JSON.parse(await fs.readFile(authFile, 'utf-8'));
-      await context.addCookies(authData.cookies || []);
-      await context.addInitScript((storage) => {
-        if (storage) {
-          Object.entries(storage).forEach(([key, value]) => {
-            localStorage.setItem(key, value as string);
-          });
-        }
-      }, authData.localStorage);
-      console.log('Auth state loaded from cache');
-    } catch (e) {
-      // If no saved auth state, perform login with auto-signup fallback
-      console.log('No existing auth state found. Attempting login with auto-signup...');
-      try {
-        await performLoginWithAutoSignup(page);
-      } catch (error) {
-        console.error('Login with auto-signup failed:', error);
-        throw error;
-      }
-
-      // Save auth state for future tests
-      try {
-        const cookies = await context.cookies();
-        const localStorage = await page.evaluate(() => {
-          const items: Record<string, string> = {};
-          for (let i = 0; i < window.localStorage.length; i++) {
-            const key = window.localStorage.key(i);
-            if (key) {
-              items[key] = window.localStorage.getItem(key) || '';
-            }
-          }
-          return items;
-        });
-
-        const authData = { cookies, localStorage };
-        const dir = path.dirname(authFile);
-        await fs.mkdir(dir, { recursive: true });
-        await fs.writeFile(authFile, JSON.stringify(authData, null, 2));
-        console.log('Auth state saved to:', authFile);
-      } catch (saveError) {
-        console.warn('WARNING: Failed to save auth state:', saveError);
-      }
+      await performLoginWithAutoSignup(page);
+    } catch (error) {
+      console.error('Login with auto-signup failed:', error);
+      throw error;
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
