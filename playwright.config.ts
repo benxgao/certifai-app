@@ -42,17 +42,21 @@ export default defineConfig({
   /* Single worker to prevent resource conflicts */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  /* `list` keeps the terminal useful by default; the HTML report is still written
+     for inspection but never auto-opens. */
+  reporter: [['list'], ['html', { open: 'never' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* Retain a trace whenever a test fails. `on-first-retry` is useless locally
+       (retries: 0), which left us debugging from console logs alone. */
+    trace: 'retain-on-failure',
     /* Screenshot on failure */
     screenshot: 'only-on-failure',
-    /* Increase timeout for live environment due to network latency */
-    navigationTimeout: isLiveEnvironment ? 30_000 : 15_000,
+    /* 30s everywhere: a cold `next dev` compile can exceed 15s and would show up
+       as a bogus navigation timeout. */
+    navigationTimeout: 30_000,
     actionTimeout: isLiveEnvironment ? 10_000 : 5_000,
   },
 

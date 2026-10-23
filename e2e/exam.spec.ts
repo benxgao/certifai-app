@@ -130,17 +130,24 @@ test.describe('Exam Flows', () => {
         console.log('✓ Certifications page DOM loaded');
         await timingTracker.capturePageMetrics(authenticatedPage, 'Certification browse page');
 
-        console.log('  - Waiting for certification data to load...');
+        console.log('  - Waiting for certification cards to render...');
         const certificationDataStartedAt = Date.now();
-        await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
-          console.log('  ⚠ networkidle timeout, continuing...');
-        });
+        // Wait for a real signal (a card action button) instead of 'networkidle':
+        // SWR keeps polling in the background, so networkidle never settles and
+        // always burned the full timeout.
+        await authenticatedPage
+          .locator('button:has-text("Register Now"), button:has-text("View Exams")')
+          .first()
+          .waitFor({ state: 'visible', timeout: 15000 })
+          .catch(() => {
+            console.log('  ⚠ Certification cards not detected within 15s, continuing...');
+          });
         timingTracker.recordDuration(
           'Certification data load wait',
           Date.now() - certificationDataStartedAt,
           {
             category: 'content',
-            details: 'Waited for certification browse page network activity to settle',
+            details: 'Waited for the first certification card action button to render',
             startedAt: certificationDataStartedAt,
           },
         );
@@ -355,16 +362,23 @@ test.describe('Exam Flows', () => {
         console.log('\n[STEP 3] Verifying "Create New Exam" button on exams page...');
         console.log('  - Waiting for page content to fully load...');
         const examPageContentStartedAt = Date.now();
-        await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
-          console.log('  ⚠ networkidle timeout, continuing...');
-        });
+        // 'networkidle' never settles here (SWR polling), so wait for the exam
+        // list surface itself — cards or the create CTA.
+        await authenticatedPage
+          .locator(
+            'div[data-testid="exam-card"], button:has-text("New Exam"), button:has-text("Create Exam")',
+          )
+          .first()
+          .waitFor({ state: 'visible', timeout: 15000 })
+          .catch(() => {
+            console.log('  ⚠ Exam list surface not detected within 15s, continuing...');
+          });
         timingTracker.recordDuration(
           'Exam list content load wait',
           Date.now() - examPageContentStartedAt,
           {
             category: 'content',
-            details:
-              'Waited for exams page network activity to settle before looking for Create Exam CTA',
+            details: 'Waited for an exam card or the Create Exam CTA to render',
             startedAt: examPageContentStartedAt,
           },
         );
@@ -448,16 +462,22 @@ test.describe('Exam Flows', () => {
         console.log('\n[STEP 3] Verifying "Create New Exam" button on exams page...');
         console.log('  - Waiting for page content to fully load...');
         const existingExamContentStartedAt = Date.now();
-        await authenticatedPage.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {
-          console.log('  ⚠ networkidle timeout, continuing...');
-        });
+        // See the no-certs path above: wait for a real surface, not 'networkidle'.
+        await authenticatedPage
+          .locator(
+            'div[data-testid="exam-card"], button:has-text("New Exam"), button:has-text("Create Exam")',
+          )
+          .first()
+          .waitFor({ state: 'visible', timeout: 15000 })
+          .catch(() => {
+            console.log('  ⚠ Exam list surface not detected within 15s, continuing...');
+          });
         timingTracker.recordDuration(
           'Exam list content load wait',
           Date.now() - existingExamContentStartedAt,
           {
             category: 'content',
-            details:
-              'Waited for exams page network activity to settle before locating Create Exam CTA',
+            details: 'Waited for an exam card or the Create Exam CTA to render',
             startedAt: existingExamContentStartedAt,
           },
         );
@@ -679,6 +699,10 @@ test.describe('Exam Flows', () => {
       const submitStartedAt = Date.now();
       const submitExamButton = authenticatedPage.locator('button:has-text("Submit Exam")').first();
       await expect(submitExamButton).toBeVisible({ timeout: 10000 });
+      // The button stays disabled until the answer PUT settles, which can take
+      // seconds on this backend. Waiting for "enabled" beats clicking a disabled
+      // button and reading a misleading "click timeout".
+      await expect(submitExamButton).toBeEnabled({ timeout: 30000 });
       await submitExamButton.click({ timeout: 8000 });
 
       const submitConfirmModal = authenticatedPage

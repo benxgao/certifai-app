@@ -56,9 +56,9 @@ export function extractRateLimitFromResponse(rateLimit: unknown): RateLimitInfo 
   if (!parsedRateLimit) return null;
 
   const rateLimitInfo: RateLimitInfo = {
-    maxExamsAllowed: parsedRateLimit.maxExamsAllowed || 3,
+    maxExamsAllowed: parsedRateLimit.maxExamsAllowed || 10,
     currentCount: parsedRateLimit.currentCount || 0,
-    remainingCount: parsedRateLimit.remainingCount || 3,
+    remainingCount: parsedRateLimit.remainingCount || 10,
     canCreateExam: parsedRateLimit.canCreateExam ?? true,
     resetTime:
       parsedRateLimit.resetTime || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
@@ -85,7 +85,7 @@ export function extractRateLimitFromResponse(rateLimit: unknown): RateLimitInfo 
  * @returns Calculated rate limit information
  */
 export function calculateRateLimitFromExams(exams: ExamListItem[]): RateLimitInfo {
-  const MAX_EXAMS_PER_24_HOURS = 3;
+  const MAX_EXAMS_PER_24_HOURS = 10;
 
   // Calculate 24 hours ago from now
   const twentyFourHoursAgo = new Date();

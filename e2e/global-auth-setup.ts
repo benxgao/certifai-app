@@ -8,6 +8,40 @@ import {
 } from './fixtures/auth-state';
 
 /**
+ * Fail fast when the app server is not actually serving.
+ *
+ * A killed `next dev` can leave a process that still LISTENS on the port but
+ * never responds. `webServer.reuseExistingServer` happily reuses it, and the
+ * first symptom is `page.goto: Timeout` inside a spec — which reads like an
+ * auth failure and sends you debugging the wrong thing.
+ */
+async function assertServerReachable(baseURL: string): Promise<void> {
+  const attempts = 3;
+
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      const res = await fetch(baseURL, { signal: AbortSignal.timeout(5_000) });
+      if (res.status < 500) return;
+    } catch {
+      // fall through to retry
+    }
+
+    if (attempt < attempts) {
+      await new Promise((resolve) => setTimeout(resolve, 2_000));
+    }
+  }
+
+  const port = new URL(baseURL).port || (baseURL.startsWith('https') ? '443' : '80');
+
+  throw new Error(
+    `[auth-setup] ${baseURL} is not responding (port likely held by a hung dev server).\n` +
+      'Fix it and re-run:\n' +
+      `  lsof -ti:${port} | xargs kill -9\n` +
+      'Playwright will then start a fresh server itself.',
+  );
+}
+
+/**
  * Logs in ONCE per `playwright test` invocation and persists the session to
  * `.auth/user.json` for specs that opt in via `test.use({ storageState })`.
  *
@@ -33,6 +67,9 @@ export default async function globalAuthSetup(config: FullConfig): Promise<void>
     config.projects[0]?.use?.baseURL || process.env.PLAYWRIGHT_TEST_BASEURL || 'http://localhost:3000';
 
   const forceFresh = process.env.E2E_FRESH_AUTH === '1';
+
+  // Always probe first — a hung server breaks reused and fresh runs alike.
+  await assertServerReachable(baseURL);
 
   if (!forceFresh && isStoredAuthReusable(baseURL)) {
     console.log('[auth-setup] ✓ Reusing saved session from .auth/user.json');
