@@ -1,7 +1,13 @@
 import { test, expect } from './fixtures/auth';
+import { AUTH_STATE_PATH } from './fixtures/auth-state';
 import type { Page, TestInfo } from '@playwright/test';
 import { deleteFirstExam, handleExamCreation } from './helpers/exams';
 import { FlowTimingTracker } from './helpers/performance';
+
+// Reuse the session captured once per run by e2e/global-auth-setup.ts.
+// Scoped to this file on purpose: a globally authenticated context would make
+// /signin redirect away and break the anonymous auth-flow specs.
+test.use({ storageState: AUTH_STATE_PATH });
 
 type TestFixtures = {
   authenticatedPage: Page;
@@ -521,8 +527,27 @@ test.describe('Exam Flows', () => {
       // ===== STEP 5: Wait for exam card action to transition to ready (max 60s) =====
       console.log('\n[STEP 5] Waiting for exam to finish generating and become startable...');
       const readyWaitStartedAt = Date.now();
-      const newestExamCard = authenticatedPage.locator('div[data-testid="exam-card"]').first();
-      await newestExamCard.waitFor({ state: 'visible', timeout: 10000 });
+      const examCards = authenticatedPage.locator('div[data-testid="exam-card"]');
+      await examCards.first().waitFor({ state: 'visible', timeout: 10000 });
+
+      // The list can also contain completed exams whose only action is
+      // "View Results & Certificate", and its order is server-defined. Target a
+      // card we can actually start instead of blindly taking the first one —
+      // otherwise a stale/completed card makes this step spin for 60s.
+      const newestExamCard = examCards
+        .filter({
+          has: authenticatedPage.locator(
+            'button:has-text("Begin Exam"), button:has-text("Resume Exam"), button:has-text("Generating Questions")',
+          ),
+        })
+        .first();
+
+      if ((await newestExamCard.count()) === 0) {
+        throw new Error(
+          'No startable exam card found — every card is a completed exam. ' +
+            'Exam creation did not produce a new exam (check the daily exam limit).',
+        );
+      }
 
       let sawGeneratingState = false;
       let readyButton = newestExamCard.locator('button:has-text("Begin Exam")').first();
@@ -603,9 +628,17 @@ test.describe('Exam Flows', () => {
         timeout: 15000,
       });
       await authenticatedPage.waitForLoadState('domcontentloaded', { timeout: 10000 });
-      await expect(authenticatedPage.locator('h2:has-text("Exam Progress")').first()).toBeVisible({
-        timeout: 10000,
-      });
+
+      // The detail route renders a loading state while questions are fetched, so
+      // the heading can legitimately take longer than the navigation itself.
+      // Report the URL on failure instead of leaving a bare "element not visible".
+      const examDetailHeading = authenticatedPage.locator('h2:has-text("Exam Progress")').first();
+      await expect
+        .poll(async () => examDetailHeading.isVisible().catch(() => false), {
+          message: `Exam detail page did not render "Exam Progress" (url: ${authenticatedPage.url()})`,
+          timeout: 25000,
+        })
+        .toBe(true);
       console.log('✓ Entered exam details page');
 
       timingTracker.recordDuration('Enter exam details page', Date.now() - enterExamStartedAt, {

@@ -164,7 +164,15 @@ export async function deleteFirstExam(page: Page): Promise<{ success: boolean; e
 
 - Use `authenticatedPage` fixture (from `./fixtures/auth`) for all tests requiring a logged-in user.
 - Use bare `page` fixture only for auth flow tests (signup, login, logout).
-- The `authenticatedPage` fixture handles auto-signup and caches auth state in `.auth/user.json`.
+- `e2e/global-auth-setup.ts` signs in **once per run** and writes `.auth/user.json`
+  (cookies + `firebase:authUser:*` localStorage). Specs that need auth opt in with
+  `test.use({ storageState: AUTH_STATE_PATH })` from `./fixtures/auth-state`.
+- Do **not** put `storageState` in the shared `use` block: an authenticated context
+  makes `/signin` redirect away, breaking the anonymous auth-flow specs.
+- The session is reused for 40 minutes (Firebase ID token lifetime is 1h). To force
+  a fresh login, run `npm run test:e2e:auth` (drops `.auth/`) or set `E2E_FRESH_AUTH=1`.
+- Never restore auth with `context.addInitScript` — it replays the old snapshot before
+  every navigation and overwrites the refresh token Firebase just rotated.
 
 ---
 

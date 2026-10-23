@@ -5,12 +5,21 @@ type AuthFixtures = {
 };
 
 /**
- * Authentication fixture that guarantees a logged-in page for every test.
+ * Authentication fixture that guarantees an authenticated page.
  *
- * Firebase Auth v9+ keeps its session in IndexedDB, which Playwright cannot
- * persist across runs (addInitScript / localStorage-only caches restore a
- * partial, stale session and the app bounces to /signin). So each test does a
- * real login (with auto-signup fallback) instead of reusing a cached file.
+ * Fast path: the spec file opts into the session captured by
+ * `global-auth-setup.ts` via `test.use({ storageState })`. Playwright then
+ * restores cookies + the `firebase:authUser:*` localStorage entry when the
+ * context is created — one write, no replay — so Firebase is free to rotate
+ * its refresh token afterwards.
+ *
+ * Slow path (fallback): if the page ends up on /signin anyway (no
+ * `storageState` opt-in, or the stored session expired mid-run), we log in
+ * for real so single-file runs still work.
+ *
+ * Note: this repo uses `addInitScript`-free restoration on purpose. Replaying
+ * a localStorage snapshot before every navigation overwrites the refreshed
+ * token and the session gets bounced to /signin.
  *
  * Usage:
  *   test('my test', async ({ authenticatedPage }) => {
@@ -19,18 +28,29 @@ type AuthFixtures = {
  *   });
  */
 export const test = base.extend<AuthFixtures>({
-  authenticatedPage: async ({ page, context }, use) => {
-    // NOTE: File-based auth caching is disabled because Firebase Auth v9+ stores
-    // session data in IndexedDB, which Playwright cannot reliably persist across
-    // test runs. The old cache saved localStorage only, so subsequent runs loaded
-    // stale/empty auth state and were redirected to /signin, causing the test to
-    // hang waiting for dashboard elements like "Register for Certification".
-    // Always performing a fresh login keeps auth reliable.
-    try {
+  authenticatedPage: async ({ page }, use) => {
+    await page.goto('/main', { waitUntil: 'domcontentloaded' });
+
+    const registerCta = page.locator('button:has-text("Register for Certification")').first();
+    const emailInput = page.locator('input[type="email"]');
+
+    const reachedDashboard = await registerCta
+      .waitFor({ state: 'visible', timeout: 15_000 })
+      .then(() => true)
+      .catch(() => false);
+
+    if (!reachedDashboard) {
+      const onSignin = await emailInput
+        .waitFor({ state: 'visible', timeout: 3_000 })
+        .then(() => true)
+        .catch(() => false);
+
+      console.log(
+        onSignin
+          ? '[auth-fixture] No stored session — performing login fallback...'
+          : '[auth-fixture] Dashboard did not render — performing login fallback...',
+      );
       await performLoginWithAutoSignup(page);
-    } catch (error) {
-      console.error('Login with auto-signup failed:', error);
-      throw error;
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks

@@ -28,6 +28,11 @@ const isLiveEnvironment = isApphostingEnvironment();
  */
 export default defineConfig({
   testDir: './e2e',
+  /* Log in once per run and persist the session to .auth/user.json.
+     Specs opt in with `test.use({ storageState })` — never globally, because
+     an authenticated context makes /signin redirect away, breaking the
+     anonymous auth-flow specs. */
+  globalSetup: './e2e/global-auth-setup.ts',
   /* Run tests sequentially to avoid hanging issues */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

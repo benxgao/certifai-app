@@ -98,11 +98,19 @@ export async function deleteFirstExam(
  */
 export async function waitForNewExamToAppear(
   page: Page,
-  options: { maxWaitTime?: number; pollInterval?: number; tracker?: FlowTimingTracker } = {},
+  options: {
+    maxWaitTime?: number;
+    pollInterval?: number;
+    tracker?: FlowTimingTracker;
+    /** Card count that must be reached. Guards against silently reusing pre-existing cards. */
+    minCardCount?: number;
+  } = {},
 ): Promise<boolean> {
-  const { maxWaitTime = 180000, pollInterval = 2000, tracker } = options;
+  const { maxWaitTime = 180000, pollInterval = 2000, tracker, minCardCount = 1 } = options;
 
-  console.log(`  - Waiting for new exam to appear in list (up to ${maxWaitTime / 1000}s)...`);
+  console.log(
+    `  - Waiting for new exam to appear in list (up to ${maxWaitTime / 1000}s, need ${minCardCount} card(s))...`,
+  );
 
   const startTime = Date.now();
 
@@ -110,7 +118,7 @@ export async function waitForNewExamToAppear(
     const examCards = page.locator('div[data-testid="exam-card"]');
     const cardCount = await examCards.count().catch(() => 0);
 
-    if (cardCount > 0) {
+    if (cardCount >= minCardCount) {
       console.log(`✓ Exam appeared in list! Found ${cardCount} exam card(s)`);
       tracker?.recordDuration('Wait for exam card to appear after creation', Date.now() - startTime, {
         category: 'polling',
@@ -151,6 +159,24 @@ export function verifyOnExamsPage(page: Page): boolean {
 }
 
 /**
+ * Read the "DAILY EXAM LIMIT  x/y  exams created today" indicator.
+ * Returns null when the widget is absent or its text can't be parsed.
+ */
+export async function readDailyExamQuota(
+  page: Page,
+): Promise<{ created: number; max: number } | null> {
+  const text = await page
+    .locator('body')
+    .innerText()
+    .catch(() => '');
+
+  const match = text.match(/(\d+)\s*\/\s*(\d+)\s+exams created today/i);
+  if (!match) return null;
+
+  return { created: Number(match[1]), max: Number(match[2]) };
+}
+
+/**
  * Handle complete exam creation flow
  * Opens create modal, fills form, submits, and waits for exam to appear
  */
@@ -176,14 +202,23 @@ export async function handleExamCreation(
   const isNewExamButtonDisabled = await newExamButton.isDisabled().catch(() => false);
 
   if (isNewExamButtonDisabled) {
-    console.log('  ⚠ "New Exam" button is DISABLED (likely due to daily quota limit)');
+    console.log('  ⚠ "New Exam" button is DISABLED');
 
-    const quotaMessage = page.locator('text=/3\\/3 exams created|daily limit|quota/i').first();
-    const hasQuotaMessage = await quotaMessage.isVisible({ timeout: 2000 }).catch(() => false);
+    const quota = await readDailyExamQuota(page);
+    if (quota) {
+      console.log(`  ℹ Daily exam quota: ${quota.created}/${quota.max}`);
+    }
 
-    if (hasQuotaMessage) {
-      const messageText = await quotaMessage.textContent();
-      console.log(`  ℹ Quota message: ${messageText}`);
+    // The backend limit counts exams CREATED today, so deleting an existing exam
+    // does NOT restore it. Force-clicking the disabled button just opens a
+    // dialog the rest of the flow can't drive, and the failure surfaces 3
+    // minutes later as a bogus "exam never became startable" timeout.
+    if (quota && quota.created >= quota.max) {
+      throw new Error(
+        `Daily exam limit reached (${quota.created}/${quota.max} exams created today). ` +
+          'Deleting an exam does not restore this quota. Use a different test account ' +
+          '(PW_TEST_EMAIL) or wait for the daily reset.',
+      );
     }
 
     console.log('  - Attempting to delete an exam to free up quota...');
@@ -313,6 +348,14 @@ export async function handleExamCreation(
     console.log('  ⚠ "Create" button is DISABLED (may be due to form validation). Attempting force click...');
   }
 
+  // Baseline before submitting: creation must ADD a card. Without this, a
+  // rejected request (e.g. 429 daily exam limit) silently "passes" because the
+  // list already contains older exams, and the caller then waits on a stale card.
+  const cardsBeforeSubmit = await page
+    .locator('div[data-testid="exam-card"]')
+    .count()
+    .catch(() => 0);
+
   try {
     console.log('  - Attempting normal click on "Create" button...');
     await createButton.click({ timeout: 5000 });
@@ -349,13 +392,52 @@ export async function handleExamCreation(
     });
   }
 
+  // Fail fast when the backend explicitly rejected the request (e.g. 429 daily
+  // exam limit). Polling 3 minutes on a list that can never grow hides the cause.
+  const rejectionToast = page
+    .locator('text=/Exam creation limit reached|maximum \\d+ exams allowed/i')
+    .first();
+  const rejected = await rejectionToast
+    .waitFor({ state: 'visible', timeout: 8000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (rejected) {
+    const cardsAfter = await page
+      .locator('div[data-testid="exam-card"]')
+      .count()
+      .catch(() => cardsBeforeSubmit);
+
+    if (cardsAfter <= cardsBeforeSubmit) {
+      const toastText = (await rejectionToast.textContent().catch(() => ''))?.trim();
+      throw new Error(
+        `Exam creation was rejected by the backend${toastText ? `: "${toastText}"` : ''}. ` +
+          'The test account has reached its daily exam limit — use a fresh account or wait for the reset.',
+      );
+    }
+  }
+
   const examAppeared = await waitForNewExamToAppear(page, {
     maxWaitTime: 180000,
     tracker,
+    minCardCount: cardsBeforeSubmit + 1,
   });
 
   if (!examAppeared) {
-    throw new Error('New exam did not appear in list within 3 minutes (180 seconds)');
+    const quotaText = await page
+      .locator('text=/daily exam limit|exams created today/i')
+      .first()
+      .textContent()
+      .catch(() => null);
+
+    throw new Error(
+      'No NEW exam card appeared within 3 minutes (180 seconds). ' +
+        `Cards before submit: ${cardsBeforeSubmit}. ` +
+        (quotaText
+          ? `The account appears to have hit its creation limit (found: "${quotaText.trim()}"). `
+          : 'The creation request was likely rejected (rate limit / server error). ') +
+        'Deleting an exam does not always restore the daily quota — use a different test account or wait for the daily reset.',
+    );
   }
 
   verifyOnExamsPage(page);
