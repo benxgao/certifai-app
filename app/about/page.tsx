@@ -1,18 +1,77 @@
-'use client';
-
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowRight, ArrowUpRight, Brain, Heart, Mail, Rocket, Target, Users } from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
-import { ActionButton } from '@/src/components/custom/ActionButton';
+import { Button } from '@/src/components/ui/button';
 import {
-  organizationSchema,
-  softwareApplicationSchema,
-} from '@/src/lib/schemas/organizationSchema';
-import { faqSchema } from '@/src/lib/schemas/faqSchema';
-import { breadcrumbSchemas } from '@/src/lib/schemas/breadcrumbSchema';
-import { Target, Heart, Users, Brain, Rocket } from 'lucide-react';
-import { MarketingPageShell, MarketingSection, MarketingCard, MarketingBadge } from '@/src/components/marketing';
+  Chip,
+  CtaPanel,
+  FeaturePanel,
+  FeaturePanelHeader,
+  IconTile,
+  MarketingPageShell,
+  MarketingSection,
+  PageHero,
+  SectionIntro,
+} from '@/src/components/marketing';
+import { marketingTheme } from '@/src/config/marketing-theme';
+import { cn } from '@/src/lib/utils';
+
+const principles = [
+  {
+    icon: <Brain className="h-5 w-5" />,
+    label: 'Principle 01',
+    title: 'It has to actually work.',
+    description:
+      'The platform adapts to how you answer rather than to a fixed syllabus order. Every report changes what the next exam contains.',
+  },
+  {
+    icon: <Target className="h-5 w-5" />,
+    label: 'Principle 02',
+    title: 'It has to save you time.',
+    description:
+      'One focused 20-question sitting on your weakest topic beats a fourth full-length run through everything you already know.',
+  },
+  {
+    icon: <Users className="h-5 w-5" />,
+    label: 'Principle 03',
+    title: 'It has to be built with feedback.',
+    description:
+      'Beta users report what is broken and what is missing. Those reports decide the roadmap — not a feature list written in advance.',
+  },
+];
+
+const patterns = [
+  {
+    number: '01',
+    title: 'The same questions, on repeat',
+    body: 'Unlimited practice feels productive, but re-drilling familiar items mostly rehearses what you can already do.',
+  },
+  {
+    number: '02',
+    title: 'Weak topics stay invisible',
+    body: 'A single accuracy score hides which domains are costing you points, so revision has no direction.',
+  },
+  {
+    number: '03',
+    title: 'Exam day is the first real signal',
+    body: 'Without topic-level feedback before the exam, the first honest measurement arrives after you have already paid for it.',
+  },
+];
+
+const buildFacts = [
+  { label: 'Who builds it', value: 'One full-stack developer' },
+  { label: 'Tracks supported', value: '100+ certifications' },
+  { label: 'The loop', value: 'Scope → generate → sit → diagnose' },
+  { label: 'During beta', value: 'Free · 300 credits' },
+];
+
+const heroStats = [
+  { value: '300', label: 'credits on signup' },
+  { value: '100+', label: 'tracks' },
+  { value: '0', label: 'card required' },
+];
 
 // Enhanced WebPage Schema for About page
 const aboutPageSchema = {
@@ -39,244 +98,260 @@ const aboutPageSchema = {
   },
 };
 
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://certestic.com' },
+    { '@type': 'ListItem', position: 2, name: 'About', item: 'https://certestic.com/about' },
+  ],
+};
+
 export default function AboutPage() {
-  const router = useRouter();
-
-  // Core values - simplified to what matters
-  const values = [
-    {
-      icon: Brain,
-      title: 'Actually Works',
-      description:
-        'The platform learns how you study best and adapts. No guessing games, just smarter preparation.',
-      benefits: [],
-    },
-    {
-      icon: Target,
-      title: 'Saves You Time',
-      description: 'Focus on knowledge gaps instead of endless drilling. Study less, retain more.',
-      benefits: [],
-    },
-    {
-      icon: Users,
-      title: 'Built With Real Feedback',
-      description: 'Shaped by what people actually need when preparing for certifications.',
-      benefits: [],
-    },
-  ];
-
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <MarketingPageShell>
         <LandingHeader />
 
-        <main className="relative" role="main">
-          {/* Hero Section */}
-          <section className="relative py-8 sm:py-12 lg:py-16 overflow-hidden" role="banner">
-            <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-              <Breadcrumb
-                items={[
-                  { label: 'Home', href: '/' },
-                  { label: 'About', current: true },
-                ]}
-                className="mb-8 sm:mb-12"
-              />
-
-              <div className="text-center max-w-4xl mx-auto space-y-6 sm:space-y-8">
-                <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
-                  <Heart className="w-4 h-4" />
-                  <span>Built for Real People</span>
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                  <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                    About Certestic
-                  </span>
-                </h1>
-
-                <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-                  A simple project built to help people study for IT certifications smarter, not
-                  just harder.
-                </p>
-
-                <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-                  Think of Certestic as a friendly study companion that learns how you learn and
-                  helps you focus on what actually matters.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <ActionButton
-                    variant="primary"
-                    size="lg"
-                    onClick={() => router.push('/signup')}
-                    icon={<Rocket className="h-5 w-5" />}
-                    className="px-8 py-4"
-                  >
+        <main>
+          <PageHero
+            breadcrumb={
+              <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About', current: true }]} />
+            }
+            eyebrow={
+              <>
+                <Heart className="h-4 w-4" aria-hidden="true" />
+                <span>Built for real people</span>
+              </>
+            }
+            title="A study tool that watches"
+            highlight="where your time goes."
+            description="Certestic started as one developer's frustration: endless practice questions, and no idea which ones were worth answering. It is now a small, focused platform that reads how you answer and points at the gaps."
+            actions={
+              <>
+                <Button
+                  asChild
+                  size="lg"
+                  className={`${marketingTheme.button.primary} ${marketingTheme.focusRing} h-12 w-full gap-2 px-7 py-0 sm:w-auto`}
+                >
+                  <Link href="/signup">
                     Try Certestic
-                  </ActionButton>
-                  <ActionButton
-                    variant="outline"
-                    size="lg"
-                    onClick={() => router.push('/contact')}
-                    icon={<Heart className="h-5 w-5" />}
-                    className="px-8 py-4"
-                  >
-                    Share Feedback
-                  </ActionButton>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Mission & Vision */}
-          <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-            <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-4xl mx-auto">
-                <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 sm:p-12 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden">
-                  <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
-                  <div className="relative z-10">
-                    <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50 mb-6 tracking-tight">
-                      What This Is Really About
-                    </h2>
-                    <div className="space-y-6 text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-                      <p>
-                        Certification exams can feel overwhelming. Too many resources, too many
-                        topics, not enough time. People study the same questions over and over,
-                        while missing the areas they actually need to work on.
-                      </p>
-                      <p>
-                        Certestic exists to change that. It's built on a simple idea: let an AI
-                        watch how you study, understand where your weaknesses are, and focus your
-                        time where it matters most.
-                      </p>
-                      <p>
-                        The goal isn't to replace traditional learning. It's to make your study time
-                        count. Learn the concepts, understand the principles, then let the platform
-                        help you practice smarter.
-                      </p>
-                    </div>
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className={`${marketingTheme.button.secondary} ${marketingTheme.focusRing} h-12 w-full px-7 py-0 sm:w-auto`}
+                >
+                  <Link href="/contact">Share feedback</Link>
+                </Button>
+              </>
+            }
+            aside={
+              <div className="relative">
+                <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-linear-to-br from-violet-500/10 via-transparent to-indigo-500/10 blur-2xl" />
+                <FeaturePanel interactive={false}>
+                  <div className="flex items-center gap-3">
+                    <IconTile>
+                      <Rocket className="h-5 w-5" />
+                    </IconTile>
+                    <span className={marketingTheme.copy.eyebrow}>The build</span>
                   </div>
-                </div>
+                  <dl className="mt-5 divide-y divide-slate-200/70 dark:divide-slate-700/60">
+                    {buildFacts.map((fact) => (
+                      <div
+                        key={fact.label}
+                        className="flex items-baseline justify-between gap-4 py-2.5 first:pt-0 last:pb-0"
+                      >
+                        <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                          {fact.label}
+                        </dt>
+                        <dd className="text-right text-xs font-semibold text-slate-900 dark:text-slate-100">
+                          {fact.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <div className="mt-4 flex flex-wrap gap-1.5 border-t border-slate-200/70 pt-4 dark:border-slate-700/60">
+                    <Chip>AI generation</Chip>
+                    <Chip>Topic-level reports</Chip>
+                    <Chip variant="accent">Free beta</Chip>
+                  </div>
+                </FeaturePanel>
               </div>
-            </div>
-          </section>
+            }
+          />
 
-          {/* Core Values */}
-          <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-            <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-12">
-                  <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-slate-900 dark:text-slate-100 tracking-tight">
-                    How It Works
-                  </h2>
-                  <p className="text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                    Three principles that guide everything
+          {/* Why this exists */}
+          <MarketingSection className={marketingTheme.section.band}>
+            <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+              <div className="max-w-xl">
+                <SectionIntro
+                  eyebrow="Why this exists"
+                  title="Too many questions. Not enough signal."
+                  description="Certification prep usually looks like a volume problem. Too many resources, too many topics, never enough time — so most people drill the same questions repeatedly and skip the areas that actually need work."
+                />
+                <div className="mt-6 space-y-4 text-base font-light leading-relaxed text-slate-600 dark:text-slate-300">
+                  <p>
+                    Certestic is built on a narrow idea: watch how you answer, work out which topics
+                    are costing you points, and spend your next hour there instead of everywhere.
+                  </p>
+                  <p>
+                    It is not trying to replace courses or the official documentation. Read those.
+                    Then use this to find out whether the material actually stuck.
                   </p>
                 </div>
-                <div className="grid md:grid-cols-3 gap-8">
-                  {values.map((value, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 flex flex-col h-full overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
-                      <div className="relative z-10">
-                        <div className="h-12 w-12 bg-violet-100 dark:bg-linear-to-br dark:from-violet-900/30 dark:to-violet-800/30 rounded-xl flex items-center justify-center mb-6 shadow-sm">
-                          <value.icon className="h-6 w-6 text-violet-500 dark:text-violet-300" />
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-4 tracking-tight">
-                          {value.title}
-                        </h3>
-                        <p className="text-base leading-relaxed text-slate-600 dark:text-slate-400">
-                          {value.description}
+                <Link
+                  href="/#analysis"
+                  className={cn(marketingTheme.copy.link, 'mt-6', marketingTheme.focusRing)}
+                >
+                  See what a report looks like
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+
+              <FeaturePanel interactive={false}>
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                    The pattern we kept hitting
+                  </p>
+                  <Chip variant="accent">Before Certestic</Chip>
+                </div>
+                <ol className="mt-4 space-y-4">
+                  {patterns.map((pattern) => (
+                    <li key={pattern.number} className="flex gap-3">
+                      <span className="mt-0.5 font-mono text-[10px] font-semibold text-violet-600 dark:text-violet-300">
+                        {pattern.number}
+                      </span>
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          {pattern.title}
+                        </p>
+                        <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                          {pattern.body}
                         </p>
                       </div>
-                    </div>
+                    </li>
                   ))}
+                </ol>
+                <div className={cn(marketingTheme.surface.inset, 'mt-4 p-3')}>
+                  <p className="text-[11px] leading-relaxed text-slate-700 dark:text-slate-200">
+                    One sitting, mapped to topics, is enough to replace all three guesses with a
+                    direction.
+                  </p>
+                </div>
+              </FeaturePanel>
+            </div>
+          </MarketingSection>
+
+          {/* Principles */}
+          <MarketingSection>
+            <SectionIntro
+              eyebrow="Principles"
+              title="Three things it is not allowed to get wrong."
+              description="These are the constraints behind every feature decision — including the ones that never shipped."
+            />
+            <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-3">
+              {principles.map((principle) => (
+                <FeaturePanel key={principle.label}>
+                  <FeaturePanelHeader {...principle} variant="soft" />
+                </FeaturePanel>
+              ))}
+            </div>
+          </MarketingSection>
+
+          {/* The developer */}
+          <MarketingSection className={marketingTheme.section.band}>
+            <div className="grid items-start gap-12 lg:grid-cols-[1.4fr_0.6fr] lg:gap-16">
+              <div className="max-w-2xl">
+                <p className={marketingTheme.copy.eyebrow}>The developer</p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50 lg:text-4xl">
+                  Built by someone who sat the exams.
+                </h2>
+                <div className="mt-6 space-y-4 text-base font-light leading-relaxed text-slate-600 dark:text-slate-300">
+
+                  <p>
+                    The premise is simple — the software should do the
+                    noticing, so your evenings go to the two topics that matter rather than the nine
+                    you already know.
+                  </p>
+                  <p>
+                    Most of the work now goes into the generation and analysis pipeline: mapping
+                    questions to real objectives, and making the report say something you can act on
+                    the same evening.
+                  </p>
                 </div>
               </div>
-            </div>
-          </section>
 
-          {/* Developer Section */}
-          <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-            <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-4xl mx-auto">
-                <div className="group relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl p-8 sm:p-12 hover:shadow-2xl hover:border-violet-300/60 dark:hover:border-violet-700/60 transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 overflow-hidden">
-                  <div className="absolute inset-0 bg-linear-to-br from-violet-50/20 to-transparent dark:from-violet-900/10 dark:to-transparent rounded-3xl"></div>
-                  <div className="relative z-10">
-                    <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50 mb-3 tracking-tight">
-                      About Ben
-                    </h2>
-                    <p className="text-lg text-violet-600 dark:text-violet-400 mb-8 font-medium">
-                      The person behind this
-                    </p>
-                    <div className="space-y-6 text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-                      <p>
-                        A full-stack developer who's spent years building software but also spent a
-                        lot of time grinding through certification exams. Got tired of studying the
-                        same things over and over while missing the concepts that actually confused
-                        me.
-                      </p>
-                      <p>
-                        That frustration turned into Certestic. The idea that technology should work
-                        harder so people don't have to. Learn less, retain more. Study efficiently
-                        instead of endlessly.
-                      </p>
-                      <p>
-                        Now spending time learning AI and machine learning, partly because it's
-                        fascinating, but mostly because it helps solve real problems. Like making
-                        certification prep actually useful.
-                      </p>
-                    </div>
-                  </div>
+              <FeaturePanel>
+                <div className="flex items-center gap-3">
+                  <IconTile variant="soft">
+                    <Mail className="h-5 w-5" />
+                  </IconTile>
+                  <span className={marketingTheme.copy.eyebrow}>Direct line</span>
                 </div>
-              </div>
-            </div>
-          </section>
+                <h3 className="mt-4 text-base font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                  Feedback goes to the person who builds it.
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                  No support tier, no ticket queue. During beta, replies come from the developer.
+                </p>
+                <a
+                  href="mailto:info@certestic.com?subject=Feedback%20on%20Certestic"
+                  className={cn(
+                    marketingTheme.copy.link,
+                    'mt-5 justify-between border-t border-slate-200/70 pt-4 dark:border-slate-700/60',
+                    marketingTheme.focusRing,
+                  )}
+                >
+                  info@certestic.com
+                  <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                </a>
 
-          {/* Call to Action */}
-          <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-            <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="max-w-7xl mx-auto">
-                <div className="group relative bg-white dark:from-violet-900/30 dark:to-blue-900/20 dark:bg-linear-to-br border border-slate-200 dark:border-violet-700/50 shadow-md rounded-3xl p-8 sm:p-16 hover:shadow-md dark:hover:shadow-2xl transition-colors dark:transition-all duration-500 overflow-hidden">
-                  {/* Decorative background pattern */}
-                  {/* Background overlay - disabled for light mode */}
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-violet-200/15 dark:bg-violet-600/8 rounded-full blur-2xl"></div>
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/15 dark:bg-blue-600/8 rounded-full blur-2xl"></div>
-
-                  <div className="relative z-10 text-center">
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-slate-900 dark:text-slate-100 tracking-tight">
-                      Ready to Try It?
-                    </h2>
-                    <p className="text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-slate-400 mb-12 max-w-3xl mx-auto">
-                      Sign up for free and see if smarter studying actually works for you.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <ActionButton
-                        variant="primary"
-                        size="lg"
-                        onClick={() => router.push('/signup')}
-                        icon={<Rocket className="h-5 w-5" />}
-                        className="px-8 py-4"
-                      >
-                        Get Started
-                      </ActionButton>
-                      <ActionButton
-                        variant="outline"
-                        size="lg"
-                        onClick={() => router.push('/contact')}
-                        icon={<Heart className="h-5 w-5" />}
-                        className="px-8 py-4"
-                      >
-                        Say Hi
-                      </ActionButton>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </FeaturePanel>
             </div>
-          </section>
+          </MarketingSection>
+
+          <MarketingSection>
+            <CtaPanel
+              eyebrow="Try it"
+              title="See if smarter studying holds up for you."
+              body="Sign up, generate one exam on the topic you keep avoiding, and read the report. That is usually enough to tell."
+              stats={heroStats}
+              actions={
+                <>
+                  <Button
+                    asChild
+                    size="lg"
+                    className={`${marketingTheme.button.onDark} ${marketingTheme.focusRing}`}
+                  >
+                    <Link href="/signup">
+                      Get started free
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    className={`${marketingTheme.button.onDarkOutline} ${marketingTheme.focusRing}`}
+                  >
+                    <Link href="/contact">Say hello</Link>
+                  </Button>
+                </>
+              }
+            />
+          </MarketingSection>
         </main>
       </MarketingPageShell>
     </>

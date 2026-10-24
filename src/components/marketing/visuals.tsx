@@ -2,7 +2,8 @@ import React from 'react';
 import { cn } from '@/src/lib/utils';
 
 /**
- * Shared, purely presentational primitives for the homepage product previews.
+ * Shared, purely presentational primitives for product previews across
+ * marketing routes (homepage, pricing, about, contact).
  * These are decorative: every preview is wrapped in `aria-hidden` by its parent,
  * so nothing here should carry information that is not also in the copy.
  */
@@ -171,28 +172,5 @@ export function Sparkline({ points, id, className }: SparklineProps) {
         <circle key={`${x}-${y}`} cx={x} cy={y} r="3.5" fill="#7c3aed" />
       ))}
     </svg>
-  );
-}
-
-interface FauxButtonProps {
-  children: React.ReactNode;
-  className?: string;
-  variant?: 'solid' | 'ghost';
-}
-
-/** Non-interactive button used inside previews. */
-export function FauxButton({ children, className, variant = 'solid' }: FauxButtonProps) {
-  return (
-    <span
-      className={cn(
-        'inline-flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold',
-        variant === 'solid'
-          ? 'bg-violet-600 text-white shadow-[0_8px_20px_-10px_rgba(109,40,217,0.8)]'
-          : 'border border-slate-200 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300',
-        className,
-      )}
-    >
-      {children}
-    </span>
   );
 }

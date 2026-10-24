@@ -3,13 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/src/components/ui/accordion';
-import { MarketingSection } from '@/src/components/marketing';
+import { FaqAccordion, MarketingSection } from '@/src/components/marketing';
 import { marketingTheme } from '@/src/config/marketing-theme';
 import { cn } from '@/src/lib/utils';
 
@@ -71,32 +65,14 @@ export default function LandingFaq() {
             </p>
             <Link
               href="/contact"
-              className={cn(
-                'mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-violet-700 transition-colors hover:text-violet-600 dark:text-violet-300 dark:hover:text-violet-200',
-                marketingTheme.focusRing,
-              )}
+              className={cn(marketingTheme.copy.link, 'mt-5', marketingTheme.focusRing)}
             >
               Talk to us
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
 
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq) => (
-              <AccordionItem
-                key={faq.value}
-                value={faq.value}
-                className="rounded-2xl border-slate-200/70 bg-white/70 shadow-none backdrop-blur-sm transition-colors hover:border-violet-300/70 hover:shadow-none dark:border-slate-700/60 dark:bg-slate-900/40 dark:hover:border-violet-500/40"
-              >
-                <AccordionTrigger className="px-5 py-4 text-left text-sm font-semibold text-slate-900 hover:no-underline dark:text-slate-100 sm:text-base">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="px-5 pb-5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <FaqAccordion items={faqs} />
         </div>
       </MarketingSection>
     </div>

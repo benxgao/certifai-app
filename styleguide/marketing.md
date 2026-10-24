@@ -14,13 +14,43 @@ The marketing design system is now code-backed and centralized.
 
 - Visual tokens and branding live in `src/config/marketing-theme.ts`
 - Marketing primitives live in `src/components/marketing/`
-  - `MarketingPageShell`
-  - `MarketingSection`
-  - `MarketingCard`
-  - `MarketingBadge`
-  - `MarketingHeading`
+  - Layout: `MarketingPageShell`, `MarketingSection`, `PageHero`, `SectionIntro`, `StepList`
+  - Surfaces: `MarketingCard`, `FeaturePanel`, `CtaPanel`, `FaqAccordion`
+  - Bits: `MarketingBadge`, `MarketingHeading`, `Chip`, `IconTile`
+  - Previews: `visuals.tsx` (`PreviewWindow`, `ScoreRing`, `TopicRow`, `Sparkline`)
 
 When editing marketing visuals (accent, gradient usage, hover behavior, radius, card/button styles), update the token contract in `src/config/marketing-theme.ts` first.
+
+### Page recipes (sub-pages)
+
+`/pricing`, `/about`, `/contact` and `/certifications` are composed from the same set as `/`. Follow these shapes rather than inventing new ones:
+
+| Slot | Primitive | Notes |
+| --- | --- | --- |
+| Page opening | `PageHero` | Copy left, `aside` preview right. Pass a pre-rendered `Breadcrumb` — the marketing layer does not import `custom/`. |
+| Section opening | `SectionIntro` | eyebrow → h2 → body, optional trailing `action` link |
+| Alternating band | `MarketingSection` + `section.band` | Muted full-width band, mirrors the homepage feature grid |
+| Feature/bento cells | `FeaturePanel` + `FeaturePanelHeader` | `interactive={false}` for static panels; `variant` maps to `iconTile` |
+| Sequence | `StepList` | `columns={2|3|4}`, connector line on `lg` |
+| FAQ | `FaqAccordion` | Keep answers identical to any `FAQPage` JSON-LD on the route |
+| Closing CTA | `CtaPanel` | Gradient panel; pass buttons styled with `button.onDark` / `button.onDarkOutline` |
+| Inline pills | `Chip` | Inside previews and card footers, never as controls |
+| Icon container | `IconTile` | `accent` at most once per section; `size="sm"` (28px) for inline lists |
+
+**Sub-page rules**
+
+- One `h1` per route, inside `PageHero`. `SectionIntro` renders `h2` by default.
+- A `PageHero` aside is illustrative: wrap previews in `aria-hidden="true"` and keep every fact in the copy too.
+- Feature copy should state what the product does, not how it feels. No "revolutionary", "seamless", "unleash".
+- Pricing copy must not invent tiers, prices, or credit→exam conversions that are not backed by `src/stripe/` or the account model.
+
+**Data-driven route rules (`/certifications`)**
+
+- The catalog is stateful: keep `fetchCertificationsData()`, the client search/vendor filter and the `?firm=` searchParam working. Do not trade the data path for layout.
+- Every cert card is an `<Link>` to `/certifications/{firm}/{slug}`. Never nest an `<a>` (or a `<button>`) inside the card link — the previous template did, and the DOM broke on parse.
+- Real counts belong in the catalog (hero snapshot + stats strip). Keep the hero footnote and closing CTA on value props (300 credits, no card, free during beta) so the same numbers don't appear three times.
+- Route metadata lives in `app/certifications/metadata.ts`; re-declare it as a local `export const metadata` in `page.tsx` so Next's static analysis picks it up.
+
 
 ### Homepage surface tokens (2026 refresh)
 
@@ -39,7 +69,8 @@ The homepage (`src/components/landing/`) introduced product-preview cards. These
 **Preview rules**
 
 - Product previews (fake windows, charts, exam UI) are illustrative. Wrap the preview container in `aria-hidden="true"` and use non-interactive elements (`div`/`span`) inside — never real `button`/`a` tags.
-- Use `PreviewWindow`, `ScoreRing`, `TopicRow`, `Sparkline`, and `FauxButton` from `src/components/landing/visuals.tsx` for consistency.
+- Use `PreviewWindow`, `ScoreRing`, `TopicRow`, and `Sparkline` from `src/components/marketing/visuals.tsx` for consistency.
+- **No button-shaped elements inside a preview.** `FauxButton` was removed for this reason: a filled violet pill in a screenshot-style window reads as a real control, and users click it expecting an action. Previews show *state* (progress, scores, topics); the page around them owns the *actions*. If a preview needs to imply a next step, describe it in copy or show it as a row of text — never as a pill.
 - Micro labels inside previews must use `text-slate-500 dark:text-slate-400` at minimum. `text-slate-400` on white fails WCAG AA at 10–11px.
 - Previews should not be the only place a feature is described; the surrounding copy must carry the same meaning.
 

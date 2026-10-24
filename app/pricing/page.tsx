@@ -1,14 +1,92 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { Button } from '@/src/components/ui/button';
-import { Check, Star } from 'lucide-react';
+import {
+  ArrowRight,
+  BarChart3,
+  Check,
+  Layers,
+  Sparkles,
+  Star,
+  Timer,
+  TrendingUp,
+  Wand2,
+} from 'lucide-react';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import Breadcrumb from '@/src/components/custom/Breadcrumb';
-import { Card, CardContent } from '@/src/components/ui/card';
-import { FaGraduationCap } from 'react-icons/fa';
-import { MarketingPageShell, MarketingSection, MarketingBadge, MarketingHeading } from '@/src/components/marketing';
+import { Button } from '@/src/components/ui/button';
+import {
+  Chip,
+  CtaPanel,
+  FaqAccordion,
+  FeaturePanel,
+  FeaturePanelHeader,
+  MarketingPageShell,
+  MarketingSection,
+  PageHero,
+  SectionIntro,
+} from '@/src/components/marketing';
+import { PreviewWindow, Sparkline, TopicRow } from '@/src/components/marketing/visuals';
+import { marketingTheme } from '@/src/config/marketing-theme';
+import { cn } from '@/src/lib/utils';
+
+/** Visible FAQ — mirrored into FAQPage structured data below. */
+const faqs = [
+  {
+    value: 'really-free',
+    question: 'Is it really free?',
+    answer:
+      'Yes. For the whole beta the platform is free: every account starts with 300 credits, there is no subscription, and no card is stored.',
+  },
+  {
+    value: 'what-credits-do',
+    question: 'What do credits actually do?',
+    answer:
+      'Credits are what the generator spends when it writes an exam for you. New accounts start with 300, and you can sit as many exams as those credits cover.',
+  },
+  {
+    value: 'card-needed',
+    question: 'Do I need a card to sign up?',
+    answer:
+      'No. Sign up with an email address or Google, and you land in the exam studio with your credits already in place.',
+  },
+  {
+    value: 'after-beta',
+    question: 'What happens when the beta ends?',
+    answer:
+      'Beta accounts keep the credits they have left and get advance notice before any paid plan exists. Nothing switches on silently, and nothing charges you in the background.',
+  },
+  {
+    value: 'multiple-certs',
+    question: 'Can I use one account for several certifications?',
+    answer:
+      'Yes. One account covers the full catalog of 100+ tracks, and your credits work across all of them — no per-certification purchase.',
+  },
+  {
+    value: 'feedback',
+    question: 'How do I report a bug or ask for a feature?',
+    answer:
+      'Email info@certestic.com or use the contact page. During beta, feedback goes straight into what gets built next rather than into a backlog nobody reads.',
+  },
+];
+
+const providers = [
+  'AWS',
+  'Microsoft Azure',
+  'Google Cloud',
+  'Cisco',
+  'CompTIA',
+  'Kubernetes (CNCF)',
+  'HashiCorp',
+  'ISC2',
+];
+
+const trustPoints = ['300 credits on signup', 'No credit card', 'All 100+ tracks'];
+
+const heroFacts = [
+  { value: '300', label: 'credits on signup' },
+  { value: '$0', label: 'during beta' },
+  { value: '0', label: 'cards stored' },
+];
 
 // Structured Data for SEO
 const pricingSchema = {
@@ -16,7 +94,7 @@ const pricingSchema = {
   '@type': 'Product',
   name: 'Certestic IT Certification Training Platform - Free Beta Access',
   description:
-    'Free beta access to AI-powered IT certification training platform! Practice with unlimited questions while we build the future of certification training',
+    'Free beta access to AI-powered IT certification training platform. Every account starts with 300 credits, no credit card required.',
   brand: {
     '@type': 'Brand',
     name: 'Certestic',
@@ -25,7 +103,7 @@ const pricingSchema = {
     {
       '@type': 'Offer',
       name: 'Free Beta Access',
-      description: 'Free access to all features while we develop the platform!',
+      description: 'Free access to all features while the platform is in beta.',
       price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
@@ -43,14 +121,27 @@ const pricingSchema = {
 const webPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Certestic - Free Beta Access! | AI-Powered IT Certification Training',
+  name: 'Certestic - Free Beta Access | AI-Powered IT Certification Training',
   description:
-    'Get free access to AI-powered IT certification training! Practice with unlimited questions and advance your career with our beta platform.',
+    'Get free access to AI-powered IT certification training. Practice with unlimited questions and advance your career with the beta platform.',
   url: 'https://certestic.com/pricing',
   mainEntity: {
     '@type': 'Product',
     name: 'Certestic IT Certification Training Platform - Free Beta Access',
   },
+};
+
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
 };
 
 export default function PricingPage() {
@@ -65,230 +156,381 @@ export default function PricingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+      />
 
-      <div className="pricing-page min-h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-800 dark:bg-linear-to-br overflow-x-hidden relative">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-200/10 dark:bg-purple-800/5 rounded-full blur-3xl"></div>
-        </div>
-
-        {/* Header with Navigation */}
+      <MarketingPageShell>
         <LandingHeader />
 
-        {/* Main Content */}
-        <main className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16" role="main">
-          {/* Breadcrumb */}
-          <Breadcrumb
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Pricing', current: true },
-            ]}
-            className="mb-8 sm:mb-12"
+        <main>
+          <PageHero
+            breadcrumb={
+              <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Pricing', current: true }]} />
+            }
+            eyebrow={
+              <>
+                <Star className="h-4 w-4" aria-hidden="true" />
+                <span>Free beta</span>
+              </>
+            }
+            title="Free while we're"
+            highlight="still building it."
+            description="Every new account starts with 300 credits and no card on file. Generate exams on any of the 100+ tracks, sit them under real conditions, and keep the report."
+            actions={
+              <>
+                <Button
+                  asChild
+                  size="lg"
+                  className={`${marketingTheme.button.primary} ${marketingTheme.focusRing} h-12 w-full gap-2 px-7 py-0 sm:w-auto`}
+                >
+                  <Link href="/signup">
+                    Start free
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className={`${marketingTheme.button.secondary} ${marketingTheme.focusRing} h-12 w-full px-7 py-0 sm:w-auto`}
+                >
+                  <Link href="#included">See what&apos;s included</Link>
+                </Button>
+              </>
+            }
+            footnote={
+              <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                {trustPoints.map((point) => (
+                  <li
+                    key={point}
+                    className="flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400"
+                  >
+                    <Check
+                      className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400"
+                      aria-hidden="true"
+                    />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            }
+            aside={
+              <div aria-hidden="true">
+                <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-linear-to-br from-violet-500/10 via-transparent to-indigo-500/10 blur-2xl" />
+                <PreviewWindow label="Your account">
+                  <div className="space-y-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                          Beta access
+                        </p>
+                        <p className="mt-1 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                          $0
+                          <span className="ml-1.5 align-middle text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                            for the beta
+                          </span>
+                        </p>
+                      </div>
+                      <Chip variant="accent">No card</Chip>
+                    </div>
+
+                    <div className={cn(marketingTheme.surface.inset, 'p-3.5')}>
+                      <div className="flex items-baseline justify-between">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
+                          Credits
+                        </p>
+                        <p className="text-sm font-semibold tabular-nums text-slate-900 dark:text-slate-100">
+                          300
+                          <span className="ml-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                            granted
+                          </span>
+                        </p>
+                      </div>
+                      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-200/80 dark:bg-slate-700/70">
+                        <div className="h-full w-full rounded-full bg-linear-to-r from-violet-500 to-indigo-500" />
+                      </div>
+                      <p className="mt-2 text-[10px] leading-relaxed text-slate-500 dark:text-slate-400">
+                        Added at signup · spent only when an exam is generated
+                      </p>
+                    </div>
+
+                    <ul className="space-y-2">
+                      {['All 100+ tracks', 'Timed sittings', 'Topic-level reports'].map((row) => (
+                        <li
+                          key={row}
+                          className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300"
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <Check
+                              className="h-3 w-3 text-violet-600 dark:text-violet-400"
+                              aria-hidden="true"
+                            />
+                            {row}
+                          </span>
+                          <span className="text-slate-500 dark:text-slate-400">included</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </PreviewWindow>
+              </div>
+            }
           />
 
-          {/* Hero Section */}
-          <section className="pricing-hero relative py-8 sm:py-12 mb-12 sm:mb-16 lg:mb-20 text-center">
-            <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
-              <div className="inline-flex items-center gap-2 bg-violet-100 dark:bg-violet-900/30 border border-violet-200 dark:border-violet-800/50 text-violet-700 dark:text-violet-300 px-4 py-2 rounded-full text-xs sm:text-sm font-medium">
-                <Star className="w-4 h-4" />
-                <span>100% Free Beta</span>
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">
-                  Simple, Transparent Pricing
-                </span>
-              </h1>
-
-              <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-                Access unlimited AI-powered practice exams and personalized learning. Everything's
-                completely free while we build the future of IT certification training.
-              </p>
-            </div>
-          </section>
-
-          {/* Pricing Card */}
-          <section className="pricing-card-section relative py-8 sm:py-12 mb-12 sm:mb-16">
-            <div className="max-w-2xl mx-auto">
-              <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500">
-                <CardContent className="relative p-8 sm:p-12 lg:p-14">
-                  {/* Free Beta Badge */}
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-violet-600 dark:bg-violet-700 text-white px-6 sm:px-8 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
-                      FREE BETA ACCESS
-                    </span>
-                  </div>
-
-                  {/* Pricing Content */}
-                  <div className="text-center mb-8 sm:mb-10 mt-4">
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-                      Beta Access
-                    </h2>
-                    <div className="text-5xl sm:text-6xl lg:text-7xl font-bold bg-linear-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent mb-3">
-                      FREE
-                    </div>
-                    <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400">
-                      Start your certification journey today
-                    </p>
-                  </div>
-
-                  {/* Features List */}
-                  <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-10">
-                    <div className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                      <span className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Unlimited AI-generated practice exams
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                      <span className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                        All IT certification tracks
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                      <span className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Performance analytics & insights
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                      <span className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Personalized study recommendations
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                      <span className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Email support & feedback
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                      <span className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                        Direct developer feedback
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Beta Promise Card */}
-                  <div className="bg-violet-50/80 dark:bg-violet-900/20 border border-violet-200/60 dark:border-violet-700/60 rounded-2xl p-4 sm:p-6 mb-8 sm:mb-10">
-                    <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 text-center leading-relaxed">
-                      <strong className="font-semibold">Beta Promise:</strong> Your feedback shapes
-                      what gets built next. Help create the platform you actually want to use.
-                    </p>
-                  </div>
-
-                  {/* CTA Button */}
-                  <Link href="/signup" className="block">
-                    <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white text-base sm:text-lg py-3 sm:py-4 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
-                      <FaGraduationCap className="mr-2" />
-                      Get Started Free
-                    </Button>
+          {/* What's included */}
+          <div id="included" className="scroll-mt-24">
+            <MarketingSection className={marketingTheme.section.band}>
+              <SectionIntro
+                eyebrow="Included"
+                title="One plan. Everything in it."
+                description="There is no paid tier holding back the useful parts during beta. Every account gets the whole workflow — generation, sitting, and diagnosis."
+                action={
+                  <Link
+                    href="/#how-it-works"
+                    className={cn(marketingTheme.copy.link, marketingTheme.focusRing)}
+                  >
+                    See how the loop works
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
+                }
+              />
 
-          {/* FAQ Section */}
-          <section className="faq-section relative py-8 sm:py-12 mb-12 sm:mb-16">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12 sm:mb-16">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4 leading-tight">
-                  Frequently Asked Questions
-                </h2>
-                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
-                  Everything you need to know about our free beta
-                </p>
-              </div>
+              <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-6">
+                {/* Generation */}
+                <FeaturePanel className="md:col-span-2 lg:col-span-3">
+                  <FeaturePanelHeader
+                    icon={<Sparkles className="h-5 w-5" />}
+                    label="Generation"
+                    title="Any track, any scope."
+                    description="Pick from 100+ certifications, set the question count, and describe the scope in your own words. A fresh exam is written in minutes."
+                  />
+                  <div className={cn(marketingTheme.surface.inset, 'mt-5 p-4')} aria-hidden="true">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                          Certification
+                        </p>
+                        <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          AWS Solutions Architect — Associate
+                        </p>
+                      </div>
+                      <Chip>SAA-C03</Chip>
+                    </div>
 
-              <div className="space-y-4 sm:space-y-6">
-                <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-2xl hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-6 sm:p-8">
-                    <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-3 text-lg">
-                      How long is the beta free?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                      The platform stays free throughout 2025. Early users will get special
-                      benefits when pricing is introduced.
-                    </p>
-                  </CardContent>
-                </Card>
+                    <div className="mt-3 flex items-start gap-2 rounded-xl border border-slate-200/70 bg-white/70 p-2.5 dark:border-slate-700/60 dark:bg-slate-900/40">
+                      <Wand2
+                        className="mt-0.5 h-3 w-3 shrink-0 text-violet-600 dark:text-violet-400"
+                        aria-hidden="true"
+                      />
+                      <p className="text-[11px] leading-relaxed text-slate-700 dark:text-slate-200">
+                        Focus on multi-account governance and cost control.
+                      </p>
+                    </div>
 
-                <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-2xl hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-6 sm:p-8">
-                    <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-3 text-lg">
-                      What happens to my data?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                      Your progress and achievements are secure. Everything stays with you as
-                      the platform grows.
-                    </p>
-                  </CardContent>
-                </Card>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {['IAM', 'VPC', 'Cost control'].map((topic) => (
+                        <Chip key={topic} variant="accent">
+                          <Check className="h-3 w-3" aria-hidden="true" />
+                          {topic}
+                        </Chip>
+                      ))}
+                      <Chip className="line-through">Identity</Chip>
+                    </div>
 
-                <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-2xl hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-6 sm:p-8">
-                    <h3 className="font-bold text-slate-900 dark:text-slate-100 mb-3 text-lg">
-                      How can I provide feedback?
-                    </h3>
-                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                      Use the built-in feedback tools or contact directly. Your input drives
-                      development priorities.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </section>
-
-          {/* Call to Action Section */}
-          <section className="cta-section relative py-12 sm:py-16">
-            <Card className="bg-linear-to-r from-violet-600 to-blue-600 text-white rounded-3xl shadow-2xl overflow-hidden">
-              <CardContent className="p-8 sm:p-12 lg:p-16 text-center relative">
-                {/* Background decoration */}
-                <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-white/5 pointer-events-none"></div>
-
-                <div className="relative max-w-4xl mx-auto">
-                  <FaGraduationCap className="text-5xl sm:text-6xl lg:text-7xl mb-6 mx-auto opacity-90" />
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
-                    Ready to Get Started?
-                  </h2>
-                  <p className="text-xl sm:text-2xl mb-8 sm:mb-10 opacity-90 leading-relaxed max-w-2xl mx-auto font-light">
-                    Join IT professionals who are already using and improving the platform.
-                    Completely free.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-                    <Link href="/signup">
-                      <Button
-                        size="lg"
-                        variant="secondary"
-                        className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 bg-white text-violet-600 hover:bg-violet-50 hover:text-violet-700 hover:scale-105 transform"
-                      >
-                        <FaGraduationCap className="mr-2" />
-                        Start Free
-                      </Button>
-                    </Link>
-                    <Link href="/contact">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-4 text-lg font-semibold rounded-xl border-2 border-white text-white bg-transparent hover:bg-white hover:text-violet-600 transition-all duration-200 hover:scale-105 transform"
-                      >
-                        Contact Us
-                      </Button>
-                    </Link>
+                    <div className="mt-3 flex items-center justify-between border-t border-slate-200/70 pt-2.5 text-[10px] font-medium text-slate-500 dark:border-slate-700/60 dark:text-slate-400">
+                      <span>40 questions · 130 min</span>
+                      <span className="text-violet-600 dark:text-violet-300">Generated on demand</span>
+                    </div>
                   </div>
+                </FeaturePanel>
+
+                {/* Report */}
+                <FeaturePanel className="md:col-span-2 lg:col-span-3">
+                  <FeaturePanelHeader
+                    icon={<BarChart3 className="h-5 w-5" />}
+                    label="Report"
+                    title="A diagnosis, not a score."
+                    description="Every answer maps to a topic. You see which domains held up, which quietly cost you points, and what to generate next."
+                    variant="soft"
+                  />
+                  <div className={cn(marketingTheme.surface.inset, 'mt-5 p-4')} aria-hidden="true">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
+                        Exam report
+                      </span>
+                      <Chip variant="accent">82% overall</Chip>
+                    </div>
+                    <div className="mt-3 space-y-2.5">
+                      <TopicRow label="Identity & access" value={94} tone="strong" />
+                      <TopicRow label="Networking" value={86} tone="mid" />
+                      <TopicRow label="Cost management" value={64} tone="weak" />
+                    </div>
+                    <div className={cn(marketingTheme.surface.callout, 'mt-3 p-2.5')}>
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-violet-700 dark:text-violet-300">
+                        AI takeaway
+                      </p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-slate-700 dark:text-slate-200">
+                        Cost management is costing you 6 points. Generate a focused 20-question set.
+                      </p>
+                    </div>
+                  </div>
+                </FeaturePanel>
+
+                {/* Timed sitting */}
+                <FeaturePanel className="md:col-span-1 lg:col-span-2">
+                  <FeaturePanelHeader
+                    icon={<Timer className="h-5 w-5" />}
+                    label="Exam conditions"
+                    title="Sit it like the real thing."
+                    description="A countdown, a navigator, and flags for review — no feedback until you submit."
+                    variant="soft"
+                  />
+                  <div className={cn(marketingTheme.surface.inset, 'mt-5 p-4')} aria-hidden="true">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                        01:24:08
+                      </span>
+                      <Chip>Timed</Chip>
+                    </div>
+                    <div className="mt-3 grid grid-cols-8 gap-1">
+                      {Array.from({ length: 16 }).map((_, index) => (
+                        <span
+                          key={index}
+                          className={cn(
+                            'flex h-3.5 w-full items-center justify-center rounded-[3px] text-[8px] font-semibold',
+                            index < 11
+                              ? 'bg-violet-200/90 text-violet-800 dark:bg-violet-500/30 dark:text-violet-200'
+                              : 'border border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400',
+                            index === 11 && 'border-violet-500 bg-white text-violet-700 dark:bg-slate-900',
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <p className="mt-2 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                      11 answered · 5 left
+                    </p>
+                  </div>
+                </FeaturePanel>
+
+                {/* Progress */}
+                <FeaturePanel className="md:col-span-1 lg:col-span-2">
+                  <FeaturePanelHeader
+                    icon={<TrendingUp className="h-5 w-5" />}
+                    label="Progress"
+                    title="The bigger picture, after two exams."
+                    description="Your AI Learning Journey rolls every report into one view: mastery by domain and the trend across exams."
+                    variant="soft"
+                  />
+                  <div className={cn(marketingTheme.surface.inset, 'mt-5 p-4')} aria-hidden="true">
+                    <div className="flex items-baseline justify-between">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
+                        Average score
+                      </p>
+                      <Chip variant="accent">
+                        <TrendingUp className="h-3 w-3" aria-hidden="true" />
+                        Improving
+                      </Chip>
+                    </div>
+                    <p className="mt-1 text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                      78%
+                      <span className="ml-1.5 align-middle text-[10px] font-semibold text-violet-600 dark:text-violet-300">
+                        +11 pts
+                      </span>
+                    </p>
+                    <Sparkline points={[52, 58, 55, 64, 67, 66, 74, 78]} id="pricing" className="mt-1" />
+                  </div>
+                </FeaturePanel>
+
+                {/* Catalog */}
+                <FeaturePanel className="md:col-span-2 lg:col-span-2">
+                  <FeaturePanelHeader
+                    icon={<Layers className="h-5 w-5" />}
+                    label="Catalog"
+                    title="100+ tracks, one balance."
+                    description="Cloud, networking, security, containers, infrastructure as code — your credits travel across all of them."
+                  />
+                  <div className="mt-5 grid grid-cols-2 gap-x-3 gap-y-2" aria-hidden="true">
+                    {providers.map((provider) => (
+                      <span
+                        key={provider}
+                        className="flex items-center gap-1.5 text-[11px] font-medium text-slate-600 dark:text-slate-300"
+                      >
+                        <span className="h-1 w-1 shrink-0 rounded-full bg-violet-500" />
+                        <span className="truncate">{provider}</span>
+                      </span>
+                    ))}
+                  </div>
+                </FeaturePanel>
+              </div>
+            </MarketingSection>
+          </div>
+
+          {/* FAQ + beta promise */}
+          <MarketingSection>
+            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+              <div className="max-w-md">
+                <SectionIntro
+                  eyebrow="FAQ"
+                  title="What &ldquo;free&rdquo; actually means."
+                  description="No trial clock, no auto-renew, no surprise invoice at the end of a promo period."
+                />
+
+                <div className={cn(marketingTheme.surface.callout, 'mt-6')}>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-violet-700 dark:text-violet-300">
+                    Beta promise
+                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                    Your feedback shapes what gets built next. Early accounts keep their remaining
+                    credits, and get told before anything about pricing changes.
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          </section>
+
+                <Link
+                  href="/contact"
+                  className={cn(marketingTheme.copy.link, 'mt-5', marketingTheme.focusRing)}
+                >
+                  Ask us anything
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+
+              <FaqAccordion items={faqs} />
+            </div>
+          </MarketingSection>
+
+          <MarketingSection>
+            <CtaPanel
+              eyebrow="Free beta"
+              title="Start with 300 credits. Keep the report."
+              body="Pick a track, describe the scope, sit the exam, and read the diagnosis. Nothing to cancel later."
+              stats={heroFacts}
+              actions={
+                <>
+                  <Button
+                    asChild
+                    size="lg"
+                    className={`${marketingTheme.button.onDark} ${marketingTheme.focusRing}`}
+                  >
+                    <Link href="/signup">
+                      Start free
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    className={`${marketingTheme.button.onDarkOutline} ${marketingTheme.focusRing}`}
+                  >
+                    <Link href="/contact">Talk to us first</Link>
+                  </Button>
+                </>
+              }
+            />
+          </MarketingSection>
         </main>
-      </div>
+      </MarketingPageShell>
     </>
   );
 }

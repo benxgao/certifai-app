@@ -2,12 +2,24 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Check, Sparkles, Timer, Wand2 } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Timer } from 'lucide-react';
 import { Button } from '@/src/components/ui/button';
 import { marketingTheme } from '@/src/config/marketing-theme';
-import { FauxButton, PreviewWindow } from './visuals';
+import { PreviewWindow } from '@/src/components/marketing/visuals';
+import { TypingInstruction } from '@/src/components/landing/TypingInstruction';
 
 const trustPoints = ['300 free credits on signup', 'No credit card required', '100+ certification tracks'];
+
+/**
+ * Example instructions cycled by the hero's simulated-typing field.
+ * Kept under ~100 characters so the preview never grows past two lines.
+ */
+const instructionExamples = [
+  'Focus on multi-account governance and real-world trade-offs.',
+  "Skip the billing basics — I've sat through those twice already.",
+  'Make it harder than the real exam: longer scenario stems.',
+  'Weight it toward S3 encryption and cost-control edge cases.',
+];
 
 export default function Hero() {
   return (
@@ -118,16 +130,8 @@ export default function Hero() {
                   </div>
                 </div>
 
-                {/* Custom instruction */}
-                <div className={`${marketingTheme.surface.inset} px-3 py-2.5`}>
-                  <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
-                    <Wand2 className="h-3 w-3" />
-                    Your instruction
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-                    &ldquo;Focus on multi-account governance and real-world trade-offs.&rdquo;
-                  </p>
-                </div>
+                {/* Custom instruction — animated as if the visitor is typing it */}
+                <TypingInstruction phrases={instructionExamples} />
 
                 {/* Topics covered by the instruction */}
                 <div>
@@ -151,11 +155,6 @@ export default function Hero() {
                     ))}
                   </div>
                 </div>
-
-                <FauxButton>
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Generate 40 questions
-                </FauxButton>
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between text-[10px] font-medium text-slate-500 dark:text-slate-400">

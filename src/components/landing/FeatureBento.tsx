@@ -13,65 +13,11 @@ import {
   Timer,
   TrendingUp,
 } from 'lucide-react';
-import { MarketingSection } from '@/src/components/marketing';
+import { FeaturePanel, FeaturePanelHeader, MarketingSection } from '@/src/components/marketing';
 import { marketingTheme } from '@/src/config/marketing-theme';
 import { cn } from '@/src/lib/utils';
-import { Sparkline, TopicRow } from './visuals';
+import { Sparkline, TopicRow } from '@/src/components/marketing/visuals';
 
-function BentoCard({ className, children }: { className?: string; children: React.ReactNode }) {
-  return (
-    <div
-      className={cn(
-        marketingTheme.surface.feature,
-        marketingTheme.surface.featureInteractive,
-        'group flex flex-col p-6 sm:p-7',
-        className,
-      )}
-    >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-violet-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-      {children}
-    </div>
-  );
-}
-
-function CardHeader({
-  icon,
-  label,
-  title,
-  description,
-  accent = true,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  title: string;
-  description: string;
-  accent?: boolean;
-}) {
-  return (
-    <>
-      <div className="flex items-center gap-3">
-        <span
-          className={cn(
-            marketingTheme.iconTile.base,
-            accent ? marketingTheme.iconTile.accent : marketingTheme.iconTile.soft,
-          )}
-        >
-          {icon}
-        </span>
-        <span className={marketingTheme.copy.eyebrow}>{label}</span>
-      </div>
-      <h3 className="mt-4 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50 sm:text-xl">
-        {title}
-      </h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-        {description}
-      </p>
-    </>
-  );
-}
 
 const objectives = [
   { code: '1.2', label: 'Design secure access', value: 100 },
@@ -106,10 +52,10 @@ export default function FeatureBento() {
 
       <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-6">
         {/* Generation */}
-        <BentoCard className="md:order-1 md:col-span-2 lg:order-1 lg:col-span-4">
+        <FeaturePanel className="md:order-1 md:col-span-2 lg:order-1 lg:col-span-4">
           <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr] lg:items-center">
             <div>
-              <CardHeader
+              <FeaturePanelHeader
                 icon={<Sparkles className="h-5 w-5" />}
                 label="Generation"
                 title="Written from the blueprint, not pulled from a dump."
@@ -149,16 +95,16 @@ export default function FeatureBento() {
               </div>
             </div>
           </div>
-        </BentoCard>
+        </FeaturePanel>
 
         {/* Topic scope */}
-        <BentoCard className="md:order-2 lg:order-2 lg:col-span-2">
-          <CardHeader
+        <FeaturePanel className="md:order-2 lg:order-2 lg:col-span-2">
+          <FeaturePanelHeader
             icon={<Target className="h-5 w-5" />}
             label="Scope"
             title="Tell it what to include — and what to skip."
             description="Set the question count, then narrow the scope in plain English. Only the topics you name get written."
-            accent={false}
+            variant="soft"
           />
           <div className={cn(marketingTheme.surface.inset, 'mt-5 space-y-3 p-4')} aria-hidden="true">
             <p className="text-[11px] leading-relaxed text-slate-700 dark:text-slate-200">
@@ -184,18 +130,18 @@ export default function FeatureBento() {
               </div>
             </div>
           </div>
-        </BentoCard>
+        </FeaturePanel>
 
         {/* Analysis */}
-        <BentoCard className="md:order-4 md:col-span-2 lg:order-3 lg:col-span-4">
+        <FeaturePanel className="md:order-4 md:col-span-2 lg:order-3 lg:col-span-4">
           <div className="grid gap-6 lg:grid-cols-[1fr_0.95fr] lg:items-center">
             <div>
-              <CardHeader
+              <FeaturePanelHeader
                 icon={<BarChart3 className="h-5 w-5" />}
                 label="Analysis"
                 title="Scores are the least interesting part."
                 description="Every answer is mapped to a topic. You see exactly where the points went missing, in plain language, with the next exam already suggested."
-                accent={false}
+                variant="soft"
               />
             </div>
 
@@ -223,16 +169,16 @@ export default function FeatureBento() {
               </div>
             </div>
           </div>
-        </BentoCard>
+        </FeaturePanel>
 
         {/* Exam conditions */}
-        <BentoCard className="md:order-3 lg:order-4 lg:col-span-2">
-          <CardHeader
+        <FeaturePanel className="md:order-3 lg:order-4 lg:col-span-2">
+          <FeaturePanelHeader
             icon={<Timer className="h-5 w-5" />}
             label="Exam conditions"
             title="Sit it like the real thing."
             description="A countdown, a question navigator, flags for review, and no feedback until you submit."
-            accent={false}
+            variant="soft"
           />
           <div className={cn(marketingTheme.surface.inset, 'mt-5 p-4')} aria-hidden="true">
             <div className="flex items-center justify-between">
@@ -271,11 +217,11 @@ export default function FeatureBento() {
               <span>20 left</span>
             </div>
           </div>
-        </BentoCard>
+        </FeaturePanel>
 
         {/* Catalog */}
-        <BentoCard className="md:order-5 lg:order-5 lg:col-span-3">
-          <CardHeader
+        <FeaturePanel className="md:order-5 lg:order-5 lg:col-span-3">
+          <FeaturePanelHeader
             icon={<Layers className="h-5 w-5" />}
             label="Catalog"
             title="100+ certifications, one workflow."
@@ -302,16 +248,16 @@ export default function FeatureBento() {
             Browse the catalog
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </Link>
-        </BentoCard>
+        </FeaturePanel>
 
         {/* Progress */}
-        <BentoCard className="md:order-6 lg:order-6 lg:col-span-3">
-          <CardHeader
+        <FeaturePanel className="md:order-6 lg:order-6 lg:col-span-3">
+          <FeaturePanelHeader
             icon={<TrendingUp className="h-5 w-5" />}
             label="Progress"
             title="Two exams in, the bigger picture appears."
             description="Your AI Learning Journey rolls every report into one view: mastery by domain, performance trend, strengths, and the gaps still holding the score down."
-            accent={false}
+            variant="soft"
           />
           <div className={cn(marketingTheme.surface.inset, 'mt-5 p-4')} aria-hidden="true">
             <div className="flex items-baseline justify-between">
@@ -342,7 +288,7 @@ export default function FeatureBento() {
               </span>
             </div>
           </div>
-        </BentoCard>
+        </FeaturePanel>
       </div>
     </MarketingSection>
   );

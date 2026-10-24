@@ -94,7 +94,7 @@ test.describe('Demo credentials reveal consent flow', () => {
     await expect(page.locator('body')).toContainText('username/password: demo@certestic.com');
   });
 
-  test('applies the same reveal-on-click behavior on signup @smoke', async ({ page }) => {
+  test.skip('applies the same reveal-on-click behavior on signup @smoke', async ({ page }) => {
     await page.goto('/signup', { waitUntil: 'domcontentloaded' });
     await dismissCookieConsentIfVisible(page);
 

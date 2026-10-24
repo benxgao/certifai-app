@@ -3,11 +3,14 @@
 import React, { useState, useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import Link from 'next/link';
+import { Lock, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import LandingHeader from '@/src/components/custom/LandingHeader';
 import AuthLeftSection from '@/src/components/auth/AuthLeftSection';
+import AuthPageShell from '@/src/components/auth/AuthPageShell';
+import AuthCard, { AuthCardHeader } from '@/src/components/auth/AuthCard';
+import AuthField from '@/src/components/auth/AuthField';
+import PasswordField from '@/src/components/auth/PasswordField';
 import EnhancedNotificationBar from '@/src/components/custom/NotificationBar';
 import { AlertMessage } from '@/src/components/custom/AlertMessage';
 import { useFirebaseAuth } from '@/src/context/FirebaseAuthContext';
@@ -15,6 +18,8 @@ import { ButtonLoadingText } from '@/src/components/ui/loading-spinner';
 import PageLoader from '@/src/components/custom/PageLoader';
 import { FeatureFlags } from '@/src/config/featureFlags';
 import { useDemoCredentialsReveal } from '@/src/hooks/useDemoCredentialsReveal';
+import { authButton, authCard, authLink, authNote } from '@/src/config/auth-theme';
+import { cn } from '@/src/lib/utils';
 import {
   DEFAULT_DEMO_CREDENTIALS_DISPLAY,
   formatDemoCredentialsForDisplay,
@@ -135,169 +140,121 @@ const LoginPage = () => {
     );
   }
 
+  const isBusy = isLoading || isRedirecting;
+  const canSubmit = !!form.email.trim() && !!form.password.trim() && !isBusy;
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-slate-100 to-violet-50/30 dark:from-slate-900 dark:via-slate-800 dark:to-violet-950/20">
-      {/* Header */}
-      <LandingHeader />
+    <AuthPageShell
+      header={<LandingHeader />}
+      // banner={
+      //   <EnhancedNotificationBar
+      //     message={demoMessage}
+      //     ctaText=""
+      //     ctaLink="/signin"
+      //     variant="promo"
+      //     showIcon={true}
+      //     requireConsent={shouldRequireDemoConsent}
+      //     consentButtonText="Show demo login details"
+      //     onConsentAccept={revealCredentials}
+      //     privacyLink="/privacy"
+      //     termsLink="/terms"
+      //     isConsentLoading={isDemoCredentialsLoading}
+      //     consentError={demoCredentialsError}
+      //   />
+      // }
+      aside={<AuthLeftSection mode="signin" />}
+    >
+      <AuthCard>
+        <AuthCardHeader
+          eyebrow="Account access"
+          title="Sign In"
+          subtitle="Enter your credentials to access your account."
+        />
 
-      {/* Notification Bar */}
-      <EnhancedNotificationBar
-        message={demoMessage}
-        ctaText=""
-        ctaLink="/signin"
-        variant="promo"
-        showIcon={true}
-        requireConsent={shouldRequireDemoConsent}
-        consentButtonText="Show demo login details"
-        onConsentAccept={revealCredentials}
-        privacyLink="/privacy"
-        termsLink="/terms"
-        isConsentLoading={isDemoCredentialsLoading}
-        consentError={demoCredentialsError}
-      />
+        <form onSubmit={handleSignin} autoComplete="on">
+          <div className={cn(authCard.body, 'space-y-5')}>
+            <AuthField
+              id="email"
+              name="email"
+              type="email"
+              label="Email address"
+              placeholder="you@example.com"
+              required
+              value={form.email}
+              onChange={onChange}
+              disabled={isBusy}
+              autoComplete="on"
+              icon={Mail}
+            />
 
-      {/* Main Container with same width as header */}
-      <div className="container mx-auto px-4 sm:px-6 md:px-7 lg:px-8">
-        <div className="flex-1 w-full lg:flex lg:gap-0 lg:bg-none auth-container">
-          {/* Left Column - Welcome Section */}
-          <AuthLeftSection mode="signin" />
+            <PasswordField
+              id="password"
+              name="password"
+              label="Password"
+              placeholder="••••••••"
+              required
+              value={form.password}
+              onChange={onChange}
+              disabled={isBusy}
+              autoComplete="on"
+              labelAction={
+                <Link href="/forgot-password" className={authLink.inline}>
+                  Forgot password?
+                </Link>
+              }
+            />
 
-          {/* Right Column - Signin Form */}
-          <div className="flex items-center justify-center py-4 sm:py-8 lg:py-20 relative min-h-full lg:min-h-0 lg:w-1/2 auth-container auth-form-mobile">
-            {/* Enhanced background decoration matching dashboard */}
-            <div className="absolute inset-0 overflow-hidden">
-              {/* Large gradient orbs for depth - matching dashboard style */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-            </div>
-
-            {/* Form Card using DashboardCard pattern */}
-            <div className="relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-2xl rounded-xl overflow-hidden w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-lg xl:max-w-xl">
-              {/* Decorative gradient orbs - matching dashboard cards */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-violet-200/20 dark:bg-violet-600/10 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-3xl"></div>
-
-              <div className="relative z-10">
-                {/* Header with dashboard card header styling */}
-                <div className="px-6 sm:px-8 py-8 sm:py-10 border-b border-slate-100 dark:border-slate-700/50 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20">
-                  <div className="text-center">
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-50 tracking-tight mb-3 leading-tight">
-                      Sign In
-                    </h1>
-                    <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-light">
-                      Enter your credentials to access your account
+            {error && (
+              <AlertMessage message={error} className="text-sm">
+                {showVerificationPrompt && (
+                  <div className="mt-3 rounded-lg border border-slate-200/80 bg-slate-50 p-3 dark:border-slate-700/60 dark:bg-slate-800/50">
+                    <p className="mb-2.5 text-sm font-medium text-slate-700 dark:text-slate-200">
+                      Didn&apos;t receive the email? Check your spam folder or resend it.
                     </p>
-                  </div>
-                </div>
-
-                <form onSubmit={handleSignin} autoComplete="on">
-                  {/* Form Content with dashboard card content styling */}
-                  <div className="p-6 sm:p-8 space-y-4 sm:space-y-5 lg:space-y-6 auth-content-mobile">
-                    <div className="space-y-2 sm:space-y-2.5">
-                      <Label
-                        htmlFor="email"
-                        className="text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-base"
-                      >
-                        Email address
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="you@example.com"
-                        required
-                        value={form.email}
-                        onChange={onChange}
-                        disabled={isLoading || isRedirecting}
-                        autoComplete="on"
-                        className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:bg-white dark:focus:bg-slate-900/80 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
-                      />
-                    </div>
-                    <div className="space-y-2 sm:space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <Label
-                          htmlFor="password"
-                          className="text-slate-700 dark:text-slate-200 font-semibold text-base sm:text-base"
-                        >
-                          Password
-                        </Label>
-                        <Link
-                          href="/forgot-password"
-                          className="text-xs sm:text-sm font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
-                        >
-                          Forgot password?
-                        </Link>
-                      </div>
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="••••••••"
-                        required
-                        value={form.password}
-                        onChange={onChange}
-                        disabled={isLoading || isRedirecting}
-                        autoComplete="on"
-                        className="text-sm sm:text-base rounded-xl border-slate-200/60 dark:border-slate-600/60 bg-white/80 dark:bg-slate-900/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 focus:bg-white dark:focus:bg-slate-900/80 transition-all duration-300 hover:border-violet-300 dark:hover:border-violet-700 backdrop-blur-sm shadow-sm hover:shadow-md"
-                      />
-                    </div>
-                    {error && (
-                      <AlertMessage message={error} className="text-base p-4 sm:p-5 lg:p-6">
-                        {showVerificationPrompt && (
-                          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/50 rounded-lg">
-                            <p className="text-sm sm:text-base text-blue-700 dark:text-blue-200 mb-3 font-medium">
-                              Didn&apos;t receive the email? Check your spam folder or resend it.
-                            </p>
-                            <Button
-                              onClick={handleResendVerificationEmail}
-                              disabled={verificationLoading}
-                              variant="outline"
-                              size="sm"
-                              className="text-xs sm:text-sm font-medium"
-                            >
-                              {verificationLoading ? 'Sending...' : 'Resend verification email'}
-                            </Button>
-                          </div>
-                        )}
-                      </AlertMessage>
-                    )}
                     <Button
-                      type="submit"
-                      className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01] text-base sm:text-base py-3 sm:py-3.5 relative overflow-hidden group"
-                      disabled={
-                        isLoading || isRedirecting || !form.email.trim() || !form.password.trim()
-                      }
-                      size="lg"
+                      onClick={handleResendVerificationEmail}
+                      disabled={verificationLoading}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs font-medium"
                     >
-                      {/* Button shine effect */}
-                      <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                      <ButtonLoadingText
-                        isLoading={isLoading || isRedirecting}
-                        loadingText={isRedirecting ? 'Redirecting...' : 'Signing In...'}
-                        defaultText="Sign In"
-                        showSpinner={true}
-                        spinnerSize="sm"
-                      />
+                      {verificationLoading ? 'Sending...' : 'Resend verification email'}
                     </Button>
                   </div>
+                )}
+              </AlertMessage>
+            )}
 
-                  {/* Form Footer with dashboard card footer styling */}
-                  <div className="flex justify-center text-base sm:text-base text-slate-600 dark:text-slate-400 pt-4 sm:pt-5 border-t border-slate-100 dark:border-slate-700/70 px-6 sm:px-8 lg:px-12 pb-5 sm:pb-7 bg-linear-to-r from-slate-50/60 to-violet-50/30 dark:from-slate-800/40 dark:to-violet-950/20 font-light">
-                    Don&apos;t have an account?&nbsp;
-                    <Link
-                      href="/signup"
-                      className="font-semibold text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 hover:underline transition-colors duration-200"
-                    >
-                      Sign up
-                    </Link>
-                  </div>
-                </form>
-              </div>
-            </div>
+            <Button
+              type="submit"
+              size="lg"
+              className={authButton.primary}
+              disabled={!canSubmit}
+            >
+              <ButtonLoadingText
+                isLoading={isBusy}
+                loadingText={isRedirecting ? 'Redirecting...' : 'Signing In...'}
+                defaultText="Sign In"
+                showSpinner={true}
+                spinnerSize="sm"
+              />
+            </Button>
+
+            <p className={authNote.secure}>
+              <Lock className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" aria-hidden="true" />
+              Encrypted in transit
+            </p>
           </div>
-        </div>
-      </div>
-    </div>
+
+          <div className={authCard.footer}>
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className={authLink.footer}>
+              Sign up
+            </Link>
+          </div>
+        </form>
+      </AuthCard>
+    </AuthPageShell>
   );
 };
 

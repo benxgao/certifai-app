@@ -6,7 +6,7 @@ import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { MarketingSection } from '@/src/components/marketing';
 import { marketingTheme } from '@/src/config/marketing-theme';
 import { cn } from '@/src/lib/utils';
-import { FauxButton, PreviewWindow, ScoreRing, TopicRow } from './visuals';
+import { PreviewWindow, ScoreRing, TopicRow } from '@/src/components/marketing/visuals';
 
 const reportPoints = [
   'Topic-level accuracy for every domain in the exam',
@@ -131,11 +131,6 @@ export default function AnalysisSection() {
                     Drill cost allocation before your next full-length attempt.
                   </p>
                 </div>
-
-                <FauxButton>
-                  Generate follow-up exam
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </FauxButton>
               </div>
             </PreviewWindow>
           </div>

@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/src/lib/utils';
 import { useAllFirmsWithCertifications } from '@/src/swr/useAllData';
 import { Loader2, Award } from 'lucide-react';
 
@@ -24,6 +25,10 @@ interface CertificationSelectorProps {
   onCertificationChange: (certId: number | null) => void;
   disabled?: boolean;
   required?: boolean;
+  /** Extra classes for the label, used by auth screens to match their field rhythm. */
+  labelClassName?: string;
+  /** Extra classes for the trigger, used by auth screens to match their input height. */
+  triggerClassName?: string;
 }
 
 function CertificationSelector({
@@ -31,6 +36,8 @@ function CertificationSelector({
   onCertificationChange,
   disabled = false,
   required = false,
+  labelClassName,
+  triggerClassName,
 }: CertificationSelectorProps) {
   const { firms, isLoading, error } = useAllFirmsWithCertifications();
 
@@ -86,7 +93,7 @@ function CertificationSelector({
 
   return (
     <div className="space-y-1.5 sm:space-y-2">
-      <Label htmlFor="certification" className="text-foreground font-medium">
+      <Label htmlFor="certification" className={cn('text-foreground font-medium', labelClassName)}>
         Certification exam to attend{' '}
         {required ? (
           <span className="text-destructive font-normal">*</span>
@@ -101,8 +108,13 @@ function CertificationSelector({
         disabled={disabled || isLoading}
       >
         <SelectTrigger
+          id="certification"
+          aria-label="Certification exam to attend"
           data-testid="certification-selector"
-          className="border-input bg-background text-foreground hover:border-ring/50 focus:ring-ring/20 focus:border-ring transition-all duration-200 w-full"
+          className={cn(
+            'border-input bg-background text-foreground hover:border-ring/50 focus:ring-ring/20 focus:border-ring transition-all duration-200 w-full',
+            triggerClassName,
+          )}
         >
           <SelectValue
             placeholder={

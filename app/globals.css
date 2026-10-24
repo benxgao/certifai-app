@@ -658,3 +658,67 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* ========================================
+   HERO "LIVE TYPING" INSTRUCTION PREVIEW
+   ======================================== */
+
+/* Blinking text caret, mimicking a focused input field. */
+@keyframes instruction-caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  92% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.instruction-caret {
+  animation: instruction-caret-blink 1.05s steps(1, end) infinite;
+}
+
+/* Pointer glides into the field, presses once, then fades out. */
+@keyframes instruction-pointer-glide {
+  0% {
+    opacity: 0;
+    transform: translate(18px, 20px) scale(0.9);
+  }
+  45% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  68% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.82);
+  }
+  84% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.instruction-pointer {
+  transform-origin: top left;
+  animation: instruction-pointer-glide 820ms cubic-bezier(0.22, 0.85, 0.24, 1) both;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instruction-caret,
+  .instruction-pointer {
+    animation: none;
+  }
+
+  .instruction-pointer {
+    display: none;
+  }
+}

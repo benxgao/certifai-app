@@ -124,3 +124,36 @@ hover:shadow-sm transition-colors duration-200
 /* BANNED: scale/translate transforms — keep all hover interactions minimal */
 /* hover:scale-*  hover:-translate-y-* */
 ```
+
+---
+
+## Auth Screens (`/signin`, `/signup`, `/forgot-password`)
+
+Auth flows are neutral-first like marketing, but use app-grade form density.
+
+**Source of truth:** `src/config/auth-theme.ts` (`authPage`, `authCard`, `authHeading`, `authField`, `authButton`, `authLink`, `authNote`, `authAside`).
+
+**Primitives:** `src/components/auth/` — `AuthPageShell` (background + header/banner slots + two-column grid), `AuthCard`/`AuthCardHeader` (surface + eyebrow/title/subtitle), `AuthField` (label + input + icon/trailing/hint), `PasswordField` (adds the reveal toggle), `AuthLeftSection` (marketing column), `AuthAsidePreview` (decorative product preview for that column).
+
+**Auth aside (left column)**
+
+The aside reuses the homepage hero vocabulary instead of inventing its own: `MarketingBadge` pill → display title with **one** gradient clause (`copy.gradient`) → `font-light` body → a product preview → quiet trust row. Pills, gradients, inset surfaces and the preview primitives (`PreviewWindow`, `TopicRow`, `Chip`) all come from `marketing-theme` / `components/marketing`; only the auth-specific sizes live in `authAside`.
+
+- No button-shaped elements in the preview (see `marketing.md` — faux buttons read as real controls). The preview shows the report/generation state; the card next to it is the only CTA on the page.
+
+- `signup` previews the generation moment (exam studio); `signin` previews the last report — the thing each mode is actually about.
+- The preview is decorative: `aria-hidden` at the wrapper, no real `button`/`a` inside, and every fact it shows is repeated in the copy. It is illustrative data (SAA-C03, 82%), never a claim about the user's account.
+- Title maxes at 2.5rem (the homepage hero is 3.35rem) so the form card stays the focal point.
+- The grid is `items-start`: the aside and the card share a top edge. Do not centre the row — the card's height varies per page, so centring would reintroduce the uneven-shoulder offset (26px on `/signin`, 209px on `/signup`).
+- The aside lives in its own stretching track (`authPage.asideColumn` + `asideSticky`): it is top-aligned like the card, then pins 31px under the sticky header once the tall signup form starts scrolling. Two rules keep this working:
+  - the page shell uses `overflow-x-clip`, **not** `overflow-x-hidden` — `hidden` makes the shell a scroll container and silently kills `position: sticky` for every descendant;
+  - the track overrides the grid's `items-start` with `self-stretch`, otherwise a short aside has no room to travel.
+
+Rules:
+
+- Both auth routes must render through `AuthPageShell` + `AuthCard`; do not reintroduce route-local card/shell class strings.
+- Controls are 44px tall (`h-11`) with `rounded-xl`; the card is `rounded-2xl`, so controls never match the card radius.
+- Fields use `AuthField`/`PasswordField`. Native props (`id`, `name`, `type`, `autoComplete`, `required`, `minLength`, handlers) must stay on the page — the primitives are presentation only.
+- Focus indication is required for both pointer and keyboard users: `focus:` **and** `focus-visible:` border + 2px violet ring.
+- No `hover:scale-*` / `hover:-translate-y-*`, no shine sweeps, no per-page gradient button systems.
+- Placeholder text must be `slate-500` on light surfaces (slate-400 fails AA).
