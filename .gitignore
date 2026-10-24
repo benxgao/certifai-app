@@ -48,7 +48,15 @@ next-env.d.ts
 
 .vscode
 .history
-.workbuddy-ai/memory/
 gcp_credentials.json
 test-results/
 test-error-debug.png
+
+# AI copilots coding assistants
+.cursor/
+.continue/
+.windsurf/
+.aider*
+.clinerules
+.cursorrules
+.workbuddy-ai/

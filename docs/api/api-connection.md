@@ -10,6 +10,11 @@ Documents how `certifai-app` connects to the `certifai-api` backend: the `ApiRes
 
 For marketing signup-subscription lifecycle details, use [`marketing-subscription-workflow.md`](marketing-subscription-workflow.md).
 
+> **Contract source of truth**: `certifai-api/docs/api/` — specifically `response-envelope.md`
+> (envelope, pagination meta, error codes) and `cross-repo-contract.md` (change sequencing + log).
+> This file describes **how the app consumes** the backend, never what the backend returns. If the two
+> disagree, the api docs win and this file gets corrected.
+
 ## Key Concepts
 
 - **`ApiResponse<T>`**: standard envelope wrapping all successful backend responses.
