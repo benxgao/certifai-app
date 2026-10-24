@@ -14,7 +14,11 @@ import { useExamState } from '@/src/swr/exams';
 import { useExamLiveStatus } from '@/src/swr/useExamLiveStatus';
 import { useExamStatusNotifications } from '@/src/hooks/useExamStatusNotifications';
 import { toastHelpers } from '@/src/lib/toast';
-import { ExamGenerationStage, isExamGeneratingStatus } from '@/src/types/exam-status';
+import {
+  ExamGenerationStage,
+  isExamGeneratingStatus,
+  isExamReadyStatus,
+} from '@/src/types/exam-status';
 import { ExamSubmitData, ExamGenerationProgressUI } from '@/src/types/swr-data/exams';
 import { ApiResponse } from '@/src/types/api';
 
@@ -63,12 +67,47 @@ export const useExamPageLogic = () => {
   const { mutateAllExams } = useAllUserExams(apiUserId);
   const { mutateExams } = useExamsForCertification(apiUserId, certId);
 
+  // Generation is no longer all-or-nothing: the backend promotes an exam to READY
+  // as soon as its first batch of questions exists, and keeps generating while the
+  // user is already answering. So we must keep watching until the *completion
+  // marker* (live-status `is_generating_completed`) says otherwise - not until the
+  // status leaves QUESTIONS_GENERATING.
+  const [generationCompleted, setGenerationCompleted] = useState(false);
+  // Safety valve: never keep polling forever if a completion marker never
+  // arrives (generation died, or the plan was cleaned up).
+  const [generationWatchExpired, setGenerationWatchExpired] = useState(false);
+
+  const examStatus = examState?.exam_status;
+  const isGenerating = isExamGeneratingStatus(examStatus);
+  const isPlayable = isExamReadyStatus(examStatus) && !examState?.submitted_at;
+
+  // Poll fast while generating, cheaply while playable-but-unfinished.
+  const trackGeneration =
+    !generationCompleted && !generationWatchExpired && (isGenerating || isPlayable);
+
   // Get real-time exam status via live-status endpoint (bypasses Redis cache)
   const { liveStatus, isLoading: isLoadingProgress, isReady: isExamReady } = useExamLiveStatus(
     apiUserId || null,
     examId || null,
-    isExamGeneratingStatus(examState?.exam_status) // Only poll while generating
+    trackGeneration,
+    isGenerating ? 2000 : 5000,
   );
+
+  useEffect(() => {
+    if (liveStatus?.is_generating_completed) {
+      setGenerationCompleted(true);
+    }
+  }, [liveStatus?.is_generating_completed]);
+
+  useEffect(() => {
+    if (!trackGeneration) return;
+
+    const timer = setTimeout(() => setGenerationWatchExpired(true), 10 * 60 * 1000);
+    return () => clearTimeout(timer);
+  }, [trackGeneration]);
+
+  /** Playable, but more question batches are still on the way. */
+  const isAwaitingMoreQuestions = trackGeneration && !generationCompleted;
 
   // Simple force status check function
   const forceStatusCheck = () => mutateExamState();
@@ -99,8 +138,14 @@ export const useExamPageLogic = () => {
   useExamStatusNotifications(examState);
 
   // Get exam questions
+  //
+  // While later batches are still being generated, revalidate the page every 10s
+  // so questions that just landed show up (and pagination grows) without a manual
+  // reload. SWR keeps the previous data, so this never blanks the page mid-answer.
   const { questions, pagination, isLoadingQuestions, isQuestionsError, mutateQuestions } =
-    useExamQuestions(questionsApiUrl);
+    useExamQuestions(questionsApiUrl, {
+      refreshIntervalMs: isAwaitingMoreQuestions ? 10_000 : 0,
+    });
 
   // Determine if we're still loading questions - this includes cases where questionsApiUrl is null
   // or when we have a URL but questions haven't loaded yet
@@ -297,6 +342,8 @@ export const useExamPageLogic = () => {
     pagination,
     isLoadingQuestions: isActuallyLoadingQuestions,
     isQuestionsError,
+    /** Playable now, but later question batches are still generating. */
+    isAwaitingMoreQuestions,
 
     // Topics
     topics,

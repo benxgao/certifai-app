@@ -161,6 +161,23 @@ When `apiUserId`, `certId`, and `examId` are available, `useExamPageLogic()` bui
 - loading / error state
 - `mutateQuestions()` for optimistic updates and revalidation
 
+### Early-ready window (playable while still generating)
+
+The backend promotes an exam to `READY` as soon as its first question batch exists
+and keeps generating the rest, so the detail page has to assume the question set can
+still grow:
+
+- `useExamLiveStatus()` keeps polling past `READY` (5s cadence) until
+  `is_generating_completed` is true — that flag, not `exam_status`, means generation
+  is over. Inactivity is capped at 10 minutes so a dead generation cannot poll forever.
+- While generation is incomplete, `useExamQuestions({ refreshIntervalMs: 10000 })`
+  revalidates the page, so newly generated questions and the pagination total appear
+  without a reload. SWR's `keepPreviousData` prevents the page from blanking.
+- `useExamPageLogic()` exposes `isAwaitingMoreQuestions` for callers that want to
+  signal "more questions are coming".
+- `GET .../questions` no longer returns `423` during generation; it returns what is
+  associated so far (empty page + `generation_in_progress: true` when there is none).
+
 ### Answer submission behavior
 
 `useSubmitAnswer()` performs per-question autosave:

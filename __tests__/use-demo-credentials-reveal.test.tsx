@@ -45,6 +45,12 @@ describe('useDemoCredentialsReveal', () => {
     });
   };
 
+  // Kept as a function so TypeScript's control-flow analysis does not narrow
+  // `latestSnapshot` to `null` between a reset and the next assertion.
+  const resetSnapshot = () => {
+    latestSnapshot = null;
+  };
+
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
@@ -186,7 +192,7 @@ describe('useDemoCredentialsReveal', () => {
     });
 
     root = createRoot(container);
-    latestSnapshot = null;
+    resetSnapshot();
 
     mockUseRevealDemoCredentials.mockReturnValue({
       reveal: jest.fn().mockResolvedValue(undefined),

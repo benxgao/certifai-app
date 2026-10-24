@@ -24,9 +24,23 @@ export type Question = Omit<QuestionData, 'answerOptions'> & { answerOptions: An
  *
  * @see functions/src/endpoints/api/users/exams/getExamQuestions.ts
  */
+export interface ExamQuestionsOptions {
+  /**
+   * Revalidate cadence for the question page. `0` (default) fetches once.
+   *
+   * Needed while an exam is playable but still generating: the backend exposes
+   * the questions it has so far (early READY), and later batches land while the
+   * user is already answering.
+   */
+  refreshIntervalMs?: number;
+}
+
 export function useExamQuestions(
   url: string | null, // The full API URL for the questions (can be first page or next_page)
+  options: ExamQuestionsOptions = {},
 ) {
+  const { refreshIntervalMs = 0 } = options;
+
   const { data, error, isLoading, isValidating, mutate } = useAuthSWR<ApiResponse<ExamQuestionsData>, Error>(
     url, // SWR key is the URL itself; SWR re-fetches if this changes
     {
@@ -34,7 +48,7 @@ export function useExamQuestions(
       revalidateOnFocus: false, // Optional: prevent revalidation on window focus
       revalidateOnReconnect: false, // Prevent revalidation on reconnect
       dedupingInterval: 3000, // Increase to 3 seconds to prevent rapid successive calls (overrides useAuthSWR's 5 second default)
-      refreshInterval: 0, // Disable auto refresh
+      refreshInterval: refreshIntervalMs, // 0 = no auto refresh (stable exam)
       refreshWhenHidden: false,
       refreshWhenOffline: false,
       keepPreviousData: true, // Keep previous data while loading new data

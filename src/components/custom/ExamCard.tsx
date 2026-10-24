@@ -11,6 +11,7 @@ import { ExamGenerationProgressBar } from '@/src/components/custom/ExamGeneratio
 import { DeleteExamModal } from '@/src/components/custom/DeleteExamModal';
 import { ExamListItem } from '@/swr/exams';
 import {
+  BackendExamStatus,
   DerivedExamStatus,
   getDerivedExamStatus,
   getExamStatusInfo,
@@ -64,16 +65,19 @@ export const ExamCard = memo(function ExamCard({
   // Get typed exam status and info
   let examStatus = getDerivedExamStatus(exam);
 
-  // OVERRIDE: If live-status shows generation is complete (100%, is_generating_completed=true),
-  // override the derived status to 'ready' to prevent UI flashing when the database
-  // is still catching up with the backend exam_status field transition
+  // The card renders from the exam-list snapshot (5s refresh interval + a ~1.3s
+  // aggregate query), while `/live-status` polls the same exam every 2s and
+  // bypasses the backend cache on purpose. So availability has to come from
+  // live-status: the moment it reports READY, the CTA must be usable — waiting
+  // for the next list refresh (or for the completion counters to catch up)
+  // keeps the user blocked on an exam that can already be started.
   const isGenerationComplete =
     liveStatus?.is_generating_completed === true && liveStatus?.progress_percentage === 100;
 
-  if (
-    isGenerationComplete &&
-    (examStatus === DerivedExamStatus.generating || examStatus === DerivedExamStatus.in_progress)
-  ) {
+  const isPlayablePerLiveStatus =
+    liveStatus?.exam_status === BackendExamStatus.READY || isGenerationComplete;
+
+  if (isPlayablePerLiveStatus && examStatus === DerivedExamStatus.generating) {
     examStatus = DerivedExamStatus.ready;
   }
 

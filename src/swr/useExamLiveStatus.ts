@@ -22,11 +22,16 @@ interface ExamLiveStatusResponse {
  *
  * Call this hook when you need up-to-the-second exam status and completion info
  * especially useful during exam generation where status changes frequently
+ *
+ * @param pollingEnabled - poll at all
+ * @param refreshIntervalMs - poll cadence; 2s while generating, a cheaper cadence
+ *   is appropriate once the exam is playable but still finishing later batches.
  */
 export function useExamLiveStatus(
   apiUserId: string | null,
   examId: string | null,
   pollingEnabled: boolean = true,
+  refreshIntervalMs: number = 2000,
 ) {
   // Enable polling while exam is generating
   const shouldFetch = Boolean(apiUserId && examId && pollingEnabled);
@@ -35,7 +40,7 @@ export function useExamLiveStatus(
   const { data, error, isLoading, mutate } = useAuthSWR<ExamLiveStatusResponse, Error>(
     key,
     {
-      refreshInterval: 2000, // Poll every 2 seconds for real-time updates
+      refreshInterval: refreshIntervalMs,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
       dedupingInterval: 500, // Very short dedup to ensure freshness (bypasses Redis cache anyway)

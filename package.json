@@ -79,7 +79,7 @@
     "typescript": "^6.0.3"
   },
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=24.22.1"
   },
   "homepage": "https://certestic.com",
   "repository": {
