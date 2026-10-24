@@ -105,6 +105,29 @@ await button.click().catch(() => {});
 
 Use a fallback chain when selectors are fragile. Always log each fallback attempt.
 
+**Do not write the chain inline.** Declare it once in `helpers/selectors.ts` as an
+ordered candidate list and resolve it with `firstMatching` (returns `null`) or
+`requireMatching` (throws a message listing everything it tried).
+
+```ts
+import { CREATE_EXAM_CTA, REGISTERED_CERT_ACTION, firstMatching, requireMatching } from './helpers/selectors';
+
+// Branching: is this cert already registered?
+const viewExams = await firstMatching(page, REGISTERED_CERT_ACTION);
+if (viewExams) { ... } else { ... }
+
+// Fatal: the CTA must be there
+const cta = await requireMatching(page, CREATE_EXAM_CTA, {
+  errorMessage: '"Create New Exam" button not found on exams page.',
+});
+```
+
+Adding a new strategy means editing one array, not every call site. Candidate
+`timeout` keeps the per-step budget of the old hand-written chain.
+
+If you need a genuinely new chain, add it to `selectors.ts` first — inline chains
+in specs are what this module exists to prevent.
+
 ```ts
 // 1. Preferred: data-testid
 let btn = page.locator('[data-testid="create-exam-modal"]');

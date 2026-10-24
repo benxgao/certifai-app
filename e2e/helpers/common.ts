@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 /**
  * Navigate to a page and wait for it to load completely
@@ -113,20 +113,17 @@ export async function waitForElementCount(
   options: { timeout?: number; logPrefix?: string } = {},
 ): Promise<void> {
   const { timeout = 30000, logPrefix = '' } = options;
-  const startTime = Date.now();
 
-  while (Date.now() - startTime < timeout) {
-    const count = await page.locator(selector).count();
-    if (count === expectedCount) {
-      if (logPrefix) console.log(`${logPrefix} ✓ Found ${expectedCount} matching element(s)`);
-      return;
-    }
-    await page.waitForTimeout(500);
-  }
+  // `expect.poll` retries with backoff and throws a message that includes the
+  // last observed value, so the hand-rolled sleep loop is unnecessary.
+  await expect
+    .poll(async () => page.locator(selector).count(), {
+      timeout,
+      message: `${logPrefix} ✗ waiting for ${expectedCount} element(s) matching "${selector}"`,
+    })
+    .toBe(expectedCount);
 
-  throw new Error(
-    `${logPrefix} ✗ Timeout waiting for ${expectedCount} element(s) matching "${selector}"`,
-  );
+  if (logPrefix) console.log(`${logPrefix} ✓ Found ${expectedCount} matching element(s)`);
 }
 
 /**

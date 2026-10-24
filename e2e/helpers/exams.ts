@@ -1,8 +1,14 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { DailyExamLimitError, recoverFromDailyExamLimit } from './account-recovery';
 import { waitForHydration } from './hydration';
 import { FlowTimingTracker } from './performance';
 import { readDailyExamQuota } from './quota';
+import {
+  CREATE_EXAM_CTA,
+  CREATE_EXAM_MODAL,
+  SUBMIT_CREATE_EXAM_CTA,
+  requireMatching,
+} from './selectors';
 
 export { readDailyExamQuota };
 
@@ -193,6 +199,7 @@ export async function deleteFirstExam(
     );
 
     const cards = page.locator('div[data-testid="exam-card"]');
+    const cardsBeforeDelete = await cards.count().catch(() => 0);
     const targetCards = skipGenerating
       ? cards.filter({ hasNot: page.locator(GENERATING_CARD_BUTTON) })
       : cards;
@@ -248,7 +255,15 @@ export async function deleteFirstExam(
     }
 
     console.log('✓ Exam deleted successfully');
-    await page.waitForTimeout(500);
+    // Wait for the card to actually leave the list (the subsequent quota read
+    // must not observe the pre-delete list). Falls back quietly if the list is
+    // cached server-side and keeps rendering the card.
+    await expect
+      .poll(() => cards.count().catch(() => cardsBeforeDelete), { timeout: 5_000 })
+      .toBeLessThan(cardsBeforeDelete)
+      .catch(() => {
+        console.log('  ℹ Deleted card still rendered (cached list) — continuing');
+      });
 
     tracker?.recordDuration('Delete existing exam for quota recovery', Date.now() - deleteStartedAt, {
       category: 'system',
@@ -468,15 +483,10 @@ async function createExamOnce(page: Page, options: CreateExamOnceOptions = {}): 
 
   console.log('  - Finding "New Exam" button...');
 
-  const newExamButton = page.locator('button:has-text("New Exam")').first();
-
-  try {
-    await newExamButton.waitFor({ state: 'visible', timeout: 5000 });
-    console.log('✓ "New Exam" button found and visible');
-  } catch (e) {
-    const errorMsg = e instanceof Error ? e.message : String(e);
-    throw new Error(`"New Exam"/"Create Exam" button not found or not visible. Error: ${errorMsg}`);
-  }
+  const newExamButton = await requireMatching(page, CREATE_EXAM_CTA, {
+    errorMessage: '"New Exam"/"Create Exam" button not found or not visible.',
+  });
+  console.log('✓ "New Exam" button found and visible');
 
   const isNewExamButtonDisabled = await newExamButton.isDisabled().catch(() => false);
 
@@ -506,7 +516,14 @@ async function createExamOnce(page: Page, options: CreateExamOnceOptions = {}): 
 
     if (deleteResult.success) {
       console.log('✓ Exam deleted, quota freed');
-      await page.waitForTimeout(1000);
+      // Wait for the CTA to actually flip back to enabled instead of sleeping a
+      // guessed amount: the gate is the button state, nothing else.
+      await expect
+        .poll(() => newExamButton.isEnabled().catch(() => false), { timeout: 15_000 })
+        .toBe(true)
+        .catch(() => {
+          console.log('  ⚠ "New Exam" still disabled after delete — continuing anyway');
+        });
     } else {
       console.log(`  ⚠ Delete failed: ${deleteResult.error}, attempting to click "New Exam" anyway...`);
     }
@@ -545,42 +562,9 @@ async function createExamOnce(page: Page, options: CreateExamOnceOptions = {}): 
 
   console.log('  - Waiting for Create Exam modal to open...');
 
-  await page.waitForTimeout(500);
-
-  let createExamModal = page.locator('div[data-testid="create-exam-modal"]');
-  let isModalVisible = await createExamModal.isVisible({ timeout: 3000 }).catch(() => false);
-
-  if (!isModalVisible) {
-    console.log('  ⚠ data-testid selector failed, trying modal with number-of-questions input...');
-    createExamModal = page
-      .locator('div[role="dialog"]:has(input[id="number-of-questions"])')
-      .first();
-    isModalVisible = await createExamModal.isVisible({ timeout: 2000 }).catch(() => false);
-  }
-
-  if (!isModalVisible) {
-    console.log('  ⚠ number-of-questions selector failed, trying "Create Exam" button text...');
-    createExamModal = page
-      .locator('div[role="dialog"]:has(button:has-text("Create Exam"))')
-      .first();
-    isModalVisible = await createExamModal.isVisible({ timeout: 2000 }).catch(() => false);
-  }
-
-  // Fallback 3: Use generic dialog selector as last resort
-  if (!isModalVisible) {
-    console.log('  ⚠ All specific selectors failed, using generic dialog selector...');
-    const allDialogs = await page.locator('div[role="dialog"]').count();
-    console.log(`  ℹ Found ${allDialogs} dialog(s) on page`);
-    createExamModal = page.locator('div[role="dialog"]').last();
-    isModalVisible = await createExamModal
-      .waitFor({ state: 'visible', timeout: 8000 })
-      .then(() => true)
-      .catch(() => false);
-  }
-
-  if (!isModalVisible) {
-    throw new Error('Create Exam modal did not open');
-  }
+  const createExamModal = await requireMatching(page, CREATE_EXAM_MODAL, {
+    errorMessage: 'Create Exam modal did not open.',
+  });
 
   console.log('✓ Create Exam modal opened');
   tracker?.recordDuration('Open create exam modal', Date.now() - modalOpenStartedAt, {
@@ -592,36 +576,9 @@ async function createExamOnce(page: Page, options: CreateExamOnceOptions = {}): 
   console.log('  - Clicking "Create" button in modal...');
   const submitStartedAt = Date.now();
 
-  let createButton = createExamModal.locator('button:has-text("Create Exam")').first();
-  let isCreateButtonVisible = await createButton.isVisible({ timeout: 3000 }).catch(() => false);
-
-  if (!isCreateButtonVisible) {
-    console.log('  ⚠ "Create Exam" selector failed, trying "Create" variant...');
-    createButton = createExamModal.locator('button:has-text("Create")').first();
-    isCreateButtonVisible = await createButton.isVisible({ timeout: 2000 }).catch(() => false);
-  }
-
-  if (!isCreateButtonVisible) {
-    console.log('  ⚠ "Create" text selector failed, trying gradient button...');
-    createButton = createExamModal.locator('button[class*="from-violet"]').last();
-    isCreateButtonVisible = await createButton.isVisible({ timeout: 2000 }).catch(() => false);
-  }
-
-  if (!isCreateButtonVisible) {
-    console.log('  ⚠ All primary selectors failed, trying extended search...');
-    createButton = createExamModal
-      .locator('button')
-      .filter({ hasText: /Create|New/ })
-      .first();
-    isCreateButtonVisible = await createButton
-      .waitFor({ state: 'visible', timeout: 5000 })
-      .then(() => true)
-      .catch(() => false);
-  }
-
-  if (!isCreateButtonVisible) {
-    throw new Error('"Create" button not found in modal');
-  }
+  const createButton = await requireMatching(createExamModal, SUBMIT_CREATE_EXAM_CTA, {
+    errorMessage: '"Create" button not found in modal.',
+  });
 
   const isButtonDisabled = await createButton.isDisabled().catch(() => false);
   if (isButtonDisabled) {

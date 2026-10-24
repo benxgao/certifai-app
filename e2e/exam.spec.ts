@@ -1,8 +1,18 @@
 import { test, expect } from './fixtures/auth';
 import { AUTH_STATE_PATH } from './fixtures/auth-state';
 import type { Page, TestInfo } from '@playwright/test';
-import { deleteFirstExam, handleExamCreation } from './helpers/exams';
+import { handleExamCreation } from './helpers/exams';
 import { FlowTimingTracker } from './helpers/performance';
+import {
+  CERTIFICATION_CTA,
+  CREATE_EXAM_CTA,
+  EXAM_CARD_ACTION_SELECTOR,
+  REGISTERED_CERT_ACTION,
+  REGISTER_NOW_CTA,
+  REGISTRATION_CONFIRM_CTA,
+  firstMatching,
+  requireMatching,
+} from './helpers/selectors';
 
 // Reuse the session captured once per run by e2e/global-auth-setup.ts.
 // Scoped to this file on purpose: a globally authenticated context would make
@@ -66,12 +76,12 @@ test.describe('Exam Flows', () => {
       console.log('✓ Dashboard page confirmed');
 
       console.log('  - Waiting for dashboard content to fully load...');
-      const registerCertButtonWait = authenticatedPage
-        .locator('button:has-text("Register for Certification")')
-        .first();
       const dashboardContentStartedAt = Date.now();
-      try {
-        await registerCertButtonWait.waitFor({ state: 'visible', timeout: 10000 });
+      const registerCertButtonWait = await firstMatching(authenticatedPage, CERTIFICATION_CTA, {
+        timeout: 10_000,
+      });
+
+      if (registerCertButtonWait) {
         console.log('✓ Dashboard content fully loaded');
         timingTracker.recordDuration(
           'Dashboard content visible',
@@ -82,7 +92,7 @@ test.describe('Exam Flows', () => {
             startedAt: dashboardContentStartedAt,
           },
         );
-      } catch (e) {
+      } else {
         console.log('  ⚠ Register button not immediately visible, proceeding with cert check...');
         timingTracker.recordDuration(
           'Dashboard content wait fallback',
@@ -109,19 +119,11 @@ test.describe('Exam Flows', () => {
         console.log('  - Looking for "Register for Certification" button...');
 
         const registerFlowStartedAt = Date.now();
-        const registerCertButton = authenticatedPage
-          .locator('button:has-text("Register for Certification")')
-          .first();
-
-        const isRegisterButtonVisible = await registerCertButton
-          .isVisible({ timeout: 5000 })
-          .catch(() => false);
-
-        if (!isRegisterButtonVisible) {
-          throw new Error(
+        const registerCertButton = await requireMatching(authenticatedPage, CERTIFICATION_CTA, {
+          timeout: 5_000,
+          errorMessage:
             '"Register for Certification" button not found on dashboard. Cannot proceed with certification registration.',
-          );
-        }
+        });
 
         console.log('✓ Found "Register for Certification" button, clicking...');
         await registerCertButton.click();
@@ -135,7 +137,6 @@ test.describe('Exam Flows', () => {
         );
         console.log('✓ Navigated to certifications browse page');
 
-        await authenticatedPage.waitForTimeout(500);
         console.log('✓ Certifications page DOM loaded');
         await timingTracker.capturePageMetrics(authenticatedPage, 'Certification browse page');
 
@@ -162,15 +163,13 @@ test.describe('Exam Flows', () => {
         );
 
         console.log('  - Checking for "View Exams" button (already registered cert)...');
-        const viewExamsCardButton = authenticatedPage
-          .locator('button:has-text("View Exams")')
-          .first();
+        const viewExamsCardButton = await firstMatching(
+          authenticatedPage,
+          REGISTERED_CERT_ACTION.slice(0, 2),
+          { timeout: 3_000 },
+        );
 
-        const hasViewExamsButton = await viewExamsCardButton
-          .isVisible({ timeout: 3000 })
-          .catch(() => false);
-
-        if (hasViewExamsButton) {
+        if (viewExamsCardButton) {
           console.log('✓ Found "View Exams" button — using existing registered cert');
           console.log('  - Clicking "View Exams" button to enter exams page...');
           await viewExamsCardButton.click();
@@ -215,19 +214,15 @@ test.describe('Exam Flows', () => {
             });
 
           console.log('  - Looking for first "Register Now" button on certifications page...');
-          const registerCertCardButton = authenticatedPage
-            .locator('button:has-text("Register Now")')
-            .first();
-
-          const isCertRegisterButtonVisible = await registerCertCardButton
-            .isVisible({ timeout: 3000 })
-            .catch(() => false);
-
-          if (!isCertRegisterButtonVisible) {
-            throw new Error(
-              'No "Register Now" button found on certifications page. Cannot register cert.',
-            );
-          }
+          const registerCertCardButton = await requireMatching(
+            authenticatedPage,
+            REGISTER_NOW_CTA,
+            {
+              timeout: 10_000,
+              errorMessage:
+                'No "Register Now" button found on certifications page. Cannot register cert.',
+            },
+          );
 
           console.log('✓ Found "Register Now" button, clicking to open modal...');
           await registerCertCardButton.click();
@@ -242,93 +237,26 @@ test.describe('Exam Flows', () => {
               : '  ⚠ Modal backdrop not found, continuing...',
           );
 
-          let modalConfirmButton = authenticatedPage
-            .locator('button:has-text("Register for this Certification")')
-            .first();
-
-          let isModalButtonVisible = await modalConfirmButton
-            .isVisible({ timeout: 3000 })
-            .catch(() => false);
-
-          if (!isModalButtonVisible) {
-            console.log('  ⚠ Exact text selector failed, trying flexible text match...');
-            modalConfirmButton = authenticatedPage
-              .locator('button:has-text("Register")')
-              .filter({ hasText: /for this Certification/ })
-              .first();
-            isModalButtonVisible = await modalConfirmButton
-              .isVisible({ timeout: 3000 })
-              .catch(() => false);
-          }
-
-          if (!isModalButtonVisible) {
-            console.log('  ⚠ Flexible selector failed, trying last resort selector...');
-            modalConfirmButton = authenticatedPage
-              .locator('[class*="fixed"] button:has-text("Register")')
-              .last();
-            isModalButtonVisible = await modalConfirmButton
-              .isVisible({ timeout: 3000 })
-              .catch(() => false);
-          }
-
-          if (!isModalButtonVisible) {
-            throw new Error(
-              'Registration confirmation modal button did not appear. Cannot proceed with registration.',
-            );
-          }
+          const modalConfirmButton = await requireMatching(
+            authenticatedPage,
+            REGISTRATION_CONFIRM_CTA,
+            {
+              timeout: 3_000,
+              errorMessage:
+                'Registration confirmation modal button did not appear. Cannot proceed with registration.',
+            },
+          );
 
           console.log('✓ Registration modal confirmation button found');
           console.log('  - Clicking "Register for this Certification" button in modal...');
           await modalConfirmButton.click();
 
-          await authenticatedPage.waitForTimeout(1000);
           console.log('✓ Registration button clicked');
 
           console.log('  - Waiting for certification card to update to "View Exams"...');
-          let viewExamsButton = authenticatedPage.locator('button:has-text("View Exams")').first();
-          let isViewExamsVisible = await viewExamsButton
-            .isVisible({ timeout: 3000 })
-            .catch(() => false);
+          const viewExamsButton = await firstMatching(authenticatedPage, REGISTERED_CERT_ACTION);
 
-          if (!isViewExamsVisible) {
-            console.log('  ⚠ Exact "View Exams" selector failed, trying flexible text match...');
-            viewExamsButton = authenticatedPage
-              .locator('button:has-text("View")')
-              .filter({ hasText: /Exam/ })
-              .first();
-            isViewExamsVisible = await viewExamsButton
-              .isVisible({ timeout: 3000 })
-              .catch(() => false);
-          }
-
-          if (!isViewExamsVisible) {
-            console.log('  ⚠ Trying "View Exam" (singular) selector...');
-            viewExamsButton = authenticatedPage.locator('button:has-text("View Exam")').first();
-            isViewExamsVisible = await viewExamsButton
-              .isVisible({ timeout: 3000 })
-              .catch(() => false);
-          }
-
-          if (!isViewExamsVisible) {
-            console.log('  ⚠ Trying emerald button selector (registered state)...');
-            viewExamsButton = authenticatedPage.locator('button[class*="emerald"]').first();
-            isViewExamsVisible = await viewExamsButton
-              .isVisible({ timeout: 3000 })
-              .catch(() => false);
-          }
-
-          if (!isViewExamsVisible) {
-            console.log('  ⚠ Waiting longer for "View Exams" button to appear in DOM...');
-            isViewExamsVisible = await authenticatedPage
-              .locator('button:has-text("View Exams")')
-              .first()
-              .waitFor({ state: 'visible', timeout: 15000 })
-              .then(() => true)
-              .catch(() => false);
-            viewExamsButton = authenticatedPage.locator('button:has-text("View Exams")').first();
-          }
-
-          if (!isViewExamsVisible) {
+          if (!viewExamsButton) {
             throw new Error(
               'Certification registration failed — "View Exams" button did not appear. Registration was not successful.',
             );
@@ -394,25 +322,9 @@ test.describe('Exam Flows', () => {
 
         console.log('  - Waiting for "Create Exam" button to appear...');
         const createCtaStartedAt = Date.now();
-        let createExamButton = authenticatedPage.locator('button:has-text("New Exam")').first();
-
-        let isCreateButtonVisible = await createExamButton
-          .waitFor({ state: 'visible', timeout: 8000 })
-          .then(() => true)
-          .catch(() => false);
-
-        if (!isCreateButtonVisible) {
-          console.log('  ⚠ "New Exam" selector failed, trying "Create Exam"...');
-          createExamButton = authenticatedPage.locator('button:has-text("Create Exam")').first();
-          isCreateButtonVisible = await createExamButton
-            .waitFor({ state: 'visible', timeout: 5000 })
-            .then(() => true)
-            .catch(() => false);
-        }
-
-        if (!isCreateButtonVisible) {
-          throw new Error('"Create New Exam" button not found on exams page. Test cannot proceed.');
-        }
+        await requireMatching(authenticatedPage, CREATE_EXAM_CTA, {
+          errorMessage: '"Create New Exam" button not found on exams page. Test cannot proceed.',
+        });
 
         console.log('✓ "Create New Exam" button found and visible');
         timingTracker.recordDuration(
@@ -493,49 +405,9 @@ test.describe('Exam Flows', () => {
 
         console.log('  - Waiting for "Create Exam" button to appear...');
         const existingCreateCtaStartedAt = Date.now();
-        let existingCreateExamButton = authenticatedPage
-          .locator('button:has-text("Create Exam")')
-          .first();
-
-        let isExistingCreateButtonVisible = await existingCreateExamButton
-          .waitFor({ state: 'visible', timeout: 8000 })
-          .then(() => true)
-          .catch(() => false);
-
-        if (!isExistingCreateButtonVisible) {
-          console.log('  ⚠ "Create Exam" selector failed, trying "Create" variant...');
-          existingCreateExamButton = authenticatedPage.locator('button:has-text("Create")').first();
-          isExistingCreateButtonVisible = await existingCreateExamButton
-            .waitFor({ state: 'visible', timeout: 5000 })
-            .then(() => true)
-            .catch(() => false);
-        }
-
-        if (!isExistingCreateButtonVisible) {
-          console.log('  ⚠ "Create" selector failed, trying gradient button selector...');
-          existingCreateExamButton = authenticatedPage
-            .locator('button[class*="from-violet"], button[class*="to-blue"]')
-            .first();
-          isExistingCreateButtonVisible = await existingCreateExamButton
-            .isVisible({ timeout: 5000 })
-            .catch(() => false);
-        }
-
-        if (!isExistingCreateButtonVisible) {
-          console.log('  ⚠ All selectors failed, waiting longer for any Create button...');
-          existingCreateExamButton = authenticatedPage
-            .locator('button')
-            .filter({ hasText: /Create|New Exam/ })
-            .first();
-          isExistingCreateButtonVisible = await existingCreateExamButton
-            .waitFor({ state: 'visible', timeout: 12000 })
-            .then(() => true)
-            .catch(() => false);
-        }
-
-        if (!isExistingCreateButtonVisible) {
-          throw new Error('"Create New Exam" button not found on exams page. Test cannot proceed.');
-        }
+        await requireMatching(authenticatedPage, CREATE_EXAM_CTA, {
+          errorMessage: '"Create New Exam" button not found on exams page. Test cannot proceed.',
+        });
 
         console.log('✓ "Create New Exam" button found and visible');
         timingTracker.recordDuration(
@@ -564,11 +436,7 @@ test.describe('Exam Flows', () => {
       // card we can actually start instead of blindly taking the first one —
       // otherwise a stale/completed card makes this step spin for 60s.
       const newestExamCard = examCards
-        .filter({
-          has: authenticatedPage.locator(
-            'button:has-text("Begin Exam"), button:has-text("Resume Exam"), button:has-text("Generating Questions")',
-          ),
-        })
+        .filter({ has: authenticatedPage.locator(EXAM_CARD_ACTION_SELECTOR) })
         .first();
 
       // Right after creation the list can briefly still render only the
@@ -632,6 +500,8 @@ test.describe('Exam Flows', () => {
           break;
         }
 
+        // Poll interval, not a synchronisation hack: the card flips from
+        // "Generating Questions" to "Begin Exam" on a server-side job.
         await authenticatedPage.waitForTimeout(1000);
       }
 
