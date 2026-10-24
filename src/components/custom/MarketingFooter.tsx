@@ -19,7 +19,7 @@ export default function MarketingFooter() {
             <div className="flex space-x-3 sm:space-x-4">
               {/* Social Media Links */}
               <a
-                href="#"
+                href="#" aria-label="Certestic on X (Twitter)"
                 className="text-slate-400 hover:text-white transition-colors duration-200"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -27,7 +27,7 @@ export default function MarketingFooter() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="#" aria-label="Certestic on LinkedIn"
                 className="text-slate-400 hover:text-white transition-colors duration-200"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -35,7 +35,7 @@ export default function MarketingFooter() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="#" aria-label="Certestic on Pinterest"
                 className="text-slate-400 hover:text-white transition-colors duration-200"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -43,7 +43,7 @@ export default function MarketingFooter() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="#" aria-label="Certestic on Instagram"
                 className="text-slate-400 hover:text-white transition-colors duration-200"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

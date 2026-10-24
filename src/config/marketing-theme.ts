@@ -64,6 +64,19 @@ export const surface = {
   cardInteractive:
     'bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-md rounded-3xl hover:shadow-md hover:border-slate-300/60 dark:hover:border-slate-600/60 transition-colors duration-300',
   cta: 'bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm border border-violet-200/70 dark:border-violet-800/40 shadow-md rounded-3xl hover:shadow-md hover:border-violet-300/70 dark:hover:border-violet-700/50 transition-colors duration-300',
+  /**
+   * Elevated product/feature surface used by the homepage bento grid.
+   * Intended for cards that contain real UI previews rather than plain copy.
+   */
+  feature:
+    'relative overflow-hidden rounded-3xl border border-slate-200/70 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/60 backdrop-blur-sm shadow-[0_1px_2px_rgba(15,23,42,0.04),0_18px_40px_-24px_rgba(15,23,42,0.18)]',
+  featureInteractive:
+    'transition-[border-color,box-shadow] duration-300 hover:border-violet-300/80 hover:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_26px_50px_-24px_rgba(124,58,237,0.28)] dark:hover:border-violet-500/40',
+  /**
+   * Recessed panel used inside feature cards for previews, charts, and lists.
+   */
+  inset:
+    'rounded-2xl border border-slate-200/70 dark:border-slate-700/60 bg-slate-50/80 dark:bg-slate-950/40',
 } as const;
 
 /**
@@ -86,6 +99,56 @@ export const motion = {
   card: 'transition-colors duration-300',
   hoverShadow: 'hover:shadow-sm',
 } as const;
+
+/**
+ * Icon container tokens. Use `accent` for primary feature markers,
+ * `soft` for supporting markers, and `neutral` for quiet metadata.
+ */
+export const iconTile = {
+  base: 'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl sm:h-11 sm:w-11',
+  accent:
+    'bg-linear-to-br from-violet-500 to-indigo-500 text-white shadow-[0_8px_20px_-8px_rgba(109,40,217,0.65)] dark:from-violet-500 dark:to-indigo-500',
+  soft: 'bg-violet-50 text-violet-700 ring-1 ring-inset ring-violet-200/70 dark:bg-violet-500/10 dark:text-violet-300 dark:ring-violet-400/25',
+  neutral:
+    'bg-slate-100 text-slate-700 ring-1 ring-inset ring-slate-200/70 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700/70',
+} as const;
+
+/**
+ * Small inline pills for topics, providers, and states inside previews.
+ */
+export const chip = {
+  base: 'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium leading-none',
+  accent:
+    'border-violet-200/80 bg-violet-50/90 text-violet-700 dark:border-violet-400/25 dark:bg-violet-500/10 dark:text-violet-200',
+  neutral:
+    'border-slate-200/80 bg-white/80 text-slate-600 dark:border-slate-700/80 dark:bg-slate-800/80 dark:text-slate-300',
+} as const;
+
+/**
+ * Copy tokens for recurring marketing text roles.
+ */
+export const copy = {
+  eyebrow:
+    'text-[11px] font-semibold uppercase tracking-[0.2em] text-violet-600 dark:text-violet-300',
+  gradient:
+    'bg-linear-to-r from-violet-600 via-violet-500 to-indigo-500 bg-clip-text text-transparent',
+  body: 'text-base leading-relaxed text-slate-600 dark:text-slate-300 font-light sm:text-lg',
+  bodySm: 'text-sm leading-relaxed text-slate-600 dark:text-slate-400',
+  meta: 'text-[11px] font-medium uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400',
+  strong: 'font-semibold text-slate-900 dark:text-slate-50',
+} as const;
+
+/**
+ * Full-bleed gradient call-to-action panel.
+ */
+export const ctaPanel =
+  'relative overflow-hidden rounded-3xl bg-linear-to-br from-violet-700 via-violet-600 to-indigo-600 text-white shadow-[0_30px_70px_-30px_rgba(76,29,149,0.65)]';
+
+/**
+ * Canonical focus treatment for interactive marketing elements.
+ */
+export const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-900';
 
 /**
  * Canonical shape token for common rounded corners.
@@ -138,6 +201,11 @@ export const marketingTheme = {
   surface,
   button,
   motion,
+  iconTile,
+  chip,
+  copy,
+  ctaPanel,
+  focusRing,
   shape,
   header,
   footer,

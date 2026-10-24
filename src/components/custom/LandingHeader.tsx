@@ -76,15 +76,14 @@ export default function LandingHeader() {
               Sign In
             </Link>
             {pathname !== '/signup' && (
-              <Link href="/signup">
-                <Button
-                  variant="default"
-                  size="sm"
-                  className={marketingTheme.header.ctaButton}
-                >
-                  Start Practicing
-                </Button>
-              </Link>
+              <Button
+                asChild
+                variant="default"
+                size="sm"
+                className={marketingTheme.header.ctaButton}
+              >
+                <Link href="/signup">Start Practicing</Link>
+              </Button>
             )}
           </nav>
 
@@ -145,14 +144,19 @@ export default function LandingHeader() {
                 </Link>
                 {pathname !== '/signup' && (
                   <div className="pt-2">
-                    <Link href="/signup" className="block w-full" onClick={() => setNavOpen(false)}>
-                      <Button
-                        className={`w-full ${marketingTheme.header.ctaButton}`}
-                        size="sm"
+                    <Button
+                      asChild
+                      className={`w-full ${marketingTheme.header.ctaButton}`}
+                      size="sm"
+                    >
+                      <Link
+                        href="/signup"
+                        className="block w-full"
+                        onClick={() => setNavOpen(false)}
                       >
                         Get Started
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   </div>
                 )}
               </div>

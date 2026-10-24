@@ -22,6 +22,27 @@ The marketing design system is now code-backed and centralized.
 
 When editing marketing visuals (accent, gradient usage, hover behavior, radius, card/button styles), update the token contract in `src/config/marketing-theme.ts` first.
 
+### Homepage surface tokens (2026 refresh)
+
+The homepage (`src/components/landing/`) introduced product-preview cards. These are token-backed so other marketing routes can reuse them without new class systems:
+
+| Token | Purpose |
+| --- | --- |
+| `surface.feature` / `surface.featureInteractive` | Elevated bento/feature card with soft layered shadow and optional violet hover border |
+| `surface.inset` | Recessed panel inside a card for previews, charts, and lists |
+| `iconTile.base` / `accent` / `soft` / `neutral` | Icon containers; `accent` is the violet→indigo gradient tile |
+| `chip.base` / `accent` / `neutral` | Inline pills for topics, providers, and states |
+| `copy.eyebrow` / `gradient` / `body` / `bodySm` / `meta` / `strong` | Recurring text roles |
+| `ctaPanel` | Full-bleed violet→indigo closing CTA panel |
+| `focusRing` | Canonical focus-visible ring for links and buttons |
+
+**Preview rules**
+
+- Product previews (fake windows, charts, exam UI) are illustrative. Wrap the preview container in `aria-hidden="true"` and use non-interactive elements (`div`/`span`) inside — never real `button`/`a` tags.
+- Use `PreviewWindow`, `ScoreRing`, `TopicRow`, `Sparkline`, and `FauxButton` from `src/components/landing/visuals.tsx` for consistency.
+- Micro labels inside previews must use `text-slate-500 dark:text-slate-400` at minimum. `text-slate-400` on white fails WCAG AA at 10–11px.
+- Previews should not be the only place a feature is described; the surrounding copy must carry the same meaning.
+
 ### Required composition for new marketing routes
 
 All new public marketing pages must:
