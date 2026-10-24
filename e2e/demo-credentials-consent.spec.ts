@@ -1,5 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
+import { waitForHydration } from './helpers/hydration';
+
 async function dismissCookieConsentIfVisible(page: Page) {
   const cookieDialog = page.getByRole('dialog', { name: 'Cookie consent' });
   if (await cookieDialog.isVisible().catch(() => false)) {
@@ -9,6 +11,11 @@ async function dismissCookieConsentIfVisible(page: Page) {
 }
 
 async function revealCredentialsViaConsentModal(page: Page) {
+  // The trigger button exists in the server-rendered HTML, so clicking it before
+  // React hydrates opens nothing and the dialog assertion fails with a bare
+  // "element not found" (common on a cold `next dev` compile).
+  await waitForHydration(page);
+
   const displayButton = page.getByRole('button', {
     name: 'Show demo login details',
   });

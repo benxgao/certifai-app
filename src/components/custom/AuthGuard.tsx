@@ -272,8 +272,15 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   }
 
   // Case 5: User is authenticated and verified - render the protected content
-  // Allow access if we have a verified Firebase user, regardless of API timeout
-  if (firebaseUser && firebaseUser.emailVerified && (apiUserId || apiTimeout)) {
+  // Allow access if we have a verified Firebase user, regardless of API timeout.
+  // UAT accounts are auto-verified by the backend asynchronously, and
+  // `performSignin` already bypasses the verification check there — requiring
+  // `emailVerified` here left unverified UAT users stranded on Case 6 forever.
+  if (
+    firebaseUser &&
+    (firebaseUser.emailVerified || isUATEnv()) &&
+    (apiUserId || apiTimeout)
+  ) {
     if (apiTimeout && !apiUserId) {
     }
     return <>{children}</>;

@@ -1,5 +1,7 @@
 import { test as base, expect, Page } from '@playwright/test';
 
+import { waitForHydration } from '../helpers/hydration';
+
 type AuthFixtures = {
   authenticatedPage: Page;
 };
@@ -30,6 +32,11 @@ type AuthFixtures = {
 export const test = base.extend<AuthFixtures>({
   authenticatedPage: async ({ page }, use) => {
     await page.goto('/main', { waitUntil: 'domcontentloaded' });
+    // The dashboard CTA is server-rendered; without waiting for hydration a spec
+    // can click it before React is listening and the click silently does nothing.
+    await waitForHydration(page).catch(() => {
+      console.log('[auth-fixture] Hydration not detected on /main, continuing...');
+    });
 
     const registerCta = page.locator('button:has-text("Register for Certification")').first();
     const emailInput = page.locator('input[type="email"]');
@@ -182,6 +189,10 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
 
   // Navigate to signin page
   await page.goto('/signin', { waitUntil: 'domcontentloaded' });
+  // The controlled inputs ignore keystrokes until React hydrates (cold `next dev`
+  // routes take seconds). Without this the form looks filled but the React state
+  // is still empty, and the failure surfaces as a bogus "wrong credentials".
+  await waitForHydration(page);
 
   // Attempt login with retry logic for post-signup race conditions
   let loginAttempt = 0;
@@ -197,6 +208,7 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
         await waitForPostSignupSync(page);
         await page.goto('/signin', { waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(100);
+        await waitForHydration(page);
       }
 
       // Wait for form fields to be visible instead of waiting for all network requests
@@ -207,11 +219,11 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
       await emailInput.waitFor({ timeout: 10000 });
       await passwordInput.waitFor({ timeout: 10000 });
 
-      // Clear and fill form fields
-      await emailInput.fill('');
-      await emailInput.type(loginEmail, { delay: 50 });
-      await passwordInput.fill('');
-      await passwordInput.type(loginPassword, { delay: 50 });
+      // `fill()` dispatches a single input event, which React's onChange handles,
+      // and avoids the per-keystroke cost of `type()` (5s actionTimeout locally
+      // made long passwords flaky).
+      await emailInput.fill(loginEmail);
+      await passwordInput.fill(loginPassword);
 
       // Wait a bit for form to update
       await page.waitForTimeout(100);
@@ -229,11 +241,14 @@ async function performLogin(page: Page, email?: string, password?: string): Prom
       }
 
       // Wait for successful authentication - should redirect to /main
+      // 45s: for a just-created account the backend still has to propagate
+      // custom claims (`api_user_id`), and the dashboard only redirects once that
+      // resolves. 20s was routinely too short right after a signup.
       await page.waitForURL(
         (url) => {
           return url.pathname === '/main';
         },
-        { timeout: 20000 },
+        { timeout: 45000 },
       );
 
       // Wait for page to be interactive with a shorter timeout
@@ -518,6 +533,11 @@ async function performSignup(
 
   // Navigate to signup page
   await page.goto('/signup', { waitUntil: 'domcontentloaded' });
+  // Signup is usually the first route a run touches, so `next dev` is still
+  // compiling it while the form is already painted. Wait for hydration before
+  // typing: otherwise firstName/lastName update the DOM but not React state and
+  // the submit button stays disabled forever (see helpers/hydration.ts).
+  await waitForHydration(page);
 
   // Wait for form fields to be visible - use id selectors
   await page.waitForSelector('input#firstName', { timeout: 15000 });
@@ -539,30 +559,26 @@ async function performSignup(
   const passwordInput = page.locator('input#password');
   const confirmPasswordInput = page.locator('input#confirmPassword');
 
-  // Clear and fill with proper event triggering
-  // Use clear() + type() instead of fill() to trigger React onChange handlers
-  await firstNameInput.clear();
-  await firstNameInput.type(firstName, { delay: 50 });
+  // `fill()` dispatches a single input event, which React's onChange handles.
+  // Typing character-by-character (delay 50ms) blew the 5s actionTimeout under
+  // load and was the source of intermittent "locator.type: Timeout" failures.
+  await firstNameInput.fill(firstName);
   await firstNameInput.blur();
   console.log(`  ✓ First name filled: "${firstName}"`);
 
-  await lastNameInput.clear();
-  await lastNameInput.type(lastName, { delay: 50 });
+  await lastNameInput.fill(lastName);
   await lastNameInput.blur();
   console.log(`  ✓ Last name filled: "${lastName}"`);
 
-  await emailInput.clear();
-  await emailInput.type(signupEmail, { delay: 50 });
+  await emailInput.fill(signupEmail);
   await emailInput.blur();
   console.log(`  ✓ Email filled: "${signupEmail}"`);
 
-  await passwordInput.clear();
-  await passwordInput.type(signupPassword, { delay: 50 });
+  await passwordInput.fill(signupPassword);
   await passwordInput.blur();
   console.log(`  ✓ Password filled: "[${signupPassword.length} chars]"`);
 
-  await confirmPasswordInput.clear();
-  await confirmPasswordInput.type(signupPassword, { delay: 50 });
+  await confirmPasswordInput.fill(signupPassword);
   await confirmPasswordInput.blur();
   console.log(`  ✓ Confirm password filled: "[${signupPassword.length} chars]"`);
 
@@ -915,13 +931,16 @@ async function navigateToProfile(page: Page): Promise<void> {
   // Click dropdown trigger button using data-testid
   const dropdownTrigger = page.locator('[data-testid="dropdown-trigger"]');
 
-  if (!(await dropdownTrigger.isVisible({ timeout: 3000 }).catch(() => false))) {
+  // The header only mounts after AuthGuard finishes resolving apiUserId, which on
+  // a cold/slow `next dev` route can take far longer than the 3s this used to
+  // allow (observed DCL of 14s on the signin route during the same run).
+  if (!(await dropdownTrigger.isVisible({ timeout: 15000 }).catch(() => false))) {
     throw new Error('Dropdown trigger button not found on page');
   }
 
   console.log('  - Opening user dropdown menu...');
   // Click to open dropdown menu
-  await dropdownTrigger.click({ timeout: 3000 });
+  await dropdownTrigger.click({ timeout: 10000 });
 
   // Wait for dropdown menu to open
   await page.waitForTimeout(500);
@@ -929,7 +948,7 @@ async function navigateToProfile(page: Page): Promise<void> {
   // Click "View Profile" menu item using data-testid
   const viewProfileItem = page.locator('[data-testid="dropdown-view-profile"]');
 
-  if (!(await viewProfileItem.isVisible({ timeout: 5000 }).catch(() => false))) {
+  if (!(await viewProfileItem.isVisible({ timeout: 10000 }).catch(() => false))) {
     throw new Error('View Profile menu item not found in dropdown');
   }
 

@@ -739,7 +739,11 @@ test.describe('Exam Flows', () => {
         .locator('p')
         .filter({ hasText: /^Submitted$/i })
         .first();
-      await expect(submittedLabel).toBeVisible({ timeout: 15000 });
+      // The submit endpoint returns before the backend finalizes the attempt, and
+      // the client revalidates the exam state only once. Observed lag between
+      // "confirm submission" and the Submitted timestamp rendering is 5-10s, so
+      // 15s left no margin and produced flaky failures on slower runs.
+      await expect(submittedLabel).toBeVisible({ timeout: 45000 });
 
       const submittedValue = submittedLabel.locator(
         'xpath=ancestor::div[contains(@class,"space-y-3")][1]/p[last()]',

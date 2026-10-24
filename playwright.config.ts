@@ -57,7 +57,10 @@ export default defineConfig({
     /* 30s everywhere: a cold `next dev` compile can exceed 15s and would show up
        as a bogus navigation timeout. */
     navigationTimeout: 30_000,
-    actionTimeout: isLiveEnvironment ? 10_000 : 5_000,
+    /* Matches navigationTimeout's reasoning: the first interaction on a cold
+       route can block the main thread while Turbopack finishes a chunk, and a
+       5s budget turned that into "locator.click/type: Timeout" flakes. */
+    actionTimeout: isLiveEnvironment ? 10_000 : 20_000,
   },
 
   /* Configure projects for major browsers */

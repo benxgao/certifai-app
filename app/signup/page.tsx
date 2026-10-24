@@ -5,6 +5,7 @@ import { flushSync } from 'react-dom';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signOut,
   updateProfile,
 } from 'firebase/auth';
 import { auth } from '@/src/firebase/firebaseWebConfig';
@@ -210,7 +211,16 @@ export default function SignUpPage() {
           setIsRedirectingToSignin(true);
           // 5 second delay to allow Firestore and Prisma account creation, plus custom claims propagation
           await new Promise((resolve) => setTimeout(resolve, 5000));
-          router.push('/signin');
+          // `createUserWithEmailAndPassword` leaves an active Firebase session.
+          // Without signing out, /signin immediately bounces the (already signed
+          // in) user to /main, so the documented "signup → signin" hand-off never
+          // happens. Clearing the session here also avoids the AuthGuard treating
+          // a just-created, not-yet-verified account as fully authenticated.
+          await signOut(auth).catch(() => {});
+          // Hard navigation: `router.push` can win the race against the auth
+          // context's state update, so /signin still saw a signed-in user and
+          // redirected back to /main. A full load re-reads an empty session.
+          window.location.replace('/signin');
           return;
         }
       } catch (registrationError: any) {

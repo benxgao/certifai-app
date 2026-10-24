@@ -1,5 +1,12 @@
 import { ExamListItem } from '@/src/swr/exams';
 
+/**
+ * Daily exam-creation cap enforced by the backend (24h rolling window).
+ * Only used as a client-side fallback when the API response omits `rateLimit`;
+ * when the payload is present its `maxExamsAllowed` wins.
+ */
+const DEFAULT_MAX_EXAMS_PER_24_HOURS = 3;
+
 // Interface for rate limit information extracted from exam responses
 export interface RateLimitInfo {
   maxExamsAllowed: number;
@@ -56,9 +63,13 @@ export function extractRateLimitFromResponse(rateLimit: unknown): RateLimitInfo 
   if (!parsedRateLimit) return null;
 
   const rateLimitInfo: RateLimitInfo = {
-    maxExamsAllowed: parsedRateLimit.maxExamsAllowed || 10,
+    // Fallback only: the backend is authoritative and returns maxExamsAllowed in
+    // its `rateLimit` payload (currently 3 / 24h). Keep this in sync with it.
+    maxExamsAllowed: parsedRateLimit.maxExamsAllowed || DEFAULT_MAX_EXAMS_PER_24_HOURS,
     currentCount: parsedRateLimit.currentCount || 0,
-    remainingCount: parsedRateLimit.remainingCount || 10,
+    remainingCount:
+      parsedRateLimit.remainingCount ??
+      Math.max(DEFAULT_MAX_EXAMS_PER_24_HOURS - (parsedRateLimit.currentCount || 0), 0),
     canCreateExam: parsedRateLimit.canCreateExam ?? true,
     resetTime:
       parsedRateLimit.resetTime || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
@@ -85,7 +96,7 @@ export function extractRateLimitFromResponse(rateLimit: unknown): RateLimitInfo 
  * @returns Calculated rate limit information
  */
 export function calculateRateLimitFromExams(exams: ExamListItem[]): RateLimitInfo {
-  const MAX_EXAMS_PER_24_HOURS = 10;
+  const MAX_EXAMS_PER_24_HOURS = DEFAULT_MAX_EXAMS_PER_24_HOURS;
 
   // Calculate 24 hours ago from now
   const twentyFourHoursAgo = new Date();

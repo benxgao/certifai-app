@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { User } from 'firebase/auth';
 import { initializeSigninPage } from '@/src/lib/signin-helpers';
+import { isUATEnv } from '@/src/utils/env';
 
 /**
  * Simplified and reliable authentication redirect hook
@@ -31,10 +32,16 @@ export const useAuthRedirect = (
 
   useEffect(() => {
     // Simple and reliable redirect conditions
+    // In UAT the backend auto-verifies accounts asynchronously, so `emailVerified`
+    // can still be false right after `performSignin` succeeded (which already
+    // bypasses the check in UAT). Requiring it here left the page stuck on
+    // "Already signed in. Redirecting..." forever.
+    const emailVerificationSatisfied = !!firebaseUser && (firebaseUser.emailVerified || isUATEnv());
+
     const shouldRedirect = 
       !loading && 
       firebaseUser && 
-      firebaseUser.emailVerified && 
+      emailVerificationSatisfied &&
       apiUserId && 
       !isRedirecting && 
       !redirectAttempted.current &&
