@@ -253,25 +253,36 @@ python3 -c "import json; json.load(open('gcp_credentials.json')); print('valid J
 
 ---
 
-## 13. Daily exam-creation limit → automatic account recycling
+## 13. Daily exam-creation limit → clear first, recycle last
 
 The backend caps exam creation at **3 exams / 24h per account** (`src/lib/rateLimitUtils.ts`,
-`DEFAULT_MAX_EXAMS_PER_24_HOURS`). Deleting an exam does **not** refund the quota — only a new
-account (or the 24h reset) does.
+`DEFAULT_MAX_EXAMS_PER_24_HOURS`). The cap is derived from the exams that still exist in the 24h
+window, so **deleting an exam refunds the slot** (verified against `/api/users/{id}/rate-limit`).
 
-`handleExamCreation` (`helpers/exams.ts`) therefore recycles the test account instead of failing:
+`handleExamCreation` (`helpers/exams.ts`) therefore does two things, in order:
 
-1. raises `DailyExamLimitError` when the limit is detected — disabled "New Exam" button with a full
-   quota widget, or the "Exam creation limit reached" toast right after submit;
-2. `recoverFromDailyExamLimit` (`helpers/account-recovery.ts`) deletes the account through
-   `/main/profile` (`performDeleteAccount` expands the collapsed "Account Settings" accordion),
-   waits for the redirect to `/signin`, then re-registers and logs in with `PW_TEST_EMAIL` /
-   `PW_TEST_PASSWORD` (plus-alias fallback if the email is still held);
-3. registers a certification for the new account when the dashboard has none, opens its exams page,
-   asserts the quota is really fresh, and persists the new session to `.auth/user.json` so the rest
-   of the run does not restore the deleted account's tokens;
-4. retries creation **once**. A second limit error fails loudly (the old account was probably never
-   deleted) rather than looping.
+1. **Pre-step — free the quota.** `clearExistingExams(page)` deletes the finished exam cards on the
+   page before creating a new one (`maxDeletions`, one deletion per card), then reloads the list and
+   logs the quota. A normal run therefore never reaches the cap, so no account is ever deleted.
+   Notes:
+   - Cards still in `QUESTIONS_GENERATING` are **skipped** — deleting an exam mid-generation leaves
+     the backend (and that card) stuck, so only settled cards are removed. The log tells you how many
+     were skipped; those still occupy quota slots.
+   - The list is cached server-side, so a deleted card can stay rendered. After clearing, the page is
+     reloaded — otherwise the create step's "cards before submit" baseline is wrong (the new exam
+     replaces the stale card and the count never grows, which reads as a timeout).
+   - The new exam is detected by **exam id** (`Exam #{8 chars}` in the card header), not by card count,
+     for the same reason.
+2. **Last resort — recycle the account.** If the cap is *still* reported as exhausted (a delete was
+   rejected, no quota widget, …), the helper raises `DailyExamLimitError` and:
+   - `recoverFromDailyExamLimit` (`helpers/account-recovery.ts`) deletes the account through
+     `/main/profile` (`performDeleteAccount` expands the collapsed "Account Settings" accordion),
+     waits for the redirect to `/signin`, then re-registers and logs in with `PW_TEST_EMAIL` /
+     `PW_TEST_PASSWORD` (plus-alias fallback if the email is still held);
+   - registers a certification for the new account when the dashboard has none, opens its exams page,
+     asserts the quota is really fresh, and persists the new session to `.auth/user.json` so the rest
+     of the run does not restore the deleted account's tokens;
+   - retries creation **once**. A second limit error fails loudly rather than looping.
 
 Consequences when writing tests:
 
@@ -287,6 +298,12 @@ Consequences when writing tests:
 
 Operational gotchas:
 
+- `clearExistingExams` deletes exams through the UI, one card at a time (at most one deletion per card
+  on screen). Very large backlogs cost a few seconds each; the log line tells you how much it
+  recovered.
+- `/api/auth/login` is rate limited to **10 per 15 minutes per IP** (in-memory). Every page reload
+  re-runs the app's auth transition and therefore costs one — hence `maxReloads` (default 3) in
+  `waitForNewExamToAppear`. Restart the dev server to clear the counter.
 - **Registration is rate limited to 3/hour per IP** (`src/lib/rate-limiting.ts`, in-memory). Each
   recovery spends one. If the app answers "Registration service temporarily unavailable", the limiter
   (or a backend hiccup) blocked `/api/auth/register`; the account exists in Firebase Auth without an

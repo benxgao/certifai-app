@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { DailyExamLimitError, recoverFromDailyExamLimit } from './account-recovery';
+import { waitForHydration } from './hydration';
 import { FlowTimingTracker } from './performance';
 import { readDailyExamQuota } from './quota';
 
@@ -14,21 +15,190 @@ export type ExamCreationOptions = ExamTimingOptions & {
   recoverFromDailyLimit?: boolean;
 };
 
+type CreateExamOnceOptions = ExamTimingOptions & {
+  /**
+   * Deleting exams right before a creation makes the app's exam list lag behind
+   * the backend for a while, so the new card can take minutes to render. Give
+   * that case a longer budget than a quiet list.
+   */
+  allowSlowList?: boolean;
+};
+
+/**
+ * Wait until the exam list has rendered either cards or the explicit empty state.
+ * Reading the quota widget instead is unreliable — it can still read x/y while
+ * the list is empty (and vice versa).
+ */
+async function waitForExamListSettled(page: Page, timeout = 20000): Promise<boolean> {
+  return page
+    .locator('div[data-testid="exam-card"], h3:has-text("No Exams Available")')
+    .first()
+    .waitFor({ state: 'visible', timeout })
+    .then(() => true)
+    .catch(() => false);
+}
+
+/** Cards whose question generation is still in flight — deleting those is skipped. */
+const GENERATING_CARD_BUTTON = 'button:has-text("Generating")';
+
+/**
+ * Delete every finished exam on the page, so the daily creation quota starts
+ * fresh.
+ *
+ * The backend caps creation at 3 exams / 24h and refunds the slot when an exam is
+ * deleted, so clearing before each creation keeps a long test session below the
+ * cap; recycling the account stays as the last resort.
+ *
+ * Cards that are still `QUESTIONS_GENERATING` are left alone: deleting an exam
+ * mid-generation confuses the backend (and the card then keeps its generating
+ * state), so only settled cards are removed.
+ *
+ * Returns how many exams were deleted. Best effort: a card that refuses to
+ * delete stops the loop instead of failing the test — creation then hits the
+ * quota error path and account recovery takes over.
+ */
+export async function clearExistingExams(
+  page: Page,
+  options: ExamTimingOptions & { maxDeletions?: number } = {},
+): Promise<number> {
+  const { tracker, maxDeletions = 10 } = options;
+  const examCards = page.locator('div[data-testid="exam-card"]');
+  const deletableCards = examCards.filter({ hasNot: page.locator(GENERATING_CARD_BUTTON) });
+
+  // Wait for the list to settle — cards, or the explicit empty state.
+  await waitForExamListSettled(page).catch(() => {});
+
+  const totalCount = await examCards.count().catch(() => 0);
+  const initialCount = await deletableCards.count().catch(() => 0);
+  const generatingCount = Math.max(totalCount - initialCount, 0);
+
+  if (generatingCount > 0) {
+    console.log(`  ℹ ${generatingCount} exam(s) still generating — left untouched`);
+  }
+
+  if (initialCount === 0) {
+    console.log('  ℹ No finished exams to clear');
+    return 0;
+  }
+
+  const quotaBefore = await readDailyExamQuota(page);
+
+  console.log(
+    `  - Clearing ${initialCount} existing exam(s) to free the daily quota` +
+      (quotaBefore ? ` (currently ${quotaBefore.created}/${quotaBefore.max})` : '') +
+      '...',
+  );
+
+  const startedAt = Date.now();
+  // One deletion per card that was on screen. The list is cached server-side, so
+  // a deleted card can linger in the DOM and be "deleted" again — capping the
+  // loop by the initial count avoids hammering the same exam.
+  const target = Math.min(initialCount, maxDeletions);
+  let deleted = 0;
+
+  while (deleted < target) {
+    const result = await deleteFirstExam(page, { tracker, skipGenerating: true });
+    if (!result.success) {
+      console.log(`  ⚠ Could not delete an exam (${result.error}), continuing`);
+      break;
+    }
+
+    deleted++;
+
+    // Stop as soon as the quota is fully refunded — one free slot is not enough
+    // for a run that might create more than one exam.
+    const quotaNow = await readDailyExamQuota(page);
+    if (quotaNow && quotaNow.created === 0) break;
+
+    await page.waitForTimeout(500);
+  }
+
+  const quotaAfter = await readDailyExamQuota(page);
+  const remainingCount = await examCards.count().catch(() => 0);
+
+  console.log(
+    `✓ Cleared ${deleted} exam(s); ${remainingCount} card(s) still rendered` +
+      (quotaAfter ? `, quota now ${quotaAfter.created}/${quotaAfter.max}` : ''),
+  );
+
+  if (quotaAfter && quotaAfter.created > 0) {
+    console.log(
+      generatingCount > 0
+        ? `  ℹ Quota still ${quotaAfter.created}/${quotaAfter.max}: ${generatingCount} generating exam(s) keep their slot`
+        : '  ⚠ Quota not fully refunded — the backend may still refuse a new creation',
+    );
+  }
+
+  // The deleted cards can stay in the DOM (the list is cached server-side). The
+  // creation step counts cards *before* submitting and waits for that count to
+  // grow — with a stale card still rendered, the new exam replaces it and the
+  // count never grows, so the wait times out even though creation succeeded.
+  // A reload here gives the create step a truthful baseline.
+  if (deleted > 0) {
+    console.log('  - Refreshing the list so the deleted cards are really gone...');
+    await page.reload({ waitUntil: 'domcontentloaded' }).catch(() => {});
+    await waitForHydration(page).catch(() => {});
+    await waitForExamListSettled(page).catch(() => {});
+
+    const afterRefresh = await examCards.count().catch(() => 0);
+    console.log(`  ℹ ${afterRefresh} card(s) listed after refresh`);
+  }
+
+  // The quota widget / CTA revalidate after each delete; give the button a
+  // moment to flip back to enabled so the creation flow does not read a stale
+  // "disabled" state and mistake it for an exhausted quota.
+  if (deleted > 0) {
+    const newExamButton = page.locator('button:has-text("New Exam")').first();
+    const deadline = Date.now() + 15_000;
+
+    while (Date.now() < deadline) {
+      if (await newExamButton.isEnabled().catch(() => false)) break;
+      await page.waitForTimeout(500);
+    }
+
+    console.log(
+      (await newExamButton.isEnabled().catch(() => false))
+        ? '✓ "New Exam" button is enabled again'
+        : '  ⚠ "New Exam" button still disabled — the quota may not have refreshed yet',
+    );
+  }
+
+  tracker?.recordDuration('Clear existing exams to free daily quota', Date.now() - startedAt, {
+    category: 'system',
+    details: `Deleted ${deleted} of ${initialCount} exam(s)` +
+      (quotaAfter ? `; quota ${quotaBefore?.created ?? '?'} -> ${quotaAfter.created}` : ''),
+    startedAt,
+  });
+
+  return deleted;
+}
+
 /**
  * Delete the first exam in the list
  * Returns success status and any error message
+ *
+ * `skipGenerating` ignores cards whose questions are still being generated, so
+ * the deletion targets the first *settled* card instead.
  */
 export async function deleteFirstExam(
   page: Page,
-  options: ExamTimingOptions = {},
+  options: ExamTimingOptions & { skipGenerating?: boolean } = {},
 ): Promise<{ success: boolean; error?: string }> {
-  const { tracker } = options;
+  const { tracker, skipGenerating = false } = options;
   const deleteStartedAt = Date.now();
 
   try {
-    console.log('  - Deleting first exam...');
+    console.log(
+      skipGenerating ? '  - Deleting first finished exam (skipping generating ones)...' : '  - Deleting first exam...',
+    );
 
-    const deleteButton = page.locator('button[data-testid="exam-card-delete-button"]').first();
+    const cards = page.locator('div[data-testid="exam-card"]');
+    const targetCards = skipGenerating
+      ? cards.filter({ hasNot: page.locator(GENERATING_CARD_BUTTON) })
+      : cards;
+    const deleteButton = targetCards
+      .locator('button[data-testid="exam-card-delete-button"]')
+      .first();
     const isDeleteButtonVisible = await deleteButton
       .isVisible({ timeout: 3000 })
       .catch(() => false);
@@ -102,8 +272,32 @@ export async function deleteFirstExam(
 }
 
 /**
+ * Exam ids currently rendered (`Exam #{first 8 chars}` in each card header).
+ *
+ * Counting cards is not enough: the list is cached server-side, so a deleted card
+ * can linger and a newly created exam can replace it, leaving the count
+ * unchanged. Comparing ids is immune to that.
+ */
+async function readExamCardIds(page: Page): Promise<string[]> {
+  return page
+    .locator('div[data-testid="exam-card"]')
+    .evaluateAll((cards) =>
+      cards
+        .map((card) => (card.textContent || '').match(/Exam #([0-9a-f]{8})/i)?.[1] ?? '')
+        .filter(Boolean),
+    )
+    .catch(() => []);
+}
+
+/**
  * Wait for a new exam to appear in the exam list
  * Polls for up to the specified timeout
+ *
+ * Reloads the page when the list has been stalled for `reloadIntervalMs`:
+ * the create call can return 201 before the list endpoint reflects the new
+ * exam, and SWR only keeps polling while a generating exam is in the payload —
+ * so an early empty response leaves the client cache empty with no further
+ * refetch. A reload forces a fresh fetch.
  */
 export async function waitForNewExamToAppear(
   page: Page,
@@ -113,21 +307,57 @@ export async function waitForNewExamToAppear(
     tracker?: FlowTimingTracker;
     /** Card count that must be reached. Guards against silently reusing pre-existing cards. */
     minCardCount?: number;
+    /** Exam ids already on screen; a card with any other id counts as the new one. */
+    excludeExamIds?: string[];
+    /** Page reload cadence while the card count does not move. 0 disables reloads. */
+    reloadIntervalMs?: number;
+    /**
+     * Hard cap on reloads. Each reload re-runs the app's auth transition, which
+     * calls `/api/auth/login` — rate limited to 10 per 15 minutes per IP. Staying
+     * well under that keeps a slow-list run from turning into a login 429.
+     */
+    maxReloads?: number;
   } = {},
 ): Promise<boolean> {
-  const { maxWaitTime = 180000, pollInterval = 2000, tracker, minCardCount = 1 } = options;
+  const {
+    maxWaitTime = 180000,
+    pollInterval = 2000,
+    tracker,
+    minCardCount = 1,
+    excludeExamIds = [],
+    reloadIntervalMs = 20000,
+    maxReloads = 3,
+  } = options;
 
   console.log(
-    `  - Waiting for new exam to appear in list (up to ${maxWaitTime / 1000}s, need ${minCardCount} card(s))...`,
+    `  - Waiting for new exam to appear in list (up to ${maxWaitTime / 1000}s, ` +
+      (excludeExamIds.length > 0
+        ? `ignoring ${excludeExamIds.length} exam(s) already on screen)...`
+        : `need ${minCardCount} card(s))...`),
   );
 
   const startTime = Date.now();
+  let lastReloadAt = startTime;
+  let reloads = 0;
 
   while (Date.now() - startTime < maxWaitTime) {
     const examCards = page.locator('div[data-testid="exam-card"]');
     const cardCount = await examCards.count().catch(() => 0);
 
-    if (cardCount >= minCardCount) {
+    const cardIds = excludeExamIds.length > 0 ? await readExamCardIds(page) : [];
+    const newExamId = cardIds.find((id) => !excludeExamIds.includes(id));
+
+    if (newExamId) {
+      console.log(`✓ New exam ${newExamId} appeared in the list`);
+      tracker?.recordDuration('Wait for exam card to appear after creation', Date.now() - startTime, {
+        category: 'polling',
+        details: `New exam ${newExamId} rendered (${cardCount} card(s) on screen)`,
+        startedAt: startTime,
+      });
+      return true;
+    }
+
+    if (excludeExamIds.length === 0 && cardCount >= minCardCount) {
       console.log(`✓ Exam appeared in list! Found ${cardCount} exam card(s)`);
       tracker?.recordDuration('Wait for exam card to appear after creation', Date.now() - startTime, {
         category: 'polling',
@@ -135,6 +365,21 @@ export async function waitForNewExamToAppear(
         startedAt: startTime,
       });
       return true;
+    }
+
+    if (
+      reloadIntervalMs > 0 &&
+      reloads < maxReloads &&
+      Date.now() - lastReloadAt >= reloadIntervalMs
+    ) {
+      reloads++;
+      console.log(
+        `  ⚠ Exam still not listed after ${Math.round((Date.now() - startTime) / 1000)}s, ` +
+          `reloading the page (${reloads}/${maxReloads})...`,
+      );
+      await page.reload({ waitUntil: 'domcontentloaded' }).catch(() => {});
+      await waitForHydration(page).catch(() => {});
+      lastReloadAt = Date.now();
     }
 
     await page.waitForTimeout(pollInterval);
@@ -171,10 +416,10 @@ export function verifyOnExamsPage(page: Page): boolean {
  * Handle complete exam creation flow
  * Opens create modal, fills form, submits, and waits for exam to appear
  *
- * When the account has exhausted its daily creation cap (see
- * `DEFAULT_MAX_EXAMS_PER_24_HOURS` = 3 in src/lib/rateLimitUtils.ts) the helper
- * recycles the test account once — delete → re-register → log in — and retries,
- * so a long test session is never blocked on a quota that only resets after 24h.
+ * Clears the exams already on the page first: deleting them refunds the daily
+ * creation quota, so a normal run never hits the cap. Recycling the test account
+ * (delete → re-register → log in, once) remains the last resort if the cap is
+ * still reported as exhausted — see `helpers/account-recovery.ts`.
  * Set `recoverFromDailyLimit: false` (or `E2E_DISABLE_ACCOUNT_RECOVERY=1`) to
  * keep the hard failure instead.
  */
@@ -184,8 +429,11 @@ export async function handleExamCreation(
 ): Promise<void> {
   const { recoverFromDailyLimit = process.env.E2E_DISABLE_ACCOUNT_RECOVERY !== '1' } = options;
 
+  console.log('\n  [Pre-step] Freeing the daily exam quota...');
+  const clearedExams = await clearExistingExams(page, { tracker: options.tracker });
+
   try {
-    await createExamOnce(page, options);
+    await createExamOnce(page, { ...options, allowSlowList: clearedExams > 0 });
     return;
   } catch (error) {
     if (!(error instanceof DailyExamLimitError) || !recoverFromDailyLimit) {
@@ -214,8 +462,8 @@ export async function handleExamCreation(
   }
 }
 
-async function createExamOnce(page: Page, options: ExamTimingOptions = {}): Promise<void> {
-  const { tracker } = options;
+async function createExamOnce(page: Page, options: CreateExamOnceOptions = {}): Promise<void> {
+  const { tracker, allowSlowList = false } = options;
   const creationStartedAt = Date.now();
 
   console.log('  - Finding "New Exam" button...');
@@ -240,17 +488,19 @@ async function createExamOnce(page: Page, options: ExamTimingOptions = {}): Prom
       console.log(`  ℹ Daily exam quota: ${quota.created}/${quota.max}`);
     }
 
-    // The backend limit counts exams CREATED today, so deleting an existing exam
-    // does NOT restore it. Force-clicking the disabled button just opens a
-    // dialog the rest of the flow can't drive, and the failure surfaces 3
-    // minutes later as a bogus "exam never became startable" timeout.
+    // Deleting an exam DOES refund the slot, so a full quota at this point means
+    // `clearExistingExams` could not remove everything (or the list was stale).
+    // Force-clicking the disabled button just opens a dialog the rest of the
+    // flow can't drive, and the failure surfaces 3 minutes later as a bogus
+    // "exam never became startable" timeout.
     if (quota && quota.created >= quota.max) {
       throw new DailyExamLimitError(
-        `Daily exam limit reached (${quota.created}/${quota.max} exams created today). ` +
-          'Deleting an exam does not restore this quota.',
+        `Daily exam limit reached (${quota.created}/${quota.max} exams created today) ` +
+          'even after deleting the listed exams.',
       );
     }
 
+    // No quota widget: fall back to deleting one exam to free a slot.
     console.log('  - Attempting to delete an exam to free up quota...');
     const deleteResult = await deleteFirstExam(page, { tracker });
 
@@ -381,10 +631,13 @@ async function createExamOnce(page: Page, options: ExamTimingOptions = {}): Prom
   // Baseline before submitting: creation must ADD a card. Without this, a
   // rejected request (e.g. 429 daily exam limit) silently "passes" because the
   // list already contains older exams, and the caller then waits on a stale card.
+  // The ids are the real baseline (a stale card can swap out for the new one and
+  // leave the count unchanged); the count is kept for the log line.
   const cardsBeforeSubmit = await page
     .locator('div[data-testid="exam-card"]')
     .count()
     .catch(() => 0);
+  const knownExamIds = await readExamCardIds(page);
 
   try {
     console.log('  - Attempting normal click on "Create" button...');
@@ -448,9 +701,11 @@ async function createExamOnce(page: Page, options: ExamTimingOptions = {}): Prom
   }
 
   const examAppeared = await waitForNewExamToAppear(page, {
-    maxWaitTime: 180000,
+    maxWaitTime: allowSlowList ? 240000 : 180000,
     tracker,
     minCardCount: cardsBeforeSubmit + 1,
+    excludeExamIds: knownExamIds,
+    maxReloads: allowSlowList ? 4 : 3,
   });
 
   if (!examAppeared) {
@@ -461,12 +716,12 @@ async function createExamOnce(page: Page, options: ExamTimingOptions = {}): Prom
       .catch(() => null);
 
     throw new Error(
-      'No NEW exam card appeared within 3 minutes (180 seconds). ' +
-        `Cards before submit: ${cardsBeforeSubmit}. ` +
+      `No NEW exam card appeared within ${allowSlowList ? 240 : 180} seconds. ` +
+        `Exam ids before submit: ${knownExamIds.join(', ') || '(none)'}. ` +
         (quotaText
           ? `The account appears to have hit its creation limit (found: "${quotaText.trim()}"). `
           : 'The creation request was likely rejected (rate limit / server error). ') +
-        'Deleting an exam does not restore the daily quota — the account must be recycled or the reset awaited.',
+        'The account did not get a quota slot — recycle the account or wait for the 24h reset.',
     );
   }
 

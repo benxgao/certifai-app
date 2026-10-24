@@ -571,12 +571,17 @@ test.describe('Exam Flows', () => {
         })
         .first();
 
-      if ((await newestExamCard.count()) === 0) {
-        throw new Error(
-          'No startable exam card found — every card is a completed exam. ' +
+      // Right after creation the list can briefly still render only the
+      // previously-submitted card (the new one is not listed yet), so a
+      // one-shot count check would fail on a card that appears moments later.
+      await expect
+        .poll(async () => newestExamCard.count(), {
+          message:
+            'No startable exam card found — every card is a completed exam. ' +
             'Exam creation did not produce a new exam (check the daily exam limit).',
-        );
-      }
+          timeout: 60000,
+        })
+        .toBeGreaterThan(0);
 
       let sawGeneratingState = false;
       let readyButton = newestExamCard.locator('button:has-text("Begin Exam")').first();
