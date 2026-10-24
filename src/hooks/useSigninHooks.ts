@@ -38,19 +38,19 @@ export const useAuthRedirect = (
     // "Already signed in. Redirecting..." forever.
     const emailVerificationSatisfied = !!firebaseUser && (firebaseUser.emailVerified || isUATEnv());
 
-    const shouldRedirect = 
-      !loading && 
-      firebaseUser && 
+    const shouldRedirect =
+      !loading &&
+      firebaseUser &&
       emailVerificationSatisfied &&
-      apiUserId && 
-      !isRedirecting && 
+      apiUserId &&
+      !isRedirecting &&
       !redirectAttempted.current &&
       !error.includes('verification') && // Ignore verification errors
       !error.includes('expired') &&     // Ignore session expired errors
       window.location.pathname === '/signin'; // Only redirect from signin page
 
     if (shouldRedirect) {
-      
+
       // Prevent multiple redirect attempts
       redirectAttempted.current = true;
       setIsRedirecting(true);
@@ -60,7 +60,7 @@ export const useAuthRedirect = (
         try {
           // Strategy 1: Next.js router (preferred)
           router.replace('/main');
-          
+
           // Strategy 2: Fallback with native redirect after short delay
           setTimeout(() => {
             if (window.location.pathname === '/signin') {
@@ -77,12 +77,12 @@ export const useAuthRedirect = (
       performRedirect();
     }
   }, [
-    loading, 
-    firebaseUser, 
-    apiUserId, 
-    isRedirecting, 
-    error, 
-    router, 
+    loading,
+    firebaseUser,
+    apiUserId,
+    isRedirecting,
+    error,
+    router,
     setIsRedirecting
   ]);
 };

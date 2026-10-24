@@ -1,8 +1,9 @@
-import { chromium, type FullConfig } from '@playwright/test';
+import { chromium, type FullConfig, type Page } from '@playwright/test';
 
 import { performLoginWithAutoSignup } from './fixtures/auth';
 import {
   AUTH_STATE_PATH,
+  clearStoredAuth,
   isStoredAuthReusable,
   writeAuthMeta,
 } from './fixtures/auth-state';
@@ -62,6 +63,34 @@ async function assertServerReachable(baseURL: string): Promise<void> {
  * creation. Do NOT restore with `addInitScript`, which replays the snapshot
  * before every navigation and clobbers the refresh token Firebase just rotated.
  */
+/**
+ * Probe a stored session: load the dashboard and require the "Register for
+ * Certification" CTA (i.e. AuthGuard let us through and stayed).
+ *
+ * A session file can be younger than the TTL and still be dead — account
+ * recycling (`helpers/account-recovery.ts`) deletes and re-creates the account,
+ * and an aborted run leaves the deleted account's tokens on disk.
+ */
+async function probeDashboard(page: Page): Promise<boolean> {
+  const registerCta = page.locator('button:has-text("Register for Certification")').first();
+  const certCard = page.locator('a[href*="/main/certifications/"]').first();
+
+  await page.goto('/main', { waitUntil: 'domcontentloaded' }).catch(() => {});
+
+  const reachedDashboard = await registerCta
+    .or(certCard)
+    .first()
+    .waitFor({ state: 'visible', timeout: 30_000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!reachedDashboard) return false;
+
+  // Grace period: confirm AuthGuard does not kick us back after the first paint.
+  await page.waitForTimeout(1_000);
+  return new URL(page.url()).pathname.startsWith('/main');
+}
+
 export default async function globalAuthSetup(config: FullConfig): Promise<void> {
   const baseURL =
     config.projects[0]?.use?.baseURL || process.env.PLAYWRIGHT_TEST_BASEURL || 'http://localhost:3000';
@@ -71,52 +100,61 @@ export default async function globalAuthSetup(config: FullConfig): Promise<void>
   // Always probe first — a hung server breaks reused and fresh runs alike.
   await assertServerReachable(baseURL);
 
-  if (!forceFresh && isStoredAuthReusable(baseURL)) {
-    console.log('[auth-setup] ✓ Reusing saved session from .auth/user.json');
-    return;
-  }
+  const reuseCandidate = !forceFresh && isStoredAuthReusable(baseURL);
 
-  console.log(
-    `[auth-setup] No reusable session for ${baseURL} — signing in once for this run...`,
-  );
-
+  // Match playwright.config.ts: system Chrome is required on older macOS.
   const browser = await chromium.launch({
-    // Match playwright.config.ts: system Chrome is required on older macOS.
     ...(process.platform === 'darwin' ? { channel: 'chrome' as const } : {}),
   });
 
-  const context = await browser.newContext({ baseURL });
-  const page = await context.newPage();
-
   try {
-    await performLoginWithAutoSignup(page);
+    if (reuseCandidate) {
+      const verifyContext = await browser.newContext({
+        baseURL,
+        storageState: AUTH_STATE_PATH,
+      });
+      const verifyPage = await verifyContext.newPage();
 
-    // Strict readiness probe. A session is only worth saving when the
-    // protected dashboard actually renders and stays there — a transient
-    // render followed by a bounce to /signin is exactly the failure mode
-    // this setup exists to prevent.
-    await page.goto('/main', { waitUntil: 'domcontentloaded' });
+      const alive = await probeDashboard(verifyPage).catch(() => false);
 
-    const registerCta = page.locator('button:has-text("Register for Certification")').first();
-    await registerCta.waitFor({ state: 'visible', timeout: 30_000 });
+      await verifyContext.close().catch(() => {});
 
-    // Grace period: confirm AuthGuard does not kick us back after the first paint.
-    await page.waitForTimeout(1_000);
+      if (alive) {
+        console.log('[auth-setup] ✓ Reusing saved session from .auth/user.json');
+        return;
+      }
 
-    const pathname = new URL(page.url()).pathname;
-    if (!pathname.startsWith('/main')) {
-      throw new Error(
-        `[auth-setup] Session bounced to ${pathname} instead of staying on /main. ` +
-          'Refusing to save an invalid auth state.',
+      console.log(
+        '[auth-setup] Stored session no longer authenticates (account deleted or expired) — signing in again...',
       );
+      clearStoredAuth();
     }
 
-    await context.storageState({ path: AUTH_STATE_PATH });
-    writeAuthMeta({ savedAt: Date.now(), baseURL });
+    console.log(`[auth-setup] No reusable session for ${baseURL} — signing in once for this run...`);
 
-    console.log(`[auth-setup] ✓ Session saved to ${AUTH_STATE_PATH}`);
+    const context = await browser.newContext({ baseURL });
+    const page = await context.newPage();
+
+    try {
+      await performLoginWithAutoSignup(page);
+
+      // Strict readiness probe before saving (see probeDashboard).
+      const ready = await probeDashboard(page);
+      if (!ready) {
+        throw new Error(
+          '[auth-setup] Dashboard did not render a logged-in surface after login. ' +
+            'Refusing to save an invalid auth state.',
+        );
+      }
+
+      await context.storageState({ path: AUTH_STATE_PATH });
+      writeAuthMeta({ savedAt: Date.now(), baseURL });
+
+      console.log(`[auth-setup] ✓ Session saved to ${AUTH_STATE_PATH}`);
+    } finally {
+      await context.close().catch(() => {});
+    }
   } finally {
-    await context.close().catch(() => {});
     await browser.close().catch(() => {});
   }
 }

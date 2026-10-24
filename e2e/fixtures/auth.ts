@@ -1,6 +1,7 @@
 import { test as base, expect, Page } from '@playwright/test';
 
 import { waitForHydration } from '../helpers/hydration';
+import { resolveTestAccountEmail } from './auth-state';
 
 type AuthFixtures = {
   authenticatedPage: Page;
@@ -157,8 +158,10 @@ async function waitForPostSignupSync(page: Page, timeoutMs: number = 15000): Pro
  * @throws Error if required credentials are not provided via params or env vars
  */
 async function performLogin(page: Page, email?: string, password?: string): Promise<void> {
-  // Load environment variables with fallback to provided parameters
-  const loginEmail = email || process.env.PW_TEST_EMAIL || process.env.PLAYWRIGHT_TEST_EMAIL;
+  // Load environment variables with fallback to provided parameters.
+  // `resolveTestAccountEmail()` prefers `.auth/test-account.json`: after an
+  // account recycle the canonical PW_TEST_EMAIL may point at a deleted user.
+  const loginEmail = email || resolveTestAccountEmail();
   const loginPassword =
     password || process.env.PW_TEST_PASSWORD || process.env.PLAYWRIGHT_TEST_PASSWORD;
 
@@ -326,7 +329,7 @@ async function performLoginWithAutoSignup(
   email?: string,
   password?: string,
 ): Promise<void> {
-  const loginEmail = email || process.env.PW_TEST_EMAIL || process.env.PLAYWRIGHT_TEST_EMAIL;
+  const loginEmail = email || resolveTestAccountEmail();
   const loginPassword =
     password || process.env.PW_TEST_PASSWORD || process.env.PLAYWRIGHT_TEST_PASSWORD;
 
@@ -476,6 +479,47 @@ async function performLoginWithAutoSignup(
 }
 
 /**
+ * How a signup attempt ended:
+ *  - `submitted`     the form was accepted and the app redirected to /signin
+ *  - `email-exists`  the backend rejected the email (already registered) — the
+ *                    Firebase Auth user survived a previous deletion
+ *  - `skipped`       the submit button never enabled (account very likely exists)
+ *  - `unknown`       no redirect and no detectable reason
+ */
+export type SignupOutcome = 'submitted' | 'email-exists' | 'skipped' | 'unknown';
+
+export type SignupResult = {
+  outcome: SignupOutcome;
+  /** Raw error text shown by the app, when any. */
+  errorText?: string;
+};
+
+/**
+ * Drop any persisted Firebase session before the signup form renders.
+ *
+ * `/signup` redirects to `/main` whenever `firebaseUser` is set. After an
+ * account deletion the browser can still hold `firebase:authUser:*`, and the
+ * page then unmounts mid-fill — the certification selector never becomes
+ * usable and signup dies with a confusing timeout. The following
+ * `page.goto('/signup')` is a full document load, so once the key is gone the
+ * SDK has nothing to restore.
+ */
+async function clearPersistedFirebaseSession(page: Page): Promise<void> {
+  if (!page.url().startsWith('http')) return;
+
+  await page
+    .evaluate(() => {
+      const re = /^firebase:|auth[_-]?token|session_token|^authUser/i;
+      Object.keys(localStorage)
+        .filter((key) => re.test(key))
+        .forEach((key) => localStorage.removeItem(key));
+    })
+    .catch(() => {
+      console.log('  ⚠ Could not inspect localStorage before signup, continuing...');
+    });
+}
+
+/**
  * Perform Firebase signup with email, password, and display name
  * Retrieved from environment variables: PW_SIGNUP_EMAIL and PW_SIGNUP_PASSWORD
  * Falls back to defaults if not set
@@ -524,7 +568,7 @@ async function performSignup(
   email?: string,
   password?: string,
   displayName?: string,
-): Promise<void> {
+): Promise<SignupResult> {
   // Load environment variables with fallback to provided parameters or defaults
   const signupEmail = email || process.env.PW_SIGNUP_EMAIL || 'pw_test_signup@certestic.com';
   const signupPassword =
@@ -532,6 +576,7 @@ async function performSignup(
   const finalDisplayName = displayName || `Test User ${Date.now()}`;
 
   // Navigate to signup page
+  await clearPersistedFirebaseSession(page);
   await page.goto('/signup', { waitUntil: 'domcontentloaded' });
   // Signup is usually the first route a run touches, so `next dev` is still
   // compiling it while the form is already painted. Wait for hydration before
@@ -837,7 +882,7 @@ async function performSignup(
     console.log(
       '✓ Navigated to signin. Signup skipped for existing account (account reused from previous run).',
     );
-    return;
+    return { outcome: 'skipped' };
   } else {
     console.log('✓ Submit button is now enabled.');
   }
@@ -870,7 +915,7 @@ async function performSignup(
     );
     console.log('✓ Successfully redirected to signin (new account or verification completed)');
     await waitForPostSignupSync(page);
-    return;
+    return { outcome: 'submitted' };
   } catch (e) {
     // Redirect didn't happen, check if there's an error
     console.log('No immediate redirect. Checking for error...');
@@ -892,7 +937,7 @@ async function performSignup(
       console.log('→ Email likely already registered. Moving to signin to use existing account...');
       await page.goto('/signin', { waitUntil: 'domcontentloaded' });
       await waitForPostSignupSync(page);
-      return;
+      return { outcome: 'email-exists', errorText: errorText.trim() };
     }
   } catch (e) {
     console.warn('WARNING: Could not check for error alert');
@@ -905,11 +950,12 @@ async function performSignup(
     console.log('Still on signup page. Moving to signin to attempt login...');
     await page.goto('/signin', { waitUntil: 'domcontentloaded' });
     await waitForPostSignupSync(page);
-    return;
+    return { outcome: 'unknown' };
   }
 
   // If we reach here, we should be on signin page
   console.log('Signup flow completed. Current page:', page.url());
+  return { outcome: 'unknown' };
 }
 
 /**
@@ -1058,7 +1104,27 @@ async function performDeleteAccount(page: Page): Promise<void> {
   // Click the delete account button
   const deleteButton = page.locator('[data-testid="profile-delete-account-btn"]');
 
-  if (!(await deleteButton.isVisible())) {
+  // The delete CTA lives inside the collapsed "Account Settings" accordion
+  // (Radix unmounts the content while collapsed). Specs that expand it first
+  // skip straight ahead; callers that arrive from another page get it opened
+  // here so the flow stays self-contained.
+  if (!(await deleteButton.isVisible({ timeout: 2000 }).catch(() => false))) {
+    const accordionTrigger = page
+      .locator('button[data-slot="accordion-trigger"]')
+      .filter({ has: page.locator('h3:has-text("Account Settings")') })
+      .first();
+
+    if (await accordionTrigger.isVisible({ timeout: 5000 }).catch(() => false)) {
+      console.log('  - "Account Settings" accordion is collapsed, expanding it...');
+      await accordionTrigger.scrollIntoViewIfNeeded().catch(() => {});
+      await accordionTrigger.click({ timeout: 5000 });
+      await deleteButton
+        .waitFor({ state: 'visible', timeout: 8000 })
+        .catch(() => console.log('  ⚠ Delete button still not visible after expanding accordion'));
+    }
+  }
+
+  if (!(await deleteButton.isVisible({ timeout: 3000 }).catch(() => false))) {
     throw new Error('Delete account button not found on profile page');
   }
 

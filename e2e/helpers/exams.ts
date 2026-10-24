@@ -1,8 +1,17 @@
 import { Page } from '@playwright/test';
+import { DailyExamLimitError, recoverFromDailyExamLimit } from './account-recovery';
 import { FlowTimingTracker } from './performance';
+import { readDailyExamQuota } from './quota';
+
+export { readDailyExamQuota };
 
 type ExamTimingOptions = {
   tracker?: FlowTimingTracker;
+};
+
+export type ExamCreationOptions = ExamTimingOptions & {
+  /** Recycle the test account when the daily cap is hit. Defaults to true. */
+  recoverFromDailyLimit?: boolean;
 };
 
 /**
@@ -159,31 +168,53 @@ export function verifyOnExamsPage(page: Page): boolean {
 }
 
 /**
- * Read the "DAILY EXAM LIMIT  x/y  exams created today" indicator.
- * Returns null when the widget is absent or its text can't be parsed.
- */
-export async function readDailyExamQuota(
-  page: Page,
-): Promise<{ created: number; max: number } | null> {
-  const text = await page
-    .locator('body')
-    .innerText()
-    .catch(() => '');
-
-  const match = text.match(/(\d+)\s*\/\s*(\d+)\s+exams created today/i);
-  if (!match) return null;
-
-  return { created: Number(match[1]), max: Number(match[2]) };
-}
-
-/**
  * Handle complete exam creation flow
  * Opens create modal, fills form, submits, and waits for exam to appear
+ *
+ * When the account has exhausted its daily creation cap (see
+ * `DEFAULT_MAX_EXAMS_PER_24_HOURS` = 3 in src/lib/rateLimitUtils.ts) the helper
+ * recycles the test account once — delete → re-register → log in — and retries,
+ * so a long test session is never blocked on a quota that only resets after 24h.
+ * Set `recoverFromDailyLimit: false` (or `E2E_DISABLE_ACCOUNT_RECOVERY=1`) to
+ * keep the hard failure instead.
  */
 export async function handleExamCreation(
   page: Page,
-  options: ExamTimingOptions = {},
+  options: ExamCreationOptions = {},
 ): Promise<void> {
+  const { recoverFromDailyLimit = process.env.E2E_DISABLE_ACCOUNT_RECOVERY !== '1' } = options;
+
+  try {
+    await createExamOnce(page, options);
+    return;
+  } catch (error) {
+    if (!(error instanceof DailyExamLimitError) || !recoverFromDailyLimit) {
+      throw error;
+    }
+
+    console.log(`\n  ⚠ ${error.message}`);
+  }
+
+  await recoverFromDailyExamLimit(page, {
+    tracker: options.tracker,
+    reason: 'daily exam limit reached while creating an exam',
+  });
+
+  console.log('  - Retrying exam creation on the freshly registered account...');
+
+  try {
+    await createExamOnce(page, options);
+  } catch (error) {
+    if (error instanceof DailyExamLimitError) {
+      throw new DailyExamLimitError(
+        `Daily exam limit is still exhausted right after account recovery — the new account did not receive a fresh quota. ${error.message}`,
+      );
+    }
+    throw error;
+  }
+}
+
+async function createExamOnce(page: Page, options: ExamTimingOptions = {}): Promise<void> {
   const { tracker } = options;
   const creationStartedAt = Date.now();
 
@@ -214,10 +245,9 @@ export async function handleExamCreation(
     // dialog the rest of the flow can't drive, and the failure surfaces 3
     // minutes later as a bogus "exam never became startable" timeout.
     if (quota && quota.created >= quota.max) {
-      throw new Error(
+      throw new DailyExamLimitError(
         `Daily exam limit reached (${quota.created}/${quota.max} exams created today). ` +
-          'Deleting an exam does not restore this quota. Use a different test account ' +
-          '(PW_TEST_EMAIL) or wait for the daily reset.',
+          'Deleting an exam does not restore this quota.',
       );
     }
 
@@ -410,9 +440,9 @@ export async function handleExamCreation(
 
     if (cardsAfter <= cardsBeforeSubmit) {
       const toastText = (await rejectionToast.textContent().catch(() => ''))?.trim();
-      throw new Error(
+      throw new DailyExamLimitError(
         `Exam creation was rejected by the backend${toastText ? `: "${toastText}"` : ''}. ` +
-          'The test account has reached its daily exam limit — use a fresh account or wait for the reset.',
+          'The test account has reached its daily exam limit.',
       );
     }
   }
@@ -436,7 +466,7 @@ export async function handleExamCreation(
         (quotaText
           ? `The account appears to have hit its creation limit (found: "${quotaText.trim()}"). `
           : 'The creation request was likely rejected (rate limit / server error). ') +
-        'Deleting an exam does not always restore the daily quota — use a different test account or wait for the daily reset.',
+        'Deleting an exam does not restore the daily quota — the account must be recycled or the reset awaited.',
     );
   }
 

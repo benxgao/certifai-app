@@ -250,3 +250,50 @@ python3 -c "import json; json.load(open('gcp_credentials.json')); print('valid J
 ```
 
 **CI does not read this local file.** The `GCP_CREDENTIALS_JSON` GitHub Secret (full JSON content) is written to `/tmp/gcp_cred.json` by the workflow, and `GOOGLE_APPLICATION_CREDENTIALS` is set to that path — the same file-path code branch as local.
+
+---
+
+## 13. Daily exam-creation limit → automatic account recycling
+
+The backend caps exam creation at **3 exams / 24h per account** (`src/lib/rateLimitUtils.ts`,
+`DEFAULT_MAX_EXAMS_PER_24_HOURS`). Deleting an exam does **not** refund the quota — only a new
+account (or the 24h reset) does.
+
+`handleExamCreation` (`helpers/exams.ts`) therefore recycles the test account instead of failing:
+
+1. raises `DailyExamLimitError` when the limit is detected — disabled "New Exam" button with a full
+   quota widget, or the "Exam creation limit reached" toast right after submit;
+2. `recoverFromDailyExamLimit` (`helpers/account-recovery.ts`) deletes the account through
+   `/main/profile` (`performDeleteAccount` expands the collapsed "Account Settings" accordion),
+   waits for the redirect to `/signin`, then re-registers and logs in with `PW_TEST_EMAIL` /
+   `PW_TEST_PASSWORD` (plus-alias fallback if the email is still held);
+3. registers a certification for the new account when the dashboard has none, opens its exams page,
+   asserts the quota is really fresh, and persists the new session to `.auth/user.json` so the rest
+   of the run does not restore the deleted account's tokens;
+4. retries creation **once**. A second limit error fails loudly (the old account was probably never
+   deleted) rather than looping.
+
+Consequences when writing tests:
+
+- Do not assert on the specific certification id across an exam-creation step — recovery may land on
+  a different certification.
+- Allow budget for one recovery cycle (~2 min) in `testInfo.setTimeout(...)`; `exam.spec.ts` uses 600s.
+  The ceiling must be set with `test.describe.configure({ timeout })`, because `testInfo.setTimeout`
+  inside `beforeEach` runs *after* the `authenticatedPage` fixture (auth/signup) and does not cover it.
+- `E2E_DISABLE_ACCOUNT_RECOVERY=1` (or `handleExamCreation(page, { recoverFromDailyLimit: false })`)
+  restores the old hard-failure behaviour when you need to inspect a quota-blocked run.
+- The account is **really deleted** in whatever environment the run targets. Only run this against
+  dedicated test accounts.
+
+Operational gotchas:
+
+- **Registration is rate limited to 3/hour per IP** (`src/lib/rate-limiting.ts`, in-memory). Each
+  recovery spends one. If the app answers "Registration service temporarily unavailable", the limiter
+  (or a backend hiccup) blocked `/api/auth/register`; the account exists in Firebase Auth without an
+  `api_user_id` claim, and login will never reach `/main`. Restart the dev server to clear the
+  in-memory limiter, then delete the half-registered Firebase user before re-running.
+- If the deleted email is still reserved in Firebase Auth, recovery falls back to
+  `<local>+pw<timestamp>@<domain>` and records it in `.auth/test-account.json`, so the next run signs
+  in with the account that actually works. `npm run test:e2e:auth` drops that file too.
+- `global-auth-setup.ts` probes the stored session against `/main` before reusing it, because a state
+  file can be younger than the 40-minute TTL yet point at an account recycled by a previous run.

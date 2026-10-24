@@ -9,14 +9,23 @@ import { FlowTimingTracker } from './helpers/performance';
 // /signin redirect away and break the anonymous auth-flow specs.
 test.use({ storageState: AUTH_STATE_PATH });
 
+// Budget: fixture setup (auth/signup) + exam creation with 3min polling.
+// The daily 3-exam cap triggers a full account recycle inside
+// `handleExamCreation` (delete → re-register → log in → create again), which
+// adds up to ~2 minutes, so the ceiling allows one recovery cycle.
+// Set at describe level (not `testInfo.setTimeout` in `beforeEach`) because the
+// `authenticatedPage` fixture's own auth/signup fallback runs *before* hooks and
+// would otherwise be cut off by the 90s global timeout.
+test.describe.configure({ timeout: 600000 });
+
 type TestFixtures = {
   authenticatedPage: Page;
 };
 
 test.describe('Exam Flows', () => {
   test.beforeEach(async ({ authenticatedPage }, testInfo) => {
-    // Extend timeout for fixture setup (auth/signup) + exam creation with 3min polling = 360s = 6 minutes
-    testInfo.setTimeout(360000);
+    // Keep the budget visible in the per-test report too.
+    testInfo.setTimeout(600000);
   });
 
   test('[Dashboard → Cert → Exams] @smoke', async ({

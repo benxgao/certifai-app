@@ -13,6 +13,7 @@ const AUTH_DIR = path.join(process.cwd(), '.auth');
 
 export const AUTH_STATE_PATH = path.join(AUTH_DIR, 'user.json');
 export const AUTH_META_PATH = path.join(AUTH_DIR, 'user.meta.json');
+export const ACTIVE_TEST_ACCOUNT_PATH = path.join(AUTH_DIR, 'test-account.json');
 
 /**
  * Firebase ID tokens live ~1h. Keep a margin so a run never starts on an
@@ -64,4 +65,66 @@ export function clearStoredAuth(): void {
       // Best effort: a missing file is a valid "clean" state.
     }
   }
+}
+
+/**
+ * The account the suite should sign in with.
+ *
+ * Normally this is `PW_TEST_EMAIL`. It only diverges when a run had to recycle
+ * the account (see `helpers/account-recovery.ts`): deleting the account is
+ * server-side and the Firebase Auth user can survive it, which makes the
+ * original email unusable for signing up again — recovery then adopts a
+ * plus-alias account and records it here so the NEXT run signs in with an
+ * account that actually works.
+ *
+ * Reset with `npm run test:e2e:auth` (drops `.auth/`).
+ */
+export type ActiveTestAccount = {
+  email: string;
+  updatedAt: number;
+  reason: string;
+};
+
+export function readActiveTestAccount(): ActiveTestAccount | null {
+  try {
+    return JSON.parse(fs.readFileSync(ACTIVE_TEST_ACCOUNT_PATH, 'utf-8')) as ActiveTestAccount;
+  } catch {
+    return null;
+  }
+}
+
+export function writeActiveTestAccount(account: {
+  email: string;
+  reason: string;
+}): void {
+  fs.mkdirSync(AUTH_DIR, { recursive: true });
+  fs.writeFileSync(
+    ACTIVE_TEST_ACCOUNT_PATH,
+    JSON.stringify({ ...account, updatedAt: Date.now() }, null, 2),
+  );
+}
+
+export function clearActiveTestAccount(): void {
+  try {
+    fs.rmSync(ACTIVE_TEST_ACCOUNT_PATH, { force: true });
+  } catch {
+    // Best effort.
+  }
+}
+
+/**
+ * Email to authenticate with: the adopted recovery account when present,
+ * otherwise `PW_TEST_EMAIL` / `PLAYWRIGHT_TEST_EMAIL`.
+ */
+export function resolveTestAccountEmail(): string | undefined {
+  const adopted = readActiveTestAccount()?.email;
+  if (adopted) {
+    console.log(
+      `[auth-state] Using recovered test account ${adopted} from .auth/test-account.json ` +
+        '(reset with `npm run test:e2e:auth`).',
+    );
+    return adopted;
+  }
+
+  return process.env.PW_TEST_EMAIL || process.env.PLAYWRIGHT_TEST_EMAIL;
 }
